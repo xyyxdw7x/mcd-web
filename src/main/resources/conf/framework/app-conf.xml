@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+	">
+	<!-- spring注册BeanPostProcessor -->
+	<context:annotation-config />
+	<!-- spring 注释扫描应该去掉spring mvc的controller组件 -->
+	<context:component-scan base-package="com.asiainfo" use-default-filters="true" >
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    <!-- spring启动加载数据源等信息 -->
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+        	<list>
+        		<value>classpath:conf/app.properties</value>
+        	</list>
+        </property>
+    </bean>
+    <!-- spring 上下文管理类 -->
+    <bean id="springContextsUtil" class="com.asiainfo.biapp.framework.util.SpringContextsUtil" lazy-init="false" />
+    
+    <!-- 当Spring容器启动完成后执行下面的这个Bean -->
+    <bean class="com.asiainfo.biapp.framework.web.context.InstantiationTracingBeanPostProcessor"/>
+    
+    <!-- json公用类 -->
+    <bean id="objectMapper" class="com.asiainfo.biapp.framework.util.JSONObjectMapper"/>
+    
+	<!-- JDBC数据层配置文件 -->
+    <import resource="data-jdbc.xml"/>
+    
+	<!-- Spring注解缓存配置可以配置为 memcached等 
+	<import resource="cache-spring.xml"/>
+	-->
+	<!-- task and schedue
+	<import resource="task-schedue.xml"/>
+	 -->
+	<!-- Dubbox配置 
+	<import resource="dubbox.xml"/>
+	-->
+	<!-- 日志和性能监控 
+	<import resource="log-monitor.xml"/>
+	-->
+	<!-- mcd framework框架之外的插件可以在plugin-conf.xml中进行配置 framework中的配置最好不要轻易修改，否则会影响系统的正常启动 -->
+	<import resource="../plugin-conf.xml"/>
+</beans>

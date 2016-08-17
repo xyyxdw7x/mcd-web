@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+    http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	">
+	<!-- 线程池
+	org.springframework.aop.interceptor.AsyncExecutionAspectSupport
+	corePoolSize 线程池维护线程的最少数量  
+	maxPoolSize 线程池维护线程的最大数量  
+	queueCapacity 线程池所使用的缓冲队列 
+	keepAliveSeconds 线程池维护线程所允许的空闲时间  
+	 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="50" />
+		<property name="queueCapacity" value="200" />
+	</bean>
+
+	<!-- 第二层operation log  --> 
+	<bean id="userOperationLogInterceptor" class="com.xes.framework.aop.UserOperationLogInterceptor">
+		<property name="taskExecutor" ref="taskExecutor"/>
+	</bean>
+	<!-- 第一层 权限验证 -->
+	<bean id="oauthSecurityInterceptor" class="com.xes.framework.aop.OauthSecurityInterceptor">
+		<property name="sysNames" value="${app_oauth_name}"/>
+		<property name="test" value="${app_oauth_test}"/>
+		<property name="excludePathInfos" >
+			<list>
+				<value>/manager/flush</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- SpringJDBCAppender -->
+	<bean id="springJDBCAppender" class="com.xes.framework.log.SpringJDBCAppender">
+		<property name="jdbcTemplateMaster" ref="jdbcTemplateMaster"/>
+		<property name="sql" value="INSERT INTO tb_user_log(ul_user_id,ul_user_key,ul_ip,ul_agent,ul_create_time,ul_url,ul_service_name,ul_service_method,ul_service_args,ul_referer) VALUES "/>
+		<property name="bufferSize" value="5"/>
+	</bean>
+	<aop:config>
+		<aop:pointcut id="oauthAllServiceMethods" expression="execution(* com.xes.mobby.ws.*.*(..))"/>
+		<aop:advisor pointcut-ref="oauthAllServiceMethods" advice-ref="oauthSecurityInterceptor" order="1"/>
+	</aop:config>
+	
+	<aop:config>
+		<aop:pointcut id="logAllServiceMethods" expression="execution(* com.xes.mobby.ws.*.*(..))"/>
+		<aop:advisor pointcut-ref="logAllServiceMethods" advice-ref="userOperationLogInterceptor" order="2"/>
+	</aop:config>
+	
+    <!-- service层方法执行时间监测 -->
+    <bean id="slowPerformanceMonitorInterceptor" class="com.xes.framework.aop.SlowPerformanceMonitorInterceptor" >
+    	<property name="warningThreshold" value="20"/>
+    </bean>
+    <!-- service层方法执行时间监测 aop-->
+   	<aop:config>
+    	<aop:pointcut id="allServiceMethods" expression="execution(* com.xes.mobby.service.*.*(..))"/>
+    	<aop:advisor pointcut-ref="allServiceMethods" advice-ref="slowPerformanceMonitorInterceptor" order="3"/>
+	</aop:config>
+	
+</beans>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/jee 
+    http://www.springframework.org/schema/jee/spring-jee.xsd
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+    ">
+    <!-- JDBC的基类 -->
+    <bean id="jdbcDaoBase" class="com.asiainfo.biapp.framework.jdbc.JdbcDaoBase" autowire="byName">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!--JdbcTemplate模板  -->
+    <bean id="jdbcTemplate" class=" org.springframework.jdbc.core.JdbcTemplate" >
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	<!-- 主数据源 -->
+    <bean id="masterJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/${app_jndi_master_name}</value>
+		</property>
+	</bean>
+	<!-- 从数据源 -->
+	<bean id="slaveJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/${app_jndi_slave_name}</value>
+		</property>
+	</bean>
+	
+	<!-- 数据源路由 -->
+	<bean id="dataSource" class="com.asiainfo.biapp.framework.jdbc.RoutingDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="master" value-ref="masterJndi" />
+				<entry key="slave" value-ref="slaveJndi" />
+			</map>
+		</property>
+		<!--默认为从服务器 主要处理查询工作  -->
+		<property name="defaultTargetDataSource" ref="slaveJndi" />
+	</bean>
+	<!-- 激活自动代理功能 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- 用注解来实现事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	
+	<!-- jdbc主从数据源切换切面 -->
+	<bean id="resetDataSourceAdvice" class="com.asiainfo.biapp.framework.jdbc.ResetDataSourceAdvice" />
+	<aop:config>
+        <aop:aspect id="changeMasterDataSource" ref="resetDataSourceAdvice">
+            <aop:pointcut expression="execution(* com.asiainfo.biapp.mcd.*.service.*.update*(..)) ||execution(* com.asiainfo.biapp.mcd.*.service.*.save*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.add*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.insert*(..))" id="update"/>
+            <aop:before method="resetMasterDataSource" pointcut-ref="update" />
+        </aop:aspect>
+        <aop:aspect id="changeSlaveDataSource" ref="resetDataSourceAdvice">
+            <aop:before method="resetSlaveDataSource"
+                pointcut="execution(* com.asiainfo.biapp.mcd.*.service.*.get*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.query*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.find*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.search*(..))" />
+        </aop:aspect>
+    </aop:config>
+    <!--事务模板 -->
+  	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+  	</bean>
+  	<!-- jdbc事务管理器 -->
+  	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+  	</bean>
+  	<tx:advice id="jdbcAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="query*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="search*" read-only="true"/>
+			<tx:method name="add*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="insert*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="save*" rollback-for="Exception" propagation="REQUIRED"/>
+			<tx:method name="change*" rollback-for="Exception" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="jdbcPointCut" expression="execution(* com.asiainfo.biapp.mcd.*.dao..*Dao.*(..))"/>
+		<aop:advisor pointcut-ref="jdbcPointCut" advice-ref="jdbcAdvice"/>
+	</aop:config>
+</beans>

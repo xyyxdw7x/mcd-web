@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	http://www.springframework.org/schema/mvc  
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	">
+	<!-- 默认的注解映射的支持  默认的order为0--> 
+    <mvc:annotation-driven/>
+     
+    
+    <mvc:default-servlet-handler/>
+    
+	<!-- 扫描Controller组件 -->
+	<context:component-scan base-package="com.asiainfo" name-generator="com.asiainfo.biapp.framework.core.context.FullPathBeanNameGenerator" >
+ 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+ 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+	</context:component-scan>
+	
+    <!-- resource本质是一个SimpleUrlHandlerMapping 静态的资源文件   
+    cache-period缓存时间 秒  86400为一天   annotation-driven默认的order为0 设置会-11和-12就不会经过其他的HandlerMapping-->
+    <mvc:resources mapping="/file/**" location="/html/"  cache-period="86400" order="-11" />
+    <mvc:resources mapping="/asset/**"    location="/asset/"     cache-period="86400" order="-12"/>
+    
+    
+    <!-- sdp中mvc的control默认统一实用xxxController 自动扫描包含@Controller注解的-->
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
+		<property name="order" value="-4"/>
+		<property name="basePackage" value="com.asiainfo.biapp.framework.web.controller"/>
+	</bean>
+	<!-- 自动查找在所有@Controller中使用了@requestMapping 注解的bean -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="order" value="-3"/>
+	</bean>
+	<!-- 扫描bean，查找@RequestMapping -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	
+	<!-- 匹配所有file开头的url 不需要控制器直接打开 -->
+	<bean name="/file/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
+	<!-- 
+	<bean class="org.springframework.web.servlet.mvc.ParameterizableViewController"/>
+	 -->
+    
+    <!-- 视图解析器 -->
+    <!-- 优先使用httl渲染 -->
+    <bean id="httlViewResolver" class="httl.web.springmvc.HttlViewResolver">
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="order" value="1"/>
+	</bean>
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".ftl" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="order" value="2"/>
+	</bean>
+	<!-- 配置freeMarker的模板路径 -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath">
+        <value>/jsp/</value>
+        </property>
+        <property name="freemarkerVariables">
+        <map>
+           
+        </map>
+        </property>
+        <property name="defaultEncoding">
+            <value>utf-8</value>
+        </property>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">3600</prop>
+            </props>
+        </property>
+    </bean>
+    
+   
+ 
+  
+   
+    <!-- 根据bean的名称来解析  BeanNameViewResolver new ModelAndView("courseList","courses",courses); -->
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="3" />
+	</bean>
+	<!-- 视图解析器internalResourceViewResolver 必须总是赋予最低的优先级（最大的order值），
+	              因为不管返回什么视图名称，它都将解析视图。如果它的优先级高于其它解析器的优先级的话，它将使得其它具有较低优先级的解析器没有机会解析视图 -->
+	<bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+		<property name="order" value="4"/>
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+	</bean>
+	
+	
+	<!-- contentNegotiatingViewResolver -->
+	<bean id="contentNegotiatingViewResolver" class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="defaultViews">
+        	<list>
+        		<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+        		<bean class="org.springframework.web.servlet.view.xml.MarshallingView">  
+                	<constructor-arg>  
+                    	<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">  
+                        	<property name="packagesToScan">  
+                            	<list>  
+                                    <value>com.asiainfo.biapp.framework</value>  
+                                </list>  
+                            </property>  
+                        </bean>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.springframework.flex.http.AmfView" />
+        	</list>
+        </property>
+       
+        <property name="order" value="4" />
+    </bean>
+
+	<!-- 系统默认的视图 -->
+	<bean id="jsonView" name="jsonView" class="com.asiainfo.biapp.framework.web.view.JsonView">
+		<property name="extractValueFromSingleKeyModel" value="true"/>
+		<property name="disableCaching" value="false"/>
+	</bean>
+	<!-- 
+	<bean id="marshallingView" name="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<property name="marshaller" ref="jaxb2MarshallingView"/>
+	</bean>
+	 -->
+	<bean id="jaxb2MarshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+    	<constructor-arg>
+        	<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        		<property name="packagesToScan">
+					<list>
+	    				<value>com.sdp</value>
+					</list>
+				</property>
+        	</bean>
+    	</constructor-arg>
+	</bean>
+	<bean id="excelView" name="excelView" class="com.asiainfo.biapp.framework.web.view.DefaultExcelView">
+	
+	</bean>
+	<bean id="pdfView" name="pdfView" class="com.asiainfo.biapp.framework.web.view.DefaultPdfView">
+	</bean>
+	<bean id="parameterMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName" value="action"/>
+		<property name="defaultMethodName" value="execute"></property>
+	</bean>
+	
+	
+	<bean id="internalPathMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.InternalPathMethodNameResolver"/>
+    <!--JSON--> 
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
+		<property name="messageConverters">  
+		<list>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+		</list> 
+	    </property>  
+	</bean>
+</beans>

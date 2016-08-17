@@ -1,0 +1,142 @@
+<!--#set(List<Book> books)-->
+<html>
+<body>
+	<p>HTTL SpringMVC Demo</p>
+	<p>${header.userAgent}</p>
+	<!--#if(books)-->
+	<table>
+		<tr>
+			<td>序号</td>
+			<td>${"book.title".message}</td>
+			<td>作者</td>
+			<td>出版商</td>
+			<td>出版时间</td>
+			<td>定价</td>
+			<td>折扣</td>
+			<td>售价</td>
+		</tr>
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>15523.123￥</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>as测试出版色12</td>
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>123213</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			<td></td>
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+		<!--#for(Book book : books)-->
+		<tr>
+			<td>${for.count}</td>
+			<td>${book.title}</td>
+			<td>${book.publication.format("yyyy-MM-dd")}</td>
+			<td>${book.price}</td>
+			<td>${book.discount}%</td>
+			<td>${book.price * book.discount / 100}</td>
+		</tr>
+		<!--#end-->
+	</table>
+	<!--#end-->
+</body>
+</html>
