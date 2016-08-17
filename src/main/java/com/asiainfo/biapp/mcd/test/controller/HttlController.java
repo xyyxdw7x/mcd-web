@@ -13,18 +13,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.test.service.IBookService;
 import com.asiainfo.biapp.mcd.test.vo.Book;
 
 @RequestMapping("/test/httl")
-public class HttlController extends MultiActionController {
+public class HttlController extends BaseMultiActionController {
 
+	//@Autowired
 	@Resource(name="bookService")
 	private IBookService bookService;
+	
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		return null;
+	}
+
 	
 	@RequestMapping("/findBooks")
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		String userId=this.getUserId(request, response);
+		System.out.println("userId="+userId);
 		String name=request.getParameter("name");
 		ModelAndView model = new ModelAndView("test/books");
 		HashMap<String,Object> modelMap=new HashMap<String,Object>();
