@@ -23,12 +23,6 @@ public class HttlController extends BaseMultiActionController {
 	@Resource(name="bookService")
 	private IBookService bookService;
 	
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
-		return null;
-	}
-
-	
 	@RequestMapping("/findBooks")
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
