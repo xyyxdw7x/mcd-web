@@ -15,8 +15,9 @@ import javax.naming.StringRefAddr;
 
 import org.apache.commons.codec.binary.Hex;
 
-import com.xes.framework.util.DESBase64Util;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory;
+
+import com.asiainfo.biapp.framework.util.DESBase64Util;
 
 public class EncryptedDataSourceFactory extends BasicDataSourceFactory {
 
