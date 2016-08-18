@@ -25,7 +25,13 @@ public class MtlCampSeginfo {
     private Integer deptId; // 策划人部门id
     
     
-    public String getEndDate() {
+    public Integer getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
+	}
+	public String getEndDate() {
 		return endDate;
 	}
 	public void setEndDate(String endDate) {
