@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.jms.util;
+package com.asiainfo.biapp.mcd.common.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
