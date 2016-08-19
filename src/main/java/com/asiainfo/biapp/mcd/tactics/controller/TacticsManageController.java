@@ -4,17 +4,21 @@ import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -155,7 +159,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				String execContentStr = rule.get("execContent").toString();
 				org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);
 				List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
-				MtlChannelDefCall mtlChannelDefCall = null;
 
 				String cepEventId = "";
 				String eventRuleDesc = "";
@@ -349,8 +352,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 				// 添加实时事件支持
 				if (execContentStr.indexOf("cepInfo") != -1) {
-					// campSeginfo.setCepEventId(cepEventId);
-					// campSeginfo.setEventRuleDesc(eventRuleDesc);
 				}
 				campSeginfo.setCepEventId(streamsId);
 				campSeginfo.setEventRuleDesc(streamName);
@@ -359,7 +360,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setUpdatecycle(updateCycle);
 
 				campSeginfo.setMtlChannelDefList(mtlChannelDefList);
-				campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
 				// 产品订购或者剔除关系
 				campSeginfo.setOrderPlanIds(orderProductNo);
 				campSeginfo.setExcludePlanIds(excludeProductNo);
@@ -404,6 +404,39 @@ public class TacticsManageController extends BaseMultiActionController {
 			out.flush();
 			out.close();
 		}
+	}
+	
+	/**
+	 * JSON转map
+	 * add by zhuml 20151203
+	 * @param paramJson
+	 * @return
+	 */
+	public static Map<String, Object> jsonToMap(String paramJson ){
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap = (Map<String, Object>) JSONObject.fromObject(paramJson);
+		return paramsMap;
+	}
+	/**
+	 * 拼装订购产品的信息
+	 * @param productArr
+	 * @return
+	 */
+	private String[] createProductAttr(String productArr){
+		String productAttr[] = new String[2];
+		try {
+			if(StringUtil.isNotEmpty(productArr)){
+				org.json.JSONArray jsonObj = new org.json.JSONArray(productArr);
+				for(int i = 0;i<jsonObj.length();i++){
+					org.json.JSONObject obj = new org.json.JSONObject(jsonObj.get(i).toString());
+					productAttr[0] = (String) obj.get("orderProductNo");
+					productAttr[1] = (String)obj.get("excludeProductNo");
+				}
+			}
+		} catch (Exception e) {
+//			LOG.error(e);
+		}
+		return productAttr;
 	}
 
 }

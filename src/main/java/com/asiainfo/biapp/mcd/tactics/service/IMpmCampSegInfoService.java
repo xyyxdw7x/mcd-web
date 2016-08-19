@@ -1,16 +1,10 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /*
  * Created on 11:31:19 AM
@@ -30,6 +24,10 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 */
 	public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo,Pager pager);
+
+	public String saveCampSegWaveInfoZJ(List<MtlCampSeginfo> campSegInfoList);
+
+	void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId, MtlCampSeginfo segInfo,String flag) throws MpmException;
 
 
 }

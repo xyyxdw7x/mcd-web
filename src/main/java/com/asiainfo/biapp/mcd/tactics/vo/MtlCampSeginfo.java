@@ -371,6 +371,4 @@ public class MtlCampSeginfo {
         this.areaId = areaId;
     }
     
-    
-    
 }
