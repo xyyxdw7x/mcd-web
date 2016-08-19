@@ -27,5 +27,7 @@ public class MpmCONST {
      */
     public static final int pageNum = 1;
     public final static int PAGE_SIZE = 10;
+    
+    public static final String CAMPAIGN_SEG_INFO_SERVICE = "mpmCampSegInfoService";
 
 }
