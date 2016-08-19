@@ -23,10 +23,10 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.util.jdbcPage.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.date.DateUtil;

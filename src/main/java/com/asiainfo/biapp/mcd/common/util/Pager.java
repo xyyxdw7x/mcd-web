@@ -1,5 +1,5 @@
 
-package com.asiainfo.biapp.mcd.util.jdbcPage;
+package com.asiainfo.biapp.mcd.common.util;
 
 import java.util.ArrayList;
 import java.util.List;

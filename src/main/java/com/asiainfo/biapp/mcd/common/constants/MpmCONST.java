@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.constants;
+package com.asiainfo.biapp.mcd.common.constants;
 
 import java.util.HashMap;
 import java.util.Map;

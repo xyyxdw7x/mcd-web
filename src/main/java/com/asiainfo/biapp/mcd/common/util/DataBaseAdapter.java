@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.util.jdbcPage;
+package com.asiainfo.biapp.mcd.common.util;
 
 import java.sql.Clob;
 import java.util.UUID;

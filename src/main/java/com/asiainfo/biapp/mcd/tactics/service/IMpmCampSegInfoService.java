@@ -6,8 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
