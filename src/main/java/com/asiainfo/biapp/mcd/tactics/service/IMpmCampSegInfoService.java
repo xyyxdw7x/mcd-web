@@ -2,6 +2,8 @@ package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
 
+
+
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
@@ -12,10 +14,11 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
  * <p>Title: </p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2006</p>
- * <p>Company: asiainfo.,Ltd</p>
- * @author weilin.wu  wuwl2@asiainfo.com
+ * <p>Company: </p>
+ * @author 
  * @version 1.0
  */
+
 public interface IMpmCampSegInfoService {
 	/**
 	 * gaowj3
@@ -30,4 +33,15 @@ public interface IMpmCampSegInfoService {
 	void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId, MtlCampSeginfo segInfo,String flag) throws MpmException;
 
 
+	/**
+	 * add by gaowj3 20150722
+	 * @Title: updateCampStat
+	 * @Description: 提交审批XML
+	 * @param campsegId   
+	 * @return String 
+	 * @throws
+	 */
+	public String submitApprovalXml(String campsegId);
+
+	List<MtlCampSeginfo> getChildCampSeginfo(String campsegId);
 }

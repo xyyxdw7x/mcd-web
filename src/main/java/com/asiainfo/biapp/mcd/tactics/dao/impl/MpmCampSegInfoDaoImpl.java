@@ -1,25 +1,10 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -27,10 +12,6 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
-import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;
 @Repository("mpmCampSegInfoDao")
 public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegInfoDao {
@@ -117,4 +98,37 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         return list;
     }
     
+	/**
+	 * 保存活动信息
+	 */
+	@Override
+	public Serializable saveCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
+		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
+		return segInfo.getCampsegId();
+	}
+	/**
+	 * 根据活动编号取活动信息
+	 */
+	@Override
+	public MtlCampSeginfo getCampSegInfo(String campSegId) throws Exception {
+		MtlCampSeginfo obj = null;
+		try {
+			//TODO: obj = (MtlCampSeginfo) this.getHibernateTemplate().get(MtlCampSeginfo.class, campSegId);
+		} catch (Exception e) {
+			throw e;
+		}
+		return obj;
+	}
+	@Override
+	public List getChildCampSeginfo(String campsegId) throws Exception {
+		final String sql = "select * from MTL_CAMP_SEGINFO seginfo where seginfo.campseg_pid = ? order by create_time asc ";
+		return this.getJdbcTemplate().queryForList(sql, new Object[]{campsegId});
+	}
+	/**
+	 * 更新活动信息
+	 */
+	@Override
+	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
+		//TODO: this.getHibernateTemplate().update(segInfo);
+	}
 }

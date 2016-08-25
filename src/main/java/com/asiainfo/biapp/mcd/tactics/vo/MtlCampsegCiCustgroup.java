@@ -36,8 +36,7 @@ public class MtlCampsegCiCustgroup implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public MtlCampsegCiCustgroup(String campsegId, String custgroupType,
-			String custgroupId, String custgroupName) {
+	public MtlCampsegCiCustgroup(String campsegId, String custgroupType,String custgroupId, String custgroupName) {
 		this.campsegId = campsegId;
 		this.custgroupType = custgroupType;
 		this.custgroupId = custgroupId;

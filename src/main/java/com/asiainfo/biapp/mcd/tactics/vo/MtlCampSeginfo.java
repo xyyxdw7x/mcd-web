@@ -10,7 +10,9 @@ public class MtlCampSeginfo {
     private Integer isSelectMy; //查询的是否是自己的 0 ：是     1 ：不是
     private Boolean isZJ;//是否是浙江 
     private Integer isMy;//是否是自己创建的  0 ：是     1 ：不是
+    private Integer custgroupNumber;//客户群规模
     private String campDrvIds; //业务类型可多选情况
+	private String campDrvName;// 活动类型名称
     private String campsegStatName; //状态名称
     private Short campsegStatId; // 营销活动状态ID
     private String channelId;
@@ -40,7 +42,6 @@ public class MtlCampSeginfo {
 	private List<MtlChannelDef> mtlChannelDefList;   //渠道执行
 	private String cityId; // 策划人所属地市	
 	private int splitCampSegInfo;// 是否按渠道类型拆分活动规则
-	private List<McdCampsegPolicyRelation> policyList;// 规则对应策略集合
 	private String approveFlowid; // 默认内部审批流程
 	private Short approveResult; // 审批结果
 	private String selectTempletId; // 筛选规则模板id
@@ -53,12 +54,36 @@ public class MtlCampSeginfo {
 	private String siteCategoryIdClassId;//活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联(json字符串)
 	private String channelCampContent; // 营销用语
 	private String filePath;
-	private String basicEventTemplateId;
-	private String bussinessLableTemplateId;
 	private MtlChannelDefCall mtlChannelDefCall;//渠道对应表_外呼
 	private String eventActiveTempletId;// 事件规则模板ID
+	private String custBaseDay;
+	private String custBaseMonth;
     
-    public String getEventActiveTempletId() {
+	public String getCampDrvName() {
+		return campDrvName;
+	}
+	public void setCampDrvName(String campDrvName) {
+		this.campDrvName = campDrvName;
+	}
+	public String getCustBaseMonth() {
+		return custBaseMonth;
+	}
+	public void setCustBaseMonth(String custBaseMonth) {
+		this.custBaseMonth = custBaseMonth;
+	}
+	public String getCustBaseDay() {
+		return custBaseDay;
+	}
+	public void setCustBaseDay(String custBaseDay) {
+		this.custBaseDay = custBaseDay;
+	}
+	public Integer getCustgroupNumber() {
+		return custgroupNumber;
+	}
+	public void setCustgroupNumber(Integer custgroupNumber) {
+		this.custgroupNumber = custgroupNumber;
+	}
+	public String getEventActiveTempletId() {
 		return eventActiveTempletId;
 	}
 	public void setEventActiveTempletId(String eventActiveTempletId) {
@@ -70,18 +95,7 @@ public class MtlCampSeginfo {
 	public void setMtlChannelDefCall(MtlChannelDefCall mtlChannelDefCall) {
 		this.mtlChannelDefCall = mtlChannelDefCall;
 	}
-	public String getBasicEventTemplateId() {
-		return basicEventTemplateId;
-	}
-	public void setBasicEventTemplateId(String basicEventTemplateId) {
-		this.basicEventTemplateId = basicEventTemplateId;
-	}
-	public String getBussinessLableTemplateId() {
-		return bussinessLableTemplateId;
-	}
-	public void setBussinessLableTemplateId(String bussinessLableTemplateId) {
-		this.bussinessLableTemplateId = bussinessLableTemplateId;
-	}
+
 	public String getSiteCategoryIdClassId() {
 		return siteCategoryIdClassId;
 	}
@@ -160,12 +174,7 @@ public class MtlCampSeginfo {
 	public void setApproveResult(Short approveResult) {
 		this.approveResult = approveResult;
 	}
-	public List<McdCampsegPolicyRelation> getPolicyList() {
-		return policyList;
-	}
-	public void setPolicyList(List<McdCampsegPolicyRelation> policyList) {
-		this.policyList = policyList;
-	}
+
 	public int getSplitCampSegInfo() {
 		return splitCampSegInfo;
 	}

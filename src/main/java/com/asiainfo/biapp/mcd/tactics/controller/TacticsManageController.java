@@ -10,22 +10,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
+import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 import net.sf.json.JSONObject;
-
+@RequestMapping("/tactics/tacticsManage")
 public class TacticsManageController extends BaseMultiActionController {
-
+    @Resource(name="mpmCampSegInfoService")
+    private IMpmCampSegInfoService mpmCampSegInfoService; 
+    @Resource(name="mpmCommonService")
+    private IMpmCommonService mpmCommonService; 
+    @Resource(name="mtlCallWsUrlService")
+    private IMtlCallWsUrlService mtlCallWsUrlService;
+    @Resource(name="mtlStcPlanManagementService")
+    private IMtlStcPlanManagementService mtlStcPlanManagementService;
+    
 	/**
 	 * 保存策略基本信息
 	 * 
@@ -33,7 +56,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	public void saveCampsegWaveInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	/*public void saveCampsegWaveInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -41,7 +64,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		
 		JSONObject dataJson = new JSONObject();
-		IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
 		List<MtlCampSeginfo> campSegInfoList = new ArrayList<MtlCampSeginfo>();
 		int whc = 0;
 		int whnum = 0;
@@ -77,8 +99,6 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSeginfoBasic.setCreateUserName(user.getUsername());
 			campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
 			campSeginfoBasic.setPlanId(planId);
-			// String campsegPid =
-			// (String)service.saveCampSegWaveInfoZJ(campSeginfoBasic,true);
 			campSeginfoBasic.setFatherNode(true);
 			campSeginfoBasic.setAreaId(user.getCityid());
 			campSeginfoBasic.setCityId(user.getCityid()); // 策划人所属城市
@@ -100,7 +120,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 			String planIdArray[] = planId.split(","); // 当时多产品的时候
 
-			// for(int i = 0;i<(ruleList.length()-1);i++){
 			for (int i = 0; i < planIdArray.length; i++) {
 				String ruleIndex = "rule0";
 				org.json.JSONObject rule = new org.json.JSONObject(ruleList.get(ruleIndex).toString()); // 迭代每一个规则进行计算
@@ -126,23 +145,16 @@ public class TacticsManageController extends BaseMultiActionController {
 				String excludeProductNo = productAttr[1]; // 剔除产品
 				// 获取渠道ID
 				String channelIds = rule.get("channelIds").toString();
-				// 获取策略类型ID
-				// String campsegTypeId = rule.get("campsegTypeId").toString();
-				// 运营位id
-				// String adivId = rule.get("adivId").toString();
 
 				// 获取客户群ID
 				String customgroupid = null;
 				String updateCycle = null;
 				if (StringUtil.isNotEmpty(rule.get("customer").toString())) {
 					customgroupid = new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
-					updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle")
-							.toString();
+					updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle").toString();
 				}
 				// 获取每个rule中的基础属性
 				String baseAttr = rule.get("baseAttr").toString();
-				// org.json.JSONObject basicPropObj = new
-				// org.json.JSONObject(baseAttr);
 				org.json.JSONArray basicPropArray = new org.json.JSONArray(baseAttr);
 				String planid = "";
 				String channelTypeId = "";
@@ -159,6 +171,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				String execContentStr = rule.get("execContent").toString();
 				org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);
 				List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
+				MtlChannelDefCall mtlChannelDefCall = null;
 
 				String cepEventId = "";
 				String eventRuleDesc = "";
@@ -172,8 +185,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						String cepInfo = obj.get("cepInfo").toString();
 						org.json.JSONObject cepInfoObject = new org.json.JSONObject(cepInfo);
 						cepEventId = cepInfoObject.getString("streamsId");
-						org.json.JSONArray functionList = new org.json.JSONArray(
-								cepInfoObject.getString("functionList"));
+						org.json.JSONArray functionList = new org.json.JSONArray(cepInfoObject.getString("functionList"));
 						for (int m = 0; m < functionList.length(); m++) {
 							org.json.JSONObject function = new org.json.JSONObject(functionList.get(m).toString());
 							String functionCn = String.valueOf(function.get("functionCn"));
@@ -194,8 +206,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						content = String.valueOf(obj.get("exec_content"));
 						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
 						// 策略级频次控制(一次性短信paramDays paramNum前台不传参数
-						// 故paramDaysObj==null paramNumObj==null ) modify by
-						// zhuml 20151203
 						Object paramDaysObj = objMap.get("paramDays");
 						String paramDays = "0";
 						if (null != paramDaysObj) {
@@ -290,13 +300,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
 						String execTitle = String.valueOf(obj.get("execTitle")); // 微信标题
 						String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
-						// String fileRemoteName =
-						// String.valueOf(obj.get("fileRemoteName"));
 						// //Ftp存放的文件名称
 						mtlChannelDef.setChannelAdivId(adivId);
 						mtlChannelDef.setExecTitle(execTitle);
 						mtlChannelDef.setFileName(fileName);
-						// mtlChannelDef.setFileRemoteName(fileRemoteName);
 					} 
 
 
@@ -316,8 +323,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 						}
 					}
-					if (StringUtil.isEmpty(channelCycle) && StringUtil.isNotEmpty(updateCycle)) { // 当channelCycle为空的时候
-																									// 保持与updateCycle一致
+					if (StringUtil.isEmpty(channelCycle) && StringUtil.isNotEmpty(updateCycle)) { // 当channelCycle为空的时候保持与updateCycle一致
 						mtlChannelDef.setContactType(Integer.parseInt(updateCycle));
 						mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
 					}
@@ -345,7 +351,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setChannelId(channelIds); // 渠道id
 				campSeginfo.setChannelTypeId(channelTypeId); // 渠道类型ID
 
-				// campSeginfo.setCampsegPid(campsegPid);
 				campSeginfo.setFatherNode(false);
 				campSeginfo.setIsApprove(isApprove);
 				campSeginfo.setCampsegNo(String.valueOf(i)); // 多规则时，规则序号
@@ -360,6 +365,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setUpdatecycle(updateCycle);
 
 				campSeginfo.setMtlChannelDefList(mtlChannelDefList);
+				campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
 				// 产品订购或者剔除关系
 				campSeginfo.setOrderPlanIds(orderProductNo);
 				campSeginfo.setExcludePlanIds(excludeProductNo);
@@ -382,15 +388,12 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setBussinessLableTemplate(bussinessLableTemplate);
 				campSeginfo.setBasicEventTemplate(basicEventTemplate);
 				campSeginfo.setRequestLocal(request.getLocale());
-				// 保存基本信息 渠道与活动关系表 活动与客户群关系表
-				// String campsegId = (String)
-				// service.saveCampSegWaveInfoZJ(campSeginfo,false);
 				campSegInfoList.add(campSeginfo);
 
 			}
 
 			// 统一进行保存
-			String flag = service.saveCampSegWaveInfoZJ(campSegInfoList);
+			String flag = mpmCampSegInfoService.saveCampSegWaveInfoZJ(campSegInfoList);
 			if ("2".equals(flag)) { // 当flag等于2的时候，有审批流程，并且审批失败，0和1说明状态都正常
 				dataJson.put("status", "201");
 			} else {
@@ -405,38 +408,286 @@ public class TacticsManageController extends BaseMultiActionController {
 			out.close();
 		}
 	}
-	
+	*/
 	/**
 	 * JSON转map
 	 * add by zhuml 20151203
 	 * @param paramJson
 	 * @return
 	 */
-	public static Map<String, Object> jsonToMap(String paramJson ){
+	private Map<String, Object> jsonToMap(String paramJson ){
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap = (Map<String, Object>) JSONObject.fromObject(paramJson);
 		return paramsMap;
 	}
+
 	/**
-	 * 拼装订购产品的信息
-	 * @param productArr
+	 * 新建策略页面---查询政策类别
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
 	 * @return
+	 * @throws Exception
 	 */
-	private String[] createProductAttr(String productArr){
-		String productAttr[] = new String[2];
+	@RequestMapping(params = "cmd=initDimPlanType")
+	public void initDimPlanType(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
 		try {
-			if(StringUtil.isNotEmpty(productArr)){
-				org.json.JSONArray jsonObj = new org.json.JSONArray(productArr);
-				for(int i = 0;i<jsonObj.length();i++){
-					org.json.JSONObject obj = new org.json.JSONObject(jsonObj.get(i).toString());
-					productAttr[0] = (String) obj.get("orderProductNo");
-					productAttr[1] = (String)obj.get("excludeProductNo");
+			//获取复杂事件规则地址
+			MtlCallwsUrl createCode = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE);
+			MtlCallwsUrl createCodeCallBack = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE_CALLBACK);
+			
+			List<DimPlanType> typeList = mpmCommonService.initDimPlanType();
+			if(!CollectionUtils.isEmpty(typeList)){
+				dataJson.put("status", "200");
+				dataJson.put("data", JmsJsonUtil.obj2Json(typeList));
+				if(null != createCode && StringUtil.isNotEmpty(createCode.getCallwsUrl())){
+					dataJson.put("cepCreateCode", createCode.getCallwsUrl());
+				}else{
+					dataJson.put("cepCreateCode", "");
 				}
+				if(null != createCode && StringUtil.isNotEmpty(createCodeCallBack.getCallwsUrl())){
+					dataJson.put("cepCreateCodeCallBack", createCodeCallBack.getCallwsUrl());
+				}else{
+					dataJson.put("cepCreateCodeCallBack", "");
+				}
+				out.print(dataJson);
 			}
 		} catch (Exception e) {
-//			LOG.error(e);
+			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
 		}
-		return productAttr;
+		
+	}
+	
+	/**
+	 * 新建策略页面---查询政策粒度
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(params = "cmd=initGrade")
+	public void initGrade(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		try {
+			List<DimPlanSrvType> list = mpmCommonService.getGradeList();
+			if(!CollectionUtils.isEmpty(list)){
+				dataJson.put("status", "200");
+				dataJson.put("data", JmsJsonUtil.obj2Json(list));
+				out.print(dataJson);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+
+	/**
+	 * 新建策略页面---初始化适用渠道
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(params = "cmd=initChannelType")
+	public void initChannelType(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//TODO：initActionAttributes(request);
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		//新建策略是否单选
+		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
+				
+		try {
+			List<DimMtlChanneltype> list = mpmCommonService.getMtlChanneltypeByCondition(isDoubleSelect);
+			List<DimMtlChanneltype> listTemp = new ArrayList<DimMtlChanneltype>();
+			
+			//TODO：String cityId = user.getCityid();
+			String cityId = "999";
+			if(!CollectionUtils.isEmpty(list)){
+				for(int i = 0;i<list.size();i++){
+					//当不是温州的时候，不显示微信温州渠道
+					if(!cityId.equals("577")){
+						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
+						if(!"912".equals(channelIdTemp)){
+							DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
+							dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+							dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
+							listTemp.add(dimMtlChanneltype);
+						}
+					}else{
+						DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
+						dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
+						listTemp.add(dimMtlChanneltype);
+					}
+				}
+			}
+			if(!CollectionUtils.isEmpty(listTemp)){
+				dataJson.put("status", "200");
+				dataJson.put("data", JmsJsonUtil.obj2Json(listTemp));
+				out.print(dataJson);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+
+	/**
+	 * 新建策略页面:  产品关系选择  按照类型和关键字查询   只查询政策力度为营销档次的产品信息
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/searchPlan")
+	public void searchPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//TODO: initActionAttributes(request);
+		Pager pager=new Pager();
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
+		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+//		政策类别
+		String typeId = StringUtil.isNotEmpty(request.getParameter("typeid")) ? request.getParameter("typeid") : null;
+		//TODO: String cityId = user.getCityid();
+		String cityId ="999";
+		try {
+			String clickQueryFlag = "true";
+			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL);
+			pager.setPageNum(pageNum);  //当前页
+			if(pageNum != null){
+				pager.setPageFlag("G");	
+			}
+			pager.setTotalSize(mtlStcPlanManagementService.searchPlanCount(keyWords, typeId,cityId));  // 总记录数
+			pager.getTotalPage();
+			if ("true".equals(clickQueryFlag)) {
+				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId,cityId,pager);
+				pager = pager.pagerFlip();
+				pager.setResult(resultList);
+			} else {
+				pager = pager.pagerFlip();
+				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId,cityId,pager);
+				pager.setResult(resultList);
+			}
+			
+			dataJson.put("status", "200");
+			dataJson.put("data", JmsJsonUtil.obj2Json(pager));
+			out.print(dataJson);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	  
+	}
+	
+	/**
+	 * 新建策略页面，根据条件查询营销政策列表
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/searchByCondation")
+	public void searchByCondation(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//TODO: initActionAttributes(request);
+		Pager pager=new Pager();
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
+		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		//政策类别
+		String typeId = StringUtil.isNotEmpty(request.getParameter("typeId")) ? request.getParameter("typeId") : null;
+		//使用渠道
+		String channelTypeId = request.getParameter("channelTypeId") != null ? request.getParameter("channelTypeId") : null;
+		//查询粒度
+		String planTypeId = request.getParameter("planTypeId") != null ? request.getParameter("planTypeId") : null;
+		//新建策略是否单选
+		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
+		
+		//TODO: String cityId = user.getCityid();
+		String cityId = "999";
+		if(StringUtil.isNotEmpty(pageNum)){
+			pager.setPageFlag("G");	
+		}
+		try {
+			String clickQueryFlag = "true";
+			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL);  //此处改为每页显示5条
+			pager.setPageNum(pageNum);  //当前页
+			if(pageNum != null){
+				pager.setPageFlag("G");	
+			}
+			pager.setTotalSize(mtlStcPlanManagementService.getMtlStcPlanByCondationCount(keyWords, typeId, channelTypeId,planTypeId,cityId,isDoubleSelect));  // 总记录数
+			pager.getTotalPage();
+			if ("true".equals(clickQueryFlag)) {
+				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId, channelTypeId,planTypeId,cityId,isDoubleSelect,pager);
+				pager = pager.pagerFlip();
+				pager.setResult(resultList);
+			} else {
+				pager = pager.pagerFlip();
+				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId, channelTypeId,planTypeId,cityId,isDoubleSelect,pager);
+				pager.setResult(resultList);
+			}
+			
+			dataJson.put("status", "200");
+			dataJson.put("data", JmsJsonUtil.obj2Json(pager));
+			
+			out.print(dataJson);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
 	}
 
 }

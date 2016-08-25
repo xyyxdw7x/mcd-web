@@ -1,35 +1,48 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.xml.namespace.QName;
 
+import org.apache.axis.client.Call;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
+import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
+import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
-import com.asiainfo.biapp.mcd.tactics.service.IMtlCampSeginfoPlanOrderService;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegPolicyRelation;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfoPlanOrder;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCallId;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefId;
+import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
+import com.asiainfo.biframe.utils.date.DateUtil;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
+import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**
@@ -43,27 +56,56 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * @author
  * @version 1.0
  */
-@Repository("mpmCampSegInfoService")
+@Service("mpmCampSegInfoService")
 public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private static Logger log = LogManager.getLogger();
     @Resource(name="mpmCampSegInfoDao")
     private IMpmCampSegInfoDao campSegInfoDao;
+    @Resource(name="mtlChannelDefDao")
+  	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
+    @Resource(name="mtlCampsegCiCustDao")
+    private IMtlCampsegCiCustDao mtlCampsegCiCustDao; 
+    @Resource(name="mpmUserPrivilegeService")
+    IMpmUserPrivilegeService mpmUserPrivilegeService;
     
+    public IMtlChannelDefDao getMtlChannelDefDao() {
+		return mtlChannelDefDao;
+	}
+	public void setMtlChannelDefDao(IMtlChannelDefDao mtlChannelDefDao) {
+		this.mtlChannelDefDao = mtlChannelDefDao;
+	}
+	public IMtlCampsegCiCustDao getMtlCampsegCiCustDao() {
+		return mtlCampsegCiCustDao;
+	}
+	public void setMtlCampsegCiCustDao(IMtlCampsegCiCustDao mtlCampsegCiCustDao) {
+		this.mtlCampsegCiCustDao = mtlCampsegCiCustDao;
+	}
+	public IMpmUserPrivilegeService getMcdZjPrivilegeService() {
+		return mpmUserPrivilegeService;
+	}
+	public void setMcdZjPrivilegeService(IMpmUserPrivilegeService mcdZjPrivilegeService) {
+		this.mpmUserPrivilegeService = mcdZjPrivilegeService;
+	}
+
+	private Map<String,String> oaMap; //经分与OA帐号对应关系
+    
+   	public Map<String, String> getOaMap() {
+		return oaMap;
+	}
+	public void setOaMap(Map<String, String> oaMap) {
+		this.oaMap = oaMap;
+	}
 	@Override
 	public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager) {
 		List list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
 		return list;
 	}
-
     public IMpmCampSegInfoDao getCampSegInfoDao() {
         return campSegInfoDao;
     }
-
     public void setCampSegInfoDao(IMpmCampSegInfoDao campSegInfoDao) {
         this.campSegInfoDao = campSegInfoDao;
     }
-
-	
 	@Override
 	public String saveCampSegWaveInfoZJ(List<MtlCampSeginfo> seginfoList)throws MpmException {
 		String approveFlag = "0";  //不走审批
@@ -88,7 +130,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
 				String attachements = segInfo.getFilePath();
 				String custGroupAttrId = segInfo.getCustGroupAttrId();
-				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
+//				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
 				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
 				String[] campsegIds = null;
 				String[] channelIds = null;
@@ -102,8 +144,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 
 					
 				//1、保存活动信息(波次条件、父活动编号、活动实际含义、推荐业务、营销时机)
-				IMpmUserPrivilegeService userService = (IMpmUserPrivilegeService) SystemServiceLocator.getInstance().getService("mcdZjPrivilegeService");
-				LkgStaff user = (LkgStaff)userService.getUser(segInfo.getCreateUserid());
+				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
 				if (user != null) {
 					segInfo.setCityId(user.getCityid());
 					String deptMsg = user.getDepId();
@@ -121,15 +162,15 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);
 					log.debug("****************新生成的波次活动ID:{}", campsegId);
 					//2、保存客户群与策略的关系/保存时机与策略关系  
-					String basicEventTemplateId = segInfo.getBasicEventTemplateId();
-					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();
+					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
+					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
 					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
-					if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
+					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
 					}
 					if(StringUtil.isNotEmpty(bussinessLableTemplateId)){
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"2");//保存业务标签 
-					}
+					}*/
 					
 					//3、保存渠道     ------------------无需判断是否已经存在
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
@@ -156,7 +197,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					}
 	
 					
-					IMpmInteractiveRuleService mpmInteractiveRuleService = (IMpmInteractiveRuleService) SystemServiceLocator.getInstance().getService("mpmInteractiveRuleService");
+					/*IMpmInteractiveRuleService mpmInteractiveRuleService = (IMpmInteractiveRuleService) SystemServiceLocator.getInstance().getService("mpmInteractiveRuleService");
 					//先删除该活动原来的事件规则，再新增
 					mpmInteractiveRuleService.deleteEventRuleByActivityCode(campsegId, "2");
 					if (StringUtil.isNotEmpty(segInfo.getEventActiveTempletId())) {
@@ -166,8 +207,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 						McdRuleTempletAction mrt = new McdRuleTempletAction();
 						mrt.setUserId(segInfo.getCreateUserid());
 						this.saveInteractiveRule(segInfo, mrt.getEventRule(segInfo.getEventActiveTempletId()));
-					}
+					}*/
 					
+					/*
 					//在保存和其他表的对应关系
 					IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
 					//保存产品订购或者剔除关系
@@ -176,15 +218,14 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					campSeginfoPlanOrder.setCampsegId(campsegId);
 					campSeginfoPlanOrder.setOrderPlanIds(segInfo.getOrderPlanIds());
 					campSeginfoPlanOrder.setExcludePlanIds(segInfo.getExcludePlanIds());
-					planOrderService.save(campSeginfoPlanOrder);
+					planOrderService.save(campSeginfoPlanOrder);*/
 					
 					
 				}
 			}
 			
 			if("true".equals(isApprove)){
-					IMpmCampSegInfoService approveService = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-					String approveStr = approveService.submitApprovalXml(campsegPid);
+					String approveStr = this.submitApprovalXml(campsegPid);
 					if("提交审批成功".equals(approveStr)){
 						approveFlag = "1"; //走审批，审批成功
 					}else{
@@ -199,7 +240,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	}
 	@Override
 	public void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId,MtlCampSeginfo segInfo,String flag) throws MpmException {
-		if(flag.equals("0")){	//基础客户群
+//		if(flag.equals("0")){	//基础客户群
 			MtlCampsegCiCustgroup mtlCampsegCustGroup = new MtlCampsegCiCustgroup();
 			mtlCampsegCustGroup.setCustgroupId(segInfo.getCustgroupId());
 			mtlCampsegCustGroup.setCampsegId(campsegId);
@@ -211,7 +252,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				mtlCampsegCustGroup.setCustBaseMonth(segInfo.getCustBaseMonth());
 			}
 			mtlCampsegCiCustDao.save(mtlCampsegCustGroup);
-		}else{
+		/*}else{
 			//时机  或者基础标签
 			MtlCampsegCiCustgroup mtlCampsegCustGroup1 = new MtlCampsegCiCustgroup();
 			mtlCampsegCustGroup1.setCampsegId(campsegId);
@@ -231,7 +272,141 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				mtlCampsegCustGroup1.setCustgroupId(segInfo.getBussinessLableTemplateId());
 				mtlCampsegCiCustDao.save(mtlCampsegCustGroup1);
 			}
+		}*/
+	}
+	public MtlCampSeginfo getBaseCampsegInfo(String campsegId) throws Exception {
+		MtlCampSeginfo campsegInfo = null;
+		if (StringUtil.isNotEmpty(campsegId)) {
+			campsegInfo = this.getCampSegInfo(campsegId);
+			if (!"0".equals(campsegInfo.getCampsegPid()) && StringUtil.isNotEmpty(campsegInfo.getCampsegPid())) {
+				campsegInfo = this.getBaseCampsegInfo(campsegInfo.getCampsegPid());
+			}
 		}
+		return campsegInfo;
+	}
+	public MtlCampSeginfo getCampSegInfo(String campSegId) throws MpmException {
+		MtlCampSeginfo obj = null;
+		try {
+			obj = campSegInfoDao.getCampSegInfo(campSegId);
+		} catch (Exception e) {
+			log.error("", e);
+			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.qhd") + campSegId+ MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+		}
+		return obj;
+	}
+	@Override
+	public String submitApprovalXml(String campsegId) {
+		StringBuffer xmlStr = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		xmlStr.append("<campsegInfo>");
+
+        try {
+        	//策略包基本信息
+			MtlCampSeginfo mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campsegId);
+			//策略包下子策略基本信息
+			List<MtlCampSeginfo> mtlCampSeginfoList = this.getChildCampSeginfo(campsegId);
+			//取渠道信息
+			List approveChannelIdList = mtlChannelDefDao.findChildChannelIdList(campsegId);
+			Set channeIdSet = new HashSet();
+			for(int i = 0;i< approveChannelIdList.size();i++){
+				Map map = (Map) approveChannelIdList.get(i);
+				String channelId = map.get("channel_id").toString();
+				channeIdSet.add(channelId);
+			}
+			String channeIds = channeIdSet.toString().replaceAll(" ","");
+
+
+	    	//策略基本信息
+	    	xmlStr.append("<campsegId>" + mtlCampSeginfo.getCampsegId()+ "</campsegId>");//营销策略编号 
+	    	xmlStr.append("<campsegName>" + mtlCampSeginfo.getCampsegName()+ "</campsegName>");//策略名称 
+	    	xmlStr.append("<campDrvName>" + mtlCampSeginfo.getCampDrvName()+ "</campDrvName>");//业务类型 
+	    	xmlStr.append("<campsegType>" + mtlCampSeginfo.getCampsegTypeId()+ "</campsegType>");//营销类别	
+	    	xmlStr.append("<startDate>" + mtlCampSeginfo.getStartDate()+ "</startDate>");//策略开始时间
+	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间
+	    	xmlStr.append("<createTime>" + DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
+	    	
+	    	IUser user  = mpmUserPrivilegeService.getUser(mtlCampSeginfo.getCreateUserid());
+	    	String userName =  user != null ? user.getUsername() : "";
+	    	xmlStr.append("<createUser>" +userName + "</createUser>");//创建人
+	    	//有些帐号经分帐号和OA帐号不同 提交审批需要OA帐号
+	    	String createUserId=mtlCampSeginfo.getCreateUserid();
+	    	if(oaMap!=null){
+	    		if(oaMap.get(createUserId)!=null){
+		    		createUserId=oaMap.get(createUserId);
+		    	}
+	    	}
+	    	xmlStr.append("<createUserId>" + createUserId + "</createUserId>");//创建人ID
+	    	xmlStr.append("<cityId>" + mtlCampSeginfo.getCityId() + "</cityId>");//创建人地市id
+	    	xmlStr.append("<approveChannelId>" + channeIds.substring(1,channeIds.length()-1) + "</approveChannelId>");//审批渠道类型（判断采用哪个流程）：渠道ID
+	    	xmlStr.append("<approveFlowId>" + mtlCampSeginfo.getApproveFlowid() + "</approveFlowId>");//审批流程ID
+	    	String campsegInfoViewUrl = MpmConfigure.getInstance().getProperty("CAMPSEGINFO_VIEWURL");
+			final String webPath = "http://" + Configure.getInstance().getProperty("HOST_ADDRESS") + ":"
+					+ Configure.getInstance().getProperty("HOST_PORT")
+					+ Configure.getInstance().getProperty("CONTEXT_PATH");
+	    	String token = DES.encrypt(mtlCampSeginfo.getCampsegId());
+	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampsegId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
+	    	xmlStr.append("</campsegInfo>");
+					
+			String results = "";
+			String request_id ="";
+			String assign_id = "";
+			String result_desc = "";
+			
+			log.info("开始提交审批 ！");
+			IMtlCallWsUrlService callwsUrlService = (IMtlCallWsUrlService) SystemServiceLocator.getInstance().getService("callWsUrlService");
+			MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+		
+			QName name=new QName("http://impl.biz.web.tz","commitApproveInfo");
+			org.apache.axis.client.Service service = new  org.apache.axis.client.Service();
+			Call call = (Call) service.createCall();
+			call.setTargetEndpointAddress(new java.net.URL(url.getCallwsUrl()));
+			call.setOperationName(name);
+			call.setTimeout(50000);//超时时间5秒
+			log.info(xmlStr.toString());
+			String childxml = call.invoke(new Object[] { xmlStr.toString() }).toString();
+
+			log.info("提交审批返回responed xml " + childxml);
+			 Document dom=DocumentHelper.parseText(childxml); 
+	   		 Element root=dom.getRootElement();  
+	   		results = root.element("result") == null ? "" : root.element("result").getText(); 
+   			request_id = root.element("request_id") == null ? "" : root.element("request_id").getText(); 
+   			assign_id = root.element("assign_id") == null ? "" : root.element("assign_id").getText(); 
+   			result_desc = root.element("result_desc") == null ? "" : root.element("result_desc").getText(); 	
+			
+			log.info("提交审批后返回值 result: " + results + " , request_id: " + request_id + " , assign_id: " + assign_id + " , result_desc: " + result_desc);
+			
+			MtlCampSeginfo segInfo = campSegInfoDao.getCampSegInfo(campsegId);
+			if("1".equals(results)){
+				segInfo.setApproveFlowid(assign_id);
+				segInfo.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
+				for(MtlCampSeginfo childSeg : mtlCampSeginfoList){
+					childSeg.setApproveFlowid(assign_id);
+					childSeg.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
+					campSegInfoDao.updateCampSegInfo(childSeg);
+				}
+			}else{
+				log.error("提交审批流程失败，失败原因：", result_desc);
+				String ApproveResult = "提交失败，失败原因："+result_desc;
+				return ApproveResult;
+			}
+			campSegInfoDao.updateCampSegInfo(segInfo);
+			
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+			return "提交失败，失败原因：" + e.getMessage();
+		}
+
+        
+		return "提交审批成功";
 	}
 	
+	@Override
+	public List<MtlCampSeginfo> getChildCampSeginfo(String campsegId) {
+		try {
+			return campSegInfoDao.getChildCampSeginfo(campsegId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

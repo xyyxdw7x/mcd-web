@@ -19,7 +19,6 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 
 import net.sf.json.JSONObject;
 @RequestMapping("/tactics/campSegSearch")
