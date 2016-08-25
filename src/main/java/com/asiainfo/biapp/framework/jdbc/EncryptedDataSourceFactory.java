@@ -103,8 +103,7 @@ public class EncryptedDataSourceFactory extends BasicDataSourceFactory {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unused")
-	private	String	getDigest(InputStream is, MessageDigest md, int byteArraySize)
+	public	String	getDigest(InputStream is, MessageDigest md, int byteArraySize)
 			throws NoSuchAlgorithmException, IOException {
 		md.reset();
 		byte[] bytes = new byte[byteArraySize];
@@ -123,7 +122,7 @@ public class EncryptedDataSourceFactory extends BasicDataSourceFactory {
 	 * @return
 	 * @throws NoSuchAlgorithmException 
 	 */
-	private String encryptedString(String oldString) throws NoSuchAlgorithmException{
+	public String encryptedString(String oldString) throws NoSuchAlgorithmException{
 		String newStr=null;
 		MessageDigest md=MessageDigest.getInstance("MD5");
 		md.reset();
@@ -131,12 +130,5 @@ public class EncryptedDataSourceFactory extends BasicDataSourceFactory {
 		byte[] digest = md.digest();
 		newStr = new String(Hex.encodeHex(digest));
 		return newStr;
-	}
-	
-	public static void main(String[] args) throws NoSuchAlgorithmException {
-		EncryptedDataSourceFactory edsf=new EncryptedDataSourceFactory();
-		String oldString="mcd/Mcd@2016";
-		String newStr=edsf.encryptedString(oldString);
-		System.out.println(newStr);
 	}
 }

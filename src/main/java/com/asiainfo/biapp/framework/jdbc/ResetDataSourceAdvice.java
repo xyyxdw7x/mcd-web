@@ -1,9 +1,8 @@
 package com.asiainfo.biapp.framework.jdbc;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.JoinPoint;
 
 /**
  * 
@@ -15,32 +14,46 @@ import org.apache.commons.logging.LogFactory;
 public class ResetDataSourceAdvice {
 
 	protected final Log logger = LogFactory.getLog(getClass());
-	
-	public void before(Method method, Object[] args, Object className) throws Throwable {
-		String methodName=method.getName();
-		logger.info("before className="+className+" method="+methodName);
-		//根据方法名进行切换数据源  query execute call update batchUpdate方法
-		if(methodName.startsWith("update")||methodName.startsWith("batchUpdate")||
-				methodName.startsWith("call")){
-			resetMasterDataSource();
-		}else if(methodName.startsWith("query")||methodName.startsWith("execute")){
-			resetSlaveDataSource();
-		}
-	}
+
+	/**
+	 * 内存数据库名称标识符号
+	 */
+	private String memDataBaseFlag;
 
 	/**
 	 * 设置当前数据源为主库
 	 */
-	public void resetMasterDataSource() {
-		logger.debug("setMasterDataSource");
-		CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER);
+	public void resetMasterDataSource(JoinPoint joinPoint) {
+		String methodName=joinPoint.getSignature().getName();
+		if(methodName.indexOf(getMemDataBaseFlag())>=3){
+			logger.debug("setMasterDataSource");
+			CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER_MEM);
+		}else{
+			logger.debug("setMasterMemDataSource");
+			CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER);
+		}
 	}
-
+	
 	/**
 	 * 设置当前数据源为从库
 	 */
-	public void resetSlaveDataSource() {
-		logger.debug("setSlaveDataSource");
-		CustomerContextHolder.setCustomerType(RoutingDataSource.SLAVE);
+	public void resetSlaveDataSource(JoinPoint joinPoint) {
+		String methodName=joinPoint.getSignature().getName();
+		if(methodName.indexOf(getMemDataBaseFlag())>=3){
+			logger.debug("resetSlaveMemDataSource");
+			CustomerContextHolder.setCustomerType(RoutingDataSource.SLAVE_MEM);
+		}else{
+			logger.debug("resetSlaveDataSource");
+			CustomerContextHolder.setCustomerType(RoutingDataSource.SLAVE);
+		}
+	}
+	
+	
+	public String getMemDataBaseFlag() {
+		return memDataBaseFlag;
+	}
+
+	public void setMemDataBaseFlag(String memDataBaseFlag) {
+		this.memDataBaseFlag = memDataBaseFlag;
 	}
 }

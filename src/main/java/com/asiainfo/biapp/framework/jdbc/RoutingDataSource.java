@@ -15,9 +15,21 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 	public static final String MASTER="master";
 	
 	/**
+	 * 主库内存库
+	 */
+	public static final String MASTER_MEM="master_mem";
+	
+	
+	/**
 	 * 从库
 	 */
 	public static final String SLAVE="slave";
+	
+	/**
+	 * 从库内存库
+	 */
+	public static final String SLAVE_MEM="slave_mem";
+	
 	
 	@Override
 	protected Object determineCurrentLookupKey() {
