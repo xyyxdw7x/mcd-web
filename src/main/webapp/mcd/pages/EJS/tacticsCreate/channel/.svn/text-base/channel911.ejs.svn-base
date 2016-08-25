@@ -1,0 +1,64 @@
+<div class="channel-app-title J_show_box hidden" channelId="<%=data.channelId%>" >
+    <span class="app-title fleft"><%=data.channelName%></span>
+    <img class="preview-image previewExeContent-wechat" channelId="<%=data.channelId%>" src="../../assets/images/preview-all.png">
+	<span class="preview-span previewExeContent-wechat" channelId="<%=data.channelId%>">效果预览</span>
+</div>
+<div class="channel-operation-box J_show_box hidden" channelId="<%=data.channelId%>" >
+    <div class="fleft channel-left-list">
+        <ul class="channel-operation-box"  channelid="<%=data.channelId%>">
+            <li class="channel-operation-box clearfix">
+                <div class="fleft channel-operation-left">选择运营位
+                </div>
+                <ul class="channel-selected-img-ul" channelid="<%=data.channelId%>">
+                    <li class="channel-selected-img unselect fleft wechat-adiv-1" adivsize="100" adivid="1"
+                        adivname="猜你喜欢" adivdesc="猜你喜欢" chnresourceid="" channelid="<%=data.channelId%>"
+                        chnresourcedesc="" adivcontenttourl=""
+                        adivcontenturl="猜你喜欢" adivresourcename="猜你喜欢！">
+                    </li>
+                </ul>
+            </li>
+            <li class="channel-operation-box clearfix">
+                <div class="fleft channel-operation-left" channelid="<%=data.channelId%>">
+                    选择图片
+                </div>
+                <div class="fleft channel-operation-main">
+                    <div class="channel-operation-main-inner clearfix">
+                        <div class="channel-operation-upload" channelid="<%=data.channelId%>">
+                            <a href="javascript:;" class="">选择图片</a>
+                            <input type="hidden" channelid="<%=data.channelId%>" />
+                            <img src="" style="display: none" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="channel-operation-box clearfix">
+                <div class="fleft channel-operation-left">
+                    标题
+                </div>
+                <div class="fleft channel-operation-main">
+                    <div class="channel-operation-main-inner clearfix">
+                        <div class="channel-operation-long-text ">
+                            <input type="text" class="weChatTitle" maxTextNum="<%=data.wordSize_t%>" channelId="<%=data.channelId%>" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="channel-operation-box clearfix">
+                <div class="fleft channel-operation-left">推荐用语
+                </div>
+                <div class="fleft channel-operation-main">
+                    <div class="channel-operation-main-inner clearfix">
+                        <div class="channel-textarea-box fleft">
+                            <textarea rows="" cols="" class="channel-textarea J_SMSBox"  channelId="<%=data.channelId%>" maxTextNum="<%=data.wordSize%>"></textarea>
+                            <p class="channel-num-text">您还可以输入<i class="yellow" ><%=data.wordSize%></i>个字</p>
+                        </div>
+                        <div class="preview-message fleft hidden">
+                            <button type="button" class="preview-btn previewExeContent-wechat" channelId="<%=data.channelId%>">预览效果</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>

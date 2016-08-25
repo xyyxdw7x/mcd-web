@@ -1,0 +1,549 @@
+define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],function(require, exports, module) {      
+	module.exports={
+		init:function(){
+			 var navManage = require("navManage");
+			 navManage.init();
+			//业务列表暂时屏蔽
+
+			window.tableViewManage  = this.loadTable({
+				currentDom:"#sortListItem_901",
+				ejsUrl:_ctx + '/mcd/pages/EJS/priorityManage/priorityTable.ejs',
+				ajaxData:{"isSelectMy":"0","channelId":"901"},
+				domCallback:function(htmlobj){
+					htmlobj.last().css("border-bottom","1px solid #efefef");
+				}
+				
+				
+			});
+
+			this.priorityManageSearchTab();
+			
+			//调整优先级 新建 保存
+			this.prority3Btn({
+				currentDom:"#sortListItem_901",
+				ejsUrl:_ctx + '/mcd/pages/EJS/priorityManage/priorityTable.ejs',
+				ajaxData:{"isSelectMy":"0","channelId":"901"},
+				domCallback:function(htmlobj){
+					htmlobj.last().css("border-bottom","1px solid #efefef");
+				}
+				
+				
+			});
+
+		},
+		loadTable:function(options){
+			var defaults = {
+				urlRoot:_ctx+"/mpm",
+				id:"priorityManage.aido",
+				cmd:"viewRules",
+				currentDom:"#sortListItem",
+				ejsUrl:_ctx + '/mcd/pages/EJS/priorityManage/priorityTable.ejs',
+				ajaxData:{},
+				addData:"",
+				isSelectMy:"0",
+				domCallback:function(dom){}
+			};
+			options = $.extend(defaults, options);
+			var priorityTableModel = Backbone.Model.extend({
+				urlRoot : options.urlRoot,
+				defaults : {
+					_ctx : _ctx
+				}
+			}); 
+			var priorityTableView = Backbone.View.extend({
+				model : new priorityTableModel({id : options.id}), 
+				events : { 
+					"click" : "click"
+				},
+				click : function(obj) {
+					var $target = $(obj.target);
+					if($target.hasClass("priority-modify")){//修改
+						$target.attr("mod-value","0");
+						$target.parents(".priority-list-tbody").find("button").css("cursor","pointer");
+						$target.parents(".priority-list-tbody").find("input").attr("readonly",false);
+						
+					}else if($target.hasClass("priority-delete")){//删除
+						if(!confirm("是否要删除此条规则?")) return;
+						var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+						var tab_id = $target.attr("tab-id");
+						var priorityModel = new priorityTableModel({id : "priorityManage.aido"});
+						priorityModel.fetch({
+							type : "post",
+							contentType: "application/x-www-form-urlencoded; charset=utf-8",
+							dataType:'json',
+							data:{cmd:"delRule",id:tab_id},
+							success:function(model){
+								if(model.attributes.status != 200){
+									alert("操作失败，请重试！！");
+									return;
+								}else{
+									alert("操作成功！");
+									module.exports.loadTable({
+										currentDom:"#sortListItem_"+channelId,
+										ajaxData:{
+											"isSelectMy":"0",
+											"channelId":channelId,
+										}
+										
+									});
+								}
+							}
+						});
+					}
+					
+					if($target.hasClass("J_bulkStart")){//启用到暂停
+						var modify_value = $($target.parents(".priority-list-tbody").find("a")[0]).attr("mod-value");
+						if(modify_value>0) return;
+						var tabId = $target.attr("tab-id");
+						$target.addClass("J_bulkStop");
+						$target.removeClass("J_bulkStart");
+						$target.attr("tab-value","2");
+						$target.html("暂停");
+						$target.next().addClass("bulk-stop-icon");
+						$target.next().removeClass("bulk-start-icon");
+						$(".content-type-search").attr("val-tab","1");
+					}else if($target.hasClass("J_bulkStop")){//暂停到启用
+						
+						var modify_value = $($target.parents(".priority-list-tbody").find("a")[0]).attr("mod-value");
+						if(modify_value>0) return;
+						var tabId = $target.attr("tab-id");
+						$target.addClass("J_bulkStart");
+						$target.removeClass("J_bulkStop");
+						$target.attr("tab-value","1");
+						$target.html("启用");
+						$target.next().addClass("bulk-start-icon");
+						$target.next().removeClass("bulk-stop-icon");
+						$(".content-type-search").attr("val-tab","1");
+					}
+				},
+				initialize : function() {
+					var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+					this.render(channelId);
+				},
+				render : function(channelId) { 
+					this.setDomList(channelId,this.model);
+					return this;
+				} ,
+				setDomList:function(channelId,tableModel){
+					var defaultData = {cmd:options.cmd,channelId:channelId};
+					var ajaxData = $.extend(defaultData, options.ajaxData);
+					tableModel.fetch({
+						type : "post",
+						contentType: "application/x-www-form-urlencoded; charset=utf-8",
+						dataType:'json',
+						data:ajaxData,
+						success:function(model){
+							var tableHtml = ""; 
+							if(options.addData!=""){
+								model.set(options.addData);
+								tableHtml = new EJS({
+									url : options.ejsUrl
+								}).render({result:model.attributes});
+							}else{
+								tableHtml = new EJS({
+									url : options.ejsUrl
+								}).render(model.attributes);
+							}
+							var htmlobj=$(tableHtml);
+							$(options.currentDom).empty().append(htmlobj);
+							options.domCallback(htmlobj);
+						}
+					});
+
+				}
+			}); 
+			var tableView = new priorityTableView({el:options.currentDom});
+			return tableView;
+		},
+
+		priorityManageSearchTab:function(){
+			var tacticsManageView = Backbone.View.extend({
+				events : { 
+					"click" : "click"
+				},
+				click : function(obj) {
+					var target=$(obj.target);
+					if(target.hasClass("active")) return;
+					var val_tab = $(".content-type-search").attr("val-tab");
+					if(val_tab!=0)
+						if(!confirm("请先保存,再切换渠道保证当前渠道信息不会丢失!")) return;
+					var ctID=target.parent().attr("dataCT");
+					var _index=target.parent().find("li").index(target[0]);
+					target.addClass("active").siblings(".active").removeClass("active");
+					$("#"+ctID).find("> .box").eq(_index).addClass("active").siblings(".box.active").removeClass("active");
+					var channelId = target.attr("data-tab");
+					if(window.tableViewManage ){
+						window.tableViewManage.undelegateEvents();  
+					}
+					window.tableViewManage  = module.exports.loadTable({
+						currentDom:"#sortListItem_"+channelId,
+						ejsUrl:_ctx + '/mcd/pages/EJS/priorityManage/priorityTable.ejs',
+						ajaxData:{"isSelectMy":"0","channelId":channelId},
+						domCallback:function(htmlobj){
+							htmlobj.last().css("border-bottom","1px solid #efefef");
+
+						}
+					});
+
+					for(var i=1;i<8;i++){
+						$("#sortListItem_90"+i).hide();
+						$("#sortListItem_90"+i).sortable({ disabled: true });
+
+					}
+					$("#sortListItem_"+channelId).show();
+				},
+				initialize : function() {
+					this.render();
+				},
+				render : function() { 
+					return this;
+				} 
+			});
+			new tacticsManageView({el:"#tacticsManageQueryTab > li"});
+		},
+		prority3Btn:function(options){
+			
+			
+			var defaults = {
+					urlRoot:_ctx+"/mpm",
+					id:"priorityManage.aido",
+					cmd:"viewRules",
+					currentDom:"#sortListItem",
+					ejsUrl:_ctx + '/mcd/pages/EJS/priorityManage/priorityTable.ejs',
+					ajaxData:{},
+					addData:"",
+					isSelectMy:"0",
+					domCallback:function(dom){}
+				};
+				options = $.extend(defaults, options);
+				var priorityTableModel = Backbone.Model.extend({
+					urlRoot : options.urlRoot,
+					defaults : {
+						_ctx : _ctx
+					}
+				}); 
+		
+			var tacticsManageView = Backbone.View.extend({
+				model:new priorityTableModel({id : options.id}), 
+				events : { 
+					"click" : "click"
+				},
+				click : function(obj) {
+					var target=$(obj.target);
+					if(target.hasClass("J_modifyBtn")){
+						if(!confirm("是否要调整优先级?")) return;
+						var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+						$("#sortListItem_"+channelId).sortable({ disabled: false });
+						$("#sortListItem_"+channelId).sortable({
+							items: "> li.priority-list-tbody",
+							cursor: "move",
+							placeholder: "ui-state-highlight",
+							containment: "parent",
+							axis:"y",
+							start:function(event, ui){
+								$(ui.item).addClass(" bulk-bg-style");
+								var length = ui.item.nextAll().length;
+								$(ui.item.nextAll()[length-1]).css("border-bottom","");
+							},
+							stop:function(event, ui){
+								if(ui.item.prev().length!=0){
+									
+									var priorityVal = ui.item.prev().find(".priority-item-prior").find("input").val();
+									var prioVal = parseInt(priorityVal)+1;
+									var nextObj = ui.item.nextAll();
+									ui.item.find(".priority-item-prior").find("input").val(prioVal);
+									if(nextObj!=null){
+										for(var i=0;i<nextObj.length;i++){
+											$(nextObj[i]).find(".priority-item-prior").find("input").val(prioVal+(i+1));
+										}
+									}
+								}
+								var length = ui.item.nextAll().length;
+								if(length==0)
+									ui.item.css("border-bottom","1px solid #efefef");
+										else
+											$(ui.item.nextAll()[length-1]).css("border-bottom","1px solid #efefef");
+							}
+						}).disableSelection();
+						
+						$(".content-type-search").attr("val-tab","1");
+					}else if(target.hasClass("J_addBtn")){//新建
+						module.exports.openDialog("priority-div","新建优先级规则",[],600,300,options);
+						$(".content-type-search").attr("val-tab","1");
+						
+					}else if(target.hasClass("J_saveBtn")){
+						var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+						var orginData = $("#sortListItem_"+channelId).find("li");
+						var _data = '';
+						var _Id = "";
+						var _orderNum = "";
+						var _ruleStatus = "";
+						
+						var _ruleName = "";
+						var _ruleDesc = "";
+						var _createTime = "";
+						for(var i=0,len=orginData.length;i<len;i++){
+							_Id = $(orginData[i]).attr("tab-id");
+							_orderNum = $(orginData[i]).find("span.priority-item-prior").find("input").val();
+							_ruleStatus = $(orginData[i]).find("span.priority-item-status").find("span").first().attr("tab-value");
+							_ruleName = $(orginData[i]).find("span.priority-item-name").html();
+							_ruleDesc = $(orginData[i]).find("span.priority-item-desc").html();
+							_createTime = $(orginData[i]).find("span.priority-tem-date").html();
+							if(i==0){
+								if(orginData.length==1)
+									_data += '[{"id":"'+_Id+'","ruleStatus":"'+_ruleStatus+'","orderNum":"'+_orderNum+'","ruleName":"'+_ruleName+'","ruleDesc":"'+_ruleDesc+'","createTime":"'+_createTime+'","channelId":"'+channelId+'"}]';
+								else
+									_data += '[{"id":"'+_Id+'","ruleStatus":"'+_ruleStatus+'","orderNum":"'+_orderNum+'","ruleName":"'+_ruleName+'","ruleDesc":"'+_ruleDesc+'","createTime":"'+_createTime+'","channelId":"'+channelId+'"},';
+							}else if(i==(len-1)){
+								_data += '{"id":"'+_Id+'","ruleStatus":"'+_ruleStatus+'","orderNum":"'+_orderNum+'","ruleName":"'+_ruleName+'","ruleDesc":"'+_ruleDesc+'","createTime":"'+_createTime+'","channelId":"'+channelId+'"}]';
+							}else 
+								_data += '{"id":"'+_Id+'","ruleStatus":"'+_ruleStatus+'","orderNum":"'+_orderNum+'","ruleName":"'+_ruleName+'","ruleDesc":"'+_ruleDesc+'","createTime":"'+_createTime+'","channelId":"'+channelId+'"},';
+						}
+						var priorityModel = new priorityTableModel({id : "priorityManage.aido"});
+						module.exports.saveWait("saveWait");
+						$("#saveWait").show();
+						priorityModel.fetch({
+							type : "post",
+							contentType: "application/x-www-form-urlencoded; charset=utf-8",
+							dataType:'json',
+							data:{cmd:"saveAll",rules:_data},
+							success:function(model){
+								
+								if(model.attributes.status != 200){
+									$("#saveWait").hide();
+									alert("操作失败，请重试！！");
+									$(".content-type-search").attr("val-tab","1");
+									return;
+								}else{
+									$("#saveWait").hide();
+									alert("操作成功！");
+									$(".content-type-search").attr("val-tab","0");
+									module.exports.loadTable({
+										currentDom:"#sortListItem_"+channelId,
+										ajaxData:{
+											"isSelectMy":"0",
+											"channelId":channelId,
+										},
+									domCallback:function(htmlobj){
+										htmlobj.last().css("border-bottom","1px solid #efefef");
+
+									}
+									});
+								}
+							}
+						});
+					}
+					
+				},
+				initialize : function() {
+					this.render();
+				},
+				render : function() { 
+					return this;
+				} 
+			});
+			new tacticsManageView({el:"#addChannelBox > button"});
+		},
+	
+
+		saveWait:function(id){//等待,
+			var div = '<div id='+id+' style="display:none;position:fixed;top:0px;left:0px;background-color:#2B2921;opacity:.4;z-index:999;width:100%;height:100%;"></div>';
+			$(div).appendTo('body');
+			var img ='<img  style="position:fixed;left:48%;top:48%;" src="../../assets/images/uploading.jpg"/>';
+			$('#'+id+'').append(img);
+			$('#'+id+'').fadeIn(300);
+		},
+		openDialog:function(id,titleTxt,buttons,_w,_h,_open,_close,options){
+			$('body').css('overflow', 'hidden');
+			var ctObj=$("#"+id);
+			if(ctObj.length>0){
+				ctObj=$("#"+id);
+				ctObj.dialog({
+					title:titleTxt,
+					modal:true,
+					width:_w||880,
+					height:_h||590,
+					position: { my: "center", at: "center", of: window },
+					buttons: [
+			                   {
+		                	      text: "确定",
+		                	      "class":"ok-small2-button",
+		                	      click: function(obj) {
+		                	    	var select_val = $(".savePriorityRule").val();
+									var htmlObj = $(".savePriorityRule").find("option")[select_val-1];
+									var rule_desc = $(htmlObj).attr("rule-desc");
+									var rule_id = $(htmlObj).attr("rule-id");
+									var rule_name = $(htmlObj).html();
+									var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+									var liObj = $("#sortListItem_"+channelId).find("li");
+									var maxLiVal = liObj.last().find(".priority-item-prior").find("input").val();
+									liObj.last().css("border-bottom","");
+									var htmlStr = '<li class="priority-list-tbody" tab-id="" style="border-bottom:1px solid #efefef;">';
+									var date = new Date();
+									var dayStr  = (date.getDate())>9?date.getDate():('0'+date.getDate());
+									var createTime = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+dayStr;
+									htmlStr+='<span class="priority-item-num fleft">'+(liObj.length+1)+'</span>';
+									htmlStr+='<span class="priority-item-name fleft" ruleName="'+rule_name+'">'+rule_name+'</span>';
+									htmlStr+='<span class="priority-item-desc fleft" ruleDesc = "'+rule_desc+'">'+rule_desc+'</span>';
+									htmlStr+='<span class="priority-item-date fleft">'+createTime+'</span>';
+									htmlStr+='<span class="priority-item-prior fleft"><input type="text" value="'+(parseInt(maxLiVal)+1)+'" style="text-align: center; width: 140px;" readonly/></span>';
+									htmlStr+='<span class="priority-item-status fleft" >';
+									htmlStr+='<button type="button" class="bulk-quota-btn fleft list-btn " style="cursor:default;"><span class=" J_bulkStop" tab-id="" tab-value="2" >暂停</span> <span class="bulk-stop-icon"></span></button></span>';
+									htmlStr+='<span class="priority-item-operation fleft" style="width:195px"><a herf="#" class="priority-modify" tab-id="" mod-value="1">修改</a>  |  <a herf="#" class="priority-delete" tab-id="">删除</a></span></li>';
+									$("#sortListItem_"+channelId).append($(htmlStr));
+									$( this ).dialog( "close" );
+		                	      }
+			                   },
+			                   {
+		                	      text: "取消" ,
+		                	      "class":"gray-small2-button",
+		                	      click: function(obj) {
+		                	        $( this ).dialog( "close" );
+		                	      }
+		                	   }
+			                ],
+					open:_open||function(){},
+					close:function(event, ui ){
+						//ctObj.dialog("destroy");
+						//ctObj.remove();
+						$(".exclamation:visible").hide();
+						$('body').css('overflow', 'auto');
+						_close?_close():"";
+					}
+				});
+				
+				$(".ui-dialog-buttonpane").css("background-color","#fff");
+			}else{
+				
+				var defaults = {
+						urlRoot:_ctx+"/mpm",
+						id:"priorityManage.aido",
+						ajaxData:{},
+						addData:"",
+						isSelectMy:"0",
+						domCallback:function(dom){}
+					};
+					options = $.extend(defaults, options);
+					var priorityTableModel = Backbone.Model.extend({
+						urlRoot : options.urlRoot,
+						defaults : {
+							_ctx : _ctx
+						}
+					}); 
+				var tableModel = new priorityTableModel({id : "priorityManage.aido"}); 
+				tableModel.fetch({
+					type : "post",
+					contentType: "application/x-www-form-urlencoded; charset=utf-8",
+					dataType:'json',
+					data:{cmd:"queryDimRules"},
+					success:function(model){
+						
+						if(model.attributes.status != 200){
+							alert("操作失败，请重试！！");
+							return;
+						}else{
+							var data = model.attributes.data;
+							var htmlobj = '<div id="'+id+'" style="height:px;"><table class="clchoose"><tbody><tr>';
+
+							htmlobj+='<td><font class="red">*</font><span class="rulename-span">规则名称</span>  </td><td>';
+							htmlobj+='<div><select class="savePriorityRule">'
+						//	htmlobj+='<option value="1">营销类</option><option value="2">服务类</option><option value="3">告知类</option>';
+							for(var i=0;i<data.length;i++){
+								htmlobj+='<option  value="'+(i+1)+'" rule-desc="'+data[i].ruleDesc+'" rule-id="'+data[i].ruleId+'">'+data[i].ruleName+'</option>';
+							}
+							htmlobj+='</select></div></tr><tr></td><td> <span class="ruledesc-span">规则描述 </span> </td><td><div class="savePriorityDesc"><textarea disabled  readonly >'+data[0].ruleDesc+'</textarea></div></td></tr>';
+							htmlobj+='</tbody></table></div>';
+							ctObj=$(htmlobj);
+							$("body").append(ctObj);
+							ctObj.dialog({
+								title:titleTxt,
+								modal:true,
+								width:_w||880,
+								height:_h||590,
+								position: { my: "center", at: "center", of: window },
+								buttons: [
+						                   {
+					                	      text: "确定",
+					                	      "class":"ok-small2-button",
+					                	      click: function(obj) {
+					                	    	  var select_val = $(".savePriorityRule").val();
+													var htmlObj = $(".savePriorityRule").find("option")[select_val-1];
+													var rule_desc = $(htmlObj).attr("rule-desc");
+													var rule_id = $(htmlObj).attr("rule-id");
+													var rule_name = $(htmlObj).html();
+													var channelId = $("#tacticsManageQueryTab").find("li.active").attr("data-tab");
+													var liObj = $("#sortListItem_"+channelId).find("li");
+													var maxLiVal = liObj.last().find(".priority-item-prior").find("input").val();
+													liObj.last().css("border-bottom","");
+													var htmlStr = '<li class="priority-list-tbody" tab-id="" style="border-bottom:1px solid #efefef;">';
+													var date = new Date();
+													var dayStr  = (date.getDate())>9?date.getDate():('0'+date.getDate());
+													var createTime = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+dayStr;
+													htmlStr+='<span class="priority-item-num fleft">'+(liObj.length+1)+'</span>';
+													htmlStr+='<span class="priority-item-name fleft" ruleName="'+rule_name+'">'+rule_name+'</span>';
+													htmlStr+='<span class="priority-item-desc fleft" ruleDesc = "'+rule_desc+'">'+rule_desc+'</span>';
+													htmlStr+='<span class="priority-item-date fleft">'+createTime+'</span>';
+													htmlStr+='<span class="priority-item-prior fleft"><input type="text" value="'+(parseInt(maxLiVal)+1)+'" style="text-align: center; width: 140px;" readonly/></span>';
+													htmlStr+='<span class="priority-item-status fleft" >';
+													htmlStr+='<button type="button" class="bulk-quota-btn fleft list-btn " style="cursor:default;"><span class=" J_bulkStop" tab-id="" tab-value="2" >暂停</span> <span class="bulk-stop-icon"></span></button></span>';
+													htmlStr+='<span class="priority-item-operation fleft" style="width:195px"><a herf="#" class="priority-modify" tab-id="" mod-value="1">修改</a>  |  <a herf="#" class="priority-delete" tab-id="">删除</a></span></li>';
+													$("#sortListItem_"+channelId).append($(htmlStr));
+													$( this ).dialog( "close" );
+					                	      }
+						                   },
+						                   {
+					                	      text: "取消" ,
+					                	      "class":"gray-small2-button",
+					                	      click: function(obj) {
+					                	        $( this ).dialog( "close" );
+					                	      }
+					                	   }
+						                ],
+								open:_open||function(){},
+								close:function(event, ui ){
+									//ctObj.dialog("destroy");
+									//ctObj.remove();
+									$(".exclamation:visible").hide();
+									$('body').css('overflow', 'auto');
+									_close?_close():"";
+								}
+							});
+							$(".savePriorityRule").bind("click",function(obj){
+								var select_val = $(".savePriorityRule").val();
+								var htmlObj = $(".savePriorityRule").find("option")[select_val-1];
+								var rule_desc = $(htmlObj).attr("rule-desc");
+								$("textarea").html(rule_desc);
+								
+							});
+							$(".ui-dialog-buttonpane").css("background-color","#fff");
+						}
+					}
+				});
+				
+			}
+			
+		},
+		/*---------------------------
+	    功能:停止事件冒泡
+	    ---------------------------*/
+	    stopBubble:function(e) {
+	        //如果提供了事件对象，则这是一个非IE浏览器
+	    		e = e || window.event; // firefox下window.event为null, IE下event为null
+	        if ( e && e.stopPropagation ){
+	            //因此它支持W3C的stopPropagation()方法
+	            e.stopPropagation();
+	        }else{
+	            //否则，我们需要使用IE的方式来取消事件冒泡
+	            window.event.cancelBubble = true;
+	        }
+		      //阻止默认浏览器动作(W3C)
+	        if ( e && e.preventDefault ){
+	            e.preventDefault();
+	        //IE中阻止函数器默认动作的方式
+	        }else{
+	            window.event.returnValue = false;
+	        }
+	        return false;
+	    }
+	};
+});

@@ -1,0 +1,17 @@
+<%for(var x in data){%>
+	<dl class="conditionChoose" attrClassId="<%=data[x].id%>">
+		<dt><%=data[x].name%><span>></span></dt>
+		<dd>
+			<ul>
+				<%for(var y in data[x].list){%>
+					<% if((data[x].list[y].attrMetaId == 'BASE_LABEL_CITY_ID') || (data[x].list[y].attrMetaId == 'BASE_LABEL_BRAND_ID') || (data[x].list[y].attrMetaId == 'BASE_LABEL_LB_BASE_42')){%>
+					<li class="active" attrId="<%=data[x].list[y].attrId%>" attrMetaId="<%=data[x].list[y].attrMetaId%>" attrAlias="<%=data[x].list[y].attrAlias%>" ctrlTypeId="<%=data[x].list[y].ctrlTypeId%>" attrClassName="<%=data[x].list[y].attrClassName%>" lableId="<%=data[x].list[y].lableId%>" updateCycle="<%=data[x].list[y].updateCycle%>" typeId="<%=data[x].list[y].typeId%>" typeName="<%=data[x].list[y].typeName%>" cView="<%=data[x].list[y].cViewId%>" columnTypeId="<%=data[x].list[y].columnDataType%>"><%=data[x].list[y].attrAlias%></li>
+					<%}else{%>
+					<li attrId="<%=data[x].list[y].attrId%>" attrMetaId="<%=data[x].list[y].attrMetaId%>" attrAlias="<%=data[x].list[y].attrAlias%>" ctrlTypeId="<%=data[x].list[y].ctrlTypeId%>" attrClassName="<%=data[x].list[y].attrClassName%>" lableId="<%=data[x].list[y].lableId%>" updateCycle="<%=data[x].list[y].updateCycle%>" typeId="<%=data[x].list[y].typeId%>" typeName="<%=data[x].list[y].typeName%>" cView="<%=data[x].list[y].cViewId%>" columnTypeId="<%=data[x].list[y].columnDataType%>"><%=data[x].list[y].attrAlias%></li>
+					<%}%>
+				<%}%>
+			</ul>
+		</dd>
+		<hr>
+	</dl>
+<%}%>

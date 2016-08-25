@@ -1,0 +1,11 @@
+<div class="channel-app-title hidden J_show_box hidden" channelId="<%=data.channelId%>">
+    <span class="app-title fleft"><%=data.channelName%></span>
+</div>
+<div class="channel-img-select clearfix J_show_box hidden" channelId="<%=data.channelId%>">
+    <div class="fleft channel-left-list">
+        <div class="channel-sub-title">选择运营位</div>
+        <ul class="channel-selected-box clearfix" channelid="<%=data.channelId%>">
+
+        </ul>
+    </div>
+</div>

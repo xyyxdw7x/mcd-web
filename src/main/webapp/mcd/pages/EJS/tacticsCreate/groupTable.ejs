@@ -1,0 +1,45 @@
+
+<%
+/*如果值为null，则显示为'--'*/
+function nullChange(message){
+   return message=='null'?'--':message;
+}
+
+function numChange(num){
+			var numStr = num.toString();
+			if(numStr.length<=4){
+				return numStr;
+			}else {
+				return numStr.substring(0, numStr.length - 4) + '万';
+			}
+		}
+for(var i = 0;i<result.data.result.length;i++){
+%>
+    <li class="group-info-ul-li"  updateCycle="<%=result.data.result[i].updateCycle%>" customNum="<%=result.data.result[i].customNum%>" classification="initMyCustom" customGroupId="<%=result.data.result[i].customGroupId%>" typeid="<%=result.data.result[i].customGroupId%>">
+        <div class="group-box">
+            <div class="group-box-header">
+                <span class="group-box-header-name" title="<%=result.data.result[i].customGroupName%>"><%=nullChange(result.data.result[i].customGroupName)%></span>
+
+                <img class="my-selected-icon" src="../../assets/images/channelSelected.png">
+            </div>
+            <div class="group-box-info">
+                <div class="group-box-info-item group-box-info-item-circle">
+                    <span>更新周期：</span>
+                    <span class="group-box-info-circle-value"><%=nullChange(result.data.result[i].custGroupUpdateCycle)%></span>
+                </div>
+                <div class="group-box-info-item group-box-info-item-num">
+                    <span>客户群规模：</span>
+                    <span class="group-box-info-num-value"><%=numChange(nullChange(result.data.result[i].customNum))%></span>
+
+                </div>
+                <div class="group-box-info-item group-box-info-item-creater">
+                    <span>创建人：</span>
+                    <span class="group-box-info-creater-value"><%=nullChange(result.data.result[i].createUserName)%></span>
+                </div>
+                <div class="group-box-detail">
+                    <a href="javascript:;">详情&gt; </a>
+                </div>
+            </div>
+        </div>
+    </li>
+<% } %>

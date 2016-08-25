@@ -1,0 +1,30 @@
+<div class="channel-app-title J_show_box hidden" channelId="<%=data.channelId%>" >
+    <span class="app-title fleft"><%=data.channelName%></span>
+ 	<%if(data.is_prev==null || data.is_prev){%>
+		<img class="preview-image previewExeContent" channelId="<%=data.channelId%>" src="../../assets/images/preview-all.png">
+		<span class="preview-span previewExeContent" channelId="<%=data.channelId%>">效果预览</span>
+ 	<%}%>
+</div>
+<div class="channel-operation-box J_show_box hidden" channelId="<%=data.channelId%>" >
+    <ul class="channel-operation-box">
+        <li class="channel-operation-box clearfix">
+            <div class="fleft channel-operation-left">推荐用语</div>
+            <div class="fleft channel-operation-main">
+                <div class="channel-operation-main-inner clearfix">
+                    <div class="channel-textarea-box fleft">
+                        <textarea rows="" cols="" class="channel-textarea J_SMSBox"  channelId="<%=data.channelId%>" maxTextNum="<%=data.wordSize%>"></textarea>
+                        <p class="channel-num-text">您还可以输入<i class="yellow">data.wordSize</i>个字</p>
+                    </div>
+                    <%if(data.is_prev==null || data.is_prev){%>
+                    <!--<div class="preview-message fleft">
+                        <button type="button" class="preview-btn previewExeContent" channelId="<%=data.channelId%>">预览效果</button>
+                    </div>-->
+                    <%}%>
+                    <!--<div channelId="<%=data.channelId%>" class="channelPreDefineList channel-ta-btn clearfix J_termLable">
+
+                    </div>-->
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

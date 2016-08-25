@@ -1,0 +1,156 @@
+<div class="channel-app-title J_show_box hidden" channelId="<%=data.channelId%>" >
+   <span class="app-title fleft" ><%=data.channelName%></span>
+   <image class='preview-image previewExeContent-910' src='../../assets/images/preview-all.png'></image>
+   <span  class="preview-span previewExeContent-910" channelId="<%=data.channelId%>">效果预览</span>
+</div>
+<div class="channel-operation-box J_show_box hidden" channelId="<%=data.channelId%>" >
+    <ul class="channel-operation-box">
+        <li class="channel-operation-box clearfix">
+            <div class="fleft channel-operation-left" style='font-weight: bold;'>短信模版<div class='model-number'>还可选<font>9</font>模版</div></div>
+            
+           <!-- <div class="fleft channel-operation-main">
+                <div class="channel-operation-main-inner">
+                    <select class="channel-boss-adiv-select" id="boss-adiv" channelId="<%=data.channelId%>">
+                        <%for(var i = 0;i < data.model_data.length;i++) { %>
+                            <option adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%></option>
+                        <% }%>
+                    </select>
+                </div>  
+            </div>  -->
+            <div class='message-model-box'>
+            <lable class='call-money'>催缴类</lable>
+	            <div class= 'message-model-box-main'>
+	            <ul class="message-model-box-main-ul">
+	            	<%for(var i = 0,count_model=0;i < data.model_data.length;i++) { 
+	            			if(data.model_data[i].templateTypeId=='1001'){
+	            			   count_model++;
+	            			   if(count_model<=4){
+	            			    	%>
+	            			   		<li class='more_tips' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+									<% 	            			   		
+	            			   }else{
+	            			       if(count_model==5){
+	            			       %>
+	            			       	   <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			       	   <image class='model-add-model' src='../../assets/images/model-add.png' style='margin:0 0 -12px 0;  cursor: pointer;' val-click='0'></image>
+	            			    	<%
+	            			       }else{
+	            			       		%>
+	            			       	     <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			      		<%
+	            			       }
+	            			   }
+	            			}
+                     }%>
+	            </ul>
+	            </div>
+            <lable class='phone-bill-mod'>话费变更</lable>
+            	<div class= 'message-model-box-main'>
+	            <ul class="message-model-box-main-ul">
+	            	<%for(var i = 0,count_model=0;i < data.model_data.length;i++) { 
+	            			if(data.model_data[i].templateTypeId=='1002'){
+	            			   count_model++;
+	            			   if(count_model<=4){
+	            			    	%>
+	            			   		<li class="more_tips" adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+									<% 	            			   		
+	            			   }else{
+	            			       if(count_model==5){
+	            			       %>
+	            			       	   <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			       	   <image class=' model-add-model' src='../../assets/images/model-add.png' style='margin:0 0 -12px 0;  cursor: pointer;' val-click='0'></image>
+	            			    	<%
+	            			       }else{
+	            			       		%>
+	            			       	     <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			      		<%
+	            			       }
+	            			   }
+	            			}
+                     }%>
+	            </ul>
+	            </div>
+            <lable class='flow-remind'>流量提醒</lable>
+            	<div class= 'message-model-box-main'>
+	            <ul class="message-model-box-main-ul">
+	            <%for(var i = 0,count_model=0;i < data.model_data.length;i++) { 
+	            			if(data.model_data[i].templateTypeId=='1003'){
+	            			   count_model++;
+	            			   if(count_model<=4){
+	            			    	%>
+	            			   		<li class="more_tips" adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+									<% 	            			   		
+	            			   }else{
+	            			       if(count_model==5){
+	            			       %>
+	            			       	   <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			       	   <image class='model-add-model' src='../../assets/images/model-add.png' style='margin:0 0 -12px 0;  cursor: pointer;' val-click='0'></image>
+	            			    	<%
+	            			       }else{
+	            			       		%>
+	            			       	     <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			      		<%
+	            			       }
+	            			   }
+	            			}
+                     }%>
+	            </ul>
+	            </div>
+            <lable class='other-remind'>其他提醒</lable>
+            	<div class= 'message-model-box-main'>
+	            <ul class="message-model-box-main-ul">
+	            	<%for(var i = 0,count_model=0;i < data.model_data.length;i++) { 
+	            			if(data.model_data[i].templateTypeId=='1004'){
+	            			   count_model++;
+	            			   if(count_model<=4){
+	            			    	%>
+	            			   		<li class="more_tips" adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+									<% 	            			   		
+	            			   }else{
+	            			       if(count_model==5){
+	            			       %>
+	            			       	   <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			       	   <image class=' model-add-model' src='../../assets/images/model-add.png' style='margin:0 0 -12px 0;  cursor: pointer;' val-click='0'></image>
+	            			    	<%
+	            			       }else{
+	            			       		%>
+	            			       	     <li class='more_tips li-more-model' adivId="<%=data.model_data[i].templateId%>" adivInfo="<%=data.model_data[i].templateContent%>"><%=data.model_data[i].templateName%><span class=""></span></li>
+	            			      		<%
+	            			       }
+	            			   }
+	            			}
+                     }%>
+	            </ul>
+	            </div>
+	        </div>
+        </li>
+        <li class="channel-operation-guide-box clearfix">
+            <div class="fleft channel-operation-guide-left" style='font-weight: bold;'>引导语</div>
+            <div class="fleft channel-operation-guide-main">
+                <input type="radio" name="guide_message" class='g_message_1' value="1" checked="checked"/>【业务告知】
+                <input type="radio" name="guide_message" class='g_message_2' value="2" />【服务提醒】
+            </div>
+        </li>
+        <li class="channel-operation-box clearfix">
+            <div class="fleft channel-operation-left" style='font-weight: bold;'>提醒内容</div>
+            <div class="fleft channel-operation-main">
+                <div class="channel-operation-main-inner clearfix">
+                    <div class="channel-textarea-box fleft">
+                        <textarea rows="" cols="" class="channel-textarea J_SMSBox"  channelId="<%=data.channelId%>" maxTextNum="<%=data.wordSize%>"></textarea>
+                        <p class="channel-num-text">您还可以输入<i class="yellow">50</i>个字</p>
+                    </div>
+                <!--     <div class="preview-message fleft">
+                        <button type="button" class="preview-btn previewExeContent-910" channelId="<%=data.channelId%>">预览效果</button>
+                    </div> -->
+                    <!--<div channelId="<%=data.channelId%>" class="channelPreDefineList channel-ta-btn clearfix J_termLable">
+
+                    </div>-->
+                </div>
+            </div>
+        </li>
+         <li class="channel-operation-box clearfix">
+            <div class='fleft sign-name-title' style='font-weight: bold;'>署名</div>
+            <div class='fleft sign-name'>(中国移动)</div>
+          </li> 
+    </ul>
+</div>

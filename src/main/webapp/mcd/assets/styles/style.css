@@ -1,0 +1,332 @@
+ 
+
+
+ 
+.banner {
+ 	position: relative; 
+ 	margin: auto;
+} 
+.banner .btn, .banner .dot {
+	-webkit-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-moz-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-ms-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	-o-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+}
+
+.banner .dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 20px;
+	width: 100%;
+}
+.banner .dots li {
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+
+	width: 10px;
+	height: 10px;
+	line-height: 10px;
+	margin: 0 4px;
+
+	text-indent: -999em;
+	*text-indent: 0;
+
+	border: 2px solid #288bdd;
+	border-radius: 6px;
+
+	cursor: pointer;
+	opacity: .4;
+
+	-webkit-transition: background .5s, opacity .5s;
+	-moz-transition: background .5s, opacity .5s;
+	transition: background .5s, opacity .5s;
+}
+.banner .dots li.active {
+	background: #03A4FC;
+	opacity: 1;
+}
+
+.banner .arrows {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	color: #000;
+}
+.banner .arrow {
+	display: inline;
+	padding-left: 10px;
+	cursor: pointer;
+}
+.banner .marketing-prev-btn{
+	position: absolute;
+	left: 0px;
+	top: 50%;
+	margin: 90px 0 0 0px;
+	background: url(../images/left.png) no-repeat ;
+	width: 20px;
+	height: 44px;
+	z-index: 100;
+	cursor: pointer;
+}
+.banner .marketing-next-btn{
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	margin: 90px 0 0 0;
+	background: url(../images/right.png) no-repeat ;
+	width: 20px;
+	height: 44px;
+	z-index: 100;
+	cursor: pointer;
+}
+
+li{list-style:none} 
+img{border:0;vertical-align:middle} 
+p{word-wrap:break-word} 
+
+.content{
+	width: 790px;
+	height: 277px;
+	margin: 0 auto;
+}
+.marketing-recommended-title{
+	width: 100%;
+	height:42px;
+	line-height:36px;
+	background: #f5f5f5; 
+	color: #000;
+	text-indent: 10px;
+	font-size: 16px;
+	font-weight: 600;
+	float: left;
+}
+.title-icon{
+	background:url(../images/pen.png) no-repeat;
+	width: 23px;
+	height: 20px;
+	float: left;
+	margin: 7px 0 0 4px;
+
+}
+.marketing-recommended-title i{
+	float: right;
+	cursor: pointer;
+}
+
+.marketing-recommended-box{
+	width: 754px;
+	height: 227px;
+	margin: auto;
+}
+.marketing-main{
+	width: 730px;
+	height: 270px;
+	overflow: hidden; 
+	clear: both;
+	margin:auto;
+}
+.marketing-bottom{
+	width: 100%;
+	height: 80px;
+	overflow: hidden; 
+	background: #f2f5f6;
+}
+.marketing-item{
+	float: left;
+	width: 360px;
+	height: 227px; 
+	background-color: #FFFFFF;
+}
+.marketing-float-right{
+	float:right;
+}
+.marketing-logo{
+	width: 50px;
+	height: 131px;
+	margin:26px 10px 24px 13px;
+	position: relative;
+	float: left;
+	overflow: hidden;
+}
+.marketing-icon-left{
+	margin: 2px 0 0 -2px;
+}
+.marketing-icon-right{
+	margin: 2px 0 0 -2px;
+}
+.marketing-content{
+	float: left;
+	height:auto;
+}
+.marketing-btn{ 
+	width: 260px;
+	height: 54px; 
+	line-height: 54px;
+	_line-height: 27px;
+	text-align: left;
+	_border: 1px solid #e3e3e3;
+	margin: 26px auto ;
+	_margin: 24px auto 24px 34px !important;
+	position: relative;
+	_text-indent: 55px;
+	_sletter-spacing: 2px;
+	cursor: pointer;
+}
+.previewExecontentDialog_906 .marketing-btn-title{
+	color: #5b6365;
+	_color: #5b6365;
+	height: 30px;
+	line-height: 30px;
+	_line-height: 30px;
+	font-size: 16px;
+ 	font-weight: bold;
+ 	letter-spacing: 1px;
+ 	width: 250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.previewExecontentDialog_902 .marketing-btn-title{
+	color: #1883cb;
+	_color: #2788CC;
+	height: 30px;
+	line-height: 30px;
+	_line-height: 30px;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	width: 250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.previewExecontentDialog_902 .marketing-btn-text{
+	color:#333333;
+	_color: #333;
+	height: 24px;
+	line-height: 20px;
+	font-size: 100%;
+  	font-weight: 500;
+	font: 11px/1.5 tahoma,arial,"Hiragino Sans GB","Microsoft Yahei",宋体;
+	_letter-spacing: normal;	
+}
+.previewExecontentDialog_906 .marketing-btn-text{
+	color:#333333;
+	_color: #333;
+	height: 24px;
+	line-height: 20px;
+	font-size: 100%;
+	font-weight: 500;
+	font: 14px/1.5 tahoma,arial,"Hiragino Sans GB","Microsoft Yahei",宋体;
+	_letter-spacing: normal;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.previewExecontentDialog_902 .marketing-text{
+	margin:10px auto;
+	height:70px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.previewExecontentDialog_906 .marketing-text{
+	margin:10px auto;
+	height:112px;
+	font-size: 10px;
+	line-height: 14px;
+	color: #666666;
+	overflow: hidden;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	letter-spacing: 1px;
+}
+.marketing-text-key{
+	color: #FF7440;
+	padding:0px 15px 0px 5px;
+}
+.marketing-text-box{ 
+
+	width: 260px;
+	height: auto; 
+	line-height: 22px;
+	text-align: left; 
+	margin: -10px auto 10px auto;
+	color: #666666;
+	_color: #999;
+	font: 11px/1.5 tahoma,arial,"Hiragino Sans GB","Microsoft Yahei",宋体;
+}
+
+.marketing-text-box button{ 
+
+	width: 95px;
+	height: 30px;
+	text-align: center;
+	color: #fff;
+	background-color: #3BA0D1;
+	_background: #3A9ED0; 
+	border: none;
+	outline: none;
+	cursor: pointer;
+	margin: 20px auto 0 0;
+	_margin: 10px auto 0 90px;
+	_margin-left:130px;
+	display: block;
+	text-decoration: none;
+    vertical-align: middle;
+    font-family: verdana, Hiragino Sans GB;
+    font-size: 14px;
+    font-weight: bold;    
+    _padding: 0 20px;
+}
+.marketing-bottom-box{ 
+	width: 304px;
+	height: 80px;  
+	text-align: left; 
+	margin: 0 auto;
+}
+.marketing-bottom-box p{ 
+	width: 304px;
+	height: 40px;  
+	line-height: 55px;
+	text-align: left; 
+	margin: 0 auto;
+}
+.marketing-bottom-box p.bottom-list{ 
+	width: 304px;
+	height: 40px;  
+	line-height: 25px;
+	text-align: left; 
+	margin: 0 auto;
+}
+.marketing-bottom-box p .app-type{ 
+	margin:  0 0 0 40px;
+}
+.marketing-title{
+	color: #2788CC;
+	font-size: 14px;
+ 	font-weight: bold;
+ 	text-align: center; 
+ 	text-indent: 0;
+ 	cursor: pointer;
+}  
+.execContent{
+	height:50px;
+	_padding: 0 0 0 35px
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
