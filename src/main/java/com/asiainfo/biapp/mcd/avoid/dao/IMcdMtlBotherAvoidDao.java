@@ -19,13 +19,13 @@ public interface IMcdMtlBotherAvoidDao {
 	
 	public List searchBotherAvoidUser(Pager pager, MtlBotherAvoid mtlBotherAvoid);
 
-	public void addBotherAvoidUser(List<MtlBotherAvoid> list) throws Exception;
+	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception;
 	
-	public int chkIsExist(MtlBotherAvoid mtl);
+	public int chkIsExistInMem(MtlBotherAvoid mtl);
 		
-	public void mdfBotherAvoidUser(List<MtlBotherAvoid> list) ;
+	public void mdfBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
 	
-	public void delBotherAvoidUser(MtlBotherAvoid mtl) ;
+	public void delBotherAvoidUserInMem(MtlBotherAvoid mtl) ;
 	
-	public void batchDelBotherAvoidUser(List<MtlBotherAvoid> list) ;
+	public void batchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
 }

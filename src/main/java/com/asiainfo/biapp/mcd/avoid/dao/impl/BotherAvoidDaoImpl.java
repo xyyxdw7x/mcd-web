@@ -21,8 +21,8 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 
-@Repository(value="botherAvoidDao")
-public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao {
+@Repository("botherAvoidDao")
+public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoidDao {
 	private static Logger log = LogManager.getLogger();
 
 	@Override
@@ -82,16 +82,15 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 	}
 	
 	@Override
-	public void addBotherAvoidUser(List<MtlBotherAvoid> list) throws Exception {
+	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception {
 		StringBuffer insertSql = new StringBuffer("INSERT INTO MTL_BOTHER_AVOID ");
 		insertSql
 				.append("(AVOID_BOTHER_TYPE,AVOID_CUST_TYPE,PRODUCT_NO,ENTER_TIME,USER_TYPE_ID,CREATE_USER_ID,CREATE_USER_NAME)")
 				.append(" VALUES(?,?,?,SYSTIMESTAMP,?,?,?)");
 		long startTime=new Date().getTime();
 		final List Locallist = list;
-		JdbcTemplate sqlFireTemplate = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 		
-		sqlFireTemplate.execute(insertSql.toString(), new PreparedStatementCallback() {
+		this.getJdbcTemplate().execute(insertSql.toString(), new PreparedStatementCallback() {
 			@Override
 			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
 				Iterator it = Locallist.iterator();
@@ -121,7 +120,7 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 	}
 
 	@Override
-	public int chkIsExist(MtlBotherAvoid mtl) {
+	public int chkIsExistInMem(MtlBotherAvoid mtl) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT COUNT(1) FROM MTL_BOTHER_AVOID WHERE ");
 		sb.append(" AVOID_BOTHER_TYPE = '"+mtl.getAvoidBotherType()+"'");
@@ -129,13 +128,11 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 		sb.append(" AND PRODUCT_NO = '"+mtl.getProductNo()+"'");
 		log.info("检查免打扰用户是否已经存在："+sb.toString());
 		
-		JdbcTemplate sqlFireTemplate = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
-		
-		return sqlFireTemplate.queryForObject(sb.toString(), Integer.class).intValue();
+		return this.getJdbcTemplate().queryForObject(sb.toString(), Integer.class).intValue();
 	}
 	
 	@Override
-	public void mdfBotherAvoidUser(List<MtlBotherAvoid> list) {
+	public void mdfBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
 		MtlBotherAvoid oldMtl = list.get(0);//修改前
 		MtlBotherAvoid newMtl = list.get(1);//修改后
 		
@@ -159,12 +156,11 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 		plist.add(oldMtl.getProductNo());
 		
 		log.info("更新免打扰客户："+sb.toString());
-		JdbcTemplate sqlFireTemplate = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
-		sqlFireTemplate.update(sb.toString(),plist.toArray());
+		this.getJdbcTemplate().update(sb.toString(),plist.toArray());
 	}
 	
 	@Override
-	public void delBotherAvoidUser(MtlBotherAvoid mtl) {
+	public void delBotherAvoidUserInMem(MtlBotherAvoid mtl) {
 	
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
@@ -179,12 +175,11 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 		plist.add(mtl.getProductNo());
 		
 		log.info("删除免打扰客户："+sb.toString());
-		JdbcTemplate sqlFireTemplate = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
-		sqlFireTemplate.update(sb.toString(),plist.toArray());
+		this.getJdbcTemplate().update(sb.toString(),plist.toArray());
 	}
 	
 	@Override
-	public void batchDelBotherAvoidUser(List<MtlBotherAvoid> list) {
+	public void batchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
 		StringBuffer deleteSql = new StringBuffer();
 		deleteSql.append("DELETE FROM MTL_BOTHER_AVOID WHERE ")
 		.append("AVOID_BOTHER_TYPE = ? ")
@@ -193,9 +188,8 @@ public class BotherAvoidDao extends JdbcDaoBase implements IMcdMtlBotherAvoidDao
 		
 		long startTime=new Date().getTime();
 		final List Locallist = list;
-		JdbcTemplate sqlFireTemplate = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 		
-		sqlFireTemplate.execute(deleteSql.toString(), new PreparedStatementCallback() {
+		this.getJdbcTemplate().execute(deleteSql.toString(), new PreparedStatementCallback() {
 			@Override
 			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
 				Iterator it = Locallist.iterator();
