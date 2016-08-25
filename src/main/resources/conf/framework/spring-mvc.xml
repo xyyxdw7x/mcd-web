@@ -4,12 +4,15 @@
 	xmlns:context="http://www.springframework.org/schema/context" 
 	xmlns:mvc="http://www.springframework.org/schema/mvc" 
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
 	http://www.springframework.org/schema/context   
     http://www.springframework.org/schema/context/spring-context-3.2.xsd 
 	http://www.springframework.org/schema/mvc  
     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+    http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd 
 	">
 	<!-- 默认的注解映射的支持  默认的order为0--> 
     <mvc:annotation-driven/>
@@ -21,7 +24,11 @@
 	<context:component-scan base-package="com.asiainfo" name-generator="com.asiainfo.biapp.framework.core.context.FullPathBeanNameGenerator" >
  		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
  		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+ 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
+	
+	<!-- 激活自动代理功能 -->
+	<aop:aspectj-autoproxy />
 	
     <!-- resource本质是一个SimpleUrlHandlerMapping 静态的资源文件   
     cache-period缓存时间 秒  86400为一天   annotation-driven默认的order为0 设置会-11和-12就不会经过其他的HandlerMapping-->

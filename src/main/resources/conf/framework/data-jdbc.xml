@@ -41,12 +41,28 @@
 		</property>
 	</bean>
 	
+    <!-- 主数据源内存数据库 -->
+	<bean id="masterMemJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/${app_jndi_master_mem_name}</value>
+		</property>
+	</bean>
+	
+	<!-- 从数据源内存数据库 -->
+	<bean id="slaveMemJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/${app_jndi_slave_mem_name}</value>
+		</property>
+	</bean>
+	
 	<!-- 数据源路由 -->
 	<bean id="dataSource" class="com.asiainfo.biapp.framework.jdbc.RoutingDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="master" value-ref="masterJndi" />
 				<entry key="slave" value-ref="slaveJndi" />
+				<entry key="master_mem" value-ref="masterMemJndi"></entry>
+				<entry key="slave_mem" value-ref="slaveMemJndi"></entry>
 			</map>
 		</property>
 		<!--默认为从服务器 主要处理查询工作  -->
@@ -58,15 +74,17 @@
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	
 	<!-- jdbc主从数据源切换切面 -->
-	<bean id="resetDataSourceAdvice" class="com.asiainfo.biapp.framework.jdbc.ResetDataSourceAdvice" />
+	<bean id="resetDataSourceAdvice" class="com.asiainfo.biapp.framework.jdbc.ResetDataSourceAdvice" >
+    	<property name="memDataBaseFlag" value="InMem"/>
+    </bean>
 	<aop:config>
         <aop:aspect id="changeMasterDataSource" ref="resetDataSourceAdvice">
-            <aop:pointcut expression="execution(* com.asiainfo.biapp.mcd.*.service.*.update*(..)) ||execution(* com.asiainfo.biapp.mcd.*.service.*.save*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.add*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.insert*(..))" id="update"/>
-            <aop:before method="resetMasterDataSource" pointcut-ref="update" />
+            <aop:pointcut id="update" expression="execution(* com.asiainfo.biapp.mcd.*.dao..update*(..)) ||execution(* com.asiainfo.biapp.mcd.*.dao..save*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..add*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..insert*(..))" />
+            <aop:before pointcut-ref="update"  method="resetMasterDataSource" />
         </aop:aspect>
         <aop:aspect id="changeSlaveDataSource" ref="resetDataSourceAdvice">
-            <aop:before method="resetSlaveDataSource"
-                pointcut="execution(* com.asiainfo.biapp.mcd.*.service.*.get*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.query*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.find*(..))||execution(* com.asiainfo.biapp.mcd.*.service.*.search*(..))" />
+            <aop:pointcut id="query" expression="execution(* com.asiainfo.biapp.mcd.*.dao..get*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..query*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..find*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..search*(..))" />
+            <aop:before pointcut-ref="query" method="resetSlaveDataSource" />
         </aop:aspect>
     </aop:config>
     <!--事务模板 -->
@@ -91,7 +109,7 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut id="jdbcPointCut" expression="execution(* com.asiainfo.biapp.mcd.*.dao..*Dao.*(..))"/>
+		<aop:pointcut id="jdbcPointCut" expression="execution(* com.asiainfo.biapp.mcd.*.service..*DaoImpl.*(..))"/>
 		<aop:advisor pointcut-ref="jdbcPointCut" advice-ref="jdbcAdvice"/>
 	</aop:config>
 </beans>
