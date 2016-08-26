@@ -1,7 +1,10 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,19 +20,29 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.tactics.service.IMcdMtlGroupInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
+import com.asiainfo.biframe.service.IdNameMapper;
+import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 @RequestMapping("/tactics/campSegSearch")
 public class CampSegSearchController extends BaseMultiActionController {
     private static Logger log = LogManager.getLogger();
     
-    @Resource(name="mpmUserPrivilegeService")
-    private IMpmUserPrivilegeService mpmUserPrivilegeService; 
+//    @Resource(name="mpmUserPrivilegeService")
+//    private IMpmUserPrivilegeService mpmUserPrivilegeService; 
     @Resource(name="mpmCampSegInfoService")
     private IMpmCampSegInfoService mpmCampSegInfoService;
+    @Resource(name="mcdMtlGroupInfoService")
+    private IMcdMtlGroupInfoService iMcdMtlGroupInfoService ;
     
     @RequestMapping("/searchIMcdCamp")
     public ModelAndView searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
@@ -72,8 +86,6 @@ public class CampSegSearchController extends BaseMultiActionController {
                 }
 
                 String channelCampCont = request.getParameter("channelCampCont");
-
-                // String clickQueryFlag=request.getParameter("clickQueryFlag");
                 String clickQueryFlag = "true";
                 Pager pager = new Pager();
                 pager.setPageSize(MpmCONST.PAGE_SIZE);
@@ -109,5 +121,149 @@ public class CampSegSearchController extends BaseMultiActionController {
 
                 return null;
             }
+    
+    /**
+     * 查询状态
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/searchCampsegStat")
+    public ModelAndView searchCampsegStat( HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        List statList = mpmCampSegInfoService.getDimCampsegStatList();
+        JSONObject dataJson = new JSONObject();
+        dataJson.put("status", "200");
+        dataJson.put("data", JmsJsonUtil.obj2Json(statList));
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.print(dataJson);
+        out.flush();
+        out.close();
+
+        return null;
+    }
+
+    /**
+     * 查询业务
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/searchDimCampDrvType")
+    public ModelAndView searchDimCampDrvType( HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        List<DimCampDrvType> dimCampSceneList = mpmCampSegInfoService.getDimCampSceneList();
+        JSONObject dataJson = new JSONObject();
+        dataJson.put("status", "200");
+        dataJson.put("data", JmsJsonUtil.obj2Json(dimCampSceneList));
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.print(dataJson);
+        out.flush();
+        out.close();
+
+        return null;
+    }
+    
+    /**
+     * 查询策略包下子策略信息
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/searchMcdMpmCampSegChild")
+    public ModelAndView searchMcdMpmCampSegChild(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        int status = 200;
+        String msg = "";
+        JSONArray jsonArray = null;
+        try {
+            String campsegId = request.getParameter("campsegId") != null ? request.getParameter("campsegId") : null;
+            List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+            List<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
+            
+            for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                JSONObject dataJson1 = new JSONObject();
+                String ruleDesc = "";
+                MtlStcPlan stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(mtlCampSeginfo.getPlanId());// 查询产品信息
+                dataJson1.put("planName", stcPlan != null ? stcPlan.getPlanName(): "");
+                List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampsegId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
+                String ruleDescShowSql = "";
+                for (int i = 0; i < custGroupSelectList.size(); i++) {
+                    MtlCampsegCiCustgroup mtlCampsegCustGroup = (MtlCampsegCiCustgroup) custGroupSelectList.get(i);
+                    if ("CG".equals(mtlCampsegCustGroup.getCustgroupType())) {
+                         //待定
+//                        IMcdMtlGroupInfoService iMcdMtlGroupInfoService = (IMcdMtlGroupInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.IMCD_MTL_GROUPINFO_SERVICE);
+                         MtlGroupInfo mtlGroupInfo = iMcdMtlGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
+                         if(mtlGroupInfo != null && mtlGroupInfo.getCustomGroupName() != null){
+                             ruleDesc = "客户群：" + mtlGroupInfo.getCustomGroupName();// +"<br>" + ruleDesc;
+                         }
+                         int originalCustGroupNum = mtlGroupInfo.getCustomNum();   //原始客户群数量
+                        dataJson1.put("originalCustGroupNum", String.valueOf(originalCustGroupNum));
+                    }
+                    dataJson1.put("ruleDesc", ruleDesc);
+                    
+                }
+                List mcdList = mpmCampSegInfoService.getMtlChannelDefs(mtlCampSeginfo.getCampsegId());
+                List<Map> mtltlChannelDefList = new ArrayList<Map>(); 
+                
+                 for(int i=0;i< mcdList.size();i++){
+                     Map map = (Map)mcdList.get(i);
+                     Map mapNew = new HashMap();
+                     mapNew.put("TARGER_USER_NUMS", map.get("TARGER_USER_NUMS") == null ? "" : map.get("TARGER_USER_NUMS").toString());
+                     mapNew.put("CHANNEL_NAME", map.get("CHANNEL_NAME") == null ? "" : map.get("CHANNEL_NAME").toString());
+                     mtltlChannelDefList.add(mapNew);
+                 }
+                 JSONArray mtlChannelDefsJsonArray = JSONArray.fromObject(mtltlChannelDefList);
+                 dataJson1.put("mtlChannelDefs", mtlChannelDefsJsonArray);
+                 jsonObjectList.add(dataJson1);
+            }
+            
+             jsonArray = JSONArray.fromObject(jsonObjectList);
+        
+        } catch (Exception e) {
+            status = 201;
+            e.printStackTrace();
+            msg = e.getMessage();
+        }  finally {
+        
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("status", "200");
+            if(!"200".equals(status)){
+                dataJson.put("result", msg);
+            }
+            dataJson.put("data", jsonArray);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+        }
+        
+        return null;
+   }
+
 
 }

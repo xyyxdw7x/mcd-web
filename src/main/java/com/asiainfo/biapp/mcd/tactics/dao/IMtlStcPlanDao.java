@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 
@@ -57,4 +58,10 @@ public interface IMtlStcPlanDao {
 	 * @return
 	 */
 	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager);
+    /**
+     * 根据渠道ID获取渠道信息
+     * @param planId
+     * @return
+     */
+    MtlStcPlan getMtlStcPlanByPlanId(String planId);
 }

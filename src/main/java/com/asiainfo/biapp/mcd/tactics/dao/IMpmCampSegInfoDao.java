@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 public interface IMpmCampSegInfoDao {
@@ -13,6 +14,18 @@ public interface IMpmCampSegInfoDao {
      * @return
      */
     public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager);
+    /**
+     * gaowj3
+     * JDBC查询业务状态
+     * @return
+     */
+    public List<DimCampDrvType> getDimCampSceneList();
+    /**
+     * gaowj3
+     * JDBC查询策略状态
+     * @return
+     */
+    public List getDimCampsegStatList();
     
 	/**
 	 * 保存活动波次信息
@@ -34,6 +47,13 @@ public interface IMpmCampSegInfoDao {
 	 * @throws Exception
 	 */
 	public List getChildCampSeginfo(String campsegId) throws Exception;
+    /**
+     * 取客户群选择（目标客户群”及“对比客户群”信息）
+     * @param campsegId
+     * @return
+     * @throws MpmException
+     */
+    public List getCustGroupSelectList(String campsegId);
 	/**
 	 * 更新活动波次信息
 	 * @param segInfo

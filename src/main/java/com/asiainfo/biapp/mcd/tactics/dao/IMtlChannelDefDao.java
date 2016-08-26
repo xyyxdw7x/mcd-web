@@ -35,5 +35,12 @@ public interface IMtlChannelDefDao {
 	 * @return
 	 */
 	public List findChildChannelIdList(String campsegId);
+    /**
+     * 根绝策略ID查询渠道信息
+     * @param campsegId
+     * @return
+     */
+    List getMtlChannelDefs(String campsegId);
+
 	
 }

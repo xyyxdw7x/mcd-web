@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +12,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biframe.utils.config.Configure;
@@ -379,5 +382,21 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 		
 		return resultList;
 	}
-
+    /**
+     * 根据渠道ID获取渠道信息
+     * @param planId
+     * @return
+     */
+    @Override
+    public MtlStcPlan getMtlStcPlanByPlanId(String planId) {
+        String sql = " select * from mtl_stc_plan A where A.PLAN_ID=?";
+        Object[] args=new Object[]{planId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<MtlStcPlan> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlStcPlan>(MtlStcPlan.class));
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 }

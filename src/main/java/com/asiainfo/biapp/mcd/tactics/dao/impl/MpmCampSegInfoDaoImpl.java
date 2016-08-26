@@ -3,15 +3,20 @@ package com.asiainfo.biapp.mcd.tactics.dao.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Types;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
 import com.asiainfo.biframe.utils.string.StringUtil;
 @Repository("mpmCampSegInfoDao")
 public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegInfoDao {
@@ -97,7 +102,28 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         
         return list;
     }
-    
+    /**
+     * gaowj3
+     * JDBC查询业务状态
+     * @return
+     */
+    @Override
+    public List<DimCampDrvType> getDimCampSceneList() {
+        String sql="select * from DIM_CAMP_DRV_TYPE where 1=1  order by CAMP_DRV_ID";
+        List<DimCampDrvType> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<DimCampDrvType>(DimCampDrvType.class));
+        return list;
+    }
+    /**
+     * gaowj3
+     * JDBC查询策略状态
+     * @return
+     */
+    @Override
+    public List getDimCampsegStatList() {
+        String sql="select * from DIM_CAMPSEG_STAT where 1=1 and CAMPSEG_STAT_VISIBLE = 0 order by CAMPSEG_STAT_SITEID";
+        List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
+        return list;
+    }
 	/**
 	 * 保存活动信息
 	 */
@@ -119,10 +145,18 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		}
 		return obj;
 	}
+    /**
+     * 根据父策略ID获取子策略
+     * @param campsegId
+     * @return
+     */
 	@Override
 	public List getChildCampSeginfo(String campsegId) throws Exception {
-		final String sql = "select * from MTL_CAMP_SEGINFO seginfo where seginfo.campseg_pid = ? order by create_time asc ";
-		return this.getJdbcTemplate().queryForList(sql, new Object[]{campsegId});
+        final String sql = "select * from mtl_camp_seginfo seginfo where seginfo.campseg_pid = ? order by CREATE_TIME asc ";
+        Object[] args=new Object[]{campsegId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
+        return list;
 	}
 	/**
 	 * 更新活动信息
@@ -131,4 +165,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
 		//TODO: this.getHibernateTemplate().update(segInfo);
 	}
+	
+    @Override
+    public List getCustGroupSelectList(String campsegId) {
+     // TODO 自动生成方法存根
+        String sql="select * from MTL_CAMPSEG_CUSTGROUP where CAMPSEG_ID = ?";
+        Object[] args=new Object[]{campsegId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<MtlCampsegCiCustgroup> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampsegCiCustgroup>(MtlCampsegCiCustgroup.class));
+        return list;
+    }
 }

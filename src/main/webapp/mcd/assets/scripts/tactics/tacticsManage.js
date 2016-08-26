@@ -29,9 +29,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTable:function(options){
 			var defaults = {
-				urlRoot:_ctx+"/mpm",
-				id:"imcdMpmCampSegZJSearch.aido",
-				cmd:"searchIMcdCamp",
+				urlRoot:_ctx+"/tactics/campSegSearch",
+				id:"searchIMcdCamp",
+//				cmd:"searchIMcdCamp",
 				currentDom:"#tacticsTable",
 				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
 				ajaxData:{},
@@ -179,9 +179,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				_table.is(":visible")?_table.hide():_table.show();
 				var _campsegId=$(this).parent().find("td").eq(1).find("a").attr("href").split("=")[1];
 				module.exports.loadTable({
-					urlRoot:_ctx+"/mpm",
-					id:"imcdMpmCampSegZJSearch.aido",
-					cmd:"searchMcdMpmCampSegChild",
+					urlRoot:_ctx+"/tactics/campSegSearch",
+					id:"searchMcdMpmCampSegChild",
+					//cmd:"searchMcdMpmCampSegChild",
 					currentDom:_table,
 					ajaxData:{"campsegId":_campsegId},
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/campSegChildTable.ejs'
@@ -377,9 +377,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTacticsManageSearchDimCampDrvType:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"imcdMpmCampSegZJSearch.aido",
-					cmd:"searchDimCampDrvType",
+					urlRoot:_ctx+"/tactics/campSegSearch",
+					id:"searchDimCampDrvType",
+//					cmd:"searchDimCampDrvType",
 					currentDom:".tacticsManageSearchDimCampDrvType",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchDimCampDrvType.ejs',
 					ajaxData:{},
@@ -459,9 +459,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTacticsManageSearchCampsegStat:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"imcdMpmCampSegZJSearch.aido",
-					cmd:"searchCampsegStat",
+					urlRoot:_ctx+"/tactics/campSegSearch",
+					id:"searchCampsegStat",
+//					cmd:"searchCampsegStat",
 					currentDom:".tacticsManageSearchCampsegStat",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchCampsegStat.ejs',
 					ajaxData:{}

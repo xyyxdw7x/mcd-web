@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,5 +51,20 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		List list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId});
 		return list;
 	}
+    /**
+     * 根绝策略ID查询渠道信息
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List getMtlChannelDefs(String campsegId) {
+        StringBuffer sql = new StringBuffer("  select mcd.targer_user_nums,dmc.channel_name from mtl_channel_def mcd  ");   
+        sql.append(" left join dim_mtl_channel dmc on mcd.channel_id = dmc.channel_id   ") ;    
+        sql.append(" where mcd.campseg_id = ? ") ;
+        List parameterList = new ArrayList();
+        parameterList.add(campsegId);
+        List list = this.getJdbcTemplate().queryForList(sql.toString(),parameterList.toArray());
+        return list;
+    }
 	
 }

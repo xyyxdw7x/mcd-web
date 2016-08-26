@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+
 public class MtlCampSeginfo {
 	private String campsegId; // 活动编号
     private Integer pageNum; //当前页
@@ -153,6 +155,7 @@ public class MtlCampSeginfo {
 	public String getCampsegId() {
 		return campsegId;
 	}
+	@Column(name="campseg_id")
 	public void setCampsegId(String campsegId) {
 		this.campsegId = campsegId;
 	}
@@ -268,6 +271,7 @@ public class MtlCampSeginfo {
 	public String getCampsegPid() {
 		return campsegPid;
 	}
+	@Column(name="campseg_pid")
 	public void setCampsegPid(String campsegPid) {
 		this.campsegPid = campsegPid;
 	}
@@ -280,6 +284,7 @@ public class MtlCampSeginfo {
 	public String getPlanId() {
 		return planId;
 	}
+	@Column(name="PLAN_ID")
 	public void setPlanId(String planId) {
 		this.planId = planId;
 	}

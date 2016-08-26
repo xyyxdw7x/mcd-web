@@ -26,10 +26,12 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
+import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
@@ -38,6 +40,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCallId;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefId;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
@@ -63,6 +66,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private IMpmCampSegInfoDao campSegInfoDao;
     @Resource(name="mtlChannelDefDao")
   	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
+    //业务类型
+    @Resource(name="mtlStcPlanDao")
+    private IMtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCiCustDao")
     private IMtlCampsegCiCustDao mtlCampsegCiCustDao; 
     @Resource(name="mpmUserPrivilegeService")
@@ -95,16 +101,43 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public void setOaMap(Map<String, String> oaMap) {
 		this.oaMap = oaMap;
 	}
-	@Override
-	public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager) {
-		List list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
-		return list;
-	}
+	
     public IMpmCampSegInfoDao getCampSegInfoDao() {
         return campSegInfoDao;
     }
     public void setCampSegInfoDao(IMpmCampSegInfoDao campSegInfoDao) {
         this.campSegInfoDao = campSegInfoDao;
+    }
+    /**
+     * gaowj3
+     * JDBC查询策略管理
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager) {
+        List list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
+        return list;
+    }
+    /**
+     * gaowj3
+     * JDBC查询业务状态
+     * @return
+     */
+    @Override
+    public List<DimCampDrvType> getDimCampSceneList() {
+        List<DimCampDrvType> list = campSegInfoDao.getDimCampSceneList();
+        return list;
+    }
+    /**
+     * gaowj3
+     * JDBC查询策略状态
+     * @return
+     */
+    @Override
+    public List getDimCampsegStatList() {
+        List list = campSegInfoDao.getDimCampsegStatList();
+        return list;
     }
 	@Override
 	public String saveCampSegWaveInfoZJ(List<MtlCampSeginfo> seginfoList)throws MpmException {
@@ -238,6 +271,44 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		}
 		return approveFlag;
 	}
+    /**
+     * 根据渠道ID获取渠道
+     * @param planId
+     * @return
+     */
+    @Override
+    public MtlStcPlan getMtlStcPlanByPlanId(String planId) {
+        try {
+            return stcPlanDao.getMtlStcPlanByPlanId(planId);
+        } catch (Exception e) {
+            log.error("", e);
+            return null;
+        }
+    }
+    /**
+     * 取客户群选择（目标客户群”及“对比客户群”信息）
+     * @param campsegId
+     * @return
+     * @throws MpmException
+     */
+    public List getCustGroupSelectList(String campsegId) throws MpmException {
+        // TODO 自动生成方法存根
+        try {
+            return campSegInfoDao.getCustGroupSelectList(campsegId);
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MpmException("获取目标客户群错误");
+        }
+    }
+    /**
+     * 根绝策略ID查询渠道信息
+     */
+    @Override
+    public List getMtlChannelDefs(String campsegId) {
+        List list = mtlChannelDefDao.getMtlChannelDefs(campsegId);
+        return list;
+    }
+    
 	@Override
 	public void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId,MtlCampSeginfo segInfo,String flag) throws MpmException {
 //		if(flag.equals("0")){	//基础客户群
