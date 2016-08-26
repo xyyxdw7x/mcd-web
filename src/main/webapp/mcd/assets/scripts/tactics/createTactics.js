@@ -33,7 +33,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			window.tableView = tableObj.loadTable({
 				urlRoot:_ctx+"/tactics/tacticsManage",
 				id:"searchByCondation",
-				//TODO:cmd:"searchByCondation",
 				isDoubleSelect:$(".J_redio_tactics:checked").val(),
 				currentDom:"#createDimPlanList",
 				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/dimPlanList.ejs',
