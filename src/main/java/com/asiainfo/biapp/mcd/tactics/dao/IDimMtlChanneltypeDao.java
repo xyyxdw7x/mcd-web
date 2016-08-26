@@ -20,4 +20,10 @@ public interface IDimMtlChanneltypeDao {
 
 	public List<DimPlanSrvType> getGradeList() throws MpmException;
 	public List<DimMtlChanneltype> getMtlChanneltypeByCondition(String isDoubleSelect) throws MpmException;
+	/**
+	 * add by lixq10 获取渠道信息表  当渠道和政策有关联时 做标识
+	 * @return
+	 */
+	public List<DimMtlChanneltype> getChannelMsg(String isDoubleSelect);
+	
 }
