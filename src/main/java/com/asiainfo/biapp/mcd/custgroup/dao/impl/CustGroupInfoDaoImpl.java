@@ -311,4 +311,22 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		return this.getJdbcTemplate().update(sb.toString());
 
 	}
+	
+	@Override
+	public void deleteCustom(String customGrpId) {
+		
+		StringBuffer buffer = new StringBuffer("update mtl_group_info t set t.custom_status_id = 2 where custom_group_id = ?");
+		
+		List params = new ArrayList();
+		params.add(customGrpId);
+		
+		this.getJdbcTemplate().update(buffer.toString(), params.toArray());
+	}
+	@Override
+	public List queryQueueInfo() {
+		// TODO Auto-generated method stub
+		StringBuffer sql = new StringBuffer("select * from dim_pub_10086_queue");
+		List list = this.getJdbcTemplate().queryForList(sql.toString());
+		return list;
+	}
 }

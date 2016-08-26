@@ -36,4 +36,8 @@ public interface CustGroupInfoDao {
 	public String getMaxQueueCfgId()throws Exception;
 	
 	public int insertQueue(String group_into_id, String group_cycle, String queue_id,String data_date, String cfg_id,String group_table_name)throws Exception;
+	
+	public void deleteCustom(String customGrpId);
+	
+	public List queryQueueInfo();
 }

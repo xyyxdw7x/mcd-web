@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -17,12 +19,21 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;
+
 @Service("custGroupInfoService")
 public class CustGroupInfoServiceImpl implements CustGroupInfoService{
+	
+	private static Logger log = LogManager.getLogger();
+	
 	@Resource(name="custGroupInfoDao")
 	CustGroupInfoDao custGroupInfoDao;
+	
 	@Resource(name="mpmUserPrivilegeService")
 	IMpmUserPrivilegeService mpmUserPrivilegeService;
+	
+	@Resource(name = "userPrivilegeService")
+	private IMpmUserPrivilegeService privilegeService;
+	
 	public void setCustGroupInfoDao(CustGroupInfoDao custGroupInfoDao) {
 		this.custGroupInfoDao = custGroupInfoDao;
 	}
@@ -76,7 +87,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 			SimpleDateFormat spfm = new SimpleDateFormat("yyyyMM");
 			Calendar currCalendar = Calendar.getInstance();
 			Calendar dataCalendar = Calendar.getInstance();
-			data = groupInfoDao.searchCustom(contentType, pager, userId, keywords);
+			data = custGroupInfoDao.searchCustom(contentType, pager, userId, keywords);
 			for(int i = 0 ; i < data.size(); i++) {
 				Map map = (Map) data.get(i);
 				
@@ -147,7 +158,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				}
 				
 				//判断客户群能否删除------------------
-				map.put("DEL_FLAG", groupInfoDao.isCustomDeletable(map.get("CUSTOM_GROUP_ID").toString(),userId));
+				map.put("DEL_FLAG", custGroupInfoDao.isCustomDeletable(map.get("CUSTOM_GROUP_ID").toString(),userId));
 				
 			}
 		} catch(Exception e) {
@@ -158,28 +169,28 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	}
 	@Override
 	public List searchCustomDetail(String customGrpId) {
-		return groupInfoDao.searchCustomDetail(customGrpId);
+		return custGroupInfoDao.searchCustomDetail(customGrpId);
 	}
 	@Override
 	public int saveQueue(String group_into_id, String group_cycle, String queue_id,String data_date,String group_table_name) {
 		try{
 			int success = 0;
 
-			String cfg_id = groupInfoDao.getExistQueueCfgId(group_into_id,queue_id);
+			String cfg_id = custGroupInfoDao.getExistQueueCfgId(group_into_id,queue_id);
 			if(StringUtil.isEmpty(cfg_id)){
-				cfg_id = groupInfoDao.getMaxQueueCfgId();
+				cfg_id = custGroupInfoDao.getMaxQueueCfgId();
 				if(StringUtil.isNotEmpty(cfg_id)){
-					int i = groupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
+					int i = custGroupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
 					String exec_sql = "select '"+queue_id+"'||'|'||product_no||'|'||substr(product_no,9,10)||'|'||(select queue_code from DIM_PUB_10086_QUEUE where queue_id='"+queue_id+"') from " +group_table_name+
 							" where data_date=(select max(DATA_DATE) from mtl_custom_list_info where CUSTOM_GROUP_ID='"+group_into_id+"' );";
-					//int j = groupInfoDao.insertCreateFileJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
-					//int k = groupInfoDao.insertCreateFtpJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
+					//int j = custGroupInfoDao.insertCreateFileJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
+					//int k = custGroupInfoDao.insertCreateFtpJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
 					if(i!=0){
 						success=1;
 					}
 				}
 			}else{
-				int i = groupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
+				int i = custGroupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
 				if(i!=0){
 					success=1;
 				}
@@ -193,6 +204,12 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	}
 	@Override
 	public void deleteCustom(String customGrpId) {
-		groupInfoDao.deleteCustom(customGrpId);
+		custGroupInfoDao.deleteCustom(customGrpId);
 	}
+	@Override
+	public List queryQueueInfo() {
+		// TODO Auto-generated method stub
+		return custGroupInfoDao.queryQueueInfo();
+	}
+	
 }
