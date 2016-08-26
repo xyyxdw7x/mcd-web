@@ -292,10 +292,10 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("batchAddBotherAvoidUser")
-	public void batchAddBotherAvoidUser(HttpServletRequest request,
-			HttpServletResponse response,
-			@RequestParam("file") MultipartFile file) throws Exception {
-		
+	public void batchAddBotherAvoidUser(
+			@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+			HttpServletRequest  request,
+			HttpServletResponse response) throws Exception{ 
 		
 		JSONObject dataJson = new JSONObject();
 		
@@ -309,7 +309,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		
 		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
 		
-		String[] productNo =(new String(file.getBytes())).split("\r\n");
+		String[] productNo =(new String(multiFile.getBytes())).split("\r\n");
 		
 		if (productNo.length == 0) {
 			dataJson.put("status", "202");

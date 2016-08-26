@@ -205,7 +205,8 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/saveCustGroup")
-	public void saveCustGroup(@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+	public void saveCustGroup(
+			@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
 			HttpServletRequest  request,
 			HttpServletResponse response) throws Exception{ 
 		// 创建客户群清单表 

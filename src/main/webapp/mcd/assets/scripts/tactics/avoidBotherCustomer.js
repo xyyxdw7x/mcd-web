@@ -474,7 +474,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxF
 				userTypeId: $("#userTypeId").val(),
 				avoidBotherType: $("#avoidBotherType").val(),
 				avoidCustType: $("#avoidCustType").val(),
-			};  
+			};
+			var oMyForm = new FormData();
+			oMyForm.append("file", show_upload_file.files[0]);
 			$.ajaxFileUpload({  
 		        url : _ctx+"/BotherAvoidList/batchAddBotherAvoidUser",
 		        data: data,
