@@ -1,23 +1,16 @@
 package com.asiainfo.biapp.mcd.avoid.dao.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IDimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.avoid.model.DimCampsegType;
-import com.asiainfo.biapp.mcd.avoid.model.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 /**
  * Created on Jan 4, 2008 5:03:41 PM
  *

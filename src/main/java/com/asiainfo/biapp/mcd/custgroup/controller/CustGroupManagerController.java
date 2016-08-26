@@ -60,13 +60,13 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	@Resource(name="mpmCommonService")
 	private IMpmCommonService mpmCommonService;
 	
-	@Resource(name="userPrivilegeService")
+	@Resource(name="mpmUserPrivilegeService")
 	private IMpmUserPrivilegeService userPrivilegeService;
 	
 	@Resource(name="custGroupService")
 	private IMtlCustGroupService custGroupService;
 	
-	@Resource(name="campSegInfoService")
+	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService campSegInfoService;
 	public void setCustGroupInfoService(CustGroupInfoService custGroupInfoService) {
 		this.custGroupInfoService = custGroupInfoService;

@@ -487,7 +487,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		}
 	}
 	
-<<<<<<< HEAD
     /**
      * 根据编号删除策略信息
      * @param campSegId
@@ -532,7 +531,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }
 
     }
-=======
 	@Override
 	public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
 		String tabNameModel="mtl_cuser_XXXXXXXX";
@@ -540,5 +538,4 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		createCustGroupTab.createCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
 		return tabName;
 	}
->>>>>>> bada207b55c69b1aeb4bea737157cc4417bace50
 }
