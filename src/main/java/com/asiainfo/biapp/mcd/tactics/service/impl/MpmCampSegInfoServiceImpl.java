@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -480,4 +481,49 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			return null;
 		}
 	}
+	
+    /**
+     * 根据编号删除策略信息
+     * @param campSegId
+     * @throws MpmException
+     */
+    public void deleteCampSegInfo(String campSegId) throws MpmException {
+        try {
+            List<String> rList = new ArrayList<String>();
+            gettListAllCampSegByParentId(campSegId, rList);
+            rList.add(campSegId);
+            for (String v_campSegId : rList) {
+                MtlCampSeginfo segInfo = campSegInfoDao.getCampSegInfo(v_campSegId);
+                //删除营销活动
+                campSegInfoDao.deleteCampSegInfo(segInfo);
+            }
+        } catch (Exception e) {
+            log.error("", e);
+            throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.schd") + campSegId
+                    + MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+        }
+    }
+    
+    /**
+     * 根据营销活动父节点查询父节点下所有节点 营销活动编码
+     * 2013-6-4 16:38:32
+     * @author Mazh
+     * @param campSegId
+     * @param rList
+     */
+    public void gettListAllCampSegByParentId(String pcampSegId, List<String> rList) {
+        try {
+            List<String> list = campSegInfoDao.gettListAllCampSegByParentId(pcampSegId, rList);
+
+            if (list != null && list.size() != 0) {
+                for (String campSegId : list) {
+                    gettListAllCampSegByParentId(campSegId, rList);
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+        }
+
+    }
 }
