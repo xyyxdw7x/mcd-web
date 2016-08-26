@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +51,7 @@ import net.sf.json.JSONObject;
  * @author lixq10 2015-7-17 下午04:15:26
  * @version 1.0
  */
+@Controller
 @RequestMapping("/custgroup/custGroupManager")
 public class CustGroupManagerController extends BaseMultiActionController{
 	static Logger log = LogManager.getLogger(); 
