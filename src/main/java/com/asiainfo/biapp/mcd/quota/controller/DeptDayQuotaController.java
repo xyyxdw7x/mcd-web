@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.quota.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,7 @@ import com.asiainfo.biapp.mcd.quota.service.QuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptDayService;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
+import com.asiainfo.biapp.mcd.avoid.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
@@ -58,12 +60,13 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
      */
     public ModelAndView editDayQuota(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        this.initActionAttributes(request);
         
         String deptId=request.getParameter("deptId");
         String dataDate = null;
         String showDate = request.getParameter("dataDate");
-        String cityId = this.user.getCityid();
+        //TODO BY ZK
+        //String cityId = this.user.getCityid();
+        String cityId = "577";
         
         CityQuotaStatisDay cityDayQuota = quotaConfigCityDayService.getCityQuotaStatisDay(cityId);
         
@@ -95,7 +98,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     @RequestMapping("/viewDayQuota")
     public void viewDayQuota(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
-        this.initActionAttributes(request);
         //TODO BY ZK
         //String cityid = this.user.getCityid();
         //String cityId = this.user.getCityid();
@@ -216,7 +218,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     public void saveQuota4Day(HttpServletRequest request,HttpServletResponse response) throws Exception {
         //date="20160627";
 
-        this.initActionAttributes(request);
         //String cityId=this.user.getCityid();
         //TODO BY ZK
         String cityId = "577";
@@ -272,16 +273,18 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         Boolean isSuccess=false;
         JSONObject result = new JSONObject();
 
-        this.initActionAttributes(request);
-
-        
-        String cityid = this.user.getCityid();
+        //TODO BY ZK
+        //String cityid = this.user.getCityid();
+        String cityid = "577";
         String dataDate;
         String showDate = request.getParameter("dataDate");
         if (StringUtil.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }else{//将“yyyy年MM月 ”格式转化成“yyyyMM”格式
-            dataDate=this.getActualDate(showDate);
+        	
+        	//TODO BY ZK
+            //dataDate=this.getActualDate(showDate);
+            dataDate = "20160825";
         }
 
         String deptId=request.getParameter("deptId");
@@ -315,5 +318,23 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         return days;
         
     }
+	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
+			log.debug("output json to response:{}", json);
+			response.setContentType("text/json; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
 
+			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+
+			try {
+				response.getWriter().print(json == null ? "{}" : json.toString());
+				response.getWriter().flush();
+				response.getWriter().close();
+			} catch (IOException e) {
+				log.error("--out put json error", e);
+				throw new MpmException("--out put json error", e);
+			}
+	 }
 }

@@ -21,9 +21,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.asiainfo.biframe.dimtable.model.DimTableDefine;
-import com.asiainfo.biframe.dimtable.service.impl.DimTableServiceImpl;
-import com.asiainfo.biframe.dimtable.service.impl.DimTableServiceImpl2;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;

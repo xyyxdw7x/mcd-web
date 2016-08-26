@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.quota.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import com.asiainfo.biapp.mcd.common.util.SpringContext;
 import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
+import com.asiainfo.biapp.mcd.avoid.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -50,8 +52,6 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
     @RequestMapping("/queryDeptsConfigMonth")
     public void queryDeptsConfigMonth(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-
-        this.initActionAttributes(request);
 
         //TODO BY ZK
         //String cityid = this.user.getCityid();
@@ -141,7 +141,9 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         
         String renFlag="";
         JSONObject dataJson = new JSONObject();
-        String cityid = this.user.getCityid();
+        //TODO BY ZK
+        //String cityid = this.user.getCityid();
+        String cityid = "577";
         String dataDate = request.getParameter("dataDate");
         if (StringUtil.isEmpty(dataDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
@@ -174,7 +176,9 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
             HttpServletResponse response) throws Exception {
         boolean flag=false;
         JSONObject result = new JSONObject();
-        String cityid = this.user.getCityid();
+        //TODO BY ZK
+        //String cityid = this.user.getCityid();
+        String cityid = "577";
         
         String jsonStr = request.getParameter("beans");
         @SuppressWarnings("unchecked")
@@ -197,5 +201,23 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         }
     }
     
-    
+	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
+			log.debug("output json to response:{}", json);
+			response.setContentType("text/json; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+
+			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+
+			try {
+				response.getWriter().print(json == null ? "{}" : json.toString());
+				response.getWriter().flush();
+				response.getWriter().close();
+			} catch (IOException e) {
+				log.error("--out put json error", e);
+				throw new MpmException("--out put json error", e);
+			}
+	 }
 }
