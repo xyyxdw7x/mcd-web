@@ -60,4 +60,20 @@ public interface IMpmCampSegInfoDao {
 	 * @throws Exception
 	 */
 	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
+    /**
+     * 根据营销活动父节点查询父节点下所有节点 营销活动编码
+     * 2013-6-4 16:38:32
+     * @author Mazh
+     * @param campSegId
+     * @param rList
+     * @return
+     */
+    public List<String> gettListAllCampSegByParentId(String campSegId, List<String> rList) throws Exception;
+    /**
+     * IMCD删除营销活动
+     * 2013-6-9 17:59:26
+     * @author Mazh
+     * @param segInfo
+     */
+    public void deleteCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
 }

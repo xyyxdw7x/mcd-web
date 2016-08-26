@@ -29,6 +29,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			this.getTacticsTypeList();
 			//显示客户群界面
 			this.customerModule();
+			//渠道列表界面
+			this.getChannelList();
 			
 			window.tableView = tableObj.loadTable({
 				urlRoot:_ctx+"/tactics/tacticsManage",
@@ -84,7 +86,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			this.productRelationSearch();
             
 			this.addPolicyToCart();
-			this.getChannelList();
+			
 
 			this.baseAttributesList();
 			this.initBaseAttributesInPage();
@@ -122,7 +124,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		//获取channelList
 		getChannelList:function(){
 			var _that=this;
-			var channelData = new generalModel({id:"imcdChannelExecuteAction.aido"});
+			//TODO
+			var channelModel = Backbone.Model.extend({
+				urlRoot : _ctx+"/tactics",
+				defaults : {_ctx : _ctx}
+			});
+			var channelData = new channelModel({id:"tacticsManage"});
 			channelData.fetch({
 				type : "post",
 				contentType: "application/x-www-form-urlencoded; charset=utf-8",

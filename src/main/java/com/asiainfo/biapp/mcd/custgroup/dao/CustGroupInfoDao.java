@@ -25,5 +25,19 @@ public interface CustGroupInfoDao {
 	 */
 	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
 	
-
+	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
+	
+	public String isCustomDeletable(String customGrpId, String userId);
+	
+	public List searchCustomDetail(String customGrpId);
+	
+	public String getExistQueueCfgId(String group_into_id, String queue_id)throws Exception;
+	
+	public String getMaxQueueCfgId()throws Exception;
+	
+	public int insertQueue(String group_into_id, String group_cycle, String queue_id,String data_date, String cfg_id,String group_table_name)throws Exception;
+	
+	public void deleteCustom(String customGrpId);
+	
+	public List queryQueueInfo();
 }

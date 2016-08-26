@@ -11,11 +11,20 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdMtlGroupInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
 
-
+/**
+ * 客户群相关操作DAO
+ * @author AsiaInfo-jie
+ *
+ */
 
 @Repository("mcdMtlGroupInfoDao")
 public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupInfoDao {
     private static Logger log = LogManager.getLogger(McdMtlGroupInfoDaoImpl.class);
+    /**
+     * 根据客户群ID查找客户群
+     * @param custgroupId
+     * @return
+     */
     @Override
     public MtlGroupInfo getMtlGroupInfo(String customgroupid) {
         List list = null;

@@ -12,7 +12,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,11 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.avoid.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 //migration
-//import com.asiainfo.biapp.mcd.avoid.util.TempUtil;
-import com.asiainfo.biapp.mcd.avoid.util.TempUtil;
+//import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biframe.service.IdNameMapper;
@@ -76,7 +75,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
-		if(!TempUtil.isNumeric(pageNum)){
+		if(!MpmUtil.isNumeric(pageNum)){
 			pageNum = "1";
 		}
 		MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
@@ -174,7 +173,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		String[] productNo = request.getParameter("productNo").split(",");
 		
 		for (int i = 0; i < productNo.length; i++) {
-			if(productNo[i].trim().length() != 11 || !TempUtil.isNumeric(productNo[i].trim())){
+			if(productNo[i].trim().length() != 11 || !MpmUtil.isNumeric(productNo[i].trim())){
 				dataJson.put("status", "202");
 				this.outJson(response, dataJson);
 				return;
@@ -292,10 +291,10 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("batchAddBotherAvoidUser")
-	public void batchAddBotherAvoidUser(HttpServletRequest request,
-			HttpServletResponse response,
-			@RequestParam("file") MultipartFile file) throws Exception {
-		
+	public void batchAddBotherAvoidUser(
+			@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+			HttpServletRequest  request,
+			HttpServletResponse response) throws Exception{ 
 		
 		JSONObject dataJson = new JSONObject();
 		
@@ -309,7 +308,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		
 		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
 		
-		String[] productNo =(new String(file.getBytes())).split("\r\n");
+		String[] productNo =(new String(multiFile.getBytes())).split("\r\n");
 		
 		if (productNo.length == 0) {
 			dataJson.put("status", "202");
@@ -324,7 +323,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 				return;
 			}
 			if (!"#".equals(productNo[i].substring(0, 1))){//注释以外
-				if(productNo[i].trim().length() != 11 || !TempUtil.isNumeric(productNo[i].trim())){
+				if(productNo[i].trim().length() != 11 || !MpmUtil.isNumeric(productNo[i].trim())){
 					dataJson.put("status", "202");
 					this.outJson(response, dataJson);
 					return;

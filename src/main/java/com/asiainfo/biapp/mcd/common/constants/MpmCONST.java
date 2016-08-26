@@ -27,6 +27,7 @@ public class MpmCONST {
     public static final int pageNum = 1;
     public final static int PAGE_SIZE = 10;  
     
+    public static final String CAMPAIGN_SEG_INFO_SERVICE = "mpmCampSegInfoService";
 	public static final String MPM_CAMPSEG_STAT_HDSP = "40";//活动审批�? （浙江--审批中）
 	public static final String MPM_CAMPSEG_STAT_CHZT = "20";//策划状�?  （浙江--草稿）
 
@@ -48,4 +49,10 @@ public class MpmCONST {
 	 * 新建策略页面 选择政策翻页每页显示5条数据
 	 */
 	public final static int SMALL_PAGE_SIZE_LABEL = 5;
+	   //活动步骤-客户属�?设置步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET = 10;
+	   //活动步骤-目标用户筛�?步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_CAMP_SELECT = 20;
+    //活动步骤-活动用户剔除步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_CAMP_FILTER = 30;
 }
