@@ -508,5 +508,15 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
              */
         }
     }
+    /**
+     * 修改策略完成时间（延期）
+     * @param campsegId
+     * @param endDate
+     */
+    @Override
+    public void updateCampSegInfoEndDate(String campsegId, String endDate) {
+        String sql = "update mtl_camp_seginfo set end_date = ? where campseg_id=?";
+        this.getJdbcTemplate().update(sql, new Object[] { endDate,campsegId });
+    }
 
 }
