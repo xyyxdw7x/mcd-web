@@ -26,7 +26,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTable:function(options){
 			var defaults = {
-				urlRoot:_ctx+"/custGroupManager",
+				urlRoot:_ctx+"/custgroup/custGroupManager",
 				id:"searchCustom",
 				currentDom:"#customTable_all",
 				ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
@@ -94,7 +94,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 											$(this).dialog( "close" );
 											return;
 										}
-										$.post( _ctx+"/custGroupManager/insertQueue",
+										$.post( _ctx+"/custgroup/custGroupManager/insertQueue",
 											{"group_into_id":group_into_id,"group_cycle":group_cycle,"queue_id":queue_id,"data_date":data_date,"group_table_name":group_table_name},
 											function (result) {
 												if(result.data==1){
@@ -342,7 +342,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			});
 			
 			$.ajax({
-				url: _ctx+"/custGroupManager/searchCustomDetail",
+				url: _ctx+"/custgroup/custGroupManager/searchCustomDetail",
 				dataType: "json",
 				async: true,
 				data: { "customGrpId": customGrpId },
@@ -367,7 +367,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		deleteCustom:function(customGrpId) {
 			$.ajax({
-				url: _ctx+"/custGroupManager/deleteCustom",
+				url: _ctx+"/custgroup/custGroupManager/deleteCustom",
 				dataType: "json",
 				async: true,
 				data: { "customGrpId": customGrpId },
@@ -451,7 +451,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 
 		initQueue:function () {
-			$.post( _ctx+"/custGroupManager/initQueue",{},function (result) {
+			$.post( _ctx+"/custgroup/custGroupManager/initQueue",{},function (result) {
 				var _html = "";
 
 				for(var i = 0; i<result.data.length; i++){
