@@ -27,6 +27,9 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 	
 			//政策分类+政策列表 界面
 			this.getTacticsTypeList();
+			//显示客户群界面
+			this.customerModule();
+			
 			window.tableView = tableObj.loadTable({
 				urlRoot:_ctx+"/tactics/tacticsManage",
 				id:"searchByCondation",
@@ -69,7 +72,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			//弹出页
 			this.createTacticsDialogs();
 			this.tacticsStateTab();
-			this.customerModule();
+			
 			this.initShopCart();
 
 			this.getSearchGroup();
@@ -1690,11 +1693,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		customerModule:function(){
 			var maduleTableModel = Backbone.Model.extend({
-				urlRoot : _ctx+"/mpm",
+				urlRoot : _ctx+"/custgroup",
 				defaults : {_ctx : _ctx,classification:""}
 			});
 			var moduleTypeView = Backbone.View.extend({
-				model :  new maduleTableModel({id : "mtlMarketingPeopleAction.aido"}),
+				model :  new maduleTableModel({id : "custGroupManager"}),
 				events : {"click" : "click"},
 				click : function(obj) {
 					if(!$(obj.target).hasClass("J_selectedBox")){
@@ -1782,7 +1785,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					return this;
 				} ,
 				getGroupType:function(){
-					var modelView = new maduleTableModel({id : "mtlMarketingPeopleAction.aido"})
+					var modelView = new maduleTableModel({id : "custGroupManager"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",
@@ -1802,7 +1805,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				},
 				//新建策略页面获取客户群列表
 				getGroupTypeNew:function(keyWords,pageNum){
-					var modelView = new maduleTableModel({id : "mtlMarketingPeopleAction.aido"})
+					var modelView = new maduleTableModel({id : "custGroupManager"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",
@@ -1859,7 +1862,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				},
 				getDimCampDrvType:function(){
-					var modelView = new maduleTableModel({id : "mtlMarketingPeopleAction.aido"})
+					var modelView = new maduleTableModel({id : "custGroupManager"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",

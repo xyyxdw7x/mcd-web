@@ -54,5 +54,15 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		}
 		return custGroupList;
 	}
+	
+	@Override
+	public List<MtlGroupInfo> getMyCustGroup(String currentUserId) {
+		List<MtlGroupInfo> custGroupList = null;
+		try {
+			custGroupList = custGroupInfoDao.getMyCustGroup(currentUserId);
+		} catch (Exception e) {
+		}
+		return custGroupList;
+	}
 
 }

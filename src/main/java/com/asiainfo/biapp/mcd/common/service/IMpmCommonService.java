@@ -2,6 +2,7 @@ package  com.asiainfo.biapp.mcd.common.service;
 
 import java.util.List;
 
+import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
@@ -25,4 +26,11 @@ public interface IMpmCommonService {
 	 * @throws MpmException
 	 */
 	public List<DimMtlChanneltype> getMtlChanneltypeByCondition(String isDoubleSelect) throws MpmException;
+	/**
+	 * add by lixq10  IMCD_ZJ 新建策略页面视图预定义配置
+	 * pAttrClassId:classId
+	 * keyWords:g关键字  只有关键字查询的时候才传递参数值
+	 * @return
+	 */
+	public List<McdCvColDefine> initCvColDefine(String pAttrClassId,String keyWords);
 }

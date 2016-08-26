@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
+import com.asiainfo.biapp.mcd.custgroup.dao.IMcdCvColDefineDao;
+import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
@@ -37,6 +39,8 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	private IMtlStcPlanDao mtlStcPlanDao;
 	@Resource(name="dimMtlChanneltypeDao")
 	private IDimMtlChanneltypeDao dimMtlChanneltypeDao;
+	@Resource(name="mcdCvColDefineDao")
+	private IMcdCvColDefineDao mcdCvColDefineDao;
 	public IMtlStcPlanDao getMtlStcPlanDao() {
 		return mtlStcPlanDao;
 	}
@@ -67,5 +71,14 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 		} catch (Exception e) {
 			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cxqdlxdysb"));
 		}
+	}
+	@Override
+	public List<McdCvColDefine> initCvColDefine(String pAttrClassId,String keyWords) {
+		List<McdCvColDefine> list = null;
+		try {
+			list = mcdCvColDefineDao.initCvColDefine(pAttrClassId,keyWords);
+		} catch (Exception e) {
+		}
+		return list;
 	}
 }

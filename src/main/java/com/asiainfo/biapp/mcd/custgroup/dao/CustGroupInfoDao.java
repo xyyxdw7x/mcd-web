@@ -18,6 +18,12 @@ public interface CustGroupInfoDao {
 	 * @return
 	 */
 	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
+	/**
+	 * 新建策略页面   选取营销人群    初始化我的客户群信息
+	 * @param currentUserId
+	 * @return
+	 */
+	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
 	
 
 }
