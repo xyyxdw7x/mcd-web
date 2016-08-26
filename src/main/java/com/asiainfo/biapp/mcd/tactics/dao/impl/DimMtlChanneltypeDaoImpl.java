@@ -72,4 +72,28 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements IDimMtlCha
 		});
 		return list;
 	}
+	
+	@Override
+	public List<DimMtlChanneltype> getChannelMsg(String isDoubleSelect) {
+		List<Map<String, Object>> list = null;
+		List<DimMtlChanneltype> custGroupList = new ArrayList<DimMtlChanneltype>();
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			if("1".equals(isDoubleSelect)){//社会渠道，营业厅、手机APP支持多选
+				sbuffer.append("select DIM_MTL_CHANNEL.CHANNEL_ID,DIM_MTL_CHANNEL.CHANNELTYPE_ID,DIM_MTL_CHANNEL.CHANNEL_NAME from DIM_MTL_CHANNEL where channel_id in('902','903','906') ORDER BY ORDER_NUM ASC");
+			}else{
+				sbuffer.append("select DIM_MTL_CHANNEL.CHANNEL_ID,DIM_MTL_CHANNEL.CHANNELTYPE_ID,DIM_MTL_CHANNEL.CHANNEL_NAME from DIM_MTL_CHANNEL ORDER BY ORDER_NUM ASC");
+			}
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
+			for (Map map : list) {
+				DimMtlChanneltype mtlChannelType = new DimMtlChanneltype();
+				mtlChannelType.setChannelId((String) map.get("CHANNEL_ID"));
+				mtlChannelType.setChanneltypeId(Short.parseShort(map.get("CHANNELTYPE_ID").toString()));
+				mtlChannelType.setChanneltypeName((String) map.get("CHANNEL_NAME"));
+				custGroupList.add(mtlChannelType);
+			}
+		} catch (Exception e) {
+		}
+		return custGroupList;
+	}
 }

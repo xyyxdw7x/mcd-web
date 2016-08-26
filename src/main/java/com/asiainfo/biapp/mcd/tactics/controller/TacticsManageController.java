@@ -22,6 +22,8 @@ import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
+import com.asiainfo.biapp.mcd.tactics.service.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
@@ -48,6 +50,8 @@ public class TacticsManageController extends BaseMultiActionController {
     private IMtlCallWsUrlService mtlCallWsUrlService;
     @Resource(name="mtlStcPlanManagementService")
     private IMtlStcPlanManagementService mtlStcPlanManagementService;
+    @Resource(name="dimMtlChanneltypeService")
+    private DimMtlChanneltypeService dimMtlChanneltypeService;
     
 	/**
 	 * 保存策略基本信息
@@ -682,6 +686,52 @@ public class TacticsManageController extends BaseMultiActionController {
 			out.print(dataJson);
 		} catch (Exception e) {
 			e.printStackTrace();
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+	
+	/**
+	 * 渠道执行情况  初始化渠道信息：短信、手机APP、营业厅、社会渠道等
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(params ="cmd=initChannelMsg")
+	public void initChannelMsg(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//TODO: initActionAttributes(request);
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();   
+		
+		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
+		List<DimMtlChanneltype> list = null;
+		try {
+			list = dimMtlChanneltypeService.getChannelMsg(isDoubleSelect);
+			//TODO:String cityId = user.getCityid();
+			String cityId ="999";
+			//当不是温州的时候，不显示微信温州渠道
+			if(!cityId.equals("577")){
+				for(int i = 0;i<list.size();i++){
+					String channelId = list.get(i).getChannelId();
+					if(channelId.equals("912")){
+						list.remove(i);
+					}
+				}
+			}
+			
+			dataJson.put("status", "200");
+			dataJson.put("data", JmsJsonUtil.obj2Json(list));
+			out.print(dataJson);
+		} catch (Exception e) {
 			dataJson.put("status", "201");
 			out.print(dataJson);
 		}finally{
