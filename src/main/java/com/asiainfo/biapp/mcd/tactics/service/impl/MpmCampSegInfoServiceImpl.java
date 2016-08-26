@@ -538,4 +538,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		createCustGroupTab.createCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
 		return tabName;
 	}
+	/**
+	 * 修改策略完成时间（延期）
+	 */
+	@Override
+	public void updateCampsegEndDate(String campsegId, String endDate) throws Exception{
+	    this.campSegInfoDao.updateCampSegInfoEndDate(campsegId,endDate);
+	        
+	}
 }

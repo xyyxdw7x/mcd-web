@@ -76,4 +76,10 @@ public interface IMpmCampSegInfoDao {
      * @param segInfo
      */
     public void deleteCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
+    /**
+     * 修改策略完成时间（延期）
+     * @param campsegId
+     * @param endDate
+     */
+    public void updateCampSegInfoEndDate(String campsegId, String endDate);
 }

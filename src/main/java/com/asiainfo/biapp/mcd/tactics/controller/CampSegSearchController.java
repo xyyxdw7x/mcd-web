@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -348,6 +349,71 @@ public class CampSegSearchController extends BaseMultiActionController {
             return null;
         }
 
+    }
+
+
+    /**
+     * 延期策略信息
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/updateCampsegEndDate")
+    public ModelAndView updateCampsegEndDate( HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        String msg = "";
+        int status = 200;
+        try {
+
+            String campsegId = request.getParameter("campsegId") != null ? request
+                    .getParameter("campsegId") : null;
+            String endDate = request.getParameter("endDate") != null ? request
+                    .getParameter("endDate") : null;
+
+            IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator
+                    .getInstance().getService(
+                            MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
+            if (campsegId != null && endDate != null) {
+
+                List<MtlCampSeginfo> mtlCampSeginfoList = service
+                        .getChildCampSeginfo(campsegId);
+                service.updateCampsegEndDate(campsegId, endDate);
+                for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                    service.updateCampsegEndDate(mtlCampSeginfo.getCampsegId(),
+                            endDate);
+                }
+
+            } else {
+                status = 201;
+                msg = "延期日期或策略id为为空";
+            }
+        } catch (Exception e) {
+            status = 201;
+            msg = "发生未知错误，请联系管理员";
+        } finally {
+            JSONObject dataJson = new JSONObject();
+            if (status != 200) {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            } else {
+                dataJson.put("status", status);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+            return null;
+        }
     }
 
 }
