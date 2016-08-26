@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.avoid.jms.util;
+package com.asiainfo.biapp.mcd.common.util;
 
 /**
  * 常量类
