@@ -84,4 +84,6 @@ public interface IMpmCampSegInfoService {
      * @throws MpmException
      */
     public void deleteCampSegInfo(String campSegId) throws MpmException;
+
+    public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId)throws MpmException;
 }

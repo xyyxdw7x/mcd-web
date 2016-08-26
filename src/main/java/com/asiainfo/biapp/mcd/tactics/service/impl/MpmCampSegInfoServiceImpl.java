@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.dao.ICreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
@@ -75,6 +77,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Resource(name="mpmUserPrivilegeService")
     IMpmUserPrivilegeService mpmUserPrivilegeService;
     
+	@Resource(name = "createCustGroupTab")
+	private ICreateCustGroupTabDao createCustGroupTab;
+	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
 	}
@@ -482,6 +487,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		}
 	}
 	
+<<<<<<< HEAD
     /**
      * 根据编号删除策略信息
      * @param campSegId
@@ -526,4 +532,13 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }
 
     }
+=======
+	@Override
+	public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
+		String tabNameModel="mtl_cuser_XXXXXXXX";
+		String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
+		createCustGroupTab.createCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
+		return tabName;
+	}
+>>>>>>> bada207b55c69b1aeb4bea737157cc4417bace50
 }
