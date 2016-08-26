@@ -10,12 +10,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
-import com.asiainfo.biapp.mcd.avoid.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;

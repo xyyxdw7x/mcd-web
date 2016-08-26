@@ -35,6 +35,20 @@ public interface CustGroupInfoService {
 	 */
 	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
 	
+	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
+
+	public List queryQueueInfo();
 	
+	/**
+	 *
+	 * @param group_into_id
+	 * @param group_cycle
+	 * @param queue_id
+	 */
+	public int saveQueue(String group_into_id,String group_cycle,String queue_id, String data_date,String group_table_name);
+
+	public void deleteCustom(String customGrpId);
+	
+	public List searchCustomDetail(String customGrpId);
 	
 }
