@@ -35,4 +35,5 @@ public interface IMpmCommonService {
 	public List<McdCvColDefine> initCvColDefine(String pAttrClassId,String keyWords);
 	
 	public void insertCustGroupDataBySqlldr(String custGroupId, String tableName, String customGroupName, String date)throws Exception;
+	
 }

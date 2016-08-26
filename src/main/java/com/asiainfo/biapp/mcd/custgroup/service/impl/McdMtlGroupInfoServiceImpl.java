@@ -9,13 +9,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.dao.IMcdMtlGroupInfoDao;
 import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.custgroup.service.IGroupInfoService;
-import com.asiainfo.biapp.mcd.custgroup.service.IMpmUserPrivilegeService;
+import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -36,7 +35,7 @@ public class McdMtlGroupInfoServiceImpl implements IGroupInfoService {
 	
 	private static Logger log = LogManager.getLogger();
 	
-	@Resource(name = "userPrivilegeService")
+	@Resource(name = "mpmUserPrivilegeService")
 	private IMpmUserPrivilegeService privilegeService;
 	
 	@Resource(name = "groupInfoDao")

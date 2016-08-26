@@ -31,7 +31,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	@Resource(name="mpmUserPrivilegeService")
 	IMpmUserPrivilegeService mpmUserPrivilegeService;
 	
-	@Resource(name = "userPrivilegeService")
+	@Resource(name = "mpmUserPrivilegeService")
 	private IMpmUserPrivilegeService privilegeService;
 	
 	public void setCustGroupInfoDao(CustGroupInfoDao custGroupInfoDao) {
