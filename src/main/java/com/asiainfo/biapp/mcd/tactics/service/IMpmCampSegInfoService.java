@@ -78,4 +78,6 @@ public interface IMpmCampSegInfoService {
      * @return
      */
     public List getMtlChannelDefs(String campsegId);
+    
+    public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId)throws MpmException;
 }

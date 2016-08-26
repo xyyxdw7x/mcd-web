@@ -7,66 +7,44 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.dao.CustGroupInfoDao;
-import com.asiainfo.biapp.mcd.custgroup.service.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.custgroup.dao.IMcdMtlGroupInfoDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.custgroup.service.IGroupInfoService;
+import com.asiainfo.biapp.mcd.custgroup.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;
-@Service("custGroupInfoService")
-public class CustGroupInfoServiceImpl implements CustGroupInfoService{
-	@Resource(name="custGroupInfoDao")
-	CustGroupInfoDao custGroupInfoDao;
-	@Resource(name="mpmUserPrivilegeService")
-	IMpmUserPrivilegeService mpmUserPrivilegeService;
-	public void setCustGroupInfoDao(CustGroupInfoDao custGroupInfoDao) {
-		this.custGroupInfoDao = custGroupInfoDao;
-	}
-	@Override
-	public int getMoreMyCustomCount(String currentUserId,String keyWords) {
-		int num = 0;
-		try {
-			num = custGroupInfoDao.getMoreMyCustomCount(currentUserId,keyWords);
-		} catch (Exception e) {
-		}
-		return num;
-	}
-	@Override
-	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager) {
-		List<MtlGroupInfo> custGroupList = null;
-		try {
-			custGroupList = custGroupInfoDao.getMoreMyCustom(currentUserId,keyWords,pager);
-			if(CollectionUtils.isNotEmpty(custGroupList)){
-				for(int i = 0 ; i < custGroupList.size(); i++) {
-					MtlGroupInfo mtlGroupInfo = custGroupList.get(i);
-					String userName = "";
-					if((StringUtil.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtil.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
-						IUser user = mpmUserPrivilegeService.getUser(mtlGroupInfo.getCreateUserId());
-						if(user != null) {
-							userName = user.getUsername();
-						}
-						mtlGroupInfo.setCreateUserName(userName);
-					}
-				}
-			}
-		} catch (Exception e) {
-		}
-		return custGroupList;
-	}
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+/**
+ * 
+ * Title: 
+ * Description: 
+ * Copyright: (C) Copyright 1993-2014 AsiaInfo Holdings, Inc
+ * Company: 亚信科技（中国）有限公司
+ * @author lixq10 2015-7-18 上午10:56:29
+ * @version 1.0
+ */
+@Service("groupInfoService")
+public class McdMtlGroupInfoServiceImpl implements IGroupInfoService {
 	
-	@Override
-	public List<MtlGroupInfo> getMyCustGroup(String currentUserId) {
-		List<MtlGroupInfo> custGroupList = null;
-		try {
-			custGroupList = custGroupInfoDao.getMyCustGroup(currentUserId);
-		} catch (Exception e) {
-		}
-		return custGroupList;
-	}
+	private static Logger log = LogManager.getLogger();
+	
+	@Resource(name = "userPrivilegeService")
+	private IMpmUserPrivilegeService privilegeService;
+	
+	@Resource(name = "groupInfoDao")
+	private IMcdMtlGroupInfoDao groupInfoDao;
+	
+	@Resource(name = "custGroupJdbcDao")
+	private IMtlCustGroupJdbcDao custGroupJdbcDao;
+	
 	@Override
 	public List searchCustom(String contentType, Pager pager, String userId, String keywords) {
 		
@@ -156,9 +134,55 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		
 		return data;
 	}
+	
 	@Override
-	public List searchCustomDetail(String customGrpId) {
-		return groupInfoDao.searchCustomDetail(customGrpId);
+	public List<MtlGroupInfo> getMyCustGroup(String currentUserId) {
+		List<MtlGroupInfo> custGroupList = null;
+		try {
+			custGroupList = groupInfoDao.getMyCustGroup(currentUserId);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return custGroupList;
+	}
+	@Override
+	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager) {
+		List<MtlGroupInfo> custGroupList = null;
+		try {
+			custGroupList = groupInfoDao.getMoreMyCustom(currentUserId,keyWords,pager);
+			if(CollectionUtils.isNotEmpty(custGroupList)){
+				for(int i = 0 ; i < custGroupList.size(); i++) {
+					MtlGroupInfo mtlGroupInfo = custGroupList.get(i);
+					String userName = "";
+					if((StringUtil.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtil.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
+						IUser user = privilegeService.getUser(mtlGroupInfo.getCreateUserId());
+						if(user != null) {
+							userName = user.getUsername();
+						}
+						mtlGroupInfo.setCreateUserName(userName);
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return custGroupList;
+	}
+	
+	@Override
+	public int getMoreMyCustomCount(String currentUserId,String keyWords) {
+		int num = 0;
+		try {
+			num = groupInfoDao.getMoreMyCustomCount(currentUserId,keyWords);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return num;
+	}
+	@Override
+	public List queryQueueInfo() {
+		// TODO Auto-generated method stub
+		return groupInfoDao.queryQueueInfo();
 	}
 	@Override
 	public int saveQueue(String group_into_id, String group_cycle, String queue_id,String data_date,String group_table_name) {
@@ -194,5 +218,30 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	@Override
 	public void deleteCustom(String customGrpId) {
 		groupInfoDao.deleteCustom(customGrpId);
+	}
+	@Override
+	public List searchCustomDetail(String customGrpId) {
+		return groupInfoDao.searchCustomDetail(customGrpId);
+	}
+    /**
+     * 
+     * @param fileNameCsv  导入文件名称
+     * @param fileNameVerf 验证文件民称
+     * @param customGroupName  客户群名称
+     * @param mtlCuserTableName 客户群所存表名称
+     * @param filenameTemp 验证文件地址
+     * @param ftpStorePath FTP需要导入的文件地址
+     * @param customGroupId 客户群ID
+     */
+	@Override
+	public void insertSqlLoderISyncDataCfg(String fileNameCsv,String fileNameVerf,String customGroupName,String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
+		//查看该客户群任务是否存在
+		List list  = custGroupJdbcDao.getSqlLoderISyncDataCfg(customGroupId);
+		if(list != null && list.size() > 0){
+			custGroupJdbcDao.updateSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
+		}else{
+			custGroupJdbcDao.insertSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
+		}
+		
 	}
 }
