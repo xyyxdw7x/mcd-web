@@ -49,4 +49,10 @@ public class MpmCONST {
 	 * 新建策略页面 选择政策翻页每页显示5条数据
 	 */
 	public final static int SMALL_PAGE_SIZE_LABEL = 5;
+	   //活动步骤-客户属�?设置步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET = 10;
+	   //活动步骤-目标用户筛�?步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_CAMP_SELECT = 20;
+    //活动步骤-活动用户剔除步骤
+    public static final short MPM_SYS_ACTSTEP_DEF_CAMP_FILTER = 30;
 }

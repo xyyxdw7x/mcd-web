@@ -78,6 +78,12 @@ public interface IMpmCampSegInfoService {
      * @return
      */
     public List getMtlChannelDefs(String campsegId);
-    
+    /**
+     * 根据编号删除策略信息
+     * @param campSegId
+     * @throws MpmException
+     */
+    public void deleteCampSegInfo(String campSegId) throws MpmException;
+
     public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId)throws MpmException;
 }

@@ -6,6 +6,10 @@ import java.util.Locale;
 
 import com.asiainfo.biapp.framework.jdbc.annotation.Column;
 
+/**
+ * @author AsiaInfo-jie
+ *
+ */
 public class MtlCampSeginfo {
 	private String campsegId; // 活动编号
     private Integer pageNum; //当前页
@@ -20,6 +24,7 @@ public class MtlCampSeginfo {
     private String channelId;
     private String channelTypeId;
     private String createUserid; // 活动策划人
+    private Short campPriId; // 活动优先级,见维表:dim_camp_pri
     private String keywords;// 关键字
     private String areaId; // 营销活动所属地区
     private String campsegName;
@@ -46,6 +51,7 @@ public class MtlCampSeginfo {
 	private int splitCampSegInfo;// 是否按渠道类型拆分活动规则
 	private String approveFlowid; // 默认内部审批流程
 	private Short approveResult; // 审批结果
+	private String approveResultDesc;//审批结果描述
 	private String selectTempletId; // 筛选规则模板id
 	private String custGroupAttrId;
 	private Integer waveContactType; // 规则接触类型
@@ -60,7 +66,27 @@ public class MtlCampSeginfo {
 	private String eventActiveTempletId;// 事件规则模板ID
 	private String custBaseDay;
 	private String custBaseMonth;
-    
+	private String createUserName;
+    private String campsegDesc; // 活动描述
+    private Integer contactedUserNums; // 联系客户数
+    private Integer contactOkuserNums; // 联系成功客户数
+    private Integer receivedOkuserNums; // 营销成功客户数
+    private Integer campsegContactUsernums; // 活动被接触控制的用户数
+
+    private Short campsegContactFlag; // 是否进行接触控制
+    private String evaluateComment; // 活动中止原因
+    private String custListTabName;// 客户群清单表名
+    private String timeInterval;
+    private Integer targerUserNums; // 目标客户数
+    private String currentTaskId;// 当前任务编号
+    private String avoidBotherTypeIds;// 免打扰客户类型ID
+    // 客户群类型(0:无 ,1:客户群 2:来自其他活动规则的反馈)
+    private Integer targetCustType;
+    private String activeTempletId;// 时机规则模板ID
+    private String initCustListTab;//策略初始清单表
+    private Date approveRemindTime;
+
+
 	public String getCampDrvName() {
 		return campDrvName;
 	}
@@ -128,7 +154,14 @@ public class MtlCampSeginfo {
 	public void setIsRelativeExecTime(Integer isRelativeExecTime) {
 		this.isRelativeExecTime = isRelativeExecTime;
 	}
-	public Integer getCampClass() {
+	
+	public Short getCampPriId() {
+        return campPriId;
+    }
+    public void setCampPriId(Short campPriId) {
+        this.campPriId = campPriId;
+    }
+    public Integer getCampClass() {
 		return campClass;
 	}
 	public void setCampClass(Integer campClass) {
@@ -178,7 +211,13 @@ public class MtlCampSeginfo {
 		this.approveResult = approveResult;
 	}
 
-	public int getSplitCampSegInfo() {
+	public String getApproveResultDesc() {
+        return approveResultDesc;
+    }
+    public void setApproveResultDesc(String approveResultDesc) {
+        this.approveResultDesc = approveResultDesc;
+    }
+    public int getSplitCampSegInfo() {
 		return splitCampSegInfo;
 	}
 	public void setSplitCampSegInfo(int splitCampSegInfo) {
@@ -383,6 +422,109 @@ public class MtlCampSeginfo {
     }
     public void setAreaId(String areaId) {
         this.areaId = areaId;
+    }
+    public String getCreateUserName() {
+        return createUserName;
+    }
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+    public String getCampsegDesc() {
+        return campsegDesc;
+    }
+    public void setCampsegDesc(String campsegDesc) {
+        this.campsegDesc = campsegDesc;
+    }
+    public Integer getContactedUserNums() {
+        return contactedUserNums;
+    }
+    public void setContactedUserNums(Integer contactedUserNums) {
+        this.contactedUserNums = contactedUserNums;
+    }
+    public Integer getContactOkuserNums() {
+        return contactOkuserNums;
+    }
+    public void setContactOkuserNums(Integer contactOkuserNums) {
+        this.contactOkuserNums = contactOkuserNums;
+    }
+    public Integer getReceivedOkuserNums() {
+        return receivedOkuserNums;
+    }
+    public void setReceivedOkuserNums(Integer receivedOkuserNums) {
+        this.receivedOkuserNums = receivedOkuserNums;
+    }
+    public Short getCampsegContactFlag() {
+        return campsegContactFlag;
+    }
+    public void setCampsegContactFlag(Short campsegContactFlag) {
+        this.campsegContactFlag = campsegContactFlag;
+    }
+    public Integer getCampsegContactUsernums() {
+        return campsegContactUsernums;
+    }
+    public void setCampsegContactUsernums(Integer campsegContactUsernums) {
+        this.campsegContactUsernums = campsegContactUsernums;
+    }
+    public String getEvaluateComment() {
+        return evaluateComment;
+    }
+    public void setEvaluateComment(String evaluateComment) {
+        this.evaluateComment = evaluateComment;
+    }
+    public String getCustListTabName() {
+        return custListTabName;
+    }
+    public void setCustListTabName(String custListTabName) {
+        this.custListTabName = custListTabName;
+    }
+    public String getTimeInterval() {
+        return timeInterval;
+    }
+    public void setTimeInterval(String timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+    public Integer getTargerUserNums() {
+        return targerUserNums;
+    }
+    public void setTargerUserNums(Integer targerUserNums) {
+        this.targerUserNums = targerUserNums;
+    }
+    public String getCurrentTaskId() {
+        return currentTaskId;
+    }
+    public void setCurrentTaskId(String currentTaskId) {
+        this.currentTaskId = currentTaskId;
+    }
+    public String getAvoidBotherTypeIds() {
+        return avoidBotherTypeIds;
+    }
+    public void setAvoidBotherTypeIds(String avoidBotherTypeIds) {
+        this.avoidBotherTypeIds = avoidBotherTypeIds;
+    }
+    public Integer getTargetCustType() {
+        return targetCustType;
+    }
+    public void setTargetCustType(Integer targetCustType) {
+        this.targetCustType = targetCustType;
+    }
+    public String getActiveTempletId() {
+        return activeTempletId;
+    }
+    @Column(name="ACTIVE_TEMPLET_ID")
+    public void setActiveTempletId(String activeTempletId) {
+        this.activeTempletId = activeTempletId;
+    }
+    public String getInitCustListTab() {
+        return initCustListTab;
+    }
+    public void setInitCustListTab(String initCustListTab) {
+        this.initCustListTab = initCustListTab;
+    }
+    public Date getApproveRemindTime() {
+        return approveRemindTime;
+    }
+    public void setApproveRemindTime(Date approveRemindTime) {
+        this.approveRemindTime = approveRemindTime;
     }
     
 }

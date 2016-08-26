@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -264,6 +263,91 @@ public class CampSegSearchController extends BaseMultiActionController {
         
         return null;
    }
+    /**
+     * 提交策略信息
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/submitApproval")
+    public ModelAndView submitApproval(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String campsegId = request.getParameter("campsegId") != null ? request
+                .getParameter("campsegId") : null;
+        String message = mpmCampSegInfoService.submitApprovalXml(campsegId);
+        JSONObject dataJson = new JSONObject();
+        if (message.contains("失败")) {
+            dataJson.put("status", 201);
+            dataJson.put("result", message);
+        } else {
+            dataJson.put("status", 200);
+        }
 
+        dataJson.put("data", "");
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.print(dataJson);
+        out.flush();
+        out.close();
+        return null;
+    }
+    /**
+     * 删除策略信息
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/delCampseg")
+    public ModelAndView delCampseg( HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        String msg = "";
+        int status = 200;
+        try {
+            String campsegId = request.getParameter("campsegId") != null ? request
+                    .getParameter("campsegId") : null;
+
+            if (campsegId != null) {
+                mpmCampSegInfoService.deleteCampSegInfo(campsegId);
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+            status = 201;
+            msg = "删除策略信息失败";
+        } finally {
+            String jsonOut = null;
+            JSONObject dataJson = new JSONObject();
+            if (status != 200) {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            } else {
+                dataJson.put("status", status);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+            return null;
+        }
+
+    }
 
 }
