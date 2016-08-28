@@ -24,6 +24,7 @@
 </script>
 <jsp:include page="../header/header.jsp"></jsp:include>
 <div class="container min-height">
+    <!-- 最左边的滑动效果  beggin -->
 	<div class="left-nav">
 		<div class="left-nav-box left-nav-active">
 			<span>选政策</span>
@@ -41,7 +42,9 @@
 		</div>
 		<input id="automaticClick" value="自动填充" style="background-color:#f00; cursor:pointer; margin-top:300px; text-align:center; color:#fff; font-size:16px; padding:0; text-indent:0; width:100px; display:none;" />
 	</div>
-
+      <!-- 最左边的滑动效果  end -->
+      
+     <!-- 最右边的暂存架 beggin -->
 	<div class="shop-cart J_shopCartContent">
 		<div class="tempshelf"><span class="car"></span>暂存架</div>
 		<div class="addStrategy">
@@ -71,6 +74,9 @@
 		<div class="totalNum" style="display: none;">已配置<i id="channelNumBox">1</i>个规则</div>
 		<div class="saveBtnCT"><input type="button" id="saveCreateTactics" class="btn_save" value="保存" wait-click-times="0" wait-click-times-bc="0" wait-click-times-sp="0" /></div>
 	</div><!--shop-cart end -->
+	 <!-- 最右边的暂存架  end -->
+	 
+	 <!-- 中间部分：政策-客户-渠道  beggin -->
 	<div class="box-container">
 		<div class="content box-content width-849">
 			<div class="content-title J_poilyTitleBox width-849 clearfix" id="poilyTitle">
@@ -190,10 +196,12 @@
 			</div>
 		</div>
 	</div>
-</div><!--container end -->
+	 <!-- 中间部分：政策-客户-渠道  end -->
+</div>
+
 <Br><br>
 
-<!-- save shopcar dialog -->
+<!-- 保存策略的弹出层 beggin -->
 <div id="saveCreateTacticsDialog">
 	<dl class="savePreview">
 		<dt>策略配置保存</dt>
@@ -255,7 +263,7 @@
 	</table>
 
 </div>
-<!-- save shopcar dialog end -->
+<!-- 保存策略的弹出层 end-->
 
 <div id="indexBigAD" class="addQueryTactics">
 	<div class="searchCT">
