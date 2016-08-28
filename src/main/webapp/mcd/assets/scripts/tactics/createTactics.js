@@ -25,13 +25,13 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				$(".J_redio_tactics[value=1]").attr("checked",true);
 			}
 	
-			//政策分类+政策列表 界面
+			//政策分类 界面（点击分类时重新加载政策列表）
 			this.getTacticsTypeList();
 			//显示客户群界面
 			this.customerModule();
 			//渠道列表界面
 			this.getChannelList();
-			
+			//加载政策列表（初始进来时候）
 			window.tableView = tableObj.loadTable({
 				urlRoot:_ctx+"/tactics/tacticsManage",
 				id:"searchByCondation",
@@ -124,24 +124,22 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		//获取channelList
 		getChannelList:function(){
 			var _that=this;
-			//TODO
 			var channelModel = Backbone.Model.extend({
-				urlRoot : _ctx+"/tactics",
+				urlRoot : _ctx+"/tactics/tacticsManage",
 				defaults : {_ctx : _ctx}
 			});
-			var channelData = new channelModel({id:"tacticsManage"});
+			var channelData = new channelModel({id:"initChannelMsg"});
 			channelData.fetch({
 				type : "post",
 				contentType: "application/x-www-form-urlencoded; charset=utf-8",
 				dataType:'json',
 				async:false,
-				data:{cmd:"initChannelMsg",isDoubleSelect:$(".J_redio_tactics:checked").val()},
+				data:{isDoubleSelect:$(".J_redio_tactics:checked").val()},
 				success:function(model){
 					var data = model.attributes.data;
 					var _ul=$("#selectedChannel").empty();
 					for(var i = 0,len= data.length;i<len;i++){
 						var imgUrl = "../../assets/images/"+data[i].channeltypeId+".png";
-
 						var _li = $('<li class="content-channel-box fleft J_channelBox" channelId="'+data[i].channeltypeId+'">' +
 							'<span ><img class="pics" src='+imgUrl+'></span>'+
 							'<span class="my-channel-name">'+data[i].channeltypeName+'</span>'+
@@ -627,7 +625,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				model : new tacticsTableModel({id : "tacticsManage"}),
 				events : {"click" : "click"},
 				click : function(obj) {
-					if($(obj.target).hasClass("J_redio_tactics")){
+					if($(obj.target).hasClass("J_redio_tactics")){//单选和多选切换
 						$('#J_addPolicy,.J_Policy_Cart,.J_cartGroup,.J_addChannelToCart').empty();
 						this.getChannelType();
 						module.exports.getChannelList();
@@ -640,21 +638,18 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						}
 						// 单政策和多政策切换 需要隐藏上一步骤选择渠道的输入信息
 						$(".J_show_box").addClass("hidden");
+						
 						window.tableView = tableObj.loadTable({
 							urlRoot:_ctx+"/tactics/tacticsManage",
-							//id:"mtlStcPlanAction.aido",
-							cmd:"searchByCondation",
+							id:"searchByCondation",
 							currentDom:"#createDimPlanList",
 							ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/dimPlanList.ejs',
 							ajaxData:{keyWords:keyWord,typeId:typeId,channelTypeId:channelTypeId,planTypeId:planTypeId,isDoubleSelect:$(".J_redio_tactics:checked").val()},
 							domCallback:function(){
-								if(module.exports.isCampsegEdit==true){
-								}
 								$('.showPlanInfo').on('click',function(){
 									var moreInfo = $(this).parents('tr').attr('data-info');
 									moreInfo = moreInfo.replace(/'/g,'"');
 									var info = JSON.parse(moreInfo);
-
 									var startDate = formatDate( new Date(info.planStartdate));
 									var endDate = formatDate( new Date(info.planEnddate));
 									var planName = info.planName;
@@ -675,6 +670,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						});
 						return;
 					}
+					
 					if(!$(obj.target).hasClass("J_type")){
 						return;
 					}
@@ -695,11 +691,10 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					if(window.tableView){
 						window.tableView.undelegateEvents();
 					}
-
+					//wb:加载政策列表界面
 					window.tableView = tableObj.loadTable({
 						urlRoot:_ctx+"/tactics/tacticsManage",
-						//id:"mtlStcPlanAction.aido",
-						cmd:"searchByCondation",
+						id:"searchByCondation",
 						currentDom:"#createDimPlanList",
 						ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/dimPlanList.ejs',
 						ajaxData:{keyWords:keyWord,typeId:typeId,channelTypeId:channelTypeId,planTypeId:planTypeId,isDoubleSelect:$(".J_redio_tactics:checked").val()},
@@ -708,7 +703,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								var moreInfo = $(this).parents('tr').attr('data-info');
 								moreInfo = moreInfo.replace(/'/g,'"');
 								var info = JSON.parse(moreInfo);
-
 								var startDate = formatDate( new Date(info.planStartdate));
 								var endDate = formatDate( new Date(info.planEnddate));
 								var planName = info.planName;
@@ -739,7 +733,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					this.getGradeType();
 					return this;
 				} ,
-				getDimPlanType:function(){
+				getDimPlanType:function(){//政策类别
 					var dimPlanType = new tacticsTableModel({id : "tacticsManage"});
 					dimPlanType.fetch({
 						type : "post",
@@ -752,7 +746,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						}
 					});
 				},
-				getGradeType:function(){
+				getGradeType:function(){//政策粒度
 					var modelView = new tacticsTableModel({id : "tacticsManage"});
 					modelView.fetch({
 						type : "post",
@@ -765,7 +759,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						}
 					});
 				},
-				getChannelType:function(){
+				getChannelType:function(){//适用渠道
 					var modelView = new tacticsTableModel({id : "tacticsManage"});
 					var isDoubleSelect = $(".J_redio_tactics:checked").val();
 					modelView.fetch({
@@ -1791,13 +1785,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					return this;
 				} ,
 				getGroupType:function(){
-					var modelView = new maduleTableModel({id : "custGroupManager"})
+					var modelView = new maduleTableModel({id : "initMyCustom"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:"initMyCustom"},
 						success:function(model){
 							modelView.set({"classification":"initMyCustom","classificationName":"客户群"});
 							var typeHtml = new EJS({url : _ctx + '/mcd/pages/EJS/tacticsCreate/customerTypeList.ejs'}).render({result:model.attributes});
@@ -2565,21 +2558,16 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							window.tableView.undelegateEvents();
 						}
 						window.tableView =  tableObj.loadTable({
-							urlRoot:_ctx+"/mpm",
-							id:"mtlStcPlanAction.aido",
-							cmd:"searchByCondation",
+							urlRoot:_ctx+"/tactics/tacticsManage",
+							id:"searchByCondation",
 							currentDom:"#createDimPlanList",
 							ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/dimPlanList.ejs',
 							ajaxData:{keyWords:keyWords,typeId:typeId,channelTypeId:channelTypeId,planTypeId:planTypeId,isDoubleSelect:$(".J_redio_tactics:checked").val()},
 							domCallback:function(){
-
-								if(module.exports.isCampsegEdit==true){
-								}
 								$('.showPlanInfo').on('click',function(){
 									var moreInfo = $(this).parents('tr').attr('data-info');
 									moreInfo = moreInfo.replace(/'/g,'"');
 									var info = JSON.parse(moreInfo);
-
 									var startDate = formatDate( new Date(info.planStartdate));
 									var endDate = formatDate( new Date(info.planEnddate));
 									var planName = info.planName;
@@ -2982,7 +2970,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					var _basicProp=module.exports.getDiscoveryQuerydata_basicProp(_parent);
 					var _baseAttr=module.exports.getDiscoveryQuerydata_baseAttr($(".J_Policy_Cart > div"));
 					var _customer=module.exports.getDiscoveryQuerydata_group(_parent);
-					//var _ARPU=module.exports.getDiscoveryQuerydata_ARPU(_parent);
 					var _productArr=module.exports.getDiscoveryQuerydata_product(_parent);
 					this.model.fetch({
 						type : "post",

@@ -702,7 +702,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params ="cmd=initChannelMsg")
+	@RequestMapping("/initChannelMsg")
 	public void initChannelMsg(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		//TODO: initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");

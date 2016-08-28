@@ -137,7 +137,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initMyCustom")
+	@RequestMapping("initMyCustom")
 	public void initMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		//TODO: initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
@@ -181,7 +181,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		try {
-		
 			//TODO:String attrClassIdBussiness = MpmConfigure.getInstance().getProperty("ATTR_CLASS_ID_BUSSINESS");
 			String attrClassIdBussiness = "3";
 			List<McdCvColDefine> bussinessList = mpmCommonService.initCvColDefine(attrClassIdBussiness,"");
@@ -342,8 +341,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/searchCustom")
-	public void searchCustom(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void searchCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		
 		String contentType = request.getParameter("contentType");
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
@@ -387,8 +385,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/searchCustomDetail")
-	public void searchCustomDetail(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void searchCustomDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		
 		String customGrpId = request.getParameter("customGrpId");
 		
@@ -461,8 +458,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/deleteCustom")
-	public void deleteCustom(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void deleteCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		
 		String customGrpId = request.getParameter("customGrpId");
 		
@@ -517,8 +513,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("/initQueue")
-	public void initQueue(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void initQueue(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
 
 		List list  = custGroupInfoService.queryQueueInfo();
