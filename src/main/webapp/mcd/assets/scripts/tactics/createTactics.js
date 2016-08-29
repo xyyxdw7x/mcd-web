@@ -1808,7 +1808,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							$("#groupInfo").empty().html(typeHtml);
 							$(".group-info-ul-li").show();
 							pageNumEnd = model.attributes.data.totalPage;
-							//客户群详情
+							//客户群详情链接时 触发
 							$(".group-box-detail").on('click',function(event){
 								var detailButton = $(this);
 								//阻止点击冒泡事件
@@ -1834,7 +1834,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 									}
 								});
 							});
-
+                            //选择客户群时触发
 							$("#groupInfo .group-info-ul-li").on('click',function(){
 								if($(".J_Policy_Cart .grayrow").length == 0){
 									alert("请选择政策！");
@@ -2306,7 +2306,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		//添加营销政策到car
 		addPolicyToCart:function(){
-			//TODO
 			var generalModel = Backbone.Model.extend({
 				urlRoot : _ctx+"/tactics/tacticsManage",
 				defaults : {_ctx : _ctx}
@@ -4344,21 +4343,21 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			});
 			new getCtrl_dateView();
 		},
+		//选择客户群后执行的方法
 		getChannelPreDefineList:function(_custGroupId){
 			var appendParent=$("#sms_J_termLable");
 			appendParent.empty();
 			$.ajax({
 				type:"post",
-				url:_ctx + '/mpm/imcdChannelExecuteAction.aido?cmd=initTermLable',
+				url:_ctx + '/tactics/tacticsManage/initTermLable',
 				data:{custGroupId:_custGroupId},
 				dataType:"json",
 				async:false,
 				success:function(myjson){ 
-
 					var _data=myjson.data;
 					var _ul=$('<ul class="chooseVars"></ul>');
-					
 					var  _class= "";
+					//客户群的所有变量列表----------------------------------------------------------------------------------
 					for(var x in _data){
 						if(_ul.find('li[attrCol="'+_data[x].attrCol+'"]').length==0){
 							var _li=$('<li class="'+_class+'" attrCol="'+_data[x].attrCol+'">'+_data[x].attrColName+'</li>');
@@ -4366,12 +4365,10 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						}
 					}
 					appendParent.html(_ul);
-					
-
+					//群发用语中还可以输入的字数限制-------------------------------------------------------------------------
 					$('.yellow').html(function(){
 						var channelId=$(this).parent().parent().children().eq(0).attr("channelid");
-						if(channelId=="901"||channelId=="910"){
-							//最佳字符不超过50 但是可以超过50不超过140字符
+						if(channelId=="901"||channelId=="910"){//最佳字符不超过50 但是可以超过50不超过140字符							
 							var fontNum = $('.J_SMSBox[channelid="901"]').val( ).length;
 							if(fontNum>50){
 								return '0';
@@ -4382,6 +4379,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							return $(this).parent().prev().attr('maxTextNum');
 						}
 					});
+					//选择变量时，写入文本域---------------------------------------------------------------------------------
 					var _textList = $('textarea.channel-textarea');
 					_textList.each(function(){
 						var _textarea = $(this);
@@ -4394,26 +4392,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 									return;
 								}
 								if(_t_channelId!='908'){
-									//908 暂时注释
-									var inputNum = parseInt($(this).parent().parent().prev().prev().find('i.yellow').html());
-									var thisLength = $(this).attr('attrCol').length+2;
-									if(inputNum<thisLength){
-										if($(this).attr("isSMS") == "true"){
-											_textarea.insertContent(("#"+$(this).attr('attrCol')+"#"));
-
-										}else{
-											_textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
-										}
-										//$(this).parent().parent().prev().prev().find('i.yellow').html('0');
-									}else{
-										if($(this).attr("isSMS") == "true"){
-											_textarea.insertContent("#"+$(this).attr('attrCol')+"#");
-										}else{
-											_textarea.insertContent("$"+$(this).attr('attrCol')+"$");
-										}
-
-									}
-									$(this).addClass("active");
+									
 								}else{
 									if($(this).hasClass("active")){
 										$(this).removeClass("active");
@@ -5326,7 +5305,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			var htmlobj=$(_html);
 			appendTar.append(htmlobj);
 			var planList = _json.data.planList;
-//			$(".J_flag  .J_Policy_Cart,#J_addPolicy").empty();
 			for(var i=0;i<planList.length;i++){
 				var planid=planList[i].planId;
 				var planname=planList[i].planName;
@@ -5403,9 +5381,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					}
 				}
 			}
-			/*if(module.exports.isCampsegEdit==true){//回显手机APP
-			    $(".J_channelBox[channelid=903]").click();
-			}*/
 		},
 		backCustomers:function(_json){//回显客户群
 			var appendCT=$("#createTacticsDialogs .choosed");
