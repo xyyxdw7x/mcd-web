@@ -1,15 +1,20 @@
 package com.asiainfo.biapp.framework.jdbc;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
@@ -28,6 +33,23 @@ public class JdbcDaoBase extends JdbcDaoSupport implements InitializingBean,Disp
 	//@Autowired
 	//@Qualifier("namedParameterJdbcTemplate")
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
+	protected ResultSetExtractor<Long> longResultSetExtractor = new ResultSetExtractor<Long>(){
+	    public Long extractData(ResultSet rs) throws SQLException, DataAccessException {  
+           	Long result = 0l;
+            try {  
+                while (rs.next()) {  
+                    Object obj  = rs.getObject(1);
+                    if (null != obj && StringUtils.isNumeric(String.valueOf(obj))) {
+                    	result += rs.getLong(1);
+                    }
+                }  
+            } catch (Throwable e) {  
+                throw new ObjectRetrievalFailureException("拼装Map对象出错！", e);  
+            }   
+            return result;  
+        }  
+	};
 	
 	/**
 	 * 数据库的类型  DB2 ORACLE MYSQL
