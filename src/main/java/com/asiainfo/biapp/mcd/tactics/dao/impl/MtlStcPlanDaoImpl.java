@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -33,7 +34,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * @author weilin.wu  wuwl2@asiainfo.com
  * @version 1.0
  */
-@Service("mtlStcPlanDao")
+@Repository("mtlStcPlanDao")
 public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 	@SuppressWarnings("unchecked")
 	@Override
