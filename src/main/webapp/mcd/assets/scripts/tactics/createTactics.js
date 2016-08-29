@@ -66,15 +66,15 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				}
 			});
+			//this.widgetInit();
+			this.initShopCart();//显示暂存架
 
 			/*//其他组件初始化
-			this.widgetInit();
-
-			//弹出页
-			this.createTacticsDialogs();
+			
+			this.createTacticsDialogs();//弹出保存对话框
 			this.tacticsStateTab();
 			
-			this.initShopCart();
+			
 
 			this.getSearchGroup();
 			this.getBusLabelQueryList();
@@ -2298,9 +2298,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				$('.J_show_box[channelId=904] .hotLineAwardMount[channelId=904]').val(td.attr('awardMount'));
 				$('.J_show_box[channelId=904] .hotLineRecommendText[channelId=904]').val(td.attr('execContent')).keyup();
 				$('.J_show_box[channelId=904] .hotLineSMSText[channelId=904]').val(td.attr('smsContent')).keyup();
-				//var num1 = parseInt($('.J_show_box[channelId=904] .hotLineSMSText[channelId=904]').attr('maxtextnum'));
-				//var num2 = parseInt($('.J_show_box[channelId=904] .hotLineRecommendText[channelId=904]').attr('maxtextnum'));
-				//$('.J_show_box[channelId=904] .hotLineSMSText[channelId=904]').next().find('yellow').html(num1-policy.attr('smsContent').length);
 				if (policy.attr('plantype') == '999') {
 					$('.J_show_box[channelId=904] .hotLineEditURL[channelId=904]').val('');
 					$('.J_show_box[channelId=904] .hotLineEditURL[channelId=904]').parent().addClass('disable-long-text');
@@ -2311,7 +2308,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					$('.J_show_box[channelId=904] .hotLineHandURL[channelId=904]').parent().removeClass('disable-long-text');
 					$('.J_show_box[channelId=904] .hotLineEditURL[channelId=904]').attr('disabled', false).css('background', '#fff');
 					$('.J_show_box[channelId=904] .hotLineHandURL[channelId=904]').attr('disabled', false).css('background', '#fff');
-
 				}
 			}else{
 
@@ -2322,9 +2318,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		addPolicyToCart:function(){
 			var selectedChannelView = Backbone.View.extend({
 				model:new generalModel({id:"imcdChannelExecuteAction.aido"}),
-				events : {
-					"click" : "click"
-				},
+				events : {"click" : "click"},
 				click : function(obj) {
 					var target=$(obj.target);
 					if($(target).hasClass("J_addPolicy")){
@@ -2503,7 +2497,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							$(".J_selectedChannel .J_channelBox[channelId='"+commonCid+"']").addClass("active");
 							$(".J_show_box[channelId='"+commonCid+"']").removeClass("hidden");
 						}
-						var $groupItem = $("#J_cartGroup div.grayrow");//$("#selectedConditiom li[classification='initMyCustom']");
+						var $groupItem = $("#J_cartGroup div.grayrow");
 
 						$(".J_show_box[channelId='"+commonCid+"'] .J_times").removeClass('active');
 						$("input[name='description']").attr("placeholder","营销策略在生效期内只执行一次");
