@@ -1,9 +1,6 @@
 define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepageScroll","modernizr","parabola","ajaxFileUpload","realTime","bootstrap"],function(require, exports,module) {
 	var tableObj = require("tacticsManage");
-	var generalModel = Backbone.Model.extend({
-		urlRoot : _ctx+"/mpm",
-		defaults : {_ctx : _ctx}
-	});
+
 	function formatDate(now) {
 		var year=now.getUTCFullYear();
 		var month=now.getMonth()+1;
@@ -66,11 +63,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				}
 			});
-			//this.widgetInit();
 			this.initShopCart();//显示暂存架
+			this.addPolicyToCart();//添加政策到暂存架
 
 			/*//其他组件初始化
-			
+			this.widgetInit();
 			this.createTacticsDialogs();//弹出保存对话框
 			this.tacticsStateTab();
 			
@@ -85,7 +82,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			this.getProductRelation();
 			this.productRelationSearch();
             
-			this.addPolicyToCart();
+		
 			
 
 			this.baseAttributesList();
@@ -2316,6 +2313,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		//添加营销政策到car
 		addPolicyToCart:function(){
+			//TODO
+			var generalModel = Backbone.Model.extend({
+				urlRoot : _ctx+"/tactics/tacticsManage",
+				defaults : {_ctx : _ctx}
+			});
 			var selectedChannelView = Backbone.View.extend({
 				model:new generalModel({id:"imcdChannelExecuteAction.aido"}),
 				events : {"click" : "click"},
@@ -2927,12 +2929,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					$(".J_shopCartContent  .J_strategy[data-num='"+obj.attr("data-num")+"']").css({"border-bottom":"3px solid #5FABE4"});
 				},
 				initTermLable:function(){
-					this.model.set("id","imcdChannelExecuteAction.aido");
+					this.model.set("id","initTermLable");
 					this.model.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:"initTermLable",custGroupId :1},
+						data:{custGroupId :1},
 						success:function(model) {
 							var data = model.attributes.data;
 							$("#sms_J_termLable").empty();
@@ -3459,7 +3461,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			var top = $(".J_poilyTitleBox").offset().top-40;
 			$(".J_shopCartContent").height(ths.getClientHeight()-32);
 			$(".J_rule").height(ths.getClientHeight()-230).css({"overflow":"auto"});
-			var _TOP = 150;
+			var _TOP = $(".box-content > .content-main").offset().top-10; //150;
 			if(ths.getScrollTop() >= _TOP){
 				top = _TOP - ths.getScrollTop() > 0 ? _TOP-ths.getScrollTop() : 0;
 				$(".J_shopCartContent").css({top:top,left:left});
@@ -5182,8 +5184,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					var _html = $('<div class="content-calculate-box" id="addChannelBox" style="cursor:default;" </div>');
 					_html.append('<button class="calculate-customer-submit fright J_addChannelBtn" type="button">确定</button>');
 					$('#channelContentMain').append(_html);
-					//$('.J_addChannelBtn').on('click',module.exports.addPolicyToCart.addChannelToCart());
-
 				},
 				inputInit:function(){
 					//textarea初始化

@@ -1,14 +1,10 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
 import java.io.PrintWriter;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +18,8 @@ import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
+import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.service.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.tactics.service.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -30,13 +27,8 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
-import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 import net.sf.json.JSONObject;
@@ -52,6 +44,8 @@ public class TacticsManageController extends BaseMultiActionController {
     private IMtlStcPlanManagementService mtlStcPlanManagementService;
     @Resource(name="dimMtlChanneltypeService")
     private DimMtlChanneltypeService dimMtlChanneltypeService;
+    @Resource(name="custGroupAttrRelService")
+    private CustGroupAttrRelService custGroupAttrRelService;
     
 	/**
 	 * 保存策略基本信息
@@ -731,6 +725,43 @@ public class TacticsManageController extends BaseMultiActionController {
 			dataJson.put("status", "200");
 			dataJson.put("data", JmsJsonUtil.obj2Json(list));
 			out.print(dataJson);
+		} catch (Exception e) {
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+	
+	/**
+	 * 选择政策：初始化短信执行情况    群发用语变量
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/initTermLable")
+	public void initTermLable(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		String custGroupId = request.getParameter("custGroupId");
+		List<MtlGroupAttrRel> list = null;
+		try {
+			if(StringUtil.isNotEmpty(custGroupId)){
+				list = custGroupAttrRelService.initTermLable(custGroupId);
+			}
+			if(!CollectionUtils.isEmpty(list)){
+				dataJson.put("status", "200");
+				dataJson.put("data", JmsJsonUtil.obj2Json(list));
+				out.print(dataJson);
+			}
 		} catch (Exception e) {
 			dataJson.put("status", "201");
 			out.print(dataJson);
