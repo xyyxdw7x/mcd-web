@@ -63,7 +63,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			});
 			this.initShopCart();//显示暂存架
 			this.addPolicyToCart();//添加政策到暂存架
-			this.widgetInit();//不同渠道显示不同的渠道信息
+			this.widgetInit();//不同渠道显示不同的渠道信息(当选择渠道后才显示)
+			
 			/*		
 			this.createTacticsDialogs();//弹出保存对话框
 			this.tacticsStateTab();
@@ -4907,8 +4908,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					var model_data = {};
 					$.ajax({
 						type:"post",
-						url:_ctx + '/mpm/imcdChannelExecuteAction.aido',
-						data:{'cmd':'initMtlChannelBossSmsTemplate'},
+						url:_ctx + '/tactics/tacticsManage/initMtlChannelBossSmsTemplate',
 						dataType:"json",
 						async:false,
 						success:function(data){

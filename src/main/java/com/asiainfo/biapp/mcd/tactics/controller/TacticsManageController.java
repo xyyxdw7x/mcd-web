@@ -20,10 +20,12 @@ import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.custgroup.service.CustGroupAttrRelService;
+import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
+import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
@@ -46,6 +48,8 @@ public class TacticsManageController extends BaseMultiActionController {
     private DimMtlChanneltypeService dimMtlChanneltypeService;
     @Resource(name="custGroupAttrRelService")
     private CustGroupAttrRelService custGroupAttrRelService;
+    @Resource(name="channelBossSmsTemplateService")
+    private ChannelBossSmsTemplateService channelBossSmsTemplateService;
     
 	/**
 	 * 保存策略基本信息
@@ -757,6 +761,39 @@ public class TacticsManageController extends BaseMultiActionController {
 			if(StringUtil.isNotEmpty(custGroupId)){
 				list = custGroupAttrRelService.initTermLable(custGroupId);
 			}
+			if(!CollectionUtils.isEmpty(list)){
+				dataJson.put("status", "200");
+				dataJson.put("data", JmsJsonUtil.obj2Json(list));
+				out.print(dataJson);
+			}
+		} catch (Exception e) {
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+	
+	/**
+	 * 初始化Boss短信运营位模板
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/initMtlChannelBossSmsTemplate")
+	public void initMtlChannelBossSmsTemplate(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		response.setContentType("application/json; charset=UTF-8");
+		response.setHeader("progma", "no-cache");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		List<ChannelBossSmsTemplate> list = null;
+		try {
+			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
 			if(!CollectionUtils.isEmpty(list)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(list));
