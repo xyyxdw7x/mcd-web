@@ -292,7 +292,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@RequestMapping("batchAddBotherAvoidUser")
 	public void batchAddBotherAvoidUser(
-			@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+			@RequestParam(value = "filterFile", required = false)MultipartFile multiFile,
 			HttpServletRequest  request,
 			HttpServletResponse response) throws Exception{ 
 		
