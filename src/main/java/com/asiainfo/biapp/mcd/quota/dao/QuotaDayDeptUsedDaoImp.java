@@ -56,36 +56,6 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 		return list;
 
 	}
-	
-	@Override
-	public int getMonQutoaTotalUntilYesterdayInMem(String cityId, String deptId) {
-		// TODO Auto-generated method stub
-		int totalUsed=0;
-		String fromDate,toDate;
-		String month = QuotaUtils.getDayMonth("yyyyMM");//YYYYmm格式的日期
-		fromDate=month+"01";
-		int day = QuotaUtils.getCurrentDayOfMon();//当前的日期
-		if(day==1){//如果当前日期是这个月的第一天
-			return 0;
-		}else{
-			int yesterday=day-1;
-			if(yesterday<10){
-				toDate="0"+yesterday;
-			}else{
-				toDate=yesterday+"";
-			}
-			
-		}
-		toDate=month+toDate;
-		List<Map<String,Object>> used = this.getUsed4DaysInMem(cityId, deptId, fromDate, toDate);
-		if(used!=null&&used.size()>0){
-			for(int i=0;i<used.size();i++){
-				totalUsed+=Integer.parseInt(used.get(i).get("USED_NUM").toString());
-			}
-		}
-
-		return totalUsed;
-	}
 
 	@Override
 	public void batchSaveInMem(final List<QuotaDayDeptUsed> list)

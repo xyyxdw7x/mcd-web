@@ -14,14 +14,7 @@ public interface QuotaDayDeptUsedDao {
 
 	public List<Map<String, Object>> getUsed4DaysInMem(String cityId, String deptId,
 			String fromDate, String toDate) throws DataAccessException;
-	/**
-	 * 获得科室截止到昨天的使用额总量
-	 * 
-	 * @param cityId
-	 * @param deptId
-	 * @return
-	 */
-	public int getMonQutoaTotalUntilYesterdayInMem(String cityId, String deptId)throws DataAccessException;
+
 	//批量保存，日定时任务中使用
 	public void batchSaveInMem(List<QuotaDayDeptUsed> list)throws DataAccessException;
 	

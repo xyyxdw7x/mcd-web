@@ -58,6 +58,7 @@ public class StcPlanController extends BaseMultiActionController {
 		try {
 			List<DimMtlChanneltype> list = commonService.getMtlChanneltypeByCondition(isDoubleSelect);
 			List<DimMtlChanneltype> listTemp = new ArrayList<DimMtlChanneltype>();
+			//TODO BY ZK
 			// String cityId = user.getCityid();
 			String cityId = "100";
 			if (!CollectionUtils.isEmpty(list)) {

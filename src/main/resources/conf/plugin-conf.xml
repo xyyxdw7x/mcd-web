@@ -21,6 +21,6 @@
 	
 	<!-- 添加第三方插件 主要用import方式 -->
 	<!-- 
-	<import resource="xxx.xml"/>
+	<import resource="mcd-job-configure.xml"/>
 	 -->
 </beans>

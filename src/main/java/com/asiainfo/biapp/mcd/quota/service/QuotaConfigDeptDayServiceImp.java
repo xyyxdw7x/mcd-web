@@ -69,16 +69,16 @@ public class QuotaConfigDeptDayServiceImp implements QuotaConfigDeptDayService {
 
 	@Override
 	public int getTotal4Days(String cityId, String deptId, String month) {
-		return quotaConfigDeptDayDao.getTotal4DaysInMem(cityId, deptId, month);
+		List<Map<String, Object>> list = quotaConfigDeptDayDao.getMonthDaysQuotaInMem(cityId, deptId,month);
+		return quotaConfigDeptDayDao.getTotal4DaysInMem(cityId, deptId, month, list);
 	}
 
 	@Override
 	public Boolean batchUpdateDaysQuota(String cityid, String deptId,
 			String month, List<QuotaConfigDeptDay> list) {
-		// TODO Auto-generated method stub
 		// 不可更新日配额的条件：1.月限额的剩余大于或等于配置的（从明天到月底）限额；2.当天之前的日限额不能调整《包括当天》（这个在前端控制）
 		int detptMon = quotaConfigDeptMothDao.getQuotaByKeysInMem(cityid, deptId,month);
-		int deptUsedUtilY = quotaDayDeptUsedDao.getMonQutoaTotalUntilYesterdayInMem(cityid, deptId);
+		int deptUsedUtilY = this.getMonQutoaTotalUntilYesterday(cityid, deptId);
 		int currentDayConf = quotaConfigDeptDayDao.getDayConfNumByKeys(cityid, deptId,QuotaUtils.getDayDate("yyyyMMdd"));
 		int limit = detptMon - (deptUsedUtilY + currentDayConf);
 		int tom2monend = getTom2Monthend(list);
@@ -89,6 +89,41 @@ public class QuotaConfigDeptDayServiceImp implements QuotaConfigDeptDayService {
         List<QuotaConfigDeptDay> list2 = this.setMonthValue(list, month);
 		quotaConfigDeptDayDao.batchSaveOrUpdateInMem(list2);
 		return true;
+	}
+	
+	/**
+	 * 获得科室截止到昨天的使用额总量
+	 * 
+	 * @param cityId
+	 * @param deptId
+	 * @return
+	 */
+	private int getMonQutoaTotalUntilYesterday(String cityId, String deptId) {
+		int totalUsed=0;
+		String fromDate,toDate;
+		String month = QuotaUtils.getDayMonth("yyyyMM");//YYYYmm格式的日期
+		fromDate=month+"01";
+		int day = QuotaUtils.getCurrentDayOfMon();//当前的日期
+		if(day==1){//如果当前日期是这个月的第一天
+			return 0;
+		}else{
+			int yesterday=day-1;
+			if(yesterday<10){
+				toDate="0"+yesterday;
+			}else{
+				toDate=yesterday+"";
+			}
+			
+		}
+		toDate=month+toDate;
+		List<Map<String,Object>> used = quotaDayDeptUsedDao.getUsed4DaysInMem(cityId, deptId, fromDate, toDate);
+		if(used!=null&&used.size()>0){
+			for(int i=0;i<used.size();i++){
+				totalUsed+=Integer.parseInt(used.get(i).get("USED_NUM").toString());
+			}
+		}
+
+		return totalUsed;
 	}
 	
 	private List<QuotaConfigDeptDay> setMonthValue(List<QuotaConfigDeptDay> list,String month){

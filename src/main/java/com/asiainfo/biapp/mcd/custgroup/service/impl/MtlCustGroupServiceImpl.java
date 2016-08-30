@@ -68,6 +68,10 @@ public class MtlCustGroupServiceImpl implements IMtlCustGroupService {
 		mtlCustGroupJdbcDao.updateMtlGroupinfo(custInfoBean);
 	}
 	@Override
+	public void updateMtlGroupStatus(String tableName,String custGroupId){
+		mtlCustGroupJdbcDao.updateMtlGroupStatusInMem(tableName,custGroupId);
+	}
+	@Override
 	public void savemtlCustomListInfo(String mtlCuserTableName,
 			String customGroupDataDate, String customGroupId, int rowNumberInt,
 			int dataStatus, Date newDate, String exceptionMessage) {

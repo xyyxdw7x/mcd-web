@@ -26,6 +26,13 @@ public interface IMtlCustGroupService {
 	 */
 	public void updateMtlGroupinfo(CustInfoBean custInfoBean);
 	/**
+	 * 更新客户群信息表状态
+	 * @param tableName
+	 * @param custGroupId
+	 * @return
+	 */
+	public void updateMtlGroupStatus(String tableName,String custGroupId);
+	/**
 	 * 执行传过来的SQL语句，并注入参数
 	 * @param mtlCuserTableName   清单表名
 	 * @param customGroupDataDate  统计周期

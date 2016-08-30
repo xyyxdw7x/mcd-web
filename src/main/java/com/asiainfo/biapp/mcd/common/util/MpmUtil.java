@@ -20,7 +20,11 @@ public class MpmUtil {
 	public static String getSqlCreateAsTableInSqlFire(String newTab, String tmpTable) {
 		StringBuilder strRet = new StringBuilder();
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		//TODO BY ZK 属性文件的读取处理迁移之后，需要删掉。
+		tabSpace = "MCD_ZJ_AD";
 		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+		//TODO BY ZK 属性文件的读取处理迁移之后，需要删掉。
+		isUseSqlfire = "false";
 		if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" NOLOGGING as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2");
 		}else{

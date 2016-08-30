@@ -57,7 +57,7 @@ public interface QuotaConfigDeptDayDao {
 	 */
 	public List<Map<String, Object>> getMonthDaysQuotaInMem(String cityID,String deptId, String month) throws DataAccessException;
 
-	public int getTotal4DaysInMem(String cityId, String deptId, String month);
+	public int getTotal4DaysInMem(String cityId, String deptId, String month,List<Map<String, Object>> list);
 	
 	public int getDayQuota(String cityID,String deptId, String date) throws DataAccessException;
 	//保存日配置列表时使用

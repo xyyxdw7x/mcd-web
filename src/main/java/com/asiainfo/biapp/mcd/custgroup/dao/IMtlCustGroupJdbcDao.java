@@ -99,4 +99,10 @@ public interface IMtlCustGroupJdbcDao {
 	 */
 	public void addMtlGroupPushInfos(String customGroupId, String userId,String pushToUserId);
 
+	/**
+	 * 更新客户群状态
+	 * @param tableName
+	 * @param custGroupId
+	 */
+	public void updateMtlGroupStatusInMem(String tableName,String custGroupId);
 }
