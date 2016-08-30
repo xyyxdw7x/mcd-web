@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.dao;
+package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import com.asiainfo.biapp.mcd.quota.dao.QuotaMonthDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.model.QuotaMonthDeptUsed;
 
 public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements

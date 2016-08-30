@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.dao;
+package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
 
 @Repository(value="quotaConfigDeptMonthDefaultDao")

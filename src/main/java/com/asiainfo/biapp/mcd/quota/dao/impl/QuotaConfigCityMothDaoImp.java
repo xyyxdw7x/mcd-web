@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.dao;
+package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityMothDao;
 
 @Repository(value="quotaConfigCityMothDao")
 public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.dao.MtlSysCampConfigDaoImpl;
+import com.asiainfo.biapp.mcd.quota.dao.impl.MtlSysCampConfigDaoImpl;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.SpringContext;
 import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;

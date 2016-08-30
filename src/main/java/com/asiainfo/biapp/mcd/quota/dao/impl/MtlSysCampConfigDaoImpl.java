@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.dao;
+package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;

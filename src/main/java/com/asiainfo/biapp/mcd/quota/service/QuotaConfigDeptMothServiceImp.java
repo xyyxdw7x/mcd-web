@@ -16,7 +16,7 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDaoImp;
+import com.asiainfo.biapp.mcd.quota.dao.impl.QuotaDayDeptUsedDaoImp;
 import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;

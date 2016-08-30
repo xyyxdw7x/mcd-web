@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.dao;
+package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
 @Repository(value="quotaConfigDeptDayDao")
 public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
