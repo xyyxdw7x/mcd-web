@@ -4392,6 +4392,27 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 									return;
 								}
 								if(_t_channelId!='908'){
+
+									//908 暂时注释
+									var inputNum = parseInt($(this).parent().parent().prev().prev().find('i.yellow').html());
+									var thisLength = $(this).attr('attrCol').length+2;
+									if(inputNum<thisLength){
+										if($(this).attr("isSMS") == "true"){
+											_textarea.insertContent(("#"+$(this).attr('attrCol')+"#"));
+
+										}else{
+											_textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
+										}
+									}else{
+										if($(this).attr("isSMS") == "true"){
+											_textarea.insertContent("#"+$(this).attr('attrCol')+"#");
+										}else{
+											_textarea.insertContent("$"+$(this).attr('attrCol')+"$");
+										}
+
+									}
+									$(this).addClass("active");
+								
 									
 								}else{
 									if($(this).hasClass("active")){
