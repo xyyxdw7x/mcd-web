@@ -362,7 +362,7 @@ function  renderDateData(jsonText){
           if($("#resetBtn")[0].checked == true){
         	     renderMonthData(MonthDataBuffer);
           }else{
-	           var  opts = {url:_ctx+"/monthQuota/batchModifyMonConf&ttDate="+(new Date()).getTime() , async :false};
+	           var  opts = {url:_ctx+"/monthQuota/batchModifyMonConf?ttDate="+(new Date()).getTime() , async :false};
 	      	   var  ajaxData = {};
 	      	   var   inputLen = $("#monthTbody").find(".limitInput").length;
 	      	    var beanArr = "[";

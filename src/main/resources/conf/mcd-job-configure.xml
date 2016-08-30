@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- 为了方便集群部署，统一采用Quartz方式,切采用MethodInvokingJobDetailFactoryBean不用耦Quartz 
+		API切方便配置 -->
+
+	<!-- ==============================JAVA TIMER START==================================================== -->
+	<!-- ==============================JAVA TIMER END==================================================== -->
+
+	<!-- ==============================SPRING QUARTZ START=============================================== -->
+	<!-- 方式一：Spring使用JobDetailBean类，继承QuartzJobBean， 重写protected void executeInternal(JobExecutionContext 
+		context)方法，注入这个类和其依赖关系。但是耦合API -->
+	<!-- 方式二：Spring使用MethodInvokingJobDetailFactoryBean，任何一个普通类都可，注入这个类， 还有那个方法要定时将job放到触发器中，并定义什么时候触发 
+		将触发器加入触发列表，触发列表可以自动启动触发器 -->
+	<bean id="dayQuotaTaskService" class="com.asiainfo.biapp.mcd.quota.service.DayQuotaTaskServiceImp">
+		<property name="deptsQuotaStatisticsDao">
+			<ref bean="deptsQuotaStatisticsDao" />
+		</property>
+		<property name="quotaDayDeptUsedDao">
+			<ref bean="quotaDayDeptUsedDao" />
+		</property>
+		<property name="quotaConfigDeptDayDao">
+			<ref bean="quotaConfigDeptDayDao" />
+		</property>
+		<property name="quotaConfigDeptMothDao">
+			<ref bean="quotaConfigDeptMothDao" />
+		</property>
+		<property name="quotaConfigCityDayDao">
+			<ref bean="quotaConfigCityDayDao" />
+		</property>
+	</bean>
+
+</beans>

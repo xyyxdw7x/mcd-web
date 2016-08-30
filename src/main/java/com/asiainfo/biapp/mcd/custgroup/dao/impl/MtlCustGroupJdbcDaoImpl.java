@@ -104,9 +104,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGro
 	@Override
 	public List getSqlLoderISyncDataCfg(String customGroupId) {
 		String sql = "select * From i_sync_data_cfg where POLICY_ID = ?";
-		//TODO BY ZK
-		//return sqlLoderJdbcTemplate.queryForList(sql,new Object[]{customGroupId});
-		return null;
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{customGroupId});
 	}
     /**
      * 查看该任务执行信息
@@ -116,9 +114,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGro
 	@Override
 	public List getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
 		String sql = "select run_end_time From i_sync_data_cfg where EXEC_SQL = ?";
-		//TODO BY ZK
-		//return sqlLoderJdbcTemplate.queryForList(sql,new Object[]{mtlCuserTableName});
-		return null;
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{mtlCuserTableName});
 	}
     /**
      * sqlLoder导入完成后更改状态
@@ -128,8 +124,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGro
 	public void updateSqlLoderISyncDataCfgStatus(String customGroupId) {
 		String sql = "update i_sync_data_cfg set time_type = -1 where POLICY_ID = ?";
 		log.info("sqlloder updateSQL :" + sql  + ",POLICY_ID:" + customGroupId);
-		//TODO BY ZK
-		//sqlLoderJdbcTemplate.update(sql,new Object[]{customGroupId});
+		this.getJdbcTemplate().update(sql,new Object[]{customGroupId});
 		
 	}
     /**
@@ -159,8 +154,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGro
 		String sql = "update i_sync_data_cfg set EXEC_SQL = ?,DATA_FILE_FORMAT=?,CHK_FILE_FORMAT=?,  REMARK = ?, ATTACH_PATH = ?, CTL_FILE_PATH = ?,time_type = 0,RUN_END_TIME=null where POLICY_ID = ?";
 		log.info("sqlloder updateSQL :" + sql );
 		log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileNameCsv+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
-		//TODO BY ZK
-		//sqlLoderJdbcTemplate.update(sql,new Object[]{mtlCuserTableName,fileNameCsv,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
+		this.getJdbcTemplate().update(sql,new Object[]{mtlCuserTableName,fileNameCsv,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
 	}
 	   /**
      * 
@@ -177,21 +171,30 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGro
            "values ((select max(CFG_ID)+1 from i_sync_data_cfg), ?, 0, 0, 4, 0, 0, 2, ?, '', ?, ?, '1', ',', sysdate, '', ?, ?, ?, null, null,?)";
 		log.info("sqlloder insertSQL :" + inertSql );
 		log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
-		//TODO BY ZK
-		//sqlLoderJdbcTemplate.update(inertSql,new Object[]{customGroupName,mtlCuserTableName,fileName,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
-	      log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
+		this.getJdbcTemplate().update(inertSql,new Object[]{customGroupName,mtlCuserTableName,fileName,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
+	    log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
 
 	}
 	@Override
 	public void addMtlGroupPushInfos(String customGroupId, String userId,
 			String pushToUserId) {
-//		JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
-
 		String sqldb = "insert into mtl_group_push_info(custom_group_id,create_user_id,create_push_target_id)" +
 		            " values (?,?,?)";
 		Object[] argdbs = new Object[]{customGroupId,userId,pushToUserId};
-//		jt.update(sqldb, argdbs);
 		this.getJdbcTemplate().update(sqldb, argdbs);
 
+	}
+	@Override
+	public void updateMtlGroupStatusInMem(String tableName,String custGroupId) {
+		
+		StringBuilder updateSql = new StringBuilder();
+		updateSql.append("UPDATE mtl_group_info SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from ")
+		.append(tableName)
+		.append(") where custom_group_id=?");
+		
+		Object[] args = new Object[]{custGroupId};
+
+		log.info("updateSql is {}", updateSql.toString());
+		this.getJdbcTemplate().update(updateSql.toString(), args);
 	}
 }

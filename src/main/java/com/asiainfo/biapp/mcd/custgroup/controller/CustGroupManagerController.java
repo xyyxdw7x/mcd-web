@@ -271,31 +271,34 @@ public class CustGroupManagerController extends BaseMultiActionController{
   			result.put("count", ""+i);
 			
 			campSegInfoService.createCustGroupTabAsCustTable1("mtl_cuser_",custGroupId);
+		
+			//TODO BY ZK
+            String config_Path = Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
+            config_Path = "D:\\1zk\\test\\ftp";
+            
+			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
+			String filepath = config_Path + File.separator; 
+			File f1 = new File(filepath + filename);
+			if (f1.exists()) {    
+				File newFile = new File(filepath + tableName+".txt");
+				f1.renameTo(newFile); 
+			}
 			
-                String config_Path = Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
-				//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
-				String filepath = config_Path + File.separator; 
-				File f1 = new File(filepath + filename);
-				if (f1.exists()) {    
-					File newFile = new File(filepath + tableName+".txt");
-					f1.renameTo(newFile); 
-				}
-				
-				FileOutputStream fos = new FileOutputStream(filepath + tableName+".txt"); //创建输出流  
-				fos.write(multiFile.getBytes()); //写入  
-				fos.flush();//释放  
-				fos.close(); //关闭  
-				System.out.println(custGroupId +tableName); 
-				
-				new Thread(new Runnable() {
-					public void run() {
-						try { 	 
-							mpmCommonService.insertCustGroupDataBySqlldr(custGroupId, tableName,customGroupName,date); 
-						}  catch (Exception e) {
-							e.printStackTrace();
-						}
-					} 
-				}).start(); 
+			FileOutputStream fos = new FileOutputStream(filepath + tableName+".txt"); //创建输出流  
+			fos.write(multiFile.getBytes()); //写入  
+			fos.flush();//释放  
+			fos.close(); //关闭  
+			System.out.println(custGroupId +tableName); 
+			
+			new Thread(new Runnable() {
+				public void run() {
+					try { 	 
+						mpmCommonService.insertCustGroupDataBySqlldr(custGroupId, tableName,customGroupName,date); 
+					}  catch (Exception e) {
+						e.printStackTrace();
+					}
+				} 
+			}).start(); 
 		   this.outJson4Ws2(response, result, "200", "OK");  
 		} catch (Exception e) { 
 			e.printStackTrace();

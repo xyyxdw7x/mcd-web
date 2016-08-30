@@ -27,8 +27,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.database.jdbc.ConnectionEx;
-import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 
 /**
  * <p>
@@ -105,11 +103,10 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	}
 	@Override
 	public void insertCustGroupDataBySqlldr(String custGroupId, String tableName,String customGroupName,String date) throws Exception {
-		Sqlca sqlca = null;
 		try {
 			
 			// 取前端存放数据的路径
-			     String filepath =  Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
+			    String filepath =  Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
 				String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
 				//  lingshi  xiugai yixia d a  String filenameTemp = File.separator+"data1"+File.separator ; 
 				String filenameTemp =filepath+tableName + ".ctl"; 
@@ -128,7 +125,7 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	 			String chkFile = filepath + tableName + ".verf";
 				creatTxtFile(chkFile,tableName+".txt");   
 				try {
-					/*
+					/*在Windows环境执行出错，暂时注释掉。
 					Runtime.getRuntime().exec("chmod 777 "+filenameTemp);
 					Runtime.getRuntime().exec("chmod 777 "+chkFile);
 					Runtime.getRuntime().exec("chmod 777 "+filepath + tableName + ".txt");
@@ -177,22 +174,10 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	                 proc.getOutputStream().close();
 	                 */ 
 
-					sqlca = new Sqlca(new ConnectionEx("JDBC_MPM"));
-					sqlca.setAutoCommit(false);   
-				     String updateSql=  "UPDATE mtl_group_info SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from MCD_AD."+tableName+ " ) where custom_group_id='"+custGroupId+"'";
-		             log.debug(">>\n" + updateSql);
-					sqlca.execute(updateSql);
-					sqlca.commit(); 
+					custGroupService.updateMtlGroupStatus(tableName,custGroupId);
 
 		} catch (Exception e) {
-			if (sqlca != null) {
-				sqlca.rollback();
-			}
-			throw e;
-		} finally {
-			if (sqlca != null) {
-				sqlca.closeAll();
-			}
+			e.printStackTrace();
 		}
 		
 	}

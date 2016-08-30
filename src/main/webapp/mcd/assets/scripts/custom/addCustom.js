@@ -55,7 +55,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxF
 				var oMyForm = new FormData();
 				oMyForm.append("file", upload_file.files[0]);
 				$.ajaxFileUpload({  
-			        url : _ctx+"/custGroupManager/saveCustGroup",
+			        url : _ctx+"/custgroup/custGroupManager/saveCustGroup",
 			        data: data,
 			        secureuri : false,  
 			        fileElementId : 'upload_file',

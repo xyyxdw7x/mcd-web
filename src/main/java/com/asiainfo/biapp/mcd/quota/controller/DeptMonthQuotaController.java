@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -30,6 +31,7 @@ import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
+@Controller
 @RequestMapping("/monthQuota")
 public class DeptMonthQuotaController  extends BaseMultiActionController {
     private static final Logger log = LogManager.getLogger();

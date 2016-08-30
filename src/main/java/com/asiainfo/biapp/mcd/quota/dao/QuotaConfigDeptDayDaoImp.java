@@ -129,9 +129,8 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public int getTotal4DaysInMem(String cityId, String deptId, String month) {
+	public int getTotal4DaysInMem(String cityId, String deptId, String month,List<Map<String, Object>> list) {
 		int totals = 0;
-		List<Map<String, Object>> list = this.getMonthDaysQuotaInMem(cityId, deptId,month);
 		for (int i = 0; i < list.size(); i++) {
 			@SuppressWarnings("rawtypes")
 			Map temp = list.get(i);
