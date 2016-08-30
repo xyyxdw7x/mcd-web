@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.custgroup.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.avoid.model.DimPlanType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 
 /*
  * Created on 4:00:43 PM

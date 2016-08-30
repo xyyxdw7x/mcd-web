@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.custgroup.dao;
 
-import com.asiainfo.biapp.mcd.custgroup.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 /*
  * Created on 11:02:19 AM

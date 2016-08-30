@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.avoid.model.DimPlanType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.dao.IMtlStcPlanDao;
 
 /**

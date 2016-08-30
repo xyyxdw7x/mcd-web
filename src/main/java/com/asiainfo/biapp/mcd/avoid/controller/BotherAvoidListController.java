@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.avoid.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
