@@ -10,5 +10,9 @@ public interface DimMtlChanneltypeService {
 	 * @return
 	 */
 	public List<DimMtlChanneltype> getChannelMsg(String isDoubleSelect);
-
+	/**
+	 * 查询线上渠道和线下渠道，以及该渠道包含的可进行优先级管理的策略数量
+	 * @return
+	 */
+	public List<DimMtlChanneltype> initChannel(boolean isOnLine,String cityId);
 }

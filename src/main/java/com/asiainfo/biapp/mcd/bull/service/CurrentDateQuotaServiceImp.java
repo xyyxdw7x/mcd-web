@@ -7,9 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.bull.dao.DeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.model.quota.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.model.quota.CurrentDateQuota;
+import com.asiainfo.biapp.mcd.quota.dao.DeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.util.QuotaUtils;
 
 @Service("currentDateQuotaService")
@@ -20,7 +20,7 @@ public class CurrentDateQuotaServiceImp implements CurrentDateQuotaService {
 	@Override
 	public List<CurrentDateQuota> getCurrentStatis(String cityId) {
 		List<CurrentDateQuota> list = new ArrayList<CurrentDateQuota>();
-		List<Map<String, Object>> month = deptsQuotaStatisticsDao.getCurrentMonth(cityId);
+		List<Map<String, Object>> month = deptsQuotaStatisticsDao.getCurrentMonthInMem(cityId);
 
 		if (month != null && month.size() > 0 ) {
 			for (int i = 0; i < month.size(); i++) {
@@ -40,7 +40,7 @@ public class CurrentDateQuotaServiceImp implements CurrentDateQuotaService {
 	@Override
 	public CityQuotaStatic getCityStatis(String cityId){
 		CityQuotaStatic cityStatic = new CityQuotaStatic();
-		Map<String, Object>  map = deptsQuotaStatisticsDao.getCityStatis(cityId);
+		Map<String, Object>  map = deptsQuotaStatisticsDao.getCityStatisInMem(cityId);
 		if(map!=null && map.size()>0){
 			cityStatic.setCityId(map.get("CITY_ID").toString());
 			

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
-import com.asiainfo.biapp.mcd.model.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 
 /**
  * 
@@ -84,4 +84,9 @@ public interface IDimMtlChanneltypeService {
 	 * @return
 	 */
 	public List<DimMtlChanneltype> initChannel(boolean isOnLine,String cityId);
+	/**
+	 * 根据渠道类型id取渠道的派单方式
+	 * @param channelTypeId
+	 * @throws MpmException
+	 */
 }

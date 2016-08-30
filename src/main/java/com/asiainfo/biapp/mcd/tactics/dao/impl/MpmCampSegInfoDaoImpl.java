@@ -518,5 +518,35 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         String sql = "update mtl_camp_seginfo set end_date = ? where campseg_id=?";
         this.getJdbcTemplate().update(sql, new Object[] { endDate,campsegId });
     }
+	@Override
+	public void cancelAssignment(String campsegId, short ampsegStatId, String approve_desc) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void updateCampStat(List<String> rList, String type) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public List getExecContentList(String campsegId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List getExecContentVariableList(String campsegId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

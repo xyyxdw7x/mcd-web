@@ -33,7 +33,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
+//import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -85,10 +85,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	private ICreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
-	@Resource(name = "mcdCampsegTaskDao")
-	private IMcdCampsegTaskDao mcdCampsegTaskDao;
-	@Resource(name = "mcdCampsegTaskService")
-	private IMcdCampsegTaskService mcdCampsegTaskService;
+//	@Resource(name = "mcdCampsegTaskDao")
+//	private IMcdCampsegTaskDao mcdCampsegTaskDao;
+//	@Resource(name = "mcdCampsegTaskService")
+//	private IMcdCampsegTaskService mcdCampsegTaskService;
 	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
@@ -555,142 +555,142 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    this.campSegInfoDao.updateCampSegInfoEndDate(campsegId,endDate);
 	        
 	}
-    /**
-     * 撤销工单
-     * @param campsegId  策略ID
-     * @param ampsegStatId  撤消后的住哪个台
-     * @param approve_desc  处理结果描述
-     */
-    @Override
-    public void cancelAssignment(String campsegId, short ampsegStatId,
-            String approve_desc) {
-        campSegInfoDao.cancelAssignment(campsegId,ampsegStatId,approve_desc);
-        
-    }
-    /**
-     * 保存暂停/停止原因
-     * @param campsegId  父策略ID
-     * @param pauseComment  暂停原因
-     */
-    @Override
-    public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
-        campSegInfoDao.updatMtlCampSeginfoPauseComment(campsegId,pauseComment);
-        mcdCampsegTaskDao.updateTaskPauseComment(campsegId,pauseComment);
-    }
-    /**
-     * add by gaowj3 20150721
-     * @Title: updateCampStat
-     * @Description: 更改策略状态（浙江版）
-     * @param @param campSegId
-     * @param @return
-     * @param @throws Exception    
-     * @return List 
-     * @throws
-     */
-    @Override
-    public void updateCampStat(String campSegId, String type) {
-        List rList = null;
-        try {
-            MtlCampSeginfo baseSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
-            rList = new ArrayList();
-            rList.add(campSegId);           
-            MtlCampSeginfo segInfo = campSegInfoDao.getCampSegInfo(campSegId);
-            boolean cepEventFlag = false;
-            if (StringUtil.isNotEmpty(segInfo.getCepEventId())) {
-                cepEventFlag = true;
-            }
-            if (MpmCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_STOP);
-                    List<McdCampsegTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,MpmCONST.CHANNEL_TYPE_SMS);
-                    for(McdCampsegTask mcdCampsegTask : mcdCampsegTakList){
-                        String taskSendoddTabName = mcdCampsegTask.getTaskSendoddTabName();
-                        if(taskSendoddTabName != null && "".equals(taskSendoddTabName)){
-                            mcdCampsegTaskService.dropTaskSendoddTabNameInMem(taskSendoddTabName);
-                        }
-                    }
-                }
-                if (cepEventFlag) {
-                    /*CepMessageReceiverThread thread = CepReceiveThreadCache.getInstance().get(segInfo.getCampsegId());
-                    if (thread != null) {*/
-                        CepUtil.finishCepEvent(segInfo.getCepEventId());
-                    /*  thread.stopThread();
-                        CepReceiveThreadCache.getInstance().remove(segInfo.getCampsegId());
-                    }*/
-                }
-                campSegInfoDao.updateCampStat(rList, type);
-            } else if (MpmCONST.MPM_CAMPSEG_STAT_DDCG.equals(type)) {//启动
-                String status = type;
-                //浙江版，策略与业务状态可多选，关联删除
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
-                    MtlCampSeginfo mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
-                    int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
-                    int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
-                    int newDate = Integer.parseInt(DateUtil.date2String(new Date(), "yyyyMMdd"));
-                    if(startDate > newDate){//未到策略开始时间
-                        status = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
-                    }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
-                        status = MpmCONST.MPM_CAMPSEG_STAT_DDCG;
-                    }else{//已到策略结束时间
-                        status = MpmCONST.MPM_CAMPSEG_STAT_HDWC;
-                    }
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_RUNNING);
+//    /**
+//     * 撤销工单
+//     * @param campsegId  策略ID
+//     * @param ampsegStatId  撤消后的住哪个台
+//     * @param approve_desc  处理结果描述
+//     */
+//    @Override
+//    public void cancelAssignment(String campsegId, short ampsegStatId,
+//            String approve_desc) {
+//        campSegInfoDao.cancelAssignment(campsegId,ampsegStatId,approve_desc);
+//        
+//    }
+//    /**
+//     * 保存暂停/停止原因
+//     * @param campsegId  父策略ID
+//     * @param pauseComment  暂停原因
+//     */
+//    @Override
+//    public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
+//        campSegInfoDao.updatMtlCampSeginfoPauseComment(campsegId,pauseComment);
+//        mcdCampsegTaskDao.updateTaskPauseComment(campsegId,pauseComment);
+//    }
+//    /**
+//     * add by gaowj3 20150721
+//     * @Title: updateCampStat
+//     * @Description: 更改策略状态（浙江版）
+//     * @param @param campSegId
+//     * @param @return
+//     * @param @throws Exception    
+//     * @return List 
+//     * @throws
+//     */
+//    @Override
+//    public void updateCampStat(String campSegId, String type) {
+//        List rList = null;
+//        try {
+//            MtlCampSeginfo baseSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
+//            rList = new ArrayList();
+//            rList.add(campSegId);           
+//            MtlCampSeginfo segInfo = campSegInfoDao.getCampSegInfo(campSegId);
+//            boolean cepEventFlag = false;
+//            if (StringUtil.isNotEmpty(segInfo.getCepEventId())) {
+//                cepEventFlag = true;
+//            }
+//            if (MpmCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
+//                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+//                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_STOP);
+//                    List<McdCampsegTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,MpmCONST.CHANNEL_TYPE_SMS);
+//                    for(McdCampsegTask mcdCampsegTask : mcdCampsegTakList){
+//                        String taskSendoddTabName = mcdCampsegTask.getTaskSendoddTabName();
+//                        if(taskSendoddTabName != null && "".equals(taskSendoddTabName)){
+//                            mcdCampsegTaskService.dropTaskSendoddTabNameInMem(taskSendoddTabName);
+//                        }
+//                    }
+//                }
+//                if (cepEventFlag) {
+//                    /*CepMessageReceiverThread thread = CepReceiveThreadCache.getInstance().get(segInfo.getCampsegId());
+//                    if (thread != null) {*/
+//                        CepUtil.finishCepEvent(segInfo.getCepEventId());
+//                    /*  thread.stopThread();
+//                        CepReceiveThreadCache.getInstance().remove(segInfo.getCampsegId());
+//                    }*/
+//                }
+//                campSegInfoDao.updateCampStat(rList, type);
+//            } else if (MpmCONST.MPM_CAMPSEG_STAT_DDCG.equals(type)) {//启动
+//                String status = type;
+//                //浙江版，策略与业务状态可多选，关联删除
+//                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+//                    MtlCampSeginfo mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
+//                    int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
+//                    int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
+//                    int newDate = Integer.parseInt(DateUtil.date2String(new Date(), "yyyyMMdd"));
+//                    if(startDate > newDate){//未到策略开始时间
+//                        status = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
+//                    }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
+//                        status = MpmCONST.MPM_CAMPSEG_STAT_DDCG;
+//                    }else{//已到策略结束时间
+//                        status = MpmCONST.MPM_CAMPSEG_STAT_HDWC;
+//                    }
+//                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_RUNNING);
+//
+//                    if (cepEventFlag) {
+//                        CepUtil.restartCepEvent(segInfo.getCepEventId());
+//                    }
+//                    campSegInfoDao.updateCampStat(rList, status);
+//                }
+//
+//            } else if (MpmCONST.MPM_CAMPSEG_STAT_PAUSE.equals(type)) {//暂停
+//                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+//                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_PAUSE);
+//                }
+//                
+//                if (cepEventFlag) {
+//                    CepUtil.stopCepEvent(segInfo.getCepEventId());
+//                }
+//                campSegInfoDao.updateCampStat(rList, type);
+//
+//            }
 
-                    if (cepEventFlag) {
-                        CepUtil.restartCepEvent(segInfo.getCepEventId());
-                    }
-                    campSegInfoDao.updateCampStat(rList, status);
-                }
 
-            } else if (MpmCONST.MPM_CAMPSEG_STAT_PAUSE.equals(type)) {//暂停
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_PAUSE);
-                }
-                
-                if (cepEventFlag) {
-                    CepUtil.stopCepEvent(segInfo.getCepEventId());
-                }
-                campSegInfoDao.updateCampStat(rList, type);
-
-            }
-
-
-        } catch (Exception e) {
-            rList = null;
-            log.error("策略状态变更失败：", e);
-        }
-    
-        
-    }
-    /**
-     * 获取有营销用语的渠道的营销用语
-     * @param campsegId
-     * @return
-     */
-    @Override
-    public List getExecContentList(String campsegId) {
-        return campSegInfoDao.getExecContentList(campsegId);
-    }
-    /**
-     * 获取营销用语变量
-     * @param campsegId
-     * @return
-     */
-    @Override
-    public List getExecContentVariableList(String campsegId) {
-        return campSegInfoDao.getExecContentVariableList(campsegId);
-
-    }
-    /**
-     * 保存营销用语
-     * @param campsegId
-     * @param channelId
-     * @param execContent
-     * @param ifHasVariate 
-     */
-    @Override
-    public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
-        campSegInfoDao.saveExecContent(campsegId,channelId,execContent,ifHasVariate);
-        
-    }
+//        } catch (Exception e) {
+//            rList = null;
+//            log.error("策略状态变更失败：", e);
+//        }
+//    
+//        
+//    }
+//    /**
+//     * 获取有营销用语的渠道的营销用语
+//     * @param campsegId
+//     * @return
+//     */
+//    @Override
+//    public List getExecContentList(String campsegId) {
+//        return campSegInfoDao.getExecContentList(campsegId);
+//    }
+//    /**
+//     * 获取营销用语变量
+//     * @param campsegId
+//     * @return
+//     */
+//    @Override
+//    public List getExecContentVariableList(String campsegId) {
+//        return campSegInfoDao.getExecContentVariableList(campsegId);
+//
+//    }
+//    /**
+//     * 保存营销用语
+//     * @param campsegId
+//     * @param channelId
+//     * @param execContent
+//     * @param ifHasVariate 
+//     */
+//    @Override
+//    public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
+//        campSegInfoDao.saveExecContent(campsegId,channelId,execContent,ifHasVariate);
+//        
+//    }
 }
