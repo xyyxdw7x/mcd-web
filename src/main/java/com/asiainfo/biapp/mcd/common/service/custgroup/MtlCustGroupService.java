@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.common.service.custgroup;
 
 import java.util.Date;
 
-import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 
 /**
  * Created on Oct 22, 2007 10:54:03 AM
@@ -24,7 +24,7 @@ public interface MtlCustGroupService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateMtlGroupinfo(CustInfoBean custInfoBean);
+	public void updateMtlGroupinfo(CustInfo custInfoBean);
 	/**
 	 * 更新客户群信息表状态
 	 * @param tableName

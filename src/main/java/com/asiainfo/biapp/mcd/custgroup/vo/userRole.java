@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.custgroup.bean;
+package com.asiainfo.biapp.mcd.custgroup.vo;
 
 /**
  * 

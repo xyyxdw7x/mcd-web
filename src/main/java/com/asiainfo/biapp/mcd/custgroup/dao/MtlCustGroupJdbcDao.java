@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 
 
 public interface MtlCustGroupJdbcDao {
@@ -17,7 +17,7 @@ public interface MtlCustGroupJdbcDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateMtlGroupinfo(CustInfoBean custInfoBean);
+	public void updateMtlGroupinfo(CustInfo custInfoBean);
 	/**
 	 * 执行传过来的SQL语句，并注入参数
 	 * @param mtlCuserTableName   清单表名

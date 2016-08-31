@@ -30,7 +30,7 @@ import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
-import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
@@ -244,8 +244,8 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			
 			int i=0;  
 			//TABLE MTL_GROUP_INFO   
-			CustInfoBean custInfoBean =null;
-			custInfoBean = new CustInfoBean();
+			CustInfo custInfoBean =null;
+			custInfoBean = new CustInfo();
 	  		custInfoBean.setCustomGroupId(custGroupId);
 	  		custInfoBean.setCustomGroupName(customGroupName);
 	  		custInfoBean.setCustomGroupDesc(customGroupDesc);

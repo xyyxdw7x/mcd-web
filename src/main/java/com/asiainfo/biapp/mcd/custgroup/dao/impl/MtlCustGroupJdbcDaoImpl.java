@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
 import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 
 @Repository("custGroupJdbcDao")
 public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGroupJdbcDao {
@@ -30,7 +30,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
 	}   
 	
 	@Override
-	public void updateMtlGroupinfo(CustInfoBean custInfoBean) {
+	public void updateMtlGroupinfo(CustInfo custInfoBean) {
 		String sqldb="";
 		Object[] argdbs = null;
 		String sql = "select * from mtl_group_info where custom_group_id = ?";

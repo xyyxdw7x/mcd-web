@@ -10,8 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
 import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 
 /**
  * Created on Oct 22, 2007 11:34:37 AM
@@ -39,7 +39,7 @@ public class MtlCustGroupServiceImpl implements MtlCustGroupService {
 		return  mtlCustGroupJdbcDao.getGroupSequence(cityid); 
 	}
 	@Override
-	public void updateMtlGroupinfo(CustInfoBean custInfoBean) {
+	public void updateMtlGroupinfo(CustInfo custInfoBean) {
 		mtlCustGroupJdbcDao.updateMtlGroupinfo(custInfoBean);
 	}
 	@Override

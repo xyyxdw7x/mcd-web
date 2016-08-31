@@ -1,8 +1,8 @@
-package com.asiainfo.biapp.mcd.custgroup.bean;
+package com.asiainfo.biapp.mcd.custgroup.vo;
 
 import java.util.Date;
 
-public class CustInfoBean  extends BaseBean {
+public class CustInfo{
 	private String customGroupId;//	客户群ID
 	private String	customGroupName;//客户群名称
 	private String	customGroupDesc;//客户群描述
