@@ -2,12 +2,11 @@ package com.asiainfo.biapp.mcd.avoid.service.impl;
 
 import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
+import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.avoid.model;
+package com.asiainfo.biapp.mcd.avoid.vo;
 
 import java.util.Date;
 

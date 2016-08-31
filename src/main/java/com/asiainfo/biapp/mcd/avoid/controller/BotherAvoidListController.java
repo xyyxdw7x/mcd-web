@@ -20,8 +20,8 @@ import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
-import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
+import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
 //migration
 //import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;

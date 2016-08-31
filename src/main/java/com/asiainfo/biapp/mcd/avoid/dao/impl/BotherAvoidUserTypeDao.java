@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IDimBotherAvoidUserTypeDao;
-import com.asiainfo.biapp.mcd.avoid.model.DimBotherAvoidUserType;
+import com.asiainfo.biapp.mcd.avoid.vo.DimBotherAvoidUserType;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;

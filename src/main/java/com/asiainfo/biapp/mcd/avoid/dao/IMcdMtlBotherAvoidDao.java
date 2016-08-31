@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.avoid.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid;
+import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;;
 
 /**
