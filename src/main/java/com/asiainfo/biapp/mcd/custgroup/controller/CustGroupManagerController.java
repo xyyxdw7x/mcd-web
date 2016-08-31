@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
@@ -59,7 +59,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	private CustGroupInfoService custGroupInfoService;
 	
 	@Resource(name="mpmCommonService")
-	private IMpmCommonService mpmCommonService;
+	private MpmCommonService mpmCommonService;
 	
 	@Resource(name="mpmUserPrivilegeService")
 	private IMpmUserPrivilegeService userPrivilegeService;

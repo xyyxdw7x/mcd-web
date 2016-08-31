@@ -46,7 +46,7 @@ import com.asiainfo.biframe.utils.config.Configure;
  * @version 1.0
  */
 @Service("mpmCommonService")
-public class MpmCommonServiceImpl implements IMpmCommonService {
+public class MpmCommonServiceImpl implements MpmCommonService {
 	
 	private static Logger log = LogManager.getLogger();
 	@Resource(name="mtlStcPlanDao")

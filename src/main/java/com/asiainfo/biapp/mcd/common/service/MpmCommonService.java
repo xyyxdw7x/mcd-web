@@ -9,7 +9,7 @@ import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 
-public interface IMpmCommonService {
+public interface MpmCommonService {
 	/**
 	 *  新建策略页面---初始化政策类别
 	 * @return

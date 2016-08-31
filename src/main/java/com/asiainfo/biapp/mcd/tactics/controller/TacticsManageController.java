@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoServiceImpl;
@@ -49,7 +49,7 @@ public class TacticsManageController extends BaseMultiActionController {
     @Resource(name="mpmCampSegInfoService")
     private IMpmCampSegInfoService mpmCampSegInfoService; 
     @Resource(name="mpmCommonService")
-    private IMpmCommonService mpmCommonService; 
+    private MpmCommonService mpmCommonService; 
     @Resource(name="mtlCallWsUrlService")
     private IMtlCallWsUrlService mtlCallWsUrlService;
     @Resource(name="mtlStcPlanManagementService")
