@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.custgroup.model.privilege;
+package com.asiainfo.biapp.mcd.custgroup.vo.privilege;
 
 import java.util.List;
 
