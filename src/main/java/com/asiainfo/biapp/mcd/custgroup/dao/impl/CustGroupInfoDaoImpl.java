@@ -329,4 +329,17 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		List list = this.getJdbcTemplate().queryForList(sql.toString());
 		return list;
 	}
+	@Override
+	public int getOriginalCustGroupNum(String custGroupId){
+		int num = 0;
+		List<Map<String, Object>> list = null;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT * FROM MTL_GROUP_INFO WHERE CUSTOM_GROUP_ID = ?");
+		log.info("获取原始客户群："+buffer.toString());
+		list = this.getJdbcTemplate().queryForList(buffer.toString(), new String[]{custGroupId});
+		for (Map map : list) {
+			num = Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))); 
+		}
+		return num;
+	}
 }

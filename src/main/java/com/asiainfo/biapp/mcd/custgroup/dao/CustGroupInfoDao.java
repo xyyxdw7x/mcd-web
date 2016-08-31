@@ -40,4 +40,10 @@ public interface CustGroupInfoDao {
 	public void deleteCustom(String customGrpId);
 	
 	public List queryQueueInfo();
+	/**
+	 * 获取原始客户群数量
+	 * @param custGroupId
+	 * @return
+	 */
+	public int getOriginalCustGroupNum(String custGroupId);
 }

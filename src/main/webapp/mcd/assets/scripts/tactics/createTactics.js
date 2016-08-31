@@ -888,9 +888,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		createTacticsDialogs:function(){
 			var createTacticsView = Backbone.View.extend({
-				events : {
-					"click" : "click"
-				},
+				events : {"click" : "click"},
 				click : function(obj) {
 					var _thisview=this;
 					var target=$(obj.target);
@@ -900,7 +898,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						"class":"ok-button",
 						click: function() {
 							_thisview.clickOKbutton($( this ));
-
 							if($(this).attr("ifclose")!="false"){
 								$( this ).dialog( "close" );
 							}
@@ -917,13 +914,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								return;
 							}
 
-
 						}
 						var btns=[
 							{
 								text: "保存",
 								"class":"ok-button",
-
 								click: function() {
 									_thisview.clickOKbutton($( this ));
 									if($(this).attr("ifclose")!="false"){
@@ -1215,10 +1210,10 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					$("#putDateStart").val(_startDate);
 					$("#putDateEnd").val(_endDate);
 					this.saveWait("conten");
+					//加载弹出框列表
 					window.tableViewSave = tableObj.loadTable({
-						urlRoot:_ctx+"/mpm",
-						id:"imcdCampSegWaveMaintainAction.aido",
-						cmd:"getOriginalCustGroupNumTemp",
+						urlRoot:_ctx+"/tactics/tacticsManage",
+						id:"getOriginalCustGroupNumTemp",
 						currentDom:"#shopcarSaveTable",
 						ajaxData:{ruleList:_ajaxData},
 						ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/shopcarSaveTable.ejs',
@@ -1240,8 +1235,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								var $parent = $(this).parent();
 								$.ajax({
 									type:"post",
-									url:_ctx + '/mpm/imcdCampSegWaveMaintainAction.aido',
-									data:{cmd:'getOriginalCustGroupNum',ruleList:_ajaxData},
+									url:_ctx + '/tactics/tacticsManage/getOriginalCustGroupNum',
+									data:{ruleList:_ajaxData},
 									dataType:"json",
 									beforeSend:function(){
 										var img ='<img  style="width:20px;height:20px;margin:13px auto;display:inline-block;" src="../../assets/images/uploading.jpg"/>';
@@ -1412,14 +1407,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					//创建页面dialog四兄弟的ok button点击
 					if(ts.attr("id")=="createTacticsDialogs"){
 						module.exports.clickCustomersOk();
-					}
-					//购物车之保存
-					else if(ts.attr("id")=="saveCreateTacticsDialog"){
+					}else if(ts.attr("id")=="saveCreateTacticsDialog"){//购物车之保存
 						var _campsegName=$("#typePolicyName").val();
 						var _campsegTypeId=$("#saveCampsegType").val();
 						var _putDateStart=$("#putDateStart").val();
 						var _putDateEnd=$("#putDateEnd").val();
-						
 						var _isFilterDisturb = $('#saveBlackList').val();
 						var _commonAttrPlanId = $(".commonAttrPlanId").html();
 						if($.trim(_campsegName).length==0||$.trim(_putDateStart).length==0 || $.trim(_putDateEnd).length==0){
@@ -1463,9 +1455,9 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						_data+='}';
 						this.saveWait("conten");
 						if(module.exports.isCampsegEdit==true){
-							var saveUrl=_ctx + '/mpm/imcdCampSegWaveMaintainAction.aido?cmd=updateCampsegWaveInfo';
+							var saveUrl=_ctx + '/tactics/tacticsManage/updateCampsegWaveInfo';
 						}else{
-							var saveUrl=_ctx + '/mpm/imcdCampSegWaveMaintainAction.aido?cmd=saveCampsegWaveInfo';
+							var saveUrl=_ctx + '/tactics/tacticsManage/saveCampsegWaveInfo';
 						}
 						$.ajax({
 							type:"post",

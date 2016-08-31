@@ -51,4 +51,11 @@ public interface CustGroupInfoService {
 	
 	public List searchCustomDetail(String customGrpId);
 	
+	/**
+	 * 获取原始客户群数量
+	 * @param custGroupId
+	 * @return
+	 */
+	public int getOriginalCustGroupNum(String custGroupId);
+	
 }

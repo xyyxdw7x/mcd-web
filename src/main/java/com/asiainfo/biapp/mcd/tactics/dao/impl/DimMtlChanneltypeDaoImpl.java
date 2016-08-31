@@ -404,7 +404,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements IDimMtlCha
 					tmp.setCampsegTypeDesc(rs.getString("CAMPSEG_TYPE_DESC"));
 					tmp.setCampsegTypeId(rs.getShort("CAMPSEG_TYPE_ID"));
 					tmp.setCampsegTypeName(rs.getString("CAMPSEG_TYPE_NAME"));
-					return null;
+					return tmp;
 				}
 				
 			});

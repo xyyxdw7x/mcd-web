@@ -1,16 +1,20 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -20,6 +24,8 @@ import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.custgroup.service.CustGroupAttrRelService;
+import com.asiainfo.biapp.mcd.custgroup.service.impl.CustGroupInfoServiceImpl;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -31,6 +37,9 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -51,6 +60,8 @@ public class TacticsManageController extends BaseMultiActionController {
     private CustGroupAttrRelService custGroupAttrRelService;
     @Resource(name="channelBossSmsTemplateService")
     private ChannelBossSmsTemplateService channelBossSmsTemplateService;
+    @Resource(name="custGroupInfoService")
+    private CustGroupInfoServiceImpl custGroupInfoService;
     
 	/**
 	 * 保存策略基本信息
@@ -59,7 +70,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	/*public void saveCampsegWaveInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public void saveCampsegWaveInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -72,9 +83,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		int whnum = 0;
 		String month = "";
 		try {
-			initActionAttributes(request);
-			McdTempletForm bussinessLableTemplate = new McdTempletForm();
-			McdTempletForm basicEventTemplate = new McdTempletForm();
+			//TODO: initActionAttributes(request);
+/*			McdTempletForm bussinessLableTemplate = new McdTempletForm();
+			McdTempletForm basicEventTemplate = new McdTempletForm();*/
 			// 策略包 先循环迭代出每个规则
 			String test = request.getParameter("ruleList");
 			org.json.JSONObject ruleList = new org.json.JSONObject(test);
@@ -98,17 +109,21 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSeginfoBasic.setStartDate(putDateStart);
 			campSeginfoBasic.setEndDate(putDateEnd);
 			campSeginfoBasic.setCampsegPid("0");// 父节点
-			campSeginfoBasic.setCreateUserid(user.getUserid());
-			campSeginfoBasic.setCreateUserName(user.getUsername());
+			//TODO:campSeginfoBasic.setCreateUserid(user.getUserid());
+			campSeginfoBasic.setCreateUserid("chenyg");
+			//TODO:campSeginfoBasic.setCreateUserName(user.getUsername());
+			campSeginfoBasic.setCreateUserName("陈永刚");
 			campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
 			campSeginfoBasic.setPlanId(planId);
 			campSeginfoBasic.setFatherNode(true);
-			campSeginfoBasic.setAreaId(user.getCityid());
-			campSeginfoBasic.setCityId(user.getCityid()); // 策划人所属城市
+			//TODO:campSeginfoBasic.setAreaId(user.getCityid());
+			campSeginfoBasic.setAreaId("999");
+			//TODO:campSeginfoBasic.setCityId(user.getCityid()); // 策划人所属城市
+			campSeginfoBasic.setCityId("999"); // 策划人所属城市
 			campSeginfoBasic.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 			String deptId = "";
 			String deptName = "";
-			if (user != null) {
+			/*if (user != null) {
 				LkgStaff staff = (LkgStaff) user;
 				String deptMsg = staff.getDepId();
 				if (deptMsg.indexOf("&&") > 0) {
@@ -116,7 +131,7 @@ public class TacticsManageController extends BaseMultiActionController {
 					deptName = deptMsg.split("&&")[1];
 				}
 				campSeginfoBasic.setDeptId(Integer.parseInt(deptId)); // 策划人部门id
-			}
+			}*/
 			campSegInfoList.add(campSeginfoBasic);
 
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -128,25 +143,25 @@ public class TacticsManageController extends BaseMultiActionController {
 				org.json.JSONObject rule = new org.json.JSONObject(ruleList.get(ruleIndex).toString()); // 迭代每一个规则进行计算
 
 				// 业务标签
-				String labelArr = rule.get("labelArr").toString();
+				/*String labelArr = rule.get("labelArr").toString();
 				if (StringUtil.isEmpty(labelArr) || labelArr.equals("[]")) {
 					bussinessLableTemplate = null;
 				} else {
 					bussinessLableTemplate = this.createTemplateForm(labelArr, "0", true);
-				}
+				}*/
 				// 获取ARPU 基础标签
-				String basicProp = rule.get("basicProp").toString();
+				/*String basicProp = rule.get("basicProp").toString();
 				if (StringUtil.isEmpty(basicProp) || basicProp.equals("[]")) {
 					basicEventTemplate = null;
 				} else {
 					basicEventTemplate = createTemplateForm(basicProp, "1", true);
-				}
+				}*/
 				// 产品订购
-				String productArr = rule.get("productArr").toString();
+			/*	String productArr = rule.get("productArr").toString();
 				String productAttr[] = this.createProductAttr(productArr);
 				String orderProductNo = productAttr[0]; // 订购产品
 				String excludeProductNo = productAttr[1]; // 剔除产品
-				// 获取渠道ID
+*/				// 获取渠道ID
 				String channelIds = rule.get("channelIds").toString();
 
 				// 获取客户群ID
@@ -343,12 +358,15 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setEndDate(putDateEnd);
 				campSeginfo.setCampsegStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
 				campSeginfo.setCampsegTypeId(Short.parseShort(campsegTypeId));// 策略类型
-				campSeginfo.setCreateUserid(user.getUserid()); // 活动策划人
-				campSeginfo.setCityId(user.getCityid()); // 策划人所属城市
+				//TODO:campSeginfo.setCreateUserid(user.getUserid()); // 活动策划人
+				campSeginfo.setCreateUserid("chenyg"); // 活动策划人
+				//TODO:campSeginfo.setCityId(user.getCityid()); // 策划人所属城市
+				campSeginfo.setCityId("999"); // 策划人所属城市
 				campSeginfo.setDeptId(Integer.parseInt(deptId)); // 策划人部门id
 				campSeginfo.setCreateTime(format.parse(format.format(new Date())));
 				campSeginfo.setPlanId(planIdArray[i]); // 产品编号
-				campSeginfo.setCreateUserName(user.getUsername());
+				//TODO:campSeginfo.setCreateUserName(user.getUsername());
+				campSeginfo.setCreateUserName("陈永刚");
 				campSeginfo.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 				// 渠道基本信息
 				campSeginfo.setChannelId(channelIds); // 渠道id
@@ -370,26 +388,26 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setMtlChannelDefList(mtlChannelDefList);
 				campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
 				// 产品订购或者剔除关系
-				campSeginfo.setOrderPlanIds(orderProductNo);
-				campSeginfo.setExcludePlanIds(excludeProductNo);
+				/*campSeginfo.setOrderPlanIds(orderProductNo);
+				campSeginfo.setExcludePlanIds(excludeProductNo);*/
 
 				// 保存业务标签
-				if (bussinessLableTemplate != null) {
+				/*if (bussinessLableTemplate != null) {
 					String bussinessLableTemplateId = this.handleTemplet(request.getLocale(), bussinessLableTemplate);
 					if (StringUtil.isNotEmpty(bussinessLableTemplateId)) {
 						campSeginfo.setBussinessLableTemplateId(bussinessLableTemplateId);
 					}
-				}
+				}*/
 				// 保存时机规则
-				if (basicEventTemplate != null) {
+				/*if (basicEventTemplate != null) {
 					String basicEventTemplateId = this.handleTemplet(request.getLocale(), basicEventTemplate);
 					if (StringUtil.isNotEmpty(basicEventTemplateId)) {
 						campSeginfo.setBasicEventTemplateId(basicEventTemplateId);
 					}
-				}
+				}*/
 
-				campSeginfo.setBussinessLableTemplate(bussinessLableTemplate);
-				campSeginfo.setBasicEventTemplate(basicEventTemplate);
+				/*campSeginfo.setBussinessLableTemplate(bussinessLableTemplate);
+				campSeginfo.setBasicEventTemplate(basicEventTemplate);*/
 				campSeginfo.setRequestLocal(request.getLocale());
 				campSegInfoList.add(campSeginfo);
 
@@ -411,7 +429,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			out.close();
 		}
 	}
-	*/
+	
 	/**
 	 * JSON转map
 	 * add by zhuml 20151203
@@ -841,5 +859,108 @@ public class TacticsManageController extends BaseMultiActionController {
 			out.close();
 		}
 	}
+	
+	/**
+	 * 查询原始客户群数量   点击保存弹出页面，查询原始客户群、过滤后的客户群
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws MpmException
+	 */
+	@RequestMapping("/getOriginalCustGroupNumTemp")
+	public void getOriginalCustGroupNumTemp(HttpServletRequest request,HttpServletResponse response) throws MpmException{
+		long begin = new Date().getTime();
+		JSONObject dataJson = new JSONObject();
+		PrintWriter out = null;
+		try {
+			response.setContentType("application/json; charset=UTF-8");
+			response.setHeader("progma", "no-cache");
+			response.setHeader("Access-Control-Allow-Origin", "*");
+			response.setHeader("Cache-Control", "no-cache");
+			out = response.getWriter();
+//			策略包    先循环迭代出每个规则
+			String test = request.getParameter("ruleList");
+			org.json.JSONObject ruleList = new org.json.JSONObject(test);
+			List<List<Map<String, String>>> lists = new ArrayList<List<Map<String, String>>>(); //存放每个rule的list
+			List<Map<String, String>> listChannel = new ArrayList<Map<String,String>>();  //存放每个rule下的渠道map
+			for(int i = 0;i<ruleList.length();i++){
+				String ruleIndex = "rule"+i;
+				org.json.JSONObject rule = new org.json.JSONObject(ruleList.get(ruleIndex).toString());  //迭代每一个规则进行计算
+				//获取渠道ID
+				String  channelIds = rule.get("channelIds").toString();
+				//获取客户群ID
+				String customgroupid = null;
+				if(StringUtil.isNotEmpty(rule.get("customer").toString())){
+					customgroupid =  new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
+				}
+				int afterBotherAvoidNum = 0;
+				int originalCustGroupNum = custGroupInfoService.getOriginalCustGroupNum(customgroupid);   //原始客户群数量
+				
+				if(StringUtil.isNotEmpty(channelIds)){
+					String channelIdTemp[] = channelIds.split(",");
+					for(int j = 0;j<channelIdTemp.length;j++){
+						Map<String, String> map = new HashMap<String, String>();
+						String channelId = channelIdTemp[j];
+						int mdrNum = 0; //免打扰数量
+						int pcNum = 0;  //频次数量
+						int satisfiedNum = 0;  //愿意数量
+						int unSatisfiedNum = 0;  //不愿意数量
+						int pcMdrNum = 0; //免打扰频次数量
+						
+						String excludeCustGroupId = "";
+						String includeCustGroupId = "";
+						List avoidSatisfiedCustList = null;  //愿意
+						List avoidUnSatisfiedCustList = null;  //不愿意
+						
+						map.put("ruleIndex", ruleIndex);    //记录是哪个规则
+						map.put("channelId", channelId);    //记录哪个渠道
+						map.put("originalCustGroupNum", String.valueOf(originalCustGroupNum));
+						
+						map.put("blackListNum", String.valueOf(mdrNum));
+						map.put("avoidCustListNum", String.valueOf(pcNum));
+						
+						map.put("satisfiedNum", String.valueOf(satisfiedNum));
+						map.put("unSatisfiedNum", String.valueOf(unSatisfiedNum));
+						map.put("afterSatisfiedFilterNum", String.valueOf(satisfiedNum+unSatisfiedNum)); //短信满意度过滤
+						
+						if(afterBotherAvoidNum-pcMdrNum-satisfiedNum-unSatisfiedNum < 0){
+							map.put("filterCustGroupNum", "0");
+						}else{
+							map.put("filterCustGroupNum", String.valueOf(afterBotherAvoidNum-pcMdrNum-satisfiedNum-unSatisfiedNum));
+						}
+						listChannel.add(map);
+					}
+				}
+				lists.add(listChannel);
+			}
+			
+			dataJson.put("status", "-1");
+			dataJson.put("data", JmsJsonUtil.obj2Json(lists));
+			out.print(dataJson);
+		} catch (Exception e) {
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+			long end = new Date().getTime();
+			System.out.println("*********************方法执行时间："+(end-begin));
+		}
+	}
+
+	
+	/**
+	 * 查询原始客户群数量   点击保存弹出页面，查询原始客户群、过滤后的客户群
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws MpmException
+	 */
+	public void getOriginalCustGroupNum(HttpServletRequest request,HttpServletResponse response) throws MpmException{
+		
+	}
+	
 
 }

@@ -211,5 +211,13 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		// TODO Auto-generated method stub
 		return custGroupInfoDao.queryQueueInfo();
 	}
+	/**
+	 * 获取原始客户群数量
+	 * @param custGroupId
+	 * @return
+	 */
+	public int getOriginalCustGroupNum(String custGroupId){
+		return custGroupInfoDao.getOriginalCustGroupNum(custGroupId);
+	}
 	
 }
