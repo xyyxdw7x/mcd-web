@@ -85,7 +85,7 @@ public class MtlCampSeginfo {
     private String activeTempletId;// 时机规则模板ID
     private String initCustListTab;//策略初始清单表
     private Date approveRemindTime;
-
+    private String eventSourceId; // 外部事件源
 
 	public String getCampDrvName() {
 		return campDrvName;
@@ -525,6 +525,13 @@ public class MtlCampSeginfo {
     }
     public void setApproveRemindTime(Date approveRemindTime) {
         this.approveRemindTime = approveRemindTime;
+    }
+    public String getEventSourceId() {
+        return eventSourceId;
+    }
+    @Column(name="EVENT_SOURCE")
+    public void setEventSourceId(String eventSourceId) {
+        this.eventSourceId = eventSourceId;
     }
     
 }

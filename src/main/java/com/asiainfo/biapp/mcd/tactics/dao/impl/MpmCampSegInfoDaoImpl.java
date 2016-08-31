@@ -152,13 +152,19 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	 */
 	@Override
 	public MtlCampSeginfo getCampSegInfo(String campSegId) throws Exception {
-		MtlCampSeginfo obj = null;
-		try {
-			//TODO: obj = (MtlCampSeginfo) this.getHibernateTemplate().get(MtlCampSeginfo.class, campSegId);
-		} catch (Exception e) {
-			throw e;
-		}
-		return obj;
+        MtlCampSeginfo obj = null;
+        try {
+            final String sql = "select * from mtl_camp_seginfo seginfo where seginfo.campseg_id = ? ";
+            Object[] args=new Object[]{campSegId};
+            int[] argTypes=new int[]{Types.VARCHAR};
+            List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
+            if(list != null && list.size() > 0){
+                obj = list.get(0);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return obj;
 	}
     /**
      * 根据父策略ID获取子策略
@@ -218,9 +224,15 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List<String> gettListAllCampSegByParentId(String campSegId, List<String> rList) {
-        final String sql = " SELECT mcs.campsegId from mtl_camp_seginfo mcs WHERE mcs.campseg_pid='" + campSegId + "'";
+        final String sql = " SELECT mcs.campseg_id from mtl_camp_seginfo mcs WHERE mcs.campseg_pid='" + campSegId + "'";
         List list = this.getJdbcTemplate().queryForList(sql);
-        return list;
+        List<String> listStr = new ArrayList<String>();
+        for(int i = 0 ; i < list.size() ; i ++){
+            Map map = (Map)list.get(i);
+            String campseg_id = map.get("campseg_id").toString();
+            listStr.add(campseg_id);
+        }
+        return listStr;
 
     }
     
@@ -518,35 +530,92 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         String sql = "update mtl_camp_seginfo set end_date = ? where campseg_id=?";
         this.getJdbcTemplate().update(sql, new Object[] { endDate,campsegId });
     }
-	@Override
-	public void cancelAssignment(String campsegId, short ampsegStatId, String approve_desc) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void updateCampStat(List<String> rList, String type) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public List getExecContentList(String campsegId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public List getExecContentVariableList(String campsegId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * 撤销工单
+     * @param campsegId  策略ID
+     * @param ampsegStatId  撤消后的住哪个台
+     * @param approve_desc  处理结果描述
+     */
+    @Override
+    public void cancelAssignment(String campsegId, short ampsegStatId, String approve_desc) {
+        String sql = "update mtl_camp_seginfo set CAMPSEG_STAT_ID = ?,approve_result_desc = ?  where campseg_id=?";
+        this.getJdbcTemplate().update(sql, new Object[] {ampsegStatId,approve_desc,campsegId });
+        
+    }
+    @Override
+    public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
+        try {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(" update mtl_camp_seginfo set pause_comment  = ? where campseg_pid = ? ")
+                  .append(" or campseg_id =? ");
+            this.getJdbcTemplate().update(buffer.toString(), new Object[] {pauseComment,campsegId,campsegId});
+            
+        } catch (Exception e) {
+            log.error("更新策略状态失败！");
+        }
+        
+    }
+    /**
+     * 修改营销活动任务状态
+     * 2013-6-8 16:53:33
+     * @author Mazh
+     * @param campSegId
+     * @param pType
+     */
+    @Override
+    public void updateCampStat(List<String> rList, String type) {
+        StringBuffer sqlB = new StringBuffer();
+        for (String campSegId : rList) {
+            sqlB = new StringBuffer();
+            sqlB.append(" UPDATE mtl_camp_seginfo A ");
+            sqlB.append(" SET ");
+            sqlB.append(" A.campseg_stat_id=" + type + " ");
+            sqlB.append(" WHERE ");
+            sqlB.append(" A.Campseg_id='");
+            sqlB.append(campSegId);
+            sqlB.append("'");
+            this.getJdbcTemplate().execute(sqlB.toString());
+            log.debug("sql:{}", sqlB.toString());
+        }
+        
+    }
+    /**
+     * 获取有营销用语的渠道的营销用语
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List getExecContentList(String campsegId) {
+        String sql = "select d.channel_id,d.channel_name,s.exec_content from mtl_channel_def s left join dim_mtl_channel d on s.channel_id = d.channel_id " +
+        "where s.campseg_id = ?  and d.exec_content_flag = 1";
+        
+        return this.getJdbcTemplate().queryForList(sql, new Object[] {campsegId });
+    }
+    /**
+     * 获取营销用语变量
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List getExecContentVariableList(String campsegId) {
+        String sql = "select attr_col_name,attr_col from MTL_GROUP_ATTR_REL mgar WHERE mgar.custom_group_id = " +
+        "(select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?)" +
+        " and mgar.list_table_name=(select max(list_table_name) from MTL_GROUP_ATTR_REL WHERE CUSTOM_GROUP_ID=(" +
+        " select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?))" ;
+        
+        return this.getJdbcTemplate().queryForList(sql, new Object[] {campsegId,campsegId });
+    }
+    /**
+     * 保存营销用语
+     * @param campsegId
+     * @param channelId
+     * @param execContent
+     * @param ifHasVariate 
+     */
+    @Override
+    public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
+        String sql = "update mtl_channel_def s set s.exec_content = ?,if_have_var = ? where s.campseg_id = ? and s.channel_id = ?" ;    
+        this.getJdbcTemplate().update(sql, new Object[] {execContent,Integer.parseInt(ifHasVariate),campsegId,channelId });
+    }
 
 }

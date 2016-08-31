@@ -43,7 +43,9 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
   <!-- spring  Listener end-->
-  
+  <listener>
+		<listener-class>com.asiainfo.biapp.mcd.listener.MpmCommonListener</listener-class>
+  </listener>
   <!--dubbo and rest config start  -->
   <listener>
     <listener-class>com.alibaba.dubbo.remoting.http.servlet.RestBootstrapListener</listener-class>

@@ -95,4 +95,55 @@ public interface IMpmCampSegInfoService {
      * @throws Exception
      */
     public void updateCampsegEndDate(String campsegId, String endDate) throws Exception;
+    /**
+     * 营销活动主键查询
+     * @param campSegId
+     * @return
+     * @throws MpmException
+     */
+    public MtlCampSeginfo getCampSegInfo(String campSegId) throws MpmException;
+    /**
+     * 撤销工单
+     * @param campsegId  策略ID
+     * @param ampsegStatId  撤消后的住哪个台
+     * @param approve_desc  处理结果描述
+     */
+    public void cancelAssignment(String campsegId, short ampsegStatId,String approve_desc);
+    /**
+     * 保存暂停/停止原因
+     * @param campsegId  父策略ID
+     * @param pauseComment  暂停原因
+     */
+    public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment);
+    /**
+     * add by gaowj3 20150721
+     * @Title: updateCampStat
+     * @Description: 更改策略状态（浙江版）
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+    public void updateCampStat(String campsegId, String type);
+    /**
+     * 获取有营销用语的渠道的营销用语
+     * @param campsegId
+     * @return
+     */
+    public List getExecContentList(String campsegId);
+    /**
+     * 获取营销用语变量
+     * @param campsegId
+     * @return
+     */
+    public List getExecContentVariableList(String campsegId);
+    /**
+     * 保存营销用语
+     * @param campsegId
+     * @param channelId
+     * @param execContent
+     * @param ifHasVariate 
+     */
+    public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate);
 }

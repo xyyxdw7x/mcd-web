@@ -9,10 +9,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 
+import org.apache.axis.client.Call;
+import org.apache.axis.client.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,16 +28,26 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdMtlGroupInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.MarketApproveInfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 import com.asiainfo.biframe.service.IdNameMapper;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
+import com.asiainfo.biframe.utils.string.StringUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+/**
+ * 策略管理Controller
+ * @author AsiaInfo-jie
+ *
+ */
 @RequestMapping("/tactics/campSegSearch")
 public class CampSegSearchController extends BaseMultiActionController {
     private static Logger log = LogManager.getLogger();
@@ -43,6 +58,10 @@ public class CampSegSearchController extends BaseMultiActionController {
     private IMpmCampSegInfoService mpmCampSegInfoService;
     @Resource(name="mcdMtlGroupInfoService")
     private IMcdMtlGroupInfoService iMcdMtlGroupInfoService ;
+    @Resource(name = "mtlCallWsUrlService")
+    private IMtlCallWsUrlService callwsUrlService;
+    @Resource(name = "mtlSmsSendTestTask")
+    private IMtlSmsSendTestTask mtlSmsSendTestTask;
     
     @RequestMapping("/searchIMcdCamp")
     public ModelAndView searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
@@ -374,17 +393,12 @@ public class CampSegSearchController extends BaseMultiActionController {
             String endDate = request.getParameter("endDate") != null ? request
                     .getParameter("endDate") : null;
 
-            IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator
-                    .getInstance().getService(
-                            MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
             if (campsegId != null && endDate != null) {
 
-                List<MtlCampSeginfo> mtlCampSeginfoList = service
-                        .getChildCampSeginfo(campsegId);
-                service.updateCampsegEndDate(campsegId, endDate);
+                List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+                mpmCampSegInfoService.updateCampsegEndDate(campsegId, endDate);
                 for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
-                    service.updateCampsegEndDate(mtlCampSeginfo.getCampsegId(),
-                            endDate);
+                    mpmCampSegInfoService.updateCampsegEndDate(mtlCampSeginfo.getCampsegId(),endDate);
                 }
 
             } else {
@@ -415,5 +429,437 @@ public class CampSegSearchController extends BaseMultiActionController {
             return null;
         }
     }
+
+    /**
+     * 撤销工单
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/cancelAssignment")
+    public ModelAndView cancelAssignment (HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        String campsegId = request.getParameter("campsegId") != null ? request
+                .getParameter("campsegId") : null;
+        String anceldesc = request.getParameter("anceldesc") != null ? request
+                .getParameter("anceldesc") : null;
+        String msg = "";
+        int status = 200;
+
+        MtlCampSeginfo segInfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
+        StringBuffer xml = new StringBuffer(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        xml.append("<MARKET_ASSIGNMENT_INFO><ASSIGNMENT_INFO>");
+        xml.append("<ASSIGN_ID>" + segInfo.getApproveFlowid() + "</ASSIGN_ID>");
+        xml.append("<CANCEL_DESC>" + anceldesc + "</CANCEL_DESC>");
+        xml.append("</ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>");
+
+        String assing_id = null;
+        String approve_flag = null;
+        String approve_desc = null;
+        log.info("开始工单撤销 ！");
+        try {
+            //
+
+            MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+
+            QName name = new QName("http://impl.biz.web.tz", "cancelAssignment");
+            Service serviceWs = new Service();
+            Call call = (Call) serviceWs.createCall();
+            call.setTargetEndpointAddress(new java.net.URL(url.getCallwsUrl()));
+            call.setOperationName(name);
+            // call.setOperationName("commitApproveInfo");
+            call.setTimeout(50000);// 超时时间5秒
+            log.info(xml.toString());
+            String childxml = call.invoke(new Object[] { xml.toString() })
+                    .toString();
+
+            log.info("撤销工单返回responed xml " + childxml);
+            Document dom = DocumentHelper.parseText(childxml);
+            Element root = dom.getRootElement();
+            List<Element> elementList = root.elements("ASSIGNMENT_INFO");
+            MarketApproveInfo marketApproveInfo = null;
+
+            for (int i = 0; i < elementList.size(); i++) {
+                Element element = (org.dom4j.Element) elementList.get(i);
+                assing_id = element.element("ASSIGN_ID") != null ? element
+                        .element("ASSIGN_ID").getText() : "";
+                approve_flag = element.element("PROCESS_FLAG") != null ? element
+                        .element("PROCESS_FLAG").getText() : "";
+                approve_desc = element.element("PROCESS_DESC") != null ? element
+                        .element("PROCESS_DESC").getText() : "";
+            }
+
+            // 存撤销工单状态及撤销原因）
+            if ("1".equals(approve_flag)) {
+                short ampsegStatId = Short
+                        .valueOf(MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+                mpmCampSegInfoService.cancelAssignment(campsegId, ampsegStatId, approve_desc);
+                List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+                for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                    mpmCampSegInfoService.cancelAssignment(mtlCampSeginfo.getCampsegId(),
+                            ampsegStatId, approve_desc);
+                }
+            } else {
+                status = 201;
+                msg = "接口返回处理结果失败，原因为：" + approve_desc;
+            }
+
+        } catch (Exception e) {
+            status = 201;
+            e.printStackTrace();
+            msg = e.getMessage();
+        } finally {
+            JSONObject dataJson = new JSONObject();
+            if (status == 200) {
+                dataJson.put("status", status);
+            } else {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+        }
+
+        return null;
+    }
+    
+
+    /**
+     * 策略停止 Method campCancel()
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/campCancel")
+    public ModelAndView campCancel(HttpServletRequest request,HttpServletResponse response)
+            throws Exception {
+        String msg = "";
+        int status = 200;
+        try {
+            /* 获取session信息 */
+            String campsegId =  request.getParameter("campsegId") != null ? request.getParameter("campsegId").toString() : null;
+            String pauseComment = request.getParameter("pauseComment") != null ? request.getParameter("pauseComment").toString() : null;
+            if (campsegId != null) {
+                // 获取service
+
+                List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+                mpmCampSegInfoService.updateCampStat(campsegId,
+                        MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+                for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(),
+                            MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+                }
+                //保存停止原因
+                mpmCampSegInfoService.updatMtlCampSeginfoPauseComment(campsegId,pauseComment);
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+            status = 201;
+            msg = "策略终止失败";
+        } finally {
+            if (StringUtil.isEmpty(msg)) {
+                msg = "策略终止成功";
+            }
+            JSONObject dataJson = new JSONObject();
+            if (status != 200) {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            } else {
+                dataJson.put("status", status);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+            return null;
+
+        }
+
+    }
+
+    /**
+     * 策略暂停
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/campPause")
+    public ModelAndView campPause(HttpServletRequest request,HttpServletResponse response)
+            throws Exception {
+        String msg = "";
+        String logDesc = "";
+        int status = 200;
+        try {
+            /* 获取session信息 */
+            String campsegId =  request.getParameter("campsegId") != null ? request.getParameter("campsegId").toString() : null;
+            String pauseComment = request.getParameter("pauseComment") != null ? request.getParameter("pauseComment").toString() : null;
+            
+            if (campsegId != null) {
+                List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+                mpmCampSegInfoService.updateCampStat(campsegId,MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
+                
+                for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(), MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
+                }
+                //保存暂停原因
+                mpmCampSegInfoService.updatMtlCampSeginfoPauseComment(campsegId,pauseComment);
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+            status = 201;
+        } finally {
+            if (status == 201) {
+                msg = "策略暂停失败";
+            } else {
+                msg = "策略暂停成功";
+            }
+            JSONObject dataJson = new JSONObject();
+            if (status != 200) {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            } else {
+                dataJson.put("status", status);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+            return null;
+
+        }
+    }
+
+    /**
+     * 策略重启
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/campRestart")
+    public ModelAndView campRestart(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String msg = "";
+        int status = 200;
+        try {
+
+            String campsegId = request.getParameter("campsegId") != null ? request
+                    .getParameter("campsegId") : null;
+
+            if (campsegId != null) {
+                List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+                mpmCampSegInfoService.updateCampStat(campsegId, MpmCONST.MPM_CAMPSEG_STAT_DDCG);
+                for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(),MpmCONST.MPM_CAMPSEG_STAT_DDCG);
+                }
+
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+            msg = "重启失败，原因：" + e.getMessage();
+            status = 201;
+        } finally {
+            JSONObject dataJson = new JSONObject();
+            if (status != 200) {
+                dataJson.put("status", status);
+                dataJson.put("result", msg);
+            } else {
+                dataJson.put("status", status);
+            }
+
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+            return null;
+        }
+    }
+    
+    /**
+     * 营销用语查询
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/searchExecContent")
+    public ModelAndView searchExecContent( HttpServletRequest request,HttpServletResponse response) throws Exception {
+        int status = 200;
+        String msg = "";
+        JSONArray jsonArrayEnd = null;
+        try {
+            String campsegId = request.getParameter("campsegId") != null ? request
+                    .getParameter("campsegId") : null;
+            List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+            List<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
+            // JSONObject dataJson = new JSONObject();
+            for (MtlCampSeginfo mtlCampSeginfo : mtlCampSeginfoList) {
+                JSONObject dataJson = new JSONObject();
+                dataJson.put("campsegName","规则" + mtlCampSeginfo.getCampsegNo());
+                dataJson.put("campsegId", mtlCampSeginfo.getCampsegId());
+                // 获取有营销用语的渠道的营销用语
+                List execContentList = mpmCampSegInfoService.getExecContentList(mtlCampSeginfo.getCampsegId());
+                JSONArray jsonArray = JSONArray.fromObject(execContentList);
+                dataJson.put("channelExecContent", jsonArray);
+                // 获取营销用语变量
+                List execContentVariableList = mpmCampSegInfoService.getExecContentVariableList(mtlCampSeginfo.getCampsegId());
+                JSONArray execContentVariableJsonArray = JSONArray.fromObject(execContentVariableList);
+                dataJson.put("execContentVariableJsonArray",
+                        execContentVariableJsonArray);
+                jsonObjectList.add(dataJson);
+            }
+            jsonArrayEnd = JSONArray.fromObject(jsonObjectList);
+
+        } catch (Exception e) {
+            status = 201;
+            e.printStackTrace();
+            msg = e.getMessage();
+        } finally {
+
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("status", "200");
+            if (!"200".equals(status)) {
+                dataJson.put("result", msg);
+            }
+            dataJson.put("data", jsonArrayEnd);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+        }
+        return null;
+    }
+
+    /**
+     * 保存营销用语
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/saveExecContent")
+    public ModelAndView saveExecContent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        int status = 200;
+        String msg = "";
+        // 是否有短信渠道
+        boolean isSMS = false;
+        int sms = MpmCONST.CHANNEL_TYPE_SMS_INT;
+        try {
+            String json = request.getParameter("json") != null ? request
+                    .getParameter("json") : null;
+            JSONObject jsonObjectP = (JSONObject) JSONObject.fromObject(json);
+            String campsegPId = jsonObjectP.get("campsegPId").toString();
+            String childCampsegString = jsonObjectP.get("childCampseg")
+                    .toString();
+            JSONArray jsonArray = JSONArray.fromObject(childCampsegString);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String campsegId = jsonObject.get("campsegId").toString();
+                String channelexecContentList = jsonObject.get(
+                        "channelexecContentList").toString();
+                JSONArray channelexecContentArray = JSONArray
+                        .fromObject(channelexecContentList);
+                for (int j = 0; j < channelexecContentArray.size(); j++) {
+                    JSONObject channelexecContent = (JSONObject) channelexecContentArray
+                            .get(j);
+                    String channelId = channelexecContent.get("channelId")
+                            .toString();
+                    String execContent = channelexecContent.get("execContent")
+                            .toString();
+                    //是否有营销用语
+                    String ifHasVariate = channelexecContent.get("ifHasVariate")
+                            .toString();
+                    
+                    mpmCampSegInfoService.saveExecContent(campsegId, channelId, execContent,ifHasVariate);
+                    if (Integer.parseInt(channelId) == sms) {
+                        isSMS = true;
+                        String result = mtlSmsSendTestTask.mtlSmsSendTest(campsegId, channelId);
+                    }
+                }
+                if (isSMS) {
+                    mtlSmsSendTestTask.updateCampsegInfoState(campsegId,MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+                }
+            }
+            if (isSMS) {
+                mtlSmsSendTestTask.updateCampsegInfoState(campsegPId, MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+            }
+
+            msg = "保存营销用语成功！";
+        } catch (Exception e) {
+            status = 201;
+            e.printStackTrace();
+            msg = e.getMessage();
+        } finally {
+
+            JSONObject dataJson = new JSONObject();
+            dataJson.put("status", "200");
+            if (!"200".equals(status)) {
+                dataJson.put("result", msg);
+            }
+            dataJson.put("data", "");
+            response.setContentType("application/json; charset=UTF-8");
+            response.setHeader("progma", "no-cache");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Cache-Control", "no-cache");
+            PrintWriter out = response.getWriter();
+            out.print(dataJson);
+            out.flush();
+            out.close();
+        }
+
+        return null;
+    }
+
 
 }

@@ -433,7 +433,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			new searchDimCampDrvTypeView({el:options.currentDom});
 		},
 		loadAllChannelType:function(){
-			var url=_ctx+"/mpm/mtlStcPlanAction.aido?cmd=initChannelType&isDoubleSelect=0";
+			var url=_ctx+"/tactics/tacticsManage?cmd=initChannelType&isDoubleSelect=0";
 			$.ajax({
 				type:"POST",
 			    url: url ,
@@ -510,7 +510,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		tacticsListManage:function(){
 			var tacticsBtnModel = Backbone.Model.extend({
-				urlRoot : _ctx+"/mpm",
+				urlRoot : _ctx+"/tactics/campSegSearch",
 				defaults : {
 					_ctx : _ctx
 				}
@@ -653,7 +653,8 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 	                        });
 						}  
 						_that.setBtnAttr({
-							cmd:cmdObj[btnType],
+							
+							modelId:cmdObj[btnType],
 							campsegId:campsegId,
 							currentClass:currentClass
 						});
@@ -675,8 +676,8 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						return ;
 					}
 					var defaults = {
-						modelId:"imcdMpmCampSegZJSearch.aido",
-						cmd:"delCampseg",
+						modelId:"",
+//						id:"delCampseg",
 						campsegId:"",
 						currentClass:"",
 						endDate:"",
@@ -688,7 +689,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:options.cmd,campsegId:options.campsegId,endDate:options.endDate,pauseComment:options.pauseComment},
+						data:{id:options.id,campsegId:options.campsegId,endDate:options.endDate,pauseComment:options.pauseComment},
 						success:function(model) {
 							$('#wait_content').hide();
 							if(model.attributes.status != 200){
@@ -782,7 +783,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 							if(!confirm("是否要取消此策略?")) return ;*/
 						if(btnType != "delay" && btnType != "edit" && btnType != 'stop' && btnType != 'pause') {
 							_that.setBtnAttr({
-								cmd: cmdObj[btnType],
+								modelId:cmdObj[btnType],
 								campsegId: campsegId,
 								currentClass: currentClass
 							});
@@ -803,7 +804,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 										"class":"ok-small-button",
 										click: function() {
 											_that.setBtnAttr({
-												cmd:cmdObj[btnType],
+												modelId:cmdObj[btnType],
 												campsegId:campsegId,
 												currentClass:currentClass,
 												pauseComment:$('.reasonDialog-div-textarea').val()
@@ -840,7 +841,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 							var campsegId = $(this).attr('campsegid');
 							$.ajax({
 								type : "post",
-								url:_ctx+"/mpm/imcdMpmCampSegZJSearch.aido?cmd=searchExecContent",
+								url:_ctx+"/tactics/campSegSearch/searchExecContent",
 								contentType: "application/x-www-form-urlencoded; charset=utf-8",
 								dataType:'json',
 								data:{"campsegId":campsegId},
@@ -1012,7 +1013,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					                	    	  ajaxJson.childCampseg = childCampsegList;
 					                	    	  $.ajax({
 													type : "post",
-													url:_ctx+"/mpm/imcdMpmCampSegZJSearch.aido?cmd=saveExecContent",
+													url:_ctx+"/tactics/campSegSearch/saveExecContent",
 													contentType: "application/x-www-form-urlencoded; charset=utf-8",
 													dataType:'json',
 													data:{'json':JSON.stringify(ajaxJson)},
@@ -1073,7 +1074,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				                	    	  		return;
 				                	    	  	}
 			  							_that.setBtnAttr({
-											cmd:cmdObj[btnType],
+			  								modelId:cmdObj[btnType],
 											campsegId:campsegId,
 											currentClass:currentClass,
 											endDate:$("#delayDialog input").val()

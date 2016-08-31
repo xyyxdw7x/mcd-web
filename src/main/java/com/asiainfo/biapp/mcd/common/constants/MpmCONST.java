@@ -55,4 +55,45 @@ public class MpmCONST {
     public static final short MPM_SYS_ACTSTEP_DEF_CAMP_SELECT = 20;
     //活动步骤-活动用户剔除步骤
     public static final short MPM_SYS_ACTSTEP_DEF_CAMP_FILTER = 30;
+    //活动终止（浙江--终止）
+    public static final String MPM_CAMPSEG_STAT_HDZZ = "91";
+    //活动暂停  （浙江--暂停）
+    public static final String MPM_CAMPSEG_STAT_PAUSE = "59";
+    //派单成功（浙江--执行中）
+    public static final String MPM_CAMPSEG_STAT_DDCG = "54";
+    //等待派单  （浙江--待执行）
+    public static final String MPM_CAMPSEG_STAT_ZXZT = "50";
+    //活动测试中（浙江--测试中）
+    public static final String MPM_CAMPSEG_STAT_HDCS = "48";
+    //活动完成  （浙江--完成）
+    public static final String MPM_CAMPSEG_STAT_HDWC = "90";
+    //活动测试不通过（浙江--测试不通过）
+    public static final String MPM_CAMPSEG_STAT_HDCSBTG = "49";
+    
+    //任务待执�?
+    public static final short TASK_STATUS_UNDO = 50;
+    //任务执行�?
+    public static final short TASK_STATUS_RUNNING = 51;
+    //任务执行成功
+    public static final short TASK_STATUS_SUCCESS = 54;
+    //任务暂停
+    public static final short TASK_STATUS_PAUSE = 59;
+    //任务加载
+    public static final short TASK_STATUS_LOADED = 70;
+    //由于某种原因（如配额不足）自动暂停
+    public static final short  TASK_STATUS_AUTOMATIC_PAUSE=71;
+    //任务执行失败
+    public static final short TASK_STATUS_FAIL = 53;
+    //任务终止
+    public static final short TASK_STATUS_STOP = 91;
+    //任务完成
+    public static final short TASK_STATUS_END = 90;
+    //当天任务完成（没有可发的）
+    public static final short TASK_STATUS_DAY_END = 79;
+    
+    public static final String CHANNEL_TYPE_SMS = "901";
+    //短信渠道
+    public static final int CHANNEL_TYPE_SMS_INT = 901;
+    
+    public static final String MCD_PROPERTY_NAME = "ASIAINFO_PROPERTIES";
 }

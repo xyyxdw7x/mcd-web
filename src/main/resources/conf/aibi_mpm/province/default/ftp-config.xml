@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+	<FTP channel_type_ids="901,902,903,905,906,907,910" type="sendodd"><!-- 配置该FTP对应的渠道ID，多个用逗号分隔 ,type:sendodd-派单，feedback-营销日志反馈-->
+		<FTP_ADDRESS>10.173.252.211</FTP_ADDRESS><!-- 配置该FTP地址 -->
+		<FTP_PORT>21</FTP_PORT><!-- 配置该FTP端口 -->
+		<FTP_PATH>/gboss/mddms/interface/bi/shell/BI_to_BOSS/vgop_data/receive/</FTP_PATH><!-- 配置该FTP服务器存放文件的根路径-->
+		<FTP_USER>mddms</FTP_USER><!-- 配置该FTP用户名 -->
+		<FTP_PASSWORD>mddms258</FTP_PASSWORD><!-- 配置该FTP密码 -->
+		<FTP_PASSWORD_ENCRYPT>0</FTP_PASSWORD_ENCRYPT><!-- 配置该FTP密码是否DES加密：0-不加密，1-加密 -->
+		<FTP_ENCODE>UTF-8</FTP_ENCODE><!-- 文件传输编码 -->
+		<ISDELETE_LOCAL>0</ISDELETE_LOCAL><!-- 是否删除本地文件（0-不删，1-删） -->
+	</FTP>
+	<FTP channel_type_ids="901,902,903,905,906,907,910" type="feedback">
+		<FTP_ADDRESS>10.173.252.211</FTP_ADDRESS>
+		<FTP_PORT>21</FTP_PORT>
+		<FTP_PATH>/gboss/mddms/interface/bi/shell/BI_to_BOSS/vgop_data/send/</FTP_PATH>
+		<FTP_USER>mddms</FTP_USER>
+		<FTP_PASSWORD>mddms258</FTP_PASSWORD>
+		<FTP_PASSWORD_ENCRYPT>0</FTP_PASSWORD_ENCRYPT>
+		<FTP_ENCODE>UTF-8</FTP_ENCODE>
+		<ISDELETE_LOCAL>1</ISDELETE_LOCAL>
+	</FTP>
+</ROOT>
