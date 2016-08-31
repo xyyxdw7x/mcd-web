@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 
@@ -79,4 +80,10 @@ public interface IDimMtlChanneltypeDao {
 	 * @throws Exception
 	 */
 	public List getAllChannelTypeForSys(String SysId) throws MpmException;
+	/**
+	 * 获取所有的营销类型列表
+	 * @return
+	 * @throws Exception
+	 */
+	public List<DimCampsegType> getAllDimCampsegType() throws Exception;
 }

@@ -18,6 +18,7 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChannel;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
@@ -386,6 +387,29 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements IDimMtlCha
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		return list;
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
+		List<DimCampsegType> list = null;
+		String sql = "select * from DIM_CAMPSEG_TYPE order by CAMPSEG_TYPE_ID asc";
+		try {
+			list = this.getJdbcTemplate().query(sql,new RowMapper(){
+
+				@Override
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					DimCampsegType tmp = new DimCampsegType();
+					tmp.setCampsegTypeDesc(rs.getString("CAMPSEG_TYPE_DESC"));
+					tmp.setCampsegTypeId(rs.getShort("CAMPSEG_TYPE_ID"));
+					tmp.setCampsegTypeName(rs.getString("CAMPSEG_TYPE_NAME"));
+					return null;
+				}
+				
+			});
+		} catch (Exception e) {
+			log.error("",e);
 		}
 		return list;
 	}

@@ -21,13 +21,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			if(module.exports.editCampsegData.data && module.exports.editCampsegData.data.planList.length > 1){
 				$(".J_redio_tactics[value=1]").attr("checked",true);
 			}
-	
-			//政策分类 界面（点击分类时重新加载政策列表）
-			this.getTacticsTypeList();
-			//显示客户群界面
-			this.customerModule();
-			//渠道列表界面
-			this.getChannelList();
+		
+			
 			//加载政策列表（初始进来时候）
 			window.tableView = tableObj.loadTable({
 				urlRoot:_ctx+"/tactics/tacticsManage",
@@ -61,12 +56,17 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				}
 			});
+			
+			this.widgetInit();//不同渠道显示不同的渠道信息(当选择渠道后才显示)	
+			this.customerModule();//显示客户群界面
+			this.getTacticsTypeList();//显示政策分类 界面（点击分类时重新加载政策列表）		
 			this.initShopCart();//显示暂存架
 			this.addPolicyToCart();//添加政策到暂存架
-			this.widgetInit();//不同渠道显示不同的渠道信息(当选择渠道后才显示)
+			this.getChannelList();//渠道列表界面
+			this.createTacticsDialogs();//弹出保存对话框
 			
 			/*		
-			this.createTacticsDialogs();//弹出保存对话框
+			
 			this.tacticsStateTab();
 
 			this.getSearchGroup();
@@ -1360,8 +1360,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					//获取营销类型列表
 					$.ajax({
 						type:"post",
-						url:_ctx + '/mpm/imcdChannelExecuteAction.aido?cmd=initDimCampsegType',
-						//data:{},
+						url:_ctx + '/tactics/tacticsManage/initDimCampsegType',
 						dataType:"json",
 						success:function(myjson){
 							if(myjson.status!=="200") return;
@@ -2680,6 +2679,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 
 				},
 				addChannelToCart:function(){
+					debugger
 					if($('.J_addChannelBtn').hasClass('calculate-customer-submit-disable')){
 						return;
 					}

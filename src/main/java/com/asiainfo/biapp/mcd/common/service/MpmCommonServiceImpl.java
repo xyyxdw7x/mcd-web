@@ -23,6 +23,7 @@ import com.asiainfo.biapp.mcd.custgroup.service.IMtlCustGroupService;
 import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
@@ -241,4 +242,15 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 		    
 	        return flag; 
 	    } 
+	    
+		@Override
+		public List<DimCampsegType> getAllDimCampsegType() throws Exception {
+			List<DimCampsegType> list = null;
+			try {
+				list = dimMtlChanneltypeDao.getAllDimCampsegType();
+			} catch (Exception e) {
+				log.error("", e);
+			}
+			return list;
+		}
 }
