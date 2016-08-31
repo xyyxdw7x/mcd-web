@@ -61,13 +61,13 @@ public interface QuotaConfigDeptDayDao {
 	
 	public int getDayQuota(String cityID,String deptId, String date) throws DataAccessException;
 	//保存日配置列表时使用
-	public void batchSaveOrUpdateInMem(List<QuotaConfigDeptDay> list);
+	public void saveBatchSaveOrUpdateInMem(List<QuotaConfigDeptDay> list);
     //定时任务-日任务时使用
 	public void batchUpdateDayConfNumInMem(List<QuotaConfigDeptDay> list);
 
 	public List<Map<String, Object>> getDayConfInMem(String cityId, String deptId,String fromDate, String toDate);
 
-	public void batchSaveInMem(List<QuotaConfigDeptDay> list);
+	public void saveBatchSaveInMem(List<QuotaConfigDeptDay> list);
 
 	public List<Map<String, Object>> queryConfigDeptInMem(String month);
 

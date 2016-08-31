@@ -24,7 +24,7 @@ public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
 	private static final String TABLE = "MTL_QUOTA_DEPT_M_DEFAULT";
 
 	@Override
-	public void batchSaveInMem(final List<DeptMonQuotaDefault> list, String cityId)
+	public void saveBatchSaveInMem(final List<DeptMonQuotaDefault> list, String cityId)
 			throws DataAccessException {
 		String delSql = "DELETE FROM " + TABLE + " WHERE CITY_ID=?";
 		Object[] delPparm = { cityId };

@@ -43,7 +43,7 @@ public interface QuotaMonthDeptUsedDao {
 
 
 
-	public void batchSaveInMem(List<QuotaMonthDeptUsed> list);
+	public void saveBatchSaveInMem(List<QuotaMonthDeptUsed> list);
 	
 	
 

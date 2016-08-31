@@ -59,7 +59,7 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void batchSaveInMem(final List<QuotaDayDeptUsed> list)
+	public void saveBatchSaveInMem(final List<QuotaDayDeptUsed> list)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		String sql="insert into MTL_QUOTA_D_DEPT_USED(city_id,dept_id,data_date,used_num)values(?,?,?,?)";

@@ -21,7 +21,7 @@ public class CreateCustGroupTabDaoImpl extends JdbcDaoBase implements CreateCust
 	private static Logger log = LogManager.getLogger();
 	
 	@Override
-	public void createCustGroupTabInMem(String sql) {
+	public void addCreateCustGroupTabInMem(String sql) {
 		try {   
 			log.debug("sql: {}", sql);   
 			this.getJdbcTemplate().execute(sql);  

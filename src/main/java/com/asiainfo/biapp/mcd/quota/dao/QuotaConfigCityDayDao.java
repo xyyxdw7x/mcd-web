@@ -10,13 +10,13 @@ public interface QuotaConfigCityDayDao {
 
 	Map<String, Object> getCityStatisDayInMem(String cityIds, String dataDate);
    //批量保存地市日使用额
-	void batchAddUsedNumInMem(List<QuotaConfigCityDay> list);
+	void addBatchAddUsedNumInMem(List<QuotaConfigCityDay> list);
 
 	List<Map<String, Object>> getCityUsedListInMem(String dataDate);
 
 	int queryCityDayQuotaInMem(String cityId, String dataDate);
 	
-	void batchAddCitysDayQuotaInMem(List<QuotaConfigCityDay> list);
+	void addBatchAddCitysDayQuotaInMem(List<QuotaConfigCityDay> list);
 
 	List<Map<String, Object>> queryCityDayQuotasInMem(String cityId, String monthDate);
 

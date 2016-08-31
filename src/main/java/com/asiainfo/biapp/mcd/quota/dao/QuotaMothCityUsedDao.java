@@ -6,6 +6,6 @@ import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
 
 public interface QuotaMothCityUsedDao {
 
-	public void batchSave(List<QuotaMonthCityUsed> list);
+	public void saveBatchSave(List<QuotaMonthCityUsed> list);
 
 }

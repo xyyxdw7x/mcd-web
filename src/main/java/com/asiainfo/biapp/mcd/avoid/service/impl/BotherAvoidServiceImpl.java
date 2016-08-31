@@ -84,7 +84,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 		
 		try {
 			
-			mcdMtlBotherAvoidDao.mdfBotherAvoidUserInMem(list);
+			mcdMtlBotherAvoidDao.updateBotherAvoidUserInMem(list);
 	
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -97,7 +97,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 		
 		try {
 			
-			mcdMtlBotherAvoidDao.delBotherAvoidUserInMem(mtl);
+			mcdMtlBotherAvoidDao.updateDelBotherAvoidUserInMem(mtl);
 	
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -110,7 +110,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 		
 		try {
 			
-			mcdMtlBotherAvoidDao.batchDelBotherAvoidUserInMem(list);
+			mcdMtlBotherAvoidDao.updatebBatchDelBotherAvoidUserInMem(list);
 	
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -19,10 +19,18 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 
+/**
+ * 免打扰页面的增删改查Dao。
+ */
 @Repository("botherAvoidDao")
 public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoidDao {
 	private static Logger log = LogManager.getLogger();
 
+	/**
+	 * 查询免打扰客户群。
+	 * @param pager 分页控制
+	 * @param mtlBotherAvoid 免打扰客户的查询条件
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List searchBotherAvoidUser(Pager pager, MtlBotherAvoid mtlBotherAvoid) {
@@ -79,6 +87,10 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		return list;
 	}
 	
+	/**
+	 * 新增免打扰客户。
+	 * @param mtl 免打扰客户vo
+	 */
 	@Override
 	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception {
 		StringBuffer insertSql = new StringBuffer("INSERT INTO MTL_BOTHER_AVOID ");
@@ -117,8 +129,9 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		log.info("免打扰客户新增耗时:"+(endTime-startTime)+"毫秒");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao#findBotherAvoidUserInMem(com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid)
+	/**
+	 * 新增免打扰客户群之前，确认新增对象是否已经存在。
+	 * @param mtl 免打扰客户vo
 	 */
 	@Override
 	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl) {
@@ -132,8 +145,12 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		return this.getJdbcTemplate().queryForObject(sb.toString(), Integer.class).intValue();
 	}
 	
+	/**
+	 * 更新免打扰客户。
+	 * @param mtl 更新前后的免打扰客户vo
+	 */
 	@Override
-	public void mdfBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
+	public void updateBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
 		MtlBotherAvoid oldMtl = list.get(0);//修改前
 		MtlBotherAvoid newMtl = list.get(1);//修改后
 		
@@ -160,8 +177,12 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		this.getJdbcTemplate().update(sb.toString(),plist.toArray());
 	}
 	
+	/**
+	 * 删除免打扰客户群。
+	 * @param mtl 免打扰客户vo
+	 */
 	@Override
-	public void delBotherAvoidUserInMem(MtlBotherAvoid mtl) {
+	public void updateDelBotherAvoidUserInMem(MtlBotherAvoid mtl) {
 	
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
@@ -179,8 +200,12 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		this.getJdbcTemplate().update(sb.toString(),plist.toArray());
 	}
 	
+	/**
+	 * 批量删除免打扰客户群。
+	 * @param mtl 免打扰客户vo的list
+	 */
 	@Override
-	public void batchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
+	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
 		StringBuffer deleteSql = new StringBuffer();
 		deleteSql.append("DELETE FROM MTL_BOTHER_AVOID WHERE ")
 		.append("AVOID_BOTHER_TYPE = ? ")

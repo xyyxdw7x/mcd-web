@@ -68,7 +68,7 @@ public class DayQuotaTaskServiceImp implements DayQuotaTaskService {
 			}
 		}
 		
-		quotaConfigCityDayDao.batchAddUsedNumInMem(noConfUsedList);
+		quotaConfigCityDayDao.addBatchAddUsedNumInMem(noConfUsedList);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class DayQuotaTaskServiceImp implements DayQuotaTaskService {
 				}
 
 			}
-			quotaDayDeptUsedDao.batchSaveInMem(dayUsed);
+			quotaDayDeptUsedDao.saveBatchSaveInMem(dayUsed);
 
 			// 3、当昨天有结余时，将昨天结余配置分配到后一天，并且要保证后一天的配额不大于平均额的3倍
 			int currentDayOfMonth = QuotaUtils.getCurrentDayOfMon();
@@ -196,7 +196,7 @@ public class DayQuotaTaskServiceImp implements DayQuotaTaskService {
 				}
 			}
 			quotaConfigDeptDayDao.batchUpdateDayConfNumInMem(dayConf4update);
-			quotaConfigDeptDayDao.batchSaveInMem(dayConf4add);
+			quotaConfigDeptDayDao.saveBatchSaveInMem(dayConf4add);
 		}
 
 	}

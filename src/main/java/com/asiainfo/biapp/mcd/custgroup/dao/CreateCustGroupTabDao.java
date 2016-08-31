@@ -14,6 +14,6 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
  */
 public interface CreateCustGroupTabDao {
 	
-	public void createCustGroupTabInMem(String sql)throws MpmException;
+	public void addCreateCustGroupTabInMem(String sql)throws MpmException;
 	
 }

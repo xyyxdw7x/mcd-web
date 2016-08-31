@@ -144,7 +144,7 @@ public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService
 			deptsMonthTotal+=tempQuota;
 		}
 		if(cityMonthQuota>=deptsMonthTotal){
-			quotaConfigDeptMonthDefaultDao.batchSaveInMem(list, cityId);
+			quotaConfigDeptMonthDefaultDao.saveBatchSaveInMem(list, cityId);
 			return true;
 		}
 		return false;
@@ -159,7 +159,7 @@ public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService
 			return "0";
 		}
 
-		quotaConfigDeptMothDao.batchSaveOrUpdateInMem(list);
+		quotaConfigDeptMothDao.saveBatchSaveOrUpdateInMem(list);
 		return "1";
 
 	}

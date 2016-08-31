@@ -84,7 +84,7 @@ public class MonthQuotaTaskServiceImp implements MonthQuotaTaskService {
 				}
 				
 			}
-			quotaMothCityUsedDao.batchSave(useds);
+			quotaMothCityUsedDao.saveBatchSave(useds);
 		}
 	}
 	//地市月配额平均分配到地市日配额中
@@ -109,7 +109,7 @@ public class MonthQuotaTaskServiceImp implements MonthQuotaTaskService {
 			cityDays = this.cityMonth2DayForToday(cityMonth);
 			//插入前先删除本月的所有地市日配额，以防之前已有地市日配额时报错
 			quotaConfigCityDayDao.delCityDayQuota4Month(QuotaUtils.getDayMonth("yyyyMM"));
-			quotaConfigCityDayDao.batchAddCitysDayQuotaInMem(cityDays);
+			quotaConfigCityDayDao.addBatchAddCitysDayQuotaInMem(cityDays);
 		}
 	}
 	
@@ -208,8 +208,8 @@ public class MonthQuotaTaskServiceImp implements MonthQuotaTaskService {
 				}*/
 			}
 
-			quotaConfigDeptMothDao.batchSaveInMem(confs);
-			quotaMonthDeptUsedDao.batchSaveInMem(useds);
+			quotaConfigDeptMothDao.saveBatchSaveInMem(confs);
+			quotaMonthDeptUsedDao.saveBatchSaveInMem(useds);
 			/*//将月限额平均到日限额中
 			List<QuotaConfigDeptDay> days = this.monthlist2Daylist(noConfDay, month);
 			quotaConfigDeptDayDao.batchSave(days);*/

@@ -45,17 +45,17 @@ public interface QuotaConfigDeptMothDao {
 	 * 
 	 * @param list
 	 */
-	void batchUpdateInMem(List<QuotaConfigDeptMoth> list) throws DataAccessException;
+	void updateBatchUpdateInMem(List<QuotaConfigDeptMoth> list) throws DataAccessException;
 
 	int getTotal4CityDeptMonthInMem(String cityId, String dataDate)throws DataAccessException;
 
 	public List<Map<String, Object>> getDeptsByDateInMem(String cityId, String dataDate)throws DataAccessException;
 	
-	public void batchSaveOrUpdateInMem(List<DeptsQuotaStatistics> list);
+	public void saveBatchSaveOrUpdateInMem(List<DeptsQuotaStatistics> list);
 	
 	public int getQuotaByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
 
-	public void batchSaveInMem(List<QuotaConfigDeptMoth> list);
+	public void saveBatchSaveInMem(List<QuotaConfigDeptMoth> list);
 
 	public List getQuotas4DeptsInMem(String cityId, String date) throws Exception;
 	

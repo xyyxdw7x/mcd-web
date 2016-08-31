@@ -180,7 +180,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void batchSaveOrUpdateInMem(final List<QuotaConfigDeptDay> list)
+	public void saveBatchSaveOrUpdateInMem(final List<QuotaConfigDeptDay> list)
 			throws DataAccessException {
 		// TODO Auto-generated method stub
 		String delSql = "delete from " + TABLE
@@ -279,7 +279,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 		return list;
 	}
     @Override
-    public void batchSaveInMem(final List<QuotaConfigDeptDay> list){
+    public void saveBatchSaveInMem(final List<QuotaConfigDeptDay> list){
     	String sql="insert into MTL_QUOTA_CONFIG_DEPT_D(CITY_ID,DEPT_ID,DATA_DATE,DAY_QUOTA_NUM,DATA_DATE_M)values(?,?,?,?,?)";
     	this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			

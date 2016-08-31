@@ -9,7 +9,7 @@ import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 
 public interface QuotaConfigDeptMonthDefaultDao {
 
-	public void batchSaveInMem(List<DeptMonQuotaDefault> list, String cityId)throws DataAccessException;
+	public void saveBatchSaveInMem(List<DeptMonQuotaDefault> list, String cityId)throws DataAccessException;
 
 	public List<Map<String, Object>> getTempletConfigsInMem(String cityId)throws DataAccessException;
 

@@ -27,11 +27,11 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  */
 @Repository(value="botherAvoidUserTypeDao")
-public class BotherAvoidUserTypeDao extends JdbcDaoBase implements IDimBotherAvoidUserTypeDao {
+public class BotherAvoidUserTypeDaoImpl extends JdbcDaoBase implements IDimBotherAvoidUserTypeDao {
 
 	private static Logger log = LogManager.getLogger();
 	
-	public BotherAvoidUserTypeDao() {
+	public BotherAvoidUserTypeDaoImpl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

@@ -29,7 +29,7 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 	}
 
 	@Override
-	public void batchSaveInMem(final List<QuotaMonthDeptUsed> list) {
+	public void saveBatchSaveInMem(final List<QuotaMonthDeptUsed> list) {
 		// TODO Auto-generated method stub
 		String sql ="insert into MTL_QUOTA_M_DEPT_USED(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {

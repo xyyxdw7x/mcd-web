@@ -75,7 +75,7 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 		
 	}
 	@Override
-	public void batchAddUsedNumInMem(final List<QuotaConfigCityDay> list){
+	public void addBatchAddUsedNumInMem(final List<QuotaConfigCityDay> list){
 		 String sql="insert into MTL_QUOTA_D_CITY_USED(CITY_ID,DATA_DATE,USED_NUM)values(?,?,?)";
 		 this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
@@ -107,7 +107,7 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 		return list;
 	}
 	@Override
-	public void batchAddCitysDayQuotaInMem(final List<QuotaConfigCityDay> list){
+	public void addBatchAddCitysDayQuotaInMem(final List<QuotaConfigCityDay> list){
 		String currentMonth = QuotaUtils.getDayMonth("yyyyMM");
 		String delSql ="delete from MTL_QUOTA_CONFIG_CITY_D where DATA_DATE_M='"+currentMonth+"'";
 		this.getJdbcTemplate().update(delSql);//插入地市日配额之前首先删本月的所有地市的日配额

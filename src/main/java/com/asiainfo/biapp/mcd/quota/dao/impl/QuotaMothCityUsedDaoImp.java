@@ -11,26 +11,21 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaMothCityUsedDao;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
 
-public class QuotaMothCityUsedDaoImp extends JdbcDaoSupport implements
+public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
 		QuotaMothCityUsedDao {
 	private static final Logger log = LogManager.getLogger();
 	
-	private  JdbcTemplate sqlFireJdbcTemplate;
-
-	public void setSqlFireJdbcTemplate(JdbcTemplate sqlFireJdbcTemplate) {
-		this.sqlFireJdbcTemplate = sqlFireJdbcTemplate;
-	}
-
 	@Override
-	public void batchSave(final List<QuotaMonthCityUsed> list) {
+	public void saveBatchSave(final List<QuotaMonthCityUsed> list) {
 
 		String sql = "insert into MTL_QUOTA_CITY_USED(city_id,data_date,used_num)values(?,?,?)";
 
 		try {
-			this.sqlFireJdbcTemplate.batchUpdate(sql,
+			this.getJdbcTemplate().batchUpdate(sql,
 					new BatchPreparedStatementSetter() {
 
 						@Override

@@ -136,7 +136,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void batchUpdateInMem(final List<QuotaConfigDeptMoth> list)
+	public void updateBatchUpdateInMem(final List<QuotaConfigDeptMoth> list)
 			throws DataAccessException {
 		String sql = "update " + TABLE + " set MONTH_QUOTA_NUM=? where CITY_ID=? and DATA_DATE=? and DEPT_ID=?";
 
@@ -168,7 +168,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void batchSaveOrUpdateInMem(final List<DeptsQuotaStatistics> list) {
+	public void saveBatchSaveOrUpdateInMem(final List<DeptsQuotaStatistics> list) {
 		// TODO Auto-generated method stub
 
 		String delSql = "delete from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
@@ -243,7 +243,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 		return num;
 	}
 	@Override
-	public void batchSaveInMem(final List<QuotaConfigDeptMoth> list){
+	public void saveBatchSaveInMem(final List<QuotaConfigDeptMoth> list){
 		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
 
 		try {

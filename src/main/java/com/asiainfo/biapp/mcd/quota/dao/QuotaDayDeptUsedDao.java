@@ -16,6 +16,6 @@ public interface QuotaDayDeptUsedDao {
 			String fromDate, String toDate) throws DataAccessException;
 
 	//批量保存，日定时任务中使用
-	public void batchSaveInMem(List<QuotaDayDeptUsed> list)throws DataAccessException;
+	public void saveBatchSaveInMem(List<QuotaDayDeptUsed> list)throws DataAccessException;
 	
 }

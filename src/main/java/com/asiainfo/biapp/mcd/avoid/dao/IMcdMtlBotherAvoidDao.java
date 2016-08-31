@@ -23,9 +23,9 @@ public interface IMcdMtlBotherAvoidDao {
 	
 	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl);
 		
-	public void mdfBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
+	public void updateBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
 	
-	public void delBotherAvoidUserInMem(MtlBotherAvoid mtl) ;
+	public void updateDelBotherAvoidUserInMem(MtlBotherAvoid mtl) ;
 	
-	public void batchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
+	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
 }

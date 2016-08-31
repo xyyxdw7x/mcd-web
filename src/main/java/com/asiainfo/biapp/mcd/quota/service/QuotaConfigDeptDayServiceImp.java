@@ -87,7 +87,7 @@ public class QuotaConfigDeptDayServiceImp implements QuotaConfigDeptDayService {
 			return false;
 		}
         List<QuotaConfigDeptDay> list2 = this.setMonthValue(list, month);
-		quotaConfigDeptDayDao.batchSaveOrUpdateInMem(list2);
+		quotaConfigDeptDayDao.saveBatchSaveOrUpdateInMem(list2);
 		return true;
 	}
 	
