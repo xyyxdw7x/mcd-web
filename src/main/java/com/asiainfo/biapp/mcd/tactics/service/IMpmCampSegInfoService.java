@@ -27,6 +27,12 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 */
 	public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo,Pager pager);
+	/**
+	 * 修改营销活动信息  浙江IMCD
+	 * @param seginfoList
+	 * @throws MpmException
+	 */
+	public String updateCampSegWaveInfoZJ(List<MtlCampSeginfo> seginfoList) throws MpmException;
 	
     /**
      * gaowj3
@@ -152,4 +158,11 @@ public interface IMpmCampSegInfoService {
 	 */
 	public List<MtlCampSeginfo> getCampSeginfoListByCampsegId(String campsegId) throws MpmException;
 	
+	/**
+	 * 根据campsegId删除业务标签或者基础标签 add by lixq10  只删除时机对应的数据
+	 * @param campsegId
+	 * @return
+	 */
+	public boolean deleteLableByCampsegId(String campsegId);
+	void updateCampsegInfo(MtlCampSeginfo segInfo);
 }

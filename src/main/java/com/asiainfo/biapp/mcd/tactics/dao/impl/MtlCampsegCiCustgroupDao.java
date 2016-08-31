@@ -34,4 +34,54 @@ public class MtlCampsegCiCustgroupDao  extends JdbcDaoBase implements IMtlCampse
 		}
 	}
 	
+	@Override
+	public boolean deleteLableByCampsegId(String campsegId) {
+		boolean flag = true;
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("delete from MCD_TEMPLET_SELECT where active_templet_id in ( ")
+				  .append(" select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
+				  .append(")");
+			this.getJdbcTemplate().equals(buffer.toString());
+			this.deleteMcdTempletActive(campsegId);
+			this.deleteMcdTempletActiveField(campsegId);
+		} catch (Exception e) {
+			log.error("删除标签存在异常:"+e);
+		}
+		return false;
+	}
+	private void deleteMcdTempletActive(String campsegId){
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("delete from MCD_TEMPLET_ACTIVE where active_templet_id in ( ")
+				  .append(" select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
+				  .append(")");
+			this.getJdbcTemplate().equals(buffer.toString());
+		} catch (Exception e) {
+			log.error("删除标签存在异常:"+e);
+		}
+	}
+	private void deleteMcdTempletActiveField(String campsegId){
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("delete from MCD_TEMPLET_ACTIVE_FIELD where select_templet_id in ( ")
+				  .append(" select select_templet_id from MCD_TEMPLET_SELECT where active_templet_id in (")
+				  .append("select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'))");
+			this.getJdbcTemplate().equals(buffer.toString());
+		} catch (Exception e) {
+			log.error("删除标签存在异常:"+e);
+		}
+	}
+	
+	public void deleteByCampsegId(String campsegId) {/*
+		log.debug("deleteByCampsegId MtlCampsegCiCustgroup instance");
+		try {
+			String sql = "delete from MtlCampsegCiCustgroup group where group.campsegId= ? ";
+			this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql, campsegId));
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+	*/}
 }

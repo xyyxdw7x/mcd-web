@@ -22,6 +22,12 @@ public interface IMtlChannelDefDao {
 	 * @throws Exception
 	 */
 	public void saveMtlChannelDef(MtlChannelDef def) throws Exception;
+	/**
+	 * 删除活动波次下所有分组的营销渠道设置
+	 * @param campsegId
+	 * @throws Exception
+	 */
+	public void deleteMtlChannelDef(String campsegId) throws Exception;
     /**
      * 保存渠道对应表——外呼
      * @param mtlChannelDefCall
@@ -42,5 +48,10 @@ public interface IMtlChannelDefDao {
      */
     List getMtlChannelDefs(String campsegId);
 
-	
+    /**
+     * 删除外呼渠道
+     * @param campsegId
+     * @param channelId
+     */
+	public void deleteMtlChannelDefCall(String campsegId, String channelId);
 }

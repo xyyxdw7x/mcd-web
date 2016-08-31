@@ -55,8 +55,6 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         } 
         
         buffer.append(" from mtl_camp_seginfo msi ")
-//      buffer.append("select msi.* from mtl_camp_seginfo msi ")
-
                .append(" left join DIM_CAMPSEG_STAT dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")
               .append("   where 1=1 ")
               .append("   and msi.campseg_pid ='0' ")
@@ -139,6 +137,10 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
         return list;
     }
+	@Override
+	public void updateCampsegInfo(MtlCampSeginfo segInfo) {
+		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
+	}
 	/**
 	 * 保存活动信息
 	 */

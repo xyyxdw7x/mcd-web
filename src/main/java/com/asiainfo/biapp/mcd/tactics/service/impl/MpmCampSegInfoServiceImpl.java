@@ -35,7 +35,6 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
-//import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -73,14 +72,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private IMpmCampSegInfoDao campSegInfoDao;
     @Resource(name="mtlChannelDefDao")
   	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
-    //业务类型
     @Resource(name="mtlStcPlanDao")
     private MtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCiCustDao")
     private IMtlCampsegCiCustDao mtlCampsegCiCustDao; 
     @Resource(name="mpmUserPrivilegeService")
     IMpmUserPrivilegeService mpmUserPrivilegeService;
-    
 	@Resource(name = "createCustGroupTab")
 	private CreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
@@ -135,6 +132,135 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         List list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
         return list;
     }
+    
+    @Override
+	public String updateCampSegWaveInfoZJ(List<MtlCampSeginfo> seginfoList)throws MpmException {
+		String approveFlag = "0";  //不走审批
+		try {
+			String campsegId = null;
+			String campsegPid = null;
+			String province = Configure.getInstance().getProperty("PROVINCE");
+			String isApprove = "false";
+			//在保存和其他表的对应关系
+			for(int j = 0;j<seginfoList.size();j++){
+				MtlCampSeginfo segInfo = seginfoList.get(j);
+				isApprove = segInfo.getIsApprove();
+				boolean isFatherNode = segInfo.isFatherNode();
+				campsegId = segInfo.getCampsegId();
+				Integer contactType = segInfo.getWaveContactType();//关联表
+				Integer contactCount = segInfo.getWaveContactCount();//关联表
+				Integer campClass = segInfo.getCampClass();
+				String custgroupId = segInfo.getCustgroupId();//关联表
+				Integer isRelativeExecTime = segInfo.getIsRelativeExecTime();
+				String absoluteDates = segInfo.getAbsoluteDates(); //关联表
+				String channelId = segInfo.getChannelId(); //渠道类型ID&渠道ID(关联表)
+				String siteCategoryIdClassId = segInfo.getSiteCategoryIdClassId(); //(云南的)活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联
+				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
+				String attachements = segInfo.getFilePath();
+				String custGroupAttrId = segInfo.getCustGroupAttrId();
+//				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
+				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
+				String[] campsegIds = null;
+				String[] channelIds = null;
+				String[] channeltypeIds = null;
+				
+				List<MtlChannelDef> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
+				int updateCycle = 0;
+				if(StringUtil.isNotEmpty(segInfo.getUpdatecycle())){
+					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
+				}
+			
+				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
+				if (user != null) {
+					segInfo.setCityId(user.getCityid());
+					String deptMsg = user.getDepId();
+					segInfo.setDeptId(Integer.parseInt(deptMsg.split("&&")[0]));
+				}
+				
+				segInfo.setCreateTime(new Date()); // 活动创建时间
+				segInfo.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_CHZT)); // 活动初始状态
+				segInfo.setApproveFlowid(null);
+				segInfo.setApproveResultDesc("测试");
+				segInfo.setSelectTempletId("XXXXXX");
+				if(isFatherNode){
+					campSegInfoDao.saveCampSegInfo(segInfo);   //不用删除旧策略  后台调用savaOrUpdate
+					campsegPid = campsegId;
+				}else{
+					segInfo.setCampsegPid(campsegPid);
+					campSegInfoDao.saveCampSegInfo(segInfo);
+					log.debug("****************新生成的波次活动ID:{}", campsegId);
+					
+					//2、保存客户群与策略的关系/保存时机与策略关系
+					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
+					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
+					//修改时,先删除客户群与策略的关系/保存时机与策略关系
+					mtlCampsegCiCustDao.deleteByCampsegId(campsegId);
+					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
+					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
+						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
+					}
+					if(StringUtil.isNotEmpty(bussinessLableTemplateId)){
+						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"2");//保存业务标签 
+					}*/
+					
+					//先删除渠道信息表
+					mtlChannelDefDao.deleteMtlChannelDef(campsegId);
+					//3、保存渠道
+					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
+						for(int i = 0;i<mtlChannelDefList.size();i++){
+							MtlChannelDef mtlChannelDef = mtlChannelDefList.get(i);
+							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
+							mtlChannelDefId.setCampsegId(campsegId);
+							mtlChannelDefId.setChannelNo(i);
+							mtlChannelDefId.setUsersegId((short) 0);
+							mtlChannelDef.setId(mtlChannelDefId);
+							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));
+							mtlChannelDefDao.saveMtlChannelDef(mtlChannelDef);
+						}
+					}
+					mtlChannelDefDao.deleteMtlChannelDefCall(campsegId,channelId);
+					if(segInfo.getMtlChannelDefCall() != null){
+						
+						MtlChannelDefCall mtlChannelDefCall = segInfo.getMtlChannelDefCall();
+						MtlChannelDefCallId mtlChannelDefCallId = new MtlChannelDefCallId();
+						mtlChannelDefCallId.setCampsegId(campsegId);
+						mtlChannelDefCallId.setChannelId(channelId);
+						mtlChannelDefCall.setId(mtlChannelDefCallId);
+						mtlChannelDefDao.saveMtlChannelDefCall(mtlChannelDefCall);
+					}
+					
+					/*//保存产品订购或者剔除关系     
+					IMtlCampSeginfoPlanOrderService planOrderService = (IMtlCampSeginfoPlanOrderService) SystemServiceLocator.getInstance().getService(
+							MpmCONST.MTL_CAMPSEG_INFO_PLAN_ORDER_SERVICE);
+					//修改时删除产品对应关系数据
+					planOrderService.updatePlanOrderByCampsegId(campsegId,segInfo.getOrderPlanIds(),segInfo.getExcludePlanIds());*/			
+					this.updateCampsegInfo(segInfo);
+				}
+			}
+			if("true".equals(isApprove)){
+					String approveStr = this.submitApprovalXml(campsegPid);
+					if("提交审批成功".equals(approveStr)){
+						approveFlag = "1"; //走审批，审批成功
+					}else{
+						approveFlag = "2"; //走审批，审批失败
+					}
+			}
+			
+		} catch (Exception e) {
+			log.error("", e);
+			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bchdxxsb"));
+		}
+		return approveFlag;
+	}
+    
+	@Override
+	public void updateCampsegInfo(MtlCampSeginfo segInfo){
+		try {
+			campSegInfoDao.updateCampsegInfo(segInfo);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+	}
     /**
      * gaowj3
      * JDBC查询业务状态
@@ -737,5 +863,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			log.error("getSubCampsegInfoTreeList error:", e);
 		}
 		return resultList;
+	}
+	
+	@Override
+	public boolean deleteLableByCampsegId(String campsegId) {
+		return mtlCampsegCiCustDao.deleteLableByCampsegId(campsegId);
 	}
 }

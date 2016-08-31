@@ -820,7 +820,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						campSeginfo.setExcludePlanIds(excludeProductNo);*/
 						
 						//先删除这条政策下的所有标签
-						//TODO: mpmCampSegInfoService.deleteLableByCampsegId(campsegId);
+						mpmCampSegInfoService.deleteLableByCampsegId(campsegId);
 //						保存业务标签
 						/*if(bussinessLableTemplate != null){
 							String bussinessLableTemplateId = this.handleTemplet(request.getLocale(), bussinessLableTemplate);
@@ -843,8 +843,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						campSegInfoList.add(campSeginfo);
 					}
 					//统一进行保存
-					String flag="";
-					//TODO: flag = mpmCampSegInfoService.updateCampSegWaveInfoZJ(campSegInfoList);
+					 String flag = mpmCampSegInfoService.updateCampSegWaveInfoZJ(campSegInfoList);
 					if("2".equals(flag)){  //当flag等于2的时候，有审批流程，并且审批失败，0和1说明状态都正常
 						dataJson.put("status", "201");
 					}else{

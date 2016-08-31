@@ -26,6 +26,12 @@ public interface IMpmCampSegInfoDao {
      * @return
      */
     public List getDimCampsegStatList();
+	/**
+	 * IMCD_ZJ 清单表生成成功的时候，更新策略信息清单表表名
+	 * @param tableName
+	 * @param campsegId
+	 */
+	public void updateCampsegInfo(MtlCampSeginfo segInfo);
     
 	/**
 	 * 保存活动波次信息

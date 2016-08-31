@@ -27,6 +27,12 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		//TODO: this.getHibernateTemplate().save(def);
 	}
 	
+	public void deleteMtlChannelDef(String campsegId) throws Exception {/*
+		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
+		this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql));
+		this.getHibernateTemplate().flush();*/
+	}
+	
     /**
      * 保存渠道对应表——外呼
      * @param mtlChannelDefCall
@@ -66,5 +72,15 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         List list = this.getJdbcTemplate().queryForList(sql.toString(),parameterList.toArray());
         return list;
     }
+    
+    /**
+     * 删除外呼渠道
+     * @param campsegId
+     * @param channelId
+     */
+	@Override
+	public void deleteMtlChannelDefCall(String campsegId, String channelId) {
+		//TODO: jt.update("delete from mtl_channel_def_call where campseg_id = ? and channel_id = ?", new Object[]{campsegId,channelId});
+	}
 	
 }
