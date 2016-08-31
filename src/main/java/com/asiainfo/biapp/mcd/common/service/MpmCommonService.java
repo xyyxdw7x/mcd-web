@@ -5,7 +5,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 

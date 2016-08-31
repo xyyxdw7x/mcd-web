@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
-import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**

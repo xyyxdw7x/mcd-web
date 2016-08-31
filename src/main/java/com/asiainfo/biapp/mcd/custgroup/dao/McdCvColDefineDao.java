@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.custgroup.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 
 public interface McdCvColDefineDao {
 	/**

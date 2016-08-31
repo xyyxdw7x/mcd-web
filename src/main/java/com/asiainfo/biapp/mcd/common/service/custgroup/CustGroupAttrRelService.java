@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.common.service.custgroup;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
 
 /**
  * 

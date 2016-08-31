@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
 @Repository("custGroupAttrRelDao")
 public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAttrRelDao{
 	@Override

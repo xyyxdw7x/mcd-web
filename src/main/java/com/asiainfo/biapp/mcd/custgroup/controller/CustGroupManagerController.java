@@ -31,7 +31,7 @@ import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
-import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;

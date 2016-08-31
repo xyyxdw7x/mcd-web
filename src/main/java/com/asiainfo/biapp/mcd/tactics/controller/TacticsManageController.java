@@ -29,7 +29,7 @@ import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
-import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;

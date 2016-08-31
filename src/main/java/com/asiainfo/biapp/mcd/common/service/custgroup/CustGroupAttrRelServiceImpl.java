@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupAttrRelDao;
-import com.asiainfo.biapp.mcd.custgroup.model.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
 @Service("custGroupAttrRelService")
 public class CustGroupAttrRelServiceImpl implements CustGroupAttrRelService{
 	@Resource(name="custGroupAttrRelDao")

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.custgroup.model;
+package com.asiainfo.biapp.mcd.custgroup.vo;
 
 import java.util.Set;
 
