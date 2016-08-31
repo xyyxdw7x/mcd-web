@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 public interface IMpmCampSegInfoDao {
@@ -135,4 +136,10 @@ public interface IMpmCampSegInfoDao {
 	 * @return
 	 */
 	public List getSubCampsegInfo(String campsegId);
+    /**
+   * 根据营销状态ID获取营销状态
+   * @param string
+   * @return
+   */
+    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
 }

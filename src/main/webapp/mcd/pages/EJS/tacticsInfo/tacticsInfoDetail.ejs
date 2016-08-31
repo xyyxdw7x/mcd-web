@@ -1,0 +1,22 @@
+<dl>
+	<dt><%=data.campsegName%><div class="tactics-info-detail-state">状态：<%=data.statusName%></div></dt>
+	<dd>
+		<table>
+			<tr>
+				<td id="campsegId" campsegId="<%=data.campsegId%>">策略编码：<%=data.campsegId%></td>
+				<td>执行周期：<%=data.startDate%> 到 <%=data.endDate%></td>
+				<td>创建人：<%=data.createUserName%></td>
+			</tr>
+			<tr>
+				<td id="cdnTd" data-cdn="<%=data.campDrvName%>">业务类型：<%=data.campDrvName.split(",")[0]%></td>
+				<td>营销类型：<%=data.campsegTypeName%></td>
+				<td>创建时间：<%=data.createTime%></td>
+			</tr>
+		</table>
+	</dd>
+	<dd id="subCampsegIdCT" style="display:none;">
+		<%for(var x in data.childMtlCampSeginfo){%>
+			<span><%=data.childMtlCampSeginfo[x].campsegId%></span>
+		<%}%>
+	</dd>
+</dl>

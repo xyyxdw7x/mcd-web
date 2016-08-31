@@ -6,6 +6,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 /*
@@ -165,4 +166,10 @@ public interface IMpmCampSegInfoService {
 	 */
 	public boolean deleteLableByCampsegId(String campsegId);
 	void updateCampsegInfo(MtlCampSeginfo segInfo);
+	/**
+	 * 根据营销状态ID获取营销状态
+	 * @param string
+	 * @return
+	 */
+    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
 }

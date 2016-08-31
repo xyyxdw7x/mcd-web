@@ -1,0 +1,21 @@
+<%for(var x in data){%>
+	<div class="logrow">
+		<div class="recordLeft">
+			<div class="txt">
+				<div class="bluebar"><span class="icon_arrRight"></span><span class="span_log_text_bluebar"><%=data[x].node_name%></span></div>
+				<p><%=data[x].approve_date.split(" ")[0]%></p>
+				<span><%=data[x].approve_date.split(" ")[1]%></span>
+			</div>
+			<div class="recordPoint">
+				<div class="point"></div>
+			</div>
+		</div>
+		<div class="recordRight">
+			<h4><%=data[x].approvaler_name%></h4>
+			<div class="log">
+				<span class="icon_arrLeft"></span>
+				<p><%=data[x].approve_result?data[x].approve_result:"&nbsp;"%></p>
+			</div>
+		</div>
+	</div>
+<%}%>

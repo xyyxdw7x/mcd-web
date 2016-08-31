@@ -295,9 +295,9 @@ define(["backbone"],function(require, exports, module) {
 		},
 		loadTacticDetail:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"iMcdviewPolicyDetail.aido",
-					cmd:"viewPolicyDetail",
+					urlRoot:_ctx+"/tactics/viewPolicyDetail",
+					id:"viewPolicyDetail",
+//					cmd:"viewPolicyDetail",
 					currentDom:"#tacticsDetail",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/tacticsInfoDetail.ejs',
 					ajaxData:{},

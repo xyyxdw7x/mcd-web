@@ -631,5 +631,23 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		}*/
 		return list;
 	}
+    /**
+   * 根据营销状态ID获取营销状态
+   * @param string
+   * @return
+   */
+    @Override
+    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
+        String sql="select * from dim_campseg_stat where campseg_stat_ID = ?";
+        Object[] args=new Object[]{dimCampsegStatID};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
+        if(list != null &&list.size() > 0){
+            return list.get(0);
+
+        }else{
+            return null;
+        }
+    }
 
 }

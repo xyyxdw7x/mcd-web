@@ -398,4 +398,22 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
             return null;
         }
     }
+    /**
+     * 根据渠道类型ID获取渠道
+     * @param planType
+     * @return
+     */
+    @Override
+    public DimPlanType getPlanTypeById(String planTypeId) {
+        String sql = " select * from DIM_PLAN_TYPE A where A.TYPE_ID=?";
+        Object[] args=new Object[]{planTypeId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<DimPlanType> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimPlanType>(DimPlanType.class));
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+
+    }
 }

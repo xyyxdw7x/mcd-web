@@ -39,6 +39,7 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
@@ -869,4 +870,13 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public boolean deleteLableByCampsegId(String campsegId) {
 		return mtlCampsegCiCustDao.deleteLableByCampsegId(campsegId);
 	}
+	   /**
+     * 根据营销状态ID获取营销状态
+     * @param string
+     * @return
+     */
+    @Override
+    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
+        return campSegInfoDao.getDimCampsegStat(dimCampsegStatID);
+    }
 }

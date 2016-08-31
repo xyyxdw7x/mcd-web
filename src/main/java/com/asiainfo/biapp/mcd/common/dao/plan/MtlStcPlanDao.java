@@ -64,4 +64,10 @@ public interface MtlStcPlanDao {
      * @return
      */
     MtlStcPlan getMtlStcPlanByPlanId(String planId);
+    /**
+     * 根据渠道类型ID获取渠道
+     * @param planType
+     * @return
+     */
+    DimPlanType getPlanTypeById(String planTypeId);
 }

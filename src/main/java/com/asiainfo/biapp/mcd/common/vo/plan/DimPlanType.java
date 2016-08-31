@@ -1,5 +1,7 @@
 package com.asiainfo.biapp.mcd.common.vo.plan;
 
+import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+
 /**
  * DimPlanType entity. @author MyEclipse Persistence Tools
  */
@@ -19,7 +21,7 @@ public class DimPlanType implements java.io.Serializable {
 	public String getSortNum() {
 		return sortNum;
 	}
-
+	@Column(name="SORT_NUM")
 	public void setSortNum(String sortNum) {
 		this.sortNum = sortNum;
 	}
@@ -39,7 +41,7 @@ public class DimPlanType implements java.io.Serializable {
 	public String getTypeId() {
 		return typeId;
 	}
-
+    @Column(name="TYPE_ID")
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}
@@ -47,7 +49,7 @@ public class DimPlanType implements java.io.Serializable {
 	public String getTypeName() {
 		return typeName;
 	}
-
+    @Column(name="TYPE_NAME")
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
@@ -55,7 +57,7 @@ public class DimPlanType implements java.io.Serializable {
 	public String getTypePid() {
 		return typePid;
 	}
-
+	@Column(name="TYPE_PID")
 	public void setTypePid(String typePid) {
 		this.typePid = typePid;
 	}
@@ -63,7 +65,7 @@ public class DimPlanType implements java.io.Serializable {
 	public String getChannelType() {
 		return channelType;
 	}
-
+	@Column(name="CHANNEL_TYPE")
 	public void setChannelType(String channelType) {
 		this.channelType = channelType;
 	}
