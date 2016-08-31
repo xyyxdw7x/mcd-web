@@ -118,18 +118,18 @@
 		<level  value="ERROR" />
 	</logger>
 	<logger name="org.springframework">
-		<level  value="ERROR" />
+		<level  value="DEBUG" />
 	</logger>
 	<logger name="com.alibaba.dubbo">
 		<level  value="INFO" />
 	</logger>
 	<logger name="org.springframework.jdbc">
-		<level  value="INFO" />
+		<level  value="DEBUG" />
 	</logger>
 	
 	<!-- 根默认会自动构建一个 root,输出日志到控制台，供logger继承 -->
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="logConOut" />
 		<appender-ref ref="allLogOut" />
 	</root>

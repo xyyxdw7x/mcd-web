@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.crazycake.jdbcTemplateTool.JdbcTemplateTool;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class JdbcDaoBase extends JdbcDaoSupport implements InitializingBean,Disp
 	//@Autowired
 	//@Qualifier("namedParameterJdbcTemplate")
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
+	@Autowired
+	@Qualifier("jdbcTemplateTool")
+	private JdbcTemplateTool jdbcTemplateTool;
 	
 	protected ResultSetExtractor<Long> longResultSetExtractor = new ResultSetExtractor<Long>(){
 	    public Long extractData(ResultSet rs) throws SQLException, DataAccessException {  
@@ -151,5 +156,13 @@ public class JdbcDaoBase extends JdbcDaoSupport implements InitializingBean,Disp
 	@Override
 	public void destroy() throws Exception {
 		
+	}
+
+	public JdbcTemplateTool getJdbcTemplateTool() {
+		return jdbcTemplateTool;
+	}
+
+	public void setJdbcTemplateTool(JdbcTemplateTool jdbcTemplateTool) {
+		this.jdbcTemplateTool = jdbcTemplateTool;
 	}
 }

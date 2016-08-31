@@ -17,6 +17,13 @@ public class BookServiceImpl implements IBookService {
 	@Resource(name="bookDao")
 	private IBookDao bookDao;
 	
+	
+	public int saveBook(Book book) throws Exception{
+		int suc=0;
+		bookDao.save(book);
+		return suc;
+	}
+	
 	public List<Book> findBooks(String name) throws Exception {
 		List<Book> books=bookDao.queryBookByName(name);
 		return books;
@@ -28,5 +35,23 @@ public class BookServiceImpl implements IBookService {
 
 	public void setBookDao(IBookDao bookDao) {
 		this.bookDao = bookDao;
+	}
+
+	@Override
+	public Book getBook(String bookId) throws Exception {
+		Book book=bookDao.getBook(bookId);
+		return book;
+	}
+
+	@Override
+	public int updateBook(Book book) throws Exception {
+		bookDao.updateBook(book);
+		return 1;
+	}
+	
+	@Override
+	public int delBook(Book book) throws Exception{
+		bookDao.updateDeleteBook(book);
+		return 1;
 	}
 }

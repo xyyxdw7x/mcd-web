@@ -14,4 +14,11 @@ public interface IBookDao {
 	public void save(Book book);
 	
 	public List<Book> queryBookByName(String name);
+	
+	public Book getBook(String bookId) throws Exception;
+	
+	public void updateBook(Book book) throws Exception;
+	
+	public void updateDeleteBook(Book book) throws Exception;
+	
 }

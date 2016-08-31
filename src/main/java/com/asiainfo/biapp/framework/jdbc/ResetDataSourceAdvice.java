@@ -25,11 +25,12 @@ public class ResetDataSourceAdvice {
 	 */
 	public void resetMasterDataSource(JoinPoint joinPoint) {
 		String methodName=joinPoint.getSignature().getName();
+		System.out.println("methodName="+methodName);
 		if(methodName.indexOf(getMemDataBaseFlag())>=3){
-			logger.debug("setMasterDataSource");
+			logger.debug("setMasterMemDataSource");
 			CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER_MEM);
 		}else{
-			logger.debug("setMasterMemDataSource");
+			logger.debug("setMasterDataSource");
 			CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER);
 		}
 	}

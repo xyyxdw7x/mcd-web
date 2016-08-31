@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.test.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +27,11 @@ public class HttlController extends BaseMultiActionController {
 	@RequestMapping("/findBooks")
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String userId=this.getUserId(request, response);
-		System.out.println("userId="+userId);
 		String name=request.getParameter("name");
 		ModelAndView model = new ModelAndView("test/books");
 		HashMap<String,Object> modelMap=new HashMap<String,Object>();
 		modelMap.put("user", "张三");
-		modelMap.put("pwd", "张三1233123212sadadas");
+		modelMap.put("pwd", "张三1233123dadas");
 		if(name==null){
 			name="";
 		}
@@ -55,11 +54,48 @@ public class HttlController extends BaseMultiActionController {
 	@ResponseBody
 	public Book getBook(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Book user=new Book();
-		user.setTitle("sanyisss13123 ceshi策划四输入大大缩短");
-		user.setPrice(1.23);
-		return user;
+		String id=request.getParameter("id");
+		Book book=bookService.getBook(id);
+		return book;
 	} 
+	
+	@RequestMapping("/updateBook")
+	@ResponseBody
+	public Book updateBook(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=bookService.getBook(id);
+		book.setTitle("修改的");
+		bookService.updateBook(book);
+		return book;
+	} 
+	
+	@RequestMapping("/delBook")
+	@ResponseBody
+	public Book delBook(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=bookService.getBook(id);
+		bookService.delBook(book);
+		return book;
+	} 
+	
+	
+	@RequestMapping("/saveBook")
+	@ResponseBody
+	public Book saveBook(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=new Book();
+		book.setId(id);
+		book.setTitle("sanyi缩短");
+		book.setPrice(1.23);
+		book.setPublication(new Date());
+		book.setDiscount(8);
+		bookService.saveBook(book);
+		return book;
+	} 
+	
 	
 	@RequestMapping("/findBooks2")
 	public ModelAndView findBooks2(HttpServletRequest request,

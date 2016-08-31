@@ -13,4 +13,12 @@ import com.asiainfo.biapp.mcd.test.vo.Book;
 public interface IBookService {
 
 	List<Book> findBooks(String name) throws Exception;
+	
+	int saveBook(Book book) throws Exception;
+	
+	Book getBook(String bookId) throws Exception;
+	
+	int updateBook(Book book) throws Exception;
+	
+	int delBook(Book book) throws Exception;
 }

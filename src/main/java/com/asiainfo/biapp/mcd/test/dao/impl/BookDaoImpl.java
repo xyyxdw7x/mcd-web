@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.test.dao.impl;
 
+import java.io.Serializable;
 import java.sql.Types;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,20 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
  *
  */
 @Repository("bookDao")
-public class BookDaoImpl extends JdbcDaoBase implements IBookDao {
+public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void save(Book book) {
-
+		try {
+			this.getJdbcTemplateTool().save(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -37,4 +47,19 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao {
 		return list;
 	}
 
+	@Override
+	public Book getBook(String bookId) throws Exception {
+		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
+		return book;
+	}
+
+	@Override
+	public void updateBook(Book book) throws Exception {
+		this.getJdbcTemplateTool().update(book);
+	}
+	
+	@Override
+	public void updateDeleteBook(Book book) throws Exception{
+		this.getJdbcTemplateTool().delete(book);
+	}
 }
