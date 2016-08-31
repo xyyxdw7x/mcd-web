@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.tactics.service;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 
 public interface IMtlStcPlanManagementService {
 	/**

@@ -123,4 +123,10 @@ public interface IMpmCampSegInfoDao {
      * @param ifHasVariate 
      */
     public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate);
+	/**
+	 * 获取直接子活动
+	 * @param campsegId
+	 * @return
+	 */
+	public List getSubCampsegInfo(String campsegId);
 }

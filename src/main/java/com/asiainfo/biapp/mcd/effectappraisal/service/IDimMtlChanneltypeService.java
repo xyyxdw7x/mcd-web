@@ -3,9 +3,9 @@ package com.asiainfo.biapp.mcd.effectappraisal.service;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
-import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 
 /**
  * 

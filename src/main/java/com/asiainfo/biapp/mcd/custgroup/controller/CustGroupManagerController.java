@@ -4,20 +4,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,20 +25,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
 import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
-import com.asiainfo.biapp.mcd.custgroup.service.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.custgroup.service.IMtlCustGroupService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
-import com.asiainfo.biframe.utils.string.StringUtil;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
+import com.asiainfo.biframe.utils.string.StringUtil;
+
 import net.sf.json.JSONObject;
 
 /**
@@ -66,7 +65,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	private IMpmUserPrivilegeService userPrivilegeService;
 	
 	@Resource(name="custGroupService")
-	private IMtlCustGroupService custGroupService;
+	private MtlCustGroupService custGroupService;
 	
 	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService campSegInfoService;

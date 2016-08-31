@@ -1,12 +1,12 @@
 package com.asiainfo.biapp.mcd.custgroup.dao.impl;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.dao.IMtlStcPlanDao;
 
 /**

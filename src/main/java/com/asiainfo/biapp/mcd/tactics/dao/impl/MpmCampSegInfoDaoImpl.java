@@ -617,5 +617,17 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         String sql = "update mtl_channel_def s set s.exec_content = ?,if_have_var = ? where s.campseg_id = ? and s.channel_id = ?" ;    
         this.getJdbcTemplate().update(sql, new Object[] {execContent,Integer.parseInt(ifHasVariate),campsegId,channelId });
     }
+    
+	@Override
+	public List getSubCampsegInfo(String campsegId) {
+		List list = null;
+		/*try {
+			StringBuffer hql = new StringBuffer(" from MtlCampSeginfo seginfo where seginfo.campsegPid = ? ");
+			list = this.getHibernateTemplate().find(hql.toString(), new String[] { campsegId });
+		} catch (Exception e) {
+			log.error("getSubCampsegInfo({}) error:", campsegId, e);
+		}*/
+		return list;
+	}
 
 }

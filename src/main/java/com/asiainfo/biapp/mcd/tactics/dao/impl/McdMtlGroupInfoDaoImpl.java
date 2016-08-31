@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdMtlGroupInfoDao;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
 
 /**
  * 客户群相关操作DAO

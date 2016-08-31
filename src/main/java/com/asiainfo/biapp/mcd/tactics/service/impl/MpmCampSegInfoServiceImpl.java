@@ -22,16 +22,17 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.custgroup.dao.ICreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 //import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
@@ -48,11 +49,9 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCallId;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefId;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -692,6 +691,51 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Override
     public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
         campSegInfoDao.saveExecContent(campsegId,channelId,execContent,ifHasVariate);
-        
     }
+    
+    /*
+	 * 属性递归查询(包括自己节点)
+	 *
+	 */
+	@Override
+	public List<MtlCampSeginfo> getCampSeginfoListByCampsegId(String campsegId) throws MpmException {
+		List<MtlCampSeginfo> allTreeList = new ArrayList();
+		try {
+			if (StringUtils.isNotEmpty(campsegId)) {
+				allTreeList = new ArrayList<MtlCampSeginfo>();
+				MtlCampSeginfo seginfo = this.getCampSegInfo(campsegId);
+				if (seginfo != null) {
+					allTreeList.add(seginfo);
+				}
+				allTreeList.addAll(getSubCampsegInfoTreeList(campsegId));
+			}
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return allTreeList;
+	}
+	
+	/**
+	 * 获取指定活动ID下的所有子节点（向下递归，不包括自身）
+	 * @param savedCampsegId
+	 * @return
+	 */
+	public List<MtlCampSeginfo> getSubCampsegInfoTreeList(String campsegId) throws MpmException {
+		List<MtlCampSeginfo> resultList = new ArrayList<MtlCampSeginfo>();
+		try {
+			List<MtlCampSeginfo> childList = campSegInfoDao.getSubCampsegInfo(campsegId);
+			if (CollectionUtils.isNotEmpty(childList)) {
+				resultList.addAll(childList);
+				for (MtlCampSeginfo mcs : childList) {
+					List<MtlCampSeginfo> cList = getSubCampsegInfoTreeList(mcs.getCampsegId());
+					if (CollectionUtils.isNotEmpty(cList)) {
+						resultList.addAll(cList);
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("getSubCampsegInfoTreeList error:", e);
+		}
+		return resultList;
+	}
 }

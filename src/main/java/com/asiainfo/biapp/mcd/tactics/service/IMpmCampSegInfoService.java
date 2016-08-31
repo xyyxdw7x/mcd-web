@@ -2,13 +2,11 @@ package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
 
-
-
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlan;
 
 /*
  * Created on 11:31:19 AM
@@ -146,4 +144,12 @@ public interface IMpmCampSegInfoService {
      * @param ifHasVariate 
      */
     public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate);
+    /**
+	 * 根据活动编号查出自身及所有波次(递归方式，包括自己)
+	 * @param campsegId
+	 * @return
+	 * @throws MpmException
+	 */
+	public List<MtlCampSeginfo> getCampSeginfoListByCampsegId(String campsegId) throws MpmException;
+	
 }

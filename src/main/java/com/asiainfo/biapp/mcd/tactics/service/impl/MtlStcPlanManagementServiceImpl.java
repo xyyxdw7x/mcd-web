@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biframe.utils.string.StringUtil;
 @Service("mtlStcPlanManagementService")

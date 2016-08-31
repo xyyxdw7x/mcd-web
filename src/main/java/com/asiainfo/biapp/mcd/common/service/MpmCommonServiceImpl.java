@@ -13,20 +13,19 @@ import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
+import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.dao.IMcdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
-import com.asiainfo.biapp.mcd.custgroup.service.IMtlCustGroupService;
-import com.asiainfo.biapp.mcd.tactics.dao.IDimMtlChanneltypeDao;
-import com.asiainfo.biapp.mcd.tactics.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
-import com.asiainfo.biapp.mcd.tactics.vo.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimPlanType;
 import com.asiainfo.biframe.utils.config.Configure;
 
 /**
@@ -54,13 +53,13 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	private IMtlStcPlanDao mtlStcPlanDao;
 	
 	@Resource(name="dimMtlChanneltypeDao")
-	private IDimMtlChanneltypeDao dimMtlChanneltypeDao;
+	private DimMtlChanneltypeDao dimMtlChanneltypeDao;
 	
 	@Resource(name="mcdCvColDefineDao")
 	private IMcdCvColDefineDao mcdCvColDefineDao;
 	
 	@Resource(name = "custGroupService")
-	private IMtlCustGroupService custGroupService;
+	private MtlCustGroupService custGroupService;
 	
 	public IMtlStcPlanDao getMtlStcPlanDao() {
 		return mtlStcPlanDao;
@@ -68,10 +67,10 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	public void setMtlStcPlanDao(IMtlStcPlanDao mtlStcPlanDao) {
 		this.mtlStcPlanDao = mtlStcPlanDao;
 	}
-	public IDimMtlChanneltypeDao getDimMtlChanneltypeDao() {
+	public DimMtlChanneltypeDao getDimMtlChanneltypeDao() {
 		return dimMtlChanneltypeDao;
 	}
-	public void setDimMtlChanneltypeDao(IDimMtlChanneltypeDao dimMtlChanneltypeDao) {
+	public void setDimMtlChanneltypeDao(DimMtlChanneltypeDao dimMtlChanneltypeDao) {
 		this.dimMtlChanneltypeDao = dimMtlChanneltypeDao;
 	}
 	@Override

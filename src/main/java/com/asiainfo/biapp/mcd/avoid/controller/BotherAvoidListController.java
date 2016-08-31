@@ -57,8 +57,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	@Resource(name="botherAvoidUserTypeIdNameMapper")
 	private IdNameMapper mpmBotherAvoidUserTypeService;
 	
-	@Resource(name="campsegTypeIdNameMapper")
-	private IdNameMapper mpmCampsegTypeTypeService;
+	@Resource(name="dimCampsegTypeIdNameMapper")
+	private IdNameMapper dimCampsegTypeIdNameMapper;
 	
 	/**
 	 * 免打扰客户查询
@@ -439,10 +439,9 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("searchCampsegType")
-	public void searchCampsegType(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public void searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	
-		List campsegTypeList = mpmCampsegTypeTypeService.getAll();
+		List campsegTypeList = dimCampsegTypeIdNameMapper.getAll();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");

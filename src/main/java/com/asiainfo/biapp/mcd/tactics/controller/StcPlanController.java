@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
-import java.io.*;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,16 +8,16 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.tactics.vo.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biframe.utils.string.StringUtil;
+
+import net.sf.json.JSONObject;
 
 /**
  * 

@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
-import com.asiainfo.biapp.mcd.tactics.vo.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 
 public interface IMcdMtlGroupInfoDao {
 
