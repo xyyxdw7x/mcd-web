@@ -57,5 +57,16 @@ public interface CustGroupInfoService {
 	 * @return
 	 */
 	public int getOriginalCustGroupNum(String custGroupId);
-	
+    /**
+     * 
+     * @param fileNameCsv  导入文件名称
+     * @param fileNameVerf 验证文件民称
+     * @param customGroupName  客户群名称
+     * @param mtlCuserTableName 客户群所存表名称
+     * @param filenameTemp 验证文件地址
+     * @param ftpStorePath FTP需要导入的文件地址
+     * @param customGroupId 客户群ID
+     */
+	public void insertSqlLoderISyncDataCfg(String fileNameCsv, String fileNameVerf, String customGroupName, String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
+
 }

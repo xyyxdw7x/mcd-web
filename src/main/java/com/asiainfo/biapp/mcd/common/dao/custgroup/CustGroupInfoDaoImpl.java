@@ -340,4 +340,49 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		}
 		return num;
 	}
+	/**
+	 * 周期性SQLLODER任务，更新任务信息
+     * @param fileNameCsv  导入文件名称
+     * @param fileNameVerf 验证文件民称
+     * @param customGroupName  客户群名称
+     * @param mtlCuserTableName 客户群所存表名称
+     * @param ftpStorePath FTP需要导入的文件地址
+     * @param filenameTemp 验证文件地址
+     * @param  customGroupId 客户群ID
+	 */
+	@Override
+	public void updateSqlLoderISyncDataCfg(String fileNameCsv,
+			String fileNameVerf, String customGroupName,
+			String mtlCuserTableName, String ftpStorePath, String filenameTemp,
+			String customGroupId) {
+		String sql = "update i_sync_data_cfg set EXEC_SQL = ?,DATA_FILE_FORMAT=?,CHK_FILE_FORMAT=?,  REMARK = ?, ATTACH_PATH = ?, CTL_FILE_PATH = ?,time_type = 0,RUN_END_TIME=null where POLICY_ID = ?";
+		log.info("sqlloder updateSQL :" + sql );
+		log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileNameCsv+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
+		this.getJdbcTemplate().update(sql,new Object[]{mtlCuserTableName,fileNameCsv,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
+	}
+/**
+  * 
+  * @param fileNameCsv  导入文件名称
+  * @param fileNameVerf 验证文件民称
+  * @param customGroupName  客户群名称
+  * @param mtlCuserTableName 客户群所存表名称
+  * @param ftpStorePath FTP需要导入的文件地址
+  * @param filenameTemp 验证文件地址
+  * @param  customGroupId 客户群ID
+  */
+	@Override
+	public void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName, String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
+		String inertSql = "insert into i_sync_data_cfg (CFG_ID, NAME, EXEC_STATUS, TIME_TYPE, EXEC_TYPE, IS_OVERRIDE, IS_BACKUP, DB_TYPE, EXEC_SQL, COLUMN_TYPES, DATA_FILE_FORMAT, CHK_FILE_FORMAT, COLUMN_NUM, COLUMN_SPLIT, RUN_BEGIN_TIME, RUN_END_TIME, REMARK, ATTACH_PATH, CTL_FILE_PATH, FTP_ID, CONTINUOUS_CFG_ID,POLICY_ID)" +
+        "values ((select max(CFG_ID)+1 from i_sync_data_cfg), ?, 0, 0, 4, 0, 0, 2, ?, '', ?, ?, '1', ',', sysdate, '', ?, ?, ?, null, null,?)";
+		log.info("sqlloder insertSQL :" + inertSql );
+		log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
+		this.getJdbcTemplate().update(inertSql,new Object[]{customGroupName,mtlCuserTableName,fileName,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
+	    log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
+
+	}
+	@Override
+	public List getSqlLoderISyncDataCfg(String customGroupId) {
+		String sql = "select * From i_sync_data_cfg where POLICY_ID = ?";
+		return this.getJdbcTemplate().queryForList(sql,new Object[]{customGroupId});
+	}
 }

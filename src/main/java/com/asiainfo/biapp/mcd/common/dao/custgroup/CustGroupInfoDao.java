@@ -46,4 +46,27 @@ public interface CustGroupInfoDao {
 	 * @return
 	 */
 	public int getOriginalCustGroupNum(String custGroupId);
+	/**
+	 * @return
+	 */
+	/**
+	 * 周期性SQLLODER任务，更新任务信息
+	 * @param fileNameCsv
+	 * @param fileNameVerf
+	 * @param customGroupName
+	 * @param mtlCuserTableName
+	 * @param ftpStorePath
+	 * @param filenameTemp
+	 * @param customGroupId
+	 */
+	public void updateSqlLoderISyncDataCfg(String fileNameCsv,String fileNameVerf, String customGroupName,String mtlCuserTableName, String ftpStorePath, String filenameTemp,String customGroupId);
+	/**
+	 * 根据客户群ID查询是否存在该客户群任务
+	 * @param customGroupId
+	 * @return
+	 */
+	public List getSqlLoderISyncDataCfg(String customGroupId);
+	void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName,
+			String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
+
 }

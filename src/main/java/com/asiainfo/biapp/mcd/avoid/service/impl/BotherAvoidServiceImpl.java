@@ -72,7 +72,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 		int isExist = 0;
 		try {
 			
-			isExist = mcdMtlBotherAvoidDao.chkIsExistInMem(mtl);
+			isExist = mcdMtlBotherAvoidDao.findBotherAvoidUserInMem(mtl);
 	
 		} catch(Exception e) {
 			e.printStackTrace();

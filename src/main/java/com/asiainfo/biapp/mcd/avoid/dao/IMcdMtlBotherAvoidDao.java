@@ -21,7 +21,7 @@ public interface IMcdMtlBotherAvoidDao {
 
 	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception;
 	
-	public int chkIsExistInMem(MtlBotherAvoid mtl);
+	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl);
 		
 	public void mdfBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
 	

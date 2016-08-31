@@ -117,8 +117,11 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		log.info("免打扰客户新增耗时:"+(endTime-startTime)+"毫秒");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao#findBotherAvoidUserInMem(com.asiainfo.biapp.mcd.avoid.model.MtlBotherAvoid)
+	 */
 	@Override
-	public int chkIsExistInMem(MtlBotherAvoid mtl) {
+	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT COUNT(1) FROM MTL_BOTHER_AVOID WHERE ");
 		sb.append(" AVOID_BOTHER_TYPE = '"+mtl.getAvoidBotherType()+"'");

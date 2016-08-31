@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -26,7 +27,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	
 	@Resource(name="custGroupInfoDao")
 	CustGroupInfoDao custGroupInfoDao;
-	
+
 	@Resource(name="mpmUserPrivilegeService")
 	IMpmUserPrivilegeService mpmUserPrivilegeService;
 	
@@ -218,5 +219,25 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	public int getOriginalCustGroupNum(String custGroupId){
 		return custGroupInfoDao.getOriginalCustGroupNum(custGroupId);
 	}
-	
+    /**
+     * 
+     * @param fileNameCsv  导入文件名称
+     * @param fileNameVerf 验证文件民称
+     * @param customGroupName  客户群名称
+     * @param mtlCuserTableName 客户群所存表名称
+     * @param filenameTemp 验证文件地址
+     * @param ftpStorePath FTP需要导入的文件地址
+     * @param customGroupId 客户群ID
+     */
+	@Override
+	public void insertSqlLoderISyncDataCfg(String fileNameCsv,String fileNameVerf,String customGroupName,String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
+		//查看该客户群任务是否存在
+		List list  = custGroupInfoDao.getSqlLoderISyncDataCfg(customGroupId);
+		if(list != null && list.size() > 0){
+			custGroupInfoDao.updateSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
+		}else{
+			custGroupInfoDao.insertSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
+		}
+		
+	}
 }
