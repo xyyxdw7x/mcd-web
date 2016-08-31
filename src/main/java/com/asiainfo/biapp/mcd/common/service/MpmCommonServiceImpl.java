@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
-import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
@@ -50,7 +50,7 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	
 	private static Logger log = LogManager.getLogger();
 	@Resource(name="mtlStcPlanDao")
-	private IMtlStcPlanDao mtlStcPlanDao;
+	private MtlStcPlanDao mtlStcPlanDao;
 	
 	@Resource(name="dimMtlChanneltypeDao")
 	private DimMtlChanneltypeDao dimMtlChanneltypeDao;
@@ -61,10 +61,10 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	@Resource(name = "custGroupService")
 	private MtlCustGroupService custGroupService;
 	
-	public IMtlStcPlanDao getMtlStcPlanDao() {
+	public MtlStcPlanDao getMtlStcPlanDao() {
 		return mtlStcPlanDao;
 	}
-	public void setMtlStcPlanDao(IMtlStcPlanDao mtlStcPlanDao) {
+	public void setMtlStcPlanDao(MtlStcPlanDao mtlStcPlanDao) {
 		this.mtlStcPlanDao = mtlStcPlanDao;
 	}
 	public DimMtlChanneltypeDao getDimMtlChanneltypeDao() {
@@ -124,20 +124,10 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 				creatTxtFile(filenameTemp,buf.toString());
 	 			String chkFile = filepath + tableName + ".verf";
 				creatTxtFile(chkFile,tableName+".txt");   
-				try {
-					/*在Windows环境执行出错，暂时注释掉。
-					Runtime.getRuntime().exec("chmod 777 "+filenameTemp);
-					Runtime.getRuntime().exec("chmod 777 "+chkFile);
-					Runtime.getRuntime().exec("chmod 777 "+filepath + tableName + ".txt");
-					*/
-				} catch (Exception e) {
-					log.error("修改文件权限异常："+e);
-				} 
 				
 				//新增逻辑SQLLODER导入
 				log.info("sqlLoder导入开始.............." );   
 				 custGroupService.insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
-					
 					Boolean isTrue = custGroupService.getSqlLoderISyncDataCfgEnd(tableName);
 					while(!isTrue){
 						Thread.sleep(60000);
@@ -146,34 +136,8 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 				    log.info("sqlLoder 插入客户群数据完毕,客户群ID：" + custGroupId);
 				    log.info("本次执行完成，更新任务状态,客户群ID：" + custGroupId);
 				    custGroupService.updateSqlLoderISyncDataCfgStatus(custGroupId);
-				    
 //					//在本笃数据库中也创建这个表
-//					custGroupService.createTableMcdBySqlFire(tableName); 
-//				    log.info("oracle 插入客户群数据完毕,客户群ID：" + custGroupId);
-//				    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + custGroupId);
 				    custGroupService.createSynonymTableMcdBySqlFire(tableName);
-
-				// Java调用SQLLoader，执行客户群表的数据加载
-			/*	String ctlCmd = "SQLLDR " + dbUser + "/" + dbPassword + "@" + dbName + " control=\"" + ctlFile + "\"";
-				
-				System.out.println(ctlCmd);
-				// log.debug(">>\n" + ctlCmd);
-				Process proc = r.exec(ctlCmd);
-				     InputStream ins = null;
-		            ins = proc.getInputStream(); // 获取执行cmd命令后的信息
-		            BufferedReader oreader = new BufferedReader(new InputStreamReader(ins));
-		            String line = null;
-		            while ((line = oreader.readLine()) != null)
-		            {
-		                String msg = new String(line.getBytes("ISO-8859-1"), "UTF-8");
-		                System.out.println(msg); // 输出
-		            }
-		            int exitValue = proc.waitFor();
-
-	                System.out.println("返回值exitValue：" + exitValue+"\n数据导入成功");
-	                 proc.getOutputStream().close();
-	                 */ 
-
 					custGroupService.updateMtlGroupStatus(tableName,custGroupId);
 
 		} catch (Exception e) {

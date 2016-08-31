@@ -33,7 +33,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * @version 1.0
  */
 @Repository("mtlStcPlanDao")
-public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
+public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DimPlanType> initDimPlanType() throws Exception {

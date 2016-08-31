@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
@@ -75,7 +75,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
   	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
     //业务类型
     @Resource(name="mtlStcPlanDao")
-    private IMtlStcPlanDao stcPlanDao;
+    private MtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCiCustDao")
     private IMtlCampsegCiCustDao mtlCampsegCiCustDao; 
     @Resource(name="mpmUserPrivilegeService")

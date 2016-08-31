@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
-import com.asiainfo.biapp.mcd.common.dao.plan.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
@@ -17,11 +17,11 @@ import com.asiainfo.biframe.utils.string.StringUtil;
 @Service("mtlStcPlanManagementService")
 public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementService  {
 	@Resource(name="mtlStcPlanDao")
-	private IMtlStcPlanDao mtlStcPlanDao;
-	public IMtlStcPlanDao getMtlStcPlanDao() {
+	private MtlStcPlanDao mtlStcPlanDao;
+	public MtlStcPlanDao getMtlStcPlanDao() {
 		return mtlStcPlanDao;
 	}
-	public void setMtlStcPlanDao(IMtlStcPlanDao mtlStcPlanDao) {
+	public void setMtlStcPlanDao(MtlStcPlanDao mtlStcPlanDao) {
 		this.mtlStcPlanDao = mtlStcPlanDao;
 	}
 	@Override

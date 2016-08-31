@@ -18,7 +18,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
  * @author weilin.wu  wuwl2@asiainfo.com
  * @version 1.0
  */
-public interface IMtlStcPlanDao {
+public interface MtlStcPlanDao {
 
 	List<DimPlanType> initDimPlanType() throws Exception;
 	/**
