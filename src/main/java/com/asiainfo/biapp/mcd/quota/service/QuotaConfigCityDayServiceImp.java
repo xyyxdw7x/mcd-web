@@ -9,8 +9,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityDayDao;
-import com.asiainfo.biapp.mcd.quota.model.CityQuotaStatisDay;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 @Service("quotaConfigCityDayService")
 public class QuotaConfigCityDayServiceImp implements QuotaConfigCityDayService {

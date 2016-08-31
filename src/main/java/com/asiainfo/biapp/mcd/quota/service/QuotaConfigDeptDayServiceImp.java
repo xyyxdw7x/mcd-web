@@ -13,8 +13,8 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.UserDeptLinkDao;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 
 @Service("quotaConfigDeptDayService")
 public class QuotaConfigDeptDayServiceImp implements QuotaConfigDeptDayService {

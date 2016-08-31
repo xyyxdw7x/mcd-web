@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 
 public interface QuotaConfigDeptDayDao {
 	/**

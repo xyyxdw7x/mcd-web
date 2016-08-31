@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.asiainfo.biapp.mcd.quota.dao.QuotaMonthDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.model.QuotaMonthDeptUsed;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
 public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 		QuotaMonthDeptUsedDao {

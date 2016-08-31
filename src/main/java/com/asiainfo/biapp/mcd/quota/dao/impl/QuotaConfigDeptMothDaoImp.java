@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 @Repository(value="quotaConfigDeptMothDao")
 public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements

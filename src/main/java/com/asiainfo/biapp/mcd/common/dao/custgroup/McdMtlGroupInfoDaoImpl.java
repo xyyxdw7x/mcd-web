@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.custgroup.dao.impl;
+package com.asiainfo.biapp.mcd.common.dao.custgroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +12,52 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMcdMtlGroupInfoDao;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**
- * 
- * Title: 
- * Description: 
- * Copyright: (C) Copyright 1993-2014 AsiaInfo Holdings, Inc
- * Company: 亚信科技（中国）有限公司
- * @author lixq10 2015-7-18 上午11:04:26
- * @version 1.0
+ * 客户群相关操作DAO
+ * @author AsiaInfo-jie
+ *
  */
-@Repository(value="groupInfoDao")
+
+@Repository("mcdMtlGroupInfoDao")
 public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupInfoDao {
-	private static Logger log = LogManager.getLogger(McdMtlGroupInfoDaoImpl.class);
+    private static Logger log = LogManager.getLogger(McdMtlGroupInfoDaoImpl.class);
+    /**
+     * 根据客户群ID查找客户群
+     * @param custgroupId
+     * @return
+     */
+    @Override
+    public MtlGroupInfo getMtlGroupInfo(String customgroupid) {
+        List list = null;
+        MtlGroupInfo custGroupInfo = null;
+        try {
+            StringBuffer sbuffer = new StringBuffer();
+            sbuffer.append("SELECT * FROM MTL_GROUP_INFO WHERE custom_group_id = ?");
+            log.info("查询客户群信息："+sbuffer.toString());
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+            for (int i=0;i<list.size();i++) {
+                Map map = (Map)list.get(i);
+                 custGroupInfo = new MtlGroupInfo();
+                custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
+                custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));    
+                custGroupInfo.setCreateUserId((String) map.get("CREATE_USER_ID"));
+                if(null != map.get("CUSTOM_NUM")){
+                    custGroupInfo.setCustomNum(Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))));
+                }
+                if(null != map.get("CUSTOM_STATUS_ID")){
+                    custGroupInfo.setCustomStatusId(Integer.parseInt(String.valueOf(map.get("CUSTOM_STATUS_ID"))));
+                }
+                if(null != map.get("UPDATE_CYCLE")){
+                    custGroupInfo.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))));
+                }
+            }
+        } catch (Exception e) {
+            log.error("",e);
+        }
+        return custGroupInfo;
+    }
 	@Override
 	public List<MtlGroupInfo> getMyCustGroup(String currentUserId) {
 		List<Map> list = null;
@@ -344,4 +375,5 @@ public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupI
 		
 		return this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
 	}
+
 }

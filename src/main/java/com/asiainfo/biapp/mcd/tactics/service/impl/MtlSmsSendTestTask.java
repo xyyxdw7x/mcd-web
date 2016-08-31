@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.model.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;

@@ -1,13 +1,12 @@
-package com.asiainfo.biapp.mcd.quota.model;
+package com.asiainfo.biapp.mcd.quota.vo;
 /**
- * 科室月使用额
+ * 地市月使用额
  * @author wb
  *
  */
-public class QuotaMonthDeptUsed {
+public class QuotaMonthCityUsed {
 	private String dataDate;
 	private String cityId;
-	private String deptId;
 	private int usedNum;
 	
 	public int getUsedNum() {
@@ -28,12 +27,7 @@ public class QuotaMonthDeptUsed {
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
 	}
-	public String getDeptId() {
-		return deptId;
-	}
-	public void setDeptId(String deptId) {
-		this.deptId = deptId;
-	}
+	
 	
 
 }

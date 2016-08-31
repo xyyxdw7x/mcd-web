@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 
 @Repository("custGroupJdbcDao")
-public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements IMtlCustGroupJdbcDao {
+public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGroupJdbcDao {
 	private static Logger log = LogManager.getLogger();
 
 	@Override

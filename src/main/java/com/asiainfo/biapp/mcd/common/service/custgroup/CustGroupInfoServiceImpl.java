@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;

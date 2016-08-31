@@ -1,20 +1,19 @@
-package com.asiainfo.biapp.mcd.quota.model;
+package com.asiainfo.biapp.mcd.quota.vo;
 /**
- * 科室月配置额
+ * 科室日使用额
  * @author wb
  *
  */
-public class QuotaConfigDeptMoth {
+public class QuotaDayDeptUsed{
 	private String dataDate;
 	private String cityId;
 	private String deptId;
-	private int monthQuotaNum;
-	
-	public int getMonthQuotaNum() {
-		return monthQuotaNum;
+	private int usedNum;
+	public int getUsedNum() {
+		return usedNum;
 	}
-	public void setMonthQuotaNum(int monthQuotaNum) {
-		this.monthQuotaNum = monthQuotaNum;
+	public void setUsedNum(int usedNum) {
+		this.usedNum = usedNum;
 	}
 	public String getDataDate() {
 		return dataDate;
@@ -35,6 +34,6 @@ public class QuotaConfigDeptMoth {
 		this.deptId = deptId;
 	}
 	
-	
+	     
 
 }

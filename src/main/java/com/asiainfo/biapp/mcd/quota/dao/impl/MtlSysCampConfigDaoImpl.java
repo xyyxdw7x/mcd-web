@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.model.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
 
 /**
  * 

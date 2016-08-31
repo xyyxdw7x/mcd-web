@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
-import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 
 @Repository(value="quotaConfigDeptMonthDefaultDao")
 public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements

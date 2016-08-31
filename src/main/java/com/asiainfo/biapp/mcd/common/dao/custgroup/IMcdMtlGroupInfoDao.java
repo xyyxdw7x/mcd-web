@@ -1,21 +1,19 @@
-package com.asiainfo.biapp.mcd.custgroup.dao;
+package com.asiainfo.biapp.mcd.common.dao.custgroup;
 
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 
-/**
- * 
- * Title: 
- * Description: 
- * Copyright: (C) Copyright 1993-2014 AsiaInfo Holdings, Inc
- * Company: 亚信科技（中国）有限公司
- * @author lixq10 2015-7-18 上午11:02:21
- * @version 1.0
- */
-
 public interface IMcdMtlGroupInfoDao {
+
+    /**
+     * 根据客户群ID查找客户群
+     * @param custgroupId
+     * @return
+     */
+    MtlGroupInfo getMtlGroupInfo(String custgroupId);
+
 	/**
 	 * 新建策略页面   选取营销人群    初始化我的客户群信息
 	 * @param currentUserId
@@ -51,4 +49,5 @@ public interface IMcdMtlGroupInfoDao {
 	public void deleteCustom(String customGrpId);
 	
 	public List searchCustomDetail(String customGrpId);
+
 }

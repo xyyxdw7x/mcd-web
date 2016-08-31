@@ -28,7 +28,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
-import com.asiainfo.biapp.mcd.custgroup.dao.ICreateCustGroupTabDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
@@ -82,7 +82,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     IMpmUserPrivilegeService mpmUserPrivilegeService;
     
 	@Resource(name = "createCustGroupTab")
-	private ICreateCustGroupTabDao createCustGroupTab;
+	private CreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
 	@Resource(name = "mcdCampsegTaskDao")

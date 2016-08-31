@@ -2,9 +2,9 @@ package com.asiainfo.biapp.mcd.quota.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 public interface QuotaConfigDeptMothService {
 

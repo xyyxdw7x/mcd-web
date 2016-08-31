@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 @Repository(value="quotaConfigDeptDayDao")
 public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 		QuotaConfigDeptDayDao {

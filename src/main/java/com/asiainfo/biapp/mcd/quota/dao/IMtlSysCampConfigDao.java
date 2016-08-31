@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.quota.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.quota.model.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
 
 /**
  * 

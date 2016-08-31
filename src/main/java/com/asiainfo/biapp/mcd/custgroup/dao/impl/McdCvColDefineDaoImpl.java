@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMcdCvColDefineDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -15,7 +15,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * The Class McdCvColDefineDaoImpl.
  */
 @Repository("mcdCvColDefineDao")
-public class McdCvColDefineDaoImpl extends JdbcDaoBase  implements IMcdCvColDefineDao {
+public class McdCvColDefineDaoImpl extends JdbcDaoBase  implements McdCvColDefineDao {
 	@Override
 	public List<McdCvColDefine> initCvColDefine(String pAttrClassId,String keyWords) {
 		List<Map<String,Object>> list = null;

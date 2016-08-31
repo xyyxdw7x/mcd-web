@@ -7,7 +7,7 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
 
 
-public interface IMtlCustGroupJdbcDao {
+public interface MtlCustGroupJdbcDao {
 
 	public int getGroupSequence(String cityid);
 	

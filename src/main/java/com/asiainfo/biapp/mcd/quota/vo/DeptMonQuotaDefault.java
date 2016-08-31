@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.model;
+package com.asiainfo.biapp.mcd.quota.vo;
 
 public class DeptMonQuotaDefault {
 	private String cityId;

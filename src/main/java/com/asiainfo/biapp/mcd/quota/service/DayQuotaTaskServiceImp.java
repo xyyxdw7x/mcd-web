@@ -10,10 +10,10 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigCityDay;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
-import com.asiainfo.biapp.mcd.quota.model.QuotaDayDeptUsed;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaDayDeptUsed;
 
 public class DayQuotaTaskServiceImp implements DayQuotaTaskService {
 	private DeptsQuotaStatisticsDao deptsQuotaStatisticsDao;

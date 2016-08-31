@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.quota.service;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.model.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 public interface QuotaConfigCityDayService {
 

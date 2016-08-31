@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.custgroup.dao.ICreateCustGroupTabDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 /**
  * 
  * Title: 
@@ -16,7 +16,7 @@ import com.asiainfo.biapp.mcd.custgroup.dao.ICreateCustGroupTabDao;
  * @version 1.0
  */
 @Repository("createCustGroupTab")
-public class CreateCustGroupTabDaoImpl extends JdbcDaoBase implements ICreateCustGroupTabDao {
+public class CreateCustGroupTabDaoImpl extends JdbcDaoBase implements CreateCustGroupTabDao {
 	
 	private static Logger log = LogManager.getLogger();
 	

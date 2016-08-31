@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 
-public interface IMcdCvColDefineDao {
+public interface McdCvColDefineDao {
 	/**
 	 * add by lixq10  IMCD_ZJ 新建策略页面视图预定义配置
 	 * @return

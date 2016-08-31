@@ -1,14 +1,15 @@
-package com.asiainfo.biapp.mcd.quota.model;
+package com.asiainfo.biapp.mcd.quota.vo;
 /**
- * 科室日使用额
+ * 科室月使用额
  * @author wb
  *
  */
-public class QuotaDayDeptUsed{
+public class QuotaMonthDeptUsed {
 	private String dataDate;
 	private String cityId;
 	private String deptId;
 	private int usedNum;
+	
 	public int getUsedNum() {
 		return usedNum;
 	}
@@ -34,6 +35,5 @@ public class QuotaDayDeptUsed{
 		this.deptId = deptId;
 	}
 	
-	     
 
 }

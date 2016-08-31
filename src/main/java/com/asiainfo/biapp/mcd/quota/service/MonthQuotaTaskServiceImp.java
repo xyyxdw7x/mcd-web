@@ -10,12 +10,12 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaMonthDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaMothCityUsedDao;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigCityDay;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigCityMoth;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;
-import com.asiainfo.biapp.mcd.quota.model.QuotaMonthCityUsed;
-import com.asiainfo.biapp.mcd.quota.model.QuotaMonthDeptUsed;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityMoth;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
 public class MonthQuotaTaskServiceImp implements MonthQuotaTaskService {
 

@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.custgroup.bean.CustInfoBean;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 
 /**
  * Created on Oct 22, 2007 11:34:37 AM
@@ -32,7 +32,7 @@ public class MtlCustGroupServiceImpl implements MtlCustGroupService {
 	private static Logger log = LogManager.getLogger();
 	
 	@Resource(name = "custGroupJdbcDao")
-	public IMtlCustGroupJdbcDao mtlCustGroupJdbcDao;
+	public MtlCustGroupJdbcDao mtlCustGroupJdbcDao;
 	
 	@Override
 	public int getGroupSequence(String cityid) {

@@ -23,12 +23,12 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.quota.model.CityQuotaStatisDay;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptDay;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptDayService;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biframe.utils.string.StringUtil;
 

@@ -22,7 +22,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.custgroup.dao.IMcdCvColDefineDao;
+import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.model.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
@@ -56,7 +56,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	private DimMtlChanneltypeDao dimMtlChanneltypeDao;
 	
 	@Resource(name="mcdCvColDefineDao")
-	private IMcdCvColDefineDao mcdCvColDefineDao;
+	private McdCvColDefineDao mcdCvColDefineDao;
 	
 	@Resource(name = "custGroupService")
 	private MtlCustGroupService custGroupService;

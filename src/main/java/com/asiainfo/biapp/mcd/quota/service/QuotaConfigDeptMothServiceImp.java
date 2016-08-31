@@ -17,12 +17,12 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.impl.QuotaDayDeptUsedDaoImp;
-import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;
-import com.asiainfo.biapp.mcd.quota.model.QuotaMonthDeptUsed;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
 @Service("quotaConfigDeptMothService")
 public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService {

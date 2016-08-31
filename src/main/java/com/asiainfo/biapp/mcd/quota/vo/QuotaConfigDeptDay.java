@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.model;
+package com.asiainfo.biapp.mcd.quota.vo;
 /**
  * 科室日配置额
  * @author wb

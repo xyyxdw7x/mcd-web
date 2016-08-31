@@ -20,10 +20,10 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.model.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biframe.utils.string.StringUtil;
 

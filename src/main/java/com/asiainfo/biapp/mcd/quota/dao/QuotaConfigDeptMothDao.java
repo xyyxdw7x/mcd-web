@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-import com.asiainfo.biapp.mcd.quota.model.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.quota.model.QuotaConfigDeptMoth;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 public interface QuotaConfigDeptMothDao {
 

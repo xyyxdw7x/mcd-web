@@ -12,7 +12,7 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
  * @author zhaokai
  * @version 1.0
  */
-public interface ICreateCustGroupTabDao {
+public interface CreateCustGroupTabDao {
 	
 	public void createCustGroupTabInMem(String sql)throws MpmException;
 	
