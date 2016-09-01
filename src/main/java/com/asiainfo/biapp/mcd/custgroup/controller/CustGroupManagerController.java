@@ -81,7 +81,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=getMoreMyCustom")
+	@RequestMapping("getMoreMyCustom")
 	public void getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Pager pager=new Pager();
 		//TODO: initActionAttributes(request);
@@ -171,7 +171,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initBussinessLable")
+	@RequestMapping("initBussinessLable")
 	public void initBussinessLable(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -400,12 +400,13 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			dataJson.put("status", "200");
 			Map map = (Map)data.get(0);
 			String userName = "";
-			if(map.get("CREATE_USER_ID") != null) {
+			/*if(map.get("CREATE_USER_ID") != null) {
 				IUser user = userPrivilegeService.getUser(map.get("CREATE_USER_ID").toString());
 				if(user != null) {
 					userName = user.getUsername();
 				}
-			}
+			}*/
+			userName="陈永刚";//TODO
 			map.put("CREATE_USER_NAME", userName);
 			SimpleDateFormat spf = new SimpleDateFormat("yyyyMMdd");
 			//创建时间

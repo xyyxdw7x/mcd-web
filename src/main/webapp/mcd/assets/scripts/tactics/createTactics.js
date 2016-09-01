@@ -1674,7 +1674,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		customerModule:function(){
 			var maduleTableModel = Backbone.Model.extend({
-				urlRoot : _ctx+"/custgroup",
+				urlRoot : _ctx+"/custgroup/custGroupManager",
 				defaults : {_ctx : _ctx,classification:""}
 			});
 			var moduleTypeView = Backbone.View.extend({
@@ -1785,14 +1785,14 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				},
 				//新建策略页面获取客户群列表
 				getGroupTypeNew:function(keyWords,pageNum){
-					var modelView = new maduleTableModel({id : "custGroupManager"})
+					var modelView = new maduleTableModel({id : "getMoreMyCustom"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
 						//初始化时调动的方法
-						data:{cmd:'getMoreMyCustom','keyWords':keyWords,'pageNum':pageNum},
+						data:{'keyWords':keyWords,'pageNum':pageNum},
 						success:function(model){
 							modelView.set({"classification":"initMyCustom","classificationName":"客户群"});
 							var typeHtml = new EJS({url : _ctx + '/mcd/pages/EJS/tacticsCreate/groupTable.ejs'}).render({result:model.attributes});
@@ -1804,12 +1804,14 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								var detailButton = $(this);
 								//阻止点击冒泡事件
 								event.stopPropagation();
+								debugger
 								var customGroupId = detailButton.parent().parent().parent().attr('customGroupId');
-								modelView.fetch({
+								var modelView2 = new maduleTableModel({id : "searchCustomDetail"})
+								modelView2.fetch({
 									type:'post',
 									contentType:'application/x-www-form-urlencoded; charset=utf-8',
 									dataType:'json',
-									data:{cmd:'searchCustomDetail','customGrpId':customGroupId},
+									data:{'customGrpId':customGroupId},
 									success:function(GrpDetail){
 										$('.showGroupTypeDialog-id').html(GrpDetail.attributes.data.CUSTOM_GROUP_ID);
 										$('.showGroupTypeDialog-name').html(GrpDetail.attributes.data.CUSTOM_GROUP_NAME);
@@ -1842,13 +1844,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				},
 				getDimCampDrvType:function(){
-					var modelView = new maduleTableModel({id : "custGroupManager"})
+					var modelView = new maduleTableModel({id : "initBussinessLable"})
 					var ths = this;
 					modelView.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:"initBussinessLable"},
 						success:function(model){
 							modelView.set({"classification":"bussinessLable","classificationName":"标签"});
 							var typeHtml = new EJS({url : _ctx + '/mcd/pages/EJS/tacticsCreate/customerTypeList.ejs'}).render({result:model.attributes});
