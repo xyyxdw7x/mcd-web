@@ -4,7 +4,7 @@ package com.asiainfo.biapp.mcd.tactics.vo;
  * MtlCampsegCustgroup entity. @author MyEclipse Persistence Tools
  */
 
-public class MtlCampsegCiCustgroup implements java.io.Serializable {
+public class MtlCampsegCustgroup implements java.io.Serializable {
 
 	// Fields
 
@@ -32,11 +32,11 @@ public class MtlCampsegCiCustgroup implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public MtlCampsegCiCustgroup() {
+	public MtlCampsegCustgroup() {
 	}
 
 	/** minimal constructor */
-	public MtlCampsegCiCustgroup(String campsegId, String custgroupType,String custgroupId, String custgroupName) {
+	public MtlCampsegCustgroup(String campsegId, String custgroupType,String custgroupId, String custgroupName) {
 		this.campsegId = campsegId;
 		this.custgroupType = custgroupType;
 		this.custgroupId = custgroupId;
@@ -44,7 +44,7 @@ public class MtlCampsegCiCustgroup implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public MtlCampsegCiCustgroup(String campsegId, String custgroupType,
+	public MtlCampsegCustgroup(String campsegId, String custgroupType,
 			String custgroupId, String custgroupName, Integer custgroupNumber,
 			String custBaseMonth, String custBaseDay, String custgroupDesc) {
 		this.campsegId = campsegId;
