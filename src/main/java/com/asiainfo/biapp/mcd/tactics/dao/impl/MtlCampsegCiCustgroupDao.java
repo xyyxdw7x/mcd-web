@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 
 /**
  * A data access object (DAO) providing persistence and search support for
@@ -16,7 +16,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
  * transactions. Each of these methods provides additional information for how
  * to configure it for the desired type of transaction control.
  *
- * @see hibernate.MtlCampsegCiCustgroup
+ * @see MtlCampsegCustgroup.MtlCampsegCiCustgroup
  * @author MyEclipse Persistence Tools
  */
                      
@@ -24,7 +24,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
 public class MtlCampsegCiCustgroupDao  extends JdbcDaoBase implements IMtlCampsegCiCustDao {
 	private static Logger log = LogManager.getLogger();
 	@Override
-	public void save(MtlCampsegCiCustgroup transientInstance) {
+	public void save(MtlCampsegCustgroup transientInstance) {
 		log.debug("saving MtlCampsegCiCustgroup instance");
 		try {
 			//TODO: getHibernateTemplate().saveOrUpdate(transientInstance);

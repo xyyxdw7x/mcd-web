@@ -1,9 +1,9 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 
 public interface IMtlCampsegCiCustDao {
-	public abstract void save(MtlCampsegCiCustgroup transientInstance);
+	public abstract void save(MtlCampsegCustgroup transientInstance);
 	/**
 	 * 根据campsegId删除业务标签或者基础标签 add by lixq10
 	 * @param campsegId
