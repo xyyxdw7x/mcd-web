@@ -7,12 +7,14 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 @Repository("custGroupInfoDao")
@@ -385,4 +387,64 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		String sql = "select * From i_sync_data_cfg where POLICY_ID = ?";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{customGroupId});
 	}
+    /**
+     * add by jinl 20150717
+     * @Title: getTargetCustomerbase
+     * @Description: 获取"目标客户群"信息
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+    @Override
+    public List getTargetCustomerbase(String campsegId) {
+        List<Map<String,Object>> list = new ArrayList();
+        try {
+            StringBuffer sql = new StringBuffer("  select mgi.custom_group_id,  mgi.custom_group_name,mgi.update_cycle,"); 
+            sql.append("  mgi.create_time, mgi.create_user_id,mgi.custom_num, ") ;
+            sql.append("  mgi.custom_source_id,mgi.rule_desc ,mgi.custom_num targer_user_nums") ;
+            sql.append("  from mtl_group_info mgi, MTL_CAMPSEG_CUSTGROUP mcc, mtl_camp_seginfo mcs  ") ;        
+            sql.append("  where mgi.custom_group_id =mcc.custgroup_id and mcs.campseg_id = mcc.campseg_id  ") ;     
+            sql.append("   and mcs.campseg_id = ?") ;
+            list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
+            //return !CollectionUtils.isEmpty(list);
+        } catch (Exception e) {
+            log.error("", e);
+        }
+        return list;
+    }
+    /**
+     * 根据客户群ID查找客户群信息
+     */
+    @Override
+    public MtlGroupInfo getMtlGroupInfo(String custgroupId) {
+        List list = null;
+        MtlGroupInfo custGroupInfo = null;
+        try {
+            StringBuffer sbuffer = new StringBuffer();
+            sbuffer.append("SELECT * FROM MTL_GROUP_INFO WHERE custom_group_id = ?");
+            log.info("查询客户群信息："+sbuffer.toString());
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { custgroupId });
+            for (int i=0;i<list.size();i++) {
+                Map map = (Map)list.get(i);
+                 custGroupInfo = new MtlGroupInfo();
+                custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
+                custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));    
+                custGroupInfo.setCreateUserId((String) map.get("CREATE_USER_ID"));
+                if(null != map.get("CUSTOM_NUM")){
+                    custGroupInfo.setCustomNum(Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))));
+                }
+                if(null != map.get("CUSTOM_STATUS_ID")){
+                    custGroupInfo.setCustomStatusId(Integer.parseInt(String.valueOf(map.get("CUSTOM_STATUS_ID"))));
+                }
+                if(null != map.get("UPDATE_CYCLE")){
+                    custGroupInfo.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))));
+                }
+            }
+        } catch (Exception e) {
+            log.error("",e);
+        }
+        return custGroupInfo;
+    }
 }

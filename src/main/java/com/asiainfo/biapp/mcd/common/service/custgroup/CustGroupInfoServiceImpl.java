@@ -240,4 +240,25 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		}
 		
 	}
+    /**
+     * add by jinl 20150717
+     * @Title: getTargetCustomerbase
+     * @Description: 获取"目标客户群"信息
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+    @Override
+    public List getTargetCustomerbase(String campsegId) {
+        return custGroupInfoDao.getTargetCustomerbase(campsegId);
+    }
+    /**
+     * 根据客户群ID查找客户群信息
+     */
+    @Override
+    public MtlGroupInfo getMtlGroupInfo(String custgroupId) {
+        return custGroupInfoDao.getMtlGroupInfo(custgroupId);
+    }
 }

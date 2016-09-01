@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
@@ -172,4 +173,16 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 */
     public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
+    /**
+     * add by jinl 20150717
+     * @Title: getTargetCustomerbase
+     * @Description: 获取"目标客户群"信息
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+    public List getTargetCustomerbase(String campsegId) throws Exception;
+    
 }

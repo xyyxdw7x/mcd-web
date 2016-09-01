@@ -418,9 +418,9 @@ define(["backbone"],function(require, exports, module) {
 		},
 		getMtlStcPlan:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"iMcdviewPolicyDetail.aido",
-					cmd:"getMtlStcPlan",
+					urlRoot:_ctx+"/tactics/viewPolicyDetail",
+					id:"getMtlStcPlan",
+//					cmd:"getMtlStcPlan",
 					currentDom:"#mtlStcPlan",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/getMtlStcPlan.ejs',
 					ajaxData:{}

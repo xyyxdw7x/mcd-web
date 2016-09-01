@@ -68,5 +68,24 @@ public interface CustGroupInfoService {
      * @param customGroupId 客户群ID
      */
 	public void insertSqlLoderISyncDataCfg(String fileNameCsv, String fileNameVerf, String customGroupName, String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
+    /**
+     * add by jinl 20150717
+     * @Title: getTargetCustomerbase
+     * @Description: 获取"目标客户群"信息
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+	public List getTargetCustomerbase(String campsegId);
+	
+    /**
+     * 根据客户群ID查找客户群
+     * @param custgroupId
+     * @return
+     */
+    MtlGroupInfo getMtlGroupInfo(String custgroupId);
 
 }
+

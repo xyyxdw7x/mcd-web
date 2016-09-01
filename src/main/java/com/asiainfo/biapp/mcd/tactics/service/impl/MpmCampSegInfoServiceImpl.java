@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
@@ -87,6 +88,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	private IMcdCampsegTaskDao mcdCampsegTaskDao;
 	@Resource(name = "mcdCampsegTaskService")
 	private IMcdCampsegTaskService mcdCampsegTaskService;
+	@Resource(name = "custGroupInfoService")
+	private CustGroupInfoService custGroupInfoService;
 	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
@@ -878,5 +881,19 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Override
     public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
         return campSegInfoDao.getDimCampsegStat(dimCampsegStatID);
+    }
+    /**
+     * add by jinl 20150717
+     * @Title: getTargetCustomerbase
+     * @Description: 获取"目标客户群"信息
+     * @param @param campsegId
+     * @param @return
+     * @param @throws Exception    
+     * @return List 
+     * @throws
+     */
+    @Override
+    public List getTargetCustomerbase(String campsegId) throws Exception {
+        return custGroupInfoService.getTargetCustomerbase(campsegId);
     }
 }

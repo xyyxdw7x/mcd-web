@@ -23,11 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
-import com.asiainfo.biapp.mcd.tactics.service.IMcdMtlGroupInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
@@ -53,8 +53,8 @@ public class CampSegSearchController extends BaseMultiActionController {
 //    private IMpmUserPrivilegeService mpmUserPrivilegeService; 
     @Resource(name="mpmCampSegInfoService")
     private IMpmCampSegInfoService mpmCampSegInfoService;
-    @Resource(name="mcdMtlGroupInfoService")
-    private IMcdMtlGroupInfoService iMcdMtlGroupInfoService ;
+    @Resource(name = "custGroupInfoService")
+    private CustGroupInfoService custGroupInfoService;
     @Resource(name = "mtlCallWsUrlService")
     private IMtlCallWsUrlService callwsUrlService;
     @Resource(name = "mtlSmsSendTestTask")
@@ -228,8 +228,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                     MtlCampsegCiCustgroup mtlCampsegCustGroup = (MtlCampsegCiCustgroup) custGroupSelectList.get(i);
                     if ("CG".equals(mtlCampsegCustGroup.getCustgroupType())) {
                          //待定
-//                        IMcdMtlGroupInfoService iMcdMtlGroupInfoService = (IMcdMtlGroupInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.IMCD_MTL_GROUPINFO_SERVICE);
-                         MtlGroupInfo mtlGroupInfo = iMcdMtlGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
+                         MtlGroupInfo mtlGroupInfo = custGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
                          if(mtlGroupInfo != null && mtlGroupInfo.getCustomGroupName() != null){
                              ruleDesc = "客户群：" + mtlGroupInfo.getCustomGroupName();// +"<br>" + ruleDesc;
                          }
