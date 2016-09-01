@@ -38,8 +38,8 @@ define(["backbone"],function(require, exports, module) {
 				//$("#subCampsegIdCT>span").html()
 				$.ajax({
 				    type: 'post',
-				    url: _ctx+"/mpm/iMcdviewPolicyDetail.aido" ,
-				    data: {cmd:"getCampsChannelSituation",subCampsegIds:subCampsegIds,channelId:channelId,statDate:statDate} ,
+				    url: _ctx+"/tactics/viewPolicyDetail/getCampsChannelSituation",
+				    data: {subCampsegIds:subCampsegIds,channelId:channelId,statDate:statDate} ,
 				    success: function(result){
 				    	console.log(result);
 				    	var data=result.data;
@@ -104,8 +104,8 @@ define(["backbone"],function(require, exports, module) {
 			return subIds;
 		},
 		loadCampsegChannels:function(campsegId,subCampsegIds){
-			var url=_ctx+"/mpm/iMcdviewPolicyDetail.aido";
-			var data={cmd:"getCampChannels",campsegId:campsegId,subCampsegIds:subCampsegIds};
+			var url=_ctx+"/tactics/viewPolicyDetail/getCampChannels";
+			var data={campsegId:campsegId,subCampsegIds:subCampsegIds};
 			$.ajax({
 			    type: 'GET',
 			    url: url ,
@@ -202,7 +202,7 @@ define(["backbone"],function(require, exports, module) {
 			for(var i = 0;i <channels.length;i++){
 	    		var item=channels[i];
 	    		var channelId=item.CHANNEL_ID;
-	    		var url=_ctx+"/mpm/iMcdviewPolicyDetail.aido";
+	    		var url=_ctx+"/tactics/viewPolicyDetail/getCampChannelDetail";
 	    		//默认查询一个月的数据
 	    		var myDate = new Date();
 	    		var startDate =   new Date(Date.parse(myDate) + ((86400000 * 7) * -1) + 86400000).Format("yyyyMMdd");
@@ -213,7 +213,7 @@ define(["backbone"],function(require, exports, module) {
 	    		if(channels[i].endDate){
 	    			endDate = channels[i].endDate;
 	    		}
-				var data={cmd:"getCampChannelDetail",campsegId:campsegId,subCampsegIds:subCampsegIds,
+				var data={campsegId:campsegId,subCampsegIds:subCampsegIds,
 						channelId:channelId,startDate:startDate,endDate:endDate};
 				$.post(url, data, module.exports.loadChannelTableDataSuc(channelId));
 	    	}
@@ -518,9 +518,9 @@ define(["backbone"],function(require, exports, module) {
 		},
 		getDeliveryChannel:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"iMcdviewPolicyDetail.aido",
-					cmd:"getDeliveryChannel",
+					urlRoot:_ctx+"/tactics/viewPolicyDetail",
+					id:"getDeliveryChannel",
+//					cmd:"getDeliveryChannel",
 					currentDom:"#deliveryChannelView",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/getDeliveryChannel.ejs',
 					ajaxData:{}
@@ -562,9 +562,9 @@ define(["backbone"],function(require, exports, module) {
 		},
 		getLogRecord:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"iMcdviewPolicyDetail.aido",
-					cmd:"getLogRecord",
+					urlRoot:_ctx+"/tactics/viewPolicyDetail",
+					id:"getLogRecord",
+//					cmd:"getLogRecord",
 					currentDom:"#logRecordCT",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/logRecord.ejs',
 					ajaxData:{}

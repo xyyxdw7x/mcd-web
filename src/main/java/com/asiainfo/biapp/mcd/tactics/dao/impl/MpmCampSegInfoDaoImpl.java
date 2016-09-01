@@ -7,8 +7,10 @@ import java.util.Map;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
@@ -19,9 +21,11 @@ import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
@@ -675,5 +679,119 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         return list;
     }
+    /**
+     * 查询本地审批日志
+     * @param approveFlowid
+     * @return
+     */
+    @Override
+    public McdApproveLog getLogByFlowId(String flowId) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(" select * from MCD_APPROVE_LOG where APPROVE_FLOW_ID =?");
+        log.info("*****************查询审批日志："+buffer.toString());
+        List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(buffer.toString(),new String[]{flowId});
+        McdApproveLog mcdApproveLog = new McdApproveLog();
+        for (Map map : list) {
+            mcdApproveLog.setApproveFlowId((String) map.get("APPROVE_FLOW_ID"));
+            mcdApproveLog.setApproveResult(String.valueOf(map.get("APPROVE_RESULT")));
+        }
+        return mcdApproveLog;
+    }
+    /**
+     * 根据策略id获得策略的所有渠道
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List getChannelsByCampIds(String campsegIds) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("select distinct d.channel_id,d.channel_name from mtl_channel_def c,dim_mtl_channel d where c.channel_id=d.channel_id and c.campseg_id in (").append(campsegIds).append(")");
+        log.info("getChannelsByCampIds执行sql="+sb);
+        return this.getJdbcTemplate().queryForList(sb.toString());
+    }
+    /**
+     * 查询指定策略指定渠道在指定时间段内的营销情况
+     * @param campsegId
+     * @param channelId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @Override
+    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate) {
+        StringBuffer sb = new StringBuffer("SELECT  ");
+        List<String> params = new ArrayList<String>();
+        sb.append("DATA_DATE,")
+            .append("SEND_TOTAL TARGET_NUMS,") //当天目标用户数
+            .append("SEND_CNT SEND_NUMS,")//已发生量
+            .append("PV_NUM  SAIL_NUMS, ")//当天营销数
+            .append("PV_NUM_TOTAL CUMULAT_SAIL_NUMS,")// 累计营销数
+            .append("SUCC_NUM SAILSUCC_NUMS,")//营销成功用户数
+            .append("SUCC_NUM_TOTAL  CUMULAT_SAILSUCC_NUMS,")//累计营销成功数
+            .append("SEND_CNT||'/'||LEFT_CNT EXCUTE_SURPLUS,")
+            .append("CK_CNT CK_NUMS, ")//当天点击数
+            .append("CK_CNT_TOTAL CUMULAT_CK_NUMS,")//累计点击数
+            .append("PV_CNT EXPOSURE_NUMS, ")//当天曝光数
+            .append("PV_CNT_TOTAL CUMULAT_EXPOSURE_NUMS ");//累计曝光数
+        sb.append("FROM MTL_CAMPSEG_RUN_LOG ");
+        sb.append("WHERE CAMPSEG_TYPE='1' AND CAMPSEG_ID=? AND CHANNEL_ID=? ");
+        
+        
+        params.add(campsegId);
+        params.add(channelId);
+        
+        if(!StringUtils.isEmpty(startDate)){
+            sb.append(" AND DATA_DATE>=? ");
+            params.add(startDate);
+        }
+       if(!StringUtils.isEmpty(endDate)){
+           sb.append(" AND DATA_DATE<=? ");
+           params.add(endDate);
+        }
+       sb.append(" ORDER BY DATA_DATE");
+       
+        log.info("getCampChannelDetail执行sql="+sb);
+        return this.getJdbcTemplate().queryForList(sb.toString(),params.toArray());
+    }
+    /**
+     * 查询某策略某个指定渠道的所有子策略某天的执行情况   
+     * @param campsegId
+     * @param channelId
+     * @param statDate
+     * @return
+     */
+    @Override
+    public Map getCampChannelSituation(String campsegId, String channelId, String statDate) {
+     Map map = null;
+        
+        StringBuffer sb = new StringBuffer("SELECT  ");
+        //sb.append("DATA_DATE,")
+        sb.append("PLAN_NAME,")
+            .append("SEND_TOTAL TARGET_NUMS,") //目标用户数
+            .append("SEND_CNT SEND_NUMS,")//已发生量
+            .append("PV_NUM  SAIL_NUMS, ")//接触（营销）用户数
+            .append("PV_NUM_TOTAL  CUMULAT_SAIL_NUMS,")//累计营销数
+            .append("SUCC_NUM SAILSUCC_NUMS,")//营销成功用户数     
+            .append("SUCC_NUM_TOTAL  CUMULAT_SAILSUCC_NUMS,")//累计营销成功数
+            .append("SEND_CNT||'/'||LEFT_CNT EXCUTE_SURPLUS,")
+            .append("CK_CNT CK_NUMS, ")//当天点击数
+            .append("CK_CNT_TOTAL CUMULAT_CK_NUMS,")//累计点击数
+            .append("PV_CNT EXPOSURE_NUMS, ")//当天曝光数
+            .append("PV_CNT_TOTAL CUMULAT_EXPOSURE_NUMS ");//累计曝光数
+        
+        sb.append("FROM MTL_CAMPSEG_RUN_LOG ");
+        sb.append("WHERE CAMPSEG_ID=? AND CHANNEL_ID=? AND DATA_DATE=? ");
+        
+        
+        log.info("getCampChannelSituation执行sql="+sb);
+        try {
+            map =this.getJdbcTemplate().queryForMap(sb.toString(), new Object[]{campsegId,channelId,statDate});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return map;
+    }
+
+    
 
 }
