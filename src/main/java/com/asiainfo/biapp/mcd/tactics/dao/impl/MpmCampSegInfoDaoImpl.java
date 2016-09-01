@@ -23,7 +23,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -147,6 +147,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	@Override
 	public Serializable saveCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
 		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
+		this.getJdbcTemplateTool().save(segInfo);
 		return segInfo.getCampsegId();
 	}
 	/**
@@ -212,7 +213,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         String sql="select * from MTL_CAMPSEG_CUSTGROUP where CAMPSEG_ID = ?";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
-        List<MtlCampsegCiCustgroup> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampsegCiCustgroup>(MtlCampsegCiCustgroup.class));
+        List<MtlCampsegCustgroup> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampsegCustgroup>(MtlCampsegCustgroup.class));
         return list;
     }
     

@@ -45,7 +45,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCiCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCallId;
@@ -298,28 +298,28 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				isApprove = segInfo.getIsApprove();
 				boolean isFatherNode = segInfo.isFatherNode();
 				campsegId = segInfo.getCampsegId();
-				Integer contactType = segInfo.getWaveContactType();//关联表
-				Integer contactCount = segInfo.getWaveContactCount();//关联表
-				Integer campClass = segInfo.getCampClass();
+//				Integer contactType = segInfo.getWaveContactType();//关联表
+//				Integer contactCount = segInfo.getWaveContactCount();//关联表
+//				Integer campClass = segInfo.getCampClass();
 				String custgroupId = segInfo.getCustgroupId();//关联表
-				Integer isRelativeExecTime = segInfo.getIsRelativeExecTime();
-				String absoluteDates = segInfo.getAbsoluteDates(); //关联表
+//				Integer isRelativeExecTime = segInfo.getIsRelativeExecTime();
+//				String absoluteDates = segInfo.getAbsoluteDates(); //关联表
 				String channelId = segInfo.getChannelId(); //渠道类型ID&渠道ID(关联表)
-				String siteCategoryIdClassId = segInfo.getSiteCategoryIdClassId(); //(云南的)活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联
-				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
-				String attachements = segInfo.getFilePath();
-				String custGroupAttrId = segInfo.getCustGroupAttrId();
+//				String siteCategoryIdClassId = segInfo.getSiteCategoryIdClassId(); //(云南的)活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联
+//				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
+//				String attachements = segInfo.getFilePath();
+//				String custGroupAttrId = segInfo.getCustGroupAttrId();
 //				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
-				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
-				String[] campsegIds = null;
-				String[] channelIds = null;
-				String[] channeltypeIds = null;
+//				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
+//				String[] campsegIds = null;
+//				String[] channelIds = null;
+//				String[] channeltypeIds = null;
 				
 				List<MtlChannelDef> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
-				int updateCycle = 0;
+/*				int updateCycle = 0;
 				if(StringUtil.isNotEmpty(segInfo.getUpdatecycle())){
 					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
-				}
+				}*/
 
 					
 				//1、保存活动信息(波次条件、父活动编号、活动实际含义、推荐业务、营销时机)
@@ -338,9 +338,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					campsegPid = campsegId;
 				}else{
 					segInfo.setCampsegPid(campsegPid);
-					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);
+					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);//Duang Duang Duang 保存策略！！！
 					log.debug("****************新生成的波次活动ID:{}", campsegId);
-					//2、保存客户群与策略的关系/保存时机与策略关系  
+					//2、保存客户群与策略的关系 
 					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
 					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
 					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
@@ -458,7 +458,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	@Override
 	public void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId,MtlCampSeginfo segInfo,String flag) throws MpmException {
 //		if(flag.equals("0")){	//基础客户群
-			MtlCampsegCiCustgroup mtlCampsegCustGroup = new MtlCampsegCiCustgroup();
+			MtlCampsegCustgroup mtlCampsegCustGroup = new MtlCampsegCustgroup();
 			mtlCampsegCustGroup.setCustgroupId(segInfo.getCustgroupId());
 			mtlCampsegCustGroup.setCampsegId(campsegId);
 			mtlCampsegCustGroup.setCustgroupName("test");
