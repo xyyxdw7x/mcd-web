@@ -1,20 +1,15 @@
 package com.asiainfo.biapp.mcd.avoid.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import java.sql.ResultSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IDimBotherAvoidUserTypeDao;
 import com.asiainfo.biapp.mcd.avoid.vo.DimBotherAvoidUserType;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.RowMapperResultSetExtractor;
-import org.springframework.stereotype.Repository;
 
 /*
  * Created on 2016-8-2 15:37:03
@@ -40,15 +35,8 @@ public class BotherAvoidUserTypeDaoImpl extends JdbcDaoBase implements IDimBothe
 	public List getAllUserType() throws Exception {
 		
 		String sql = "SELECT * FROM DIM_BOTHER_AVOID_USER_TYPE WHERE IS_SHOW = 1 ORDER BY DISPLAY_ORDER";
-		return (List) this.getJdbcTemplate().query(sql, new RowMapperResultSetExtractor(new RowMapper() {
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				DimBotherAvoidUserType userType = new DimBotherAvoidUserType();
-				userType.setId(Integer.parseInt(rs.getString("ID")));
-				userType.setName(rs.getString("NAME"));
-				return userType;
-			}
-		}, 0));
+
+		return (List<DimBotherAvoidUserType>) this.getJdbcTemplate().query(sql, new BeanPropertyRowMapper  (DimBotherAvoidUserType.class));
 
 	}
 
