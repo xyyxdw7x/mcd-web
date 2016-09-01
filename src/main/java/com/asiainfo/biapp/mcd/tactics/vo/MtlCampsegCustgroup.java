@@ -7,16 +7,25 @@ package com.asiainfo.biapp.mcd.tactics.vo;
 public class MtlCampsegCustgroup implements java.io.Serializable {
 
 	// Fields
-
+	@javax.persistence.Column(name="CAMPSEG_CUSTGROUP_ID")
 	private String campsegCustgroupId;
+	@javax.persistence.Column(name="CAMPSEG_ID")
 	private String campsegId;
+	@javax.persistence.Column(name="CUSTGROUP_TYPE")
 	private String custgroupType;
+	@javax.persistence.Column(name="CUSTGROUP_ID")
 	private String custgroupId;
+	@javax.persistence.Column(name="CUSTGROUP_NAME")
 	private String custgroupName;
+	@javax.persistence.Column(name="CUSTGROUP_NUMBER")
 	private Integer custgroupNumber;
+	@javax.persistence.Column(name="CUST_BASE_MONTH")
 	private String custBaseMonth;
+	@javax.persistence.Column(name="CUST_BASE_DAY")
 	private String custBaseDay;
+	@javax.persistence.Column(name="CUSTGROUP_DESC")
 	private String custgroupDesc;
+	@javax.persistence.Column(name="ATTR_CLASS_ID")
 	private String attrClassId;
 	
 	private String attrMetaId;

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
+import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 
 /**
@@ -20,18 +20,19 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
  * @author MyEclipse Persistence Tools
  */
                      
-@Repository("mtlCampsegCiCustDao")
-public class MtlCampsegCiCustgroupDao  extends JdbcDaoBase implements IMtlCampsegCiCustDao {
+@Repository("mtlCampsegCustgroupDao")
+public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCampsegCustgroupDao {
 	private static Logger log = LogManager.getLogger();
 	@Override
 	public void save(MtlCampsegCustgroup transientInstance) {
 		log.debug("saving MtlCampsegCiCustgroup instance");
 		try {
 			//TODO: getHibernateTemplate().saveOrUpdate(transientInstance);
-		} catch (RuntimeException re) {
-			log.error("save failed", re);
-			throw re;
+			this.getJdbcTemplateTool().save(transientInstance);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
 	}
 	
 	@Override

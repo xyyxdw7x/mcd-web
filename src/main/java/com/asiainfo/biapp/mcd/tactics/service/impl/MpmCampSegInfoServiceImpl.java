@@ -32,7 +32,7 @@ import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
-import com.asiainfo.biapp.mcd.tactics.dao.IMtlCampsegCiCustDao;
+import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
@@ -76,8 +76,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
   	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
     @Resource(name="mtlStcPlanDao")
     private MtlStcPlanDao stcPlanDao;
-    @Resource(name="mtlCampsegCiCustDao")
-    private IMtlCampsegCiCustDao mtlCampsegCiCustDao; 
+    @Resource(name="mtlCampsegCustgroupDao")
+    private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
     @Resource(name="mpmUserPrivilegeService")
     IMpmUserPrivilegeService mpmUserPrivilegeService;
 	@Resource(name = "createCustGroupTab")
@@ -97,12 +97,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public void setMtlChannelDefDao(IMtlChannelDefDao mtlChannelDefDao) {
 		this.mtlChannelDefDao = mtlChannelDefDao;
 	}
-	public IMtlCampsegCiCustDao getMtlCampsegCiCustDao() {
-		return mtlCampsegCiCustDao;
-	}
-	public void setMtlCampsegCiCustDao(IMtlCampsegCiCustDao mtlCampsegCiCustDao) {
-		this.mtlCampsegCiCustDao = mtlCampsegCiCustDao;
-	}
+
 	public IMpmUserPrivilegeService getMcdZjPrivilegeService() {
 		return mpmUserPrivilegeService;
 	}
@@ -198,7 +193,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
 					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
 					//修改时,先删除客户群与策略的关系/保存时机与策略关系
-					mtlCampsegCiCustDao.deleteByCampsegId(campsegId);
+					mtlCampsegCustgroupDao.deleteByCampsegId(campsegId);
 					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
 					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
@@ -468,7 +463,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			if (StringUtils.isEmpty(segInfo.getCustBaseDay())) {
 				mtlCampsegCustGroup.setCustBaseMonth(segInfo.getCustBaseMonth());
 			}
-			mtlCampsegCiCustDao.save(mtlCampsegCustGroup);
+			mtlCampsegCustgroupDao.save(mtlCampsegCustGroup);
 		/*}else{
 			//时机  或者基础标签
 			MtlCampsegCiCustgroup mtlCampsegCustGroup1 = new MtlCampsegCiCustgroup();
@@ -871,7 +866,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	
 	@Override
 	public boolean deleteLableByCampsegId(String campsegId) {
-		return mtlCampsegCiCustDao.deleteLableByCampsegId(campsegId);
+		return mtlCampsegCustgroupDao.deleteLableByCampsegId(campsegId);
 	}
 	   /**
      * 根据营销状态ID获取营销状态
