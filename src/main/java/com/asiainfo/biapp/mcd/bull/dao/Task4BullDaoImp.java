@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.model.McdCampsegTask;
-import com.asiainfo.biapp.mcd.model.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 @Repository(value="task4BullDao")
 public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{

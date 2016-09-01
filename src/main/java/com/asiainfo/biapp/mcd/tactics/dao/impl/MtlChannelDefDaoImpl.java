@@ -29,8 +29,9 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefDao {
     private static Logger log = LogManager.getLogger();
 
-	public void saveMtlChannelDef(MtlChannelDef def) throws Exception {
+	public void save(MtlChannelDef def) throws Exception {
 		//TODO: this.getHibernateTemplate().save(def);
+		this.getJdbcTemplateTool().save(def);
 	}
 	
 	public void deleteMtlChannelDef(String campsegId) throws Exception {/*
@@ -44,8 +45,13 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      * @param mtlChannelDefCall
      */
 	@Override
-	public void saveMtlChannelDefCall(MtlChannelDefCall mtlChannelDefCall) {
-		//TODO: this.getHibernateTemplate().save(mtlChannelDefCall);
+	public void save(MtlChannelDefCall mtlChannelDefCall) {
+		try {
+			//TODO: this.getHibernateTemplate().save(mtlChannelDefCall);
+			this.getJdbcTemplateTool().save(mtlChannelDefCall);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

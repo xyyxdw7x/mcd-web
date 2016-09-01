@@ -214,7 +214,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 							mtlChannelDefId.setUsersegId((short) 0);
 							mtlChannelDef.setId(mtlChannelDefId);
 							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));
-							mtlChannelDefDao.saveMtlChannelDef(mtlChannelDef);
+							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
 					mtlChannelDefDao.deleteMtlChannelDefCall(campsegId,channelId);
@@ -225,7 +225,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 						mtlChannelDefCallId.setCampsegId(campsegId);
 						mtlChannelDefCallId.setChannelId(channelId);
 						mtlChannelDefCall.setId(mtlChannelDefCallId);
-						mtlChannelDefDao.saveMtlChannelDefCall(mtlChannelDefCall);
+						mtlChannelDefDao.save(mtlChannelDefCall);
 					}
 					
 					/*//保存产品订购或者剔除关系     
@@ -318,12 +318,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 
 					
 				//1、保存活动信息(波次条件、父活动编号、活动实际含义、推荐业务、营销时机)
-				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
-				if (user != null) {
+//				TODO LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
+				/*if (user != null) {
 					segInfo.setCityId(user.getCityid());
 					String deptMsg = user.getDepId();
 					segInfo.setDeptId(Integer.parseInt(deptMsg.split("&&")[0]));
-				}
+				}*/
 				segInfo.setCreateTime(new Date()); // 活动创建时间
 				segInfo.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_CHZT)); // 活动初始状态
 				segInfo.setApproveFlowid(null);
@@ -338,7 +338,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					//2、保存客户群与策略的关系 
 					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
 					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
-					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
+//					TODO:saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
+					saveCampsegCustGroupZJ(campsegId, custgroupId, "chenyg",segInfo,"0");//基础客户群必须保存
 					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
 					}
@@ -356,7 +357,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 							mtlChannelDefId.setUsersegId((short) 0);
 							mtlChannelDef.setId(mtlChannelDefId);
 							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));							
-							mtlChannelDefDao.saveMtlChannelDef(mtlChannelDef);
+							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
 					
@@ -367,7 +368,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 						mtlChannelDefCallId.setCampsegId(campsegId);
 						mtlChannelDefCallId.setChannelId(channelId);
 						mtlChannelDefCall.setId(mtlChannelDefCallId);
-						mtlChannelDefDao.saveMtlChannelDefCall(mtlChannelDefCall);
+						mtlChannelDefDao.save(mtlChannelDefCall);
 					}
 	
 					

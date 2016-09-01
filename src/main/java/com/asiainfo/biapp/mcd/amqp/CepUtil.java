@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +15,12 @@ import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.kafka.cep.CepKafKaProducer;
-import com.asiainfo.biapp.mcd.model.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.wsclient.impl.gansu.MpmCampsegEventUtil;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;
+
+import net.sf.json.JSONObject;
 
 public class CepUtil {
 	private static final Logger log = LogManager.getLogger();

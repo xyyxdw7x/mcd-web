@@ -13,10 +13,10 @@ import com.asiainfo.biapp.mcd.model.DimCustEvelType;
 import com.asiainfo.biapp.mcd.model.McdCampsegPolicyRelation;
 import com.asiainfo.biapp.mcd.model.MtlCampBaseinfo;
 import com.asiainfo.biapp.mcd.model.MtlCampSegCostRelation;
-import com.asiainfo.biapp.mcd.model.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.model.MtlCampsegCustGroup;
 import com.asiainfo.biapp.mcd.model.MtlCampsegExecList;
 import com.asiainfo.biapp.mcd.model.MtlPlanExecType;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 public interface IMpmCampSegInfoDao {

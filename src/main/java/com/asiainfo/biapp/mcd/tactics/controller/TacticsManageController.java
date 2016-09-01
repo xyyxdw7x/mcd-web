@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -62,6 +64,7 @@ public class TacticsManageController extends BaseMultiActionController {
     private ChannelBossSmsTemplateService channelBossSmsTemplateService;
     @Resource(name="custGroupInfoService")
     private CustGroupInfoServiceImpl custGroupInfoService;
+    private static Logger log = LogManager.getLogger();
     
 	/**
 	 * 保存策略基本信息
@@ -363,7 +366,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setCreateUserid("chenyg"); // 活动策划人
 				//TODO:campSeginfo.setCityId(user.getCityid()); // 策划人所属城市
 				campSeginfo.setCityId("999"); // 策划人所属城市
-				campSeginfo.setDeptId(Integer.parseInt(deptId)); // 策划人部门id
+//				campSeginfo.setDeptId(Integer.parseInt(deptId)); // 策划人部门id
 				campSeginfo.setCreateTime(format.parse(format.format(new Date())));
 				campSeginfo.setPlanId(planIdArray[i]); // 产品编号
 				//TODO:campSeginfo.setCreateUserName(user.getUsername());
@@ -423,6 +426,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			}
 			out.print(dataJson);
 		} catch (Exception e) {
+			log.error("保存异常",e);
 			dataJson.put("status", "201");
 			out.print(dataJson);
 		} finally {

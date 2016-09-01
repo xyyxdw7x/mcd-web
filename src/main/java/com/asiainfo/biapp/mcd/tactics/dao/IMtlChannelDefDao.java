@@ -22,7 +22,7 @@ public interface IMtlChannelDefDao {
 	 * @param def
 	 * @throws Exception
 	 */
-	public void saveMtlChannelDef(MtlChannelDef def) throws Exception;
+	public void save(MtlChannelDef def) throws Exception;
 	/**
 	 * 删除活动波次下所有分组的营销渠道设置
 	 * @param campsegId
@@ -33,7 +33,7 @@ public interface IMtlChannelDefDao {
      * 保存渠道对应表——外呼
      * @param mtlChannelDefCall
      */
-	public void saveMtlChannelDefCall(MtlChannelDefCall mtlChannelDefCall);
+	public void save(MtlChannelDefCall mtlChannelDefCall);
 	/**
 	 * 取策略包下子策略所用营销渠道
 	 * 2015-8-15 9:36:24

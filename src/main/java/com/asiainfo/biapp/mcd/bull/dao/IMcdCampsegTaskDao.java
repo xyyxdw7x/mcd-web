@@ -1,9 +1,5 @@
 package com.asiainfo.biapp.mcd.bull.dao;
 
-import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
-
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +7,11 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.bean.McdCampsegTaskBean;
 import com.asiainfo.biapp.mcd.model.McdCampsegTask;
 import com.asiainfo.biapp.mcd.model.McdCampsegTaskHotPlanRela;
-import com.asiainfo.biapp.mcd.model.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 public interface IMcdCampsegTaskDao {
 
