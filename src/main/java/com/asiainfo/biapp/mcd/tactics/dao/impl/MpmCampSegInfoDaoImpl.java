@@ -650,5 +650,30 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             return null;
         }
     }
+    
+    /**
+     * 获取细分规则信息（时机）
+     */
+    @Override
+    public List<Map<String, Object>> getrule(String campsegId) {
+        List<Map<String,Object>> list = new ArrayList();
+        try {
+            
+            //edit by lixq10 begin
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("select basicData.*，MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE,MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE_ID,MDA_SYS_TABLE_COLUMN.COLUMN_CN_NAME,MCD_CV_COL_DEFINE.CTRL_TYPE_ID from ( ")
+                  .append(" select mts.SHOW_SQL, mcc.CUSTGROUP_NUMBER,mts.SELECT_TEMPLET_ID from MTL_CAMPSEG_CUSTGROUP mcc, MCD_TEMPLET_SELECT mts")
+                  .append(" where mts.ACTIVE_TEMPLET_ID = mcc.CUSTGROUP_ID and mcc.campseg_Id = ? and mcc.CUSTGROUP_TYPE = 'CGT'")
+                  .append(" ) basicData left join MCD_TEMPLET_ACTIVE_FIELD on basicData.SELECT_TEMPLET_ID = MCD_TEMPLET_ACTIVE_FIELD.SELECT_TEMPLET_ID")
+                  .append(" LEFT JOIN MDA_SYS_TABLE_COLUMN ON MDA_SYS_TABLE_COLUMN.COLUMN_ID = MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_ID")
+                  .append(" LEFT JOIN MCD_CV_COL_DEFINE ON MDA_SYS_TABLE_COLUMN.COLUMN_ID = MCD_CV_COL_DEFINE.ATTR_META_ID");
+            //end
+            list= this.getJdbcTemplate().queryForList(buffer.toString(), new String[] { campsegId });
+            //return !CollectionUtils.isEmpty(list);
+        } catch (Exception e) {
+            log.error("", e);
+        }
+        return list;
+    }
 
 }

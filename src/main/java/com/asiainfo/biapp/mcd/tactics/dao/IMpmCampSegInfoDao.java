@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
@@ -142,4 +143,8 @@ public interface IMpmCampSegInfoDao {
    * @return
    */
     public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
+    /**
+     * 获取细分规则信息（时机）
+     */
+    public List<Map<String, Object>> getrule(String campsegId);
 }

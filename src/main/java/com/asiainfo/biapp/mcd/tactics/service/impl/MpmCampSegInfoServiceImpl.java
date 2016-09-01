@@ -896,4 +896,11 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     public List getTargetCustomerbase(String campsegId) throws Exception {
         return custGroupInfoService.getTargetCustomerbase(campsegId);
     }
+    /**
+     * 获取细分规则信息（时机）
+     */
+    @Override
+    public List<Map<String, Object>> getrule(String campsegId) {
+        return campSegInfoDao.getrule(campsegId);
+    }
 }
