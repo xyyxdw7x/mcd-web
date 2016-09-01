@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
@@ -54,4 +55,17 @@ public interface IMtlChannelDefDao {
      * @param channelId
      */
 	public void deleteMtlChannelDefCall(String campsegId, String channelId);
+    /**
+     * add by jinl 20150717
+     * 获取投放渠道
+     * @param campsegId
+     * @return
+     */
+    public List<Map<String, Object>> getDeliveryChannel(String campsegId);
+    /**
+     * 获取投放渠道(外呼渠道)
+     * @param campsegId
+     * @return
+     */
+    public List<Map<String, Object>> getDeliveryChannelCall(String campsegId);
 }

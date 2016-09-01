@@ -261,4 +261,26 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
     public MtlGroupInfo getMtlGroupInfo(String custgroupId) {
         return custGroupInfoDao.getMtlGroupInfo(custgroupId);
     }
+    /**
+     * @Title: getDataDateCustomNum
+     * @Description: 最新数据日期，初始客户群规模
+     * @param @param campsegId
+     * @param @return    
+     * @return List<Map<String,Object>> 
+     * @throws
+     */
+    @Override
+    public List<Map<String, Object>> getDataDateCustomNum(String campsegId) {
+        return custGroupInfoDao.getDataDateCustomNum(campsegId);
+
+    }
+    /**
+     * 详情页  查询原始客户群数量
+     * @param custom_group_id
+     * @return
+     */
+    @Override
+    public int getOriCustGroupNum(String custom_group_id) {
+        return custGroupInfoDao.getOriCustGroupNum(custom_group_id);
+    }
 }

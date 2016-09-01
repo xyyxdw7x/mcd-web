@@ -447,4 +447,56 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         }
         return custGroupInfo;
     }
+    /**
+     * @Title: getDataDateCustomNum
+     * @Description: 最新数据日期，初始客户群规模
+     * @param @param campsegId
+     * @param @return    
+     * @return List<Map<String,Object>> 
+     * @throws
+     */
+    @Override
+    public List<Map<String, Object>> getDataDateCustomNum(String campsegId) {
+        List<Map<String,Object>> list = new ArrayList();
+        try {
+            StringBuffer sql = new StringBuffer("   select mcli.data_date  max_data_time , mcli.custom_num sum_custom_num from mtl_custom_list_info mcli where mcli.custom_group_id in (   "); 
+            sql.append("   select mcc.custgroup_id from mtl_camp_seginfo mcs left join MTL_CAMPSEG_CUSTGROUP mcc on mcs.campseg_id = mcc.campseg_id ") ;        
+            sql.append("  where mcc.custgroup_type = 'CG' and mcs.campseg_Id= ? ) order by mcli.data_date desc ") ;     
+            list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
+            
+        } catch (Exception e) {
+            log.error("", e);
+        }
+        return list;
+    }
+    /**
+     * 详情页  查询原始客户群数量
+     * @param custom_group_id
+     * @return
+     */
+    @Override
+    public int getOriCustGroupNum(String custom_group_id) {
+        List<Map> listTemp = this.getMtlCustomTableName(custom_group_id);
+        String custom_num = listTemp.get(0).get("custom_num").toString();  
+        int result = 0;
+        if(StringUtil.isNotEmpty(custom_num)){
+
+            result = Integer.parseInt(custom_num);
+        }
+        return result;
+    }
+    
+    //查询第一次推送的客户群大小
+    private List getMtlCustomTableName(String customgroupid) {
+        List<Map<String, Object>> list = null;
+        try {
+            StringBuffer sbuffer = new StringBuffer();
+            sbuffer.append("SELECT * FROM mtl_custom_list_info WHERE custom_group_id = ? order by data_date");
+            log.info("查询客户群清单信息："+sbuffer.toString());
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+        } catch (Exception e) {
+            log.error("",e);
+        }
+        return list;
+    }
 }

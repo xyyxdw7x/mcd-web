@@ -184,5 +184,11 @@ public interface IMpmCampSegInfoService {
      * @throws
      */
     public List getTargetCustomerbase(String campsegId) throws Exception;
+    /**
+     * 获取细分规则信息（时机）
+     * @param campsegId
+     * @return
+     */
+    public List<Map<String, Object>> getrule(String campsegId);
     
 }

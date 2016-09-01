@@ -474,9 +474,9 @@ define(["backbone"],function(require, exports, module) {
 		},
 		getTargetCustomerbase:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/mpm",
-					id:"iMcdviewPolicyDetail.aido",
-					cmd:"getTargetCustomerbase",
+					urlRoot:_ctx+"/tactics/viewPolicyDetail",
+					id:"getTargetCustomerbase",
+//					cmd:"getTargetCustomerbase",
 					currentDom:"#targetCustomerbase",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/gettargetCustomerbase.ejs',
 					ajaxData:{}

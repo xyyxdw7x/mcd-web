@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.common.dao.custgroup;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
@@ -83,5 +84,20 @@ public interface CustGroupInfoDao {
      * 根据客户群ID查找客户群信息
      */
     public MtlGroupInfo getMtlGroupInfo(String custgroupId);
+    /**
+     * @Title: getDataDateCustomNum
+     * @Description: 最新数据日期，初始客户群规模
+     * @param @param campsegId
+     * @param @return    
+     * @return List<Map<String,Object>> 
+     * @throws
+     */
+    public List<Map<String, Object>> getDataDateCustomNum(String campsegId);
+    /**
+     * 详情页  查询原始客户群数量
+     * @param custom_group_id
+     * @return
+     */
+    public int getOriCustGroupNum(String custom_group_id);
 
 }
