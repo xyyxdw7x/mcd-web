@@ -1,6 +1,6 @@
 define(["backbone"],function(require, exports,module) {
 	var generalModel = Backbone.Model.extend({
-		urlRoot : _ctx+"/mpm",
+		urlRoot : _ctx+"/privilege/login",
 		defaults : {
 			_ctx : _ctx
 		}
@@ -32,54 +32,57 @@ define(["backbone"],function(require, exports,module) {
 					if(1==2){
 						_that.constructMenu(sessionMenu);
 					}else{
-						var navModel = new generalModel({id:"imcdMenuItem.aido"});
+						var navModel = new generalModel({id:"getUserMenu"});
 						navModel.fetch({
 							type : "post",
 							contentType: "application/x-www-form-urlencoded; charset=utf-8",
 							dataType:'json',
-							data:{"cmd":"searchDirectlySubMenuItems","roundDate":(new Date()).getTime()},
+							data:{"roundDate":(new Date()).getTime()},
 							success:function(model){
-								var data = model.attributes.data;
+								var data = model.attributes;
 								$(".nav").empty();
-								for(var i=0,len=data.length;i<len;i++){
-									var parentData = data[i].iMenuItem;
-									var childLi = "";
-									for(var j=0,length = data[i].iMenuItemList.length;j<length;j++){
-										var iMenuItem = data[i].iMenuItemList[j].iMenuItem;
-										var url ="";
-										if($.trim(iMenuItem.url).length != 0){
-											url = _ctx+iMenuItem.url;//+"?navId="+iMenuItem.parentId +"& subNavId="+iMenuItem.menuItemId;
+								$.each(data, function(key, val) {
+									if(key=="id"||key=="_ctx"){
+										
+									}else{
+										var parentData = data[key];
+										var childLi = "";
+										for(var j=0,length = data[key].subMenuList.length;j<length;j++){
+											var iMenuItem = data[key].subMenuList[j];
+											var url ="";
+											if($.trim(iMenuItem.url).length != 0){
+												url = _ctx+iMenuItem.url;//+"?navId="+iMenuItem.parentId +"& subNavId="+iMenuItem.menuItemId;
+											}
+											var subParam = window.location.search;//1002002
+											subParam = subParam ? subParam.split("&")[1] : "";
+											subParam = subParam ? subParam.split("=")[1] : ""; 
+											subParam = subParam ? subParam = subParam.substring(subParam.lenth-7,subParam.lenth) : '';
+											if(subParam == 714212){
+												subParam=1002002;
+											}else if(subParam == 714211){
+												subParam=1002001;
+											}
+											if(iMenuItem.id == subParam){
+												childLi += '<li class="active" onclick="menuClickEvent(\''+iMenuItem.id+'\',\''+iMenuItem.name+'\',\''+url+'\')" navId="'+iMenuItem.pid+ '" subNavId="'+iMenuItem.id+'">'+iMenuItem.name+'</li>';
+											}else{
+												childLi += '<li onclick="menuClickEvent(\''+iMenuItem.id+'\',\''+iMenuItem.name+'\',\''+url+'\')" navId="'+iMenuItem.pid+ '" subNavId="'+iMenuItem.id+'">'+iMenuItem.name+'</li>';
+											}
 										}
-										var subParam = window.location.search;//1002002
-										subParam = subParam ? subParam.split("&")[1] : "";
-										subParam = subParam ? subParam.split("=")[1] : ""; 
-										subParam = subParam ? subParam = subParam.substring(subParam.lenth-7,subParam.lenth) : '';
-										if(subParam == 714212){
-											subParam=1002002;
-										}else if(subParam == 714211){
-											subParam=1002001;
+										var urlParam = window.location.search;
+										urlParam = urlParam ? urlParam.split("&")[0] : "";
+										urlParam = urlParam ? urlParam.split("=")[1] : ""; 
+										urlParam = urlParam ? urlParam = urlParam.substring(urlParam.lenth-4,urlParam.lenth) : '';
+										var $li = $('<li menuItemName="'+parentData.name+'" menuItemId="'+parentData.id+'" menuUrl="'+parentData.url+'">'+parentData.name+'<span class="icon_arrDown"></span><ul class="J_children hidden">'+childLi+'</ul></li>');
+										if(urlParam == 7142){
+											urlParam=1002;
 										}
-										if(iMenuItem.menuItemId == subParam){
-											childLi += '<li class="active" onclick="menuClickEvent(\''+iMenuItem.menuItemId+'\',\''+iMenuItem.menuItemTitle+'\',\''+url+'\')" navId="'+iMenuItem.parentId+ '" subNavId="'+iMenuItem.menuItemId+'">'+iMenuItem.menuItemTitle+'</li>';
-										}else{
-											childLi += '<li onclick="menuClickEvent(\''+iMenuItem.menuItemId+'\',\''+iMenuItem.menuItemTitle+'\',\''+url+'\')" navId="'+iMenuItem.parentId+ '" subNavId="'+iMenuItem.menuItemId+'">'+iMenuItem.menuItemTitle+'</li>';
+										if(urlParam == parentData.id){
+											$li.addClass("active");
+											$(".ul02").html(childLi);
 										}
+										$(".nav").append($li);
 									}
-									var urlParam = window.location.search;
-									urlParam = urlParam ? urlParam.split("&")[0] : "";
-									urlParam = urlParam ? urlParam.split("=")[1] : ""; 
-									urlParam = urlParam ? urlParam = urlParam.substring(urlParam.lenth-4,urlParam.lenth) : '';
-									var $li = $('<li menuItemName="'+parentData.menuItemTitle+'" menuItemId="'+parentData.menuItemId+'" menuUrl="'+parentData.url+'">'+parentData.menuItemTitle+'<span class="icon_arrDown"></span><ul class="J_children hidden">'+childLi+'</ul></li>');
-									if(urlParam == 7142){
-										urlParam=1002;
-									}
-									if(urlParam == parentData.menuItemId){
-										$li.addClass("active");
-										$(".ul02").html(childLi);
-									}
-									$(".nav").append($li);
-								}
-
+								}); 
                                 $("#headerDiv").show();
 								sessionStorage.menu = sessionMenu = $('.nav').html();
 								_that.constructMenu(sessionMenu);

@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.framework.privilege.vo;
 
+import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.framework.jdbc.annotation.Column;
@@ -57,6 +58,10 @@ public class Menu {
 	 */
 	private Map<String,Object> extendInfo;
 
+	/**
+	 * 子菜单信息
+	 */
+	private List<Menu> subMenuList;
 
 	public String getId() {
 		return id;
@@ -144,5 +149,13 @@ public class Menu {
 
 	public void setExtendInfo(Map<String, Object> extendInfo) {
 		this.extendInfo = extendInfo;
+	}
+
+	public List<Menu> getSubMenuList() {
+		return subMenuList;
+	}
+
+	public void setSubMenuList(List<Menu> subMenuList) {
+		this.subMenuList = subMenuList;
 	} 
 }

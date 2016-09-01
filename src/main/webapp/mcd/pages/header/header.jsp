@@ -3,7 +3,7 @@
 	_ctx = "<%=request.getContextPath()%>";
 </script>
 
-<div class="header" id="headerDiv" style="display:none">
+<div class="header" id="headerDiv" >
 	<div class="inner">
 		<div class="logo">
 			<img src="<%=request.getContextPath()%>/mcd/assets/images/logos/logo.png" />

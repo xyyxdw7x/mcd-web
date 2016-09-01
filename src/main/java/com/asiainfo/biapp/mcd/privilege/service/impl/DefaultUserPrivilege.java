@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.privilege.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,7 +36,27 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 	public List<Menu> getUserMenuInfos(String userId) throws Exception {
 		logger.info("userId="+userId);
 		List<Menu> menuList=userPrivilegeDao.getUserMenuInfos(userId);
-		return menuList;
+		//找到一级菜单信息
+		List<Menu> topMenu=new ArrayList<>();
+		for (int i = 0,size=menuList.size(); i < size; i++) {
+			Menu menu=menuList.get(i);
+			if("91".equals(menu.getPid())){
+				topMenu.add(menu);
+				menu.setSubMenuList(getSubMenuList(menuList,menu.getId()));
+			}
+		}
+		return topMenu;
+	}
+	
+	private List<Menu> getSubMenuList(List<Menu> menus,String pid){
+		List<Menu> subMenu=new ArrayList<>();
+		for (int i = 0,size=menus.size(); i < size; i++) {
+			Menu menu=menus.get(i);
+			if(pid.equals(menu.getPid())){
+				subMenu.add(menu);
+			}
+		}
+		return subMenu;
 	}
 
 	@Override
