@@ -2,7 +2,8 @@ package com.asiainfo.biapp.mcd.common.vo.plan;
 
 import java.util.Date;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+import javax.persistence.Column;
+
 
 /**
  * 产品信息
@@ -15,32 +16,45 @@ public class MtlStcPlan implements java.io.Serializable {
 	private static final long serialVersionUID = -6294398412949785065L;
 	// Fields
 
+	@Column(name="PLAN_ID")
 	protected String planId; //主键
 
+	@Column(name="PLAN_NAME")
 	protected String planName;
 
+	@Column(name="PLAN_STARTDATE")
 	protected Date planStartdate;
 
+	@Column(name="PLAN_ENDDATE")
 	protected Date planEnddate;
 
+	@Column(name="PLAN_DESC")
 	protected String planDesc;
 
+	@Column(name="STATUS")
 	protected String status;
 
+	@Column(name="CREATE_USERID")
 	protected String createUserid;
 
+	@Column(name="CREATE_DATE")
 	protected Date createDate;
 
+	@Column(name="BRAND_ID")
 	private String brandId;
 
+	@Column(name="CITY_ID")
 	private String cityId;
 
+	@Column(name="PLAN_TYPE")
 	private String planType;
 
 	protected String id;
 	
+	@Column(name="TYPE_ID")
 	private String typeId;
 
+	@Column(name="DEFAULT_CHANNEL_ID")
 	private String defaultChannelId;
 	
 	private String levelId;
@@ -55,7 +69,10 @@ public class MtlStcPlan implements java.io.Serializable {
 	private String pictureName;//产品图片名称
 	private String linkedPicAdr;//产品图片链接地址
 	
+	@Column(name="PLAN_SRV_TYPE")
 	private String planSrvType;
+	
+	@Column(name="PLAN_PID")
 	private String planPid;
 	private String planDealRule;
 	private String brandDesc;
@@ -66,7 +83,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanSrvType() {
 		return planSrvType;
 	}
-	@Column(name="PLAN_SRV_TYPE")
+	
 	public void setPlanSrvType(String planSrvType) {
 		this.planSrvType = planSrvType;
 	}
@@ -74,7 +91,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanPid() {
 		return planPid;
 	}
-	@Column(name="PLAN_PID")
+	
 	public void setPlanPid(String planPid) {
 		this.planPid = planPid;
 	}
@@ -224,7 +241,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanId() {
 		return planId;
 	}
-	@Column(name="PLAN_ID")
+	
 	public void setPlanId(String planId) {
 		this.planId = planId;
 	}
@@ -240,7 +257,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanName() {
 		return planName;
 	}
-	@Column(name="PLAN_NAME")
+	
 	public void setPlanName(String planName) {
 		this.planName = planName;
 	}
@@ -248,7 +265,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public Date getPlanStartdate() {
 		return planStartdate;
 	}
-	@Column(name="PLAN_STARTDATE")
+	
 	public void setPlanStartdate(Date planStartdate) {
 		this.planStartdate = planStartdate;
 	}
@@ -256,7 +273,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public Date getPlanEnddate() {
 		return planEnddate;
 	}
-	@Column(name="PLAN_ENDDATE")
+	
 	public void setPlanEnddate(Date planEnddate) {
 		this.planEnddate = planEnddate;
 	}
@@ -264,7 +281,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanDesc() {
 		return planDesc;
 	}
-	@Column(name="PLAN_DESC")
+	
 	public void setPlanDesc(String planDesc) {
 		this.planDesc = planDesc;
 	}
@@ -272,7 +289,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getStatus() {
 		return status;
 	}
-	@Column(name="STATUS")
+	
 	public void setStatus(String status) {
 		this.status = status;
 	}
@@ -280,7 +297,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getCreateUserid() {
 		return createUserid;
 	}
-	@Column(name="CREATE_USERID")
+	
 	public void setCreateUserid(String createUserid) {
 		this.createUserid = createUserid;
 	}
@@ -288,7 +305,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public Date getCreateDate() {
 		return createDate;
 	}
-	@Column(name="CREATE_DATE")
+	
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
@@ -296,7 +313,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getBrandId() {
 		return brandId;
 	}
-	@Column(name="BRAND_ID")
+	
 	public void setBrandId(String brandId) {
 		this.brandId = brandId;
 	}
@@ -304,7 +321,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getCityId() {
 		return cityId;
 	}
-	@Column(name="CITY_ID")
+	
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
 	}
@@ -312,7 +329,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getPlanType() {
 		return planType;
 	}
-	@Column(name="PLAN_TYPE")
+	
 	public void setPlanType(String planType) {
 		this.planType = planType;
 	}
@@ -320,7 +337,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getDefaultChannelId() {
 		return defaultChannelId;
 	}
-	@Column(name="DEFAULT_CHANNEL_ID")
+	
 	public void setDefaultChannelId(String defaultChannelId) {
 		this.defaultChannelId = defaultChannelId;
 	}
@@ -345,7 +362,7 @@ public class MtlStcPlan implements java.io.Serializable {
 	public String getTypeId() {
 		return typeId;
 	}
-	@Column(name="TYPE_ID")
+	
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}

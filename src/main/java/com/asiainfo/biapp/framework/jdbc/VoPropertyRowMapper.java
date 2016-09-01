@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.framework.jdbc;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -9,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.Column;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,6 @@ import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
 
 
 /**
@@ -113,10 +115,12 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
 		this.mappedProperties = new HashSet<String>();
 		PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
 		for (PropertyDescriptor pd : pds) {
+			String propertyName=pd.getName();
 			Method method=pd.getWriteMethod();
 			if (method != null) {
 				//如果该类的set方法上有注解 注解优先
-				Column column=method.getAnnotation(Column.class);
+				//Column column=method.getAnnotation(Column.class);
+				Column column=getClassFieldColumnInfo(mappedClass,propertyName);
 				if(column!=null){
 					String columnName=column.name();
 					this.mappedFields.put(columnName.toLowerCase(), pd);
@@ -130,6 +134,19 @@ public class VoPropertyRowMapper<T> implements RowMapper<T> {
 				this.mappedProperties.add(pd.getName());
 			}
 		}
+	}
+	
+	private Column getClassFieldColumnInfo(Class<T> mappedClass,String propertyName){
+		Column column=null;
+		Field[] fields = mappedClass.getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field f = fields[i];
+			if(f.getName().equals(propertyName)){
+				column=f.getAnnotation(Column.class);
+				break;
+			}
+		}
+		return column;
 	}
 
 	/**

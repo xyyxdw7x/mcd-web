@@ -2,7 +2,8 @@ package com.asiainfo.biapp.mcd.tactics.vo;
 
 import java.util.Date;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+import javax.persistence.Column;
+
 
 public class McdCampsegTask implements java.io.Serializable{
 
@@ -10,23 +11,56 @@ public class McdCampsegTask implements java.io.Serializable{
      * 
      */
     private static final long serialVersionUID = 6745348474090585380L;
+    
+    @Column(name="TASK_ID")
     private String taskId;
+    
+    @Column(name="CAMPSEG_ID")
     private String campsegId;
+    
+    @Column(name="EXEC_STATUS")
     private Short execStatus;
+    
+    @Column(name="EXEC_INFO_DESC")
     private String execInfoDesc;
+    
+    @Column(name="exec_time")
     private Date execTime;
+    
+    @Column(name="TASK_START_TIME")
     private Date taskStartTime;
+    
+    @Column(name="TASK_END_TIME")
     private Date taskEndTime;
+    
+    @Column(name="CUST_LIST_TAB_NAME")
     private String custListTabName;
+    
+    @Column(name="TASK_SENDODD_TAB_NAME")
     private String taskSendoddTabName;
+    
+    @Column(name="CI_CUSTGROUP_TAB_NAME")
     private String ciCustgroupTabName;
     private int retry = 0;
+    
+    @Column(name="CAMPSEG_STAT_ID")
     private int sendCount = 0;//实际派发到渠道的客户数
+    
     private int planCount = 0;//客户群运算后客户数
+    
+    @Column(name="channel_id")
     private String channelId;//新增渠道ID
+    
+    @Column(name="int_group_num")
     private int intGroupNum;//客户群数目
+    
+    @Column(name="bother_avoid_num")
     private int botherAvoidNum;//免打扰控制数目
+    
+    @Column(name="contact_control_num")
     private int contactControlNum;//频次控制数目
+    
+    @Column(name="cycle_type")
     private short cycleType;//周期类型
 
 
@@ -59,7 +93,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getTaskId() {
         return taskId;
     }
-    @Column(name="TASK_ID")
+    
     public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
@@ -67,7 +101,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getCampsegId() {
         return campsegId;
     }
-    @Column(name="CAMPSEG_ID")
+    
     public void setCampsegId(String campsegId) {
         this.campsegId = campsegId;
     }
@@ -75,7 +109,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public Short getExecStatus() {
         return execStatus;
     }
-    @Column(name="EXEC_STATUS")
+    
     public void setExecStatus(Short execStatus) {
         this.execStatus = execStatus;
     }
@@ -83,7 +117,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getExecInfoDesc() {
         return execInfoDesc;
     }
-    @Column(name="EXEC_INFO_DESC")
+    
     public void setExecInfoDesc(String execInfoDesc) {
         this.execInfoDesc = execInfoDesc;
     }
@@ -91,7 +125,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public Date getExecTime() {
         return execTime;
     }
-    @Column(name="exec_time")
+    
     public void setExecTime(Date execTime) {
         this.execTime = execTime;
     }
@@ -99,7 +133,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public Date getTaskStartTime() {
         return taskStartTime;
     }
-    @Column(name="TASK_START_TIME")
+    
     public void setTaskStartTime(Date taskStartTime) {
         this.taskStartTime = taskStartTime;
     }
@@ -107,7 +141,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public Date getTaskEndTime() {
         return taskEndTime;
     }
-    @Column(name="TASK_END_TIME")
+    
     public void setTaskEndTime(Date taskEndTime) {
         this.taskEndTime = taskEndTime;
     }
@@ -115,7 +149,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getCustListTabName() {
         return custListTabName;
     }
-    @Column(name="CUST_LIST_TAB_NAME")
+    
     public void setCustListTabName(String custListTabName) {
         this.custListTabName = custListTabName;
     }
@@ -123,7 +157,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getTaskSendoddTabName() {
         return taskSendoddTabName;
     }
-    @Column(name="TASK_SENDODD_TAB_NAME")
+    
     public void setTaskSendoddTabName(String taskSendoddTabName) {
         this.taskSendoddTabName = taskSendoddTabName;
     }
@@ -162,7 +196,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getCiCustgroupTabName() {
         return ciCustgroupTabName;
     }
-    @Column(name="CI_CUSTGROUP_TAB_NAME")
+   
     public void setCiCustgroupTabName(String ciCustgroupTabName) {
         this.ciCustgroupTabName = ciCustgroupTabName;
     }
@@ -170,7 +204,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public int getSendCount() {
         return sendCount;
     }
-    @Column(name="CAMPSEG_STAT_ID")
+    
     public void setSendCount(int sendCount) {
         this.sendCount = sendCount;
     }
@@ -186,7 +220,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public String getChannelId() {
         return channelId;
     }
-    @Column(name="channel_id")
+    
     public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
@@ -194,7 +228,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public int getIntGroupNum() {
         return intGroupNum;
     }
-    @Column(name="int_group_num")
+   
     public void setIntGroupNum(int intGroupNum) {
         this.intGroupNum = intGroupNum;
     }
@@ -202,7 +236,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public int getBotherAvoidNum() {
         return botherAvoidNum;
     }
-    @Column(name="bother_avoid_num")
+    
     public void setBotherAvoidNum(int botherAvoidNum) {
         this.botherAvoidNum = botherAvoidNum;
     }
@@ -210,7 +244,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public int getContactControlNum() {
         return contactControlNum;
     }
-    @Column(name="contact_control_num")
+    
     public void setContactControlNum(int contactControlNum) {
         this.contactControlNum = contactControlNum;
     }
@@ -218,7 +252,7 @@ public class McdCampsegTask implements java.io.Serializable{
     public short getCycleType() {
         return cycleType;
     }
-    @Column(name="cycle_type")
+    
     public void setCycleType(short cycleType) {
         this.cycleType = cycleType;
     }

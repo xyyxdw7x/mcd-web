@@ -4,11 +4,11 @@ package com.asiainfo.biapp.mcd.test.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
 
 /**
  * Book
@@ -20,19 +20,19 @@ public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@javax.persistence.Column(name="ID")
+	@Column(name="ID")
 	private String id;
 	
-	@javax.persistence.Column(name="NAME")
+	@Column(name="NAME")
 	private String title;
 
-	@javax.persistence.Column(name="PUBLICATION")
+	@Column(name="PUBLICATION")
 	private Date publication;
 	
-	@javax.persistence.Column(name="PRICE")
+	@Column(name="PRICE")
 	private Number price;
 	
-	@javax.persistence.Column(name="DISCOUNT")
+	@Column(name="DISCOUNT")
 	private int discount;
 	
 	@Transient
@@ -54,7 +54,6 @@ public class Book implements Serializable {
 		return title;
 	}
 	
-	@Column(name="BOOK_TITLE")
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -64,7 +63,6 @@ public class Book implements Serializable {
 		return publication;
 	}
 	
-	@Column(name="BOOK_PUBLICATION")
 	public void setPublication(Date publication) {
 		this.publication = publication;
 	}
@@ -73,7 +71,6 @@ public class Book implements Serializable {
 		return price;
 	}
 	
-	@Column(name="BOOK_PRICE")
 	public void setPrice(Number price) {
 		this.price = price;
 	}
@@ -82,7 +79,6 @@ public class Book implements Serializable {
 		return discount;
 	}
 	
-	@Column(name="BOOK_DISCOUNT")
 	public void setDiscount(int discount) {
 		this.discount = discount;
 	}

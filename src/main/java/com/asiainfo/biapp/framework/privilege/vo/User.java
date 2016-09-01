@@ -3,7 +3,8 @@ package com.asiainfo.biapp.framework.privilege.vo;
 import java.util.Date;
 import java.util.Map;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+import javax.persistence.Column;
+
 
 /**
  * 系统用户
@@ -15,31 +16,37 @@ public class User {
 	/**
 	 * 用户ID
 	 */
+	@Column(name="USERID")
 	private String id;
 	
 	/**
 	 * 用户姓名
 	 */
+	@Column(name="USERNAME")
 	private String name;
 	
 	/**
 	 * 用户密码
 	 */
+	@Column(name="PWD")
 	private String pwd;
 	
 	/**
 	 * 用户所属地市
 	 */
+	@Column(name="CITYID")
 	private String cityId;
 	
 	/**
 	 * 用户所属部门ID
 	 */
+	@Column(name="DEPARTMENTID")
 	private String departmentId;
 	
 	/**
 	 * 用户状态0禁用1启用
 	 */
+	@Column(name="STATUS")
 	private String status;
 	
 	/**
@@ -50,6 +57,7 @@ public class User {
 	/**
 	 * 用户手机号码
 	 */
+	@Column(name="MOBILEPHONE")
 	private String mobilePhone;
 	
 	/**
@@ -60,7 +68,7 @@ public class User {
 	public String getId() {
 		return id;
 	}
-	@Column(name="USERID")
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -69,7 +77,7 @@ public class User {
 		return name;
 	}
 
-	@Column(name="USERNAME")
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -78,7 +86,7 @@ public class User {
 		return pwd;
 	}
 
-	@Column(name="PWD")
+	
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
@@ -87,7 +95,7 @@ public class User {
 		return cityId;
 	}
 
-	@Column(name="CITYID")
+	
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
 	}
@@ -96,7 +104,7 @@ public class User {
 		return departmentId;
 	}
 
-	@Column(name="DEPARTMENTID")
+	
 	public void setDepartmentId(String departmentId) {
 		this.departmentId = departmentId;
 	}
@@ -105,7 +113,7 @@ public class User {
 		return status;
 	}
 
-	@Column(name="STATUS")
+	
 	public void setStatus(String status) {
 		this.status = status;
 	}
@@ -122,7 +130,7 @@ public class User {
 		return mobilePhone;
 	}
 
-	@Column(name="MOBILEPHONE")
+	
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}

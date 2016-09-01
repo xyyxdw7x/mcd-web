@@ -4,11 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+
 
 /**
  * @author AsiaInfo-jie
@@ -17,7 +18,7 @@ import com.asiainfo.biapp.framework.jdbc.annotation.Column;
 @Table(name="mtl_camp_seginfo")
 public class MtlCampSeginfo {
 	@Id
-	@javax.persistence.Column(name="CAMPSEG_ID")
+	@Column(name="CAMPSEG_ID")
 	private String campsegId; // 活动编号
 	@Transient
     private Integer pageNum; //当前页
@@ -33,51 +34,51 @@ public class MtlCampSeginfo {
     private String campDrvIds; //业务类型可多选情况
 	@Transient
 	private String campDrvName;// 活动类型名称
-	 @javax.persistence.Column(name="CAMPSEG_STAT_NAME")
+	 @Column(name="CAMPSEG_STAT_NAME")
     private String campsegStatName; //状态名称
-	 @javax.persistence.Column(name="CAMPSEG_STAT_ID")
+	 @Column(name="CAMPSEG_STAT_ID")
     private Short campsegStatId; // 营销活动状态ID
 	 @Transient
     private String channelId;
 	 @Transient
     private String channelTypeId;
-    @javax.persistence.Column(name="CREATE_USERID")
+    @Column(name="CREATE_USERID")
     private String createUserid; // 活动策划人
-    @javax.persistence.Column(name="CAMP_PRI_ID")
+    @Column(name="CAMP_PRI_ID")
     private Short campPriId; // 活动优先级,见维表:dim_camp_pri
     @Transient
     private String keywords;// 关键字
     @Transient
     private String areaId; // 营销活动所属地区
-    @javax.persistence.Column(name="CAMPSEG_NAME")
+    @Column(name="CAMPSEG_NAME")
     private String campsegName;
-    @javax.persistence.Column(name="START_DATE")
+    @Column(name="START_DATE")
     private String startDate; // 开始时间
-    @javax.persistence.Column(name="END_DATE")
+    @Column(name="END_DATE")
     private String endDate; // 结束时间
-    @javax.persistence.Column(name="CAMPSEG_PID")
+    @Column(name="CAMPSEG_PID")
     private String campsegPid; // 活动编号父ID
-    @javax.persistence.Column(name="CAMPSEG_TYPE_ID")
+    @Column(name="CAMPSEG_TYPE_ID")
     private Short campsegTypeId; // 活动营销类型
-    @javax.persistence.Column(name="PLAN_ID")
+    @Column(name="PLAN_ID")
     private String planId; // 产品编码
     @Transient
     private boolean isFatherNode;  //是否为策略基础信息；true:是基本信息；false:子规则
-	@javax.persistence.Column(name="IS_FILTER_DISTURB")
+	@Column(name="IS_FILTER_DISTURB")
     private Integer isFileterDisturb;
-    @javax.persistence.Column(name="DEPTID")
+    @Column(name="DEPTID")
     private Integer deptId; // 策划人部门id
     @Transient
     private Locale requestLocal;
-    @javax.persistence.Column(name="CREATE_TIME")
+    @Column(name="CREATE_TIME")
     private Date createTime; // 本活动定义时间
     @Transient
     private String isApprove;
-    @javax.persistence.Column(name="CAMPSEG_NO")
+    @Column(name="CAMPSEG_NO")
     private String campsegNo; // 多规则时，规则序号
-    @javax.persistence.Column(name="CEP_EVENT_ID")
+    @Column(name="CEP_EVENT_ID")
     private String cepEventId; // 复杂事件ID
-    @javax.persistence.Column(name="EVENT_RULE_DESC")
+    @Column(name="EVENT_RULE_DESC")
     private String eventRuleDesc;  //复杂事件描述
     @Transient
     private String custgroupId; // 客户群
@@ -89,17 +90,17 @@ public class MtlCampSeginfo {
 	private String excludePlanIds;//剔除产品ID
     @Transient
 	private List<MtlChannelDef> mtlChannelDefList;   //渠道执行
-	@javax.persistence.Column(name="CITY_ID")
+	@Column(name="CITY_ID")
 	private String cityId; // 策划人所属地市	
 	@Transient
 	private int splitCampSegInfo;// 是否按渠道类型拆分活动规则
-	@javax.persistence.Column(name="APPROVE_FLOW_ID")
+	@Column(name="APPROVE_FLOW_ID")
 	private String approveFlowid; // 默认内部审批流程
-	@javax.persistence.Column(name="APPROVE_RESULT")
+	@Column(name="APPROVE_RESULT")
 	private Short approveResult; // 审批结果
-	@javax.persistence.Column(name="APPROVE_RESULT_DESC")
+	@Column(name="APPROVE_RESULT_DESC")
 	private String approveResultDesc;//审批结果描述
-	@javax.persistence.Column(name="SELECT_TEMPLET_ID")
+	@Column(name="SELECT_TEMPLET_ID")
 	private String selectTempletId; // 筛选规则模板id
 	@Transient
 	private String custGroupAttrId;
@@ -107,9 +108,9 @@ public class MtlCampSeginfo {
 	private Integer waveContactType; // 规则接触类型
 	@Transient
 	private Integer waveContactCount;
-	@javax.persistence.Column(name="CAMP_CLASS")
+	@Column(name="CAMP_CLASS")
 	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
-	@javax.persistence.Column(name="IS_RELATIVE_EXEC_TIME")
+	@Column(name="IS_RELATIVE_EXEC_TIME")
 	private Integer isRelativeExecTime; // 执行时间是否相对时间
 	@Transient
 	private String absoluteDates; // 绝对时间串，逗号分隔
@@ -121,15 +122,15 @@ public class MtlCampSeginfo {
 	private String filePath;
 	@Transient
 	private MtlChannelDefCall mtlChannelDefCall;//渠道对应表_外呼
-	@javax.persistence.Column(name="EVENT_ACTIVE_TEMPLET_ID")
+	@Column(name="EVENT_ACTIVE_TEMPLET_ID")
 	private String eventActiveTempletId;// 事件规则模板ID
 	@Transient
 	private String custBaseDay;
 	@Transient
 	private String custBaseMonth;
-	@javax.persistence.Column(name="CREATE_USERNAME")
+	@Column(name="CREATE_USERNAME")
 	private String createUserName;
-	@javax.persistence.Column(name="CAMPSEG_DESC")
+	@Column(name="CAMPSEG_DESC")
     private String campsegDesc; // 活动描述
 	@Transient
     private Integer contactedUserNums; // 联系客户数
@@ -141,26 +142,26 @@ public class MtlCampSeginfo {
     private Integer campsegContactUsernums; // 活动被接触控制的用户数
 	@Transient
     private Short campsegContactFlag; // 是否进行接触控制
-    @javax.persistence.Column(name="EVALUATE_COMMENT")
+    @Column(name="EVALUATE_COMMENT")
     private String evaluateComment; // 活动中止原因
-    @javax.persistence.Column(name="CUST_LIST_TAB_NAME")
+    @Column(name="CUST_LIST_TAB_NAME")
     private String custListTabName;// 客户群清单表名
-    @javax.persistence.Column(name="TIME_INTERVAL")
+    @Column(name="TIME_INTERVAL")
     private String timeInterval;
-    @javax.persistence.Column(name="TARGER_USER_NUMS")
+    @Column(name="TARGER_USER_NUMS")
     private Integer targerUserNums; // 目标客户数
     private String currentTaskId;// 当前任务编号
-    @javax.persistence.Column(name="AVOID_BOTHER_TYPE_IDS")
+    @Column(name="AVOID_BOTHER_TYPE_IDS")
     private String avoidBotherTypeIds;// 免打扰客户类型ID
-    @javax.persistence.Column(name="TARGET_CUST_TYPE")
+    @Column(name="TARGET_CUST_TYPE")
     private Integer targetCustType;// 客户群类型(0:无 ,1:客户群 2:来自其他活动规则的反馈)
-    @Transient
+    @Column(name="ACTIVE_TEMPLET_ID")
     private String activeTempletId;// 时机规则模板ID
-    @javax.persistence.Column(name="INIT_CUST_LIST_TAB")
+    @Column(name="INIT_CUST_LIST_TAB")
     private String initCustListTab;//策略初始清单表
-    @javax.persistence.Column(name="APPROVE_REMIND_TIME")
+    @Column(name="APPROVE_REMIND_TIME")
     private Date approveRemindTime;
-    @Transient
+    @Column(name="EVENT_SOURCE")
     private String eventSourceId; // 外部事件源
     
     public boolean getIsFatherNode() {
@@ -271,7 +272,7 @@ public class MtlCampSeginfo {
 	public String getCampsegId() {
 		return campsegId;
 	}
-	@Column(name="campseg_id")
+	
 	public void setCampsegId(String campsegId) {
 		this.campsegId = campsegId;
 	}
@@ -393,7 +394,6 @@ public class MtlCampSeginfo {
 	public String getCampsegPid() {
 		return campsegPid;
 	}
-	@Column(name="campseg_pid")
 	public void setCampsegPid(String campsegPid) {
 		this.campsegPid = campsegPid;
 	}
@@ -406,7 +406,7 @@ public class MtlCampSeginfo {
 	public String getPlanId() {
 		return planId;
 	}
-	@Column(name="PLAN_ID")
+	
 	public void setPlanId(String planId) {
 		this.planId = planId;
 	}
@@ -588,7 +588,7 @@ public class MtlCampSeginfo {
     public String getActiveTempletId() {
         return activeTempletId;
     }
-    @Column(name="ACTIVE_TEMPLET_ID")
+    
     public void setActiveTempletId(String activeTempletId) {
         this.activeTempletId = activeTempletId;
     }
@@ -607,7 +607,7 @@ public class MtlCampSeginfo {
     public String getEventSourceId() {
         return eventSourceId;
     }
-    @Column(name="EVENT_SOURCE")
+    
     public void setEventSourceId(String eventSourceId) {
         this.eventSourceId = eventSourceId;
     }

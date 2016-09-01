@@ -3,7 +3,8 @@ package com.asiainfo.biapp.framework.privilege.vo;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.framework.jdbc.annotation.Column;
+import javax.persistence.Column;
+
 
 /**
  *  菜单信息
@@ -15,21 +16,25 @@ public class Menu {
 	/**
 	 *  菜单ID
 	 */
+	@Column(name="MENUITEMID")
 	private String id;
 	
 	/**
 	 * 菜单父ID
 	 */
+	@Column(name="PARENTID")
 	private String pid;
 	
 	/**
 	 * 菜单名称
 	 */
+	@Column(name="MENUITEMTITLE")
 	private String name;
 	
 	/**
 	 * 菜单URL地址
 	 */
+	@Column(name="URL")
 	private String url;
 	
 	/**
@@ -67,7 +72,7 @@ public class Menu {
 		return id;
 	}
 
-	@Column(name="MENUITEMID")
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -77,7 +82,7 @@ public class Menu {
 		return pid;
 	}
 
-	@Column(name="PARENTID")
+	
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
@@ -87,7 +92,7 @@ public class Menu {
 		return name;
 	}
 
-	@Column(name="MENUITEMTITLE")
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -97,7 +102,7 @@ public class Menu {
 		return url;
 	}
 
-	@Column(name="URL")
+	
 	public void setUrl(String url) {
 		this.url = url;
 	}
