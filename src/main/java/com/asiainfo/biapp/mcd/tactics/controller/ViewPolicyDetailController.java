@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,9 +11,17 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 
+import org.apache.axis.client.Call;
+import org.apache.axis.client.Service;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -25,20 +34,27 @@ import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustUpdateCycle;
+import com.asiainfo.biapp.mcd.jms.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.service.IMpmCommonService;
+import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
+import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
+import com.asiainfo.biapp.mcd.tactics.vo.DataGridData;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MpmCampSegInfoBean;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.date.DateUtil;
 import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
+import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,6 +68,9 @@ import net.sf.json.JSONObject;
  */
 @RequestMapping("/tactics/viewPolicyDetail")
 public class ViewPolicyDetailController extends BaseMultiActionController  {
+    private static Logger log = LogManager.getLogger(ViewPolicyDetailController.class);
+
+    
     @Resource(name="mpmCampSegInfoService")
     private IMpmCampSegInfoService mpmCampSegInfoService;
     @Resource(name = "mtlCallWsUrlService")
@@ -68,6 +87,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     private CustGroupInfoService custGroupInfoService;
     @Resource(name = "mtlChannelDefService")
     private IMtlChannelDefService mtlChannelDefService;
+    @Resource(name = "channelBossSmsTemplateService")
+    private ChannelBossSmsTemplateService channelBossSmsTemplateService;
     
     /**
      * viewPolicyDetail 查看策略详情
@@ -441,8 +462,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     public ModelAndView getDeliveryChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
         MpmCampSegInfoBean segInfoBean = new MpmCampSegInfoBean();        
         
-        IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(
-                MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -482,166 +501,165 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 } 
          JSONArray dChannelDataJSONArray=new JSONArray();
          //boss运营位短信模板
-//         IMtlChannelBossSmsTemplateService mtlChannelBossSmsTemplateService = (IMtlChannelBossSmsTemplateService) SystemServiceLocator.getInstance().getService("mtlChannelBossSmsTemplateService");
-//         List<MtlChannelBossSmsTemplate> bossSmsTemplatelist = mtlChannelBossSmsTemplateService.initMtlChannelBossSmsTemplate();;
-//         for(int i=0;i<list.size();i++){
-//             Map<String,Object> tmap = list.get(i);
-//            channel_id = (String) tmap.get("CHANNEL_ID");
-//            channel_name = (String) tmap.get("CHANNEL_NAME");
-//            exec_content = (String) tmap.get("EXEC_CONTENT");
-//            update_cycle = String.valueOf(tmap.get("update_cycle"));
-//            channelAdivId = (String) tmap.get("channel_adiv_id");
-//            String templateName = "";
-//            if(StringUtil.isNotEmpty(channelAdivId)){
-//                String[] adivId = channelAdivId.split(",");
-//                for(int n = 0;n<adivId.length;n++){
-//                    for(int m = 0;m<bossSmsTemplatelist.size();m++){
-//                        if(adivId[n].equals(bossSmsTemplatelist.get(m).getTemplateId())){
-//                            templateName += bossSmsTemplatelist.get(m).getTemplateName()+",";
-//                        }
-//                    }
-//                }
-//                if(StringUtil.isNotEmpty(templateName)){
-//                    channelAdivName = templateName.substring(0, templateName.length()-1);
-//                }
-//            }else{
-//                channelAdivName = (String) tmap.get("adiv_name");
-//            }
-//            adivName = (String) tmap.get("adiv_name");
-//            eventRuleDesc = (String)tmap.get("EVENT_RULE_DESC");
-//            
-//            paramDays = String.valueOf(tmap.get("PARAM_DAYS"));
-//            paramNum = String.valueOf(tmap.get("PARAM_NUM"));
-//            
-//            execTitle = String.valueOf(tmap.get("EXEC_TITLE"));
-//            fileName = String.valueOf(tmap.get("FILE_NAME"));
-//            
-//            contactType = String.valueOf(tmap.get("contact_type"));
-//            
-//            if(null != tmap.get("award_mount")){
-//                awardMount = Double.parseDouble(String.valueOf(tmap.get("award_mount")));
-//            }else{
-//                awardMount = Double.parseDouble(String.valueOf("0"));
-//            }
-//            editUrl = String.valueOf(tmap.get("edit_url"));
-//            handleUrl = String.valueOf(tmap.get("handle_url"));
-//            sendSms = String.valueOf(tmap.get("send_sms"));
-//            
-//            trigger_timing ="";
-//            if(StringUtil.isNotEmpty(channel_id) && "901".equals(channel_id)){  //当时短信渠道的时候
-//                if("1".equals(contactType)){
-//                    update_cycle = "一次性";
-//                }else if("2".equals(contactType)){
-//                    //update_cycle = "月周期";
-//                    update_cycle = "周期性";
-//                }else{
-//                    //update_cycle = "日周期";
-//                    update_cycle = "周期性";
-//                }
-//            }else{
-//    //          客户群生成周期:1,一次性;2:月周 3:日周期
-//                    if("1".equals(update_cycle)){
-//                        update_cycle = "一次性";
-//                    }else if("2".equals(update_cycle)){
-//                        update_cycle = "周期性";
-//                    }else if("3".equals(update_cycle)){
-//                        update_cycle = "周期性";
-//                    }
-//            }
-//            
-//            JSONObject dChannelDataJSON=new JSONObject();
-//            dChannelDataJSON.put("channel_id", channel_id == null ? "" : channel_id);
-//            dChannelDataJSON.put("channel_name", channel_name == null ? "" : channel_name);
-//            dChannelDataJSON.put("exec_content", exec_content == null ? "" : exec_content);
-//            dChannelDataJSON.put("update_cycle", update_cycle == null ? "" : update_cycle);
-//            dChannelDataJSON.put("trigger_timing", trigger_timing == null ? "" : trigger_timing);
-//            dChannelDataJSON.put("channelAdivId", channelAdivId == null ? "" : channelAdivId);
-//            dChannelDataJSON.put("adivName", adivName == null ? "" : adivName);
-//            dChannelDataJSON.put("channelAdivName", channelAdivName == null ? "" : channelAdivName);
-//            dChannelDataJSON.put("eventRuleDesc", eventRuleDesc == null ? "" : eventRuleDesc);
-//            dChannelDataJSON.put("paramDays", paramDays == null ? "" : paramDays);
-//            dChannelDataJSON.put("paramNum", paramNum == null ? "" : paramNum);
-//            dChannelDataJSON.put("awardMount", awardMount == 0D ? "" : awardMount);
-//            dChannelDataJSON.put("editUrl", editUrl == null ? "" : editUrl);
-//            dChannelDataJSON.put("handleUrl", handleUrl == null ? "" : handleUrl);
-//            dChannelDataJSON.put("sendSms", sendSms == null ? "" : sendSms);
-//            dChannelDataJSON.put("execTitle", execTitle == null ? "" : execTitle);
-//            dChannelDataJSON.put("fileName", fileName == null ? "" : fileName);
-//            dChannelDataJSON.put("isCall", 0);
-//            
-//            dChannelDataJSONArray.add(dChannelDataJSON);
-//         }
-//         
-//         for(int i=0;i<list2.size();i++){
-//            Map<String,Object> tmap = list2.get(i);
-//            String channelId = (String) tmap.get("channelId");
-//            String channelName = (String) tmap.get("channelName");
-//            String taskCode = (String) tmap.get("taskCode");//任务编码
-//            String taskName = (String) tmap.get("taskName");//任务名称
-//            String demand = (String) tmap.get("demand");//需求方
-//            String taskClassName = (String) tmap.get("taskClassName");//任务分类
-//            String taskLevel1 = (String) tmap.get("taskLevel1");//任务类型一级
-//            String taskLevel2 = (String) tmap.get("taskLevel2");//任务类型2级
-//            String taskLevel3 = (String) tmap.get("taskLevel3");//任务类型3级
-//            String busiLevel1 = (String) tmap.get("busiLevel1");//业务类型一级
-//            String busiLevel2 = (String) tmap.get("busiLevel2");//业务类型2级
-//            String inPlanFlag = (String) tmap.get("inPlanFlag");//是否计划内关联月度计划
-//            String monthTaskName = (String) tmap.get("monthTaskName");//关联月度计划名称
-//            String callCycle = (String) tmap.get("callCycle");//外呼周期
-//            String callPlanNum = (String) tmap.get("callPlanNum").toString();//计划外呼量
-//            String finishDate = (String) tmap.get("finishDate");//要求完成时间
-//            String taskComment = (String) tmap.get("taskComment");//任务描述
-//            String userLableInfo = (String) tmap.get("userLableInfo");//客户标签信息
-//            String callQuestionUrl = (String) tmap.get("callQuestionUrl");//外呼问卷地址
-//            String callQuestionName = (String) tmap.get("callQuestionName");//外呼问卷名称
-//            String callNo = (String) tmap.get("callNo");//主叫号码
-//            String avoidFilterFlag = (String) tmap.get("avoidFilterFlag");//是否要清洗黑红白名单
-//            String callTestFlag = (String) tmap.get("callTestFlag");//是否拨测
-//            String freFilterFlag = (String) tmap.get("freFilterFlag");//是否需要进行频次清洗
-//            String callFormName = (String) tmap.get("callFormName");//外呼形式
-//            String callCityTypeName = (String) tmap.get("callCityTypeName");//外呼属地
-//
-//            
-//            JSONObject dChannelDataJSON=new JSONObject();
-//            dChannelDataJSON.put("channelId", channelId == null ? "" : channelId);
-//            dChannelDataJSON.put("channelName", channelName == null ? "" : channelName);
-//            dChannelDataJSON.put("taskCode", taskCode == null ? "" : taskCode);
-//            dChannelDataJSON.put("taskName", taskName == null ? "" : taskName);
-//            dChannelDataJSON.put("demand", demand == null ? "" : demand);
-//            dChannelDataJSON.put("taskClassName", taskClassName == null ? "" : taskClassName);
-//            dChannelDataJSON.put("taskLevel1", taskLevel1 == null ? "" : taskLevel1);
-//            dChannelDataJSON.put("taskLevel2", taskLevel2 == null ? "" : taskLevel2);
-//            dChannelDataJSON.put("taskLevel3", taskLevel3 == null ? "" : taskLevel3);
-//            dChannelDataJSON.put("busiLevel1", busiLevel1 == null ? "" : busiLevel1);
-//            dChannelDataJSON.put("busiLevel2", busiLevel2 == null ? "" : busiLevel2);
-//            dChannelDataJSON.put("inPlanFlag", inPlanFlag == null ? "" : inPlanFlag);
-//            dChannelDataJSON.put("monthTaskName",monthTaskName == null ? "" : monthTaskName);
-//            dChannelDataJSON.put("callCycle", callCycle == null ? "" : callCycle);
-//            dChannelDataJSON.put("callPlanNum", callPlanNum == null ? "" : callPlanNum);
-//            dChannelDataJSON.put("finishDate", finishDate == null ? "" : finishDate);
-//            dChannelDataJSON.put("taskComment", taskComment == null ? "" : taskComment);
-//            dChannelDataJSON.put("userLableInfo", userLableInfo == null ? "" : userLableInfo);
-//            dChannelDataJSON.put("callQuestionUrl", callQuestionUrl == null ? "" : callQuestionUrl);
-//            dChannelDataJSON.put("callQuestionName", callQuestionName == null ? "" : callQuestionName);
-//            dChannelDataJSON.put("callNo", callNo == null ? "" : callNo);
-//            dChannelDataJSON.put("avoidFilterFlag", avoidFilterFlag == null ? "" : avoidFilterFlag);
-//            dChannelDataJSON.put("callTestFlag", callTestFlag == null ? "" : callTestFlag);
-//            dChannelDataJSON.put("freFilterFlag", freFilterFlag == null ? "" : freFilterFlag);
-//            dChannelDataJSON.put("callFormName", callFormName == null ? "" : callFormName);
-//            dChannelDataJSON.put("callCityTypeName", callCityTypeName == null ? "" : callCityTypeName);
-//            dChannelDataJSON.put("isCall", 1);
-//            
-//            dChannelDataJSONArray.add(dChannelDataJSON);
-//         }
-//         
-//
-//         System.out.println("dChannelDataJSONArray=========="+dChannelDataJSONArray);
-//         JSONObject result =new JSONObject();
-//         result.put("status","200");
-//         result.put("data", dChannelDataJSONArray);
-//         //String result = "{status : 200,data:["+dChannelDataJSON.toString()+"]}";
-//         System.out.println("dChannelDataJSONresult===="+result);
-//         out.print(result);
+         List<ChannelBossSmsTemplate> bossSmsTemplatelist = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();;
+         for(int i=0;i<list.size();i++){
+             Map<String,Object> tmap = list.get(i);
+            channel_id = (String) tmap.get("CHANNEL_ID");
+            channel_name = (String) tmap.get("CHANNEL_NAME");
+            exec_content = (String) tmap.get("EXEC_CONTENT");
+            update_cycle = String.valueOf(tmap.get("update_cycle"));
+            channelAdivId = (String) tmap.get("channel_adiv_id");
+            String templateName = "";
+            if(StringUtil.isNotEmpty(channelAdivId)){
+                String[] adivId = channelAdivId.split(",");
+                for(int n = 0;n<adivId.length;n++){
+                    for(int m = 0;m<bossSmsTemplatelist.size();m++){
+                        if(adivId[n].equals(bossSmsTemplatelist.get(m).getTemplateId())){
+                            templateName += bossSmsTemplatelist.get(m).getTemplateName()+",";
+                        }
+                    }
+                }
+                if(StringUtil.isNotEmpty(templateName)){
+                    channelAdivName = templateName.substring(0, templateName.length()-1);
+                }
+            }else{
+                channelAdivName = (String) tmap.get("adiv_name");
+            }
+            adivName = (String) tmap.get("adiv_name");
+            eventRuleDesc = (String)tmap.get("EVENT_RULE_DESC");
+            
+            paramDays = String.valueOf(tmap.get("PARAM_DAYS"));
+            paramNum = String.valueOf(tmap.get("PARAM_NUM"));
+            
+            execTitle = String.valueOf(tmap.get("EXEC_TITLE"));
+            fileName = String.valueOf(tmap.get("FILE_NAME"));
+            
+            contactType = String.valueOf(tmap.get("contact_type"));
+            
+            if(null != tmap.get("award_mount")){
+                awardMount = Double.parseDouble(String.valueOf(tmap.get("award_mount")));
+            }else{
+                awardMount = Double.parseDouble(String.valueOf("0"));
+            }
+            editUrl = String.valueOf(tmap.get("edit_url"));
+            handleUrl = String.valueOf(tmap.get("handle_url"));
+            sendSms = String.valueOf(tmap.get("send_sms"));
+            
+            trigger_timing ="";
+            if(StringUtil.isNotEmpty(channel_id) && "901".equals(channel_id)){  //当时短信渠道的时候
+                if("1".equals(contactType)){
+                    update_cycle = "一次性";
+                }else if("2".equals(contactType)){
+                    //update_cycle = "月周期";
+                    update_cycle = "周期性";
+                }else{
+                    //update_cycle = "日周期";
+                    update_cycle = "周期性";
+                }
+            }else{
+    //          客户群生成周期:1,一次性;2:月周 3:日周期
+                    if("1".equals(update_cycle)){
+                        update_cycle = "一次性";
+                    }else if("2".equals(update_cycle)){
+                        update_cycle = "周期性";
+                    }else if("3".equals(update_cycle)){
+                        update_cycle = "周期性";
+                    }
+            }
+            
+            JSONObject dChannelDataJSON=new JSONObject();
+            dChannelDataJSON.put("channel_id", channel_id == null ? "" : channel_id);
+            dChannelDataJSON.put("channel_name", channel_name == null ? "" : channel_name);
+            dChannelDataJSON.put("exec_content", exec_content == null ? "" : exec_content);
+            dChannelDataJSON.put("update_cycle", update_cycle == null ? "" : update_cycle);
+            dChannelDataJSON.put("trigger_timing", trigger_timing == null ? "" : trigger_timing);
+            dChannelDataJSON.put("channelAdivId", channelAdivId == null ? "" : channelAdivId);
+            dChannelDataJSON.put("adivName", adivName == null ? "" : adivName);
+            dChannelDataJSON.put("channelAdivName", channelAdivName == null ? "" : channelAdivName);
+            dChannelDataJSON.put("eventRuleDesc", eventRuleDesc == null ? "" : eventRuleDesc);
+            dChannelDataJSON.put("paramDays", paramDays == null ? "" : paramDays);
+            dChannelDataJSON.put("paramNum", paramNum == null ? "" : paramNum);
+            dChannelDataJSON.put("awardMount", awardMount == 0D ? "" : awardMount);
+            dChannelDataJSON.put("editUrl", editUrl == null ? "" : editUrl);
+            dChannelDataJSON.put("handleUrl", handleUrl == null ? "" : handleUrl);
+            dChannelDataJSON.put("sendSms", sendSms == null ? "" : sendSms);
+            dChannelDataJSON.put("execTitle", execTitle == null ? "" : execTitle);
+            dChannelDataJSON.put("fileName", fileName == null ? "" : fileName);
+            dChannelDataJSON.put("isCall", 0);
+            
+            dChannelDataJSONArray.add(dChannelDataJSON);
+         }
+         
+         for(int i=0;i<list2.size();i++){
+            Map<String,Object> tmap = list2.get(i);
+            String channelId = (String) tmap.get("channelId");
+            String channelName = (String) tmap.get("channelName");
+            String taskCode = (String) tmap.get("taskCode");//任务编码
+            String taskName = (String) tmap.get("taskName");//任务名称
+            String demand = (String) tmap.get("demand");//需求方
+            String taskClassName = (String) tmap.get("taskClassName");//任务分类
+            String taskLevel1 = (String) tmap.get("taskLevel1");//任务类型一级
+            String taskLevel2 = (String) tmap.get("taskLevel2");//任务类型2级
+            String taskLevel3 = (String) tmap.get("taskLevel3");//任务类型3级
+            String busiLevel1 = (String) tmap.get("busiLevel1");//业务类型一级
+            String busiLevel2 = (String) tmap.get("busiLevel2");//业务类型2级
+            String inPlanFlag = (String) tmap.get("inPlanFlag");//是否计划内关联月度计划
+            String monthTaskName = (String) tmap.get("monthTaskName");//关联月度计划名称
+            String callCycle = (String) tmap.get("callCycle");//外呼周期
+            String callPlanNum = (String) tmap.get("callPlanNum").toString();//计划外呼量
+            String finishDate = (String) tmap.get("finishDate");//要求完成时间
+            String taskComment = (String) tmap.get("taskComment");//任务描述
+            String userLableInfo = (String) tmap.get("userLableInfo");//客户标签信息
+            String callQuestionUrl = (String) tmap.get("callQuestionUrl");//外呼问卷地址
+            String callQuestionName = (String) tmap.get("callQuestionName");//外呼问卷名称
+            String callNo = (String) tmap.get("callNo");//主叫号码
+            String avoidFilterFlag = (String) tmap.get("avoidFilterFlag");//是否要清洗黑红白名单
+            String callTestFlag = (String) tmap.get("callTestFlag");//是否拨测
+            String freFilterFlag = (String) tmap.get("freFilterFlag");//是否需要进行频次清洗
+            String callFormName = (String) tmap.get("callFormName");//外呼形式
+            String callCityTypeName = (String) tmap.get("callCityTypeName");//外呼属地
+
+            
+            JSONObject dChannelDataJSON=new JSONObject();
+            dChannelDataJSON.put("channelId", channelId == null ? "" : channelId);
+            dChannelDataJSON.put("channelName", channelName == null ? "" : channelName);
+            dChannelDataJSON.put("taskCode", taskCode == null ? "" : taskCode);
+            dChannelDataJSON.put("taskName", taskName == null ? "" : taskName);
+            dChannelDataJSON.put("demand", demand == null ? "" : demand);
+            dChannelDataJSON.put("taskClassName", taskClassName == null ? "" : taskClassName);
+            dChannelDataJSON.put("taskLevel1", taskLevel1 == null ? "" : taskLevel1);
+            dChannelDataJSON.put("taskLevel2", taskLevel2 == null ? "" : taskLevel2);
+            dChannelDataJSON.put("taskLevel3", taskLevel3 == null ? "" : taskLevel3);
+            dChannelDataJSON.put("busiLevel1", busiLevel1 == null ? "" : busiLevel1);
+            dChannelDataJSON.put("busiLevel2", busiLevel2 == null ? "" : busiLevel2);
+            dChannelDataJSON.put("inPlanFlag", inPlanFlag == null ? "" : inPlanFlag);
+            dChannelDataJSON.put("monthTaskName",monthTaskName == null ? "" : monthTaskName);
+            dChannelDataJSON.put("callCycle", callCycle == null ? "" : callCycle);
+            dChannelDataJSON.put("callPlanNum", callPlanNum == null ? "" : callPlanNum);
+            dChannelDataJSON.put("finishDate", finishDate == null ? "" : finishDate);
+            dChannelDataJSON.put("taskComment", taskComment == null ? "" : taskComment);
+            dChannelDataJSON.put("userLableInfo", userLableInfo == null ? "" : userLableInfo);
+            dChannelDataJSON.put("callQuestionUrl", callQuestionUrl == null ? "" : callQuestionUrl);
+            dChannelDataJSON.put("callQuestionName", callQuestionName == null ? "" : callQuestionName);
+            dChannelDataJSON.put("callNo", callNo == null ? "" : callNo);
+            dChannelDataJSON.put("avoidFilterFlag", avoidFilterFlag == null ? "" : avoidFilterFlag);
+            dChannelDataJSON.put("callTestFlag", callTestFlag == null ? "" : callTestFlag);
+            dChannelDataJSON.put("freFilterFlag", freFilterFlag == null ? "" : freFilterFlag);
+            dChannelDataJSON.put("callFormName", callFormName == null ? "" : callFormName);
+            dChannelDataJSON.put("callCityTypeName", callCityTypeName == null ? "" : callCityTypeName);
+            dChannelDataJSON.put("isCall", 1);
+            
+            dChannelDataJSONArray.add(dChannelDataJSON);
+         }
+         
+
+         System.out.println("dChannelDataJSONArray=========="+dChannelDataJSONArray);
+         JSONObject result =new JSONObject();
+         result.put("status","200");
+         result.put("data", dChannelDataJSONArray);
+         //String result = "{status : 200,data:["+dChannelDataJSON.toString()+"]}";
+         System.out.println("dChannelDataJSONresult===="+result);
+         out.print(result);
         }catch(Exception e){
             e.printStackTrace();
             JSONObject result =new JSONObject();
@@ -657,5 +675,288 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     }
 
     
+    /**
+     * @Title: getLogRecord
+     * @Description: 审批日志记录
+     * @param @param mapping
+     * @param @param form
+     * @param @param request
+     * @param @param response
+     * @param @return
+     * @param @throws Exception    
+     * @return ActionForward 
+     * @throws
+     */
+    @RequestMapping("/getLogRecord")
+    public ModelAndView getLogRecord(HttpServletRequest request,HttpServletResponse response) throws Exception {
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        String campsegId = request.getParameter("campsegId");
+        MtlCampSeginfo mtlCampSeginfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
+        JSONObject result = new JSONObject();
+        try{
+            //调用接口获取请求返回的XML
+            log.info("=========获取XML开始===========");
+            
+
+            MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+//          
+//          Client client = new Client(new URL(url.getCallwsUrl()));
+//          
+//          Object[] resultObject = client.invoke("getMarketApproveInfo", new Long[] {Long.parseLong(mtlCampSeginfo.getApproveFlowid())});//mtlCampSeginfo.getApproveFlowid()});
+//          org.apache.xerces.dom.DocumentImpl resulta = (org.apache.xerces.dom.DocumentImpl) resultObject[0];
+//          String childxml = resulta.getDocumentElement().getFirstChild().getNodeValue();
+            
+            QName name=new QName("http://impl.biz.web.tz","getMarketApproveInfo");
+            Service service = new Service();
+            Call call = (Call) service.createCall();
+            call.setTargetEndpointAddress(new java.net.URL(url.getCallwsUrl()));
+            call.setOperationName(name);
+//          call.setOperationName("commitApproveInfo");
+            call.setTimeout(50000);//超时时间5秒
+            
+            if(mtlCampSeginfo.getApproveFlowid() != null){
+                //先从本地库去日志信息，如果该日志信息已经存在，则直接使用，否则再次调用
+                McdApproveLog mcdApproveLog = mpmCampSegInfoService.getLogByFlowId(mtlCampSeginfo.getApproveFlowid());
+                String childxml = null;
+               
+                    
+                if(mcdApproveLog != null && null != mcdApproveLog.getApproveResult()){
+                    childxml = mcdApproveLog.getApproveResult();
+                }else{
+                    childxml = call.invoke(new Long[] { Long.parseLong(mtlCampSeginfo.getApproveFlowid()) }).toString();
+                }
+            
+                
+                
+                
+                log.info("=========XML解析开始===========");
+                log.info("*********************日志信息："+childxml);
+                 Document dom=DocumentHelper.parseText(childxml); 
+                 Element root=dom.getRootElement();  
+                 List<Element> elementList=root.elements("APPROVE_INFO"); 
+                 List<Map> mapList = new ArrayList<Map>();
+        
+                 
+                 for(int i=0;i<elementList.size();i++){
+
+                    Element element= (org.dom4j.Element) elementList.get(i);
+                    String node_no = element.element("NODE_NO") != null ? element.element("NODE_NO").getText() : ""; 
+                    String nodname = element.element("NODE_NAME") != null ? element.element("NODE_NAME").getText() : ""; 
+                    String node_name = "";
+                    if("系统管理员审批".equals(nodname)){
+                        node_name = "系统管理员审批";
+                    }else{
+                        node_name = i== 0 ? "草稿" : nodname;
+                    }
+                    String approve_result = element.element("APPROVE_RESULT") != null ? element.element("APPROVE_RESULT").getText() : "";
+                    String approve_view = element.element("APPROVE_VIEW") != null ? element.element("APPROVE_VIEW").getText() : "";
+                    String approvaler_name = element.element("APPROVALER_NAME") != null ? element.element("APPROVALER_NAME").getText() : "";
+                    String approve_date = element.element("APPROVE_DATE") != null ? element.element("APPROVE_DATE").getText() : "";
+                    String if_current_node = element.element("IF_CURRENT_NODE") != null ? element.element("IF_CURRENT_NODE").getText() : "";
+                    Map<String,String> map = new HashMap<String,String>();
+
+
+                    map.put("node_name", node_name);
+                    map.put("node_no", node_no);
+                    map.put("approve_result", approve_result);
+                    map.put("approve_view", approve_view);
+                    map.put("approvaler_name", approvaler_name);
+                    map.put("approve_date", approve_date);
+                    map.put("if_current_node", if_current_node);
+                    mapList.add(map);
+                 }
+                
+
+
+                log.info("=========XML解析结束===========");
+                //转换JSON格式
+                JSONArray jsonArray = JSONArray.fromObject(mapList);
+                JSONObject object = new JSONObject();
+                result.put("status", "200");
+                result.put("data", jsonArray);
+            }else{
+                List<Map> mapList = new ArrayList<Map>();
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("node_name", "草稿");
+                map.put("node_no", "1");
+                map.put("approve_result", mtlCampSeginfo.getCreateUserName() + "创建了策略");
+                map.put("approve_view", "");
+                map.put("approvaler_name",mtlCampSeginfo.getCreateUserName());
+                map.put("approve_date", DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+                map.put("if_current_node", "");
+                mapList.add(map);
+                JSONArray jsonArray = JSONArray.fromObject(mapList);
+                JSONObject object = new JSONObject();
+                result.put("status", "200");
+                result.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
+                result.put("data", jsonArray);
+            }
+
+        }catch(Exception e){
+            log.error(e);
+//          e.getStackTrace();
+//          result.put("status", "201");
+//          result.put("result", "fail");
+            List<Map> mapList = new ArrayList<Map>();
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("node_name", "错误");
+            map.put("node_no", "1");
+            map.put("approve_result", "发生错误，审批系统未返回相关日志");
+            map.put("approve_view", "");
+            map.put("approvaler_name",mtlCampSeginfo.getCreateUserName());
+            map.put("approve_date", DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("if_current_node", "");
+            mapList.add(map);
+            JSONArray jsonArray = JSONArray.fromObject(mapList);
+            JSONObject object = new JSONObject();
+            result.put("status", "200");
+            result.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
+            result.put("data", jsonArray);
+        }
+        out.print(result);
+        out.flush();
+        out.close();
+        return null;
+    }
+    
+    /**
+     * @Title: getLogRecord
+     * @Description: 营销策略查看URL token验证
+     * @param @param mapping
+     * @param @param form
+     * @param @param request
+     * @param @param response
+     * @param @return
+     * @param @throws Exception    
+     * @return ActionForward 
+     * @throws
+     */
+    @RequestMapping("/tokenVerification")
+    public ModelAndView tokenVerification(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String campsegId = request.getParameter("campsegId");
+        String token = request.getParameter("token");
+        boolean verification = false;
+        if(!StringUtil.isEmpty(campsegId) && !StringUtil.isEmpty(token)){
+            String tokenNew = DES.encrypt(campsegId);
+            if(token.equals(tokenNew)){
+                verification = true;
+            }
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        JSONObject result = new JSONObject();
+        result.put("status", "200");
+        JSONObject verificationJSON = new JSONObject();
+        verificationJSON.put("verification", verification);
+        verificationJSON.put("campsegId", campsegId);
+
+        result.put("data", verificationJSON);
+        
+        out.print(result);
+        out.flush();
+        out.close();
+        return null;
+    }
+    
+    @RequestMapping("/getCampChannels")
+    public ModelAndView getCampChannels(HttpServletRequest request,HttpServletResponse response) throws IOException  {
+        String campsegIds = request.getParameter("subCampsegIds");
+        try {
+                List list=mpmCampSegInfoService.getChannelsByCampIds(campsegIds);
+                this.outJson4Ws(response, list, "200", "");
+        } catch (Exception e) {
+            this.outJson4Ws(response, null, "503", "获取策略渠道异常！！！");
+        }
+        return null;
+    }
+    /**
+     * 查询（父）策略某个渠道的从某天到某天的执行情况
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping("/getCampChannelDetail")
+   public ModelAndView getCampChannelDetail(HttpServletRequest request,HttpServletResponse response) throws IOException {
+      
+       String campsegId = request.getParameter("campsegId");
+       String channelId = request.getParameter("channelId");
+       String startDate = request.getParameter("startDate");
+       String endDate = request.getParameter("endDate");
+       DataGridData dg = new DataGridData();
+       try {
+                List list=mpmCampSegInfoService.getCampChannelDetail(campsegId,channelId,startDate,endDate);
+                dg.setDatas(list);
+                if("901".equals(channelId)){
+                    dg.setHeaderTexts(new String[]{"执行时间","计划群发客户量","已发送量/过滤数量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                    dg.setDataFields(new String[]{"DATA_DATE","TARGET_NUMS","EXCUTE_SURPLUS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                }else if("908".equals(channelId)){//外呼
+                    dg.setHeaderTexts(new String[]{"执行时间","计划外呼量","已外呼数量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                    dg.setDataFields(new String[]{"DATA_DATE","TARGET_NUMS","SEND_NUMS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                }else if("910".equals(channelId)){//BOSS运营位
+                    dg.setHeaderTexts(new String[]{"执行时间","当日接触客户量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                    dg.setDataFields(new String[]{"DATA_DATE","SAIL_NUMS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                }else{
+                    dg.setHeaderTexts(new String[]{"执行时间","当日展示政策次数","累计展示政策次数","当日点击政策次数","累计点击政策次数","当日成功办理量","累计成功办理量"});
+                    dg.setDataFields(new String[]{"DATA_DATE","EXPOSURE_NUMS","CUMULAT_EXPOSURE_NUMS","CK_NUMS","CUMULAT_CK_NUMS","SAILSUCC_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                }
+                dg.setDatas(list);
+                this.outJson4Ws(response, dg, "200", "");
+           } catch (Exception e) {
+                this.outJson4Ws(response, null, "503", "获取渠道信息异常！！！");
+          }
+       return null;
+   }
+    
+  /**
+   * 查询某策略某个指定渠道的所有子策略某天的执行情况   
+   * @param mapping
+   * @param form
+   * @param request
+   * @param response
+   * @throws IOException
+   */
+    @RequestMapping("/getCampsChannelSituation") 
+    public ModelAndView getCampsChannelSituation(HttpServletRequest request,HttpServletResponse response) throws IOException {
+          
+           String campsegIds = request.getParameter("subCampsegIds");
+           String channelId = request.getParameter("channelId");
+           String statDate = request.getParameter("statDate");
+           DataGridData dg = new DataGridData();
+           try {
+                    List list=mpmCampSegInfoService.getCampsChannelSituation(campsegIds,channelId,statDate);
+                    dg.setDatas(list);
+                    if("901".equals(channelId)){
+                        dg.setHeaderTexts(new String[]{"政策名称","计划群发客户量","已发送量/过滤数量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                        dg.setDataFields(new String[]{"PLAN_NAME","TARGET_NUMS","EXCUTE_SURPLUS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                    }else if("908".equals(channelId)){//外呼
+                        dg.setHeaderTexts(new String[]{"政策名称","计划外呼量","已外呼数量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                        dg.setDataFields(new String[]{"PLAN_NAME","TARGET_NUMS","SEND_NUMS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                    }else if("910".equals(channelId)){//BOSS运营位
+                        dg.setHeaderTexts(new String[]{"政策名称","当日接触客户量","当日成功办理量","累计接触客户量","累计成功办理量"});
+                        dg.setDataFields(new String[]{"PLAN_NAME","SAIL_NUMS","SAILSUCC_NUMS","CUMULAT_SAIL_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                    }else{
+                        dg.setHeaderTexts(new String[]{"政策名称","当日展示政策次数","累计展示政策次数","当日点击政策次数","累计点击政策次数","当日成功办理量","累计成功办理量"});
+                        dg.setDataFields(new String[]{"PLAN_NAME","EXPOSURE_NUMS","CUMULAT_EXPOSURE_NUMS","CK_NUMS","CUMULAT_CK_NUMS","SAILSUCC_NUMS","CUMULAT_SAILSUCC_NUMS"});
+                    }
+                    dg.setDatas(list);
+                    this.outJson4Ws(response, dg, "200", "");
+               } catch (Exception e) {
+                   log.error("", e);
+                    this.outJson4Ws(response, null, "503", "获取渠道信息异常！！！");
+              }
+           return null;
+       }
+    
+
 
 }

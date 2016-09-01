@@ -7,6 +7,7 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 public interface IMpmCampSegInfoDao {
@@ -147,4 +148,33 @@ public interface IMpmCampSegInfoDao {
      * 获取细分规则信息（时机）
      */
     public List<Map<String, Object>> getrule(String campsegId);
+    /**
+     * 查询本地审批日志
+     * @param approveFlowid
+     * @return
+     */
+    public McdApproveLog getLogByFlowId(String flowId);
+    /**
+     * 根据策略id获得策略的所有渠道
+     * @param campsegId
+     * @return
+     */
+    public List getChannelsByCampIds(String campsegIds);
+    /**
+     * 查询指定策略指定渠道在指定时间段内的营销情况
+     * @param campsegId
+     * @param channelId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
+    /**
+     * 查询某策略某个指定渠道的所有子策略某天的执行情况   
+     * @param campsegId
+     * @param channelId
+     * @param statDate
+     * @return
+     */
+    public Map getCampChannelSituation(String campsegId, String channelId, String statDate);
 }

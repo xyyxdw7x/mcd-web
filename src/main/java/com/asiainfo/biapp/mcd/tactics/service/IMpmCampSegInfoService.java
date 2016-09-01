@@ -8,6 +8,7 @@ import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 
 /*
@@ -190,5 +191,34 @@ public interface IMpmCampSegInfoService {
      * @return
      */
     public List<Map<String, Object>> getrule(String campsegId);
+    /**
+     * 查询本地审批日志
+     * @param approveFlowid
+     * @return
+     */
+    public McdApproveLog getLogByFlowId(String approveFlowid);
+    /**
+     * 根据策略id获得策略的所有渠道
+     * @param campsegId
+     * @return
+     */
+    public List getChannelsByCampIds(String campsegIds);
+    /**
+     * 查询指定策略指定渠道在指定时间段内的营销情况
+     * @param campsegId
+     * @param channelId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
+    /**
+     * 查询某策略某个指定渠道的所有子策略某天的执行情况   
+     * @param campsegIds
+     * @param channelId
+     * @param statDate
+     * @return
+     */
+    public List getCampsChannelSituation(String campsegIds, String channelId, String statDate);
     
 }

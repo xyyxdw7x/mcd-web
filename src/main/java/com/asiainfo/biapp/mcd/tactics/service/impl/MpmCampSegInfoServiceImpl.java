@@ -42,6 +42,7 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
+import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
@@ -897,5 +898,62 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Override
     public List<Map<String, Object>> getrule(String campsegId) {
         return campSegInfoDao.getrule(campsegId);
+    }
+    /**
+     * 查询本地审批日志
+     * @param approveFlowid
+     * @return
+     */
+    @Override
+    public McdApproveLog getLogByFlowId(String flowId) {
+        McdApproveLog mcdApproveLog = null;
+        try {
+            mcdApproveLog = campSegInfoDao.getLogByFlowId(flowId);
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return mcdApproveLog;
+    }
+    /**
+     * 根据策略id获得策略的所有渠道
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List getChannelsByCampIds(String campsegIds) {
+        return campSegInfoDao.getChannelsByCampIds(campsegIds);
+
+    }
+    /**
+     * 查询指定策略指定渠道在指定时间段内的营销情况
+     * @param campsegId
+     * @param channelId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @Override
+    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate) {
+        return campSegInfoDao.getCampChannelDetail(campsegId,channelId,startDate,endDate);
+
+    }
+    /**
+     * 查询某策略某个指定渠道的所有子策略某天的执行情况   
+     * @param campsegIds
+     * @param channelId
+     * @param statDate
+     * @return
+     */
+    @Override
+    public List getCampsChannelSituation(String campsegIds, String channelId, String statDate) {
+        String[] campsegs = campsegIds.split(",");
+        List list = new ArrayList();
+        for(int i=0;i<campsegs.length;i++){
+            Map map =campSegInfoDao.getCampChannelSituation(campsegs[i],channelId,statDate);
+            if(map!=null){
+                list.add(map);
+            }
+        }
+        return list;
     }
 }
