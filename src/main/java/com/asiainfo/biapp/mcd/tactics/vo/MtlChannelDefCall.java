@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
+@SuppressWarnings("serial")
 public class MtlChannelDefCall implements java.io.Serializable {
 
 	// Fields
@@ -22,25 +23,59 @@ public class MtlChannelDefCall implements java.io.Serializable {
 	public void setChannelPrio(Integer channelPrio) {
 		this.channelPrio = channelPrio;
 	}
-	private MtlChannelDefCallId id;
+	@javax.persistence.Column(name="CAMPSEG_ID")
+	private String  campsegId;
+	@javax.persistence.Column(name="CHANNEL_ID")
+	private String  channelId;
+	@javax.persistence.Column(name="TASK_CODE")
 	private String taskCode;//任务编码
+	@javax.persistence.Column(name="TASK_NAME")
 	private String taskName;//任务名称
+	@javax.persistence.Column(name="DEMAND")
 	private String demand;//需求方
+	@javax.persistence.Column(name="TASK_CLASS_ID")
 	private String taskClassId;//任务分类
+	@javax.persistence.Column(name="TASK_LEVEL1_ID")
 	private String tasklevel1Id;//任务类型一级
+	@javax.persistence.Column(name="TASK_LEVEL2_ID")
 	private String taskLevel2Id;//任务类型二级
+	@javax.persistence.Column(name="TASK_LEVEL3_ID")
 	private String taskLevel3Id;//任务类型三级
+	@javax.persistence.Column(name="BUSI_LEVEL1_ID")
 	private String busiLevel1Id;//业务类型一级
+	@javax.persistence.Column(name="BUSI_LEVEL2_ID")
 	private String busiLevel2Id;//业务类型二级	
+	@javax.persistence.Column(name="IN_PLAN_FLAG")
 	private Integer inPlanFlag;//是否计划内
+	@javax.persistence.Column(name="MONTH_PLAN_FLAG")
 	private Integer monthPlanFlag;//关联月度计划
+	@javax.persistence.Column(name="CALL_CYCLE")
 	private Integer callCycle;//外呼周期
+	@javax.persistence.Column(name="CALL_PLAN_NUM")
 	private Integer callPlanNum;//计划外呼量
+	@javax.persistence.Column(name="FINISH_DATE")
 	private String finishDate;//要求完成时间
+	@javax.persistence.Column(name="TASK_COMMENT")
 	private String taskComment;//任务描述
+	@javax.persistence.Column(name="USER_LABLE_INFO")
 	private String 	userLableInfo;//客户标签信息
+	@javax.persistence.Column(name="CALL_QUESTION_URL")
 	private String 	callQuestionUrl;//外呼问卷地址	
+	@javax.persistence.Column(name="CALL_QUESTION_NAME")
 	private String 	callQuestionName;//外呼问卷名称	
+	
+	public String getCampsegId() {
+		return campsegId;
+	}
+	public void setCampsegId(String campsegId) {
+		this.campsegId = campsegId;
+	}
+	public String getChannelId() {
+		return channelId;
+	}
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
 	public String getCallQuestionName() {
 		return callQuestionName;
 	}
@@ -61,12 +96,7 @@ public class MtlChannelDefCall implements java.io.Serializable {
 	
 	
 	
-	public MtlChannelDefCallId getId() {
-		return id;
-	}
-	public void setId(MtlChannelDefCallId id) {
-		this.id = id;
-	}
+
 	public String getTaskCode() {
 		return taskCode;
 	}

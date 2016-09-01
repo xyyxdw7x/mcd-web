@@ -1,27 +1,23 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.io.Serializable;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.sql.SQLException;
-import java.sql.Types;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
-import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
@@ -29,7 +25,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.string.StringUtil;
 /**
  * 策略管理相关dao

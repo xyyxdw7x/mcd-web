@@ -26,6 +26,7 @@ import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoServiceImpl;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
@@ -109,6 +110,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			String isApprove = commonAttr.get("isApprove").toString();
 			// 先保存基本信息 父亲节点
 			MtlCampSeginfo campSeginfoBasic = new MtlCampSeginfo();
+			campSeginfoBasic.setCampsegId(MpmUtil.generateCampsegAndTaskNo());//TODO:wb
 			campSeginfoBasic.setCampsegName(campsegName);
 			campSeginfoBasic.setStartDate(putDateStart);
 			campSeginfoBasic.setEndDate(putDateEnd);

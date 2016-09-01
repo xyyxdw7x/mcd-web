@@ -24,6 +24,7 @@ import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
@@ -32,8 +33,8 @@ import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
-import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
+import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -49,8 +50,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCallId;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefId;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
@@ -145,7 +144,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			for(int j = 0;j<seginfoList.size();j++){
 				MtlCampSeginfo segInfo = seginfoList.get(j);
 				isApprove = segInfo.getIsApprove();
-				boolean isFatherNode = segInfo.isFatherNode();
+				boolean isFatherNode = segInfo.getIsFatherNode();
 				campsegId = segInfo.getCampsegId();
 				Integer contactType = segInfo.getWaveContactType();//关联表
 				Integer contactCount = segInfo.getWaveContactCount();//关联表
@@ -209,23 +208,22 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
 							MtlChannelDef mtlChannelDef = mtlChannelDefList.get(i);
-							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
-							mtlChannelDefId.setCampsegId(campsegId);
-							mtlChannelDefId.setChannelNo(i);
-							mtlChannelDefId.setUsersegId((short) 0);
-							mtlChannelDef.setId(mtlChannelDefId);
+							mtlChannelDef.setCampsegId(campsegId);
+							mtlChannelDef.setChannelNo(i);
+							mtlChannelDef.setUsersegId((short) 0);
 							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
 					mtlChannelDefDao.deleteMtlChannelDefCall(campsegId,channelId);
 					if(segInfo.getMtlChannelDefCall() != null){
-						
 						MtlChannelDefCall mtlChannelDefCall = segInfo.getMtlChannelDefCall();
-						MtlChannelDefCallId mtlChannelDefCallId = new MtlChannelDefCallId();
+						/*MtlChannelDefCallId mtlChannelDefCallId = new MtlChannelDefCallId();
 						mtlChannelDefCallId.setCampsegId(campsegId);
 						mtlChannelDefCallId.setChannelId(channelId);
-						mtlChannelDefCall.setId(mtlChannelDefCallId);
+						mtlChannelDefCall.setId(mtlChannelDefCallId);*/
+						mtlChannelDefCall.setCampsegId(campsegId);
+						mtlChannelDefCall.setChannelId(channelId);
 						mtlChannelDefDao.save(mtlChannelDefCall);
 					}
 					
@@ -292,7 +290,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			for(int j = 0;j<seginfoList.size();j++){
 				MtlCampSeginfo segInfo = seginfoList.get(j);
 				isApprove = segInfo.getIsApprove();
-				boolean isFatherNode = segInfo.isFatherNode();
+				boolean isFatherNode = segInfo.getIsFatherNode();
 				campsegId = segInfo.getCampsegId();
 //				Integer contactType = segInfo.getWaveContactType();//关联表
 //				Integer contactCount = segInfo.getWaveContactCount();//关联表
@@ -330,10 +328,11 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				segInfo.setApproveFlowid(null);
 				segInfo.setSelectTempletId("XXXXXX");
 				if(isFatherNode){
-					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);
+					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);//Duang Duang Duang 保存策略！！！
 					campsegPid = campsegId;
 				}else{
 					segInfo.setCampsegPid(campsegPid);
+					segInfo.setCampsegId(MpmUtil.generateCampsegAndTaskNo());
 					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);//Duang Duang Duang 保存策略！！！
 					log.debug("****************新生成的波次活动ID:{}", campsegId);
 					//2、保存客户群与策略的关系 
@@ -352,23 +351,23 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
 							MtlChannelDef mtlChannelDef = mtlChannelDefList.get(i);
-							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
-							mtlChannelDefId.setCampsegId(campsegId);
-							mtlChannelDefId.setChannelNo(i);
-							mtlChannelDefId.setUsersegId((short) 0);
-							mtlChannelDef.setId(mtlChannelDefId);
+//							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
+//							mtlChannelDefId.setCampsegId(campsegId);
+//							mtlChannelDefId.setChannelNo(i);
+//							mtlChannelDefId.setUsersegId((short) 0);
+//							mtlChannelDef.setId(mtlChannelDefId);
+							mtlChannelDef.setCampsegId(campsegId);
+							mtlChannelDef.setChannelNo(i);
+							mtlChannelDef.setUsersegId((short) 0);
 							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));							
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
 					
 					if(segInfo.getMtlChannelDefCall() != null){
-						
 						MtlChannelDefCall mtlChannelDefCall = segInfo.getMtlChannelDefCall();
-						MtlChannelDefCallId mtlChannelDefCallId = new MtlChannelDefCallId();
-						mtlChannelDefCallId.setCampsegId(campsegId);
-						mtlChannelDefCallId.setChannelId(channelId);
-						mtlChannelDefCall.setId(mtlChannelDefCallId);
+						mtlChannelDefCall.setCampsegId(campsegId);
+						mtlChannelDefCall.setChannelId(channelId);
 						mtlChannelDefDao.save(mtlChannelDefCall);
 					}
 	
@@ -464,6 +463,11 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			mtlCampsegCustGroup.setCustBaseDay(segInfo.getCustBaseDay());
 			if (StringUtils.isEmpty(segInfo.getCustBaseDay())) {
 				mtlCampsegCustGroup.setCustBaseMonth(segInfo.getCustBaseMonth());
+			}
+			try {
+				mtlCampsegCustGroup.setCampsegCustgroupId(DataBaseAdapter.generaterPrimaryKey());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			mtlCampsegCustgroupDao.save(mtlCampsegCustGroup);
 		/*}else{
