@@ -1804,7 +1804,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								var detailButton = $(this);
 								//阻止点击冒泡事件
 								event.stopPropagation();
-								debugger
 								var customGroupId = detailButton.parent().parent().parent().attr('customGroupId');
 								var modelView2 = new maduleTableModel({id : "searchCustomDetail"})
 								modelView2.fetch({
@@ -2672,7 +2671,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 
 				},
 				addChannelToCart:function(){
-					debugger
 					if($('.J_addChannelBtn').hasClass('calculate-customer-submit-disable')){
 						return;
 					}
@@ -5271,13 +5269,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		getEditCampsegData:function(editSegId){
 			$.ajax({
 				type:"post",
-				url:_ctx + '/mpm/imcdCampSegWaveMaintainAction.aido?cmd=getCampsegInfo',
+				url:_ctx + '/tactics/tacticsManage/getCampsegInfo',
 				data:{"campsegPid":editSegId},
 				dataType:"json",
 				async:false,
 				success:function(campsegData){
 					module.exports.editCampsegData=campsegData;
-
 				}
 			});
 		},

@@ -49,7 +49,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;

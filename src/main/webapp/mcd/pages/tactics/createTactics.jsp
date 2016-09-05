@@ -757,7 +757,7 @@
 
 	seajs.use(["../../assets/scripts/nav/navManage","../../assets/scripts/tactics/createTactics"],function(nav,ct){
 		 nav.init();
- 		//ct.ifEditFun(); 
+ 		ct.ifEditFun(); 
 		ct.init();
 	});
 	seajs.use("../../assets/scripts/tactics/main",function(main){
