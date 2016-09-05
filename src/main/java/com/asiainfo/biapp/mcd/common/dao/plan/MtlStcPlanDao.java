@@ -70,4 +70,10 @@ public interface MtlStcPlanDao {
      * @return
      */
     DimPlanType getPlanTypeById(String planTypeId);
+	/**
+	 * 根据plan_id查询推荐业务
+	 * @param planID
+	 * @return
+	 */
+	public MtlStcPlan getMtlStcPlanByPlanID(String planID);
 }

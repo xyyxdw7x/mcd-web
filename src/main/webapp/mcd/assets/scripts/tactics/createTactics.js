@@ -5260,25 +5260,10 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			//修改状态下  禁用单产品和多产品选择功能
 			$(".J_redio_tactics").attr("disabled",true);
 			$("head title").html(window.name);
-			/**
-			 回显。多规则可复用此段
-			 **/
-				//政策(放在政策表格ajax的callback里)
-				//module.exports.backPlan(campsegData);
-
-				//客户
-				//xx
-			module.exports.backCustomers(module.exports.editCampsegData);
-
-			//渠道
-			//放在getChannelList()的success里
-
-
 			//保存之弹出层
 			module.exports.backSaveDialog();
-
-
 		},//ifEdit end
+		
 		backSaveDialog:function(){
 
 		},

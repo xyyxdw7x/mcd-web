@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupAttrRelDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 @Service("custGroupAttrRelService")
 public class CustGroupAttrRelServiceImpl implements CustGroupAttrRelService{
 	@Resource(name="custGroupAttrRelDao")
@@ -21,5 +22,14 @@ public class CustGroupAttrRelServiceImpl implements CustGroupAttrRelService{
 		} catch (Exception e) {
 		}
 		return mtlGroupAttrRelList;
+	}
+	
+	public List<RuleTimeTermLable> getFunctionNameById(String functionId){
+		List<RuleTimeTermLable> list = null;
+		try {
+			list = this.custGroupAttrRelDao.getFunctionNameById(functionId);
+		} catch (Exception e) {
+		}
+		return list;
 	}
 }

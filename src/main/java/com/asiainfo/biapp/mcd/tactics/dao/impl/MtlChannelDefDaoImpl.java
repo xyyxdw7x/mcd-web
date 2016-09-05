@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
+import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
@@ -153,5 +155,42 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         }
         return list;
     }
+    
+	public List findMtlChannelDef(String campsegId) throws Exception {/*
+		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
+		final String tmpSql = sql;
+		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session s) throws HibernateException, SQLException {
+				Query query = s.createQuery(tmpSql);
+				return query.list();
+			}
+		});
+	*/
+		String sql = "select * from MTL_CHANNEL_DEF mcd where mcd.id.campseg_id='" + campsegId + "'";
+		List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
+		return mtlChannelDefs;
+	}
+	
+	/**
+	 * 根据策略ID，渠道ID获取相关信息（外呼渠道）
+	 * @param campsegId
+	 * @param channelDefCall
+	 * @return
+	 */
+	@Override
+	public Map searchMtlChnCallPlanMonthTask(String campsegId,String channelDefCall) {
+		String sql = "select t.campseg_id as \"campsegId\",t.channel_id as \"channelId\",t.task_code as \"taskCode\",t.task_name as \"taskName\",t.demand as \"demand\",t.task_class_id as \"taskClassId\",t.task_level1_id as \"tasklevel1Id\","+
+					"t.task_level2_id as \"taskLevel2Id\",t.task_level3_id as \"taskLevel3Id\",t.busi_level1_id as \"busiLevel1Id\",t.busi_level2_id as \"busiLevel2Id\",t.in_plan_flag as \"inPlanFlag\",t.month_plan_flag as \"monthPlanFlag\","+
+					"t.call_cycle as \"callCycle\",t.call_plan_num as \"callPlanNum\",t.finish_date as \"finishDate\",t.task_comment as \"taskComment\",t.user_lable_info as \"userLableInfo\",t.call_question_url as \"callQuestionUrl\",t.call_no as \"callNo\","+
+					"t.avoid_filter_flag as \"avoidFilterFlag\",t.call_test_flag as \"callTestFlag\",t.fre_filter_flag as \"freFilterFlag\",t.call_form as \"callForm\",t.call_city_type as \"callCityType\",t.channel_prio as \"channelPrio\","+
+					"t.approve_result as \"approveResult\",t.approve_result_desc as \"approveResultDesc\"" +
+					" from mtl_channel_def_call t where campseg_id = ? and channel_id = ?";
+		List list = this.getJdbcTemplate().queryForList(sql,new String[]{campsegId,channelDefCall});
+		Map map = null;
+		if(list != null && list.size() > 0){
+			map = (Map)list.get(0);
+		}
+		return map;
+	}
 	
 }

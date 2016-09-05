@@ -161,10 +161,18 @@ public class MtlCampSeginfo {
     private String initCustListTab;//策略初始清单表
     @Column(name="APPROVE_REMIND_TIME")
     private Date approveRemindTime;
-    @Column(name="EVENT_SOURCE")
+    @Transient
     private String eventSourceId; // 外部事件源
+    @Transient
+    private String planName;
     
-    public boolean getIsFatherNode() {
+    public String getPlanName() {
+		return planName;
+	}
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+	public boolean getIsFatherNode() {
  		return isFatherNode;
  	}
  	public void setFatherNode(boolean isFatherNode) {

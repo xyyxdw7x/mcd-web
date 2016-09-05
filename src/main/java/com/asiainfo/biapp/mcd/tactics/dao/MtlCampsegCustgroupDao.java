@@ -1,5 +1,8 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
+import java.util.List;
+
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 
 public interface MtlCampsegCustgroupDao {
@@ -15,4 +18,10 @@ public interface MtlCampsegCustgroupDao {
 	 * @param campsegId
 	 */
 	public abstract void deleteByCampsegId(String campsegId);
+	/**
+	 * 
+	 * @param campsegId  根据campsegId查询客户群与策略的关系
+	 * @return
+	 */
+	public abstract List<MtlGroupInfo> getChoiceCustom(String campsegId);
 }

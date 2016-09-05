@@ -17,5 +17,22 @@ public interface IMtlChannelDefService {
      * @return
      */
     List<Map<String, Object>> getDeliveryChannelCall(String campsegId);
+    
+	/**
+	 * 取活动波次下营销渠道设置信息
+	 * @param campsegId
+	 * @param usersegId
+	 * @return
+	 * @throws Exception
+	 */
+	public List findMtlChannelDef(String campsegId) throws Exception;
+	
+	/**
+	 * 根据策略ID，渠道ID获取相关信息（外呼渠道）
+	 * @param campsegId
+	 * @param channelDefCall
+	 * @return
+	 */
+	Map getMtlChannelDefCall(String campsegId,String channelDefCall);
 
 }

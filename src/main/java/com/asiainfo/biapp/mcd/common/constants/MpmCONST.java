@@ -94,6 +94,8 @@ public class MpmCONST {
     public static final String CHANNEL_TYPE_SMS = "901";
     //短信渠道
     public static final int CHANNEL_TYPE_SMS_INT = 901;
+    //外呼
+  	public static final String CHANNEL_TYPE_OUT_CALL = "913";
     
     public static final String MCD_PROPERTY_NAME = "ASIAINFO_PROPERTIES";
 }

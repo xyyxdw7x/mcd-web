@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 @Repository("custGroupAttrRelDao")
 public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAttrRelDao{
 	@Override
@@ -34,6 +35,22 @@ public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAt
 			logger.error("",e);
 		}
 		return mtlGroupAttrRelList;
+	}
+	
+	@Override
+	public List<RuleTimeTermLable> getFunctionNameById(String functionId){
+		List<Map<String, Object>> list = null;
+		List<RuleTimeTermLable> resultList = new ArrayList<RuleTimeTermLable>();
+		StringBuffer sbuffer = new StringBuffer();
+		sbuffer.append("select * from dim_function_map_zj where function_id=? ");
+		list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[]{functionId});
+		for (Map map : list) {
+			RuleTimeTermLable temp = new RuleTimeTermLable();
+			temp.setFunctionId((String) map.get("function_id"));
+			temp.setFunctionNameDesc((String) map.get("function_name"));
+			resultList.add(temp);
+		}
+		return resultList;
 	}
 
 }

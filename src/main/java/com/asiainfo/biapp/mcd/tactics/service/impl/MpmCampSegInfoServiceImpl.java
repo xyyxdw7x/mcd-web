@@ -2,7 +2,9 @@ package com.asiainfo.biapp.mcd.tactics.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +52,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
@@ -961,4 +964,26 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }
         return list;
     }
+    
+    public List<MtlStcPlanChannel> getStcPlanChannel(String planId){
+		List<MtlStcPlanChannel> mtlStcPlanChannels = stcPlanDao.getChannelIds(planId);
+		List<MtlStcPlanChannel> result = new ArrayList<MtlStcPlanChannel>();
+		String channelIds = "";
+		String planChannelId = "";
+		Map<String, MtlStcPlanChannel> map = new HashMap<String, MtlStcPlanChannel>();
+		
+		for(int j = 0;j<mtlStcPlanChannels.size();j++){
+			MtlStcPlanChannel mtlStcPlanChannel = mtlStcPlanChannels.get(j);
+			map.put(mtlStcPlanChannel.getId(), mtlStcPlanChannel);
+		}
+		
+		Set<String> keySet = map.keySet();  
+        Iterator<String> it = keySet.iterator();  
+        while (it.hasNext())  
+        {  
+        	String i = it.next();  
+            result.add(map.get(i));
+        }  
+		return result;
+	}
 }

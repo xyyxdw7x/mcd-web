@@ -1,10 +1,15 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 
@@ -85,4 +90,38 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 			throw re;
 		}
 	*/}
+	
+	@Override
+	public List<MtlGroupInfo> getChoiceCustom(String campsegId) {
+		List<Map<String,Object>> list = null;
+		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("select MTL_CAMPSEG_CUSTGROUP.*,MTL_GROUP_INFO.Custom_Group_Name,MTL_GROUP_INFO.Custom_Num,MTL_GROUP_INFO.Create_User_Id,MTL_GROUP_INFO.Custom_Status_Id,MTL_GROUP_INFO.Update_Cycle from MTL_CAMPSEG_CUSTGROUP ")
+				  .append(" left join MTL_GROUP_INFO on MTL_CAMPSEG_CUSTGROUP.Custgroup_Id = MTL_GROUP_INFO.Custom_Group_Id")
+				  .append(" where CUSTGROUP_TYPE='CG' AND MTL_CAMPSEG_CUSTGROUP.CAMPSEG_id = ?");
+			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
+			
+			for (Map map : list) {
+				MtlGroupInfo mtlGroupInfo = new MtlGroupInfo();
+				mtlGroupInfo.setCampsegCustGroupId((String) map.get("CAMPSEG_CUSTGROUP_ID"));
+				mtlGroupInfo.setCustomGroupId((String) map.get("CUSTGROUP_ID"));
+				mtlGroupInfo.setCreateUserId((String) map.get("CREATE_USER_ID"));
+				mtlGroupInfo.setCustomGroupName((String) map.get("Custom_Group_Name"));
+				if(null != map.get("CUSTOM_NUM")){
+					mtlGroupInfo.setCustomNum(Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))));
+				}
+				if(null != map.get("CUSTOM_STATUS_ID")){
+					mtlGroupInfo.setCustomStatusId(Integer.parseInt(String.valueOf(map.get("CUSTOM_STATUS_ID"))));
+				}
+				if(null != map.get("UPDATE_CYCLE")){
+					mtlGroupInfo.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))));
+				}
+				result.add(mtlGroupInfo);
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return result;
+	}
 }

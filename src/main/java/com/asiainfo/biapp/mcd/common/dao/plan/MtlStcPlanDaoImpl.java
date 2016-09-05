@@ -414,6 +414,15 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
         } else {
             return null;
         }
-
     }
+    
+	public MtlStcPlan getMtlStcPlanByPlanID(String planID){
+		final String sql="select * from mtl_stc_plan where plan_id=?";
+		List<MtlStcPlan> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, new VoPropertyRowMapper(MtlStcPlan.class));
+		if(list!=null&&list.size()>0){
+			return (MtlStcPlan) list.get(0);
+		}else{
+			return null;
+		}
+	}
 }

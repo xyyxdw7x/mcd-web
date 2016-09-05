@@ -1,5 +1,7 @@
 package com.asiainfo.biapp.mcd.common.service.plan;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 
 /**
  * 渠道相关Service
@@ -30,4 +33,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
     public DimPlanType getPlanTypeById(String planTypeId) {
         return mtlStcPlanDao.getPlanTypeById(planTypeId);
     }
+    
+	public MtlStcPlan getMtlStcPlanByPlanID(String planID){
+		return mtlStcPlanDao. getMtlStcPlanByPlanID(planID);
+	}
 }

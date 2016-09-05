@@ -10,6 +10,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 
 /*
  * Created on 11:31:19 AM
@@ -221,4 +222,12 @@ public interface IMpmCampSegInfoService {
      */
     public List getCampsChannelSituation(String campsegIds, String channelId, String statDate);
     
+    /**
+	 * 根据产品id查询适配渠道
+	 * @param planId
+	 * @return
+	 */
+	public List<MtlStcPlanChannel> getStcPlanChannel(String planId);
+    
+	
 }
