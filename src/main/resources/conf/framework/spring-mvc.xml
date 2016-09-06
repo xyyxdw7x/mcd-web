@@ -14,9 +14,9 @@
     http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop.xsd 
 	">
+	
 	<!-- 默认的注解映射的支持  默认的order为0--> 
     <mvc:annotation-driven/>
-     
     
     <mvc:default-servlet-handler/>
     

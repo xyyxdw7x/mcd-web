@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.test.service.IBookService;
 import com.asiainfo.biapp.mcd.test.vo.Book;
@@ -66,7 +67,14 @@ public class HttlController extends BaseMultiActionController {
 		String id=request.getParameter("id");
 		Book book=bookService.getBook(id);
 		return book;
+	}
+	
+	public User getBook3(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		User book=this.getUserPrivilege().queryUserById("admin");
+		return book;
 	} 
+	
 	
 	@RequestMapping("/updateBook")
 	@ResponseBody
@@ -76,6 +84,7 @@ public class HttlController extends BaseMultiActionController {
 		Book book=bookService.getBook(id);
 		book.setTitle("修改的");
 		bookService.updateBook(book);
+		
 		return book;
 	} 
 	
