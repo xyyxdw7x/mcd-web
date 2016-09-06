@@ -13,6 +13,13 @@ import com.asiainfo.biapp.framework.privilege.vo.User;
 public interface IUserPrivilege {
 
 	/**
+	 * 根据用户ID查询用户信息 查询不到返回null
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public User queryUserById(String userId) throws Exception;
+	/**
 	 * 验证一个用户  如果用户id和密码正确返回用户信息 如果不正确返回null
 	 * @param userId
 	 * @param userPwd

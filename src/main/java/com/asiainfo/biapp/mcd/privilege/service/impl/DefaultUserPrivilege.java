@@ -25,6 +25,13 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 	 
 
 	@Override
+	public User queryUserById(String userId) throws Exception {
+		logger.info("userId="+userId);
+		User user=userPrivilegeDao.queryUserById(userId);
+		return user;
+	}
+	
+	@Override
 	public User validationUserPwd(String userId, String userPwd) throws Exception {
 		logger.info("userId="+userId+" userPwd="+userPwd);
 		String md5Pwd=MD5Util.encode(userPwd);

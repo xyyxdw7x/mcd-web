@@ -13,6 +13,14 @@ import com.asiainfo.biapp.framework.privilege.vo.User;
 public interface IUserPrivilegeDao {
 
 	/**
+	 * 根据用户ID查询用户信息 查询不到返回null
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
+	public User queryUserById(String userId) throws Exception;
+	
+	/**
 	 * 根据用户ID和密码查询用户 查询不到返回null
 	 * @param userId
 	 * @param userPwd
@@ -20,6 +28,7 @@ public interface IUserPrivilegeDao {
 	 * @throws Exception
 	 */
 	public User queryUser(String userId, String userPwd) throws Exception;
+	
 
 	/**
 	 * 查询一个用户的所有菜单信息

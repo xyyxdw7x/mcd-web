@@ -23,12 +23,27 @@ public class UserPrivilegeDaoImpl extends JdbcDaoBase implements IUserPrivilegeD
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
+
+	@Override
+	public User queryUserById(String userId) throws Exception {
+		logger.info("userId="+userId);
+		String sql="select t.USERID,t.CITYID,t.USERNAME,t.PWD,t.STATUS,t.MOBILEPHONE,t.DEPARTMENTID from USER_USER t where t.USERID=? and status>=0 ";
+		int[] argTypes=new int[]{Types.VARCHAR};
+		List<User> users=this.getJdbcTemplate().query(sql, new Object[]{userId}, argTypes, new VoPropertyRowMapper<User>(User.class));
+		User user=null;
+		if(users.size()==0){
+			return user;
+		}else{
+			user=users.get(0);
+		}
+		return user;
+	}
+	
 	@Override
 	public User queryUser(String userId, String userPwd) throws Exception {
 		logger.info("userId="+userId+" userPwd="+userPwd);
 		String sql="select t.USERID,t.CITYID,t.USERNAME,t.PWD,t.STATUS,t.MOBILEPHONE,t.DEPARTMENTID from USER_USER t where t.USERID=? and t.PWD=? and status>=0 ";
 		int[] argTypes=new int[]{Types.VARCHAR,Types.VARCHAR};
-		List ss=this.getJdbcTemplate().queryForList(sql, new Object[]{userId,userPwd}, argTypes);
 		List<User> users=this.getJdbcTemplate().query(sql, new Object[]{userId,userPwd}, argTypes, new VoPropertyRowMapper<User>(User.class));
 		User user=null;
 		if(users.size()==0){
