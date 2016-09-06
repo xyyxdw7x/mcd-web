@@ -21,6 +21,7 @@ import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
@@ -64,6 +65,7 @@ public class CampSegSearchController extends BaseMultiActionController {
     public ModelAndView searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
 //                initActionAttributes(request);
 
+                User user = this.getUser(request, response);
                 // this.userId 当前登录人ID
                 String keywords = request.getParameter("keywords") != null ? request
                         .getParameter("keywords") : null;
@@ -96,7 +98,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 
 
                 // 不是省公司人员，则只可以产看本地市和省公司，省公司的则可查看全部
-                String cityId = "999";//mpmUserPrivilegeService.getUserActualCity(this.user.getCityid()).getCityId();
+                String cityId = user.getCityId();
                 if (!"999".equals(cityId)) {
                     segInfo.setAreaId(cityId);
                 }
