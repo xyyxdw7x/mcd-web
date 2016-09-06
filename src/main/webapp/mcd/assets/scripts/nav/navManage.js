@@ -51,7 +51,7 @@ define(["backbone"],function(require, exports,module) {
 											var iMenuItem = data[key].subMenuList[j];
 											var url ="";
 											if($.trim(iMenuItem.url).length != 0){
-												url = _ctx+iMenuItem.url;//+"?navId="+iMenuItem.parentId +"& subNavId="+iMenuItem.menuItemId;
+												url = _ctx+iMenuItem.url;
 											}
 											var subParam = window.location.search;//1002002
 											subParam = subParam ? subParam.split("&")[1] : "";
@@ -73,7 +73,7 @@ define(["backbone"],function(require, exports,module) {
 										urlParam = urlParam ? urlParam.split("=")[1] : ""; 
 										urlParam = urlParam ? urlParam = urlParam.substring(urlParam.lenth-4,urlParam.lenth) : '';
 										var $li = $('<li menuItemName="'+parentData.name+'" menuItemId="'+parentData.id+'" menuUrl="'+parentData.url+'">'+parentData.name+'<span class="icon_arrDown"></span><ul class="J_children hidden">'+childLi+'</ul></li>');
-										if(urlParam == 7142){
+										if(urlParam == 7141){
 											urlParam=1002;
 										}
 										if(urlParam == parentData.id){
