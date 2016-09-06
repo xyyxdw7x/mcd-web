@@ -1448,7 +1448,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						List<MtlChannelDef> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(campsegId); 
 						//所有适配的渠道
 						List<MtlStcPlanChannel> AllChannel = mpmCampSegInfoService.getStcPlanChannel(mtlCampSeginfo.getPlanId());
-						Set<String> setTemp = new HashSet<String>();
 						
 						for(int j = 0;j<AllChannel.size();j++){
 							MtlStcPlanChannel mtlStcPlanChannel = AllChannel.get(j);
