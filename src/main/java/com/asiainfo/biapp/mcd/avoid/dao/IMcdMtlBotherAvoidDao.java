@@ -3,7 +3,8 @@ package com.asiainfo.biapp.mcd.avoid.dao;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
-import com.asiainfo.biapp.mcd.common.util.Pager;;
+import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;;
 
 /**
  * 
@@ -28,4 +29,12 @@ public interface IMcdMtlBotherAvoidDao {
 	public void updateDelBotherAvoidUserInMem(MtlBotherAvoid mtl) ;
 	
 	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
+	
+	/**
+	 * 条件查询
+	 * @param campsegTypeId
+	 * @param channelId
+	 * @return
+	 */
+	public MtlBotherContactConfig getBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType);
 }

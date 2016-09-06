@@ -12,10 +12,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
+import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -33,6 +36,9 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	
 	@Resource(name = "mpmUserPrivilegeService")
 	private IMpmUserPrivilegeService privilegeService;
+	
+    @Resource(name="botherAvoidService")
+    private IMcdMtlBotherAvoidService botherAvoidService;
 	
 	public void setCustGroupInfoDao(CustGroupInfoDao custGroupInfoDao) {
 		this.custGroupInfoDao = custGroupInfoDao;
@@ -283,4 +289,63 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
     public int getOriCustGroupNum(String custom_group_id) {
         return custGroupInfoDao.getOriCustGroupNum(custom_group_id);
     }
+	@Override
+	public int getCustInfoCount(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo) {
+		return custGroupInfoDao.getCustInfoCountInMem(customgroupid,bussinessLableSql,ARPUSql,orderProductNo,excludeProductNo);
+	}
+	
+	/**
+	 * 
+	 * @param bussinessLableSql 业务标签拼装的SQL 过滤黑名单
+	 * @param basicEventSql  基础标签拼装的SQL
+	 * @param channelId   渠道ID
+	 * @param campsegTypeId  策略类型ID 
+	 * @return
+	 */
+	public List getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
+		return custGroupInfoDao.getAfterFilterCustGroupListInMem(bussinessLableSql, basicEventSql, channelId, campsegTypeId,customgroupid,orderProductNo,excludeProductNo);
+	}
+	
+	@Override
+	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+			String customgroupid, String orderProductNo, String excludeProductNo,String cityId,String campsegId,int avoidBotherFlagT,int flag) {
+		
+		int campsegCityType = 1;  //地市类型 默认地市
+		if(!cityId.isEmpty() && "999".equals(cityId)){
+			campsegCityType = 0; //全省
+		}
+		
+		MtlBotherContactConfig mtlBotherContactConfig = this.getMtlBotherContactConfig(String.valueOf(campsegTypeId), channelId,campsegCityType);
+		int avoidBotherFlag = 0;
+		if(flag == 0){
+			avoidBotherFlag = avoidBotherFlagT;
+		}else{
+			avoidBotherFlag = mtlBotherContactConfig.getAvoidBotherFlag();  //是否需要免打扰
+		}
+		int contactControlFlag = mtlBotherContactConfig.getContactControlFlag();   //是否需要接触控制
+		int paramDays = mtlBotherContactConfig.getParamDays();  //间隔天数
+		int paramNum = mtlBotherContactConfig.getParamNum();    //在间隔天数内发送次数
+		
+		List listResult = null;
+		if(avoidBotherFlag !=0 || contactControlFlag != 0){
+			//根据客户群ID获取客户群信息
+			MtlGroupInfo mtlGroupInfo = custGroupInfoDao.getMtlGroupInfo(customgroupid);
+			int updateCycle = 0;
+			if(null != mtlGroupInfo){
+				updateCycle = mtlGroupInfo.getUpdateCycle();  //客户群生成周期:1,一次性;2,月周期;3,日周期
+			}
+			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){//短信渠道
+				listResult = custGroupInfoDao.getAfterBotherAvoid1InMem(bussinessLableSql, basicEventSql, channelId, campsegTypeId, customgroupid, orderProductNo, excludeProductNo,avoidBotherFlag,contactControlFlag,cityId,String.valueOf(paramDays),String.valueOf(paramNum),updateCycle,campsegId);
+			}else{
+				listResult = custGroupInfoDao.getAfterBotherAvoid1(bussinessLableSql, basicEventSql, channelId, campsegTypeId, customgroupid, orderProductNo, excludeProductNo,avoidBotherFlag,contactControlFlag,cityId,String.valueOf(paramDays),String.valueOf(paramNum),updateCycle,campsegId);
+			}
+		}
+		
+		return listResult;
+	}
+	
+	@Override
+	public MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType){
+		return this.botherAvoidService.getMtlBotherContactConfig(campsegTypeId, channelId,campsegCityType);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 
 /**
  * 
@@ -27,5 +28,7 @@ public interface IMcdMtlBotherAvoidService {
 	public void delBotherAvoidUser(MtlBotherAvoid mtl);
 	
 	public void batchDelBotherAvoidUser(List<MtlBotherAvoid> list);
+	
+	public MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType);
 	
 }

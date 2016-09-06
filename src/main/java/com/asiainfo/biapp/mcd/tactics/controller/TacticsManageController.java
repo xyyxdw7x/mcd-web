@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -22,11 +23,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
+import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoServiceImpl;
+import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
@@ -37,6 +39,7 @@ import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
@@ -47,6 +50,7 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
@@ -73,13 +77,15 @@ public class TacticsManageController extends BaseMultiActionController {
     @Resource(name="channelBossSmsTemplateService")
     private ChannelBossSmsTemplateService channelBossSmsTemplateService;//Boss运营位模板
     @Resource(name="custGroupInfoService")
-    private CustGroupInfoServiceImpl custGroupInfoService;//客户群信息
+    private CustGroupInfoService custGroupInfoService;//客户群信息
     @Resource(name="mtlStcPlanService")
     private IMtlStcPlanService mtlStcPlanService;//产品信息
     @Resource(name="mtlCampsegCustgroupService")
     private MtlCampsegCustgroupService mtlCampsegCustgroupService;//客户群与渠道关系
     @Resource(name="mtlChannelDefService")
     private IMtlChannelDefService mtlChannelDefService;//策略和渠道关系表
+    @Resource(name="botherAvoidService")
+    private IMcdMtlBotherAvoidService botherAvoidService;
     
     private static Logger log = LogManager.getLogger();
     
@@ -1640,4 +1646,160 @@ public class TacticsManageController extends BaseMultiActionController {
 		}
 	}
 
+	/**
+	 * describute:选择营销人群，点击探索按钮，计算客户群数量
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/executeCustomGroup")
+	public void executeCustomGroup(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		JSONObject dataJson = new JSONObject();
+		try {
+			//TODO:initActionAttributes(request);
+			response.setContentType("application/json; charset=UTF-8");
+			response.setHeader("progma", "no-cache");
+			response.setHeader("Access-Control-Allow-Origin", "*");
+			response.setHeader("Cache-Control", "no-cache");
+			/*McdTempletForm bussinessLableTemplate = new McdTempletForm();
+			McdTempletForm basicEventTemplate = new McdTempletForm();*/
+/*//			业务标签
+			String labelArr = request.getParameter("labelArr");
+			bussinessLableTemplate = this.createTemplateForm(labelArr,"0",false);
+//			获取ARPU
+			String ARPU = request.getParameter("basicProp");
+			basicEventTemplate = createTemplateForm(ARPU,"1",false);*/
+			
+			//获取客户群ID
+			String customgroupid = null;
+			if(StringUtil.isNotEmpty(request.getParameter("customer"))){
+				customgroupid = new org.json.JSONObject(request.getParameter("customer")).getString("id");
+			}
+//			产品订购
+/*			String productArr = request.getParameter("productArr");
+			String productAttr[] = this.createProductAttr(productArr);
+			String orderProductNo = productAttr[0];    //订购产品
+			String excludeProductNo = productAttr[1];  //剔除产品
+*/			//计算客户群数量
+			int custGroupNum = this.excuteCustGroupCount(customgroupid, null, null,request.getLocale(),null,null);
+			dataJson.put("status", "200");
+
+			
+			//计算渠道筛选过后的客户群
+			String baseAttrStr = request.getParameter("baseAttr");
+			org.json.JSONObject baseAttr = new org.json.JSONObject(baseAttrStr);
+			String channelIds = baseAttr.getString("channelid");
+			String campsegTypeId =  baseAttr.getString("campsegtypeid");
+			if(StringUtil.isEmpty(campsegTypeId) || "undefined".equals(campsegTypeId)){
+				campsegTypeId = "1";
+			}
+			String channelId[] = channelIds.split(",");
+			if(channelId.length>0 && StringUtil.isNotEmpty(channelIds)){
+				/*String bussinessLableSql = this.getSql(bussinessLableTemplate, request.getLocale());
+				String basicEventSql = this.getSql(basicEventTemplate, request.getLocale());*/
+				//TODO String cityId = user.getCityid();
+				String cityId ="999";
+				int campsegCityType = 1;  //地市类型 默认地市
+				if(!cityId.isEmpty() && "999".equals(cityId)){
+					campsegCityType = 0; //全省
+				}
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("[");
+				for(int i = 0;i<channelId.length;i++){
+					//免打扰、频次控制
+					MtlBotherContactConfig config = botherAvoidService.getMtlBotherContactConfig(campsegTypeId, channelId[i],campsegCityType);
+					int mdrNum = 0;
+					int pcNum = 0;
+					int pcMdrNum = 0;
+					//只有短信(901)和boss运营位(910)时才做频次免打扰控制
+					if(null != config && ("901".equals(channelId[i]) || "910".equals(channelId[i]))){
+						int avoidBotherFlag = config.getAvoidBotherFlag();  //是否需要免打扰
+						int contactControlFlag = config.getContactControlFlag();   //是否需要接触控制
+						List blackList = null;
+						List avoidCustList = null;
+						
+						if(avoidBotherFlag == 1 && contactControlFlag == 1){ //同时免打扰和频次控制
+							//免打扰
+							blackList = custGroupInfoService.getAfterFilterCustGroupList(null, null, channelId[i], Integer.parseInt(campsegTypeId), customgroupid,null,null);
+							//TODO:
+							avoidCustList = custGroupInfoService.getAfterBotherAvoid(null, null, channelId[i], Integer.parseInt(campsegTypeId), customgroupid, null, null,"999",null,avoidBotherFlag,0);
+							if(CollectionUtils.isNotEmpty(avoidCustList)){
+								Map mapT = (Map)avoidCustList.get(0);
+								pcNum = Integer.parseInt(String.valueOf(mapT.get("pcNum")));
+							}
+							if(CollectionUtils.isNotEmpty(blackList)){
+								Map mapT = (Map)blackList.get(0);
+								mdrNum = Integer.parseInt(String.valueOf(mapT.get("blackFilterNum")));
+							}
+							pcMdrNum = pcNum+mdrNum;
+						}else if(avoidBotherFlag == 0 && contactControlFlag == 1){ //不进行免打扰，只进行频次
+							//当只进行频次的时候，avoidCustList既是总数又是免打扰的数量
+							//TODO:avoidCustList = custGroupInfoService.getAfterBotherAvoid(null, null, channelId[i], Integer.parseInt(campsegTypeId), customgroupid, null, null,user,null,avoidBotherFlag,0);
+							avoidCustList = custGroupInfoService.getAfterBotherAvoid(null, null, channelId[i], Integer.parseInt(campsegTypeId), customgroupid, null, null,"999",null,avoidBotherFlag,0);
+							if(CollectionUtils.isNotEmpty(avoidCustList)){
+								Map mapT = (Map)avoidCustList.get(0);
+								pcNum = Integer.parseInt(String.valueOf(mapT.get("pcNum")));
+							}
+							pcMdrNum = pcNum;
+						}else if(avoidBotherFlag == 1 && contactControlFlag == 0){ //进行免打扰，不进行频次
+							blackList = custGroupInfoService.getAfterFilterCustGroupList(null, null, channelId[i], Integer.parseInt(campsegTypeId), customgroupid,null,null);
+							if(CollectionUtils.isNotEmpty(blackList)){
+								Map mapT = (Map)blackList.get(0);
+								pcMdrNum = Integer.parseInt(String.valueOf(mapT.get("blackFilterNum")));
+								mdrNum = pcMdrNum;
+							}
+						}
+					}
+					if(i == channelId.length-1){  //最后一个
+						if(custGroupNum-pcMdrNum<0){
+							buffer.append("{channelId:"+channelId[i]+",value:0}");
+						}else{
+							buffer.append("{channelId:"+channelId[i]+",value:"+(custGroupNum-pcMdrNum)+"}");
+						}
+					}else{
+						if(custGroupNum-pcMdrNum<0){
+							buffer.append("{channelId:"+channelId[i]+",value:0},");
+						}else{
+							buffer.append("{channelId:"+channelId[i]+",value:"+(custGroupNum-pcMdrNum)+"},");
+						}
+					}
+				}
+				buffer.append("]");
+				dataJson.put("channelIdCustNum", buffer.toString());
+			}
+			
+			dataJson.put("data", "[{custGroupNum:"+custGroupNum+"}]");
+			out.print(dataJson);
+		} catch (Exception e) {
+			dataJson.put("status", "201");
+			out.print(dataJson);
+		}finally{
+			out.flush();
+			out.close();
+		}
+	}
+	/**
+	 * 根据业务标签  基础标签 产品订购 计算我的客户群数量  add by zhanghy2 at 2015-12-06 because of huge custom group
+	 * @return
+	 */
+	private int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo){
+		int custCnt = 0;
+		try {
+			/*String bussinessLableSql = null;
+			if(null != bussinessLableTemplate){
+				bussinessLableSql = this.getSql(bussinessLableTemplate, local);
+			}
+			String basicEventSql = null;
+			if(null != basicEventTemplate){
+				basicEventSql = this.getSql(basicEventTemplate, local);
+			}*/
+			custCnt = custGroupInfoService.getCustInfoCount(customgroupid,null,null,orderProductNo,excludeProductNo);
+		} catch (Exception e) {
+		}
+		
+		return custCnt;
+	}
 }

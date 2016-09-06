@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
+import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
-import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 
 /**
  * 免打扰页面的增删改查Dao。
@@ -236,5 +239,30 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		
 		long endTime=new Date().getTime();
 		log.info("免打扰客户批量刪除耗时:"+(endTime-startTime)+"毫秒");
+	}
+	
+	@Override
+	public MtlBotherContactConfig getBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType) {
+		List<Map<String,Object>> list = null;
+		MtlBotherContactConfig mtlBotherContactConfig = new MtlBotherContactConfig();
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(" SELECT CAMPSEG_TYPE_ID,CHANNEL_ID,AVOID_BOTHER_FLAG,CONTACT_CONTROL_FLAG,PARAM_DAYS,PARAM_NUM FROM MTL_BOTHER_CONTACT_CONFIG WHERE CAMPSEG_TYPE_ID = ? AND CHANNEL_ID = ? AND CAMPSEG_CITY_TYPE=?");
+			list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] { campsegTypeId,channelId,campsegCityType });
+			if(CollectionUtils.isNotEmpty(list)){
+				for (Map map : list) {
+					mtlBotherContactConfig.setChannelId((String) map.get("CHANNEL_ID"));
+					mtlBotherContactConfig.setCampsegTypeId(Integer.parseInt(String.valueOf(map.get("CAMPSEG_TYPE_ID"))));
+					mtlBotherContactConfig.setAvoidBotherFlag(Integer.parseInt(String.valueOf(map.get("AVOID_BOTHER_FLAG"))));
+					mtlBotherContactConfig.setContactControlFlag(Integer.parseInt(String.valueOf(map.get("CONTACT_CONTROL_FLAG"))));
+					mtlBotherContactConfig.setParamDays(Integer.parseInt(String.valueOf(map.get("PARAM_DAYS"))));
+					mtlBotherContactConfig.setParamNum(Integer.parseInt(String.valueOf(map.get("PARAM_NUM"))));
+				}
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		StringBuffer buffer = new StringBuffer();
+		return mtlBotherContactConfig;
 	}
 }

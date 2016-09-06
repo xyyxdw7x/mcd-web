@@ -2,6 +2,8 @@ package com.asiainfo.biapp.mcd.common.dao.custgroup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
@@ -480,7 +483,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         String custom_num = listTemp.get(0).get("custom_num").toString();  
         int result = 0;
         if(StringUtil.isNotEmpty(custom_num)){
-
             result = Integer.parseInt(custom_num);
         }
         return result;
@@ -499,4 +501,523 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         }
         return list;
     }
+    
+    /**
+	 * 根据客户群清单表名，查询出项目客户群数量信息  add by zhanghy2 at 2015-12-06 because of huge custom group
+	 */
+	@Override
+	public int getCustInfoCountInMem(String customgroupid,String bussinessLableSql,String basicEventSql,String orderProductNo,String excludeProductNo) {
+		List<Map<String, Object>> list = null;
+		int custCount = 0;
+		try {
+			String sql = this.getCountCustGrpSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
+			log.info("sql:"+sql);
+//			使用sql数据源
+			list = this.getJdbcTemplate().queryForList(sql);
+			if(null != list && list.size()>0){
+				Map map = list.get(0);
+				if(null != map.get("CUSTOM_CNT")) {
+					custCount = Integer.parseInt(String.valueOf(map.get("CUSTOM_CNT")));
+				}
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return custCount;
+	}
+	
+	/**
+	 * 查询客户群与时机组合的客户群清单数量语句
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param customgroupid
+	 * @return
+	 */
+	private String getCountCustGrpSqlStr(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
+		StringBuffer buffer = new StringBuffer();
+		String sql = "";
+		boolean useCountSql = StringUtil.isEmpty(orderProductNo) && StringUtil.isEmpty(excludeProductNo) ;
+		String countStr = " count(PRODUCT_NO) CUSTOM_CNT ";
+		String selectStr = " PRODUCT_NO ";
+		if(useCountSql){
+			selectStr = countStr;
+		}
+		log.info("查询客户群与时机组合的客户群数量 in param"+"----bussinessLableSql----" + bussinessLableSql + "-----\n"
+				+ " ----basicEventSql----"+ basicEventSql+" \n  -----customgroupid:"+customgroupid +" \n"  +
+				" ------orderProductNo----" + orderProductNo + "----excludeProductNo----"+excludeProductNo);
+		
+		StringBuffer singleCustBuffer = new StringBuffer();
+		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+					  buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1")
+					  .append(" and T4.product_no in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				if(useCountSql){
+					buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1");
+				} else {
+					buffer.append(bussinessLableSql);
+				}
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				if(useCountSql){
+					buffer.append("select ").append(selectStr).append(" from ("+basicEventSql+") T4 where 1=1");
+				} else {
+					buffer.append(basicEventSql);
+				}
+			}
+		}else{
+			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql+")")
+					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql)
+					  .append(")");
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+				      .append(" where PRODUCT_NO in (")
+				      .append(basicEventSql)
+				      .append(")");
+			}else{					//值选择基础客户群
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where 1=1");
+			}
+		}
+		
+		sql = buffer.toString();
+
+		StringBuffer sbuffer1 = new StringBuffer();
+		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+			String orderProductNos[] = orderProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<orderProductNos.length;i++){
+				if(i != orderProductNos.length-1){
+					temp += ("'"+orderProductNos[i]+"',");
+				}else{
+					temp += ("'"+orderProductNos[i]+"'");
+				}
+			}
+			
+			if(StringUtil.isNotEmpty(sql)){
+				if(StringUtil.isNotEmpty(excludeProductNo)){
+					sbuffer1.append("select PRODUCT_NO from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
+				} else {
+					sbuffer1.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
+				}
+				sbuffer1.append(" and ttt.PRODUCT_NO in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer1.append(" SELECT count(PRODUCT_NO) CUSTOM_CNT FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer1.toString();
+		}
+		StringBuffer sbuffer2 = new StringBuffer();
+		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+			String excludeProductNos[] = excludeProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<excludeProductNos.length;i++){
+				if(i != excludeProductNos.length-1){
+					temp += ("'"+excludeProductNos[i]+"',");
+				}else{
+					temp += ("'"+excludeProductNos[i]+"'");
+				}
+			}
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer2.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") tttt where 1=1 ");  //modify at 2015-12-05
+				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer2.append(" SELECT count(PRODUCT_NO) CUSTOM_CNT FROM MCD_PROD_ORDER WHERE PROD_ID NOT IN (")  //modify at 2015-12-05
+						.append(temp).append(")");
+			}
+			sql = sbuffer2.toString();
+		}
+
+		log.info("查询客户群与时机组合的客户群数量语句"+sql);
+		return sql;
+	}
+	
+	//查询客户群清单信息
+	@Override
+	public List getMtlCustomListInfo(String customgroupid) {
+		List<Map<String, Object>> list = null;
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("SELECT * FROM mtl_custom_list_info WHERE custom_group_id = ? order by data_date desc");
+			log.info("查询客户群清单信息："+sbuffer.toString());
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return list;
+	}
+	
+	/**
+	 * 
+	 * @param bussinessLableSql 业务标签拼装的SQL 过滤黑名单
+	 * @param basicEventSql  基础标签拼装的SQL
+	 * @param channelId   渠道ID
+	 * @param campsegTypeId  策略类型ID 
+	 * @return
+	 */
+	@Override
+	public List getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
+		List<Map<String, Object>> list = null;
+		try {
+			String sql = "";
+			List paramList = new ArrayList();
+			StringBuffer buffer = new StringBuffer();
+			if(StringUtil.isEmpty(customgroupid)  || customgroupid.equals("undefined")){
+				if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
+					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
+						  .append(" and basicData.product_no in ("+basicEventSql+")")
+						  .append("and basicData.product_no in (")
+						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
+					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
+						  .append(" and basicData.PRODUCT_NO in ")
+						  .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
+					buffer.append("select basicData.PRODUCT_NO from ("+basicEventSql+") basicData where 1=1")
+						  .append(" and basicData.PRODUCT_NO in ")
+						  .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}
+			}else{
+				List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+				String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");   
+				if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
+					buffer.append("select PRODUCT_NO from ")
+						  .append(tableListName)
+						  .append(" where PRODUCT_NO in (")
+						  .append(bussinessLableSql +")")
+						  .append(" and PRODUCT_NO in (")
+						  .append(basicEventSql +")")
+						  .append(" and PRODUCT_NO in (")
+						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
+					buffer.append("select PRODUCT_NO from ")
+						  .append(tableListName)
+						  .append(" where PRODUCT_NO in (")
+						  .append(bussinessLableSql +")")
+						  .append(" and PRODUCT_NO in (")
+						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
+					buffer.append("select PRODUCT_NO from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(basicEventSql +")")
+					  .append(" and PRODUCT_NO in (")
+					  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}else {
+					buffer.append("select PRODUCT_NO from ")
+						  .append(tableListName)
+					      .append(" where PRODUCT_NO in ")
+					      .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					paramList.add(channelId);
+					paramList.add(String.valueOf(campsegTypeId));
+				}
+			}
+			
+			sql = buffer.toString();
+
+			StringBuffer sbuffer1 = new StringBuffer();
+			if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+				String orderProductNos[] = orderProductNo.split("&");
+				String temp = "";
+				for(int i=0;i<orderProductNos.length;i++){
+					if(i != orderProductNos.length-1){
+						temp += ("'"+orderProductNos[i]+"',");
+					}else{
+						temp += ("'"+orderProductNos[i]+"'");
+					}
+				}
+				if(StringUtil.isNotEmpty(sql)){
+					sbuffer1.append(sql +" and PRODUCT_NO in (")
+							.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+							.append(temp).append("))");
+				}else{
+					sbuffer1.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+							.append(temp).append(")");
+				}
+				sql = sbuffer1.toString();
+			}
+			StringBuffer sbuffer2 = new StringBuffer();
+			if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+				String excludeProductNos[] = excludeProductNo.split("&");
+				String temp = "";
+				for(int i=0;i<excludeProductNos.length;i++){
+					if(i != excludeProductNos.length-1){
+						temp += ("'"+excludeProductNos[i]+"',");
+					}else{
+						temp += ("'"+excludeProductNos[i]+"'");
+					}
+				}
+				if(StringUtil.isNotEmpty(sql)){
+					sbuffer2.append(sql +" and PRODUCT_NO NOT in (")
+							.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+							.append(temp).append("))");
+				}else{
+					sbuffer2.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID NOT IN (")
+							.append(temp).append(")");
+				}
+				
+				sql = sbuffer2.toString();
+			}
+			log.info("黑名单过滤sql:"+sql);
+			log.info("黑名单过滤传递参数："+paramList.toString());
+			JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+			sql = "select count(1) blackFilterNum from ( "+sql+" )";
+			list = this.getJdbcTemplate().queryForList(sql,paramList.toArray());
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return list;
+	}
+	
+	
+	/**
+	 * 免打扰频次过滤,计算的是总数
+	 */
+	@Override
+	public List getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+			String customgroupid, String orderProductNo, String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId) {
+		List<Map<String, Object>> list = null;
+		String sql = "";
+		Calendar curretDate = Calendar.getInstance();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDateStr = format.format(curretDate.getTime());
+		curretDate.add(Calendar.DAY_OF_MONTH, Integer.parseInt("-"+cityType));
+		String dealDateStr = format.format(curretDate.getTime());
+		try {
+			//先拼接 查询客户群与时机组合的客户群清单列表语句
+			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
+			StringBuffer buffer = new StringBuffer();
+			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
+				if(contactControlFlag == 1){  		 //频次
+					StringBuffer temp = new StringBuffer();
+					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
+						  .append(" select PRODUCT_NO from MTL_CONTACT_RECENT_LOG")
+						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
+						  .append(" and CITY_ID = '"+cityId +"'")
+						  .append(" and CHANNEL_ID = '"+channelId +"'")
+						  .append(" group by PRODUCT_NO having count(1)>="+frequencyTime+" )  ");
+					sql = temp.toString();
+				}
+			}else{   //其他渠道
+				String tableName = this.getTableName(channelId);
+				if(contactControlFlag == 1){  		 //进行频次
+					StringBuffer temp = new StringBuffer();
+					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
+						  .append(" select PRODUCT_NO from "+tableName)
+						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
+						  .append(" group by PRODUCT_NO having count(1)>="+frequencyTime+" )  ");
+					sql = temp.toString();
+				}
+			}
+			
+
+			log.debug("频次控制SQL="+sql);
+			sql = "select count(1) pcNum from ( "+sql+" )";
+			log.info("频次免打扰控制："+sql);
+			list = this.getJdbcTemplate().queryForList(sql);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+		}
+		return list;
+	}
+	
+	
+	/**
+	 * 免打扰频次过滤,计算的是总数
+	 */
+	@Override
+	public List getAfterBotherAvoid1(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+			String customgroupid, String orderProductNo, String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId) {
+		List<Map<String, Object>> list = null;
+		String sql = "";
+		Calendar curretDate = Calendar.getInstance();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDateStr = format.format(curretDate.getTime());
+		curretDate.add(Calendar.DAY_OF_MONTH, Integer.parseInt("-"+cityType));
+		String dealDateStr = format.format(curretDate.getTime());
+		try {
+			//先拼接 查询客户群与时机组合的客户群清单列表语句
+			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
+			StringBuffer buffer = new StringBuffer();
+			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
+				if(contactControlFlag == 1){  		 //频次
+					StringBuffer temp = new StringBuffer();
+					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
+						  .append(" select PRODUCT_NO from MTL_CONTACT_RECENT_LOG")
+						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
+						  .append(" and CITY_ID = '"+cityId +"'")
+						  .append(" and CHANNEL_ID = '"+channelId +"'")
+						  .append(" group by PRODUCT_NO having count(1)>="+frequencyTime+" )  ");
+					sql = temp.toString();
+				}
+			}else{   //其他渠道
+				String tableName = this.getTableName(channelId);
+				if(contactControlFlag == 1){  		 //进行频次
+					StringBuffer temp = new StringBuffer();
+					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
+						  .append(" select PRODUCT_NO from "+tableName)
+						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
+						  .append(" group by PRODUCT_NO having count(1)>="+frequencyTime+" )  ");
+					sql = temp.toString();
+				}
+			}
+			
+
+			log.debug("频次控制SQL="+sql);
+			sql = "select count(1) pcNum from ( "+sql+" )";
+			log.info("频次免打扰控制："+sql);
+			list = this.getJdbcTemplate().queryForList(sql);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e);
+		}
+		return list;
+	}
+	
+	
+	
+	/**
+	 * 返回除了短信渠道之外接触控制的表名
+	 * @param channelId
+	 * @return
+	 */
+	private String getTableName(String channelId){
+		String tableName = "MTL_CHN_{CHNID}_V_LOG_YYYYMM";
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
+		String dateStr = format.format(new Date());
+		tableName = tableName.replace("{CHNID}", channelId).replace("YYYYMM", dateStr);
+		return tableName;
+	}
+	
+	/**
+	 * 查询客户群与时机组合的客户群清单列表语句
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param customgroupid
+	 * @return
+	 */
+	private String createSqlStr(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
+		StringBuffer buffer = new StringBuffer();
+		String sql = "";
+		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+					  buffer.append("select * from ("+bussinessLableSql+") T4 where 1=1")
+					  .append(" and T4.product_no in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append(bussinessLableSql);
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append(basicEventSql);
+			}
+		}else{
+			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+				buffer.append("select PRODUCT_NO from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql+")")
+					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append("select PRODUCT_NO from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql)
+					  .append(")");
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append("select PRODUCT_NO from ")
+					  .append(tableListName)
+				      .append(" where PRODUCT_NO in (")
+				      .append(basicEventSql)
+				      .append(")");
+			}else{					//值选择基础客户群
+				buffer.append("select PRODUCT_NO from ")
+					  .append(tableListName)
+					  .append(" where 1=1");
+			}
+		}
+		
+		sql = buffer.toString();
+		StringBuffer sbuffer1 = new StringBuffer();
+		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+			String orderProductNos[] = orderProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<orderProductNos.length;i++){
+				if(i != orderProductNos.length-1){
+					temp += ("'"+orderProductNos[i]+"',");
+				}else{
+					temp += ("'"+orderProductNos[i]+"'");
+				}
+			}
+			
+
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer1.append("select PRODUCT_NO from ("+sql+") ttt where 1=1");
+				sbuffer1.append(" and ttt.PRODUCT_NO in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer1.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer1.toString();
+		}
+		StringBuffer sbuffer2 = new StringBuffer();
+		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+			String excludeProductNos[] = excludeProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<excludeProductNos.length;i++){
+				if(i != excludeProductNos.length-1){
+					temp += ("'"+excludeProductNos[i]+"',");
+				}else{
+					temp += ("'"+excludeProductNos[i]+"'");
+				}
+			}
+
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer2.append("select PRODUCT_NO from ("+sql+") tttt where 1=1 ");
+				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer2.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID NOT IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer2.toString();
+		}
+		log.info("查询客户群与时机组合的客户群清单列表语句"+sql);
+		return sql;
+	}
+	
+	
 }

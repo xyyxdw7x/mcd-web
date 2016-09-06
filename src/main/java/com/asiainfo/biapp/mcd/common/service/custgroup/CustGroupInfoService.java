@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 
 /**
  * 
@@ -102,6 +103,36 @@ public interface CustGroupInfoService {
      * @return
      */
     public int getOriCustGroupNum(String custom_group_id);
+	/**
+	 * 根据客户群清单表名，查询出项目客户群数量  add by zhanghy2 at 2015-12-06 because of huge custom group
+	 */
+	public int getCustInfoCount(String customgroupid, String bussinessLableSql,String ARPUSql, String orderProductNo, String excludeProductNo);
 
+	/**
+	 * 
+	 * @param bussinessLableSql 业务标签拼装的SQL   过滤黑名单
+	 * @param basicEventSql  基础标签拼装的SQL
+	 * @param channelId   渠道ID
+	 * @param campsegTypeId  策略类型ID 
+	 * @return
+	 */
+	public List getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
+
+	/**
+	 * 免打扰  频次过滤
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param channelId
+	 * @param campsegTypeId
+	 * @param customgroupid
+	 * @param orderProductNo
+	 * @param excludeProductNo
+	 * @return
+	 */
+	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,String cityId,String campsegId,int avoidBotherFlag,int flag);
+	MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId, String channelId, int campsegCityType);
+	
+	
+	
 }
 

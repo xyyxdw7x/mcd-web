@@ -67,8 +67,7 @@ public interface CustGroupInfoDao {
 	 * @return
 	 */
 	public List getSqlLoderISyncDataCfg(String customGroupId);
-	void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName,
-			String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
+	void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName,String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
     /**
      * add by jinl 20150717
      * @Title: getTargetCustomerbase
@@ -99,5 +98,41 @@ public interface CustGroupInfoDao {
      * @return
      */
     public int getOriCustGroupNum(String custom_group_id);
+    
+	/**
+	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group
+	 */
+	public int getCustInfoCountInMem(String customgroupid, String bussinessLableSql,String basicEventSql, String orderProductNo, String excludeProductNo);
+	List getMtlCustomListInfo(String customgroupid); 
+	/**
+	 * 
+	 * @param bussinessLableSql 业务标签拼装的SQL  过滤黑名单
+	 * @param basicEventSql  基础标签拼装的SQL
+	 * @param channelId   渠道ID
+	 * @param campsegTypeId  策略类型ID 
+	 * @return
+	 */
+	public List getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
+	
+	/**
+	 * 免打扰  频次过滤
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param channelId
+	 * @param campsegTypeId
+	 * @param customgroupid
+	 * @param orderProductNo
+	 * @param excludeProductNo
+	 * @param cityType:地市接触频次：15天   省公司接触频次：30天
+	 * @param frequencyTime:接触次数
+	 * @param updateCycle：客户群周期
+	 * @return
+	 */
+	public List getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId);
+	List getAfterBotherAvoid1(String bussinessLableSql, String basicEventSql, String channelId, int campsegTypeId,
+			String customgroupid, String orderProductNo, String excludeProductNo, int avoidBotherFlag,
+			int contactControlFlag, String cityId, String cityType, String frequencyTime, int updateCycle,
+			String campsegId);
+	
 
 }
