@@ -81,6 +81,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   </filter-mapping>
   <!-- spring character filter end  -->
   
+  <filter>
+  	<filter-name>OauthLoginFilter</filter-name>
+  	<filter-class>com.asiainfo.biapp.framework.filter.OauthLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>OauthLoginFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
   <!-- spring mvc start-->
   <servlet>
     <servlet-name>mvc</servlet-name>
