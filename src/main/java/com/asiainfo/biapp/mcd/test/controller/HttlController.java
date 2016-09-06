@@ -57,6 +57,15 @@ public class HttlController extends BaseMultiActionController {
 		String id=request.getParameter("id");
 		Book book=bookService.getBook(id);
 		return book;
+	}
+	
+	@RequestMapping()
+	@ResponseBody
+	public Book getBook2(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=bookService.getBook(id);
+		return book;
 	} 
 	
 	@RequestMapping("/updateBook")
