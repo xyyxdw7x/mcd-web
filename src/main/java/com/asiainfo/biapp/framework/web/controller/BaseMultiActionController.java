@@ -20,13 +20,19 @@ import net.sf.json.JSONObject;
  */
 public class BaseMultiActionController extends MultiActionController {
 
+	 /**
+	  * 获取用户ID
+	  * @param request
+	  * @param response
+	  * @return
+	  */
      public String  getUserId(HttpServletRequest request, HttpServletResponse response) {  
         String userId=(String) request.getSession().getAttribute("USER_ID");
         return userId;
      }
 	 @ModelAttribute
      public void   setUserId(HttpServletRequest request, HttpServletResponse response) {  
-		request.getSession().setAttribute("USER_ID", "admin");
+		//request.getSession().setAttribute("USER_ID", "admin");
      }
 	 
 	 /**
