@@ -34,7 +34,8 @@
     cache-period缓存时间 秒  86400为一天   annotation-driven默认的order为0 设置会-11和-12就不会经过其他的HandlerMapping-->
     <mvc:resources mapping="/file/**" location="/html/"  cache-period="86400" order="-11" />
     <mvc:resources mapping="/asset/**"    location="/asset/"     cache-period="86400" order="-12"/>
-    
+    <mvc:resources mapping="/mcd/assets/**"    location="/mcd/assets/"     cache-period="86400" order="-13"/>
+    <mvc:resources mapping="/mcd/pages/**"    location="/mcd/pages/"     cache-period="86400" order="-14"/>
     
     <!-- sdp中mvc的control默认统一实用xxxController 自动扫描包含@Controller注解的-->
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
@@ -89,10 +90,6 @@
             </props>
         </property>
     </bean>
-    
-   
- 
-  
    
     <!-- 根据bean的名称来解析  BeanNameViewResolver new ModelAndView("courseList","courses",courses); -->
 	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
