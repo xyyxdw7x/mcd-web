@@ -145,8 +145,6 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSeginfoBasic.setFatherNode(true);
 			campSeginfoBasic.setCityId(user.getCityId()); // 策划人所属城市
 			campSeginfoBasic.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
-			String deptId = "";
-			String deptName = "";
 			/*if (user != null) {
 				LkgStaff staff = (LkgStaff) user;
 				String deptMsg = staff.getDepId();
@@ -215,8 +213,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
 				MtlChannelDefCall mtlChannelDefCall = null;
 
-				String cepEventId = "";
-				String eventRuleDesc = "";
 				String streamsId = "";
 				String streamName = "";
 				for (int j = 0; j < execContent.length(); j++) {
@@ -226,12 +222,8 @@ public class TacticsManageController extends BaseMultiActionController {
 					if (execContentStr.indexOf("cepInfo") != -1) {
 						String cepInfo = obj.get("cepInfo").toString();
 						org.json.JSONObject cepInfoObject = new org.json.JSONObject(cepInfo);
-						cepEventId = cepInfoObject.getString("streamsId");
 						org.json.JSONArray functionList = new org.json.JSONArray(cepInfoObject.getString("functionList"));
 						for (int m = 0; m < functionList.length(); m++) {
-							org.json.JSONObject function = new org.json.JSONObject(functionList.get(m).toString());
-							String functionCn = String.valueOf(function.get("functionCn"));
-							eventRuleDesc += functionCn + "&";
 						}
 					}
 
@@ -590,8 +582,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);
 						List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
 						
-						String cepEventId = "";
-						String eventRuleDesc = "";
 						String streamsId = "";
 						String streamName = "";
 						for(int j = 0;j<execContent.length();j++){
@@ -601,12 +591,8 @@ public class TacticsManageController extends BaseMultiActionController {
 							if(execContentStr.indexOf("cepInfo") != -1){
 								String cepInfo = obj.get("cepInfo").toString();
 								org.json.JSONObject cepInfoObject = new org.json.JSONObject(cepInfo);
-								cepEventId = cepInfoObject.getString("streamsId");
 								org.json.JSONArray functionList = new org.json.JSONArray(cepInfoObject.getString("functionList"));
 								for(int m=0;m<functionList.length();m++){
-									org.json.JSONObject function = new org.json.JSONObject(functionList.get(m).toString());
-									String functionCn = String.valueOf(function.get("functionCn")) ;
-									eventRuleDesc += functionCn + "&";
 								}
 							}
 							
@@ -733,9 +719,6 @@ public class TacticsManageController extends BaseMultiActionController {
 								String taskComment = String.valueOf(obj.get("taskComment"));//任务描述
 								String 	userLableInfo = String.valueOf(obj.get("userLableInfo"));//客户标签信息
 								String 	callQuestionUrl = String.valueOf(obj.get("callQuestionUrl"));//外呼问卷地址	
-								String callNo = String.valueOf(obj.get("callNo"));//主叫号码
-								Integer avoidFilterFlag =  obj.get("avoidFilterFlag") == null ? null : Integer.parseInt(obj.get("avoidFilterFlag").toString());//是否要清洗黑红白名单
-								Integer callTestFlag =  obj.get("callTestFlag") == null ? null : Integer.parseInt(obj.get("callTestFlag").toString());//是否拨测
 								Integer freFilterFlag =  obj.get("freFilterFlag") == null ? null : Integer.parseInt(obj.get("freFilterFlag").toString());//是否需要进行频次清洗
 								String 	callForm = String.valueOf(obj.get("callForm"));//外外呼形式问卷地址	
 								String callCityType = String.valueOf(obj.get("callCityType"));//外呼属地
@@ -1351,11 +1334,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						int unSatisfiedNum = 0;  //不愿意数量
 						int pcMdrNum = 0; //免打扰频次数量
 						
-						String excludeCustGroupId = "";
-						String includeCustGroupId = "";
-						List avoidSatisfiedCustList = null;  //愿意
-						List avoidUnSatisfiedCustList = null;  //不愿意
-						
 						map.put("ruleIndex", ruleIndex);    //记录是哪个规则
 						map.put("channelId", channelId);    //记录哪个渠道
 						map.put("originalCustGroupNum", String.valueOf(originalCustGroupNum));
@@ -1421,10 +1399,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
 				Map paramMap = new HashMap();
 				for(int i = 0;i<campsegList.size();i++){  //区分出子策略和父策略  （兼容多规则）
-					String basicLableAttrId = "";
-					String bussinessLabelAttrId = "";
-					String orderPlanIds = "";
-					String excludePlanIds = "";
 					String ruleName = "";
 					MtlCampSeginfo mtlCampSeginfo = campsegList.get(i);
 					if("0".equals(mtlCampSeginfo.getCampsegPid())){
