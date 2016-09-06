@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
@@ -106,10 +107,10 @@ public class TacticsManageController extends BaseMultiActionController {
 		
 		JSONObject dataJson = new JSONObject();
 		List<MtlCampSeginfo> campSegInfoList = new ArrayList<MtlCampSeginfo>();
-		int whc = 0;
-		int whnum = 0;
-		String month = "";
+		
 		try {
+			User user = this.getUser(request, response);
+			
 			//TODO: initActionAttributes(request);
 /*			McdTempletForm bussinessLableTemplate = new McdTempletForm();
 			McdTempletForm basicEventTemplate = new McdTempletForm();*/
@@ -137,17 +138,12 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSeginfoBasic.setStartDate(putDateStart);
 			campSeginfoBasic.setEndDate(putDateEnd);
 			campSeginfoBasic.setCampsegPid("0");// 父节点
-			//TODO:campSeginfoBasic.setCreateUserid(user.getUserid());
-			campSeginfoBasic.setCreateUserid("chenyg");
-			//TODO:campSeginfoBasic.setCreateUserName(user.getUsername());
-			campSeginfoBasic.setCreateUserName("陈永刚");
+			campSeginfoBasic.setCreateUserid(user.getId());
+			campSeginfoBasic.setCreateUserName(user.getName());
 			campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
 			campSeginfoBasic.setPlanId(planId);
 			campSeginfoBasic.setFatherNode(true);
-			//TODO:campSeginfoBasic.setAreaId(user.getCityid());
-			campSeginfoBasic.setAreaId("999");
-			//TODO:campSeginfoBasic.setCityId(user.getCityid()); // 策划人所属城市
-			campSeginfoBasic.setCityId("999"); // 策划人所属城市
+			campSeginfoBasic.setCityId(user.getCityId()); // 策划人所属城市
 			campSeginfoBasic.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 			String deptId = "";
 			String deptName = "";
@@ -386,15 +382,11 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setEndDate(putDateEnd);
 				campSeginfo.setCampsegStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
 				campSeginfo.setCampsegTypeId(Short.parseShort(campsegTypeId));// 策略类型
-				//TODO:campSeginfo.setCreateUserid(user.getUserid()); // 活动策划人
-				campSeginfo.setCreateUserid("chenyg"); // 活动策划人
-				//TODO:campSeginfo.setCityId(user.getCityid()); // 策划人所属城市
-				campSeginfo.setCityId("999"); // 策划人所属城市
-//				campSeginfo.setDeptId(Integer.parseInt(deptId)); // 策划人部门id
+				campSeginfo.setCreateUserid(user.getId()); // 活动策划人
+				campSeginfo.setCityId(user.getCityId()); // 策划人所属城市
 				campSeginfo.setCreateTime(format.parse(format.format(new Date())));
 				campSeginfo.setPlanId(planIdArray[i]); // 产品编号
-				//TODO:campSeginfo.setCreateUserName(user.getUsername());
-				campSeginfo.setCreateUserName("陈永刚");
+				campSeginfo.setCreateUserName(user.getName());
 				campSeginfo.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 				// 渠道基本信息
 				campSeginfo.setChannelId(channelIds); // 渠道id
@@ -479,6 +471,8 @@ public class TacticsManageController extends BaseMultiActionController {
 			//TODO:initActionAttributes(request);
 			/*McdTempletForm bussinessLableTemplate = new McdTempletForm();
 			McdTempletForm basicEventTemplate = new McdTempletForm();*/
+			User user = this.getUser(request, response);
+			
 //			策略包    先循环迭代出每个规则
 			String test = request.getParameter("ruleList");
 			if(StringUtil.isNotEmpty(test)){
@@ -514,19 +508,13 @@ public class TacticsManageController extends BaseMultiActionController {
 					campSeginfoBasic.setStartDate(putDateStart);
 					campSeginfoBasic.setEndDate(putDateEnd);
 					campSeginfoBasic.setCampsegPid("0");//父节点
-					//TODO:campSeginfoBasic.setCreateUserid(user.getUserid());
-					campSeginfoBasic.setCreateUserid("chenyg");
-					//TODO:campSeginfoBasic.setCreateUserName(user.getUsername());
-					campSeginfoBasic.setCreateUserName("陈永刚");
+					campSeginfoBasic.setCreateUserid(user.getId());
+					campSeginfoBasic.setCreateUserName(user.getName());
 					campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
 					campSeginfoBasic.setPlanId(planId);
 					campSeginfoBasic.setFatherNode(true);
-					//TODO:campSeginfoBasic.setAreaId(user.getCityid());
-					campSeginfoBasic.setAreaId("999");
-					//TODO:campSeginfoBasic.setCityId(user.getCityid());			   //策划人所属城市
-					campSeginfoBasic.setCityId("999");
+					campSeginfoBasic.setCityId(user.getCityId());
 					String deptId = "";
-					String deptName = "";
 					/*if(user != null){
 						LkgStaff staff = (LkgStaff)user;
 						String deptMsg = staff.getDepId();
@@ -811,15 +799,12 @@ public class TacticsManageController extends BaseMultiActionController {
 						campSeginfo.setEndDate(putDateEnd);
 						campSeginfo.setCampsegStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));
 						campSeginfo.setCampsegTypeId(Short.parseShort(campsegTypeId));//策略类型
-						//TODO:campSeginfo.setCreateUserid(user.getUserid());  //活动策划人
-						campSeginfo.setCreateUserid("chenyg");  //活动策划人
-						//TODO:campSeginfo.setCityId(user.getCityid());			   //策划人所属城市
-						campSeginfo.setCityId("999");			   //策划人所属城市
+						campSeginfo.setCreateUserid(user.getId());  //活动策划人
+						campSeginfo.setCityId(user.getCityId());			   //策划人所属城市
 						campSeginfo.setDeptId(Integer.parseInt(deptId));				   //策划人部门id
 						campSeginfo.setCreateTime(format.parse(format.format(new Date())));
 						campSeginfo.setPlanId(planIdArray[i]);                //产品编号
-						//TODO:campSeginfo.setCreateUserName(user.getUsername());
-						campSeginfo.setCreateUserName("陈永刚");
+						campSeginfo.setCreateUserName(user.getName());
 						//渠道基本信息
 						campSeginfo.setChannelId(channelIds);           //渠道id
 						campSeginfo.setChannelTypeId(channelTypeId);		   //渠道类型ID
@@ -894,6 +879,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param paramJson
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private Map<String, Object> jsonToMap(String paramJson ){
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap = (Map<String, Object>) JSONObject.fromObject(paramJson);
@@ -1004,11 +990,11 @@ public class TacticsManageController extends BaseMultiActionController {
 		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
 				
 		try {
+			User user = this.getUser(request, response);
 			List<DimMtlChanneltype> list = mpmCommonService.getMtlChanneltypeByCondition(isDoubleSelect);
 			List<DimMtlChanneltype> listTemp = new ArrayList<DimMtlChanneltype>();
 			
-			//TODO：String cityId = user.getCityid();
-			String cityId = "999";
+			String cityId =user.getCityId();
 			if(!CollectionUtils.isEmpty(list)){
 				for(int i = 0;i<list.size();i++){
 					//当不是温州的时候，不显示微信温州渠道
@@ -1064,10 +1050,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
 		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
-//		政策类别
 		String typeId = StringUtil.isNotEmpty(request.getParameter("typeid")) ? request.getParameter("typeid") : null;
-		//TODO: String cityId = user.getCityid();
-		String cityId ="999";
+		User user = this.getUser(request, response);
+		String cityId =user.getCityId();
 		try {
 			String clickQueryFlag = "true";
 			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL);
@@ -1118,6 +1103,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Cache-Control", "no-cache");
+		User user = this.getUser(request, response);
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
@@ -1131,8 +1117,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		//新建策略是否单选
 		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
 		
-		//TODO: String cityId = user.getCityid();
-		String cityId = "999";
+		String cityId = user.getCityId();
 		if(StringUtil.isNotEmpty(pageNum)){
 			pager.setPageFlag("G");	
 		}
@@ -1189,12 +1174,12 @@ public class TacticsManageController extends BaseMultiActionController {
 		
 		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
 		List<DimMtlChanneltype> list = null;
+		
 		try {
+			User user = this.getUser(request, response);
 			list = dimMtlChanneltypeService.getChannelMsg(isDoubleSelect);
-			//TODO:String cityId = user.getCityid();
-			String cityId ="999";
-			//当不是温州的时候，不显示微信温州渠道
-			if(!cityId.equals("577")){
+			String cityId =user.getCityId();
+			if(!cityId.equals("577")){//当不是温州的时候，不显示微信温州渠道
 				for(int i = 0;i<list.size();i++){
 					String channelId = list.get(i).getChannelId();
 					if(channelId.equals("912")){
@@ -1406,19 +1391,6 @@ public class TacticsManageController extends BaseMultiActionController {
 			System.out.println("*********************方法执行时间："+(end-begin));
 		}
 	}
-
-	
-	/**
-	 * 查询原始客户群数量   点击保存弹出页面，查询原始客户群、过滤后的客户群
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @throws MpmException
-	 */
-	public void getOriginalCustGroupNum(HttpServletRequest request,HttpServletResponse response) throws MpmException{
-		
-	}
 	
 	/**
 	 * 根据campsegId修改策略信息  回填修改参数
@@ -1438,18 +1410,12 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		try {
 			//父策略id
-			String campsegPid = StringUtil.isNotEmpty(request.getParameter("campsegPid")) ? request.getParameter("campsegPid") : "2016061317242609";
-			
-			
-			/*MtlCampSeginfoPlanOrder planOrderService = (MtlCampSeginfoPlanOrder) SystemServiceLocator.getInstance().getService(
-					MpmCONST.MTL_CAMPSEG_INFO_PLAN_ORDER_SERVICE);*/
-					
+			String campsegPid = StringUtil.isNotEmpty(request.getParameter("campsegPid")) ? request.getParameter("campsegPid") : "2016061317242609";				
 			List<MtlCampSeginfo> campsegList = null;
 			List<MtlCampSeginfo> basicCampSeginfoList = new ArrayList<MtlCampSeginfo>();  //父策略
 			String planName = "";   //
 			String planType=""; //政策类别
-			Map map = new HashMap();  //存放最终拼装的参数
-			
+			Map map = new HashMap();  //存放最终拼装的参数		
 			if(StringUtil.isNotEmpty(campsegPid)){
 				//获取策略的基本信息
 				campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
@@ -1660,6 +1626,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		try {
 			//TODO:initActionAttributes(request);
+			User user = this.getUser(request, response);
 			response.setContentType("application/json; charset=UTF-8");
 			response.setHeader("progma", "no-cache");
 			response.setHeader("Access-Control-Allow-Origin", "*");
@@ -1700,8 +1667,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			if(channelId.length>0 && StringUtil.isNotEmpty(channelIds)){
 				/*String bussinessLableSql = this.getSql(bussinessLableTemplate, request.getLocale());
 				String basicEventSql = this.getSql(basicEventTemplate, request.getLocale());*/
-				//TODO String cityId = user.getCityid();
-				String cityId ="999";
+				String cityId = user.getCityId();
 				int campsegCityType = 1;  //地市类型 默认地市
 				if(!cityId.isEmpty() && "999".equals(cityId)){
 					campsegCityType = 0; //全省
