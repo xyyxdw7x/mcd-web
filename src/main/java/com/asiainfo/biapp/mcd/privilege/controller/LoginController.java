@@ -35,6 +35,7 @@ public class LoginController extends BaseMultiActionController {
 		User user=userPrivilege.validationUserPwd(userId, userPwd);
 		if(user!=null){
 			request.getSession().setAttribute("USER_ID", user.getId());
+			request.getSession().setAttribute("USER", user);
 			suc=true;
 		}
 		return suc;
