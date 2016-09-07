@@ -1,4 +1,3 @@
-
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.sql.Types;

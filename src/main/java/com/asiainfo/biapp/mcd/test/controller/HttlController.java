@@ -13,18 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.test.service.IBookService;
 import com.asiainfo.biapp.mcd.test.vo.Book;
 
-@RequestMapping("/test/httl")
+@RequestMapping("/action/test/httl")
 public class HttlController extends BaseMultiActionController {
 
 	//@Autowired
 	@Resource(name="bookService")
 	private IBookService bookService;
 	
-	@RequestMapping("/findBooks")
+	@RequestMapping
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String name=request.getParameter("name");
@@ -43,21 +44,37 @@ public class HttlController extends BaseMultiActionController {
 		return model;
 	}
 	
-	@RequestMapping("/hello")
+	@RequestMapping
 	public ModelAndView hello(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		response.getWriter().write("hello spring mvc，this is text plan");
 		return null;
 	} 
 	
-	@RequestMapping("/getBook")
+	@RequestMapping
 	@ResponseBody
 	public Book getBook(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String id=request.getParameter("id");
 		Book book=bookService.getBook(id);
 		return book;
+	}
+	
+	@RequestMapping
+	@ResponseBody
+	public Book getBook2(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=bookService.getBook(id);
+		return book;
+	}
+	
+	public User getBook3(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		User book=this.getUserPrivilege().queryUserById("admin");
+		return book;
 	} 
+	
 	
 	@RequestMapping("/updateBook")
 	@ResponseBody
@@ -67,6 +84,7 @@ public class HttlController extends BaseMultiActionController {
 		Book book=bookService.getBook(id);
 		book.setTitle("修改的");
 		bookService.updateBook(book);
+		
 		return book;
 	} 
 	

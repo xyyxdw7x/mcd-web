@@ -129,7 +129,7 @@
 	
 	<!-- 根默认会自动构建一个 root,输出日志到控制台，供logger继承 -->
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="logConOut" />
 		<appender-ref ref="allLogOut" />
 	</root>

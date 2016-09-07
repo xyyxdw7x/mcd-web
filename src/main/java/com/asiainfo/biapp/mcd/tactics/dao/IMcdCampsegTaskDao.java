@@ -1,4 +1,3 @@
-
 package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.util.List;
