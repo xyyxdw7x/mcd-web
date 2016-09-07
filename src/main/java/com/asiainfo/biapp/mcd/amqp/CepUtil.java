@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.asiainfo.biapp.mcd.bull.dao.IMpmCampSegInfoDao;
+import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;

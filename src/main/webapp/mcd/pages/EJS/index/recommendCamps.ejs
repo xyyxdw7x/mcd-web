@@ -1,0 +1,57 @@
+<% for(var i = 0; i < result.data.result.length; i++) {%>
+    <% if (i==0) { %>
+    <li class="recommend-detail-li">
+    <% } %>
+    <% if (i!=0 && i%5==0) { %>
+    </li><li class="recommend-detail-li">
+    <% } %>
+        <div class="recommend-detail-li-div recommend-detail-color-<%=i%5+1%>">
+            <div class="title">
+                <p><a target="_blank" href="<%=_ctx%>/mcd/pages/tactics/tacticsInfo.jsp?campsegId=<%=result.data.result[i].campsegId%>" title="<%=result.data.result[i].campsegName%>"><%=result.data.result[i].campsegName%></a></p>
+            </div>
+            <div class="info info-1">
+                <span class="info-name">营销用户数</span>
+                <span class="info-value"><%=result.data.result[i].campUserNum%></span>
+            </div>
+            <div class="info info-2">
+                <span class="info-name">成功用户数</span>
+                <span class="info-value"><%=result.data.result[i].campSuccNum%></span>
+            </div>
+            <div class="info info-3">
+                <span class="info-name">成功率</span>
+                <span class="info-value"><%=formatRate(result.data.result[i].campSuccRate)%></span>
+            </div>
+            <div class="icon-list" data-id="<%=result.data.result[i].campsegId%>">
+                <div class="channel-page-span prev">
+                    <
+                </div>
+                <div class="icon-list-div" data-id="<%=result.data.result[i].campsegId%>">
+                    <ul class="icon-list-ul">
+                    <%  for(var j = 0; j < result.data.result[i].channels.length; j++) {%>
+                        <% if (j==0) { %>
+                            <li class="icon-list-li">
+                        <% } %>
+                        <% if (j!=0 && j%4==0) { %>
+                            </li><li class="icon-list-li">
+                        <% } %>
+                                <img src="<%=_ctx%>/mcd/assets/images/index-icon/channel_<%=result.data.result[i].channels[j].channelId%>.png" alt="<%=result.data.result[i].channels[j].channelTypeName%>" title="<%=result.data.result[i].channels[j].channelTypeName%>" />
+                        <% if (j == result.data.result[i].channels.length-1) { %>
+                            </li>
+                        <% } %>
+                    <%  } %>
+                    </ul>
+                </div>
+                <div class="channel-page-span next">
+                    >
+                </div>
+            </div>
+        </div>
+    <% if (i == result.data.result.length-1) { %>
+    </li>
+    <% } %>
+<% }
+    function formatRate(num){
+        if(isNaN(num)) return '--';
+        return (num*100).toFixed(2)+'%'
+    }
+%>

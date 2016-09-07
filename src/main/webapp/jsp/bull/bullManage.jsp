@@ -34,7 +34,7 @@
 </style>
 
 </head>
-<jsp:include page="../header/header.jsp"></jsp:include>
+<jsp:include page="/mcd/pages/header/header.jsp"></jsp:include>
 <body class="bulk-body">
 	<div class="bulk-container"  <c:if test="${cityId == '999'}">style="display:none"</c:if>>
 	 		

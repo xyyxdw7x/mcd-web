@@ -177,4 +177,11 @@ public interface IMpmCampSegInfoDao {
      * @return
      */
     public Map getCampChannelSituation(String campsegId, String channelId, String statDate);
+    
+	/**
+	 * 通过活动ID,向上递归拿到最顶父活动
+	 * @param campsegId
+	 * @return
+	 */
+	public MtlCampSeginfo getCampsegTopId(String campsegId) throws Exception;
 }

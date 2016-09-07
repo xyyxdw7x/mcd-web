@@ -1,7 +1,9 @@
+
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.sql.Types;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -133,5 +135,26 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
         this.getJdbcTemplate().execute(sql);
         
     }
+    
+    @Override
+	public List<Map<String, Object>> getCampsegMsgByTaskIds(String taskIds[]) {
+		List<Map<String, Object>> list = null;
+		if(taskIds.length > 0){
+			String taskIdTemp = "";
+			for(int i=0;i<taskIds.length;i++){
+				taskIdTemp += "'"+taskIds[i]+"',";
+			}
+			try {
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("select MCD_CAMPSEG_TASK.Task_Id,mtl_camp_seginfo.campseg_id,mtl_camp_seginfo.cep_event_id,mtl_camp_seginfo.campseg_name ")
+					  .append(" from MCD_CAMPSEG_TASK left join mtl_camp_seginfo on MCD_CAMPSEG_TASK.Campseg_Id = mtl_camp_seginfo.campseg_id")
+					  .append(" where MCD_CAMPSEG_TASK.Task_Id in ("+taskIdTemp.substring(0, taskIdTemp.length()-1)+")");
+				return this.getJdbcTemplate().queryForList(buffer.toString());
+			} catch (Exception e) {
+				logger.error("",e);
+			}
+		}
+		return list;
+	}
 
 }
