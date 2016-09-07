@@ -289,7 +289,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.PLAN_DESC,A.ID,A.STATUS,A.CREATE_USERID,A.CREATE_DATE,A.FEE_DESC,A.MATERIAL_DESC," +
 				   "A.CITY_ID,A.PLAN_TYPE,A.CHANNELS,A.LEVEL_ID,A.CAMPSEG_TYPE_ID,A.PLAN_PID,A.PLAN_PNAME,A.PLAN_SRV_TYPE,B.PLAN_TYPE_ID,B.PLAN_TYPE_NAME,")
 				  .append(" D.TYPE_ID,D.TYPE_NAME,")
-				  .append(" (select to_char(wm_concat(c.city_name)) from dim_pub_city c where '|' || A.city_id || '|' like '%|' || c.city_id || '|%' ) city_name")
+				  .append(" (select to_char(wm_concat(c.city_name)) from dim_pub_city c where c.city_id like '%A.city_id%' ) city_name")
 				  .append(" FROM MTL_STC_PLAN A ")
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN DIM_PLAN_TYPE D ON A.PLAN_TYPE = D.TYPE_ID")
@@ -311,8 +311,8 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				buffer.append(" and B.PLAN_TYPE_ID =?");
 				parameterList.add(planTypeId);
 			}
-			if(StringUtil.isNotEmpty(cityId) && !cityId.equals("999")){  //地市限制
-				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
+			if(StringUtil.isNotEmpty(cityId) && !cityId.equals("999")){ //地市人员只能看本地市的产品
+				buffer.append(" and instr(A.CITY_ID,"+cityId+",1,1)>0 ");//CITY_ID字段中包含当前地市
 			}
 			if(StringUtil.isNotEmpty(channelTypeId)){ //渠道类型查询
 				buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from MTL_STC_PLAN_CHANNEL WHERE CHANNEL_ID = ?)");
