@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +36,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  */
 @Repository("mtlStcPlanDao")
 public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
+	private static Logger log = LogManager.getLogger();
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DimPlanType> initDimPlanType() throws Exception {
@@ -312,7 +315,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				parameterList.add(planTypeId);
 			}
 			if(StringUtil.isNotEmpty(cityId) && !cityId.equals("999")){ //地市人员只能看本地市的产品
-				buffer.append(" and instr(A.CITY_ID,"+cityId+",1,1)>0 ");//CITY_ID字段中包含当前地市
+				buffer.append(" and instr(A.CITY_ID,'"+cityId+"',1,1)>0 ");//CITY_ID字段中包含当前地市
 			}
 			if(StringUtil.isNotEmpty(channelTypeId)){ //渠道类型查询
 				buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from MTL_STC_PLAN_CHANNEL WHERE CHANNEL_ID = ?)");
@@ -326,7 +329,8 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			buffer.append(" AND SYSDATE BETWEEN nvl2(A.PLAN_STARTDATE,A.PLAN_STARTDATE,TO_DATE('19000101','YYYYMMDD'))  AND nvl2(A.PLAN_ENDDATE,A.PLAN_ENDDATE,TO_DATE('21000101','YYYYMMDD'))");
 			buffer.append(" ORDER BY A.PLAN_STARTDATE DESC,A.PLAN_ID DESC");
 			String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
-			list = this.getJdbcTemplate().queryForList(sqlExt.toString(), parameterList.toArray());
+			log.info("执行sql="+sqlExt);
+			list = this.getJdbcTemplate().queryForList(sqlExt, parameterList.toArray());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			for (Map map : list) {
 				MtlStcPlanBean bean = new MtlStcPlanBean();
@@ -360,7 +364,6 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				bean.setPlanSrvType((String) map.get("PLAN_SRV_TYPE"));
 				bean.setFeeDesc((String) map.get("FEE_DESC"));
 				bean.setMaterialDesc((String) map.get("MATERIAL_DESC"));
-				
 				bean.setPlanPid((String) map.get("PLAN_PID"));//营销案编号
 				bean.setIsUserd(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
 				if(StringUtil.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
@@ -391,6 +394,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
         String sql = " select * from mtl_stc_plan A where A.PLAN_ID=?";
         Object[] args=new Object[]{planId};
         int[] argTypes=new int[]{Types.VARCHAR};
+        log.info("执行sql="+sql);
         List<MtlStcPlan> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlStcPlan>(MtlStcPlan.class));
         if (list != null && list.size() > 0) {
             return list.get(0);
@@ -408,6 +412,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
         String sql = " select * from DIM_PLAN_TYPE A where A.TYPE_ID=?";
         Object[] args=new Object[]{planTypeId};
         int[] argTypes=new int[]{Types.VARCHAR};
+        log.info("执行sql="+sql);
         List<DimPlanType> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimPlanType>(DimPlanType.class));
         if (list != null && list.size() > 0) {
             return list.get(0);
@@ -418,6 +423,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
     
 	public MtlStcPlan getMtlStcPlanByPlanID(String planID){
 		final String sql="select * from mtl_stc_plan where plan_id=?";
+		log.info("执行sql="+sql);
 		List<MtlStcPlan> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, new VoPropertyRowMapper(MtlStcPlan.class));
 		if(list!=null&&list.size()>0){
 			return (MtlStcPlan) list.get(0);
