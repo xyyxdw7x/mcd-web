@@ -30,7 +30,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTable:function(options){
 			var defaults = {
 				urlRoot:_ctx+"/tactics/campSegSearch",
-				id:"searchIMcdCamp.do",
+				id:"searchIMcdCamp",
 //				cmd:"searchIMcdCamp",
 				currentDom:"#tacticsTable",
 				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
@@ -180,7 +180,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				var _campsegId=$(this).parent().find("td").eq(1).find("a").attr("href").split("=")[1];
 				module.exports.loadTable({
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchMcdMpmCampSegChild.do",
+					id:"searchMcdMpmCampSegChild",
 					//cmd:"searchMcdMpmCampSegChild",
 					currentDom:_table,
 					ajaxData:{"campsegId":_campsegId},
@@ -378,7 +378,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTacticsManageSearchDimCampDrvType:function(options){
 			var defaults = {
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchDimCampDrvType.do",
+					id:"searchDimCampDrvType",
 //					cmd:"searchDimCampDrvType",
 					currentDom:".tacticsManageSearchDimCampDrvType",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchDimCampDrvType.ejs',
@@ -460,7 +460,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTacticsManageSearchCampsegStat:function(options){
 			var defaults = {
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchCampsegStat.do",
+					id:"searchCampsegStat",
 //					cmd:"searchCampsegStat",
 					currentDom:".tacticsManageSearchCampsegStat",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchCampsegStat.ejs',
