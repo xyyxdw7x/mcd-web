@@ -20,7 +20,6 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
  */
 @Repository("bookDao")
 public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,BeanSelfAware{
-
 	/**
 	 * 
 	 */
@@ -57,7 +56,6 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
 		
 		int size=selfProxy.queryDatInMem();
-		System.out.println("size="+size);
 		return book;
 	}
 
