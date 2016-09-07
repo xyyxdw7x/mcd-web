@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.index.service.SaleSituationService;
 import com.asiainfo.biapp.mcd.model.index.SaleSituation;
@@ -22,9 +23,8 @@ public class HomePageController extends BaseMultiActionController {
 	@RequestMapping(params = "cmd=getSaleSituation")
 	public void getSaleSituation(HttpServletRequest request, HttpServletResponse response) {
 		SaleSituation saleSituation = null;
-		// TODO 待用户获取功能完成
-		String userId = this.getUserId(request, response);
-		String cityId = "";
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		try {
 			saleSituation = saleSituationService.querySaleSituation(cityId);
 			this.outJson4Ws(response, saleSituation, "200", "");
@@ -36,13 +36,13 @@ public class HomePageController extends BaseMultiActionController {
 
 	@RequestMapping(params = "cmd=getMySales")
 	public void getMySales(HttpServletRequest request, HttpServletResponse response) {
-		// TODO 待用户获取功能完成
-		String userId = this.getUserId(request, response);
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		String pageNum = request.getParameter("pageNum") == null ? "1": request.getParameter("pageNum");
 		int pageSize =  request.getParameter("pageSize") == null ?10:Integer.parseInt(request.getParameter("pageSize"));
 		Pager page = null;
 		try {
-			page = this.saleSituationService.getMySale(userId,Integer.parseInt(pageNum),pageSize);
+			page = this.saleSituationService.getMySale(user.getId(),Integer.parseInt(pageNum),pageSize);
 			this.outJson4Ws(response, page, "200", "");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,12 +52,12 @@ public class HomePageController extends BaseMultiActionController {
 
 	@RequestMapping(params = "cmd=getRecommendCamps")
 	public void getRecommendCamps(HttpServletRequest request, HttpServletResponse response) {
-		// TODO 待用户获取功能完成
-		String city_id = "";
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		String pageNum = request.getParameter("pageNum") == null ? "1": request.getParameter("pageNum");
 		Pager page = null;
 		try {
-			page = this.saleSituationService.getRecommendCamp(Integer.parseInt(pageNum),city_id);
+			page = this.saleSituationService.getRecommendCamp(Integer.parseInt(pageNum), cityId);
 			this.outJson4Ws(response, page, "200", "");
 		} catch (Exception e) {
 			e.printStackTrace();

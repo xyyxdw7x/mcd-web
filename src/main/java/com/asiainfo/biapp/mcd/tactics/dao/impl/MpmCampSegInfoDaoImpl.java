@@ -786,7 +786,22 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         return map;
     }
-
     
+    /***
+	 * 通过活动ID,向上递归拿到最顶父活动
+	 * @throws Exception
+	 * */
+	@Override
+	public MtlCampSeginfo getCampsegTopId(String campsegId) throws Exception {
+		MtlCampSeginfo mtlCampSeginfo = getCampSegInfo(campsegId);
+		if (mtlCampSeginfo != null && !StringUtils.isEmpty(mtlCampSeginfo.getCampsegPid())) {
+			if ("0".equals(mtlCampSeginfo.getCampsegPid())) {
+				return mtlCampSeginfo;
+			} else {
+				return getCampsegTopId(mtlCampSeginfo.getCampsegPid());
+			}
+		}
+		return null;
+	}
 
 }

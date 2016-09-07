@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-
+import com.asiainfo.biapp.framework.aop.BeanSelfAware;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.test.dao.IBookDao;
 import com.asiainfo.biapp.mcd.test.vo.Book;
@@ -19,12 +19,16 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
  *
  */
 @Repository("bookDao")
-public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable {
-
+public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,BeanSelfAware{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 自身的代理对象
+	 */
+	private IBookDao selfProxy;
 
 	@Override
 	public void save(Book book) {
@@ -50,6 +54,8 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable {
 	@Override
 	public Book getBook(String bookId) throws Exception {
 		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
+		
+		int size=selfProxy.queryDatInMem();
 		return book;
 	}
 
@@ -61,5 +67,16 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable {
 	@Override
 	public void updateDeleteBook(Book book) throws Exception{
 		this.getJdbcTemplateTool().delete(book);
+	}
+
+	@Override
+	public int queryDatInMem() throws Exception {
+		String sql="select * from RED_WHITE_LIST";
+		List<Map<String,Object>> list=this.getJdbcTemplate().queryForList(sql);
+		return list.size();
+	}
+	@Override
+	public void setSelfProxy(Object proxyObj) {
+		this.selfProxy=(IBookDao) proxyObj;
 	}
 }

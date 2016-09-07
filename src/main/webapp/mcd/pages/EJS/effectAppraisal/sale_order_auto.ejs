@@ -1,0 +1,155 @@
+<div class="content-table">
+			<div><span class="content-sub-title">系统自动优先级</span>
+			<span>(</span>
+			<span class='effectContainer-addIcon'></span>
+			<span>新增)</span>
+	
+			  <input  type="button" name="search_btn" value=""  id="search_sale_order_auto_btn" onclick="click_search_order(this)" class="fright"  >
+			  		<span class="search-sale-box fright" >
+	                <input type="text" name="search" id="search_sale_order_auto" placeholder="请输入关键字" >
+
+		</div>
+			<div class="content-table-box" id="createDimPlanList">
+				<table class="content-table">
+					<tbody>
+						<tr>
+							<th class="content-table-th" style="width: 20%">策略编号</th>
+							<th class="content-table-th">策略名称</th>
+							<!-- <th class="content-table-th" style="width: 18%">政策名称</th> -->
+							<th class="content-table-th" style="width: 15%">客户群规模</th>
+							<!-- <th class="content-table-th" style="width: 10%">距离失效</th> -->
+							<!--<th class="content-table-th" style="width: 10%">是否新增</th>-->
+							<th class="content-table-th" style="width: 12%">成功率</th>
+							<th class="content-table-th" style="width: 12%">优先级</th>
+							<th class="content-table-th" style="width: 12%">操作</th>
+						</tr>
+						<%
+							for (var i = 0; i < data.result.length; i++) {
+							if(data.result[i].succRate!=0){
+								data.result[i].succRate=((data.result[i].succRate)*100).toFixed(2);
+							}
+						%>
+						<tr class="even content-table-tr">
+						<% if(data.result[i].isNewDays=='是'){%>
+							<td class="content-table-td-green"><span class='effectContainer-addIcon-tr'></span><%=data.result[i].campsegId%></td>
+							<% }else{%>
+							<td class="content-table-td"><%=data.result[i].campsegId%></td>
+							<%}%>
+							<%
+							  if(data.result[i].campsegName.length>27){
+							     data.result[i].campsegShortName=data.result[i].campsegName.substring(0,27)+"...";
+							  }else{
+							     data.result[i].campsegShortName=data.result[i].campsegName;
+							  }
+							%>
+							<td class="content-table-td" title="<%=data.result[i].campsegName%>"><%=data.result[i].campsegShortName%></td>
+							<!-- <td class="content-table-td align_center"><%=data.result[i].planName%></td>  -->
+							<td class="content-table-td" style="color: #FFBB66"><%=data.result[i].custgroupNumber%></td>
+							<!-- <td class="content-table-td" style="color: #FFBB66"><%=data.result[i].ineffectieDays%></td>  -->
+							<!--<td class="content-table-td"><%=data.result[i].isNewDays%></td>-->
+							<td class="content-table-td"><%=data.result[i].succRate %>%</td>
+							<td class="content-table-td"><%=data.result[i].priOrderNum%></td>
+							<td class="content-table-td"><img mat="<%=data.result[i].campsegId%>" chnAdivId="<%=data.result[i].chnAdivId%>" title="置顶" class="stick_on_top" src="<%=_ctx%>/mcd/assets/images/cep/top-priority.png" style="cursor:pointer;" onclick="add_on_top(this);"></img></td>
+							<td style="display: none;"><%=data.result[i].chnAdivId%></td>
+						</tr>
+						<%
+							}
+						%>
+					</tbody>
+				</table>
+
+				<div class="content-table-page">
+			<div class="fright clearfix centent-page-box">
+				<%
+					if (!data.hasPrevPage || data.totalSize == 0) {
+				%>
+				<a href="javascript:;" class="page-button fleft disabled">上一页</a>
+				<%
+					} else {
+				%>
+				<a href="javascript:;" class="page-button fleft" data-flag="prev">上一页</a>
+				<%
+					}
+				%>
+				<%
+					if (data.totalPage > 5) {
+				%>
+				<%
+					if (data.pageNum < 5 || data.pageNum > data.totalPage - 2) {
+				%>
+				<a href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == 1) {%>active<%}%>">1</a> <a
+					href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == 2) {%>active<%}%>">2</a> <a
+					href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == 3) {%>active<%}%>">3</a> <a
+					href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == 4) {%>active<%}%>">4</a> <a
+					href="javascript:;" class="page-num fleft" data-flag="last-dot"
+					style="pointer-events: none;">···</a> <a href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == data.totalPage - 1) {%>active<%}%>"><%=data.totalPage - 1%></a>
+				<a href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == data.totalPage) {%>active<%}%>"><%=data.totalPage%></a>
+				<%
+					} else if (data.pageNum > 4
+								&& data.pageNum < data.totalPage - 1) {
+				%>
+				<a href="javascript:;" class="page-num fleft ">1</a> <a
+					href="javascript:;" class="page-num fleft">2</a>
+				<%
+					if (data.totalPage - 2 == data.pageNum) {
+				%>
+				<a href="javascript:;" class="page-num fleft">3</a>
+				<%
+					}
+				%>
+				<a href="javascript:;" class="page-num fleft" data-flag="first-dot"
+					style="pointer-events: none;">···</a> <a href="javascript:;"
+					class="page-num fleft active"><%=data.pageNum%></a>
+				<%
+					if (data.totalPage - 2 != data.pageNum) {
+				%>
+				<a href="javascript:;" class="page-num fleft" data-flag="last-dot"
+					style="pointer-events: none;">···</a>
+				<%
+					}
+				%>
+				<a href="javascript:;" class="page-num fleft"><%=data.totalPage - 1%></a>
+				<a href="javascript:;" class="page-num fleft"><%=data.totalPage%></a>
+				<%
+					}
+				%>
+				<%
+					} else {
+				%>
+				<%
+					for (var i = 1; i <= data.totalPage; i++) {
+				%>
+				<a href="javascript:;"
+					class="page-num fleft <%if (data.pageNum == i) {%>active<%}%>"><%=i%></a>
+				<%
+					}
+				%>
+				<%
+					}
+				%>
+				<%
+					if (!data.hasNextPage || data.totalSize == 0) {
+				%>
+				<a href="javascript:;" class="page-button fleft disabled">下一页</a>
+				<%
+					} else {
+				%>
+				<a href="javascript:;" class="page-button fleft" data-flag="next">下一页</a>
+				<%
+					}
+				%>
+				<span class="fleft">
+					<input id="goPageNumInput" type="text"class="ui-page-num"/>
+				</span>
+				<a href="javascript:;" data-flag="go" class="ui-page-button page-button J_go_num fleft">跳转</a>
+			</div>
+		</div>
+
+			</div>
+		</div>

@@ -3,6 +3,10 @@ package com.asiainfo.biapp.framework.jdbc;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
+import org.springframework.stereotype.Repository;
+
+import com.asiainfo.biapp.framework.aop.BeanSelfAware;
+import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 
 /**
  * 
@@ -25,7 +29,6 @@ public class ResetDataSourceAdvice {
 	 */
 	public void resetMasterDataSource(JoinPoint joinPoint) {
 		String methodName=joinPoint.getSignature().getName();
-		System.out.println("methodName="+methodName);
 		if(methodName.indexOf(getMemDataBaseFlag())>=3){
 			logger.debug("setMasterMemDataSource");
 			CustomerContextHolder.setCustomerType(RoutingDataSource.MASTER_MEM);
@@ -39,6 +42,13 @@ public class ResetDataSourceAdvice {
 	 * 设置当前数据源为从库
 	 */
 	public void resetSlaveDataSource(JoinPoint joinPoint) {
+		if(joinPoint.getTarget() instanceof BeanSelfAware){
+			BeanSelfAware myBean=(BeanSelfAware)joinPoint.getTarget();
+			Repository respository=myBean.getClass().getAnnotation(Repository.class);
+			if(respository!=null){
+				myBean.setSelfProxy(SpringContextsUtil.getBean(respository.value()));
+			}
+		}
 		String methodName=joinPoint.getSignature().getName();
 		if(methodName.indexOf(getMemDataBaseFlag())>=3){
 			logger.debug("resetSlaveMemDataSource");

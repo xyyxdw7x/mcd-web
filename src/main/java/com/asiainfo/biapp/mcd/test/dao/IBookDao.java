@@ -21,4 +21,6 @@ public interface IBookDao {
 	
 	public void updateDeleteBook(Book book) throws Exception;
 	
+	public int queryDatInMem() throws Exception;
+	
 }

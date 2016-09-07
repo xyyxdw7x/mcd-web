@@ -18,6 +18,8 @@
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop.xsd
     ">
+    <!-- spring bean初始化前后添加逻辑处理入口 -->
+    <bean class="com.asiainfo.biapp.framework.jdbc.InjectDaoBeanSelfProcessor"></bean>
     <!-- JDBC的基类 -->
     <bean id="jdbcDaoBase" class="com.asiainfo.biapp.framework.jdbc.JdbcDaoBase" autowire="byName">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>

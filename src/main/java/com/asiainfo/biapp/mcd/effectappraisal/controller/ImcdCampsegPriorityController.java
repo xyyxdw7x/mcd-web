@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.bean.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IcampsegPriorityService;
@@ -38,8 +39,8 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	public void initManualPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
 		String adivId =  request.getParameter("adivId");  //运营位id
-		// TODO
-		String cityId = "";
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		try {
 			List<CampsegPriorityBean> list = this.campsegPriorityService.initManualPriorityCampseg(channelId,adivId, cityId);
 
@@ -62,8 +63,8 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	public void initAutoPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
 		String adivId =  request.getParameter("adivId");  //运营位id
-		// TODO
-		String cityId = "";
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
 		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		Pager pager=new Pager();
@@ -107,8 +108,8 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	@RequestMapping(params = "cmd=editPriorityCampseg")
 	public void editPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// TODO
-		String cityId = "";
+		User user = this.getUser(request, response);
+		String cityId = user.getCityId();
 		String channelId = request.getParameter("channelId");
 		String campsegId = request.getParameter("campsegId");
 		String chnAdivId = request.getParameter("chnAdivId");

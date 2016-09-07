@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
+import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.jms.util.JmsJsonUtil;
 
 import net.sf.json.JSONObject;
@@ -21,6 +23,11 @@ import net.sf.json.JSONObject;
  */
 public class BaseMultiActionController extends MultiActionController {
 
+	//@Autowired
+	//@Qualifier("defaultUserPrivilege")
+	@SuppressWarnings("unused")
+	private IUserPrivilege userPrivilege;
+	
 	 /**
 	  * 获取用户ID
 	  * @param request
@@ -83,4 +90,13 @@ public class BaseMultiActionController extends MultiActionController {
 				e.printStackTrace();
 			}
 		}
+
+	public IUserPrivilege getUserPrivilege() {
+		IUserPrivilege up=(IUserPrivilege) SpringContextsUtil.getBean("defaultUserPrivilege");
+		return up;
+	}
+
+	public void setUserPrivilege(IUserPrivilege userPrivilege) {
+		this.userPrivilege = userPrivilege;
+	}
 }

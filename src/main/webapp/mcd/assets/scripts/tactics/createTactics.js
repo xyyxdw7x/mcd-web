@@ -2430,9 +2430,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 											var currentDOM = $(".J_Policy_Cart .grayrow[channelid *='"+currentCIdArr[v]+"']");
 											if(currentDOM.length == allSelectedDom.length){
 												currentDomChannelId +=currentCIdArr[v]+",";
-												
 											}
-
 										}
 										if(currentDomChannelId.length>0){
 											currentDomChannelId = currentDomChannelId.substring(0,currentDomChannelId.length-1);
@@ -2446,17 +2444,11 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 								return;
 							}
 						}
-						
-
 						// init frequency
 						module.exports.frequencyInit('901');
-
 						$('.J_addChannelBtn').prop('disabled','').addClass('calculate-customer-submit').removeClass('calculate-customer-submit-disable');
-
 						$(".J_show_box[channelid=903] li").remove();
-
 						var _channel_li = $('#selectedChannel li');
-
 						$('#selectedChannel li').addClass('content-channel-box').removeClass('disable-channel');
 						var commonCid = $("#J_addPolicy").attr("channelId").split(",");
 						if($(".J_Policy_Cart .grayrow").length == 0){
@@ -2753,7 +2745,6 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							}
 							var paramDays = $('.paramDays[channelid=901]').val();
 							var paramNum = $('.paramNum[channelid=901]').val();
-							//var channelTrigger = $('.channel-executive-item[name=time-trigger].active').attr('trigger');
 							var channelTrigger = $('#CEPMessageName').attr('functionid')==null?1:0;
 
 							var chooseVarsli = $('.channelPreDefineList[channelid="901"] .chooseVars li.active');
@@ -2943,7 +2934,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 
 					this.saveWait("discoveryWait");
 
-					this.model.set("id","imcdCampSegWaveMaintainAction.aido");
+					this.model.set("id","executeCustomGroup");
 					var _parent=$("#selectedConditiom li");
 					var _labelArr=module.exports.getDiscoveryQuerydata_label(_parent);
 					var _basicProp=module.exports.getDiscoveryQuerydata_basicProp(_parent);
@@ -2955,7 +2946,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
 						cache:false,
-						data:{cmd:"executeCustomGroup",labelArr:_labelArr,customer:_customer/*,ARPU:_ARPU*/,productArr:_productArr,basicProp:_basicProp,baseAttr:_baseAttr},
+						data:{labelArr:_labelArr,customer:_customer,productArr:_productArr,basicProp:_basicProp,baseAttr:_baseAttr},
 						success:function(model) {
 							var _data = model.attributes.data;
 							var _channelIdCustNum = model.attributes.channelIdCustNum;
@@ -5742,8 +5733,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 			}
 			$.ajax({
 				type:"post",
-				url:_ctx + '/mpm/imcdCampSegWaveMaintainAction.aido',
-				data:{cmd:"executeCustomGroup",customer:'{id:'+$(obj).attr('typeid')+',updatecycle:'+$(obj).attr('updatecycle')+'}',labelArr:[],productArr:"[{excludeProductNo:'',orderProductNo:''}]",basicProp:[],baseAttr:"{campsegtypeid:"+$('.J_Policy_Cart .grayrow').attr('campsegtypeid')+',planid:'+$('.J_Policy_Cart .grayrow').attr('planid')+',planname:"'+$('.J_Policy_Cart .grayrow em').html()+'",channelid:"'+ currentChnId +'"}'},
+				url:_ctx + '/tactics/tacticsManage/executeCustomGroup',
+				data:{customer:'{id:'+$(obj).attr('typeid')+',updatecycle:'+$(obj).attr('updatecycle')+'}',labelArr:[],productArr:"[{excludeProductNo:'',orderProductNo:''}]",basicProp:[],baseAttr:"{campsegtypeid:"+$('.J_Policy_Cart .grayrow').attr('campsegtypeid')+',planid:'+$('.J_Policy_Cart .grayrow').attr('planid')+',planname:"'+$('.J_Policy_Cart .grayrow em').html()+'",channelid:"'+ currentChnId +'"}'},
 				dataType:"json",
 				success:function(model){
 					var chnGroupObj ={

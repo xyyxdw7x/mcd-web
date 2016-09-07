@@ -1,0 +1,53 @@
+<div class="content-table">
+			<div class="content-sub-title  centent-page-box">
+				<table frame="void" >
+					<tr>
+						<td width="80%" style="margin-left:0px">置顶优先级</td>
+					
+							<!-- <a href="javascript:void(0);" class="page-button fleft" >保存</a>  <a href="javascript:void(0);" class="page-button fleft" >取消 </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="page-button fleft" >编辑</a> -->
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="content-table-box" id="createDimPlanList">
+				<ul class="bulk-list-content">
+					<li class="bulk-list-thead">
+						<span class="ui-priority-num fleft" >策略编号</span>
+						<span class="ui-priority-name fleft">策略名称</span>
+						<!-- <span class="ui-priority-name fleft">政策名称</span> -->
+						<span class="ui-priority-custom-num fleft">客户群规模</span>
+						<span class="ui-priority-date fleft">成功率</span>
+						<span class="ui-priority-quantity fleft">优先级</span>
+						<span class="ui-priority-operation fleft">操作</span>
+					</li>
+				</ul>
+				
+				<ul class="bulk-list-content ui-sortable" id="createDimPlanListUl">
+					<%
+						if(!(!data || data.length == 0)){
+							for (var i = 0; i < data.length; i++) {
+								if(data[i].succRate!=0){
+									data[i].succRate=((data[i].succRate)*100).toFixed(2);
+								}
+						%>
+					<li class="bulk-list-tbody ui-sortable-handle <%if(i==data.length-1){%>last<%}%>" cityId = "<%=data[i].cityId%>" channelId = "<%=data[i].channelId%>"  priOrderNum = "<%=data[i].priOrderNum%>" campsegId = "<%=data[i].campsegId%>" chnAdivId = "<%=data[i].chnAdivId%>">
+						<span class="ui-priority-num fleft" ><%=data[i].campsegId%></span>
+						<span class="ui-priority-name fleft" title="<%=data[i].campsegName%>"><%=data[i].campsegName%></span> 
+						<!-- <span class="ui-priority-name fleft"><%=data[i].planName%></span> -->
+						<span class="ui-priority-custom-num fleft" style="color: #FFBB66" ><%=data[i].custgroupNumber%></span>
+						<span class="ui-priority-date fleft" style="color: #FFBB66" ><%=(data[i].succRate) %>%</span>
+						<span class="ui-priority-quantity fleft more_tips"><%=data[i].priOrderNum%></span>
+						<span class="ui-priority-operation fleft">
+							<img mat="<%=data.campsegId%>" class="stick_on_top" title="移动" src="<%=_ctx%>/mcd/assets/images/cep/drag-priority.png" style="cursor:pointer;" />
+							<img mat="<%=data.campsegId%>" class="stick_on_top_cancel" title="取消置顶" src="<%=_ctx%>/mcd/assets/images/cep/cancel-priority.png" style="cursor:pointer;"/>
+						</span>
+						<span class="ui-priority-operation fleft" style="display: none;"><%=data[i].chnAdivId%></span>
+					</li>
+						<%
+							}
+						}
+						%>
+				</ul>
+
+			</div>
+		</div>
