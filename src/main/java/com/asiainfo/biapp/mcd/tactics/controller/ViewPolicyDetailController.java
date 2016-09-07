@@ -24,6 +24,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
@@ -121,10 +122,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             segInfoBean.setEndDate(segInfo.getEndDate());
             
             //根据ID获取用户类
-            IUser user = null;//mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
+            User user = this.getUserPrivilege().queryUserById(segInfo.getCreateUserid());//mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
             String userName = "";
             if(user!=null){
-                userName = user.getUsername();
+                userName = user.getName();
             }
             //业务类型
             String campDrvName ="";
