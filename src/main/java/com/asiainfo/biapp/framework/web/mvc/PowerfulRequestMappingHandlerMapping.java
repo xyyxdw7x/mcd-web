@@ -168,9 +168,6 @@ public class PowerfulRequestMappingHandlerMapping extends RequestMappingInfoHand
 	 */
 	@Override
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
-		if(method.getName().equals("getBook2")){
-			method.getName().toLowerCase();
-		}
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);

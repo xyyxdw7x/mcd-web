@@ -15,8 +15,26 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd 
 	">
 	
-	<!-- 默认的注解映射的支持  默认的order为0--> 
-    <mvc:annotation-driven/>
+	<!-- 默认的注解映射的支持  默认的order为0  RequestMappingHandlerMapping和RequestMappingHandlerAdapter --> 
+    <!-- 
+      <mvc:annotation-driven>
+    </mvc:annotation-driven>
+     -->
+    <!-- annotation-driven中RequestMappingHandlerMapping要求RequestMapping的值必须唯一，如果都为空就会启动错误 --> 
+    <!-- PowerfulRequestMappingHandlerMapping config -->
+	<bean name="handlerMapping" class=" com.asiainfo.biapp.framework.web.mvc.PowerfulRequestMappingHandlerMapping">
+		<property name="order" value="-3"/>
+		<property name="extension" value="do"/>
+	</bean>
+	
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+     	<property name="messageConverters">  
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+			</list> 
+	    </property> 
+     </bean>
+  
     
     <mvc:default-servlet-handler/>
     
@@ -42,11 +60,11 @@
 		<property name="order" value="-4"/>
 		<property name="basePackage" value="com.asiainfo.biapp.framework.web.controller"/>
 	</bean>
-	<!-- 自动查找在所有@Controller中使用了@requestMapping 注解的bean
+	<!-- 自动查找在所有@Controller中使用了@requestMapping 注解的bean 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-		<property name="order" value="-3"/>
+		<property name="order" value="30"/>
 	</bean>
-	 -->
+	-->
 	<!-- 扫描bean，查找@RequestMapping -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	
@@ -177,11 +195,6 @@
 	    </property>  
 	</bean>
 	
-	<!-- PowerfulRequestMappingHandlerMapping config -->
-	<bean name="handlerMapping" class=" com.asiainfo.biapp.framework.web.mvc.PowerfulRequestMappingHandlerMapping">
-		<property name="order" value="-3"/>
-		<property name="extension" value="do"/>
-	</bean>
 	<!-- 文件上传表单的视图解析器 -->  
     <bean id="multipartResolver"    
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    

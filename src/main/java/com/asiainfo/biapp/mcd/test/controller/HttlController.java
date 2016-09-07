@@ -25,7 +25,7 @@ public class HttlController extends BaseMultiActionController {
 	@Resource(name="bookService")
 	private IBookService bookService;
 	
-	@RequestMapping("/findBooks")
+	@RequestMapping
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String name=request.getParameter("name");
@@ -44,14 +44,14 @@ public class HttlController extends BaseMultiActionController {
 		return model;
 	}
 	
-	@RequestMapping("/hello")
+	@RequestMapping
 	public ModelAndView hello(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		response.getWriter().write("hello spring mvc，this is text plan");
 		return null;
 	} 
 	
-	@RequestMapping("/getBook")
+	@RequestMapping
 	@ResponseBody
 	public Book getBook(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
