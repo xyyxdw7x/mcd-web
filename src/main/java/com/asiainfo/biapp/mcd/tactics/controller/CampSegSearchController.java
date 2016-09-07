@@ -61,7 +61,7 @@ public class CampSegSearchController extends BaseMultiActionController {
     @Resource(name = "mtlSmsSendTestTask")
     private IMtlSmsSendTestTask mtlSmsSendTestTask;
     
-    @RequestMapping("/searchIMcdCamp")
+    @RequestMapping
     public ModelAndView searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
 //                initActionAttributes(request);
 
@@ -150,7 +150,7 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/searchCampsegStat")
+    @RequestMapping
     public ModelAndView searchCampsegStat( HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List statList = mpmCampSegInfoService.getDimCampsegStatList();
@@ -179,7 +179,7 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/searchDimCampDrvType")
+    @RequestMapping
     public ModelAndView searchDimCampDrvType( HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<DimCampDrvType> dimCampSceneList = mpmCampSegInfoService.getDimCampSceneList();
@@ -208,7 +208,7 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/searchMcdMpmCampSegChild")
+    @RequestMapping
     public ModelAndView searchMcdMpmCampSegChild(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         int status = 200;
