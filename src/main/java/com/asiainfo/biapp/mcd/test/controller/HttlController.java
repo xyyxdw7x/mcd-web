@@ -18,7 +18,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.test.service.IBookService;
 import com.asiainfo.biapp.mcd.test.vo.Book;
 
-@RequestMapping("/test/httl")
+@RequestMapping("/action/test/httl")
 public class HttlController extends BaseMultiActionController {
 
 	//@Autowired
@@ -60,7 +60,7 @@ public class HttlController extends BaseMultiActionController {
 		return book;
 	}
 	
-	@RequestMapping()
+	@RequestMapping
 	@ResponseBody
 	public Book getBook2(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
