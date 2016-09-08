@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
 
@@ -30,4 +31,10 @@ public interface IMcdCampsegTaskDao {
      */
     void dropTaskSendoddTabNameInMem(String taskSendoddTabName);
 
+    /**
+	 * 根据任务id获取策略信息
+	 * @param taskIds
+	 * @return
+	 */
+	public List<Map<String, Object>> getCampsegMsgByTaskIds(String taskIds[]);
 }

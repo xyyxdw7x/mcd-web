@@ -1,0 +1,30 @@
+<style>
+    .disableBtn{
+        border: 1px solid #dbdbdb;
+        color: #dbdbdb;
+        cursor: default;
+    }
+</style>
+<% for(var i = 0; i < result.data.result.length; i++) { %>
+    <li class="<%if(i%2==1){%>odd<%}else{%>even<%}%> priority-list-tbody"  style="width: 1202px;" data-id="<%=result.data.result[i].campsegId%>">
+        <span class="priority-item-leftborder fleft" style="width: 3px;">&nbsp;</span>
+        <span class="priority-item-num fleft"><%=i+1%></span>
+        <span class="priority-item-id fleft"><%=result.data.result[i].campsegId%></span>
+        <span class="priority-item-name fleft" style="text-align: left" title="<%=result.data.result[i].campsegName%>"><%=result.data.result[i].campsegName%></span>
+        <span class="priority-item-status fleft" ><%=result.data.result[i].campsegStatName%></span>
+        <span class="priority-item-daysucc fleft" ><%=result.data.result[i].yesterdaySuccessNum%></span>
+        <span class="priority-item-monsucc fleft" ><%=result.data.result[i].monthSuccessNum%></span>
+        <span class="priority-item-info fleft" ><a target="_blank" href="<%=_ctx%>/mcd/pages/tactics/tacticsInfo.jsp?campsegId=<%=result.data.result[i].campsegId%>">查看</a></span>
+        <span class="priority-item-operation fleft" >
+            <button type="button" class="bulk-quota-btn fleft list-btn quickOrder <%=formatQuickOrder(result.data.result[i].campsegStatId)%>">
+                <span class=" J_bulkStop"  >我要催单</span>
+            </button>
+        </span>
+    </li>
+<% } %>
+<%
+    function formatQuickOrder(state){
+        if(isNaN(state)) return 'disableBtn';
+        if(state != '40') return 'disableBtn';
+    }
+%>
