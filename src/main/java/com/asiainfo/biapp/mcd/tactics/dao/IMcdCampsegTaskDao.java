@@ -54,4 +54,10 @@ public interface IMcdCampsegTaskDao {
 	 * @return
 	 */
 	public List<Map<String, Object>> getCampsegMsgByTaskIds(String taskIds[]);
+
+	/**
+	 * 根据任务状态，查询任务信息  add by lixq10 2016年5月31日10:39:20
+	 * @param status
+	 */
+	public List getCampsegByStatus(short status);
 }
