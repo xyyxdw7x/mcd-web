@@ -48,7 +48,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		StringBuffer sb = new StringBuffer();
 		long startTime = new Date().getTime();
 		sb.append("select * from (")	
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num,mcoa.city_id,mcoa.channel_id,mcoa.chn_adiv_id, mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num,mcoa.city_id,mcoa.channel_id,mcoa.chn_adiv_id, mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,meicd.camp_succ_rate ")
 		  .append(" from mcd_camp_order mcoa")
 		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
@@ -64,7 +64,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" from mtl_campseg_sort where stat_date = (select max(stat_date) from mtl_campseg_sort) and CAMPSEG_TYPE=0) mcs on mcs.campseg_id= campseg.campseg_id ")
 		  .append(" group by campseg.city_id,campseg.campseg_id")
 		  .append(" ) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.city_id=meicd.city_id ")
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=1  and mct.exec_status in (50,51,59)")
+		  .append(" where mcoa.is_manual=1  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=1 ");
 		if(StringUtil.isNotEmpty(channelId)){
@@ -125,7 +125,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		List<CampsegPriorityBean> listResult = new ArrayList<CampsegPriorityBean>();
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from(")
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcoa.chn_adiv_id,mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcoa.chn_adiv_id,mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,")
 		  .append(" CEIL(sysdate-TO_DATE(to_char(mcs.create_time,'yyyy-mm-dd'), 'YYYY-MM-DD ')) IsNewDays,meicd.camp_succ_rate")
 		  .append(" from mcd_camp_order mcoa")
@@ -142,7 +142,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" group by campseg.city_id,campseg.campseg_id")
 		  .append(" ) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.city_id=meicd.city_id ")
 		  //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0 AND (MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDCG+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDZX+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_PAUSE+")");
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0  and mct.exec_status in (50,51,59)")
+		  .append(" where mcoa.is_manual=0  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0");
 		if(StringUtil.isNotEmpty(channelId)){
@@ -229,7 +229,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	public int getAutoPriorityCampsegNum(String channelId,String adivId, String cityId,String keyWords) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select count(1) from (")
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays")
 		  .append(" from mcd_camp_order mcoa")
 		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
@@ -238,7 +238,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
 		   .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0 AND (MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDCG+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDZX+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_PAUSE+")");
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0  and mct.exec_status in (50,51,59) ")
+		  .append(" where  mcoa.is_manual=0  and mct.exec_status in (50,51,59) ")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 		if(StringUtil.isNotEmpty(channelId)){
 			sb.append(" and mcoa.channel_id='"+channelId+"'");
