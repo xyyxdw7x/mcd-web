@@ -3,6 +3,7 @@ package com.asiainfo.biapp.mcd.common.dao.channel;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
@@ -22,7 +23,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 public interface DimMtlChanneltypeDao {
 
 	public List<DimPlanSrvType> getGradeList() throws MpmException;
-	public List<DimMtlChanneltype> getMtlChanneltypeByCondition(String isDoubleSelect) throws MpmException;
+	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect) throws MpmException;
 	/**
 	 * add by lixq10 获取渠道信息表  当渠道和政策有关联时 做标识
 	 * @return

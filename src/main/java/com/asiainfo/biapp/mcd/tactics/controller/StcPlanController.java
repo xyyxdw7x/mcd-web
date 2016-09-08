@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -43,8 +44,8 @@ public class StcPlanController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/initChannelType")
-	public void initChannelType(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping("/initChannel")
+	public void initChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -56,8 +57,8 @@ public class StcPlanController extends BaseMultiActionController {
 				? request.getParameter("isDoubleSelect") : "0";
 
 		try {
-			List<DimMtlChanneltype> list = commonService.getMtlChanneltypeByCondition(isDoubleSelect);
-			List<DimMtlChanneltype> listTemp = new ArrayList<DimMtlChanneltype>();
+			List<DimMtlChannel> list = commonService.getMtlChannelByCondition(isDoubleSelect);
+			List<DimMtlChannel> listTemp = new ArrayList<DimMtlChannel>();
 			//TODO BY ZK
 			// String cityId = user.getCityid();
 			String cityId = "100";
@@ -67,16 +68,16 @@ public class StcPlanController extends BaseMultiActionController {
 					if (!cityId.equals("577")) {
 						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
 						if (!"912".equals(channelIdTemp)) {
-							DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
-							dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
-							dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
-							listTemp.add(dimMtlChanneltype);
+						    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
+							listTemp.add(dimMtlChannel);
 						}
 					} else {
-						DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
-						dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
-						dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
-						listTemp.add(dimMtlChanneltype);
+					    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+						dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						dimMtlChannel.setTypeName(list.get(i).getChannelName());
+						listTemp.add(dimMtlChannel);
 					}
 				}
 			}

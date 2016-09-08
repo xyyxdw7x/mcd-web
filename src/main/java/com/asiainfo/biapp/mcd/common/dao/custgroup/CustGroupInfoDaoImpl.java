@@ -202,7 +202,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			buffer.append(" ) t2 where t2.rn = 1) dinfo");
 			buffer.append(" left join MTL_GROUP_INFO cinfo on dinfo.custom_group_id = cinfo.custom_group_id");
 			buffer.append(" where (cinfo.create_user_id =  '"+userId+"' or  cinfo.custom_group_id in (select custom_group_id from mtl_group_push_info where create_push_target_id = '"+userId+"'))");
-            buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mtl_camp_seginfo mcs,MTL_CAMPSEG_CUSTGROUP mcc where mcs.campseg_id = mcc.campseg_id and mcc.custgroup_type = 'CG'and mcs.campseg_stat_id in ('50','54','59'))");
+            buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mtl_camp_seginfo mcs,MTL_CAMPSEG_CUSTGROUP mcc where mcs.campseg_id = mcc.campseg_id and mcs.campseg_stat_id in ('50','54','59'))");
 			    buffer.append(") tab) re ");
 
 			buffer.append(" where ((re.invalid_flag = 1 and re.custom_status_id <>2)  or re.custom_status_id='9' or re.custom_num='0') ");// re.custom_status_id <>2：客户群状态不等于删除状态
@@ -230,7 +230,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		buffer.append(" from mtl_camp_seginfo mcs");
 		buffer.append(" left join MTL_CAMPSEG_CUSTGROUP mcc");
 		buffer.append(" on mcs.campseg_id = mcc.campseg_id");
-		buffer.append(" where mcc.CUSTGROUP_TYPE='CG' and mcc.CUSTGROUP_ID = ?");
+		buffer.append(" where mcc.CUSTGROUP_ID = ?");
 		buffer.append(" and mcs.CAMPSEG_STAT_ID NOT IN (91)");
 		buffer.append(" union select custom_group_id from MTL_GROUP_INFO where create_user_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
 		buffer.append(" union select custom_group_id from mtl_group_push_info where create_push_target_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
@@ -466,7 +466,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         try {
             StringBuffer sql = new StringBuffer("   select mcli.data_date  max_data_time , mcli.custom_num sum_custom_num from mtl_custom_list_info mcli where mcli.custom_group_id in (   "); 
             sql.append("   select mcc.custgroup_id from mtl_camp_seginfo mcs left join MTL_CAMPSEG_CUSTGROUP mcc on mcs.campseg_id = mcc.campseg_id ") ;        
-            sql.append("  where mcc.custgroup_type = 'CG' and mcs.campseg_Id= ? ) order by mcli.data_date desc ") ;     
+            sql.append("  where mcs.campseg_Id= ? ) order by mcli.data_date desc ") ;     
             list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
             
         } catch (Exception e) {

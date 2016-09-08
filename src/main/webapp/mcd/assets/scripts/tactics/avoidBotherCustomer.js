@@ -380,7 +380,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxF
 			new searchCustomerTypeView({el:options.currentDom});
 		},
 		loadAllChannelType:function(){
-			var url=_ctx+"/StcPlan/initChannelType?isDoubleSelect=0";
+			var url=_ctx+"/StcPlan/initChannel?isDoubleSelect=0";
 			$.ajax({
 				type:"POST",
 			    url: url ,

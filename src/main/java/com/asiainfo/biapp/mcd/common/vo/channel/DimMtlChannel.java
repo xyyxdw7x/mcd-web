@@ -20,8 +20,39 @@ public class DimMtlChannel implements java.io.Serializable {
 	//	private String cityId;
 	private String createUser; //渠道创建人,空代表共有渠道
 	// Constructors
+//  IMCD_ZJ 为了统一前台模板使用  起别名
+    private String typeId;
+    private String typeName;
+    private Integer displayOrder;
+    
+    
+	
+	public Integer getDisplayOrder() {
+        return displayOrder;
+    }
 
-	public String getCampId() {
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+    
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getCampId() {
 		return campId;
 	}
 

@@ -65,26 +65,22 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		return dimPlanSrvTypeList;
 	}
 	@SuppressWarnings("unchecked")
-	public List<DimMtlChanneltype> getMtlChanneltypeByCondition(String isDoubleSelect){
-		List<DimMtlChanneltype> list=null;
-		String sql = "select * from DIM_MTL_CHANNELTYPE dmc where 1=1 ";
+	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect){
+		List<DimMtlChannel> list=null;
+		String sql = "select * from DIM_MTL_CHANNEL dmc where 1=1 ";
 		if("1".equals(isDoubleSelect)){
-			sql += " and dmc.channeltype_id in (902,903,906)";
+			sql += " and dmc.channel_id in (902,903,906)";
 		}
 		sql += " order by dmc.display_order";
 		list = this.getJdbcTemplate().query(sql,new RowMapper(){
 
 			@Override
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				DimMtlChanneltype dimMtlChanneltype=new DimMtlChanneltype();
-				dimMtlChanneltype.setActiveFlag(rs.getShort("ACTIVE_FLAG"));
-				dimMtlChanneltype.setAutoSendOdd(rs.getInt("AUTO_SENDODD"));
-				dimMtlChanneltype.setChanneltypeId(rs.getShort("CHANNELTYPE_ID"));
-				dimMtlChanneltype.setChanneltypeName(rs.getString("CHANNELTYPE_NAME"));
-				dimMtlChanneltype.setContactType(rs.getInt("CONTACT_TYPE"));
-				dimMtlChanneltype.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
-				dimMtlChanneltype.setInitiativeType(rs.getInt("INITIATIVE_TYPE"));
-				return dimMtlChanneltype;
+				DimMtlChannel dimMtlChannel=new DimMtlChannel();
+				dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
+				dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
+				dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
+				return dimMtlChannel;
 			}
 			
 		});

@@ -478,7 +478,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
          String channelAdivId = "";  //新增运营位id
          String adivName = "";       //运营位名称
          String channelAdivName = "";//短信模板名称
-         String eventRuleDesc = "";  //复杂事件描述信息
+//         String eventRuleDesc = "";  //复杂事件描述信息
          String paramDays = "";
          String paramNum = "";
          
@@ -527,7 +527,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 channelAdivName = (String) tmap.get("adiv_name");
             }
             adivName = (String) tmap.get("adiv_name");
-            eventRuleDesc = (String)tmap.get("EVENT_RULE_DESC");
+//            eventRuleDesc = (String)tmap.get("EVENT_RULE_DESC");
             
             paramDays = String.valueOf(tmap.get("PARAM_DAYS"));
             paramNum = String.valueOf(tmap.get("PARAM_NUM"));
@@ -577,7 +577,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             dChannelDataJSON.put("channelAdivId", channelAdivId == null ? "" : channelAdivId);
             dChannelDataJSON.put("adivName", adivName == null ? "" : adivName);
             dChannelDataJSON.put("channelAdivName", channelAdivName == null ? "" : channelAdivName);
-            dChannelDataJSON.put("eventRuleDesc", eventRuleDesc == null ? "" : eventRuleDesc);
+//            dChannelDataJSON.put("eventRuleDesc", eventRuleDesc == null ? "" : eventRuleDesc);
             dChannelDataJSON.put("paramDays", paramDays == null ? "" : paramDays);
             dChannelDataJSON.put("paramNum", paramNum == null ? "" : paramNum);
             dChannelDataJSON.put("awardMount", awardMount == 0D ? "" : awardMount);

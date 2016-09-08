@@ -10,54 +10,54 @@ public class MtlChannelDef implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@javax.persistence.Column(name="USERSEG_ID")
+	@Transient
 	private Short  usersegId;
 	@javax.persistence.Column(name="CAMPSEG_ID")
 	private String  campsegId;
-	@javax.persistence.Column(name="CHANNEL_NO")
+	@Transient
 	private Integer  channelNo;
 	
-	@javax.persistence.Column(name="CHANNEL_PRIO")
+	@Transient
 	private Integer channelPrio;
 	@javax.persistence.Column(name="CHANNEL_ID")
 	private String channelId;
-	@javax.persistence.Column(name="CHANNELTYPE_ID")
+	@Transient
 	private Integer channeltypeId;
 	@javax.persistence.Column(name="CONTACT_TYPE")
 	private Integer contactType;
-	@javax.persistence.Column(name="SEND_TYPE_ID")
+	@Transient
 	private Short sendTypeId;/** 渠道（短信）发送的具体方式 ：群发？实时*/
-	@javax.persistence.Column(name="CHANNEL_CAMP_CONTENT")
+	@Transient
 	private String channelCampContent;
-	@javax.persistence.Column(name="FILE_PATH")
+	@Transient
 	private String filePath;
-	@javax.persistence.Column(name="CHANNEL_EXTEND_INFO")
+	@Transient
 	private String channelExtendInfo;
-	@javax.persistence.Column(name="FMT_MESS_FLAG")
+	@Transient
 	private Short fmtMessFlag;
-	@javax.persistence.Column(name="TEST_PRODUCT_NO")
+	@Transient
 	private String testProductNo;
 	@Transient
 	private String channelName;
-	@javax.persistence.Column(name="FEEDBACKINFO")
+	@Transient
 	private String feedbackinfo;
-	@javax.persistence.Column(name="ORI_CHANNEL_CONTENT")
+	@Transient
 	private String oriChannelContent;
 	@javax.persistence.Column(name="IF_HAVE_VAR")
 	private Short ifHaveVar; //是否具有替换符,0:无;1:有
 	@javax.persistence.Column(name="EXEC_CONTENT")
 	private String execContent;
-	@javax.persistence.Column(name="SX_RECOMMEND_DESC")
+	@Transient
 	private String sxRecommendDesc;//陕西推荐对象描述
-	@javax.persistence.Column(name="ONLINE_SERVICE_URL")
+	@Transient
 	private String onlineServiceUrl;//陕西网上营业厅url
-	@javax.persistence.Column(name="EXEC_CONTENT_TYPE")
+	@Transient
 	private String exeContentType;//营销用语类型
 	@Transient
 	private String campsegInstruct;//营销指令
 	@javax.persistence.Column(name="TARGER_USER_NUMS")
 	private int targetUserNums;  //目标客户群
-	@javax.persistence.Column(name="SEND_TIME_LIMIT")
+	@Transient
 	private Integer sendTimeLimit;//短信派发时限字段，用于限定渠道短信派发的时间（单位：天）:
 	@javax.persistence.Column(name="UPDATE_CYCLE")
 	private int updateCycle;
@@ -75,7 +75,7 @@ public class MtlChannelDef implements java.io.Serializable {
 	private String sendSms ; // 短信用语
 	@javax.persistence.Column(name="CHANNEL_ADIV_ID")
 	private String channelAdivId;  //运营位id
-	@javax.persistence.Column(name="CEP_TRIGGER_FLAG")
+	@Transient
 	private int cepTriggerFlag;  //判断是否是实施触发
 	@Transient
 	private boolean isChoose;  //该渠道在修改之前是否进行过操作  比如增删改查
