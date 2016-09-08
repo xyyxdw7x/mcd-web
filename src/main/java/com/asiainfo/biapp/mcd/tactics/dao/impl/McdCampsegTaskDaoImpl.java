@@ -169,7 +169,6 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
           try {
               this.getJdbcTemplateTool().save(task);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
     }
@@ -195,4 +194,17 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
     }
 
 
+	@Override
+	public List getCampsegByStatus(short status){
+		List<Map<String, Object>> list = null;
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(" select * from MCD_CAMPSEG_TASK where exec_status =?");
+			log.info("**********根据状态查询任务sql:"+buffer.toString()+" ;status="+status);
+			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{status});
+		} catch (Exception e) {
+			log.error("根据状态查询策略异常："+e);
+		}
+		return list;
+	}
 }

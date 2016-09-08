@@ -221,4 +221,11 @@ public interface IMpmCampSegInfoDao {
      */
     public String getMtlCampsegCustGroupId(String campsegId);
     
+	/**
+	 * 根据策略id查询出策略信息
+	 * @param campsegId
+	 * @return
+	 */
+	public List getCampsegInfoById(String campsegId);
+    
 }

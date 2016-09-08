@@ -29,5 +29,34 @@
 			<ref bean="quotaConfigCityDayDao" />
 		</property>
 	</bean>
+	
+		<!--创建Duser表的过程  add by lixq10  -->
+	<bean id="mcdCreateDuserTableTask" class="com.asiainfo.biapp.mcd.tactics.task.McdCreateDuserTableTask">
+	</bean>
+	<bean id="mcdCreateDuserTableJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="mcdCreateDuserTableTask" />
+		</property>
+		<property name="targetMethod">
+			<value>runTask</value>
+		</property>
+	</bean>
+	<bean id="mcdCreateDuserTableTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="mcdCreateDuserTableJob" />
+		<property name="cronExpression">
+			<value>0 0/2 * * * ?</value>
+		</property>
+	</bean>
+	
+		<bean id="jobTriggerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- <property value="classpath:config/aibi_mpm/quartz.properties" name="configLocation" />  -->
+	    <property name="startupDelay" value="120" />
+		<property name="triggers">
+			<list>
+				<ref bean="mcdCreateDuserTableTrigger" />
+			</list>
+		</property>
+	</bean>
 
 </beans>

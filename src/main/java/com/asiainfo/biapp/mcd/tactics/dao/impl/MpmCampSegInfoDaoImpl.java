@@ -868,7 +868,6 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         
         String sql = "select CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP where campseg_id = ?";
         Map map = this.getJdbcTemplate().queryForMap(sql, new Object[] {campsegId });
-        
         String id = null;
         if(map != null){
             id = map.get("CUSTGROUP_ID").toString();
@@ -876,5 +875,20 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         return id;
     }
 
+	@Override
+	public List getCampsegInfoById(String campsegId){
+		List<Map<String, Object>> list = null;
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("select * from mtl_camp_seginfo  ")
+				  .append(" where campseg_id = ( select campseg_pid from mtl_camp_seginfo where campseg_id=?)")
+				  .append(" or campseg_pid = ( select campseg_pid from mtl_camp_seginfo where campseg_id=?)");
+			log.info("查询策略组："+buffer.toString());
+			list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] {campsegId,campsegId });
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return list;
+	}
 
 }
