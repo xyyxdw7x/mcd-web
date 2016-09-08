@@ -55,5 +55,11 @@ public interface IMcdMtlGroupInfoDao {
      * @return
      */
     List getMtlCustomListInfo(String custgroupId);
+	/**
+	 * 根据客户群id查询客户群信息
+	 * @param custGroupId
+	 * @return
+	 */
+	public MtlGroupInfo getCustGroupInfoById(String custGroupId);
 
 }

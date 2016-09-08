@@ -890,5 +890,48 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		}
 		return list;
 	}
+	
+	@Override
+	public List getSqlFireTableColumnsInMem(String tableName) {
+	    List listResult = null;
+	    try {                                        
+	        StringBuffer buffer = new StringBuffer();
+	        buffer.append("select * from user_tab_columns where Table_Name=UPPER(?)  order by column_id");
+	        listResult = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[]{tableName});
+	    } catch (Exception e) {
+	        log.error("读取表结构异常："+e);
+	    }
+	    return listResult;
+	}
+	
+	@Override
+	public void excSqlInMcdAdInMem(String sqlStr) {
+		if(StringUtil.isNotEmpty(sqlStr)){
+			this.getJdbcTemplate().execute(sqlStr);
+		}
+	} 
 
+	@Override
+	public void excSqlInMcd(String sqlStr) {
+		if(StringUtil.isNotEmpty(sqlStr)){
+			try {
+				this.getJdbcTemplate().execute(sqlStr);
+			} catch (Exception e) {
+				log.error(e);
+			}
+		}
+	}
+	
+	@Override
+	public void updateCampsegById(String campsegId,String tableName,int targetUserNum){
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(" update MTL_CAMP_SEGINFO set targer_user_nums = ?,init_cust_list_tab=? where campseg_id=? or campseg_pid=?");
+			log.info("更新MTL_CAMP_SEGINFO表sql:"+buffer.toString()+"campsegId="+campsegId);
+			this.getJdbcTemplate().update(buffer.toString(), new Object[] {targetUserNum,tableName,campsegId,campsegId });
+		} catch (Exception e) {
+			log.error("更新策略目标客户群数量和清单表名称异常："+e);
+		}
+	}
+	
 }

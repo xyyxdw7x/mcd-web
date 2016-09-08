@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
@@ -1019,5 +1021,268 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		return sql;
 	}
 	
+    /**
+     * 根据代替SQLFIRE内的表在MCD里创建表的同义词
+     * @param mtlCuserTableName
+     */
+    @Override
+    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+        String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+        String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
+        this.getJdbcTemplate().execute(sql);
+    } 
+    
+    @Override
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String basicEventSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) {
+		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+//		使用sql数据源
+		JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+		List<Map> list = null;
+		String sql = "";
+		try {
+			sql = this.createSqlStrTemp(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
+			StringBuffer buffer = new StringBuffer();
+			StringBuffer buffer1 = new StringBuffer();
+			
+			//获取当前客户群的
+			MtlGroupInfo groupInfo = this.getCustGroupInfoById(customgroupid);
+			int updateCycle = groupInfo.getUpdateCycle();
+			
+			//组装该分区名称，
+			String partitionName ="";
+			if(updateCycle == 3){  // 日周期
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+				partitionName = "p_" + df.format(new Date());   //当前分区名称 
+			}else if(updateCycle == 2){  //月周期
+				SimpleDateFormat df1 = new SimpleDateFormat("yyyyMM");
+				partitionName = "p_" + df1.format(new Date());   //当前分区名称 
+			}
+			
+			//判断当前分区是否存在
+			List partitionList = this.checkPartitionIsExist(tableName, partitionName);
+			List isPartitionTable = this.checkTableIsPartition(tableName);
+			String tableSpaceName = "";
+			if(CollectionUtils.isNotEmpty(isPartitionTable)){
+				tableSpaceName = String.valueOf(((Map)isPartitionTable.get(0)).get("TABLESPACE_NAME"));
+			}
+			if(StringUtil.isEmpty(tableSpaceName) || "null".equals(tableSpaceName) ){ //为空，代表的就是分区表
+				if(partitionList.size() == 0){  //该分区不存在 
+					String createPartition = "";
+					String createPartition1 = "";
+					if(updateCycle == 3){  // 日周期
+//						直接添加最新的分区
+						SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+						createPartition = "alter table "+tableName+" split partition p_max at ('"+df.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
+						createPartition1 = "alter table "+tabSpace+"."+tableName+" split partition p_max at ('"+df.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
+					}else if(updateCycle == 2){  //月周期
+						SimpleDateFormat df1 = new SimpleDateFormat("yyyyMM");
+						createPartition = "alter table "+tableName+" split partition p_max at ('"+df1.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
+						createPartition1 = "alter table "+tabSpace+"."+tableName+" split partition p_max at ('"+df1.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
+					}
+					log.info("为mcd_ad库创建分区语句："+createPartition1);
+					if(StringUtil.isNotEmpty(createPartition1)){
+						jt.execute(createPartition1);
+					}
+				}
+			}
+			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
+			
+			if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+				if(removeRepeatFlag){  //当是true的时候需要去重复数据
+					buffer.append("DECLARE ");
+					buffer.append("CURSOR cur IS ");
+					buffer.append("SELECT * FROM ").append(tableListName).append(" mc1 ").append(" WHERE ROWID=(SELECT MAX(ROWID) FROM ").append(tableListName).append(" mc2 ");
+					buffer.append("WHERE mc1.PRODUCT_NO=mc2.PRODUCT_NO)").append(";");
+					buffer.append("TYPE rec IS TABLE OF ").append(tableListName).append("%ROWTYPE; ");
+					buffer.append("recs rec; ");
+					buffer.append("BEGIN ");
+					buffer.append("OPEN cur; ");
+					buffer.append("WHILE (TRUE) LOOP ");
+					buffer.append("FETCH cur BULK COLLECT ");
+					buffer.append("INTO recs LIMIT 20000; ");
+					buffer.append("FORALL i IN 1 .. recs.COUNT ");
+					buffer.append("INSERT INTO /*+append*/  ").append(tableName).append(" VALUES recs (i);");
+					buffer.append("COMMIT; ");
+					buffer.append("EXIT WHEN cur%NOTFOUND; ");
+					buffer.append("END LOOP; ");
+					buffer.append("CLOSE cur; ");
+					buffer.append("END; ");
+					buffer1 =   buffer;
+				}else{
+					buffer.append("DECLARE ");
+					buffer.append("CURSOR cur IS ");
+					buffer.append("SELECT * FROM ").append(tableListName).append(";");
+					buffer.append("TYPE rec IS TABLE OF ").append(tableListName).append("%ROWTYPE; ");
+					buffer.append("recs rec; ");
+					buffer.append("BEGIN ");
+					buffer.append("OPEN cur; ");
+					buffer.append("WHILE (TRUE) LOOP ");
+					buffer.append("FETCH cur BULK COLLECT ");
+					buffer.append("INTO recs LIMIT 20000; ");
+					buffer.append("FORALL i IN 1 .. recs.COUNT ");
+					buffer.append("INSERT INTO /*+append*/  ").append(tableName).append(" VALUES recs (i);");
+					buffer.append("COMMIT; ");
+					buffer.append("EXIT WHEN cur%NOTFOUND; ");
+					buffer.append("END LOOP; ");
+					buffer.append("CLOSE cur; ");
+					buffer.append("END; ");
+					buffer1 =   buffer;
+				}
+			}else{
+				buffer.append("INSERT INTO ").append(tabSpace).append(".").append(tableName).append(sql);
+				buffer1.append("INSERT INTO ").append(tabSpace).append(".").append(tableName).append(sql);
+			}
+			log.info("sql:"+buffer.toString());
+			jt.execute(buffer.toString());
+		} catch (Exception e) {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("update mtl_group_info set custom_status_id=? WHERE custom_group_id = ? ");
+			log.info("更新客户群状态："+sbuffer.toString());
+//			客户群状态10：表示客户群入库错误
+			this.getJdbcTemplate().update(sbuffer.toString(), new Object[] { 10, customgroupid });
+			log.error("",e);
+		}
+	}
+	/**
+	 * 判断是否是分区表
+	 * @param tableName
+	 * @return
+	 */
+	private List checkTableIsPartition(String tableName){
+	    JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("select * from user_tables where table_name =UPPER(?)");
+		log.info("查询分区是否存在："+buffer.toString());
+		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName});
+		return list;
+	}
+    /**
+	 * 判断表对应的分区是否存在,前提必须是分区表
+	 * @param tableName
+	 * @param partitionName
+	 * @return
+	 */
+	private List checkPartitionIsExist(String tableName,String partitionName){
+	    JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("select table_name,partition_name,high_value,tablespace_name from user_tab_partitions ")
+			  .append(" where table_name=UPPER(?) and partition_name=UPPER(?)");
+		log.info("查询分区是否存在："+buffer.toString());
+		List list = jt.queryForList(buffer.toString(),new Object[]{tableName,partitionName});
+		return list;
+	}
+	@Override
+	public MtlGroupInfo getCustGroupInfoById(String custGroupId){
+		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
+		String sqlStr = "select * from mtl_group_info where custom_group_id=?";
+		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sqlStr,new Object[]{custGroupId});
+		for (Map map : list) {
+			MtlGroupInfo info = new MtlGroupInfo();
+			info.setCustomGroupId((String) map.get("custom_group_id"));
+			info.setCustomGroupName((String) map.get("custom_group_name"));
+			info.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("update_cycle"))));
+			result.add(info);
+		}
+		return result.get(0);
+	}
+    
+    /**
+	 * 查询客户群与时机组合的客户群清单列表语句    区别createSqlStr()方法：createSqlStr都是select product_no ,createSqlStrTemp都是select *
+	 * 是为了建表专用
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param customgroupid
+	 * @return
+	 */
+	private String createSqlStrTemp(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
+		StringBuffer buffer = new StringBuffer();
+		String sql = "";
+		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+					  buffer.append("select * from ("+bussinessLableSql+") T4 where 1=1")
+					  .append(" and T4.product_no in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append(bussinessLableSql);
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append(basicEventSql);
+			}
+		}else{
+			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+				buffer.append("select * from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql+")")
+					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append("select * from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql)
+					  .append(")");
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append("select * from ")
+					  .append(tableListName)
+				      .append(" where PRODUCT_NO in (")
+				      .append(basicEventSql)
+				      .append(")");
+			}else{					//值选择基础客户群
+				buffer.append("select * from ")
+					  .append(tableListName)
+					  .append(" where 1=1");
+			}
+		}
+		
+		sql = buffer.toString();
+		StringBuffer sbuffer1 = new StringBuffer();
+		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+			String orderProductNos[] = orderProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<orderProductNos.length;i++){
+				if(i != orderProductNos.length-1){
+					temp += ("'"+orderProductNos[i]+"',");
+				}else{
+					temp += ("'"+orderProductNos[i]+"'");
+				}
+			}
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer1.append("select * from ("+sql+") ttt where 1=1");
+				sbuffer1.append(" and ttt.PRODUCT_NO in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer1.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer1.toString();
+		}
+		StringBuffer sbuffer2 = new StringBuffer();
+		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+			String excludeProductNos[] = excludeProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<excludeProductNos.length;i++){
+				if(i != excludeProductNos.length-1){
+					temp += ("'"+excludeProductNos[i]+"',");
+				}else{
+					temp += ("'"+excludeProductNos[i]+"'");
+				}
+			}
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer2.append("select * from ("+sql+") tttt where 1=1 ");
+				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer2.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID NOT IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer2.toString();
+		}
+		log.info("查询客户群与时机组合的客户群清单列表语句"+sql);
+		return sql;
+	}
 	
 }

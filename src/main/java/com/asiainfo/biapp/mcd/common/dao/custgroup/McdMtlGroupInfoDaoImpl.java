@@ -391,5 +391,20 @@ public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupI
         }
         return list;
     }
+    
+	@Override
+	public MtlGroupInfo getCustGroupInfoById(String custGroupId){
+		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
+		String sqlStr = "select * from mtl_group_info where custom_group_id=?";
+		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sqlStr,new Object[]{custGroupId});
+		for (Map map : list) {
+			MtlGroupInfo info = new MtlGroupInfo();
+			info.setCustomGroupId((String) map.get("custom_group_id"));
+			info.setCustomGroupName((String) map.get("custom_group_name"));
+			info.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("update_cycle"))));
+			result.add(info);
+		}
+		return result.get(0);
+	}
 
 }

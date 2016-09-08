@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -36,6 +37,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
@@ -52,6 +54,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
@@ -1054,7 +1057,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
              }
              
-             
                 String campsegStatId = null;
                 List list = campSegInfoDao.getCampSegInfoByApproveFlowId(assing_id);
                 Map campSegInfoMap = null;
@@ -1066,8 +1068,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 int endDate = campSegInfoMap.get("end_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("end_date").toString().replaceAll("-",""));
                 int newDate = Integer.parseInt(DateTool.getStringDate(new Date(), "yyyyMMdd"));
                 String pidSampsegId = campSegInfoMap.get("campseg_id") == null ? "" : campSegInfoMap.get("campseg_id").toString();
-                
-             
              
              //根据工单 编号获取子策略（规则）
             List mtlCampSeginfoList = campSegInfoDao.getChildCampSeginfoByAssingId(assing_id);
@@ -1126,9 +1126,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
                 short approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_PASSED;
                 campSegInfoDao.updateCampsegApproveStatusZJ(assing_id, "", approveResult,campsegStatId);
-                
-
-                
                 
                 //策略包整体审核通过，且子策略有短信渠道,且没有超期
                 if(newDate < endDate){
@@ -1295,8 +1292,150 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
               .append("<IF_CURRENT_NODE>N</IF_CURRENT_NODE>")
               .append("</APPROVE_INFO>")
               .append("</MARKET_APPROVE_INFO>");
-        
         return buffer.toString();
     }
+    
+    @Override
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
+		List<Map> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
+		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
+		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
+		String province = Configure.getInstance().getProperty("PROVINCE");
+		//查询客户群的周期性
+		MtlGroupInfo groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+		int updateCycle = groupInfo.getUpdateCycle();
+		if(StringUtil.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
+//			创建分区   edit by lixq10 2016年6月2日21:13:06
+			try {
+				campSegInfoDao.excSqlInMcdAdInMem(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+				//MCD表创建同义词
+				custGroupInfoService.createSynonymTableMcdBySqlFire(tabName);
+
+			} catch (Exception e) {
+				log.error(e);
+			}
+		}else{
+			campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+		}
+		return tabName;
+	}
+    
+    @Override
+	public void createDuserIndex(String tableName,String custGroupId){
+		try {
+			if(tableName.indexOf("_") != -1){
+				String ss[] = tableName.split("_");
+				
+				//查询客户群的周期性
+				MtlGroupInfo groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+				int updateCycle = groupInfo.getUpdateCycle();
+				String sql = "";
+				if("2".equals(updateCycle) || "3".equals(updateCycle)){
+					sql = "create index INDEX_"+(ss[ss.length-1])+"_0 ON "+tableName+"(PRODUCT_NO) LOCAL";
+				}else{
+					sql = "create index INDEX_"+(ss[ss.length-1])+"_0 ON "+tableName+"(PRODUCT_NO) ";
+				}
+				campSegInfoDao.excSqlInMcdAdInMem(sql);
+				
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+		
+	}
+    
+    /**
+	 * 创建mcd_ad分区
+	 * @param tableName
+	 * @param tableModle
+	 * @return
+	 */
+	private String getCreateDuserSQLForSqlfire(String tableName,String tableModle,int updateCycle){
+		String result = "";
+		List columnList = this.getSqlFireTableColumns(tableModle);
+		StringBuffer buffer = new StringBuffer();
+		for(int i = 0;i<columnList.size();i++){
+			Map<String,Object> tmap = (Map<String, Object>) columnList.get(i);
+			String columnName = (String)tmap.get("column_name");
+			String dataType = (String)tmap.get("data_type");
+			String dataLength = String.valueOf(tmap.get("data_length"));
+			if(StringUtil.isNotEmpty(dataLength)){
+				buffer.append(" ").append(columnName).append(" ").append(dataType).append("(").append(dataLength).append("),");
+			}else{
+				buffer.append(" ").append(columnName).append(" ").append(dataType);
+			}
+		}
+		
+		StringBuilder strRet = new StringBuilder();
+		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+		if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+			strRet.append("create table ").append(tabSpace).append(".").append(tableName).append(" ");
+		}else{
+			strRet.append("create table ").append(tabSpace).append(".").append(tableName).append(" ");
+		}
+		
+		//创建分区
+		StringBuilder buffer1 = new StringBuilder();
+		if(updateCycle == 3){  // 日周期
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+			buffer1.append(" partition by range (DATA_DATE) (")
+			  .append(" partition p_"+df.format(new Date())+" values less than ("+df.format(new Date())+"),")
+			  .append(" partition p_max values less than (maxvalue))");
+		}else if(updateCycle == 2){  //月周期
+			SimpleDateFormat df1 = new SimpleDateFormat("yyyyMM");
+			buffer1.append(" partition by range (DATA_DATE) (")
+			  .append(" partition p_"+df1.format(new Date())+" values less than ("+df1.format(new Date())+"),")
+			  .append(" partition p_max values less than (maxvalue))");
+		}
+		
+		result = strRet.toString()+" ("+buffer.toString().substring(0, buffer.toString().length()-1)+") "+buffer1.toString();
+		log.info("**************创建MCD_AD库分区表："+result);
+		return result;
+	}
+	   /**
+  * 根据表名读取表结构
+  * @param tableName
+  * @return
+  */
+ private List getSqlFireTableColumns(String tableName){
+     return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
+ }
+ 
+	@Override
+	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo){
+		int custCount = 0;
+		try {
+			/*String bussinessLableSql = null;
+			if(null != bussinessLableTemplate){
+				bussinessLableSql = this.getSql(bussinessLableTemplate, local);
+			}
+			String basicEventSql = null;
+			if(null != basicEventTemplate){
+				basicEventSql = this.getSql(basicEventTemplate, local);
+			}*/
+			custCount = custGroupInfoService.getCustInfoCount(customgroupid,null,null,orderProductNo,excludeProductNo);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		
+		return custCount;
+	}
+	
+	@Override
+	public void insertCustGroupNewWay(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) {
+		try {
+			/*if(null != bussinessLableTemplate){
+				bussinessLableSql = this.getSql(bussinessLableTemplate, local);
+			}
+			String basicEventSql = null;
+			if(null != basicEventTemplate){
+				basicEventSql = this.getSql(basicEventTemplate, local);
+			}*/
+			custGroupInfoService.insertCustGroupNewWay(customgroupid,null,null,orderProductNo,excludeProductNo,tableName,removeRepeatFlag);
+		} catch (Exception e) {
+			log.error("",e);
+		}
+	}
     
 }

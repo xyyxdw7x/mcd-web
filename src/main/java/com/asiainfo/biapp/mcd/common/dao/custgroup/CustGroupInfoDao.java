@@ -131,8 +131,23 @@ public interface CustGroupInfoDao {
 	public List getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId);
 	List getAfterBotherAvoid1(String bussinessLableSql, String basicEventSql, String channelId, int campsegTypeId,
 			String customgroupid, String orderProductNo, String excludeProductNo, int avoidBotherFlag,
-			int contactControlFlag, String cityId, String cityType, String frequencyTime, int updateCycle,
-			String campsegId);
+			int contactControlFlag, String cityId, String cityType, String frequencyTime, int updateCycle,String campsegId);
 	
-
+	 /**
+     * 根据代替SQLFIRE内的表在MCD里创建表的同义词
+     * @param mtlCuserTableName
+     */
+    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName);
+    
+    /**
+	 * 插入清单表新方式
+	 * @param customgroupid
+	 * @param bussinessLableSql
+	 * @param ARPUSql
+	 * @param orderProductNo
+	 * @param excludeProductNo
+	 * @return
+	 */
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	MtlGroupInfo getCustGroupInfoById(String custGroupId);
 }

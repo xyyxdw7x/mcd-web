@@ -132,6 +132,23 @@ public interface CustGroupInfoService {
 	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,String cityId,String campsegId,int avoidBotherFlag,int flag);
 	MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId, String channelId, int campsegCityType);
 	
+    /**
+     * 根据代替SQLFIRE内的表在MCD里创建表的同义词
+     * @param mtlCuserTableName
+     */
+    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName);
+    
+    /**
+	 * 插入清单表新方式
+	 * @param customgroupid
+	 * @param bussinessLableSql
+	 * @param ARPUSql
+	 * @param orderProductNo
+	 * @param excludeProductNo
+	 * @return
+	 */
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	
 	
 	
 }

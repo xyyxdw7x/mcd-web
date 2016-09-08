@@ -18,6 +18,7 @@ public class MpmUtil {
 	private static Logger log = LogManager.getLogger();
 	public static final int[] NUM_DATA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	public static String lastCampsegTaskId = "";//记录最新的活动或任务ID值
+	public static String lastTabTime = "";//记录最新的数据表时间戳后缀
 	   /** 数据库保存的日期格式 */
     public static final String DATE_DB_FORMAT = "yyyy-MM-dd";
     public static final String DATE_DB_FORMAT_YM = "yyyy-MM";
@@ -124,5 +125,21 @@ public class MpmUtil {
 			sb.append(NUM_DATA[index]);
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * 获取绝对唯一的时间戳
+	 * @return
+	 */
+	public synchronized static String convertLongMillsToYYYYMMDDHHMMSSSSS() {
+		FastDateFormat df = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
+		String dateStr = df.format(new Date());
+		if (StringUtil.isNotEmpty(lastTabTime)) {
+			while (Long.parseLong(dateStr) == Long.parseLong(lastTabTime)) {
+				dateStr = df.format(new Date());
+			}
+		}
+		lastTabTime = dateStr;
+		return lastTabTime;
 	}
 }

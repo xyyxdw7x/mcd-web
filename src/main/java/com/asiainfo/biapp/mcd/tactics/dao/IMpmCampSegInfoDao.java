@@ -227,5 +227,30 @@ public interface IMpmCampSegInfoDao {
 	 * @return
 	 */
 	public List getCampsegInfoById(String campsegId);
+    /**
+     * 根据表明读取表结构（SQLFire）
+     * @param tableName
+     * @return
+     */
+    public List getSqlFireTableColumnsInMem(String tableName);
     
+    /**
+     * 
+     * @param sqlStr   在mcd_ad库执行
+     */
+    public void excSqlInMcdAdInMem(String sqlStr);
+    
+    /**
+     * 
+     * @param sqlStr:待执行的sql语句  在mcd库执行
+     */
+    public void excSqlInMcd(String sqlStr);
+    
+	/**
+	 * 将目标客户群数量、D表名称更新至策略主表  add by lixq10 2016年5月31日15:19:48
+	 * @param campsegId
+	 * @param tableName
+	 * @param state
+	 */
+	public void updateCampsegById(String campsegId,String tableName,int targetUserNum);
 }
