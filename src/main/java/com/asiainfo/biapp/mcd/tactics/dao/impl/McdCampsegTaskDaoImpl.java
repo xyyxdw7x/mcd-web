@@ -39,7 +39,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
     public void updateTaskPauseComment(String campsegId, String pauseComment) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(" update MCD_CAMPSEG_TASK  set pause_comment  = ? where campseg_id in ( ")
-              .append(" select campseg_id from MTL_CAMP_SEGINFO where campseg_pid =?) ");
+              .append(" select campseg_id from mcd_camp_def where campseg_pid =?) ");
         this.getJdbcTemplate().update(buffer.toString(), new Object[] {pauseComment,campsegId });
         
     }
@@ -156,8 +156,8 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 			}
 			try {
 				StringBuffer buffer = new StringBuffer();
-				buffer.append("select MCD_CAMPSEG_TASK.Task_Id,mtl_camp_seginfo.campseg_id,mtl_camp_seginfo.cep_event_id,mtl_camp_seginfo.campseg_name ")
-					  .append(" from MCD_CAMPSEG_TASK left join mtl_camp_seginfo on MCD_CAMPSEG_TASK.Campseg_Id = mtl_camp_seginfo.campseg_id")
+				buffer.append("select MCD_CAMPSEG_TASK.Task_Id,mcd_camp_def.campseg_id,mcd_camp_def.cep_event_id,mcd_camp_def.campseg_name ")
+					  .append(" from MCD_CAMPSEG_TASK left join mcd_camp_def on MCD_CAMPSEG_TASK.Campseg_Id = mcd_camp_def.campseg_id")
 					  .append(" where MCD_CAMPSEG_TASK.Task_Id in ("+taskIdTemp.substring(0, taskIdTemp.length()-1)+")");
 				return this.getJdbcTemplate().queryForList(buffer.toString());
 			} catch (Exception e) {
@@ -219,7 +219,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	public int getCuserNum(String campsegId){
 		try {
 			StringBuilder builder = new StringBuilder();
-			builder.append("select * from mcd_custgroup_tab_list mcli where mcli.custom_group_id=(select mcc.custgroup_id from MTL_CAMPSEG_CUSTGROUP mcc where mcc.campseg_id='")
+			builder.append("select * from mcd_custgroup_tab_list mcli where mcli.custom_group_id=(select mcc.custgroup_id from mcd_camp_custgroup_list mcc where mcc.campseg_id='")
 				   .append(campsegId)
 				   .append("') order by data_date desc");
 			log.info("******************查询C表清单表："+builder.toString());
@@ -244,7 +244,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	@Override
 	public int checkCampsegDuserIsExists(String campsegId){
 		int i = 0;
-		StringBuilder sql = new StringBuilder("select * from mtl_camp_seginfo mcs where mcs.campseg_id='")
+		StringBuilder sql = new StringBuilder("select * from mcd_camp_def mcs where mcs.campseg_id='")
 		.append(campsegId).append("'");
 		log.info("**********检查策略中是否存在D表的sql="+sql.toString());
 		List<Map<String, Object>> list = getJdbcTemplate().queryForList(sql.toString());

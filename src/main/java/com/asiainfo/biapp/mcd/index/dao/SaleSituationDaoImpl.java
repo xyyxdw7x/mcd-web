@@ -207,7 +207,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 
 		srcSql.append("SELECT A.STAT_DATE,A.CAMPSEG_ID,A.CAMPSEG_NAME,A.CITY_ID,A.CAMP_USER_NUM_TOTAL,A.CAMP_SUCC_NUM_TOTAL,A.CAMP_SUCC_RATE_TOTAL,A.PV_CONVERT_RATE_TOTAL,A.ORDER_SCORE from ");
 		srcSql.append(" (select A.STAT_DATE,A.CAMPSEG_ID,B.CAMPSEG_NAME,A.CITY_ID,A.CAMP_USER_NUM_TOTAL,A.CAMP_SUCC_NUM_TOTAL,A.CAMP_SUCC_RATE_TOTAL,A.PV_CONVERT_RATE_TOTAL,A.ORDER_SCORE,row_number() over(partition by A.CAMPSEG_ID ORDER BY A.STAT_DATE DESC) rm ");
-		srcSql.append(" from MTL_CAMPSEG_SORT A, MTL_CAMP_SEGINFO B,DIM_PLAN_RECM C where A.CAMPSEG_ID = B.CAMPSEG_ID ");
+		srcSql.append(" from MTL_CAMPSEG_SORT A, mcd_camp_def B,DIM_PLAN_RECM C where A.CAMPSEG_ID = B.CAMPSEG_ID ");
 		
 		if (StringUtils.isNotEmpty(city_id)) {
 			srcSql.append("and A.city_id=? ");
@@ -259,7 +259,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		List<CampChannel> list = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append(
-				"select a.channeltype_id,b.channeltype_name from MTL_CHANNEL_DEF a,dim_mtl_channeltype b,mtl_camp_seginfo c")
+				"select a.channeltype_id,b.channeltype_name from mcd_camp_channel_list a,mcd_dim_channeltype b,mcd_camp_def c")
 				.append(" WHERE c.campseg_pid='").append(campsegId)
 				.append("' and a.channeltype_id = b.channeltype_id and a.campseg_id=c.campseg_id");
 
@@ -305,7 +305,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		/*
 		 * select
 		 * camp.campseg_id,camp.campseg_name,camp.campseg_stat_id,mm.month_succ_num
-		 * ,nn.camp_succ_num from MTL_CAMP_SEGINFO camp,
+		 * ,nn.camp_succ_num from mcd_camp_def camp,
 		 * 
 		 * (select sum(CAMP_SUCC_NUM) month_succ_num, campseg_id from (select *
 		 * from MTL_EVAL_INFO_CAMPSEG_D where channel_id = '-1'and stat_date >
@@ -322,7 +322,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		/*
 		 * select
 		 * camp.campseg_id,camp.campseg_name,camp.campseg_stat_id,mm.month_succ_num
-		 * ,nn.camp_succ_num from MTL_CAMP_SEGINFO camp
+		 * ,nn.camp_succ_num from mcd_camp_def camp
 		 * 
 		 * left outer join
 		 * 
@@ -342,7 +342,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		StringBuffer sql = new StringBuffer();
 
 		sql.append("select camp.campseg_id,camp.campseg_name,camp.campseg_stat_id,aa.campseg_stat_name,mm.month_succ_num,nn.camp_succ_num ")
-				.append(" from MTL_CAMP_SEGINFO camp ");
+				.append(" from mcd_camp_def camp ");
 
 		sql.append(" left outer join  ");
 		sql.append("(")
@@ -403,7 +403,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 	private long getMyTotalCamp(String userId) {
 		long num = 0;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select count(1) from MTL_CAMP_SEGINFO where  CREATE_USERID = ?");
+		sql.append("select count(1) from mcd_camp_def where  CREATE_USERID = ?");
 		log.debug("getMyTotalCamp执行sql=" + sql);
 		try {
 			num = this.getJdbcTemplate().query(sql.toString(),new String[] { userId }, this.longResultSetExtractor);

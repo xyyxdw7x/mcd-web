@@ -15,7 +15,7 @@ import javax.persistence.Transient;
  * @author AsiaInfo-jie
  *
  */
-@Table(name="mtl_camp_seginfo")
+@Table(name="mcd_camp_def")
 public class MtlCampSeginfo {
 	@Id
 	@Column(name="CAMPSEG_ID")

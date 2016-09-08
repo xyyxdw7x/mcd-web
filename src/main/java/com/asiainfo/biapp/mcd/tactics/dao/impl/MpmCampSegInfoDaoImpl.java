@@ -56,7 +56,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') THEN TRUNC((select MIN(PLAN_ENDDATE) from mtl_stc_plan where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_3\" ") ;
         } 
         
-        buffer.append(" from mtl_camp_seginfo msi ")
+        buffer.append(" from mcd_camp_def msi ")
                .append(" left join DIM_CAMPSEG_STAT dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")
               .append("   where 1=1 ")
               .append("   and msi.campseg_pid ='0' ")
@@ -90,8 +90,8 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         if(StringUtil.isNotEmpty(segInfo.getChannelId()) ){
             buffer.append(" and msi.campseg_id in(")
-                  .append(" select unique mcs.campseg_pid from mtl_camp_seginfo mcs")
-                  .append(" left join mtl_channel_def mcd on mcs.campseg_id=mcd.campseg_id")
+                  .append(" select unique mcs.campseg_pid from mcd_camp_def mcs")
+                  .append(" left join mcd_camp_channel_list mcd on mcs.campseg_id=mcd.campseg_id")
                   .append(" where mcd.channel_id=? and mcs.campseg_pid<>'0')");
             parameterList.add(segInfo.getChannelId());
         }
@@ -159,7 +159,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public MtlCampSeginfo getCampSegInfo(String campSegId) throws Exception {
         MtlCampSeginfo obj = null;
         try {
-            final String sql = "select * from mtl_camp_seginfo seginfo where seginfo.campseg_id = ? ";
+            final String sql = "select * from mcd_camp_def seginfo where seginfo.campseg_id = ? ";
             Object[] args=new Object[]{campSegId};
             int[] argTypes=new int[]{Types.VARCHAR};
             List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
@@ -178,7 +178,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
 	@Override
 	public List getChildCampSeginfo(String campsegId) throws Exception {
-        final String sql = "select * from mtl_camp_seginfo seginfo where seginfo.campseg_pid = ? order by CREATE_TIME asc ";
+        final String sql = "select * from mcd_camp_def seginfo where seginfo.campseg_pid = ? order by CREATE_TIME asc ";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
         List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
@@ -190,7 +190,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	@Override
 	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
 		//TODO: this.getHibernateTemplate().update(segInfo);
-	    final String sql = "update mtl_camp_seginfo set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
+	    final String sql = "update mcd_camp_def set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
 	                    + "approve_result=?,approve_result_desc=?,create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,campseg_desc=?,PLAN_ID=?,contacted_user_nums=?,"
 	                    + "contact_okuser_nums=?,received_okuser_nums=?,CAMPSEG_CONTACT_FLAG=?,campseg_contact_usernums=?,evaluate_comment=?,CUST_LIST_TAB_NAME=?,TIME_INTERVAL=?,"
 	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,CURRENT_TASK_ID=?,avoid_bother_type_ids=?,TARGET_CUST_TYPE=?,select_templet_id=?,ACTIVE_TEMPLET_ID=?,"
@@ -212,7 +212,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     @Override
     public List getCustGroupSelectList(String campsegId) {
      // TODO 自动生成方法存根
-        String sql="select * from MTL_CAMPSEG_CUSTGROUP where CAMPSEG_ID = ?";
+        String sql="select * from mcd_camp_custgroup_list where CAMPSEG_ID = ?";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
         List<MtlCampsegCustgroup> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampsegCustgroup>(MtlCampsegCustgroup.class));
@@ -229,7 +229,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List<String> gettListAllCampSegByParentId(String campSegId, List<String> rList) {
-        final String sql = " SELECT mcs.campseg_id from mtl_camp_seginfo mcs WHERE mcs.campseg_pid='" + campSegId + "'";
+        final String sql = " SELECT mcs.campseg_id from mcd_camp_def mcs WHERE mcs.campseg_pid='" + campSegId + "'";
         List list = this.getJdbcTemplate().queryForList(sql);
         List<String> listStr = new ArrayList<String>();
         for(int i = 0 ; i < list.size() ; i ++){
@@ -289,7 +289,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除活动的客户群选择信息
-            sql = "delete from mtl_campseg_custgroup where campseg_id=?";
+            sql = "delete from mcd_camp_custgroup_list where campseg_id=?";
             log.debug(">>deleteCampaignBaseInfo() 25.7  : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
@@ -302,8 +302,8 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             log.debug(">>deleteCampSegInfo() 26.8 : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
-            //TODO 添加删除渠道 mtl_channel_def
-            sql = " DELETE FROM mtl_channel_def WHERE campseg_id=?";
+            //TODO 添加删除渠道 mcd_camp_channel_list
+            sql = " DELETE FROM mcd_camp_channel_list WHERE campseg_id=?";
             log.debug(">>deleteCampSegInfo() 删除渠道 : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
@@ -316,7 +316,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             log.debug(">>deleteCampSegInfo() 删除营销活动执行时间表 : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             // 删除活动信息
-            sql = "delete from mtl_camp_seginfo where campseg_id=?";
+            sql = "delete from mcd_camp_def where campseg_id=?";
             log.debug(">>deleteCampSegInfo() 27. : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
@@ -497,7 +497,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除营销渠道定义信息
-            sql = "delete from mtl_channel_def where campseg_id=?";
+            sql = "delete from mcd_camp_channel_list where campseg_id=?";
             log.debug(">>deleteCampSegInfo() 20.1  : {}", sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
@@ -532,7 +532,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public void updateCampSegInfoEndDate(String campsegId, String endDate) {
-        String sql = "update mtl_camp_seginfo set end_date = ? where campseg_id=?";
+        String sql = "update mcd_camp_def set end_date = ? where campseg_id=?";
         this.getJdbcTemplate().update(sql, new Object[] { endDate,campsegId });
     }
     /**
@@ -543,7 +543,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public void cancelAssignment(String campsegId, short ampsegStatId, String approve_desc) {
-        String sql = "update mtl_camp_seginfo set CAMPSEG_STAT_ID = ?,approve_result_desc = ?  where campseg_id=?";
+        String sql = "update mcd_camp_def set CAMPSEG_STAT_ID = ?,approve_result_desc = ?  where campseg_id=?";
         this.getJdbcTemplate().update(sql, new Object[] {ampsegStatId,approve_desc,campsegId });
         
     }
@@ -551,7 +551,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     public void updatMtlCampSeginfoPauseComment(String campsegId, String pauseComment) {
         try {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(" update mtl_camp_seginfo set pause_comment  = ? where campseg_pid = ? ")
+            buffer.append(" update mcd_camp_def set pause_comment  = ? where campseg_pid = ? ")
                   .append(" or campseg_id =? ");
             this.getJdbcTemplate().update(buffer.toString(), new Object[] {pauseComment,campsegId,campsegId});
             
@@ -572,7 +572,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         StringBuffer sqlB = new StringBuffer();
         for (String campSegId : rList) {
             sqlB = new StringBuffer();
-            sqlB.append(" UPDATE mtl_camp_seginfo A ");
+            sqlB.append(" UPDATE mcd_camp_def A ");
             sqlB.append(" SET ");
             sqlB.append(" A.campseg_stat_id=" + type + " ");
             sqlB.append(" WHERE ");
@@ -591,7 +591,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List getExecContentList(String campsegId) {
-        String sql = "select d.channel_id,d.channel_name,s.exec_content from mtl_channel_def s left join dim_mtl_channel d on s.channel_id = d.channel_id " +
+        String sql = "select d.channel_id,d.channel_name,s.exec_content from mcd_camp_channel_list s left join mcd_dim_channel d on s.channel_id = d.channel_id " +
         "where s.campseg_id = ?  and d.exec_content_flag = 1";
         
         return this.getJdbcTemplate().queryForList(sql, new Object[] {campsegId });
@@ -604,9 +604,9 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     @Override
     public List getExecContentVariableList(String campsegId) {
         String sql = "select attr_col_name,attr_col from mcd_custgroup_attr_list mgar WHERE mgar.custom_group_id = " +
-        "(select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?)" +
+        "(select mcc.CUSTGROUP_ID from mcd_camp_custgroup_list mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?)" +
         " and mgar.list_table_name=(select max(list_table_name) from mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=(" +
-        " select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?))" ;
+        " select mcc.CUSTGROUP_ID from mcd_camp_custgroup_list mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?))" ;
         
         return this.getJdbcTemplate().queryForList(sql, new Object[] {campsegId,campsegId });
     }
@@ -619,7 +619,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public void saveExecContent(String campsegId, String channelId, String execContent, String ifHasVariate) {
-        String sql = "update mtl_channel_def s set s.exec_content = ?,if_have_var = ? where s.campseg_id = ? and s.channel_id = ?" ;    
+        String sql = "update mcd_camp_channel_list s set s.exec_content = ?,if_have_var = ? where s.campseg_id = ? and s.channel_id = ?" ;    
         this.getJdbcTemplate().update(sql, new Object[] {execContent,Integer.parseInt(ifHasVariate),campsegId,channelId });
     }
     
@@ -664,7 +664,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             //edit by lixq10 begin
             StringBuffer buffer = new StringBuffer();
             buffer.append("select basicData.*，MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE,MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE_ID,MDA_SYS_TABLE_COLUMN.COLUMN_CN_NAME,MCD_CV_COL_DEFINE.CTRL_TYPE_ID from ( ")
-                  .append(" select mts.SHOW_SQL, mts.SELECT_TEMPLET_ID from MTL_CAMPSEG_CUSTGROUP mcc, MCD_TEMPLET_SELECT mts")
+                  .append(" select mts.SHOW_SQL, mts.SELECT_TEMPLET_ID from mcd_camp_custgroup_list mcc, MCD_TEMPLET_SELECT mts")
                   .append(" where mts.ACTIVE_TEMPLET_ID = mcc.CUSTGROUP_ID and mcc.campseg_Id = ?")
                   .append(" ) basicData left join MCD_TEMPLET_ACTIVE_FIELD on basicData.SELECT_TEMPLET_ID = MCD_TEMPLET_ACTIVE_FIELD.SELECT_TEMPLET_ID")
                   .append(" LEFT JOIN MDA_SYS_TABLE_COLUMN ON MDA_SYS_TABLE_COLUMN.COLUMN_ID = MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_ID")
@@ -703,7 +703,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     @Override
     public List getChannelsByCampIds(String campsegIds) {
         StringBuffer sb = new StringBuffer();
-        sb.append("select distinct d.channel_id,d.channel_name from mtl_channel_def c,dim_mtl_channel d where c.channel_id=d.channel_id and c.campseg_id in (").append(campsegIds).append(")");
+        sb.append("select distinct d.channel_id,d.channel_name from mcd_camp_channel_list c,mcd_dim_channel d where c.channel_id=d.channel_id and c.campseg_id in (").append(campsegIds).append(")");
         log.info("getChannelsByCampIds执行sql="+sb);
         return this.getJdbcTemplate().queryForList(sb.toString());
     }
@@ -795,7 +795,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List getChildCampSeginfoByAssingId(String assing_id) {
-        String sql = "select campseg_id from mtl_camp_seginfo where approve_flow_id=? and campseg_pid != '0'";
+        String sql = "select campseg_id from mcd_camp_def where approve_flow_id=? and campseg_pid != '0'";
         List list = this.getJdbcTemplate().queryForList(sql, new Object[] {assing_id });
         return list;
     }
@@ -804,7 +804,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List getCampSegInfoByApproveFlowId(String assing_id) {
-        String sql = "select start_date,end_date,campseg_id,APPROVE_FLOW_ID,CREATE_USERNAME from mtl_camp_seginfo where approve_flow_id=? and campseg_pid = '0'";
+        String sql = "select start_date,end_date,campseg_id,APPROVE_FLOW_ID,CREATE_USERNAME from mcd_camp_def where approve_flow_id=? and campseg_pid = '0'";
         List list = this.getJdbcTemplate().queryForList(sql, new Object[] {assing_id });
         return list;
 
@@ -841,7 +841,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     public void updateCampsegApproveStatusZJ(String assing_id,String approve_desc,short approveResult, String campsegStatId) throws Exception {
         Short statid = Short.valueOf(campsegStatId);
         short state = statid.shortValue();
-        String sql = "update mtl_camp_seginfo set approve_result_desc=?,campseg_stat_id=?,approve_result = ? where approve_flow_id=? and campseg_pid = '0'";
+        String sql = "update mcd_camp_def set approve_result_desc=?,campseg_stat_id=?,approve_result = ? where approve_flow_id=? and campseg_pid = '0'";
         this.getJdbcTemplate().update(sql, new Object[] { approve_desc, Short.parseShort(campsegStatId),approveResult, assing_id }); 
     }
     
@@ -854,7 +854,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     public void updateCampsegInfoState(String campseg_id, String status) {
         // TODO Auto-generated method stub
         
-        String sql = " update mtl_camp_seginfo a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mtl_camp_seginfo where campseg_id = ?)";
+        String sql = " update mcd_camp_def a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mcd_camp_def where campseg_id = ?)";
         this.getJdbcTemplate().update(sql, new Object[] { Short.parseShort(status), campseg_id,campseg_id });
         
     }
@@ -866,7 +866,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     @Override
     public String getMtlCampsegCustGroupId(String campsegId) {
         
-        String sql = "select CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP where campseg_id = ?";
+        String sql = "select CUSTGROUP_ID from mcd_camp_custgroup_list where campseg_id = ?";
         Map map = this.getJdbcTemplate().queryForMap(sql, new Object[] {campsegId });
         String id = null;
         if(map != null){
@@ -880,9 +880,9 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		List<Map<String, Object>> list = null;
 		try {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("select * from mtl_camp_seginfo  ")
-				  .append(" where campseg_id = ( select campseg_pid from mtl_camp_seginfo where campseg_id=?)")
-				  .append(" or campseg_pid = ( select campseg_pid from mtl_camp_seginfo where campseg_id=?)");
+			buffer.append("select * from mcd_camp_def  ")
+				  .append(" where campseg_id = ( select campseg_pid from mcd_camp_def where campseg_id=?)")
+				  .append(" or campseg_pid = ( select campseg_pid from mcd_camp_def where campseg_id=?)");
 			log.info("查询策略组："+buffer.toString());
 			list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] {campsegId,campsegId });
 		} catch (Exception e) {
@@ -926,8 +926,8 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public void updateCampsegById(String campsegId,String tableName,int targetUserNum){
 		try {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(" update MTL_CAMP_SEGINFO set targer_user_nums = ?,init_cust_list_tab=? where campseg_id=? or campseg_pid=?");
-			log.info("更新MTL_CAMP_SEGINFO表sql:"+buffer.toString()+"campsegId="+campsegId);
+			buffer.append(" update mcd_camp_def set targer_user_nums = ?,init_cust_list_tab=? where campseg_id=? or campseg_pid=?");
+			log.info("更新mcd_camp_def表sql:"+buffer.toString()+"campsegId="+campsegId);
 			this.getJdbcTemplate().update(buffer.toString(), new Object[] {targetUserNum,tableName,campsegId,campsegId });
 		} catch (Exception e) {
 			log.error("更新策略目标客户群数量和清单表名称异常："+e);

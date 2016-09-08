@@ -3,7 +3,6 @@ package com.asiainfo.biapp.mcd.tactics.vo;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 public class MpmCampSegInfoBean {
     private String campsegId; // 活动编号
     private Integer pageNum; //当前页
