@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,22 @@ public interface IMcdCampsegTaskDao {
      * @param taskSendoddTabName
      */
     void dropTaskSendoddTabNameInMem(String taskSendoddTabName);
+    /**
+     * 保存相关任务
+     * @param task
+     */
+    void saveTask(McdCampsegTask task);
+    /**
+     * 新增任务对应时间表
+     * @param taskId 任务ID
+     * dataDate 当前日期
+     * execStatus 状态
+     * @param planExecTime 计划执行时间
+     * @param tableNum 清单数据量
+     * @return
+     * @throws Exception
+     */
+    void insertMcdCampsegTaskDate(String taskId, String dataDate, short execStatus, int tableNum, Date planExecTime);
 
     /**
 	 * 根据任务id获取策略信息

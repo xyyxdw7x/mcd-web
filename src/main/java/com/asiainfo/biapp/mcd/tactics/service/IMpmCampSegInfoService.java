@@ -228,6 +228,11 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 */
 	public List<MtlStcPlanChannel> getStcPlanChannel(String planId);
-    
+    /**
+     * 浙江处理策略审批结束（通过或退回）后的信息
+     * @param campsegId 营销活动编号
+     * @param approveResult 最终审批结果(1 - 审批通过；2 - 退回)
+     */
+    public String processApproveInfo(String approveInfoXML);
 	
 }

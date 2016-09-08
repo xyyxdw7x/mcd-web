@@ -375,5 +375,21 @@ public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupI
 		
 		return this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
 	}
+	/**
+	 * 查询客户群清单信息
+	 */
+    @Override
+    public List getMtlCustomListInfo(String customgroupid) {
+        List<Map<String, Object>> list = null;
+        try {
+            StringBuffer sbuffer = new StringBuffer();
+            sbuffer.append("SELECT * FROM mtl_custom_list_info WHERE custom_group_id = ? order by data_date desc");
+            log.info("查询客户群清单信息："+sbuffer.toString());
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+        } catch (Exception e) {
+            log.error("",e);
+        }
+        return list;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -192,5 +193,69 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		}
 		return map;
 	}
+    /**
+     *  add by gaowj3 20150815
+     * @Title: updateMtlChannelDefApproveResilt
+     * @Description:  根据工单编号，修改所有字策略（规则）下某渠道的审批状态
+     * @param @param assing_id 工单编号
+     * @return String 
+     * @throws
+     */
+    @Override
+    public void updateMtlChannelDefApproveResult(String assing_id,String approve_desc, String channel_id, short approveResult) {
+        StringBuffer sql = new StringBuffer(" update mtl_channel_def set approve_result = ?,approve_result_desc=? ");   
+        sql.append(" where channel_id = ? and campseg_id in  ") ; 
+        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
+        
+        
+    }
+    
+    /**
+     * 根据工单编号，修改所有子策略（规则）下某渠道的审批状态，因外呼渠道换表存了，故更改外呼渠道的审批状态
+     * @param assing_id 工单编号
+     * @param approve_desc
+     * @param channel_id 渠道ID
+     * @param approveResult
+     */
+    @Override
+    public void updateMtlChannelDefCallApproveResult(String assing_id,
+            String approve_desc, String channel_id, short approveResult) {
+        StringBuffer sql = new StringBuffer(" update mtl_channel_def_call set approve_result = ?,approve_result_desc=? ");  
+        sql.append(" where channel_id = ? and campseg_id in  ") ; 
+        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
+        
+    }
+    
+    /**
+     *  add by gaowj3 20150815
+     * @Title: updateMtlChannelDefApproveResilt
+     * @Description:  根据子策略（规则）编号查询该策略下渠道的审批状态
+     * @param @param assing_id 工单编号
+     * @return String 
+     * @throws
+     */
+    @Override
+    public List getMtlChannelDefApproveFlowList(String childCampseg_id) {
+        StringBuffer sql = new StringBuffer(" select distinct approve_result,approve_result_desc from mtl_channel_def where campseg_id = ?  ");
+        sql.append(" union ");
+        sql.append("  select distinct approve_result,approve_result_desc from mtl_channel_def_call where campseg_id = ?   ");
+        List list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { childCampseg_id,childCampseg_id});
+        return list;
+    }
+    /**
+     * 查找活动下的所有渠道
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
+        StringBuffer sql = new StringBuffer(" select * from MTL_CHANNEL_DEF mcd where mcd.id.campseg_id in (select campseg_id from mtl_camp_seginfo where campseg_pid = ?) ");
+        Object[] args=new Object[]{campsegId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
+        return mtlChannelDefs;
+    }
 	
 }

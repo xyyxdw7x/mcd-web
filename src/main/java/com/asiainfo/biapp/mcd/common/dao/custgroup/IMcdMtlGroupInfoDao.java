@@ -49,5 +49,11 @@ public interface IMcdMtlGroupInfoDao {
 	public void deleteCustom(String customGrpId);
 	
 	public List searchCustomDetail(String customGrpId);
+    /**
+     * 根据客户群编码获取客户群清单信息
+     * @param customgroupid
+     * @return
+     */
+    List getMtlCustomListInfo(String custgroupId);
 
 }
