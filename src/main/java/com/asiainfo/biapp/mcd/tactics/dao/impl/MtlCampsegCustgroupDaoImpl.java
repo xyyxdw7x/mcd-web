@@ -46,7 +46,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("delete from MCD_TEMPLET_SELECT where active_templet_id in ( ")
-				  .append(" select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
+				  .append(" select custgroup_id from mcd_camp_custgroup_list where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
 				  .append(")");
 			this.getJdbcTemplate().equals(buffer.toString());
 			this.deleteMcdTempletActive(campsegId);
@@ -60,7 +60,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("delete from MCD_TEMPLET_ACTIVE where active_templet_id in ( ")
-				  .append(" select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
+				  .append(" select custgroup_id from mcd_camp_custgroup_list where campseg_id = '"+campsegId+"' and custgroup_type='CGT'")
 				  .append(")");
 			this.getJdbcTemplate().equals(buffer.toString());
 		} catch (Exception e) {
@@ -72,7 +72,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("delete from MCD_TEMPLET_ACTIVE_FIELD where select_templet_id in ( ")
 				  .append(" select select_templet_id from MCD_TEMPLET_SELECT where active_templet_id in (")
-				  .append("select custgroup_id from MTL_CAMPSEG_CUSTGROUP where campseg_id = '"+campsegId+"' and custgroup_type='CGT'))");
+				  .append("select custgroup_id from mcd_camp_custgroup_list where campseg_id = '"+campsegId+"' and custgroup_type='CGT'))");
 			this.getJdbcTemplate().equals(buffer.toString());
 		} catch (Exception e) {
 			log.error("删除标签存在异常:"+e);
@@ -97,9 +97,9 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
 		try {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("select MTL_CAMPSEG_CUSTGROUP.*,mcd_custgroup_def.Custom_Group_Name,mcd_custgroup_def.Custom_Num,mcd_custgroup_def.Create_User_Id,mcd_custgroup_def.Custom_Status_Id,mcd_custgroup_def.Update_Cycle from MTL_CAMPSEG_CUSTGROUP ")
-				  .append(" left join mcd_custgroup_def on MTL_CAMPSEG_CUSTGROUP.Custgroup_Id = mcd_custgroup_def.Custom_Group_Id")
-				  .append(" where CUSTGROUP_TYPE='CG' AND MTL_CAMPSEG_CUSTGROUP.CAMPSEG_id = ?");
+			buffer.append("select mcd_camp_custgroup_list.*,mcd_custgroup_def.Custom_Group_Name,mcd_custgroup_def.Custom_Num,mcd_custgroup_def.Create_User_Id,mcd_custgroup_def.Custom_Status_Id,mcd_custgroup_def.Update_Cycle from mcd_camp_custgroup_list ")
+				  .append(" left join mcd_custgroup_def on mcd_camp_custgroup_list.Custgroup_Id = mcd_custgroup_def.Custom_Group_Id")
+				  .append(" where CUSTGROUP_TYPE='CG' AND mcd_camp_custgroup_list.CAMPSEG_id = ?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
 			
 			for (Map map : list) {
@@ -129,7 +129,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 	public List getCustInfoByCampsegId(String campsegId) {
 		List list = new ArrayList();
 		try {
-			StringBuffer sql = new StringBuffer(" select *  from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CAMPSEG_ID = ?"); 
+			StringBuffer sql = new StringBuffer(" select *  from mcd_camp_custgroup_list mcc where mcc.CAMPSEG_ID = ?"); 
 			list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId,});
 		} catch (Exception e) {
 			e.printStackTrace();

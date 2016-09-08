@@ -332,7 +332,7 @@ public String getMessage(String CAMPSEG_ID,String channel_id) throws SQLExceptio
     
         try {
             conn = this.getJdbcTemplate().getDataSource().getConnection();
-            String sql = "select nvl(exec_content,'') from mtl_channel_def a where a.campseg_id =? and a.channel_id= ? ";
+            String sql = "select nvl(exec_content,'') from mcd_camp_channel_list a where a.campseg_id =? and a.channel_id= ? ";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, CAMPSEG_ID);
@@ -437,7 +437,7 @@ public String getCityandCampsegNameCreUID(String CAMPSEG_ID) throws SQLException
     
     String cityid="";
     String campsegName="";
-    String sql = " select city_id ,campseg_name ,create_userid from mtl_camp_seginfo a where a.campseg_id =?  ";
+    String sql = " select city_id ,campseg_name ,create_userid from mcd_camp_def a where a.campseg_id =?  ";
     String createUserId = "";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
@@ -498,7 +498,7 @@ public Map getUserPhone(String cityid) throws SQLException{
 public void updateCampsegInfoState(String campseg_id, String status) throws SQLException {
     // TODO Auto-generated method stub
     
-    String sql = " update mtl_camp_seginfo a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mtl_camp_seginfo where campseg_id = ?)";
+    String sql = " update mcd_camp_def a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mcd_camp_def where campseg_id = ?)";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         conn.setAutoCommit(false);

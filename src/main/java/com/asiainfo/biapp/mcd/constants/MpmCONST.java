@@ -96,7 +96,7 @@ public class MpmCONST extends SysCodes {
 	//活动状�?
 	public static final String COMPAIGN_STATUS = "campStatus";
 
-	//mtl_camp_segInfo中scene_type字段的含�?
+	//mcd_camp_def中scene_type字段的含�?
 	//活动场景类型
 	public static final String SCENE_TYPE = "scene_type";
 	public static final String SCENE_TYPE_REALTIME = "scene_type11";
@@ -170,7 +170,7 @@ public class MpmCONST extends SysCodes {
 
 	public static final short MPM_TEMPLET_TYPE_OTHER = 4;
 
-	//mtl_camp_seginfo中approve_flag字段的含�?
+	//mcd_camp_def中approve_flag字段的含�?
 	//活动波次是否�?��审批标志
 	public static final String MPM_SEG_APPROVE_FLAG = "segApproveFlag";
 
@@ -190,7 +190,7 @@ public class MpmCONST extends SysCodes {
 	//活动关联的指标来�?来自营销管理系统自定�?
 	public static final short MPM_CAMP_INDI_RESOURCE_FROM_SELF = 1;
 
-	//mtl_camp_seginfo中approve_result字段的含�?
+	//mcd_camp_def中approve_result字段的含�?
 	//活动波次审批结果标志
 	public static final String MPM_SEG_APPROVE_RESULT = "segApproveResult";
 
@@ -315,7 +315,7 @@ public class MpmCONST extends SysCodes {
 
 	public static final int ADD_SOURCE_TABLE_TYPE_ELIMINATE = 5;
 
-	//mtl_approve_confirm_list，mtl_camp_seginfo中confirm_flag字段的含�?
+	//mtl_approve_confirm_list，mcd_camp_def中confirm_flag字段的含�?
 	public static final String MPM_CONFIRM_FLAG = "mpm_confirm_flag";
 
 	//不需要渠道确�?
@@ -633,7 +633,7 @@ public class MpmCONST extends SysCodes {
 
 	public static final String MPM_PROMOTION_TYPE_SERVICE = "mtlPromotionTypeService";
 
-	public static final String DIM_MTL_CHANNEL_SERVICE = "dimMtlChannelService";
+	public static final String mcd_dim_channel_SERVICE = "dimMtlChannelService";
 
 	public static final String MPM_CAMPSEG_AGGREGATE_SELECT_SERVICE = "mpmCampsegAggregateSelectService";
 
@@ -741,7 +741,7 @@ public class MpmCONST extends SysCodes {
 
 	//20090618 by wt add
 	public static final String MTL_APPROVE_FLOW = "approveFlow";
-	public static final String DIM_MTL_CHANNELTYPE = "dimMtlChanneltype";
+	public static final String mcd_dim_channelTYPE = "dimMtlChanneltype";
 	public static final String ALL_CHANNEL = "allChannel";
 
 	//added by jianglc
@@ -1184,7 +1184,7 @@ public class MpmCONST extends SysCodes {
 	public static final String MPM_RES_NAME_TYPE_CAMP = "mtl_camp_baseinfo";
 
 	//活动波次
-	public static final String MPM_RES_NAME_TYPE_CAMP_SEG = "mtl_camp_seginfo";
+	public static final String MPM_RES_NAME_TYPE_CAMP_SEG = "mcd_camp_def";
 
 	//活动模版
 	public static final String MPM_RES_NAME_TYPE_ACTIVE_TEMPLET = "mtl_templet_active";
@@ -1920,22 +1920,11 @@ public class MpmCONST extends SysCodes {
 	public static final String DB_TYPE_MYSQL = "MYSQL";
 	public static final String DB_TYPE_GP = "POSTGRESQL";
 	public static final String DB_TYPE_GBASE = "GBASE";
-	//客户群清单模板表名
-	public static final String MTL_DUSER_YYYYMMDDHHMMSSSSS = "MTL_DUSER_YYYYMMDDHHMMSSSSS";
-	
-	//任务基础客户清单表
-	public static final String MTL_DUSER_T_PREFIX = "MTL_DUSER_T_";
-	//任务派单客户清单表
-	public static final String MTL_DUSER_O_PREFIX = "MTL_DUSER_O_";
-	//活动客户清单表
-	public static final String MTL_DUSER_A_PREFIX = "MTL_DUSER_A_";
-	//活动客户清单表
-	public static final String MTL_DUSER_PREFIX = "MTL_DUSER_";
-	
+
 	//客户群清单模板表名  浙江
 	public static final String MTL_CUSER_YYYYMMDDHHMMSSSSS = "MTL_CUSER_YYYYMMDDHHMMSSSSS";
 	//客户群清单表名 前缀   浙江
-	public static final String MTL_DUSER_I_PREFIX = "MTL_DUSER_I_";
+	public static final String MCD_ZD_USER_PREFIX = "mcd_zd_user_";
 
 	//活动优先级
 	public static final String CAMPSEG_PRI_EMERGENCY = "32767";

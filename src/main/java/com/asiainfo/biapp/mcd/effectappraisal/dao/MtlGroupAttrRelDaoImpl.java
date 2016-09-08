@@ -199,7 +199,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		  .append(" select count(1) num ,MTL_CAMPESEG_ORDER_ATTR.channel_id,MTL_CAMPESEG_ORDER_ATTR.Chn_Adiv_Id ")
 		  .append(" from MTL_CAMPESEG_ORDER_ATTR  ")
 		  .append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on MTL_CAMPESEG_ORDER_ATTR.campseg_id = mct.campseg_id")
-		  .append(" left join mtl_camp_seginfo mcs on MTL_CAMPESEG_ORDER_ATTR.campseg_id=mcs.campseg_id")
+		  .append(" left join mcd_camp_def mcs on MTL_CAMPESEG_ORDER_ATTR.campseg_id=mcs.campseg_id")
 		  .append(" where MTL_CAMPESEG_ORDER_ATTR.city_id='"+cityId+"' ")
 		  .append(" and  mct.exec_status in (50,51,59) ")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0")

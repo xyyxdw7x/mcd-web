@@ -1,11 +1,12 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
  * MtlCampsegCustgroup entity. @author MyEclipse Persistence Tools
  */
-
+@Table(name="mcd_camp_custgroup_list")
 public class MtlCampsegCustgroup implements java.io.Serializable {
 
 	// Fields

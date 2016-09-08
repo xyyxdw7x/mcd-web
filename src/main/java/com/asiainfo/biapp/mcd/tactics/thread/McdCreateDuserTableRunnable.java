@@ -88,7 +88,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 			log.info("*************custGroupId："+custGroupId);
 			if(StringUtil.isNotEmpty(custGroupId)){
 				//创建D表
-				String tableName = mpmCampSegInfoService.createCustGroupTabAsCustTable(MpmCONST.MTL_DUSER_I_PREFIX, custGroupId);
+				String tableName = mpmCampSegInfoService.createCustGroupTabAsCustTable(MpmCONST.MCD_ZD_USER_PREFIX, custGroupId);
 				//给Duser表创建索引-----------创建索引的方式有待确认
 				mpmCampSegInfoService.createDuserIndex(tableName,custGroupId);
 				log.info("***********************tableName="+tableName);

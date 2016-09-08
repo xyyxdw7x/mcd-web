@@ -21,7 +21,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	@Override
 	public void updateCampPri(final List<MtlCampSeginfo> campsegs){
 		
-		String sql="update MTL_CAMP_SEGINFO t set t.camp_pri_id=? where t.campseg_id=?";
+		String sql="update mcd_camp_def t set t.camp_pri_id=? where t.campseg_id=?";
 		String sql2="update mcd_sms_schedule t set t.pri_id=? where t.campseg_id=?";
 		log.info("执行sql=" + sql);
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
