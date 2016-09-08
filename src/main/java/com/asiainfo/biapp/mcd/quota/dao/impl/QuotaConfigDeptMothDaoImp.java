@@ -24,7 +24,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 	private static Logger log = LogManager.getLogger();
 
-	private static final String TABLE = "MTL_QUOTA_CONFIG_DEPT";
+	private static final String TABLE = "mcd_quota_config_dept";
 	private static final String COL_CITY_ID = "CITY_ID";
 	private static final String COL_DEPT_ID = "DEPT_ID";
 	private static final String COL_DATA_DATE = "DATA_DATE";
@@ -277,7 +277,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getQuotas4DeptsInMem(String cityId, String date) throws Exception {
-		String sql = "select * from mtl_user_dept t right join mtl_quota_config_dept t1 on t.city_id = t1.city_id and t.dept_id = t1.dept_id where t1.city_id = ? and t1.data_date = ? order by t1.dept_id";
+		String sql = "select * from mtl_user_dept t right join mcd_quota_config_dept t1 on t.city_id = t1.city_id and t.dept_id = t1.dept_id where t1.city_id = ? and t1.data_date = ? order by t1.dept_id";
 		return this.getJdbcTemplate().queryForList(sql, new Object[] { cityId, date });
 	}
 

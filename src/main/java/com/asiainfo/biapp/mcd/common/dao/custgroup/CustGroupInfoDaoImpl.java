@@ -33,11 +33,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			StringBuffer buffer = new StringBuffer();
 			parameterList.add(currentUserId);
 			parameterList.add(currentUserId);
-			buffer.append("SELECT COUNT(*) FROM (select MTL_GROUP_INFO.*,mtl_custom_list_info.data_time from MTL_GROUP_INFO left join (")
+			buffer.append("SELECT COUNT(*) FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time from mcd_custgroup_def left join (")
 		 	   .append(" select A.Custom_Group_Id,B.data_time from (")
-		 	   .append(" select max(list_table_name) list_table_name, max(data_date ),Custom_Group_Id from mtl_custom_list_info group by Custom_Group_Id")
-		 	   .append("  ) A left join mtl_custom_list_info B on A.list_table_name = B.list_table_name)")
-		 	   .append(" mtl_custom_list_info on MTL_GROUP_INFO.Custom_Group_Id = mtl_custom_list_info.custom_group_id order by MTL_GROUP_INFO.create_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mtl_group_push_info where create_push_target_id = ?))")
+		 	   .append(" select max(list_table_name) list_table_name, max(data_date ),Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
+		 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
+		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_def.create_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 			   .append(" and custom_status_id not in (2,9)")
 		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
 			if(StringUtil.isNotEmpty(keyWords)){
@@ -68,11 +68,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			parameterList.add(currentUserId);
 			parameterList.add(currentUserId);
 			
-			sbuffer.append("SELECT * FROM (select MTL_GROUP_INFO.*,mtl_custom_list_info.data_time,mtl_custom_list_info.max_data_time from MTL_GROUP_INFO left join (")
+			sbuffer.append("SELECT * FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time,mcd_custgroup_tab_list.max_data_time from mcd_custgroup_def left join (")
 		 	   .append(" select A.Custom_Group_Id,A.max_data_time,B.data_time from (")
-		 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mtl_custom_list_info group by Custom_Group_Id")
-		 	   .append("  ) A left join mtl_custom_list_info B on A.list_table_name = B.list_table_name)")
-		 	   .append(" mtl_custom_list_info on MTL_GROUP_INFO.Custom_Group_Id = mtl_custom_list_info.custom_group_id order by mtl_custom_list_info.max_data_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mtl_group_push_info where create_push_target_id = ?))")
+		 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
+		 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
+		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_tab_list.max_data_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 		 	   .append(" and custom_status_id not in (2,9)")
 		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
 			if(StringUtil.isNotEmpty(keyWords)){
@@ -125,11 +125,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		List<MtlGroupInfo> custGroupList = new ArrayList<MtlGroupInfo>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT * FROM (select MTL_GROUP_INFO.*,mtl_custom_list_info.data_time,mtl_custom_list_info.max_data_time  from MTL_GROUP_INFO left join (")
+			sbuffer.append("SELECT * FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time,mcd_custgroup_tab_list.max_data_time  from mcd_custgroup_def left join (")
 			 	   .append(" select A.Custom_Group_Id,A.max_data_time,B.data_time from (")
-			 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mtl_custom_list_info group by Custom_Group_Id")
-			 	   .append("  ) A left join mtl_custom_list_info B on A.list_table_name = B.list_table_name)")
-			 	   .append(" mtl_custom_list_info on MTL_GROUP_INFO.Custom_Group_Id = mtl_custom_list_info.custom_group_id order by mtl_custom_list_info.max_data_time desc) WHERE CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mtl_group_push_info where create_push_target_id = ?)");
+			 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
+			 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
+			 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_tab_list.max_data_time desc) WHERE CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?)");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { currentUserId,currentUserId });
 			for (Map map : list) {
 				MtlGroupInfo custGroupInfo = new MtlGroupInfo();
@@ -170,10 +170,10 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			buffer.append(" select ROWNUM as rowno,t.custom_group_id,t.custom_group_name,t.custom_group_desc,t.create_user_id,t.create_time,t.rule_desc,t.custom_num,");
 			buffer.append(" case t.custom_status_id when 0 then '无效' when 1 then '有效'  when 3 then '提取处理中'  when 4 then '提取失败' when 9 then '客户群导入失败' end as custom_status,t.effective_time,t.fail_time,t.create_user_name,");
 			buffer.append(" case t.update_cycle when 1 then '一次性' when 2 then '月' when 3 then '日' end as update_cycle_name");
-			buffer.append(" from MTL_GROUP_INFO t where t.custom_status_id <>'2' ");
+			buffer.append(" from mcd_custgroup_def t where t.custom_status_id <>'2' ");
 
 			if("MY-CUSTOM".equals(contentType)) {
-				buffer.append(" and (t.create_user_id = ?  or t.custom_group_id in (select custom_group_id from mtl_group_push_info where create_push_target_id = '"+userId+"'))");
+				buffer.append(" and (t.create_user_id = ?  or t.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = '"+userId+"'))");
 				plist.add(userId);
 			}
 			if(keywords != null && !"".equals(keywords)) {
@@ -184,7 +184,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			buffer.append(" ) tbase left join (");
 			buffer.append(" select * from (");
 			buffer.append(" SELECT ROW_NUMBER() OVER(PARTITION BY custom_group_id ORDER BY data_time DESC) rn,t.* ");
-			buffer.append(" FROM MTL_CUSTOM_LIST_INFO t ) where rn = 1");
+			buffer.append(" FROM mcd_custgroup_tab_list t ) where rn = 1");
 			buffer.append(" ) info on tbase.custom_group_id = info.custom_group_id");
 		} else {//异常客户群：过期的、客户群状态为9的，客户群数量为0的
 
@@ -198,10 +198,10 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			buffer.append(" select cinfo.*, dinfo.data_time,dinfo.data_date from (");
 			buffer.append(" select * from (");
 			buffer.append(" SELECT ROW_NUMBER() OVER(PARTITION BY custom_group_id ORDER BY data_time DESC) rn,t1.* ");
-			buffer.append(" FROM MTL_CUSTOM_LIST_INFO t1");
+			buffer.append(" FROM mcd_custgroup_tab_list t1");
 			buffer.append(" ) t2 where t2.rn = 1) dinfo");
-			buffer.append(" left join MTL_GROUP_INFO cinfo on dinfo.custom_group_id = cinfo.custom_group_id");
-			buffer.append(" where (cinfo.create_user_id =  '"+userId+"' or  cinfo.custom_group_id in (select custom_group_id from mtl_group_push_info where create_push_target_id = '"+userId+"'))");
+			buffer.append(" left join mcd_custgroup_def cinfo on dinfo.custom_group_id = cinfo.custom_group_id");
+			buffer.append(" where (cinfo.create_user_id =  '"+userId+"' or  cinfo.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = '"+userId+"'))");
             buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mtl_camp_seginfo mcs,MTL_CAMPSEG_CUSTGROUP mcc where mcs.campseg_id = mcc.campseg_id and mcs.campseg_stat_id in ('50','54','59'))");
 			    buffer.append(") tab) re ");
 
@@ -232,8 +232,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		buffer.append(" on mcs.campseg_id = mcc.campseg_id");
 		buffer.append(" where mcc.CUSTGROUP_ID = ?");
 		buffer.append(" and mcs.CAMPSEG_STAT_ID NOT IN (91)");
-		buffer.append(" union select custom_group_id from MTL_GROUP_INFO where create_user_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
-		buffer.append(" union select custom_group_id from mtl_group_push_info where create_push_target_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
+		buffer.append(" union select custom_group_id from mcd_custgroup_def where create_user_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
+		buffer.append(" union select custom_group_id from mcd_custgroup_push where create_push_target_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
 		List params = new ArrayList();
 		params.add(customGrpId);
 		List data = this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
@@ -256,10 +256,10 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		          .append("  when 9 then '客户群导入失败' ")
 		          .append(" end as custom_status, ");
 		buffer.append(" t2.data_date from (");
-		buffer.append(" select * from MTL_GROUP_INFO cus where cus.custom_group_id = ?) t1 left join (");
+		buffer.append(" select * from mcd_custgroup_def cus where cus.custom_group_id = ?) t1 left join (");
 		buffer.append(" select * from (");
 		buffer.append(" SELECT ROW_NUMBER() OVER(PARTITION BY custom_group_id ORDER BY data_time DESC) rn,t.* ");
-		buffer.append(" FROM MTL_CUSTOM_LIST_INFO t ) info where info.rn = 1");
+		buffer.append(" FROM mcd_custgroup_tab_list t ) info where info.rn = 1");
 		buffer.append(" ) t2 on t1.custom_group_id = t2.custom_group_id");
 		
 		log.info("searchCustomDetail执行sql="+buffer);
@@ -320,7 +320,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	@Override
 	public void deleteCustom(String customGrpId) {
 		
-		StringBuffer buffer = new StringBuffer("update mtl_group_info t set t.custom_status_id = 2 where custom_group_id = ?");
+		StringBuffer buffer = new StringBuffer("update mcd_custgroup_def t set t.custom_status_id = 2 where custom_group_id = ?");
 		
 		List params = new ArrayList();
 		params.add(customGrpId);
@@ -339,7 +339,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		int num = 0;
 		List<Map<String, Object>> list = null;
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT * FROM MTL_GROUP_INFO WHERE CUSTOM_GROUP_ID = ?");
+		buffer.append("SELECT * FROM mcd_custgroup_def WHERE CUSTOM_GROUP_ID = ?");
 		log.info("获取原始客户群："+buffer.toString());
 		list = this.getJdbcTemplate().queryForList(buffer.toString(), new String[]{custGroupId});
 		for (Map map : list) {
@@ -409,7 +409,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
             StringBuffer sql = new StringBuffer("  select mgi.custom_group_id,  mgi.custom_group_name,mgi.update_cycle,"); 
             sql.append("  mgi.create_time, mgi.create_user_id,mgi.custom_num, ") ;
             sql.append("  mgi.custom_source_id,mgi.rule_desc ,mgi.custom_num targer_user_nums") ;
-            sql.append("  from mtl_group_info mgi, MTL_CAMPSEG_CUSTGROUP mcc, mtl_camp_seginfo mcs  ") ;        
+            sql.append("  from mcd_custgroup_def mgi, MTL_CAMPSEG_CUSTGROUP mcc, mtl_camp_seginfo mcs  ") ;        
             sql.append("  where mgi.custom_group_id =mcc.custgroup_id and mcs.campseg_id = mcc.campseg_id  ") ;     
             sql.append("   and mcs.campseg_id = ?") ;
             list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
@@ -428,7 +428,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         MtlGroupInfo custGroupInfo = null;
         try {
             StringBuffer sbuffer = new StringBuffer();
-            sbuffer.append("SELECT * FROM MTL_GROUP_INFO WHERE custom_group_id = ?");
+            sbuffer.append("SELECT * FROM mcd_custgroup_def WHERE custom_group_id = ?");
             log.info("查询客户群信息："+sbuffer.toString());
             list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { custgroupId });
             for (int i=0;i<list.size();i++) {
@@ -464,7 +464,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
     public List<Map<String, Object>> getDataDateCustomNum(String campsegId) {
         List<Map<String,Object>> list = new ArrayList();
         try {
-            StringBuffer sql = new StringBuffer("   select mcli.data_date  max_data_time , mcli.custom_num sum_custom_num from mtl_custom_list_info mcli where mcli.custom_group_id in (   "); 
+            StringBuffer sql = new StringBuffer("   select mcli.data_date  max_data_time , mcli.custom_num sum_custom_num from mcd_custgroup_tab_list mcli where mcli.custom_group_id in (   "); 
             sql.append("   select mcc.custgroup_id from mtl_camp_seginfo mcs left join MTL_CAMPSEG_CUSTGROUP mcc on mcs.campseg_id = mcc.campseg_id ") ;        
             sql.append("  where mcs.campseg_Id= ? ) order by mcli.data_date desc ") ;     
             list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
@@ -495,7 +495,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         List<Map<String, Object>> list = null;
         try {
             StringBuffer sbuffer = new StringBuffer();
-            sbuffer.append("SELECT * FROM mtl_custom_list_info WHERE custom_group_id = ? order by data_date");
+            sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date");
             log.info("查询客户群清单信息："+sbuffer.toString());
             list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
         } catch (Exception e) {
@@ -656,7 +656,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		List<Map<String, Object>> list = null;
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT * FROM mtl_custom_list_info WHERE custom_group_id = ? order by data_date desc");
+			sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date desc");
 			log.info("查询客户群清单信息："+sbuffer.toString());
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
 		} catch (Exception e) {
@@ -685,19 +685,19 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
 						  .append(" and basicData.product_no in ("+basicEventSql+")")
 						  .append("and basicData.product_no in (")
-						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
 					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
 						  .append(" and basicData.PRODUCT_NO in ")
-						  .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+						  .append(" (SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
 					buffer.append("select basicData.PRODUCT_NO from ("+basicEventSql+") basicData where 1=1")
 						  .append(" and basicData.PRODUCT_NO in ")
-						  .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+						  .append(" (SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}
@@ -712,7 +712,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						  .append(" and PRODUCT_NO in (")
 						  .append(basicEventSql +")")
 						  .append(" and PRODUCT_NO in (")
-						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
@@ -721,7 +721,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						  .append(" where PRODUCT_NO in (")
 						  .append(bussinessLableSql +")")
 						  .append(" and PRODUCT_NO in (")
-						  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
@@ -730,14 +730,14 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 					  .append(" where PRODUCT_NO in (")
 					  .append(basicEventSql +")")
 					  .append(" and PRODUCT_NO in (")
-					  .append(" SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}else {
 					buffer.append("select PRODUCT_NO from ")
 						  .append(tableListName)
 					      .append(" where PRODUCT_NO in ")
-					      .append(" (SELECT PRODUCT_NO FROM  MTL_BOTHER_AVOID WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
+					      .append(" (SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
 				}
@@ -821,7 +821,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
 					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
-						  .append(" select PRODUCT_NO from MTL_CONTACT_RECENT_LOG")
+						  .append(" select PRODUCT_NO from mcd_log_contact_recent_sms")
 						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
 						  .append(" and CITY_ID = '"+cityId +"'")
 						  .append(" and CHANNEL_ID = '"+channelId +"'")
@@ -875,7 +875,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
 					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
-						  .append(" select PRODUCT_NO from MTL_CONTACT_RECENT_LOG")
+						  .append(" select PRODUCT_NO from mcd_log_contact_recent_sms")
 						  .append(" where LOG_TIME > to_date('"+dealDateStr+" 00:00:00','yyyy-mm-dd hh24:mi:ss')  and LOG_TIME < to_date('"+currentDateStr+" 23:59:59','yyyy-mm-dd hh24:mi:ss')  ")
 						  .append(" and CITY_ID = '"+cityId +"'")
 						  .append(" and CHANNEL_ID = '"+channelId +"'")
@@ -1138,7 +1138,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			jt.execute(buffer.toString());
 		} catch (Exception e) {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("update mtl_group_info set custom_status_id=? WHERE custom_group_id = ? ");
+			sbuffer.append("update mcd_custgroup_def set custom_status_id=? WHERE custom_group_id = ? ");
 			log.info("更新客户群状态："+sbuffer.toString());
 //			客户群状态10：表示客户群入库错误
 			this.getJdbcTemplate().update(sbuffer.toString(), new Object[] { 10, customgroupid });
@@ -1176,7 +1176,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	@Override
 	public MtlGroupInfo getCustGroupInfoById(String custGroupId){
 		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
-		String sqlStr = "select * from mtl_group_info where custom_group_id=?";
+		String sqlStr = "select * from mcd_custgroup_def where custom_group_id=?";
 		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sqlStr,new Object[]{custGroupId});
 		for (Map map : list) {
 			MtlGroupInfo info = new MtlGroupInfo();

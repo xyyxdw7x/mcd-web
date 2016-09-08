@@ -188,7 +188,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				if(StringUtil.isNotEmpty(cfg_id)){
 					int i = custGroupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
 					String exec_sql = "select '"+queue_id+"'||'|'||product_no||'|'||substr(product_no,9,10)||'|'||(select queue_code from DIM_PUB_10086_QUEUE where queue_id='"+queue_id+"') from " +group_table_name+
-							" where data_date=(select max(DATA_DATE) from mtl_custom_list_info where CUSTOM_GROUP_ID='"+group_into_id+"' );";
+							" where data_date=(select max(DATA_DATE) from mcd_custgroup_tab_list where CUSTOM_GROUP_ID='"+group_into_id+"' );";
 					//int j = custGroupInfoDao.insertCreateFileJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
 					//int k = custGroupInfoDao.insertCreateFtpJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
 					if(i!=0){

@@ -213,9 +213,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		try { 
 			Map<String, String> result = new HashMap<String, String>();
 			result.put("count", "0");  
-			//TODO BY ZK
-			//int  num =custGroupService.getGroupSequence(user.getCityid()) +1 ;  
-			int  num =custGroupService.getGroupSequence("577") +1 ;
+			int  num =custGroupService.getGroupSequence(getUser(request,response).getCityId()) +1 ;  
 			SimpleDateFormat df = new SimpleDateFormat("yyMM"); 
 			String	month = df.format(new Date());    
 			String code="";   
@@ -233,9 +231,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			else{
 				code = "" + num ; 
 			}
-			//TODO BY ZK
-			//final String custGroupId ="J" +user.getCityid()+ month+code; 
-			final String custGroupId ="J" +"577"+ month+code;
+			final String custGroupId ="J" +getUser(request,response).getCityId()+ month+code; 
 			final String tableName = "MTL_CUSER_" +custGroupId; 
 			final String customGroupName=request.getParameter("custom_name");
 			String customGroupDesc=request.getParameter("custom_description");
@@ -243,7 +239,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			String filename = multiFile.getOriginalFilename();
 			
 			int i=0;  
-			//TABLE MTL_GROUP_INFO   
+			//TABLE mcd_custgroup_def   
 			CustInfo custInfoBean =null;
 			custInfoBean = new CustInfo();
 	  		custInfoBean.setCustomGroupId(custGroupId);
@@ -258,9 +254,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		  	custInfoBean.setCustomStatusId(3);
 	  		custInfoBean.setEffectiveTime(new Date());
 	  		custInfoBean.setFailTime( DateUtil.string2Date(failTime)); 
-	  		//TODO BY ZK
-	  		//custInfoBean.setCreateUserName(user.getUsername());
-	  		custInfoBean.setCreateUserName("ycc");
+	  		custInfoBean.setCreateUserName(this.getUser(request, response).getName());
 	  		custGroupService.updateMtlGroupinfo(custInfoBean);
 			
 	  		final String date = DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
@@ -271,9 +265,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			
 			campSegInfoService.createCustGroupTabAsCustTable1("mtl_cuser_",custGroupId);
 		
-			//TODO BY ZK
             String config_Path = Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
-            config_Path = "D:\\1zk\\test\\ftp";
             
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
 			String filepath = config_Path + File.separator; 
@@ -400,13 +392,9 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			dataJson.put("status", "200");
 			Map map = (Map)data.get(0);
 			String userName = "";
-			/*if(map.get("CREATE_USER_ID") != null) {
-				IUser user = userPrivilegeService.getUser(map.get("CREATE_USER_ID").toString());
-				if(user != null) {
-					userName = user.getUsername();
-				}
-			}*/
-			userName="陈永刚";//TODO
+			if(map.get("CREATE_USER_ID") != null) {
+				userName = this.getUser(request, response).getName();
+			}
 			map.put("CREATE_USER_NAME", userName);
 			SimpleDateFormat spf = new SimpleDateFormat("yyyyMMdd");
 			//创建时间
@@ -505,31 +493,4 @@ public class CustGroupManagerController extends BaseMultiActionController{
 
 	}
 
-	/**
-	 * 查询10086队列信息
-	 *
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/initQueue")
-	public void initQueue(HttpServletRequest request,HttpServletResponse response) throws Exception {
-
-
-		List list  = custGroupInfoService.queryQueueInfo();
-		JSONObject dataJson = new JSONObject();
-		dataJson.put("status", "200");
-		dataJson.put("data", JmsJsonUtil.obj2Json(list));
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-	}
 }

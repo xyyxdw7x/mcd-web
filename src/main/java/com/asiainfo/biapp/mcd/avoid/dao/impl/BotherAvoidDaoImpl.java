@@ -43,11 +43,11 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		List plist = new ArrayList();
 
 		buffer.append("SELECT A.AVOID_BOTHER_TYPE, A.AVOID_CUST_TYPE, A.PRODUCT_NO, to_char(A.ENTER_TIME, 'yyyy.mm.dd') as ENTER_TIME, A.USER_TYPE_ID, A.CREATE_USER_ID,")
-		 .append(" A.CREATE_USER_NAME, B.NAME AS USER_TYPE_NAME,C.CAMPSEG_TYPE_NAME,D.CHANNELTYPE_NAME")
-		 .append(" FROM MCD_ZJ_AD.MTL_BOTHER_AVOID A")
+		 .append(" A.CREATE_USER_NAME, B.NAME AS USER_TYPE_NAME,C.CAMPSEG_TYPE_NAME,D.CHANNEL_NAME")
+		 .append(" FROM MCD_CORE_AD.mcd_bother_avoid A")
 		 .append(" INNER JOIN DIM_BOTHER_AVOID_USER_TYPE B ON A.USER_TYPE_ID  = B.ID")
 		 .append(" INNER JOIN DIM_CAMPSEG_TYPE C ON A.AVOID_CUST_TYPE = C.CAMPSEG_TYPE_ID")
-		 .append(" INNER JOIN DIM_Mtl_Channeltype D ON A.AVOID_BOTHER_TYPE = D.CHANNELTYPE_ID");
+		 .append(" INNER JOIN DIM_Mtl_Channel D ON A.AVOID_BOTHER_TYPE = D.CHANNELTYPE_ID");
 		 
 		if(mtlBotherAvoid.getKeywords() != null && !"".equals(mtlBotherAvoid.getKeywords())) {
 			buffer.append(" and (A.PRODUCT_NO like '%" + mtlBotherAvoid.getKeywords() + "%')");
@@ -96,7 +96,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 */
 	@Override
 	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception {
-		StringBuffer insertSql = new StringBuffer("INSERT INTO MTL_BOTHER_AVOID ");
+		StringBuffer insertSql = new StringBuffer("INSERT INTO mcd_bother_avoid ");
 		insertSql
 				.append("(AVOID_BOTHER_TYPE,AVOID_CUST_TYPE,PRODUCT_NO,ENTER_TIME,USER_TYPE_ID,CREATE_USER_ID,CREATE_USER_NAME)")
 				.append(" VALUES(?,?,?,SYSTIMESTAMP,?,?,?)");
@@ -139,7 +139,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	@Override
 	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT COUNT(1) FROM MTL_BOTHER_AVOID WHERE ");
+		sb.append("SELECT COUNT(1) FROM mcd_bother_avoid WHERE ");
 		sb.append(" AVOID_BOTHER_TYPE = '"+mtl.getAvoidBotherType()+"'");
 		sb.append(" AND AVOID_CUST_TYPE = '"+mtl.getAvoidCustType()+"'");
 		sb.append(" AND PRODUCT_NO = '"+mtl.getProductNo()+"'");
@@ -160,7 +160,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("UPDATE MTL_BOTHER_AVOID SET ")
+		sb.append("UPDATE mcd_bother_avoid SET ")
 		.append(" AVOID_BOTHER_TYPE = ?")
 		.append(" , AVOID_CUST_TYPE = ?")
 		.append(" , USER_TYPE_ID = ?")
@@ -190,7 +190,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("DELETE FROM MTL_BOTHER_AVOID ")
+		sb.append("DELETE FROM mcd_bother_avoid ")
 		.append(" WHERE AVOID_BOTHER_TYPE = ?")
 		.append(" AND AVOID_CUST_TYPE = ?")
 		.append(" AND PRODUCT_NO = ?");
@@ -210,7 +210,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	@Override
 	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
 		StringBuffer deleteSql = new StringBuffer();
-		deleteSql.append("DELETE FROM MTL_BOTHER_AVOID WHERE ")
+		deleteSql.append("DELETE FROM mcd_bother_avoid WHERE ")
 		.append("AVOID_BOTHER_TYPE = ? ")
 		.append("AND AVOID_CUST_TYPE = ? ")
 		.append("AND PRODUCT_NO = ? ");

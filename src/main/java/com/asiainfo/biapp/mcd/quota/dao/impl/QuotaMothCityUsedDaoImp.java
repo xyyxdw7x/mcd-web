@@ -22,7 +22,7 @@ public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
 	@Override
 	public void saveBatchSave(final List<QuotaMonthCityUsed> list) {
 
-		String sql = "insert into MTL_QUOTA_CITY_USED(city_id,data_date,used_num)values(?,?,?)";
+		String sql = "insert into mcd_quota_used_city(city_id,data_date,used_num)values(?,?,?)";
 
 		try {
 			this.getJdbcTemplate().batchUpdate(sql,

@@ -219,7 +219,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	public int getCuserNum(String campsegId){
 		try {
 			StringBuilder builder = new StringBuilder();
-			builder.append("select * from mtl_custom_list_info mcli where mcli.custom_group_id=(select mcc.custgroup_id from MTL_CAMPSEG_CUSTGROUP mcc where mcc.campseg_id='")
+			builder.append("select * from mcd_custgroup_tab_list mcli where mcli.custom_group_id=(select mcc.custgroup_id from MTL_CAMPSEG_CUSTGROUP mcc where mcc.campseg_id='")
 				   .append(campsegId)
 				   .append("') order by data_date desc");
 			log.info("******************查询C表清单表："+builder.toString());

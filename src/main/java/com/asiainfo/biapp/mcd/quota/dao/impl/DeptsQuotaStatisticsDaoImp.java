@@ -29,8 +29,8 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		String sql = "select ud.*, t.month_quota_num, t.used_num, t.data_date "
 				+ " from MTL_USER_DEPT ud "
 				+ " LEFT OUTER JOIN (select dmq.*, dmu.used_num "
-				+ " from MTL_QUOTA_CONFIG_DEPT dmq "
-				+ " LEFT OUTER JOIN MTL_QUOTA_M_DEPT_USED dmu "
+				+ " from mcd_quota_config_dept dmq "
+				+ " LEFT OUTER JOIN mcd_quota_used_dept_m dmu "
 				+ " on dmq.dept_id = dmu.dept_id and dmq.city_id=dmu.city_id"
 				+ " and dmq.data_date = dmu.data_date "
 				+ " where dmq.data_date = ?) t "
@@ -57,8 +57,8 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 
 		String sql = " select ud.*, t.month_quota_num,t.used_num,t.data_date from MTL_USER_DEPT ud "
 				+ "LEFT OUTER JOIN (select dmq.*, dmu.used_num "
-				+ " from MTL_QUOTA_CONFIG_DEPT dmq "
-				+ " LEFT OUTER JOIN MTL_QUOTA_M_DEPT_USED dmu "
+				+ " from mcd_quota_config_dept dmq "
+				+ " LEFT OUTER JOIN mcd_quota_used_dept_m dmu "
 				+ " on dmq.dept_id = dmu.dept_id and dmq.city_id=dmu.city_id "
 				+ " and dmq.data_date = dmu.data_date "
 				+ " where dmq.data_date = ?) t "
@@ -85,7 +85,7 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 
 		String sql = "select ud.*, t.day_quota_num, t.used_num, t.data_date_m, t.data_date "
 				+ "from MTL_USER_DEPT ud  LEFT OUTER JOIN "
-				+ "(select ddq.*, ddu.used_num from MTL_QUOTA_CONFIG_DEPT_D ddq "
+				+ "(select ddq.*, ddu.used_num from mcd_quota_config_dept_D ddq "
 				+ "LEFT OUTER JOIN MTL_QUOTA_D_DEPT_USED ddu "
 				+ "on ddq.city_id = ddu.city_id and ddq.dept_id = ddu.dept_id and ddq.data_date = ddu.data_date "
 				+ "where ddq.data_date = ?) t "
@@ -109,12 +109,12 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		Map<String, Object> map = new HashMap<String, Object>();
 		String currentMonth = QuotaUtils.getDayMonth("yyyyMM");
 		StringBuffer sql = new StringBuffer();
-		sql.append("select cq.*,t.USED_NUM from MTL_QUOTA_CONFIG_CITY cq ")
-				.append(" LEFT OUTER JOIN (select * from MTL_QUOTA_CITY_USED where DATA_DATE=?) t ")
+		sql.append("select cq.*,t.USED_NUM from mcd_quota_config_city cq ")
+				.append(" LEFT OUTER JOIN (select * from mcd_quota_used_city where DATA_DATE=?) t ")
 				.append(" on cq.city_id=t.city_id ")
 				.append(" where cq.CITY_ID=? ");
-		/*String sql = "select cq.*,t.USED_NUM from MTL_QUOTA_CONFIG_CITY cq "
-				+ "LEFT OUTER JOIN (select * from MTL_QUOTA_CITY_USED where DATA_DATE=?) t on cq.city_id=t.city_id"
+		/*String sql = "select cq.*,t.USED_NUM from mcd_quota_config_city cq "
+				+ "LEFT OUTER JOIN (select * from mcd_quota_used_city where DATA_DATE=?) t on cq.city_id=t.city_id"
 				+ " where cq.CITY_ID=?";*/
 		Object[] parm = { currentMonth, cityId };
 		try {
@@ -132,11 +132,11 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		List<Map<String, Object>> list = null;
 
 		StringBuffer sql = new StringBuffer();
-		sql.append("select cc.city_id,cu.used_num,cu.data_date from MTL_QUOTA_CONFIG_CITY cc")
-		.append(" LEFT OUTER JOIN (select city_id,data_date,used_num from MTL_QUOTA_CITY_USED where data_date=?)cu ")
+		sql.append("select cc.city_id,cu.used_num,cu.data_date from mcd_quota_config_city cc")
+		.append(" LEFT OUTER JOIN (select city_id,data_date,used_num from mcd_quota_used_city where data_date=?)cu ")
 		.append(" on cc.city_id=cu.city_id ");
-//		String sql = "select cc.city_id,cu.used_num,cu.data_date from MTL_QUOTA_CONFIG_CITY cc "
-//				+ "LEFT OUTER JOIN (select city_id,data_date,used_num from MTL_QUOTA_CITY_USED where data_date=?)cu "
+//		String sql = "select cc.city_id,cu.used_num,cu.data_date from mcd_quota_config_city cc "
+//				+ "LEFT OUTER JOIN (select city_id,data_date,used_num from mcd_quota_used_city where data_date=?)cu "
 //				+ "on cc.city_id=cu.city_id";
 		String[] parm = { month };
 
@@ -156,7 +156,7 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		String sql = "select ud.city_id, ud.dept_id,t.month_quota_num,t.used_num,def.month_quota_num defNum "
 				+ "from MTL_USER_DEPT ud LEFT OUTER JOIN "
 				+ "(select dc.city_id,dc.dept_id,dc.data_date,dc.month_quota_num,du.used_num "
-				+ "from MTL_QUOTA_CONFIG_DEPT dc LEFT OUTER JOIN MTL_QUOTA_M_DEPT_USED du "
+				+ "from mcd_quota_config_dept dc LEFT OUTER JOIN mcd_quota_used_dept_m du "
 				+ "on dc.city_id = du.city_id and dc.dept_id = du.dept_id and dc.data_date = du.data_date "
 				+ "where dc.data_date = ?) t on ud.city_id = t.city_id and ud.dept_id = t.dept_id "
 				+ "LEFT OUTER JOIN MTL_QUOTA_DEPT_M_DEFAULT def on ud.city_id = def.city_id and ud.dept_id = def.dept_id";
@@ -175,9 +175,9 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		List<Map<String, Object>> list = null;
 		String month = date.substring(0, 6);
 		String sql = "select dmc.city_id,dmc.dept_id,dmc.data_date data_date_m,t.data_date,t.day_quota_num,t.used_num "
-				+ "from MTL_QUOTA_CONFIG_DEPT dmc LEFT OUTER JOIN "
+				+ "from mcd_quota_config_dept dmc LEFT OUTER JOIN "
 				+ "(select ddc.city_id,ddc.dept_id,ddc.data_date,ddc.day_quota_num,ddc.data_date_m,ddu.used_num "
-				+ " from MTL_QUOTA_CONFIG_DEPT_D ddc LEFT OUTER JOIN MTL_QUOTA_D_DEPT_USED ddu "
+				+ " from mcd_quota_config_dept_D ddc LEFT OUTER JOIN MTL_QUOTA_D_DEPT_USED ddu "
 				+ "on ddc.city_id = ddu.city_id and ddc.dept_id = ddu.dept_id and ddc.data_date = ddu.data_date "
 				+ "where ddc.data_date = ?) t "
 				+ "on dmc.city_id = t.city_id and dmc.dept_id = t.dept_id "

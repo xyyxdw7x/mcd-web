@@ -32,8 +32,8 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		List<MtlGroupAttrRel> mtlGroupAttrRelList = new ArrayList<MtlGroupAttrRel>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT  * FROM MTL_GROUP_ATTR_REL WHERE CUSTOM_GROUP_ID=?")
-				   .append(" and list_table_name=(select max(list_table_name) from MTL_GROUP_ATTR_REL WHERE CUSTOM_GROUP_ID=?)");
+			sbuffer.append("SELECT  * FROM mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?")
+				   .append(" and list_table_name=(select max(list_table_name) from mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?)");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new String[]{custGroupId,custGroupId}, Map.class);
 			for (Map map : list) {
 				MtlGroupAttrRel mtlGroupAttrRel = new MtlGroupAttrRel();

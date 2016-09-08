@@ -64,9 +64,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         String deptId=request.getParameter("deptId");
         String dataDate = null;
         String showDate = request.getParameter("dataDate");
-        //TODO BY ZK
-        //String cityId = this.user.getCityid();
-        String cityId = "577";
+        String cityId = getUser(request,response).getCityId();
         
         CityQuotaStatisDay cityDayQuota = quotaConfigCityDayService.getCityQuotaStatisDay(cityId);
         
@@ -98,11 +96,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     @RequestMapping("/viewDayQuota")
     public void viewDayQuota(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
-        //TODO BY ZK
-        //String cityid = this.user.getCityid();
-        //String cityId = this.user.getCityid();
-        String cityid = "577";
-        String cityId = "577";
+        String cityId = this.getUser(request, response).getCityId();
         String dataDate = "";
         String showDate = request.getParameter("dataDate");
         if (StringUtil.isEmpty(showDate)) {
@@ -121,7 +115,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         List<String> daysList = CommonUtil.serializeToList(days);
         int sumSurplus = 0;
         int cityMonthConfig = 0;//地市月配额
-        cityMonthConfig = quotaConfigDeptMothService.getCityMonthQuota(cityid);
+        cityMonthConfig = quotaConfigDeptMothService.getCityMonthQuota(cityId);
         int sumQuota = 0;
         if (list.isEmpty()) {
             for (int i = 0; i < days; i++) {
@@ -218,9 +212,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     public void saveQuota4Day(HttpServletRequest request,HttpServletResponse response) throws Exception {
         //date="20160627";
 
-        //String cityId=this.user.getCityid();
-        //TODO BY ZK
-        String cityId = "577";
+        String cityId=this.getUser(request, response).getCityId();
         String day = request.getParameter("day");
         String month = request.getParameter("month");
         //月剩余配额
@@ -273,18 +265,14 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         Boolean isSuccess=false;
         JSONObject result = new JSONObject();
 
-        //TODO BY ZK
-        //String cityid = this.user.getCityid();
-        String cityid = "577";
+        String cityid = this.getUser(request, response).getCityId();
         String dataDate;
         String showDate = request.getParameter("dataDate");
         if (StringUtil.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }else{//将“yyyy年MM月 ”格式转化成“yyyyMM”格式
         	
-        	//TODO BY ZK
-            //dataDate=this.getActualDate(showDate);
-            dataDate = "20160825";
+            dataDate=this.getActualDate(showDate);
         }
 
         String deptId=request.getParameter("deptId");
@@ -337,4 +325,12 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
 				throw new MpmException("--out put json error", e);
 			}
 	 }
+	 
+	//将“yyyy年MM月 ”格式转化成“yyyyMM”格式。
+	private String getActualDate(String monthDate) {
+		String year = monthDate.substring(0, 4);
+		String month = monthDate.substring(5, monthDate.length() - 1);
+		String str = year + month;
+		return str;
+	}
 }
