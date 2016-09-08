@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
@@ -25,6 +27,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
+import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.string.StringUtil;
 /**
  * 策略管理相关dao
@@ -786,6 +789,26 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         return map;
     }
+
+    /**
+     * 根据工单 编号获取子策略（规则）
+     */
+    @Override
+    public List getChildCampSeginfoByAssingId(String assing_id) {
+        String sql = "select campseg_id from mtl_camp_seginfo where approve_flow_id=? and campseg_pid != '0'";
+        List list = this.getJdbcTemplate().queryForList(sql, new Object[] {assing_id });
+        return list;
+    }
+    /**
+     * 根据工单 编号获取策略（规则）
+     */
+    @Override
+    public List getCampSegInfoByApproveFlowId(String assing_id) {
+        String sql = "select start_date,end_date,campseg_id,APPROVE_FLOW_ID,CREATE_USERNAME from mtl_camp_seginfo where approve_flow_id=? and campseg_pid = '0'";
+        List list = this.getJdbcTemplate().queryForList(sql, new Object[] {assing_id });
+        return list;
+
+    }
     
     /***
 	 * 通过活动ID,向上递归拿到最顶父活动
@@ -803,5 +826,55 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		}
 		return null;
 	}
+
+    /**
+     *  add by gaowj3 20150728
+     * @Title: updateCampsegApproveStatusZJ
+     * @Description:  外部审批结束后修改状态方法
+     * @param @param assing_id 工单编号
+     * @param approve_desc   审批结果描述
+     *  @param campsegStatId   策略状态
+     * @return String 
+     * @throws
+     */
+    @Override
+    public void updateCampsegApproveStatusZJ(String assing_id,String approve_desc,short approveResult, String campsegStatId) throws Exception {
+        Short statid = Short.valueOf(campsegStatId);
+        short state = statid.shortValue();
+        String sql = "update mtl_camp_seginfo set approve_result_desc=?,campseg_stat_id=?,approve_result = ? where approve_flow_id=? and campseg_pid = '0'";
+        this.getJdbcTemplate().update(sql, new Object[] { approve_desc, Short.parseShort(campsegStatId),approveResult, assing_id }); 
+    }
+    
+    /**
+     * 通过策略编码
+     * 更新策略信息表的状态
+     * @throws SQLException 
+     */
+    @Override
+    public void updateCampsegInfoState(String campseg_id, String status) {
+        // TODO Auto-generated method stub
+        
+        String sql = " update mtl_camp_seginfo a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mtl_camp_seginfo where campseg_id = ?)";
+        this.getJdbcTemplate().update(sql, new Object[] { Short.parseShort(status), campseg_id,campseg_id });
+        
+    }
+    /**
+     * 根据策略获取策略相关客户群ID
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public String getMtlCampsegCustGroupId(String campsegId) {
+        
+        String sql = "select CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP where campseg_id = ?";
+        Map map = this.getJdbcTemplate().queryForMap(sql, new Object[] {campsegId });
+        
+        String id = null;
+        if(map != null){
+            id = map.get("CUSTGROUP_ID").toString();
+        }
+        return id;
+    }
+
 
 }

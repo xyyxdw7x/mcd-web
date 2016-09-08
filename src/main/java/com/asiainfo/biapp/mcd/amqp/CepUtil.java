@@ -11,10 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
+
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.kafka.cep.CepKafKaProducer;
+import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.wsclient.impl.gansu.MpmCampsegEventUtil;
 import com.asiainfo.biframe.utils.config.Configure;
@@ -136,20 +138,6 @@ public class CepUtil {
 		}
 		return sendContent;
 	}
-	public static String getPriorityCode(String campsegId) {
-		String priorityCode = (String)SimpleCache.getInstance().get("PRIORITY_CODE"+campsegId);
-		if(StringUtil.isEmpty(priorityCode)){
-			IMpmCampSegInfoDao seginfoDao = SpringContext.getBean("mpmCampSegInfoDao", IMpmCampSegInfoDao.class);
-			try {
-				priorityCode = String.valueOf(seginfoDao.getCampsegTopId(campsegId).getCampPriId());
-			} catch (Exception e) {
-				log.error("",e);
-				priorityCode = MpmCONST.CAMPSEG_PRI_NORMAL;
-			}
-			SimpleCache.getInstance().put("PRIORITY_CODE"+campsegId,priorityCode,expireTime);
-		}
-		return priorityCode;
-	}
 	public static String getPlanId(String campsegId) {
 		String planId = (String)SimpleCache.getInstance().get("PLAN_ID"+campsegId);
 		if(planId == null){
@@ -166,24 +154,6 @@ public class CepUtil {
 			SimpleCache.getInstance().put("PLAN_ID"+campsegId,planId,expireTime);
 		}
 		return planId;
-	}
-	public static Date[] getCampsegBenEndDate(String campsegId){
-		Date[] beginEnd = (Date[])SimpleCache.getInstance().get("CAMPSEG_START_END_DATE_"+campsegId);
-		if(beginEnd == null){
-			IMpmCampSegInfoDao seginfoDao = SpringContext.getBean("mpmCampSegInfoDao", IMpmCampSegInfoDao.class);
-			MtlCampSeginfo seginfo;
-			try {
-				seginfo = seginfoDao.getCampsegTopId(campsegId);
-				beginEnd =  new Date[2];
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				beginEnd[0] = sdf.parse(seginfo.getStartDate()+" 00:00:00");
-				beginEnd[1] = sdf.parse(seginfo.getEndDate()+" 23:59:59");
-				SimpleCache.getInstance().put("CAMPSEG_START_END_DATE_"+campsegId, beginEnd, expireTime);
-			} catch (Exception e) {
-				log.error("",e);
-			}
-		}
-		return beginEnd;
 	}
 	public static boolean isCamspegTaskExecute(String campsegId){
 		Boolean flag = (Boolean)SimpleCache.getInstance().get("CAMPSEG_IS_EXECUTE_"+campsegId);

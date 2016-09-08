@@ -184,4 +184,41 @@ public interface IMpmCampSegInfoDao {
 	 * @return
 	 */
 	public MtlCampSeginfo getCampsegTopId(String campsegId) throws Exception;
+    /**
+     * 根据工单 编号获取子策略（规则）
+     * @param assing_id 审批工单号
+     * @return
+     */
+    public List getChildCampSeginfoByAssingId(String assing_id);
+    /**
+     * 根据工单 编号获取策略（规则）
+     * @param assing_id 审批工单号
+     * @return
+     */
+    public List getCampSegInfoByApproveFlowId(String assing_id);
+    /**
+     *  add by gaowj3 20150728
+     * @Title: updateCampsegApproveStatusZJ
+     * @Description:  外部审批结束后修改状态方法
+     * @param @param assing_id 工单编号
+     * @param approve_desc   审批结果描述
+     *  @param campsegStatId   策略状态
+     * @return String 
+     * @throws
+     */
+    public void updateCampsegApproveStatusZJ(String assing_id,String approve_desc,short approveResult, String campsegStatId)  throws Exception ;
+    /**
+     * 更改规则的执行状态为测试中  
+     * 通过campseg——id
+     * @param campseg_id
+     * @param status
+     */
+    public void updateCampsegInfoState(String campsegPid, String mpmCampsegStatHdcs);
+    /**
+     * 根据策略获取策略相关客户群ID
+     * @param campsegId
+     * @return
+     */
+    public String getMtlCampsegCustGroupId(String campsegId);
+    
 }
