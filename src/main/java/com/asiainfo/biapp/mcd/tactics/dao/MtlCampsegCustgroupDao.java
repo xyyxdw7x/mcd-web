@@ -24,4 +24,11 @@ public interface MtlCampsegCustgroupDao {
 	 * @return
 	 */
 	public abstract List<MtlGroupInfo> getChoiceCustom(String campsegId);
+	
+	/**
+	 * 
+	 * @param campsegId   策略id
+	 * @return
+	 */
+	public List getCustInfoByCampsegId(String campsegId);
 }

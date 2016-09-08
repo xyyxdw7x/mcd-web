@@ -124,4 +124,16 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 		}
 		return result;
 	}
+	
+	@Override
+	public List getCustInfoByCampsegId(String campsegId) {
+		List list = new ArrayList();
+		try {
+			StringBuffer sql = new StringBuffer(" select *  from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CAMPSEG_ID = ?"); 
+			list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId,});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

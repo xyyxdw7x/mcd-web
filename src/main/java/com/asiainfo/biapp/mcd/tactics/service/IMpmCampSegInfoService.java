@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -9,6 +10,7 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
+import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 
@@ -234,5 +236,32 @@ public interface IMpmCampSegInfoService {
      * @param approveResult 最终审批结果(1 - 审批通过；2 - 退回)
      */
     public String processApproveInfo(String approveInfoXML);
+    
+	/**
+	 * 根据客户群清单表字段进行创建
+	 * @param tabPrefix
+	 * @return
+	 * @throws MpmException
+	 */
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId)throws MpmException;
+	
+	/**
+	 * 为Duser表创建索引
+	 * @param tableName
+	 */
+	public void createDuserIndex(String tableName,String custGroupId);
+	
+	/*
+	 * 根据业务标签  ARPU 计算我的客户群数量  added by zhanghy2 2015-12-06
+	 */
+	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,
+			McdTempletForm basicEventTemplate, Locale local,String orderProductNo, String excludeProductNo);
+	
+	/**
+	 * 新的方式插入清单表数据
+	 */
+	public void insertCustGroupNewWay(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	
+	
 	
 }
