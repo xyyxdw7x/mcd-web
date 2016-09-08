@@ -22,7 +22,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	public void updateCampPri(final List<MtlCampSeginfo> campsegs){
 		
 		String sql="update MTL_CAMP_SEGINFO t set t.camp_pri_id=? where t.campseg_id=?";
-		String sql2="update MTL_SMS_CHANNEL_SCHEDULE t set t.pri_id=? where t.campseg_id=?";
+		String sql2="update mcd_sms_schedule t set t.pri_id=? where t.campseg_id=?";
 		log.info("执行sql=" + sql);
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
@@ -59,7 +59,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	    
 		String sql="update MCD_CAMPSEG_TASK t set t.exec_status=? where t.task_id=? and t.exec_status!= ?";
 		
-		String sql2 ="update MTL_SMS_CHANNEL_SCHEDULE t set t.task_status=? where t.task_id=?";
+		String sql2 ="update mcd_sms_schedule t set t.task_status=? where t.task_id=?";
 		
 		String sql3 ="update MTL_CAMPSEG_TASK_DATE t set t.EXEC_STATUS=? where t.task_id=? and t.EXEC_STATUS=?";
 		
@@ -100,7 +100,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 				}
 			});
 		} catch (DataAccessException e) {
-			log.error("更新表{MTL_SMS_CHANNEL_SCHEDULE}时出错！！！");
+			log.error("更新表{mcd_sms_schedule}时出错！！！");
 			throw e;
 		}
 

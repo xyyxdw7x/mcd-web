@@ -48,7 +48,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 		sql.append(" on CAMP.CREATE_USERID = MAP.USER_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT DEPT ");
 		sql.append(" on MAP.DEPT_ID = DEPT.DEPT_ID ");
-		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from MTL_SMS_CHANNEL_SUB_TASK  where to_char(CREATE_TIME,'YYYYMMdd')=? group by TASK_ID) t ");
+		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from mcd_sms_send_sub_task  where to_char(CREATE_TIME,'YYYYMMdd')=? group by TASK_ID) t ");
 		sql.append(" on TASK.TASK_ID=t.TASK_ID ");
 		sql.append(" LEFT OUTER JOIN(")
 		    .append("select task_id,(nvl(YESTERDAY_SURPLUS,0)+nvl(CUST_LIST_TAB_GROUP_NUM,0)) SRC_CUST_NUM,(nvl(BOTHER_AVOID_NUM,0)+nvl(CONTACT_CONTROL_NUM,0)) FILTERED_NUM ")
@@ -91,7 +91,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 		sql.append(" on CAMP.CREATE_USERID = MAP.USER_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT DEPT ");
 		sql.append(" on MAP.DEPT_ID = DEPT.DEPT_ID ");
-		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from MTL_SMS_CHANNEL_SUB_TASK where to_char(CREATE_TIME,'YYYYMMdd')=?  group by TASK_ID) t ");
+		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from mcd_sms_send_sub_task where to_char(CREATE_TIME,'YYYYMMdd')=?  group by TASK_ID) t ");
 		sql.append(" on TASK.TASK_ID=t.TASK_ID ");
 		sql.append(" LEFT OUTER JOIN(")
 	    .append("select task_id,(nvl(YESTERDAY_SURPLUS,0)+nvl(CUST_LIST_TAB_GROUP_NUM,0)) SRC_CUST_NUM,(nvl(BOTHER_AVOID_NUM,0)+nvl(CONTACT_CONTROL_NUM,0)) FILTERED_NUM ")

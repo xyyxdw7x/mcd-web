@@ -187,7 +187,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.PLAN_DESC,A.ID,A.STATUS,A.CREATE_USERID,A.CREATE_DATE,A.PLAN_PNAME CAMP_NAME,A.PLAN_PID CAMP_ID,A.FEE_DESC,A.MATERIAL_DESC," +
 				   "A.CITY_ID,A.PLAN_TYPE,A.CHANNELS,A.LEVEL_ID,A.CAMPSEG_TYPE_ID,B.PLAN_TYPE_ID,B.PLAN_TYPE_NAME,")
 				  .append(" D.TYPE_ID,D.TYPE_NAME,")
-				  .append(" (select to_char(wm_concat(c.city_name)) from dim_pub_city c where '|' || A.city_id || '|' like '%|' || c.city_id || '|%' ) city_name,")
+				  .append(" (select to_char(wm_concat(c.city_name)) from mcd_dim_city c where '|' || A.city_id || '|' like '%|' || c.city_id || '|%' ) city_name,")
 				  .append(" (CASE WHEN A.PLAN_ID IN (SELECT F.PLAN_ID FROM  mtl_camp_seginfo F WHERE F.CAMPSEG_STAT_ID NOT IN ('90', '20', '91') AND F.city_id = '"+cityId+"' )")
 				  .append(" THEN 1 ELSE 0 END) IS_USERD")
 				  .append(" FROM MTL_STC_PLAN A ")
@@ -292,7 +292,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.PLAN_DESC,A.ID,A.STATUS,A.CREATE_USERID,A.CREATE_DATE,A.FEE_DESC,A.MATERIAL_DESC," +
 				   "A.CITY_ID,A.PLAN_TYPE,A.CHANNELS,A.LEVEL_ID,A.CAMPSEG_TYPE_ID,A.PLAN_PID,A.PLAN_PNAME,A.PLAN_SRV_TYPE,B.PLAN_TYPE_ID,B.PLAN_TYPE_NAME,")
 				  .append(" D.TYPE_ID,D.TYPE_NAME,")
-				  .append(" (select to_char(wm_concat(c.city_name)) from dim_pub_city c where c.city_id like '%A.city_id%' ) city_name")
+				  .append(" (select to_char(wm_concat(c.city_name)) from mcd_dim_city c where c.city_id like '%A.city_id%' ) city_name")
 				  .append(" FROM MTL_STC_PLAN A ")
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN DIM_PLAN_TYPE D ON A.PLAN_TYPE = D.TYPE_ID")

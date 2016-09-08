@@ -52,7 +52,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
     public void updateCampTaskStat(String campsegId, short type) {
         if(type == MpmCONST.TASK_STATUS_RUNNING){//重启
             //当任务没拆分的时候，短信渠道策略状态需要更改为待执行，不能是执行中
-            String mtlSmsChannelScheduleSql="select * from MTL_SMS_CHANNEL_SCHEDULE t  where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
+            String mtlSmsChannelScheduleSql="select * from mcd_sms_schedule t  where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
             List list = this.getJdbcTemplate().queryForList(mtlSmsChannelScheduleSql,new Object[]{campsegId});
             if(list != null && list.size() > 0){
                 String taskSql="select task_id from MCD_CAMPSEG_TASK where campseg_id=? and channel_id = ?";
@@ -72,7 +72,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
                     this.getJdbcTemplate().update(sqlNotSMS2,new Object[]{type,campsegId,MpmCONST.CHANNEL_TYPE_SMS,MpmCONST.TASK_STATUS_PAUSE});
                     
                     //重启短信渠道任务调度表
-                    String sql3="update MTL_SMS_CHANNEL_SCHEDULE t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=? and channel_id = ? )";
+                    String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=? and channel_id = ? )";
                     this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId,MpmCONST.CHANNEL_TYPE_SMS});
                 }else{
                     //重启任务主表
@@ -92,7 +92,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
                 String sql2="update MTL_CAMPSEG_TASK_DATE t set t.exec_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=? ) and t.exec_status= ?";
                 this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_PAUSE});
                 //重启短信渠道任务调度表
-                String sql3="update MTL_SMS_CHANNEL_SCHEDULE t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
+                String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
                 this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId});    
             }           
         }else if(type == MpmCONST.TASK_STATUS_PAUSE){//暂停
@@ -103,7 +103,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
             String sql2="update MTL_CAMPSEG_TASK_DATE t set t.exec_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=? ) and t.exec_status= ?";
             this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_RUNNING});
             //暂停短信渠道任务调度表
-            String sql3="update MTL_SMS_CHANNEL_SCHEDULE t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
+            String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
             this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId});
         }else if(type == MpmCONST.TASK_STATUS_STOP){//停止
             //停止任务主表
@@ -115,7 +115,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
             this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_RUNNING,MpmCONST.TASK_STATUS_PAUSE});
             
             //停止短信渠道任务调度表
-            String sql3="delete from  MTL_SMS_CHANNEL_SCHEDULE t  where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
+            String sql3="delete from  mcd_sms_schedule t  where t.task_id in (select task_id from MCD_CAMPSEG_TASK where campseg_id=?)";
             this.getJdbcTemplate().update(sql3,new Object[]{campsegId});
         }       
     

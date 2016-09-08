@@ -168,6 +168,9 @@ public class PowerfulRequestMappingHandlerMapping extends RequestMappingInfoHand
 	 */
 	@Override
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+		if (method.getName().equals("viewBull")) {
+			System.out.println("catch your!");
+		}
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);
