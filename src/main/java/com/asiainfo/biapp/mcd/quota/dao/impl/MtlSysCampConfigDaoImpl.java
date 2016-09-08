@@ -36,7 +36,7 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 		try {
 			List<Map> listTemp = null;
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(" select * from MTL_SYS_CAMP_CONFIG");
+			buffer.append(" select * from mcd_sys_dic");
 			listTemp = this.jdbcTemplate.queryForList(buffer.toString(),Map.class);
 			for (Map map : listTemp) {
 				MtlSysCampConfig mtlSysCampConfig = new MtlSysCampConfig();
@@ -52,7 +52,7 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 	}
 	
 	public Object getProperety(String key) {
-		String sql = "select t.* from MTL_SYS_CAMP_CONFIG t where t.CONFIG_KEY = ?";
+		String sql = "select t.* from mcd_sys_dic t where t.CONFIG_KEY = ?";
 		@SuppressWarnings("unchecked")
 		Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql, new Object[] { key });
 //		Iterator<Entry<String, String>> ite = map.entrySet().iterator();

@@ -147,7 +147,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
                   .append(" (select LOCAL_NAME from DIM_CHN_CALL_LOCAL where LOCAL_ID = mcd.call_form) as callFormName, ")
                   .append(" (select FORM_NAME from DIM_CHN_CALL_FORM where FORM_ID = mcd.call_city_type) as  callCityTypeName, ")
                   .append("mcd.call_question_name AS callQuestionName ")
-                  .append("  from mcd_camp_channel_list_call mcd, mcd_dim_channel dmc ")
+                  .append("  from mtl_channel_def_call mcd, mcd_dim_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id and mcd.campseg_id = ?) basic left join mcd_camp_def on basic.campseg_id = mcd_camp_def.campseg_id");
                     
             list= this.getJdbcTemplate().queryForList(buffer.toString(), new String[] { campsegId });

@@ -41,7 +41,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 				.append("CAMP.CREATE_USERID,CAMP.CREATE_USERNAME,CAMP.CAMP_PRI_ID,CAMP.CAMPSEG_NO,DEPT.DEPT_ID,")
 				.append("nvl(DEPT.DEPT_NAME,'-') DEPT_NAME,TASK.TASK_SENDODD_TAB_NAME,DEPT.City_Id,nvl(dd.SRC_CUST_NUM,0) SRC_CUST_NUM,")
 				.append("nvl(dd.FILTERED_NUM,0) FILTERED_NUM ");
-		sql.append(" from MCD_CAMPSEG_TASK TASK ");
+		sql.append(" from mcd_camp_task TASK ");
 		sql.append(" LEFT OUTER JOIN mcd_camp_def CAMP ");
 		sql.append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT_MAP MAP ");
@@ -83,7 +83,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 				.append("CAMP.CREATE_USERID,CAMP.CREATE_USERNAME,CAMP.CAMP_PRI_ID,CAMP.CAMPSEG_NO,DEPT.DEPT_ID,")
 				.append("nvl(DEPT.DEPT_NAME,'-') DEPT_NAME,TASK.TASK_SENDODD_TAB_NAME,DEPT.City_Id,nvl(dd.SRC_CUST_NUM,0) SRC_CUST_NUM,")
 				.append("nvl(dd.FILTERED_NUM,0) FILTERED_NUM");
-		sql.append(" from MCD_CAMPSEG_TASK TASK ");
+		sql.append(" from mcd_camp_task TASK ");
 		sql.append(" LEFT OUTER JOIN mcd_camp_def CAMP ");
 		sql.append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
 		
@@ -135,7 +135,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
     public void updateCampSegInfoCampPriId(String campsegId,String cityId) {
         StringBuffer sql = new StringBuffer();
         sql.append(" update mcd_camp_def mcs set mcs.camp_pri_id =")
-                .append(" (select decode(max(camp.camp_pri_id),'',0,max(camp.camp_pri_id))+1  from MCD_CAMPSEG_TASK TASK ")
+                .append(" (select decode(max(camp.camp_pri_id),'',0,max(camp.camp_pri_id))+1  from mcd_camp_task TASK ")
                 .append(" LEFT OUTER JOIN mcd_camp_def CAMP")
                 .append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
         sql.append(" where  TASK.channel_id='901'  and CAMP.City_Id= ? ");

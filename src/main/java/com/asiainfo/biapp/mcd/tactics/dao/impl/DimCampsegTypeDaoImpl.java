@@ -47,7 +47,7 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 		// TODO Auto-generated method stub
 		DimCampsegType obj = null;
 		try {
-			String sql = "SELECT * FROM DIM_CAMPSEG_TYPE WHERE CAMPSEG_TYPE_ID = ? order by CAMPSEG_TYPE_ID asc";
+			String sql = "SELECT * FROM mcd_dim_camp_type WHERE CAMPSEG_TYPE_ID = ? order by CAMPSEG_TYPE_ID asc";
 			
 			Object args[] = new Object[]{campsegTypeId};  
 	        return (DimCampsegType)this.getJdbcTemplate().queryForObject(sql,args,new BeanPropertyRowMapper(DimCampsegType.class));
@@ -61,7 +61,7 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
 		List<DimCampsegType> list = null;
 		try {
-			String sql = "SELECT * FROM DIM_CAMPSEG_TYPE order by CAMPSEG_TYPE_ID asc";
+			String sql = "SELECT * FROM mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 			return (List) this.getJdbcTemplate().query(sql, new RowMapperResultSetExtractor(new RowMapper() {
 				@Override
 				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {

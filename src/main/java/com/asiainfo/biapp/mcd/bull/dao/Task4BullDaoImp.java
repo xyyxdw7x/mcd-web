@@ -57,11 +57,11 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	@Override
 	public void batchUpdate(final List<McdCampsegTask> list){
 	    
-		String sql="update MCD_CAMPSEG_TASK t set t.exec_status=? where t.task_id=? and t.exec_status!= ?";
+		String sql="update mcd_camp_task t set t.exec_status=? where t.task_id=? and t.exec_status!= ?";
 		
 		String sql2 ="update mcd_sms_schedule t set t.task_status=? where t.task_id=?";
 		
-		String sql3 ="update MTL_CAMPSEG_TASK_DATE t set t.EXEC_STATUS=? where t.task_id=? and t.EXEC_STATUS=?";
+		String sql3 ="update mcd_camp_task_date t set t.EXEC_STATUS=? where t.task_id=? and t.EXEC_STATUS=?";
 		
 		try {
 			log.info("执行sql=" + sql);
@@ -80,7 +80,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 				}
 			});
 		} catch (DataAccessException e) {
-			log.error("更新表{MCD_CAMPSEG_TASK}时出错！！！");
+			log.error("更新表{mcd_camp_task}时出错！！！");
 			throw e;
 		}
 		
@@ -126,7 +126,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 				}
 			});
 		} catch (DataAccessException e) {
-			log.error("更新表{MTL_CAMPSEG_TASK_DATE}时出错！！！");
+			log.error("更新表{mcd_camp_task_date}时出错！！！");
 			throw e;
 		}
 		

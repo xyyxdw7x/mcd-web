@@ -59,22 +59,22 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			/**
-			 * select mtl_stc_plan_channel.*,mtl_stc_plan_resource.adiv_id,dim_mtl_adiv_info.* from mtl_stc_plan_channel 
-				left join mtl_stc_plan_resource on mtl_stc_plan_channel.plan_id=mtl_stc_plan_resource.plan_id
+			 * select mcd_plan_channel_list.*,mtl_stc_plan_resource.adiv_id,dim_mtl_adiv_info.* from mcd_plan_channel_list 
+				left join mtl_stc_plan_resource on mcd_plan_channel_list.plan_id=mtl_stc_plan_resource.plan_id
 				left join dim_mtl_adiv_info on mtl_stc_plan_resource.adiv_id = dim_mtl_adiv_info.adiv_id
 				--left join dim_mtl_adiv_resouce on mtl_stc_plan_resource.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id
-				where mtl_stc_plan_channel.plan_id in ('600000274748','600000282454','600000282453','600000298809','600000298808')
+				where mcd_plan_channel_list.plan_id in ('600000274748','600000282454','600000282453','600000298809','600000298808')
 				and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) 
 				or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND
                        nvl2(PLAN_CHN_STARTDATE, PLAN_CHN_STARTDATE, TO_DATE('21000101', 'YYYYMMDD')))
 			 */
-			sbuffer.append("select mtl_stc_plan_channel.*,mtl_stc_plan_resource.adiv_id,mtl_stc_plan_resource.chn_resource_id,mtl_stc_plan_resource.chn_resource_desc," +
-					"dim_mtl_adiv_resouce.adiv_resource_name,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url,dim_mtl_adiv_info.* from mtl_stc_plan_channel ")
-				   .append(" left join mtl_stc_plan_resource on mtl_stc_plan_channel.plan_id=mtl_stc_plan_resource.plan_id")
+			sbuffer.append("select mcd_plan_channel_list.*,mtl_stc_plan_resource.adiv_id,mtl_stc_plan_resource.chn_resource_id,mtl_stc_plan_resource.chn_resource_desc," +
+					"dim_mtl_adiv_resouce.adiv_resource_name,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url,dim_mtl_adiv_info.* from mcd_plan_channel_list ")
+				   .append(" left join mtl_stc_plan_resource on mcd_plan_channel_list.plan_id=mtl_stc_plan_resource.plan_id")
 				   .append(" left join dim_mtl_adiv_info on mtl_stc_plan_resource.adiv_id = dim_mtl_adiv_info.adiv_id")
 				   .append(" left join dim_mtl_adiv_resouce on mtl_stc_plan_resource.chn_resource_id = dim_mtl_adiv_resouce.adiv_resource_id")
-				   .append(" where mtl_stc_plan_channel.plan_id=? and mtl_stc_plan_channel.channel_id=?")
-				   .append(" and mtl_stc_plan_channel.channel_id = dim_mtl_adiv_info.channel_id")
+				   .append(" where mcd_plan_channel_list.plan_id=? and mcd_plan_channel_list.channel_id=?")
+				   .append(" and mcd_plan_channel_list.channel_id = dim_mtl_adiv_info.channel_id")
 				   .append(" and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) ")
 				   .append(" or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND")
 				   .append(" nvl2(PLAN_CHN_ENDDATE, PLAN_CHN_ENDDATE, TO_DATE('21000101', 'YYYYMMDD')))");
@@ -196,14 +196,14 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		JdbcTemplate jt = this.getJdbcTemplate();
 		StringBuffer sb = new StringBuffer();
 		sb.append("select dmai.*,num,case when num is null then 0 else num end sortNum from dim_mtl_adiv_info dmai left join (")
-		  .append(" select count(1) num ,MTL_CAMPESEG_ORDER_ATTR.channel_id,MTL_CAMPESEG_ORDER_ATTR.Chn_Adiv_Id ")
-		  .append(" from MTL_CAMPESEG_ORDER_ATTR  ")
-		  .append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on MTL_CAMPESEG_ORDER_ATTR.campseg_id = mct.campseg_id")
-		  .append(" left join mcd_camp_def mcs on MTL_CAMPESEG_ORDER_ATTR.campseg_id=mcs.campseg_id")
-		  .append(" where MTL_CAMPESEG_ORDER_ATTR.city_id='"+cityId+"' ")
+		  .append(" select count(1) num ,mcd_camp_order.channel_id,mcd_camp_order.Chn_Adiv_Id ")
+		  .append(" from mcd_camp_order  ")
+		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcd_camp_order.campseg_id = mct.campseg_id")
+		  .append(" left join mcd_camp_def mcs on mcd_camp_order.campseg_id=mcs.campseg_id")
+		  .append(" where mcd_camp_order.city_id='"+cityId+"' ")
 		  .append(" and  mct.exec_status in (50,51,59) ")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0")
-		  .append(" group by  MTL_CAMPESEG_ORDER_ATTR.channel_id,MTL_CAMPESEG_ORDER_ATTR.Chn_Adiv_Id ")
+		  .append(" group by  mcd_camp_order.channel_id,mcd_camp_order.Chn_Adiv_Id ")
 		  .append(" ) basic on basic.channel_id=dmai.channel_id and basic.Chn_Adiv_Id=dmai.adiv_id")
 		  .append(" where dmai.channel_id <> '910'")
 		  .append(" order by sortNum desc");

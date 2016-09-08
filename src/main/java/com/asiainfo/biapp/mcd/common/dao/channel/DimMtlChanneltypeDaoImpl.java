@@ -391,7 +391,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	@Override
 	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
 		List<DimCampsegType> list = null;
-		String sql = "select * from DIM_CAMPSEG_TYPE order by CAMPSEG_TYPE_ID asc";
+		String sql = "select * from mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 		try {
 			list = this.getJdbcTemplate().query(sql,new RowMapper(){
 
@@ -419,13 +419,13 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("select DMC.CHANNEL_ID,DMC.CHANNELTYPE_ID,DMC.CHANNEL_NAME,TEMP.NUM ")
 				   .append(" from mcd_dim_channel DMC left join")
-				   .append(" (select count(1) num ,MTL_CAMPESEG_ORDER_ATTR.channel_id from MTL_CAMPESEG_ORDER_ATTR ")
-				   .append("  left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on MTL_CAMPESEG_ORDER_ATTR.campseg_id = mct.campseg_id")
-				   .append(" left join mcd_camp_def mcs on MTL_CAMPESEG_ORDER_ATTR.campseg_id=mcs.campseg_id")
-				   .append(" where MTL_CAMPESEG_ORDER_ATTR.city_id='"+cityId+"'")
+				   .append(" (select count(1) num ,mcd_camp_order.channel_id from mcd_camp_order ")
+				   .append("  left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcd_camp_order.campseg_id = mct.campseg_id")
+				   .append(" left join mcd_camp_def mcs on mcd_camp_order.campseg_id=mcs.campseg_id")
+				   .append(" where mcd_camp_order.city_id='"+cityId+"'")
 				   .append(" and  mct.exec_status in (50,51,59)")
 				   .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0")  //失效的策略不统计
-				   .append(" group by  MTL_CAMPESEG_ORDER_ATTR.channel_id")
+				   .append(" group by  mcd_camp_order.channel_id")
 				   .append(" ) temp on DMC.CHANNEL_ID = TEMP.CHANNEL_ID");
 			if(isOnLine){ //线上
 				   sbuffer.append(" where DMC.channel_class=1");

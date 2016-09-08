@@ -50,14 +50,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         if(segInfo.getIsSelectMy() != null && segInfo.getIsSelectMy() == 0){
             buffer.append(",(CASE  WHEN msi.campseg_stat_id = '54' AND TO_NUMBER(TO_DATE(msi.end_date, 'YYYY-MM-DD') - sysdate) * 24 <= 72 THEN 1 ELSE 0 END) AS \"DQ_1\",")
             .append("(CASE WHEN msi.campseg_stat_id = '40' AND TO_NUMBER(TO_DATE(msi.start_date, 'YYYY-MM-DD') - sysdate) * 24 <= 24 THEN 1 ELSE 0 END) AS \"DQ_2\",")
-            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') AND TO_NUMBER((select MIN(PLAN_ENDDATE) from mtl_stc_plan where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - sysdate) * 24 <= 72 THEN 1 ELSE 0 END) AS \"DQ_3\",")
+            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') AND TO_NUMBER((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - sysdate) * 24 <= 72 THEN 1 ELSE 0 END) AS \"DQ_3\",")
             .append("(CASE WHEN msi.campseg_stat_id = '54' THEN TRUNC(TO_DATE(msi.end_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_1\",")
             .append("(CASE WHEN msi.campseg_stat_id = '40' THEN TRUNC(TO_DATE(msi.start_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_2\",")
-            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') THEN TRUNC((select MIN(PLAN_ENDDATE) from mtl_stc_plan where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_3\" ") ;
+            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') THEN TRUNC((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_3\" ") ;
         } 
         
         buffer.append(" from mcd_camp_def msi ")
-               .append(" left join DIM_CAMPSEG_STAT dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")
+               .append(" left join mcd_dim_camp_status dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")
               .append("   where 1=1 ")
               .append("   and msi.campseg_pid ='0' ")
               .append("   and (msi.camp_class is null or msi.camp_class =1) ");
@@ -135,7 +135,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List getDimCampsegStatList() {
-        String sql="select * from DIM_CAMPSEG_STAT where 1=1 and CAMPSEG_STAT_VISIBLE = 0 order by CAMPSEG_STAT_SITEID";
+        String sql="select * from mcd_dim_camp_status where 1=1 and CAMPSEG_STAT_VISIBLE = 0 order by CAMPSEG_STAT_SITEID";
         List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
         return list;
     }
@@ -641,7 +641,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
    */
     @Override
     public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
-        String sql="select * from dim_campseg_stat where campseg_stat_ID = ?";
+        String sql="select * from mcd_dim_camp_status where campseg_stat_ID = ?";
         Object[] args=new Object[]{dimCampsegStatID};
         int[] argTypes=new int[]{Types.VARCHAR};
         List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
@@ -731,7 +731,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             .append("CK_CNT_TOTAL CUMULAT_CK_NUMS,")//累计点击数
             .append("PV_CNT EXPOSURE_NUMS, ")//当天曝光数
             .append("PV_CNT_TOTAL CUMULAT_EXPOSURE_NUMS ");//累计曝光数
-        sb.append("FROM MTL_CAMPSEG_RUN_LOG ");
+        sb.append("FROM mcd_log_camp_exec ");
         sb.append("WHERE CAMPSEG_TYPE='1' AND CAMPSEG_ID=? AND CHANNEL_ID=? ");
         
         
@@ -777,7 +777,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             .append("PV_CNT EXPOSURE_NUMS, ")//当天曝光数
             .append("PV_CNT_TOTAL CUMULAT_EXPOSURE_NUMS ");//累计曝光数
         
-        sb.append("FROM MTL_CAMPSEG_RUN_LOG ");
+        sb.append("FROM mcd_log_camp_exec ");
         sb.append("WHERE CAMPSEG_ID=? AND CHANNEL_ID=? AND DATA_DATE=? ");
         
         

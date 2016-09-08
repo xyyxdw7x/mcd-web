@@ -357,7 +357,7 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 				.append(") nn");
 		sql.append(" on camp.campseg_id = nn.campseg_id ");
 		
-		sql.append(" left outer join  (select t.campseg_stat_siteid,t.campseg_stat_id,t.campseg_stat_name from DIM_CAMPSEG_STAT t  where t.campseg_stat_visible=0 ) aa")
+		sql.append(" left outer join  (select t.campseg_stat_siteid,t.campseg_stat_id,t.campseg_stat_name from mcd_dim_camp_status t  where t.campseg_stat_visible=0 ) aa")
 		.append(" on aa.campseg_stat_id=camp.campseg_stat_id");
          
 		sql.append(" where camp.CREATE_USERID=? and camp.campseg_pid='0' ");

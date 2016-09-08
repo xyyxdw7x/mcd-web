@@ -915,7 +915,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @return
 	 */
 	private String getTableName(String channelId){
-		String tableName = "MTL_CHN_{CHNID}_V_LOG_YYYYMM";
+
+		String tableName = "MCD_LOG_CHN_{CHNID}_EXP_YYYYMM";
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMM");
 		String dateStr = format.format(new Date());
 		tableName = tableName.replace("{CHNID}", channelId).replace("YYYYMM", dateStr);
