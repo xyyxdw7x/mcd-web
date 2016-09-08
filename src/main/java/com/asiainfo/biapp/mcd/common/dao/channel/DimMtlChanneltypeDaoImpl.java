@@ -71,19 +71,22 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		if("1".equals(isDoubleSelect)){
 			sql += " and dmc.channel_id in (902,903,906)";
 		}
-		sql += " order by dmc.display_order";
-		list = this.getJdbcTemplate().query(sql,new RowMapper(){
-
-			@Override
-			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				DimMtlChannel dimMtlChannel=new DimMtlChannel();
-				dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
-				dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
-				dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
-				return dimMtlChannel;
-			}
-			
-		});
+		sql += " order by dmc.DISPLAY_ORDER";
+		try {
+			list = this.getJdbcTemplate().query(sql,new RowMapper(){
+				@Override
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					DimMtlChannel dimMtlChannel=new DimMtlChannel();
+					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
+					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
+					dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
+					return dimMtlChannel;
+				}
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			throw e;
+		}
 		return list;
 	}
 	
