@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityMothDao;
 public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements
 		QuotaConfigCityMothDao {
 	private static final Logger log = LogManager.getLogger();
-	private static final String TABLE = "MTL_QUOTA_CONFIG_CITY";
+	private static final String TABLE = "mcd_quota_config_city";
 
 	@Override
 	public int queryCityMonthQuotaInMem(String city)
@@ -39,7 +39,7 @@ public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements
 	@Override
 	public List<Map<String,Object>> queryAllInMem(){
 		List<Map<String,Object>> list=null;
-		String sql = "select * from MTL_QUOTA_CONFIG_CITY";
+		String sql = "select * from mcd_quota_config_city";
 		list = this.getJdbcTemplate().queryForList(sql);
 		return list;
 	}

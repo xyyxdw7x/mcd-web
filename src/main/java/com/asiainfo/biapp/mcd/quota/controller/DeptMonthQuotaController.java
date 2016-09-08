@@ -53,9 +53,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
     public void queryDeptsConfigMonth(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        //TODO BY ZK
-        //String cityid = this.user.getCityid();
-        String cityid = "577";
+        String cityid = this.getUser(request, response).getCityId();
         
         String dataDate;
         String showDate = request.getParameter("dataDate");
@@ -141,9 +139,8 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         
         String renFlag="";
         JSONObject dataJson = new JSONObject();
-        //TODO BY ZK
-        //String cityid = this.user.getCityid();
-        String cityid = "577";
+
+        String cityid = this.getUser(request, response).getCityId();
         String dataDate = request.getParameter("dataDate");
         if (StringUtil.isEmpty(dataDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
@@ -176,9 +173,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
             HttpServletResponse response) throws Exception {
         boolean flag=false;
         JSONObject result = new JSONObject();
-        //TODO BY ZK
-        //String cityid = this.user.getCityid();
-        String cityid = "577";
+        String cityid = this.getUser(request, response).getCityId();
         
         String jsonStr = request.getParameter("beans");
         @SuppressWarnings("unchecked")

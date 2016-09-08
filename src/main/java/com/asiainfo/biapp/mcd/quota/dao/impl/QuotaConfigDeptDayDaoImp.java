@@ -21,7 +21,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 		QuotaConfigDeptDayDao {
 	private static final Logger log = LogManager.getLogger();
 
-	private static final String TABLE = "MTL_QUOTA_CONFIG_DEPT_D";
+	private static final String TABLE = "mcd_quota_config_dept_D";
 
 	@Override
 	public void updateDepDayQuotaInMem(QuotaConfigDeptDay depDayQuota, int newQuota)
@@ -245,7 +245,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 
 	@Override
     public void batchUpdateDayConfNumInMem(final List<QuotaConfigDeptDay> list){
-		String sql = "update MTL_QUOTA_CONFIG_DEPT_D set DAY_QUOTA_NUM=? where CITY_ID=? and DEPT_ID=? and DATA_DATE=?";
+		String sql = "update mcd_quota_config_dept_D set DAY_QUOTA_NUM=? where CITY_ID=? and DEPT_ID=? and DATA_DATE=?";
         this.getJdbcTemplate().batchUpdate(sql,new BatchPreparedStatementSetter() {
 			
 			@Override
@@ -267,7 +267,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 	@Override
 	public List<Map<String,Object>> getDayConfInMem(String cityId,String deptId,String fromDate,String toDate){
 		List<Map<String,Object>> list=null;
-		String sql="select * from MTL_QUOTA_CONFIG_DEPT_D where city_Id=? and dept_id=? and data_date>=? and data_date<=?";
+		String sql="select * from mcd_quota_config_dept_D where city_Id=? and dept_id=? and data_date>=? and data_date<=?";
 		Object[] parm = {cityId,deptId,fromDate,toDate};
 		
 		try {
@@ -280,7 +280,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 	}
     @Override
     public void saveBatchSaveInMem(final List<QuotaConfigDeptDay> list){
-    	String sql="insert into MTL_QUOTA_CONFIG_DEPT_D(CITY_ID,DEPT_ID,DATA_DATE,DAY_QUOTA_NUM,DATA_DATE_M)values(?,?,?,?,?)";
+    	String sql="insert into mcd_quota_config_dept_D(CITY_ID,DEPT_ID,DATA_DATE,DAY_QUOTA_NUM,DATA_DATE_M)values(?,?,?,?,?)";
     	this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
@@ -304,7 +304,7 @@ public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
 	@Override
     public List<Map<String,Object>> queryConfigDeptInMem(String month){
     	List<Map<String,Object>> list = null;
-    	String sql = "select DEPT_ID from MTL_QUOTA_CONFIG_DEPT_D  where data_date_m=? group by DEPT_ID";
+    	String sql = "select DEPT_ID from mcd_quota_config_dept_D  where data_date_m=? group by DEPT_ID";
     	Object[] args ={month};
     	try {
 			list = this.getJdbcTemplate().queryForList(sql, args);

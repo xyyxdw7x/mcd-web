@@ -97,8 +97,8 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
 		try {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("select MTL_CAMPSEG_CUSTGROUP.*,MTL_GROUP_INFO.Custom_Group_Name,MTL_GROUP_INFO.Custom_Num,MTL_GROUP_INFO.Create_User_Id,MTL_GROUP_INFO.Custom_Status_Id,MTL_GROUP_INFO.Update_Cycle from MTL_CAMPSEG_CUSTGROUP ")
-				  .append(" left join MTL_GROUP_INFO on MTL_CAMPSEG_CUSTGROUP.Custgroup_Id = MTL_GROUP_INFO.Custom_Group_Id")
+			buffer.append("select MTL_CAMPSEG_CUSTGROUP.*,mcd_custgroup_def.Custom_Group_Name,mcd_custgroup_def.Custom_Num,mcd_custgroup_def.Create_User_Id,mcd_custgroup_def.Custom_Status_Id,mcd_custgroup_def.Update_Cycle from MTL_CAMPSEG_CUSTGROUP ")
+				  .append(" left join mcd_custgroup_def on MTL_CAMPSEG_CUSTGROUP.Custgroup_Id = mcd_custgroup_def.Custom_Group_Id")
 				  .append(" where CUSTGROUP_TYPE='CG' AND MTL_CAMPSEG_CUSTGROUP.CAMPSEG_id = ?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
 			

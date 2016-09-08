@@ -20,9 +20,6 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			//绑定事件
 			this.bindEvent();
 			
-			this.initQueue();
-
-
 		},
 		loadTable:function(options){
 			var defaults = {
@@ -450,24 +447,6 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 
 		},
 
-		initQueue:function () {
-			$.post( _ctx+"/custgroup/custGroupManager/initQueue",{},function (result) {
-				var _html = "";
-
-				for(var i = 0; i<result.data.length; i++){
-					_html += '<li class="item" data-id="'+result.data[i].QUEUE_ID+'">' +
-						'<input type="radio" name="queneRadio" data-id="'+result.data[i].QUEUE_ID+'">' +
-						'<span>'+result.data[i].QUEUE_NAME+'</span>' +
-						'</li>'
-				}
-				_html += '<li class="item" data-id="-1">' +
-					'<input type="radio" name="queneRadio" data-id="-1">' +
-					'<span>无队列</span>' +
-					'</li>'
-				$('.handOutList').html(_html);
-			},'json');
-
-		},
 		openDialogHandOut:function(titleTxt,_w,_h,_open,_close){
 			$('body').css('overflow', 'hidden');
 

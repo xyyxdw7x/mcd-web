@@ -67,7 +67,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	@SuppressWarnings("unchecked")
 	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect){
 		List<DimMtlChannel> list=null;
-		String sql = "select * from DIM_MTL_CHANNEL dmc where 1=1 ";
+		String sql = "select * from dim_mtl_channel dmc where 1=1 ";
 		if("1".equals(isDoubleSelect)){
 			sql += " and dmc.channel_id in (902,903,906)";
 		}

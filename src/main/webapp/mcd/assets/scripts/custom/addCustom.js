@@ -52,8 +52,8 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxF
 					user_type: $(".import-local-custom-table input[name='user_type']:checked").val(),
 					custom_description: $("#custom_description").val()
 				};  
-				var oMyForm = new FormData();
-				oMyForm.append("file", upload_file.files[0]);
+				//var oMyForm = new FormData();
+				//oMyForm.append("file", $("#upload_file")[0].files[0]);
 				$.ajaxFileUpload({  
 			        url : _ctx+"/custgroup/custGroupManager/saveCustGroup",
 			        data: data,
@@ -74,7 +74,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxF
 							alert("新增客户群成功！");
 							//直接跳转到我的客户群页面
 							var baseUrl=window.location.protocol+"//"+window.location.host+_ctx;
-							var url=baseUrl+"/mcd/pages/custom/customManage.jsp?navId=M001005004001001&subNavId=M001005004001001001";
+							var url=baseUrl+"/mcd/pages/custom/customManage.jsp?navId=7143&subNavId=714311";
 							window.location.href=url;
 						} else {
 							alert("新增客户群失败！");

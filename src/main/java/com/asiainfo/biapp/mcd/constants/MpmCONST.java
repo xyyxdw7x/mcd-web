@@ -2069,14 +2069,14 @@ public class MpmCONST extends SysCodes {
 	public static final int MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE= 2;
 	
 	public static final String IMCD_MTL_GROUPINFO_SERVICE = "mcdMtlGroupInfoService";
-	public static final String IMCD_MTL_GROUP_ATTR_REL_SERVICE = "mtlGroupAttrRelService";
+	public static final String IMCD_mcd_custgroup_attr_list_SERVICE = "mtlGroupAttrRelService";
 
 	/**
 	 * 客户群生成周期 add by jinl
 	 */
-	public static final String  MTL_GROUP_INFO_UPDATE_CYCLE_1 = "一次性";
-	public static final String  MTL_GROUP_INFO_UPDATE_CYCLE_2 = "月周期";
-	public static final String  MTL_GROUP_INFO_UPDATE_CYCLE_3 = "日周期";
+	public static final String  mcd_custgroup_def_UPDATE_CYCLE_1 = "一次性";
+	public static final String  mcd_custgroup_def_UPDATE_CYCLE_2 = "月周期";
+	public static final String  mcd_custgroup_def_UPDATE_CYCLE_3 = "日周期";
 	
 	public static final String MPM_ZJMARKET_APPROVEWS_CLIENT = "mpmZjmarketApproveWsClient";
 	

@@ -603,9 +603,9 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public List getExecContentVariableList(String campsegId) {
-        String sql = "select attr_col_name,attr_col from MTL_GROUP_ATTR_REL mgar WHERE mgar.custom_group_id = " +
+        String sql = "select attr_col_name,attr_col from mcd_custgroup_attr_list mgar WHERE mgar.custom_group_id = " +
         "(select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?)" +
-        " and mgar.list_table_name=(select max(list_table_name) from MTL_GROUP_ATTR_REL WHERE CUSTOM_GROUP_ID=(" +
+        " and mgar.list_table_name=(select max(list_table_name) from mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=(" +
         " select mcc.CUSTGROUP_ID from MTL_CAMPSEG_CUSTGROUP mcc where mcc.CUSTGROUP_TYPE = 'CG' and mcc.campseg_id = ?))" ;
         
         return this.getJdbcTemplate().queryForList(sql, new Object[] {campsegId,campsegId });

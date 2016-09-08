@@ -19,7 +19,7 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 		QuotaMonthDeptUsedDao {
 	private static final Logger log = LogManager.getLogger();
 	
-	private static String TABLE = "MTL_QUOTA_M_DEPT_USED";
+	private static String TABLE = "mcd_quota_used_dept_m";
 	
 	@Override
 	public QuotaMonthDeptUsed updateDayQuotaUsed(
@@ -31,7 +31,7 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 	@Override
 	public void saveBatchSaveInMem(final List<QuotaMonthDeptUsed> list) {
 		// TODO Auto-generated method stub
-		String sql ="insert into MTL_QUOTA_M_DEPT_USED(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
+		String sql ="insert into mcd_quota_used_dept_m(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
