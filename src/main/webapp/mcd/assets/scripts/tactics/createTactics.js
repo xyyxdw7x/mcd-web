@@ -608,7 +608,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		},
 		getTacticsTypeList:function(){
 			var tacticsTableModel = Backbone.Model.extend({
-				urlRoot : _ctx+ "/tactics/", 
+				urlRoot : _ctx+ "/tactics/tacticsManage", 
 				defaults : {_ctx : _ctx}
 			});
 			var tacticsTypeView = Backbone.View.extend({
@@ -724,7 +724,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					return this;
 				} ,
 				getDimPlanType:function(){//政策类别
-					var dimPlanType = new tacticsTableModel({id : "tacticsManage"});
+					var dimPlanType = new tacticsTableModel({id : "initDimPlanType"});
 					dimPlanType.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -737,12 +737,12 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				},
 				getGradeType:function(){//政策粒度
-					var modelView = new tacticsTableModel({id : "tacticsManage"});
+					var modelView = new tacticsTableModel({id : "initGrade"});
 					modelView.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:"initGrade"},
+//						data:{cmd:"initGrade"},
 						success:function(model){
 							var typeHtml = new EJS({url : _ctx + '/mcd/pages/EJS/tacticsCreate/typeLIst.ejs'}).render(model.attributes);
 							$("#initGrade").html(typeHtml);
@@ -750,13 +750,13 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				},
 				getChannelType:function(){//适用渠道
-					var modelView = new tacticsTableModel({id : "tacticsManage"});
+					var modelView = new tacticsTableModel({id : "initChannelType"});
 					var isDoubleSelect = $(".J_redio_tactics:checked").val();
 					modelView.fetch({
 						type : "post",
 						contentType: "application/x-www-form-urlencoded; charset=utf-8",
 						dataType:'json',
-						data:{cmd:"initChannelType",isDoubleSelect:isDoubleSelect   },
+						data:{isDoubleSelect:isDoubleSelect   },
 						success:function(model){
 							var typeHtml = new EJS({url : _ctx + '/mcd/pages/EJS/tacticsCreate/typeLIst.ejs'}).render(model.attributes);
 							$("#channelType").html(typeHtml);
@@ -3035,8 +3035,8 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 		getProductRelationQueryList:function(options){
 			var defaults = {
 				urlRoot:_ctx+"/tactics/tacticsManage",
-				//id:"mtlStcPlanAction.aido",
-				cmd:"initDimPlanType",
+				id:"initDimPlanType",
+				//cmd:"initDimPlanType",
 				currentDom:"#productRelationQueryList",
 				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsCreate/productRelationQueryList.ejs',
 				ajaxData:{}

@@ -876,7 +876,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initDimPlanType")
+	@RequestMapping("initDimPlanType")
 	public void initDimPlanType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -924,7 +924,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initGrade")
+	@RequestMapping("initGrade")
 	public void initGrade(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -958,7 +958,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initChannelType")
+	@RequestMapping("initChannelType")
 	public void initChannelType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		//TODO：initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
