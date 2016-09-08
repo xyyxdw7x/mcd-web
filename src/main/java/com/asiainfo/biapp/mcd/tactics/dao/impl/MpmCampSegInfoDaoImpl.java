@@ -60,7 +60,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                .append(" left join DIM_CAMPSEG_STAT dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")
               .append("   where 1=1 ")
               .append("   and msi.campseg_pid ='0' ")
-              .append("   and (msi.camp_class is null or msi.camp_class =1) and (msi.is_scene_template = 2 or msi.is_scene_template is null or msi.is_scene_template = 0)");
+              .append("   and (msi.camp_class is null or msi.camp_class =1) ");
               
               
             //业务状态改为多选
@@ -664,8 +664,8 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             //edit by lixq10 begin
             StringBuffer buffer = new StringBuffer();
             buffer.append("select basicData.*，MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE,MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_VALUE_ID,MDA_SYS_TABLE_COLUMN.COLUMN_CN_NAME,MCD_CV_COL_DEFINE.CTRL_TYPE_ID from ( ")
-                  .append(" select mts.SHOW_SQL, mcc.CUSTGROUP_NUMBER,mts.SELECT_TEMPLET_ID from MTL_CAMPSEG_CUSTGROUP mcc, MCD_TEMPLET_SELECT mts")
-                  .append(" where mts.ACTIVE_TEMPLET_ID = mcc.CUSTGROUP_ID and mcc.campseg_Id = ? and mcc.CUSTGROUP_TYPE = 'CGT'")
+                  .append(" select mts.SHOW_SQL, mts.SELECT_TEMPLET_ID from MTL_CAMPSEG_CUSTGROUP mcc, MCD_TEMPLET_SELECT mts")
+                  .append(" where mts.ACTIVE_TEMPLET_ID = mcc.CUSTGROUP_ID and mcc.campseg_Id = ?")
                   .append(" ) basicData left join MCD_TEMPLET_ACTIVE_FIELD on basicData.SELECT_TEMPLET_ID = MCD_TEMPLET_ACTIVE_FIELD.SELECT_TEMPLET_ID")
                   .append(" LEFT JOIN MDA_SYS_TABLE_COLUMN ON MDA_SYS_TABLE_COLUMN.COLUMN_ID = MCD_TEMPLET_ACTIVE_FIELD.ELEMENT_ID")
                   .append(" LEFT JOIN MCD_CV_COL_DEFINE ON MDA_SYS_TABLE_COLUMN.COLUMN_ID = MCD_CV_COL_DEFINE.ATTR_META_ID");

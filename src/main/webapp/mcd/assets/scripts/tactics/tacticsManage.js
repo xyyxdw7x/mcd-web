@@ -433,7 +433,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			new searchDimCampDrvTypeView({el:options.currentDom});
 		},
 		loadAllChannelType:function(){
-			var url=_ctx+"/tactics/tacticsManage/initChannelType?isDoubleSelect=0";
+			var url=_ctx+"/tactics/tacticsManage/initChannel?isDoubleSelect=0";
 			$.ajax({
 				type:"POST",
 			    url: url ,

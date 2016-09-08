@@ -750,7 +750,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					});
 				},
 				getChannelType:function(){//适用渠道
-					var modelView = new tacticsTableModel({id : "initChannelType"});
+					var modelView = new tacticsTableModel({id : "initChannel"});
 					var isDoubleSelect = $(".J_redio_tactics:checked").val();
 					modelView.fetch({
 						type : "post",

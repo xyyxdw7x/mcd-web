@@ -108,7 +108,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         List<Map<String,Object>> list = new ArrayList();
         try {
             StringBuffer buffer = new StringBuffer();
-            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mtl_camp_seginfo.CEP_EVENT_ID,mtl_camp_seginfo.EVENT_RULE_DESC from (")
+            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mtl_camp_seginfo.CEP_EVENT_ID from (")
                   .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME ")
                   .append(" from mtl_channel_def mcd, dim_mtl_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id   and mcd.campseg_id = ? ) basic")
@@ -129,7 +129,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         try {
             StringBuffer buffer = new StringBuffer();
             
-            buffer.append("select basic.*,mtl_camp_seginfo.CEP_EVENT_ID,mtl_camp_seginfo.EVENT_RULE_DESC from ")
+            buffer.append("select basic.*,mtl_camp_seginfo.CEP_EVENT_ID from ")
                   .append(" (select mcd.campseg_id,dmc.channel_id as channelId, dmc.channel_name as channelName, mcd.task_code as taskCode, mcd.task_name as taskName, mcd.demand,")
                   .append(" (select dcctc.CLASS_NAME || '-' || dcctsc.SUB_CLASS_NAME from DIM_CHN_CALL_TASK_CLASS dcctc left join  DIM_CHN_CALL_TASK_SUB_CLASS dcctsc on dcctc.CLASS_ID = dcctsc.CLASS_PID where dcctsc.SUB_CLASS_ID =mcd.task_class_id) as taskClassName,")
                   .append(" (select LEVEL1_NAME from DIM_CALL_CHN_TASK_REL where SUB_CLASS_ID = mcd.task_class_id and LEVEL1_ID=mcd.task_level1_id) as taskLevel1,")

@@ -34,7 +34,7 @@ public class MtlCampSeginfo {
     private String campDrvIds; //业务类型可多选情况
 	@Transient
 	private String campDrvName;// 活动类型名称
-	 @Column(name="CAMPSEG_STAT_NAME")
+	@Transient
     private String campsegStatName; //状态名称
 	 @Column(name="CAMPSEG_STAT_ID")
     private Short campsegStatId; // 营销活动状态ID
@@ -74,11 +74,11 @@ public class MtlCampSeginfo {
     private Date createTime; // 本活动定义时间
     @Transient
     private String isApprove;
-    @Column(name="CAMPSEG_NO")
+    @Transient
     private String campsegNo; // 多规则时，规则序号
     @Column(name="CEP_EVENT_ID")
     private String cepEventId; // 复杂事件ID
-    @Column(name="EVENT_RULE_DESC")
+    @Transient
     private String eventRuleDesc;  //复杂事件描述
     @Transient
     private String custgroupId; // 客户群
@@ -96,11 +96,11 @@ public class MtlCampSeginfo {
 	private int splitCampSegInfo;// 是否按渠道类型拆分活动规则
 	@Column(name="APPROVE_FLOW_ID")
 	private String approveFlowid; // 默认内部审批流程
-	@Column(name="APPROVE_RESULT")
+	@Transient
 	private Short approveResult; // 审批结果
-	@Column(name="APPROVE_RESULT_DESC")
+	@Transient
 	private String approveResultDesc;//审批结果描述
-	@Column(name="SELECT_TEMPLET_ID")
+	@Transient
 	private String selectTempletId; // 筛选规则模板id
 	@Transient
 	private String custGroupAttrId;
@@ -110,7 +110,7 @@ public class MtlCampSeginfo {
 	private Integer waveContactCount;
 	@Column(name="CAMP_CLASS")
 	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
-	@Column(name="IS_RELATIVE_EXEC_TIME")
+	@Transient
 	private Integer isRelativeExecTime; // 执行时间是否相对时间
 	@Transient
 	private String absoluteDates; // 绝对时间串，逗号分隔
@@ -122,7 +122,7 @@ public class MtlCampSeginfo {
 	private String filePath;
 	@Transient
 	private MtlChannelDefCall mtlChannelDefCall;//渠道对应表_外呼
-	@Column(name="EVENT_ACTIVE_TEMPLET_ID")
+	@Transient
 	private String eventActiveTempletId;// 事件规则模板ID
 	@Transient
 	private String custBaseDay;
@@ -130,7 +130,7 @@ public class MtlCampSeginfo {
 	private String custBaseMonth;
 	@Column(name="CREATE_USERNAME")
 	private String createUserName;
-	@Column(name="CAMPSEG_DESC")
+	@Transient
     private String campsegDesc; // 活动描述
 	@Transient
     private Integer contactedUserNums; // 联系客户数
@@ -142,20 +142,21 @@ public class MtlCampSeginfo {
     private Integer campsegContactUsernums; // 活动被接触控制的用户数
 	@Transient
     private Short campsegContactFlag; // 是否进行接触控制
-    @Column(name="EVALUATE_COMMENT")
+	@Transient
     private String evaluateComment; // 活动中止原因
-    @Column(name="CUST_LIST_TAB_NAME")
+	@Transient
     private String custListTabName;// 客户群清单表名
-    @Column(name="TIME_INTERVAL")
+    @Transient
     private String timeInterval;
     @Column(name="TARGER_USER_NUMS")
     private Integer targerUserNums; // 目标客户数
+    @Transient
     private String currentTaskId;// 当前任务编号
-    @Column(name="AVOID_BOTHER_TYPE_IDS")
+    @Transient
     private String avoidBotherTypeIds;// 免打扰客户类型ID
-    @Column(name="TARGET_CUST_TYPE")
+    @Transient
     private Integer targetCustType;// 客户群类型(0:无 ,1:客户群 2:来自其他活动规则的反馈)
-    @Column(name="ACTIVE_TEMPLET_ID")
+    @Transient
     private String activeTempletId;// 时机规则模板ID
     @Column(name="INIT_CUST_LIST_TAB")
     private String initCustListTab;//策略初始清单表
