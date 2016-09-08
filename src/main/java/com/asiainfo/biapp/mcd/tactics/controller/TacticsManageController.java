@@ -32,6 +32,7 @@ import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
@@ -876,7 +877,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initDimPlanType")
+	@RequestMapping("initDimPlanType")
 	public void initDimPlanType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -924,7 +925,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initGrade")
+	@RequestMapping("initGrade")
 	public void initGrade(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -958,8 +959,8 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initChannelType")
-	public void initChannelType(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	@RequestMapping("initChannel")
+	public void initChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		//TODO：initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
@@ -972,8 +973,8 @@ public class TacticsManageController extends BaseMultiActionController {
 				
 		try {
 			User user = this.getUser(request, response);
-			List<DimMtlChanneltype> list = mpmCommonService.getMtlChanneltypeByCondition(isDoubleSelect);
-			List<DimMtlChanneltype> listTemp = new ArrayList<DimMtlChanneltype>();
+			List<DimMtlChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
+			List<DimMtlChannel> listTemp = new ArrayList<DimMtlChannel>();
 			
 			String cityId =user.getCityId();
 			if(!CollectionUtils.isEmpty(list)){
@@ -982,16 +983,16 @@ public class TacticsManageController extends BaseMultiActionController {
 					if(!cityId.equals("577")){
 						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
 						if(!"912".equals(channelIdTemp)){
-							DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
-							dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
-							dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
-							listTemp.add(dimMtlChanneltype);
+						    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
+							listTemp.add(dimMtlChannel);
 						}
 					}else{
-						DimMtlChanneltype dimMtlChanneltype = new DimMtlChanneltype();
-						dimMtlChanneltype.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
-						dimMtlChanneltype.setTypeName(list.get(i).getChanneltypeName());
-						listTemp.add(dimMtlChanneltype);
+                        DimMtlChannel dimMtlChannel = new DimMtlChannel();
+                        dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+                        dimMtlChannel.setTypeName(list.get(i).getChannelName());
+						listTemp.add(dimMtlChannel);
 					}
 				}
 			}

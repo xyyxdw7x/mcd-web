@@ -2,6 +2,7 @@ package  com.asiainfo.biapp.mcd.common.service;
 
 import java.util.List;
 
+import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
@@ -26,7 +27,7 @@ public interface MpmCommonService {
 	 * @return
 	 * @throws MpmException
 	 */
-	public List<DimMtlChanneltype> getMtlChanneltypeByCondition(String isDoubleSelect) throws MpmException;
+	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect) throws MpmException;
 	/**
 	 * add by lixq10  IMCD_ZJ 新建策略页面视图预定义配置
 	 * pAttrClassId:classId

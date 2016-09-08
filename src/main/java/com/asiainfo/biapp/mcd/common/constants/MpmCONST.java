@@ -69,6 +69,8 @@ public class MpmCONST {
     public static final String MPM_CAMPSEG_STAT_HDWC = "90";
     //活动测试不通过（浙江--测试不通过）
     public static final String MPM_CAMPSEG_STAT_HDCSBTG = "49";
+    //审批要求整改   （浙江--审批退回）
+    public static final String MPM_CAMPSEG_STAT_SPYG = "41";
     
     //任务待执�?
     public static final short TASK_STATUS_UNDO = 50;
@@ -90,6 +92,8 @@ public class MpmCONST {
     public static final short TASK_STATUS_END = 90;
     //当天任务完成（没有可发的）
     public static final short TASK_STATUS_DAY_END = 79;
+    //当为创建完成D表的时候对应任务的状态
+    public static final short TASK_STATUS_INIT = 30;
     
     public static final String CHANNEL_TYPE_SMS = "901";
     //短信渠道
@@ -98,4 +102,11 @@ public class MpmCONST {
   	public static final String CHANNEL_TYPE_OUT_CALL = "913";
     
     public static final String MCD_PROPERTY_NAME = "ASIAINFO_PROPERTIES";
+    
+    
+    //活动波次审批结果标志-通过
+    public static final short MPM_SEG_APPROVE_RESULT_PASSED = 1;
+
+    //活动波次审批结果标志-未�?�?
+    public static final short MPM_SEG_APPROVE_RESULT_NOTPASSED = 2;
 }

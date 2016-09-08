@@ -4,12 +4,15 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
@@ -20,6 +23,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
  */
 @Repository("mcdCampsegTaskDao")
 public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampsegTaskDao{
+    private static Logger log = LogManager.getLogger();
     /**
      * 策略停止/暂停原因修改
      * @param taskSendoddTabName
@@ -156,4 +160,51 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 		return list;
 	}
 
+    /**
+     * 保存相关任务
+     * @param task
+     */
+    @Override
+    public void saveTask(McdCampsegTask task) {
+          try {
+              this.getJdbcTemplateTool().save(task);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    
+       /**
+     * 新增任务对应时间表
+     * @param taskId 任务ID
+     * dataDate 当前日期
+     * execStatus 状态
+     * @param planExecTime 计划执行时间
+     * @param tableNum 清单数据量
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public void insertMcdCampsegTaskDate(String taskId, String dataDate,short execStatus, int tableNum, java.util.Date planExecTime) {
+        try {
+            String sql = "insert into MTL_CAMPSEG_TASK_DATE(TASK_ID,DATA_DATE,EXEC_STATUS,plan_exec_time,cust_list_count) values (?,?,?,?,?)";
+            this.getJdbcTemplate().update(sql,new Object[] { taskId ,dataDate,execStatus,planExecTime,tableNum});
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+
+
+	@Override
+	public List getCampsegByStatus(short status){
+		List<Map<String, Object>> list = null;
+		try {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(" select * from MCD_CAMPSEG_TASK where exec_status =?");
+			log.info("**********根据状态查询任务sql:"+buffer.toString()+" ;status="+status);
+			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{status});
+		} catch (Exception e) {
+			log.error("根据状态查询策略异常："+e);
+		}
+		return list;
+	}
 }

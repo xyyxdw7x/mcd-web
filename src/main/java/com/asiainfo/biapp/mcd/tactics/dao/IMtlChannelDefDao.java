@@ -85,4 +85,34 @@ public interface IMtlChannelDefDao {
 	 * @return
 	 */
 	Map searchMtlChnCallPlanMonthTask(String campsegId,String channelDefCall);
+	/**
+	 * 根据工单编号，修改所有子策略（规则）下某渠道的审批状态
+	 * @param assing_id  
+	 * @param approve_desc
+	 * @param channel_id
+	 * @param approveResult
+	 */
+    public void updateMtlChannelDefApproveResult(String assing_id, String approve_desc, String channel_id,
+                    short approveResult);
+    /**
+     * 因外呼渠道换表存了，故更改外呼渠道的审批状态    
+     * @param assing_id
+     * @param approve_desc
+     * @param channel_id
+     * @param approveResult
+     */
+    public void updateMtlChannelDefCallApproveResult(String assing_id, String approve_desc, String channel_id,
+                    short approveResult);
+    /**
+     * 查找子策略下有的所有渠道有几种审批状态
+     * @param childCampseg_id
+     * @return
+     */
+    public List getMtlChannelDefApproveFlowList(String childCampseg_id);
+    /**
+     * 查找活动下的所有渠道
+     * @param campsegId
+     * @return
+     */
+    public List<MtlChannelDef> getChannelByCampsegId(String campsegId);
 }

@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.xml.namespace.QName;
@@ -20,13 +22,16 @@ import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
+import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
@@ -56,6 +61,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
+import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -93,6 +99,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	private IMcdCampsegTaskService mcdCampsegTaskService;
 	@Resource(name = "custGroupInfoService")
 	private CustGroupInfoService custGroupInfoService;
+	@Resource(name = "mcdMtlGroupInfoDao")
+    private IMcdMtlGroupInfoDao mcdMtlGroupInfoDao;
 	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
@@ -986,4 +994,309 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }  
 		return result;
 	}
+    
+    
+    /**
+     * 浙江处理策略审批结束（通过或退回）后的信息
+     * @param campId
+     * @param approveFlag
+     * @throws MpmException
+     */
+    @Override
+    public String processApproveInfo(String approveInfoXML) {
+        //String campsegId, short approveResult
+        log.info("=====MpmApproveWsService----processApproveInfo param:"+approveInfoXML);
+         String assing_id = null;
+         String approve_flag = null;
+         String approve_desc = null;
+         String channel_id = null;
+         String isSystemApprove = null;
+
+        String flag ="0";
+        String processingResults = "";
+        //用来判断策略包最终是否审批通过
+        boolean isapprove = true;
+        //短信渠道是否通过
+        boolean approveSMS = false;
+
+        try{
+             Document dom=DocumentHelper.parseText(approveInfoXML); 
+             Element root=dom.getRootElement();  
+             List<Element> elementList=root.elements("ASSIGNMENT_INFO"); 
+    
+             for(int i=0;i<elementList.size();i++){
+                 Element element= (org.dom4j.Element) elementList.get(i);
+                 assing_id = element.element("ASSIGN_ID").getText(); 
+                 approve_flag = element.element("APPROVE_FLAG").getText(); 
+                 approve_desc = null != element.element("APPROVE_DESC") ? element.element("APPROVE_DESC").getText():null; 
+                 channel_id = element.element("CHANNEL_ID").getText(); 
+                 isSystemApprove = element.element("IS_SYSTEM_APPROVE") == null ? "1" : "0";  //0:人工（soupUI）审批，1:审批系统审批(默认)
+                short approveResult;
+                if("1".equals(approve_flag)){//通过
+                    approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_PASSED;
+                    
+                } else{//驳回
+                    approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED;
+                }
+                //根据工单编号，修改所有子策略（规则）下某渠道的审批状态
+                mtlChannelDefDao.updateMtlChannelDefApproveResult(assing_id,approve_desc,channel_id,approveResult);
+                
+                //因外呼渠道换表存了，故更改外呼渠道的审批状态                
+                mtlChannelDefDao.updateMtlChannelDefCallApproveResult(assing_id,approve_desc,channel_id,approveResult);
+                if("0".equals(approve_flag)){
+                    isapprove = false;
+                 }
+                
+                //------------------------------------新增功能，生成营销任务记录------------------------------------------------------------------
+                int channelId = channel_id == null ? 0 : Integer.parseInt(channel_id);
+                if(channelId == MpmCONST.CHANNEL_TYPE_SMS_INT){
+                    approveSMS = true;
+                }
+             }
+             
+             
+                String campsegStatId = null;
+                List list = campSegInfoDao.getCampSegInfoByApproveFlowId(assing_id);
+                Map campSegInfoMap = null;
+                if(list != null && list.size() > 0){
+                    campSegInfoMap = (Map)list.get(0);
+                }
+                //只有策略包邮开始时间与结束时间，根据开始时间与结束时间破判断所有策略状态
+                int startDate = campSegInfoMap.get("start_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("start_date").toString().replaceAll("-",""));
+                int endDate = campSegInfoMap.get("end_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("end_date").toString().replaceAll("-",""));
+                int newDate = Integer.parseInt(DateTool.getStringDate(new Date(), "yyyyMMdd"));
+                String pidSampsegId = campSegInfoMap.get("campseg_id") == null ? "" : campSegInfoMap.get("campseg_id").toString();
+                
+             
+             
+             //根据工单 编号获取子策略（规则）
+            List mtlCampSeginfoList = campSegInfoDao.getChildCampSeginfoByAssingId(assing_id);
+            for(int i=0 ;i<mtlCampSeginfoList.size();i++){
+                Map mtlCampSeginfoMap = (Map)mtlCampSeginfoList.get(i);
+                String childCampseg_id = mtlCampSeginfoMap.get("campseg_id").toString();
+                //查找子策略下有的所有渠道有几种审批状态
+                List mtlChannelDefApproveFlowList = mtlChannelDefDao.getMtlChannelDefApproveFlowList(childCampseg_id);
+                //当策略下有的所有渠道只有一种审批状态时，该策略状态即为渠道审批状态
+                if(mtlChannelDefApproveFlowList != null && mtlChannelDefApproveFlowList.size() == 1){
+                    Map approveFlowMap = (Map)mtlChannelDefApproveFlowList.get(0);
+                    String channelApproveResult = approveFlowMap.get("approve_result").toString();
+                    //String approve_result_desc = approveFlowMap.get("approve_result_desc").toString();
+                    short approveResult;
+                    if("1".equals(channelApproveResult)){//通过
+                        approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_PASSED;
+                        if(startDate > newDate){//未到策略开始时间
+                            campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
+                        }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
+                            campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_DDCG;
+                        }else{//已到策略结束时间
+                            campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_HDWC;
+                        }
+                        
+                    } else{//驳回
+                        approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED;
+                        campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_SPYG;
+                    }
+                    MtlCampSeginfo segInfo = this.getCampSegInfo(childCampseg_id);
+                    segInfo.setApproveResult(approveResult);
+                    //segInfo.setApproveResultDesc(approve_result_desc);
+                    segInfo.setCampsegStatId(Short.parseShort(campsegStatId));
+                    campSegInfoDao.updateCampSegInfo(segInfo);                   
+                }else if(mtlChannelDefApproveFlowList != null && mtlChannelDefApproveFlowList.size() > 1){
+                //当策略下有的所有渠道有两种审批状态时，该策略状态一定为不通过，因为状态只有通过与不通过两种
+                    Map approveFlowMap = (Map)mtlChannelDefApproveFlowList.get(0);
+                    String channelApproveResult = approveFlowMap.get("approve_result").toString();
+                    //String approve_result_desc = approveFlowMap.get("approve_result_desc").toString();
+                    short approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED;
+                    MtlCampSeginfo segInfo = this.getCampSegInfo(childCampseg_id);
+                    segInfo.setApproveResult(approveResult);
+                    //segInfo.setApproveResultDesc(approve_result_desc);
+                    segInfo.setCampsegStatId(Short.parseShort(campsegStatId));
+                    campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_SPYG;
+                    campSegInfoDao.updateCampSegInfo(segInfo);   
+                }
+            }
+        
+            if(isapprove){
+                if(startDate > newDate){//未到策略开始时间
+                    campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
+                }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
+                    campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_DDCG;//所谓执行成功在浙江改为待执行
+                }else{//已到策略结束时间
+                    campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_HDWC;
+                }
+                short approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_PASSED;
+                campSegInfoDao.updateCampsegApproveStatusZJ(assing_id, "", approveResult,campsegStatId);
+                
+
+                
+                
+                //策略包整体审核通过，且子策略有短信渠道,且没有超期
+                if(newDate < endDate){
+                    List<MtlCampSeginfo> childMtlCampSeginfoList = this.getChildCampSeginfo(pidSampsegId);
+                    boolean isSMSTest = false;
+                    for(MtlCampSeginfo childMtl : childMtlCampSeginfoList){
+                        //查找活动下的所有渠道
+                        List<MtlChannelDef> mtlChannelDefList = this.getChannelByCampsegId(childMtl.getCampsegId());
+                        boolean isSMS = false;
+                    
+                        for(MtlChannelDef mtlChannelDef : mtlChannelDefList){
+                            //是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
+                            if(mtlChannelDef.getChanneltypeId().intValue() ==MpmCONST.CHANNEL_TYPE_SMS_INT){
+                                //短信测试流程，暂时不写
+                                isSMS = true;                    
+                                
+                            }else{
+                                McdCampsegTask task = new McdCampsegTask();
+                                MtlCampSeginfo mtlCampSeginfo = campSegInfoDao.getCampSegInfo(pidSampsegId);
+                                task.setCampsegId(childMtl.getCampsegId());
+                                //生成清单表（任务的基础清客户单表和派单客户清单表
+                                Date startTime = DateTool.getDate(mtlCampSeginfo.getStartDate());
+                                task.setTaskStartTime(startTime);
+                                task.setExecStatus(MpmCONST.TASK_STATUS_INIT);
+                                task.setChannelId(mtlChannelDef.getChannelId());
+                                //把从策略获取表的过程个去掉   edit by lixq10  2016年6月3日10:43:33
+//                              String custListTabName = childMtl.getInitCustListTab();
+//                              task.setCustListTabName(custListTabName);
+//                              String currentTime = MpmUtil.convertLongMillsToYYYYMMDDHHMMSS(new Date().getTime());
+//                              task.setTaskSendoddTabName(MpmCONST.MTL_DUSER_O_PREFIX + currentTime);
+//                              mcdCampsegTaskDao.createTaskSendoddTab(task.getTaskSendoddTabName());
+                                task.setRetry(0);
+                                task.setBotherAvoidNum(0);
+                                task.setContactControlNum(0);
+                                task.setCycleType((short)mtlChannelDef.getContactType().intValue());
+//                              int intGroupNum = mcdCampsegTaskDao.getSqlFireTableNum(custListTabName);
+//                              task.setIntGroupNum(intGroupNum);
+                                mcdCampsegTaskDao.saveTask(task);
+                                
+                                String taskId = task.getTaskId();
+                                short execStatus = MpmCONST.TASK_STATUS_INIT;
+                                try {
+                                    String custgroupId = campSegInfoDao.getMtlCampsegCustGroupId(childMtl.getCampsegId());
+                                    String dataDate = "";
+                                    if(custgroupId != null){
+                                        List mtlCustomList = mcdMtlGroupInfoDao.getMtlCustomListInfo(custgroupId);
+                                        if(mtlCustomList != null && mtlCustomList.size() > 0){
+                                            Map mtlCustomMap = (Map)mtlCustomList.get(0);
+                                            dataDate = mtlCustomMap.get("data_date") == null ? "" : mtlCustomMap.get("data_date").toString();
+                                        }
+                                    }
+                                    int tableNum = 0;
+                                    if(!"".equals(dataDate)){
+//                                      tableNum = mcdMtlGroupInfoDao.getCustomListInfoNum(custListTabName,dataDate);
+                                    }
+                                    Date planExecTime = new Date();
+                                    mcdCampsegTaskDao.insertMcdCampsegTaskDate(taskId,dataDate,execStatus,tableNum,planExecTime);
+                                } catch (Exception e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                    
+                            }   
+                        }
+                    }
+                    //有短信渠道且为测试中，更改所有策略状态
+                    if(isSMSTest){
+                        int i = 0 ;
+                        for(MtlCampSeginfo childMtl : childMtlCampSeginfoList){
+                            if(i == 0){
+                                campSegInfoDao.updateCampsegInfoState(childMtl.getCampsegPid(), MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+                                i = 1;
+                            }
+                            campSegInfoDao.updateCampsegInfoState(childMtl.getCampsegId(), MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+                        }
+                    }
+                    
+                    
+                }
+                
+                
+            }else{
+                short approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED ;
+                campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_SPYG;
+                campSegInfoDao.updateCampsegApproveStatusZJ(assing_id, "", approveResult,campsegStatId);
+            }
+            
+            processingResults = "处理成功";
+            
+            //当审批完成后，从审批系统调用审批日志  add by lixq10 2016年7月1日19:40:16 ------begin  add gaowj3 因为本地核心版本审批另做，这暂时去掉
+            
+//            //先从本地库去日志信息，如果该日志信息已经存在，则直接使用，否则再次调用
+//            IMcdApproveLogService mcdApproveLogService = (IMcdApproveLogService) SystemServiceLocator.getInstance().getService("mcdApproveService");
+//            McdApproveLog mcdApproveLogLocal = mcdApproveLogService.getLogByFlowId(assing_id);
+//            
+//            //当是人工审批（soupUI）审批时
+//            McdApproveLog mcdApproveLog = new McdApproveLog();
+//            mcdApproveLog.setApproveFlowId(assing_id);
+//            if("0".equals(isSystemApprove)){
+//                String manualApproveLog = this.assembleXmlLog(campSegInfoMap);
+//                mcdApproveLog.setApproveResult(manualApproveLog);
+//            }else{  //审批系统审批
+//                String approveLog = this.getApproveLog(pidSampsegId);
+//                mcdApproveLog.setApproveResult(approveLog);
+//            }
+//            
+//            IMcdApproveLogService mcdApproveService = (IMcdApproveLogService) SystemServiceLocator.getInstance().getService("mcdApproveService");
+//            if(mcdApproveLogLocal != null && null != mcdApproveLogLocal.getApproveResult()){
+//                mcdApproveService.updateLogByFlowId(mcdApproveLog);
+//            }else{
+//                mcdApproveService.saveApproveLog(mcdApproveLog);
+//            }
+            //add by lixq10 2016年7月1日19:40:16 ------end
+        }catch(Exception e){
+            flag ="1";
+            processingResults = "处理失败，原因：" + e.getMessage();
+            log.error("",e);
+        }finally{
+            StringBuffer xmlStr = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlStr.append("<MARKET_ASSIGNMENT_INFO><ASSIGNMENT_INFO>");
+            xmlStr.append("<ASSIGN_ID>"+ assing_id +"</ASSIGN_ID>");
+            xmlStr.append("<PROCESS_FLAG>"+ flag +"</PROCESS_FLAG>");
+            xmlStr.append("<PROCESS_DESC>"+ processingResults +"</PROCESS_DESC>");
+            xmlStr.append("</ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>");
+            return xmlStr.toString();
+        }
+    }
+    
+    /**
+     * 查找活动下的所有渠道
+     * @param campsegId
+     * @return
+     */
+    private List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
+        return mtlChannelDefDao.getChannelByCampsegId(campsegId);
+    }
+    /**
+     * 当是soupUI审批系统的时候，拼装审批日志xml文件，保存至数据库
+     * @param list
+     * @return
+     */
+    private String assembleXmlLog(Map campSegInfoMap){
+        //针对soapUI审批的策略，只是针对父策略，只需要拼一个参数即可
+        int startDate = campSegInfoMap.get("start_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("start_date").toString().replaceAll("-",""));
+        int endDate = campSegInfoMap.get("end_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("end_date").toString().replaceAll("-",""));
+        int newDate = Integer.parseInt(DateTool.getStringDate(new Date(), "yyyyMMdd"));
+        String pidSampsegId = campSegInfoMap.get("campseg_id") == null ? "" : campSegInfoMap.get("campseg_id").toString();
+        String approveFlowId = campSegInfoMap.get("APPROVE_FLOW_ID") == null ? "" : campSegInfoMap.get("APPROVE_FLOW_ID").toString();
+        String creator = campSegInfoMap.get("CREATE_USERNAME") == null ? "" : campSegInfoMap.get("CREATE_USERNAME").toString();
+        
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+              .append("<MARKET_APPROVE_INFO>")
+              .append("<ASSIGN_ID>").append(approveFlowId).append("</ASSIGN_ID>")
+              .append("<CREATOR>").append(creator).append("</CREATOR>")
+              .append("<ASSIGN_NAME>系统管理员审批</ASSIGN_NAME>")
+              .append("<APPROVE_INFO>")
+              .append("<NODE_NO>").append(UUID.randomUUID()).append("</NODE_NO>")
+              .append("<NODE_NAME>系统管理员审批</NODE_NAME>")
+              .append("<APPROVE_RESULT>同意</APPROVE_RESULT>")
+              .append("<APPROVE_VIEW>111</APPROVE_VIEW>")
+              .append("<APPROVALER_NAME>系统管理员审批</APPROVALER_NAME>")
+              .append("<APPROVE_DATE>").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).append("</APPROVE_DATE>")
+              .append("<IF_CURRENT_NODE>N</IF_CURRENT_NODE>")
+              .append("</APPROVE_INFO>")
+              .append("</MARKET_APPROVE_INFO>");
+        
+        return buffer.toString();
+    }
+    
 }

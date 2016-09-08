@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +108,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         List<Map<String,Object>> list = new ArrayList();
         try {
             StringBuffer buffer = new StringBuffer();
-            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mtl_camp_seginfo.CEP_EVENT_ID,mtl_camp_seginfo.EVENT_RULE_DESC from (")
+            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mtl_camp_seginfo.CEP_EVENT_ID from (")
                   .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME ")
                   .append(" from mtl_channel_def mcd, dim_mtl_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id   and mcd.campseg_id = ? ) basic")
@@ -128,7 +129,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         try {
             StringBuffer buffer = new StringBuffer();
             
-            buffer.append("select basic.*,mtl_camp_seginfo.CEP_EVENT_ID,mtl_camp_seginfo.EVENT_RULE_DESC from ")
+            buffer.append("select basic.*,mtl_camp_seginfo.CEP_EVENT_ID from ")
                   .append(" (select mcd.campseg_id,dmc.channel_id as channelId, dmc.channel_name as channelName, mcd.task_code as taskCode, mcd.task_name as taskName, mcd.demand,")
                   .append(" (select dcctc.CLASS_NAME || '-' || dcctsc.SUB_CLASS_NAME from DIM_CHN_CALL_TASK_CLASS dcctc left join  DIM_CHN_CALL_TASK_SUB_CLASS dcctsc on dcctc.CLASS_ID = dcctsc.CLASS_PID where dcctsc.SUB_CLASS_ID =mcd.task_class_id) as taskClassName,")
                   .append(" (select LEVEL1_NAME from DIM_CALL_CHN_TASK_REL where SUB_CLASS_ID = mcd.task_class_id and LEVEL1_ID=mcd.task_level1_id) as taskLevel1,")
@@ -192,5 +193,69 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		}
 		return map;
 	}
+    /**
+     *  add by gaowj3 20150815
+     * @Title: updateMtlChannelDefApproveResilt
+     * @Description:  根据工单编号，修改所有字策略（规则）下某渠道的审批状态
+     * @param @param assing_id 工单编号
+     * @return String 
+     * @throws
+     */
+    @Override
+    public void updateMtlChannelDefApproveResult(String assing_id,String approve_desc, String channel_id, short approveResult) {
+        StringBuffer sql = new StringBuffer(" update mtl_channel_def set approve_result = ?,approve_result_desc=? ");   
+        sql.append(" where channel_id = ? and campseg_id in  ") ; 
+        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
+        
+        
+    }
+    
+    /**
+     * 根据工单编号，修改所有子策略（规则）下某渠道的审批状态，因外呼渠道换表存了，故更改外呼渠道的审批状态
+     * @param assing_id 工单编号
+     * @param approve_desc
+     * @param channel_id 渠道ID
+     * @param approveResult
+     */
+    @Override
+    public void updateMtlChannelDefCallApproveResult(String assing_id,
+            String approve_desc, String channel_id, short approveResult) {
+        StringBuffer sql = new StringBuffer(" update mtl_channel_def_call set approve_result = ?,approve_result_desc=? ");  
+        sql.append(" where channel_id = ? and campseg_id in  ") ; 
+        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
+        
+    }
+    
+    /**
+     *  add by gaowj3 20150815
+     * @Title: updateMtlChannelDefApproveResilt
+     * @Description:  根据子策略（规则）编号查询该策略下渠道的审批状态
+     * @param @param assing_id 工单编号
+     * @return String 
+     * @throws
+     */
+    @Override
+    public List getMtlChannelDefApproveFlowList(String childCampseg_id) {
+        StringBuffer sql = new StringBuffer(" select distinct approve_result,approve_result_desc from mtl_channel_def where campseg_id = ?  ");
+        sql.append(" union ");
+        sql.append("  select distinct approve_result,approve_result_desc from mtl_channel_def_call where campseg_id = ?   ");
+        List list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { childCampseg_id,childCampseg_id});
+        return list;
+    }
+    /**
+     * 查找活动下的所有渠道
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
+        StringBuffer sql = new StringBuffer(" select * from MTL_CHANNEL_DEF mcd where mcd.id.campseg_id in (select campseg_id from mtl_camp_seginfo where campseg_pid = ?) ");
+        Object[] args=new Object[]{campsegId};
+        int[] argTypes=new int[]{Types.VARCHAR};
+        List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
+        return mtlChannelDefs;
+    }
 	
 }
