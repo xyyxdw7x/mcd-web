@@ -3,8 +3,11 @@ package com.asiainfo.biapp.mcd.tactics.thread;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.model.MtlChannelDef;
@@ -14,7 +17,6 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.util.MpmConfigure;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**
@@ -28,15 +30,20 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  */
 
 public class McdCreateDuserTableRunnable implements Runnable {
-	private static Logger log = LogManager.getLogger();
+	protected final Log log = LogFactory.getLog(getClass());
+	@Resource(name="mpmCampSegInfoDao")
 	private IMpmCampSegInfoDao mpmCampSegInfoDao;
+	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService mpmCampSegInfoService;
+	@Resource(name="mtlCampsegCustgroupDao")
 	private MtlCampsegCustgroupDao mtlCampsegCustgroupDao;
+	@Resource(name="mcdCampsegTaskDao")
 	private IMcdCampsegTaskDao mcdCampsegTaskDao;
+	@Resource(name="mtlChannelDefDao")
 	private IMtlChannelDefDao mtlChannelDefDao;
 	
 	public McdCreateDuserTableRunnable() {
-		try {
+		/*try {
 			log.info("begin initParam...................");
 			this.mpmCampSegInfoDao = (IMpmCampSegInfoDao)SystemServiceLocator.getInstance().getService("mpmCampSegInfoDao");
 			this.mpmCampSegInfoService = (IMpmCampSegInfoService)SystemServiceLocator.getInstance().getService("mpmCampSegInfoService");
@@ -45,20 +52,17 @@ public class McdCreateDuserTableRunnable implements Runnable {
 			this.mtlChannelDefDao = (IMtlChannelDefDao)SystemServiceLocator.getInstance().getService("mtlChannelDefDao");
 		} catch (Exception e) {
 			log.error(e);
-		}
+		}*/
 	}
 	
 	@Override
 	public void run() {
+		log.info("启动生成D表的监听*****生成者！！！");
 		String campsegId = null;
 		while(true){
 			campsegId = CreateDuserTaskMessageCacheQueue.getMessageQueue().poll();
 			if(StringUtil.isEmpty(campsegId)){
-				try {
 					continue;
-				} catch (Exception e) {
-					log.error(e);
-				}
 			}
 			if(mcdCampsegTaskDao.getCuserNum(campsegId) == 0){
 				log.info("*********************C表数据为空，从队列出将策略id移除！！！！");

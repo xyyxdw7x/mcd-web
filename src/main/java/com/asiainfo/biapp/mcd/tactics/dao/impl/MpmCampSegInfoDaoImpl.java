@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.axis.utils.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,6 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
@@ -27,7 +26,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.string.StringUtil;
 /**
  * 策略管理相关dao
@@ -36,8 +34,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  */
 @Repository("mpmCampSegInfoDao")
 public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegInfoDao {
-    private static Logger log = LogManager.getLogger();
-
+	protected final Log log = LogFactory.getLog(getClass());
     @Override
     public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager) {
         List parameterList = new ArrayList();
@@ -113,7 +110,6 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         List list = jt.queryForList(sqlExt.toString(), parameterList.toArray());
         List listSize = jt.queryForList(buffer.toString(), parameterList.toArray());
         pager.setTotalSize(listSize.size());  // 总记录数
-        
         
         return list;
     }
@@ -250,7 +246,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         try {
             // 1 取活动下属活动在属性设置阶段设置的活动模版编号
             String sql = "select t2.proform_result from mtl_campseg_progress t2 where t2.campseg_id=? and t2.step_id=?";
-            log.debug(">>deleteCampSegInfo() 1. : {}", sql);
+            log.debug(sql);
             List list = this.getJdbcTemplate().queryForList(sql, new Object[] { campsegId, MpmCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET });
             String templetIds = "";
             for(int i = 0 ;i < list.size() ; i ++){
@@ -267,71 +263,71 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             deleteCampsegPlanRules(campsegId);
             // 删除活动附件信息
             sql = "delete from mtl_attachment_info where camp_campseg_id=?";
-            log.debug(">>deleteCampaignBaseInfo() 21. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             // 删除活动的步骤信息
             sql = "delete from mtl_campseg_progress where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 22. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             // 删除活动相关的外部评估链接
             sql = "delete from MTL_EXT_EVALUATION_URL where camp_id=?";
-            log.debug(">>deleteCampSegInfo() 23. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除活动单列分析数据
             sql = "delete from mtl_analyse_single where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 23.2  : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除活动的目标客户群运算设置
             sql = "delete from MTL_AGGREGATE_SELECT where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 23.3  : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除活动的客户群选择信息
             sql = "delete from mcd_camp_custgroup_list where campseg_id=?";
-            log.debug(">>deleteCampaignBaseInfo() 25.7  : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除计划执行活动表
             sql = "delete from mtl_campseg_exec_list where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 26. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             //
             sql = "delete from mtl_campseg_export_cond where campseg_id =?";
-            log.debug(">>deleteCampSegInfo() 26.8 : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             //TODO 添加删除渠道 mcd_camp_channel_list
             sql = " DELETE FROM mcd_camp_channel_list WHERE campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 删除渠道 : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             //TODO 添加接触规则表数据删除 mcd_activity_contact_rule_def
             sql = " DELETE FROM MCD_ACTIVITY_CONTACT_RULE_DEF WHERE ACTIVITY_CODE=?";
-            log.debug(">>deleteCampSegInfo() 删除接触控制规则 : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             //TODO 添加营销活动执行时间表删除 mcd_activity_contact_rule_def
             sql = " DELETE FROM MTL_CAMP_EXEC_TIME WHERE ACTIVITY_CODE=?";
-            log.debug(">>deleteCampSegInfo() 删除营销活动执行时间表 : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             // 删除活动信息
             sql = "delete from mcd_camp_def where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 27. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删去位置营销数据；
             sql = "delete from  mtl_campseg_realtime_area where campseg_id =?";
-            log.debug(">>deleteCampSegInfo() 28. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             // 删去规则参数；
             sql = "delete from Mtl_campseg_realtime_rule where campseg_id =?";
-            log.debug(">>deleteCampSegInfo() 28. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删去营销营销活动信息；
             sql = "delete from mtl_camp_realtime_list where campseg_id =?";
-            log.debug(">>deleteCampSegInfo() 28. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             
             //浙江版，策略与业务状态可多选，关联删除
@@ -345,7 +341,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                 String custListTableName = segInfo.getCustListTabName();
                 if (custListTableName != null && !"".equals(custListTableName)) {
                     sql = "drop table " + custListTableName;
-                    log.debug(">>deleteCampSegInfo() 000. : {}", sql);
+                    log.debug(sql);
                     this.getJdbcTemplate().update(sql);
                 }
             } catch (Exception e) {
@@ -377,7 +373,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(") and seltemplet_type=3")
                     .append(" and select_templet_id in (select proform_result from mtl_campseg_progress where campseg_id='")
                     .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_CAMP_SELECT + ")");
-            log.debug(">>deleteCampSegInfo() 2. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用剔除模版
@@ -387,7 +383,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(" and filter_templet_id in (select proform_result from mtl_campseg_progress where campseg_id='")
                     .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_CAMP_FILTER)
                     .append(")");
-            log.debug(">>deleteCampSegInfo() 3. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用分组模版
@@ -396,18 +392,18 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(") and stemplet_type=3")
                     .append(" and subsection_templet_id in (select rule_ident from MTL_filter_rule_combination where campseg_id='")
                     .append(campsegId).append("')");
-            log.debug(">>deleteCampSegInfo() 4. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
         }
 
         // 删除活动剔除规则
         String sqlTemp = "delete from MTL_filter_rule_combination where campseg_id=?";
-        log.debug(">>deleteCampSegInfo() 5. : {}", sqlTemp);
+        log.debug(sqlTemp);
         this.getJdbcTemplate().update(sqlTemp, new Object[] { campsegId });
 
         // 删除活动分组规则
         sqlTemp = "delete from MTL_subsection_rule_comb where campseg_id=?";
-        log.debug(">>deleteCampSegInfo() 6. : {}", sqlTemp);
+        log.debug(sqlTemp);
         this.getJdbcTemplate().update(sqlTemp, new Object[] { campsegId });
 
         // 判断哪些活动模版是活动专用模版，并且没有被其他波次使用，则可以删除
@@ -420,7 +416,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(" and active_templet_id not in (select proform_result from mtl_campseg_progress where campseg_id <> '")
                     .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET)
                     .append(")");
-            log.debug(">>deleteCampSegInfo() 7. : {}", sql);
+            log.debug(sql);
             List list = this.getJdbcTemplate().queryForList(sql.toString());
             for(int i = 0 ;i < list.size() ; i ++){
                 Map map = (Map)list.get(i);
@@ -434,31 +430,31 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             // 删除活动专用模版下的筛选模版
             sql = new StringBuffer("delete from MTL_templet_select where active_templet_id in (").append(aTempletIds)
                     .append(")");
-            log.debug(">>deleteCampSegInfo() 8. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用模版下的剔除模版
             sql = new StringBuffer("delete from MTL_templet_filter where active_templet_id in (").append(aTempletIds)
                     .append(")");
-            log.debug(">>deleteCampSegInfo() 9. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用模版下的分组模版
             sql = new StringBuffer("delete from MTL_templet_subsection where active_templet_id in (").append(
                     aTempletIds).append(")");
-            log.debug(">>deleteCampSegInfo() 10. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用模版下的字段信息
             sql = new StringBuffer("delete from MTL_templet_active_field where active_templet_id in (").append(
                     aTempletIds).append(")");
-            log.debug(">>deleteCampSegInfo() 11. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
             // 删除活动专用模版
             sql = new StringBuffer("delete from MTL_templet_active where atemplet_type=3 and active_templet_id in (")
                     .append(aTempletIds).append(")");
-            log.debug(">>deleteCampSegInfo() 12. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
         }
     }
@@ -476,7 +472,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         if (campsegId.length() > 0) {
             // 删除短信彩信交互代码表
             sql = "delete from MTL_sms_mms_code_def where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 13. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             /*
@@ -493,22 +489,22 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 
             // 删除渠道成本
             sql = "delete from mtl_channel_cost where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 20. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除营销渠道定义信息
             sql = "delete from mcd_camp_channel_list where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 20.1  : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除客户营销渠道设计
             sql = "delete from MTL_userseg_channel_plan where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 14. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             // 删除细分执行结果
             sql = "delete from MTL_subsection_result where campseg_id=?";
-            log.debug(">>deleteCampSegInfo() 15. : {}", sql);
+            log.debug(sql);
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 
             /*
@@ -580,7 +576,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             sqlB.append(campSegId);
             sqlB.append("'");
             this.getJdbcTemplate().execute(sqlB.toString());
-            log.debug("sql:{}", sqlB.toString());
+            log.debug(sqlB.toString());
         }
         
     }

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,8 +30,8 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  */
 @Repository("mcdCampsegTaskDao")
 public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampsegTaskDao{
-    private static Logger log = LogManager.getLogger();
-    /**
+	protected final Log log = LogFactory.getLog(getClass());
+	/**
      * 策略停止/暂停原因修改
      * @param taskSendoddTabName
      */
