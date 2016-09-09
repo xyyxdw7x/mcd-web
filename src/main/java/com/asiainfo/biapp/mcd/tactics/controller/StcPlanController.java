@@ -59,9 +59,7 @@ public class StcPlanController extends BaseMultiActionController {
 		try {
 			List<DimMtlChannel> list = commonService.getMtlChannelByCondition(isDoubleSelect);
 			List<DimMtlChannel> listTemp = new ArrayList<DimMtlChannel>();
-			//TODO BY ZK
-			// String cityId = user.getCityid();
-			String cityId = "100";
+			String cityId = this.getUser(request,response).getCityId();
 			if (!CollectionUtils.isEmpty(list)) {
 				for (int i = 0; i < list.size(); i++) {
 					// 当不是温州的时候，不显示微信温州渠道
@@ -75,7 +73,7 @@ public class StcPlanController extends BaseMultiActionController {
 						}
 					} else {
 					    DimMtlChannel dimMtlChannel = new DimMtlChannel();
-						dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
 						dimMtlChannel.setTypeName(list.get(i).getChannelName());
 						listTemp.add(dimMtlChannel);
 					}
