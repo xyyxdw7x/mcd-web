@@ -28,7 +28,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 public class MtlCallwsUrlDaoImpl extends JdbcDaoBase implements IMtlCallwsUrlDao {
 	private static Logger log = LogManager.getLogger();
 	public List findByCond(MtlCallwsUrl mtlCallwsUrl) throws Exception {
-		String sql = "select * from MTL_CALLWS_URL  a where 1=1 ";
+		String sql = "select * from mcd_sys_interface_def  a where 1=1 ";
 		if (mtlCallwsUrl.getCallwsUrlCode() != null) {
 			sql = sql + " and a.callws_url_code = '" + mtlCallwsUrl.getCallwsUrlCode() + "'";
 		}

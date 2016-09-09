@@ -258,14 +258,14 @@ private void saveMtkSmsSendTestTaskInfo(String port,
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         conn.setAutoCommit(false);
-        String qSql = " select * from mtl_sms_test_campseg_info a where campseg_id = ?"; //判断是否存在
+        String qSql = " select * from mcd_sms_test_camp a where campseg_id = ?"; //判断是否存在
         ps = conn.prepareStatement(qSql);
         ps.setString(1, cAMPSEG_ID);
         rs = ps.executeQuery();
         
         if(rs.next()){
             
-            sql = "update mtl_sms_test_campseg_info a set a.test_content = ?,a.send_time=? where campseg_id = ?";
+            sql = "update mcd_sms_test_camp a set a.test_content = ?,a.send_time=? where campseg_id = ?";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, message);
@@ -274,7 +274,7 @@ private void saveMtkSmsSendTestTaskInfo(String port,
             ps.execute();
         }else{
             
-            sql = "insert into mtl_sms_test_campseg_info values(?,?,?)";
+            sql = "insert into mcd_sms_test_camp values(?,?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, cAMPSEG_ID);
             ps.setString(2, message);
@@ -282,7 +282,7 @@ private void saveMtkSmsSendTestTaskInfo(String port,
             ps.execute();
         }
         
-        qSql = " select * from mtl_sms_test_send_port a where a.send_port=? and a.campseg_id= ?"; //判断是否存在
+        qSql = " select * from mcd_sms_test_send_port a where a.send_port=? and a.campseg_id= ?"; //判断是否存在
         ps = conn.prepareStatement(qSql);
         ps.setString(1, port);
         ps.setString(2, cAMPSEG_ID);
@@ -290,7 +290,7 @@ private void saveMtkSmsSendTestTaskInfo(String port,
         
         if(rs.next()){
             
-            sql = "update mtl_sms_test_send_port a set a.create_time = ?,a.invalid_time = ? where a.send_port = ? and a.campseg_id=?";
+            sql = "update mcd_sms_test_send_port a set a.create_time = ?,a.invalid_time = ? where a.send_port = ? and a.campseg_id=?";
             
             ps = conn.prepareStatement(sql);
             ps.setTimestamp(1, new Timestamp( schduleTime.getTime()));
@@ -300,7 +300,7 @@ private void saveMtkSmsSendTestTaskInfo(String port,
             ps.execute();
         }else{
             
-            sql = "insert into mtl_sms_test_send_port values(?,?,?,?)";
+            sql = "insert into mcd_sms_test_send_port values(?,?,?,?)";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, port);
@@ -332,7 +332,7 @@ public String getMessage(String CAMPSEG_ID,String channel_id) throws SQLExceptio
     
         try {
             conn = this.getJdbcTemplate().getDataSource().getConnection();
-            String sql = "select nvl(exec_content,'') from mtl_channel_def a where a.campseg_id =? and a.channel_id= ? ";
+            String sql = "select nvl(exec_content,'') from mcd_camp_channel_list a where a.campseg_id =? and a.channel_id= ? ";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, CAMPSEG_ID);
@@ -366,7 +366,7 @@ public String getPort(String CAMPSEG_ID) throws SQLException{
         try {
             conn = this.getJdbcTemplate().getDataSource().getConnection();
             
-            String sql = " select substr(max(send_port),9) as port_value from mtl_sms_test_send_port a where a.campseg_id = ?";
+            String sql = " select substr(max(send_port),9) as port_value from mcd_sms_test_send_port a where a.campseg_id = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, CAMPSEG_ID);
             rs = ps.executeQuery();
@@ -375,7 +375,7 @@ public String getPort(String CAMPSEG_ID) throws SQLException{
             if(rs.next()){
                 port = rs.getString(1);
                 if(port==null){
-                    sql = " select substr(max(send_port),9) as port_value, count(*) as total_value from mtl_sms_test_send_port a";
+                    sql = " select substr(max(send_port),9) as port_value, count(*) as total_value from mcd_sms_test_send_port a";
                     port = "0001";
                     ps = conn.prepareStatement(sql);
                     rs = ps.executeQuery();
@@ -437,7 +437,7 @@ public String getCityandCampsegNameCreUID(String CAMPSEG_ID) throws SQLException
     
     String cityid="";
     String campsegName="";
-    String sql = " select city_id ,campseg_name ,create_userid from mtl_camp_seginfo a where a.campseg_id =?  ";
+    String sql = " select city_id ,campseg_name ,create_userid from mcd_camp_def a where a.campseg_id =?  ";
     String createUserId = "";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
@@ -468,7 +468,7 @@ public String getCityandCampsegNameCreUID(String CAMPSEG_ID) throws SQLException
 public Map getUserPhone(String cityid) throws SQLException{
     Map map = new HashMap();
     
-    String sql = " select * from MTL_SMS_TEST_GROUP where city_id=?";
+    String sql = " select * from mcd_sms_test_group where city_id=?";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         ps = conn.prepareStatement(sql);
@@ -498,7 +498,7 @@ public Map getUserPhone(String cityid) throws SQLException{
 public void updateCampsegInfoState(String campseg_id, String status) throws SQLException {
     // TODO Auto-generated method stub
     
-    String sql = " update mtl_camp_seginfo a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mtl_camp_seginfo where campseg_id = ?)";
+    String sql = " update mcd_camp_def a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mcd_camp_def where campseg_id = ?)";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         conn.setAutoCommit(false);
@@ -641,14 +641,14 @@ private void saveFailLinformInfo(String campsegid, String campsegPho,
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         conn.setAutoCommit(false);
-        String qSql = " select * from MTL_SMS_TEST_FAIL_INFORM a where a.campseg_id =? and a.product_no=?"; //判断是否存在
+        String qSql = " select * from mcd_sms_test_fail_inform a where a.campseg_id =? and a.product_no=?"; //判断是否存在
         ps = conn.prepareStatement(qSql);
         ps.setString(1, campsegid);
         ps.setString(2, campsegPho);
         rs = ps.executeQuery();
         if(rs.next()){
             
-            sql = " update MTL_SMS_TEST_FAIL_INFORM a set a.inform_content = ?,a.inform_time=? where a.campseg_id =? and a.product_no=?";
+            sql = " update mcd_sms_test_fail_inform a set a.inform_content = ?,a.inform_time=? where a.campseg_id =? and a.product_no=?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, message);
             ps.setTimestamp(2, sendTime);
@@ -657,7 +657,7 @@ private void saveFailLinformInfo(String campsegid, String campsegPho,
             ps.execute();
         }else{
             
-            sql = " insert into MTL_SMS_TEST_FAIL_INFORM values(?,?,?,?)";
+            sql = " insert into mcd_sms_test_fail_inform values(?,?,?,?)";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, campsegid);
@@ -689,7 +689,7 @@ private void saveFailLinformInfo(String campsegid, String campsegPho,
 private String getReplyPhoNameByPho(String replyPhoneNo) throws SQLException {
     // TODO Auto-generated method stub
     
-    String sql = " select USER_NAME from MTL_SMS_TEST_GROUP where PRODUCT_NO=?";
+    String sql = " select USER_NAME from mcd_sms_test_group where PRODUCT_NO=?";
     String userName = "";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
@@ -876,13 +876,13 @@ private void saveSmsTestReplayInfo(String campsegid, String sendNo,
         conn = this.getJdbcTemplate().getDataSource().getConnection();
         conn.setAutoCommit(false);
         
-        String qSql = " select * from MTL_SMS_TEST_REPLY a where a.campseg_id=? and a.product_no=?"; //判断是否存在
+        String qSql = " select * from mcd_sms_test_reply a where a.campseg_id=? and a.product_no=?"; //判断是否存在
         ps = conn.prepareStatement(qSql);
         ps.setString(1, campsegid);
         ps.setString(2, replyPhoneNo);
         rs = ps.executeQuery();
         if(rs.next()){
-            sql = " update MTL_SMS_TEST_REPLY a set a.send_port = ?,a.reply_content=?,a.reply_time=? where a.campseg_id=? and a.product_no=?";
+            sql = " update mcd_sms_test_reply a set a.send_port = ?,a.reply_content=?,a.reply_time=? where a.campseg_id=? and a.product_no=?";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, sendNo);
@@ -893,7 +893,7 @@ private void saveSmsTestReplayInfo(String campsegid, String sendNo,
             ps.execute();
         }else{
             
-            sql = " insert into MTL_SMS_TEST_REPLY values(?,?,?,?,?)";
+            sql = " insert into mcd_sms_test_reply values(?,?,?,?,?)";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, campsegid);
@@ -935,7 +935,7 @@ private String getCampidAndisOverByPort(String sendNo,String replyTime) throws S
     Timestamp overTime ;
     
     String isOverTime = "2";//2默认超时 1没有超时   
-    String sql = " select * from mtl_sms_test_send_port a where a.send_port = ?";
+    String sql = " select * from mcd_sms_test_send_port a where a.send_port = ?";
     
     try {
         //SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -975,7 +975,7 @@ private String getCampidAndisOverByPort(String sendNo,String replyTime) throws S
     @Override
     public void updateMtlSmsTestCampsegInfoSendTime(String campsegId)  throws SQLException {
         // TODO Auto-generated method stub
-        String sql = " update MTL_SMS_TEST_CAMPSEG_INFO a set a.send_time = ? where a.campseg_id = ?";
+        String sql = " update mcd_sms_test_camp a set a.send_time = ? where a.campseg_id = ?";
         final java.sql.Date sqlDate=new java.sql.Date(System.currentTimeMillis());
         try {
             conn = this.getJdbcTemplate().getDataSource().getConnection();

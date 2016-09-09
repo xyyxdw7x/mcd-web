@@ -12,7 +12,7 @@ public class SendType4CitysDaoImp extends JdbcDaoBase implements SendType4CitysD
 	private static final Logger log = LogManager.getLogger();
 	@Override
 	public void updateType(String cityId,String sendType){
-		String sql = "update MTL_SMS_SEND_CITY_CONFIG t set t.send_type=? where city_id=?";
+		String sql = "update mcd_sms_send_city_config t set t.send_type=? where city_id=?";
 		String[] parm ={sendType,cityId};
 		try {
 			log.info("执行sql=" + sql);
@@ -24,7 +24,7 @@ public class SendType4CitysDaoImp extends JdbcDaoBase implements SendType4CitysD
 	}
 	@Override
 	public int getCitySendType(String city){
-		String sql="select send_type from MTL_SMS_SEND_CITY_CONFIG where city_id=?";
+		String sql="select send_type from mcd_sms_send_city_config where city_id=?";
 		String[] parm = {city};
 		int type = 0;
 		try {
@@ -38,7 +38,7 @@ public class SendType4CitysDaoImp extends JdbcDaoBase implements SendType4CitysD
 	}
 	@Override
 	public void add(String cityId, int sendType) {
-		String sql="insert into MTL_SMS_SEND_CITY_CONFIG(city_id,send_type)values(?,?)";
+		String sql="insert into mcd_sms_send_city_config(city_id,send_type)values(?,?)";
 		Object[] parms={cityId,sendType};
 		log.info("执行sql=" + sql);
 		this.getJdbcTemplate().update(sql, parms);

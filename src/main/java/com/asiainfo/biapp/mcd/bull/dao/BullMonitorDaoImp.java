@@ -41,14 +41,14 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 				.append("CAMP.CREATE_USERID,CAMP.CREATE_USERNAME,CAMP.CAMP_PRI_ID,CAMP.CAMPSEG_NO,DEPT.DEPT_ID,")
 				.append("nvl(DEPT.DEPT_NAME,'-') DEPT_NAME,TASK.TASK_SENDODD_TAB_NAME,DEPT.City_Id,nvl(dd.SRC_CUST_NUM,0) SRC_CUST_NUM,")
 				.append("nvl(dd.FILTERED_NUM,0) FILTERED_NUM ");
-		sql.append(" from MCD_CAMPSEG_TASK TASK ");
-		sql.append(" LEFT OUTER JOIN MTL_CAMP_SEGINFO CAMP ");
+		sql.append(" from mcd_camp_task TASK ");
+		sql.append(" LEFT OUTER JOIN mcd_camp_def CAMP ");
 		sql.append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT_MAP MAP ");
 		sql.append(" on CAMP.CREATE_USERID = MAP.USER_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT DEPT ");
 		sql.append(" on MAP.DEPT_ID = DEPT.DEPT_ID ");
-		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from MTL_SMS_CHANNEL_SUB_TASK  where to_char(CREATE_TIME,'YYYYMMdd')=? group by TASK_ID) t ");
+		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from mcd_sms_send_sub_task  where to_char(CREATE_TIME,'YYYYMMdd')=? group by TASK_ID) t ");
 		sql.append(" on TASK.TASK_ID=t.TASK_ID ");
 		sql.append(" LEFT OUTER JOIN(")
 		    .append("select task_id,(nvl(YESTERDAY_SURPLUS,0)+nvl(CUST_LIST_TAB_GROUP_NUM,0)) SRC_CUST_NUM,(nvl(BOTHER_AVOID_NUM,0)+nvl(CONTACT_CONTROL_NUM,0)) FILTERED_NUM ")
@@ -83,15 +83,15 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 				.append("CAMP.CREATE_USERID,CAMP.CREATE_USERNAME,CAMP.CAMP_PRI_ID,CAMP.CAMPSEG_NO,DEPT.DEPT_ID,")
 				.append("nvl(DEPT.DEPT_NAME,'-') DEPT_NAME,TASK.TASK_SENDODD_TAB_NAME,DEPT.City_Id,nvl(dd.SRC_CUST_NUM,0) SRC_CUST_NUM,")
 				.append("nvl(dd.FILTERED_NUM,0) FILTERED_NUM");
-		sql.append(" from MCD_CAMPSEG_TASK TASK ");
-		sql.append(" LEFT OUTER JOIN MTL_CAMP_SEGINFO CAMP ");
+		sql.append(" from mcd_camp_task TASK ");
+		sql.append(" LEFT OUTER JOIN mcd_camp_def CAMP ");
 		sql.append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
 		
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT_MAP MAP ");
 		sql.append(" on CAMP.CREATE_USERID = MAP.USER_ID ");
 		sql.append(" LEFT OUTER JOIN MTL_USER_DEPT DEPT ");
 		sql.append(" on MAP.DEPT_ID = DEPT.DEPT_ID ");
-		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from MTL_SMS_CHANNEL_SUB_TASK where to_char(CREATE_TIME,'YYYYMMdd')=?  group by TASK_ID) t ");
+		sql.append(" LEFT OUTER JOIN(select task_id,nvl(sum(SEND_NUM),0) SEND_NUM  from mcd_sms_send_sub_task where to_char(CREATE_TIME,'YYYYMMdd')=?  group by TASK_ID) t ");
 		sql.append(" on TASK.TASK_ID=t.TASK_ID ");
 		sql.append(" LEFT OUTER JOIN(")
 	    .append("select task_id,(nvl(YESTERDAY_SURPLUS,0)+nvl(CUST_LIST_TAB_GROUP_NUM,0)) SRC_CUST_NUM,(nvl(BOTHER_AVOID_NUM,0)+nvl(CONTACT_CONTROL_NUM,0)) FILTERED_NUM ")
@@ -118,7 +118,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 	 */
 	@Override
 	public void batchUpdatePauseComment(String campIds,String pauseComment){
-		StringBuffer sql = new StringBuffer("update MTL_CAMP_SEGINFO set PAUSE_COMMENT=? where CAMPSEG_ID in(");
+		StringBuffer sql = new StringBuffer("update mcd_camp_def set PAUSE_COMMENT=? where CAMPSEG_ID in(");
 		sql.append(campIds);
 		sql.append(")");
 		String[] parms={pauseComment};
@@ -134,9 +134,9 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
     @Override
     public void updateCampSegInfoCampPriId(String campsegId,String cityId) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" update MTL_CAMP_SEGINFO mcs set mcs.camp_pri_id =")
-                .append(" (select decode(max(camp.camp_pri_id),'',0,max(camp.camp_pri_id))+1  from MCD_CAMPSEG_TASK TASK ")
-                .append(" LEFT OUTER JOIN MTL_CAMP_SEGINFO CAMP")
+        sql.append(" update mcd_camp_def mcs set mcs.camp_pri_id =")
+                .append(" (select decode(max(camp.camp_pri_id),'',0,max(camp.camp_pri_id))+1  from mcd_camp_task TASK ")
+                .append(" LEFT OUTER JOIN mcd_camp_def CAMP")
                 .append(" on TASK.CAMPSEG_ID = CAMP.CAMPSEG_ID ");
         sql.append(" where  TASK.channel_id='901'  and CAMP.City_Id= ? ");
         sql.append(" and TASK.EXEC_STATUS in( ").append(this.getBullShowStaus()).append(")");

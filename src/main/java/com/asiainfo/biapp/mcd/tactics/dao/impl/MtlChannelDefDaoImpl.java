@@ -66,8 +66,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 	 */
 	@Override
 	public List findChildChannelIdList(String campsegId) {
-		StringBuffer sql = new StringBuffer("  select distinct mcd.channel_id from mtl_channel_def mcd where mcd.campseg_id in (  "); 	
-		sql.append(" select mcs.campseg_id from mtl_camp_seginfo mcs where mcs.campseg_pid =  ?  ") ; 	
+		StringBuffer sql = new StringBuffer("  select distinct mcd.channel_id from mcd_camp_channel_list mcd where mcd.campseg_id in (  "); 	
+		sql.append(" select mcs.campseg_id from mcd_camp_def mcs where mcs.campseg_pid =  ?  ") ; 	
 		sql.append(" )") ;
 		List list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId});
 		return list;
@@ -79,8 +79,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
     @Override
     public List getMtlChannelDefs(String campsegId) {
-        StringBuffer sql = new StringBuffer("  select mcd.targer_user_nums,dmc.channel_name from mtl_channel_def mcd  ");   
-        sql.append(" left join dim_mtl_channel dmc on mcd.channel_id = dmc.channel_id   ") ;    
+        StringBuffer sql = new StringBuffer("  select mcd.targer_user_nums,dmc.channel_name from mcd_camp_channel_list mcd  ");   
+        sql.append(" left join mcd_dim_channel dmc on mcd.channel_id = dmc.channel_id   ") ;    
         sql.append(" where mcd.campseg_id = ? ") ;
         List parameterList = new ArrayList();
         parameterList.add(campsegId);
@@ -95,7 +95,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
 	@Override
 	public void deleteMtlChannelDefCall(String campsegId, String channelId) {
-		//TODO: jt.update("delete from mtl_channel_def_call where campseg_id = ? and channel_id = ?", new Object[]{campsegId,channelId});
+		//TODO: jt.update("delete from mcd_camp_channel_list_call where campseg_id = ? and channel_id = ?", new Object[]{campsegId,channelId});
 	}
     /**
      * add by jinl 20150717
@@ -108,12 +108,12 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         List<Map<String,Object>> list = new ArrayList();
         try {
             StringBuffer buffer = new StringBuffer();
-            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mtl_camp_seginfo.CEP_EVENT_ID from (")
+            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mcd_camp_def.CEP_EVENT_ID from (")
                   .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME ")
-                  .append(" from mtl_channel_def mcd, dim_mtl_channel dmc ")
+                  .append(" from mcd_camp_channel_list mcd, mcd_dim_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id   and mcd.campseg_id = ? ) basic")
                   .append(" left join  dim_mtl_adiv_info on basic.channel_adiv_id = dim_mtl_adiv_info.adiv_id and basic.channel_id=dim_mtl_adiv_info.channel_id")
-                  .append(" left join mtl_camp_seginfo on basic.campseg_id = mtl_camp_seginfo.campseg_id");
+                  .append(" left join mcd_camp_def on basic.campseg_id = mcd_camp_def.campseg_id");
             
             list= this.getJdbcTemplate().queryForList(buffer.toString(), new String[] { campsegId });
             //return !CollectionUtils.isEmpty(list);
@@ -129,7 +129,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         try {
             StringBuffer buffer = new StringBuffer();
             
-            buffer.append("select basic.*,mtl_camp_seginfo.CEP_EVENT_ID from ")
+            buffer.append("select basic.*,mcd_camp_def.CEP_EVENT_ID from ")
                   .append(" (select mcd.campseg_id,dmc.channel_id as channelId, dmc.channel_name as channelName, mcd.task_code as taskCode, mcd.task_name as taskName, mcd.demand,")
                   .append(" (select dcctc.CLASS_NAME || '-' || dcctsc.SUB_CLASS_NAME from DIM_CHN_CALL_TASK_CLASS dcctc left join  DIM_CHN_CALL_TASK_SUB_CLASS dcctsc on dcctc.CLASS_ID = dcctsc.CLASS_PID where dcctsc.SUB_CLASS_ID =mcd.task_class_id) as taskClassName,")
                   .append(" (select LEVEL1_NAME from DIM_CALL_CHN_TASK_REL where SUB_CLASS_ID = mcd.task_class_id and LEVEL1_ID=mcd.task_level1_id) as taskLevel1,")
@@ -147,8 +147,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
                   .append(" (select LOCAL_NAME from DIM_CHN_CALL_LOCAL where LOCAL_ID = mcd.call_form) as callFormName, ")
                   .append(" (select FORM_NAME from DIM_CHN_CALL_FORM where FORM_ID = mcd.call_city_type) as  callCityTypeName, ")
                   .append("mcd.call_question_name AS callQuestionName ")
-                  .append("  from mtl_channel_def_call mcd, dim_mtl_channel dmc ")
-                  .append(" where mcd.channel_id = dmc.channel_id and mcd.campseg_id = ?) basic left join mtl_camp_seginfo on basic.campseg_id = mtl_camp_seginfo.campseg_id");
+                  .append("  from mtl_channel_def_call mcd, mcd_dim_channel dmc ")
+                  .append(" where mcd.channel_id = dmc.channel_id and mcd.campseg_id = ?) basic left join mcd_camp_def on basic.campseg_id = mcd_camp_def.campseg_id");
                     
             list= this.getJdbcTemplate().queryForList(buffer.toString(), new String[] { campsegId });
         } catch (Exception e) {
@@ -167,7 +167,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 			}
 		});
 	*/
-		String sql = "select * from MTL_CHANNEL_DEF mcd where mcd.id.campseg_id='" + campsegId + "'";
+		String sql = "select * from mcd_camp_channel_list mcd where mcd.id.campseg_id='" + campsegId + "'";
 		List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
 		return mtlChannelDefs;
 	}
@@ -185,7 +185,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 					"t.call_cycle as \"callCycle\",t.call_plan_num as \"callPlanNum\",t.finish_date as \"finishDate\",t.task_comment as \"taskComment\",t.user_lable_info as \"userLableInfo\",t.call_question_url as \"callQuestionUrl\",t.call_no as \"callNo\","+
 					"t.avoid_filter_flag as \"avoidFilterFlag\",t.call_test_flag as \"callTestFlag\",t.fre_filter_flag as \"freFilterFlag\",t.call_form as \"callForm\",t.call_city_type as \"callCityType\",t.channel_prio as \"channelPrio\","+
 					"t.approve_result as \"approveResult\",t.approve_result_desc as \"approveResultDesc\"" +
-					" from mtl_channel_def_call t where campseg_id = ? and channel_id = ?";
+					" from mcd_camp_channel_list_call t where campseg_id = ? and channel_id = ?";
 		List list = this.getJdbcTemplate().queryForList(sql,new String[]{campsegId,channelDefCall});
 		Map map = null;
 		if(list != null && list.size() > 0){
@@ -203,9 +203,9 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
     @Override
     public void updateMtlChannelDefApproveResult(String assing_id,String approve_desc, String channel_id, short approveResult) {
-        StringBuffer sql = new StringBuffer(" update mtl_channel_def set approve_result = ?,approve_result_desc=? ");   
+        StringBuffer sql = new StringBuffer(" update mcd_camp_channel_list set approve_result = ?,approve_result_desc=? ");   
         sql.append(" where channel_id = ? and campseg_id in  ") ; 
-        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        sql.append(" (select campseg_id from mcd_camp_def where approve_flow_id = ? and campseg_pid != '0') ") ; 
         this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
         
         
@@ -221,9 +221,9 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
     @Override
     public void updateMtlChannelDefCallApproveResult(String assing_id,
             String approve_desc, String channel_id, short approveResult) {
-        StringBuffer sql = new StringBuffer(" update mtl_channel_def_call set approve_result = ?,approve_result_desc=? ");  
+        StringBuffer sql = new StringBuffer(" update mcd_camp_channel_list_call set approve_result = ?,approve_result_desc=? ");  
         sql.append(" where channel_id = ? and campseg_id in  ") ; 
-        sql.append(" (select campseg_id from mtl_camp_seginfo where approve_flow_id = ? and campseg_pid != '0') ") ; 
+        sql.append(" (select campseg_id from mcd_camp_def where approve_flow_id = ? and campseg_pid != '0') ") ; 
         this.getJdbcTemplate().update(sql.toString(), new Object[] {approveResult, approve_desc,channel_id,assing_id});
         
     }
@@ -238,9 +238,9 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
     @Override
     public List getMtlChannelDefApproveFlowList(String childCampseg_id) {
-        StringBuffer sql = new StringBuffer(" select distinct approve_result,approve_result_desc from mtl_channel_def where campseg_id = ?  ");
+        StringBuffer sql = new StringBuffer(" select distinct approve_result,approve_result_desc from mcd_camp_channel_list where campseg_id = ?  ");
         sql.append(" union ");
-        sql.append("  select distinct approve_result,approve_result_desc from mtl_channel_def_call where campseg_id = ?   ");
+        sql.append("  select distinct approve_result,approve_result_desc from mcd_camp_channel_list_call where campseg_id = ?   ");
         List list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { childCampseg_id,childCampseg_id});
         return list;
     }
@@ -251,7 +251,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
     @Override
     public List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
-        StringBuffer sql = new StringBuffer(" select * from MTL_CHANNEL_DEF mcd where mcd.id.campseg_id in (select campseg_id from mtl_camp_seginfo where campseg_pid = ?) ");
+        StringBuffer sql = new StringBuffer(" select * from mcd_camp_channel_list mcd where mcd.id.campseg_id in (select campseg_id from mcd_camp_def where campseg_pid = ?) ");
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
         List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));

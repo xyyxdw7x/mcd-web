@@ -11,11 +11,8 @@ public class DimMtlChannel implements java.io.Serializable {
 	// Fields
 
 	private String channelId;
-
 	private Short channeltypeId;
-
 	private String channelName;
-
 	private String campId;
 	//	private String cityId;
 	private String createUser; //渠道创建人,空代表共有渠道

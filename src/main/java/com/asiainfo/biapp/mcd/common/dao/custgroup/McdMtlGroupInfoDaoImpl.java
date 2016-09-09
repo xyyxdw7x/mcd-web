@@ -243,7 +243,7 @@ public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupI
 			buffer.append(" ) t2 where t2.rn = 1) dinfo");
 			buffer.append(" left join mcd_custgroup_def cinfo on dinfo.custom_group_id = cinfo.custom_group_id");
 			buffer.append(" where (cinfo.create_user_id =  '"+userId+"' or  cinfo.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = '"+userId+"'))");
-            buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mtl_camp_seginfo mcs,MTL_CAMPSEG_CUSTGROUP mcc where mcs.campseg_id = mcc.campseg_id and mcc.custgroup_type = 'CG'and mcs.campseg_stat_id in ('50','54','59'))");
+            buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mcd_camp_def mcs,mcd_camp_custgroup_list mcc where mcs.campseg_id = mcc.campseg_id and mcc.custgroup_type = 'CG'and mcs.campseg_stat_id in ('50','54','59'))");
 			    buffer.append(") tab) re ");
 
 			buffer.append(" where ((re.invalid_flag = 1 and re.custom_status_id <>2)  or re.custom_status_id='9' or re.custom_num='0') ");// re.custom_status_id <>2：客户群状态不等于删除状态
@@ -268,8 +268,8 @@ public class McdMtlGroupInfoDaoImpl extends JdbcDaoBase implements IMcdMtlGroupI
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("select mcc.CUSTGROUP_ID");
-		buffer.append(" from mtl_camp_seginfo mcs");
-		buffer.append(" left join MTL_CAMPSEG_CUSTGROUP mcc");
+		buffer.append(" from mcd_camp_def mcs");
+		buffer.append(" left join mcd_camp_custgroup_list mcc");
 		buffer.append(" on mcs.campseg_id = mcc.campseg_id");
 		buffer.append(" where mcc.CUSTGROUP_TYPE='CG' and mcc.CUSTGROUP_ID = ?");
 		buffer.append(" and mcs.CAMPSEG_STAT_ID NOT IN (91)");

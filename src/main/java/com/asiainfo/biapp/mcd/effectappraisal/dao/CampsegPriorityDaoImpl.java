@@ -48,23 +48,23 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		StringBuffer sb = new StringBuffer();
 		long startTime = new Date().getTime();
 		sb.append("select * from (")	
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num,mcoa.city_id,mcoa.channel_id,mcoa.chn_adiv_id, mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num,mcoa.city_id,mcoa.channel_id,mcoa.chn_adiv_id, mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,meicd.camp_succ_rate ")
-		  .append(" from MTL_CAMPESEG_ORDER_ATTR mcoa")
-		  .append(" left join mtl_camp_seginfo mcs on mcoa.campseg_id=mcs.campseg_id")
-		  .append(" left join mtl_stc_plan msp on mcs.plan_id=msp.plan_id")
-		  .append(" left join MTL_CAMPSEG_CUSTGROUP mcc on mcc.campseg_id=mcs.campseg_id")
+		  .append(" from mcd_camp_order mcoa")
+		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
+		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
+		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 //		  .append(" left join (select * from mtl_campseg_sort  where stat_date = (select max(stat_date) from mtl_campseg_sort)) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.channel_id=meicd.channel_id and mcoa.city_id=meicd.city_id and meicd.CAMPSEG_TYPE=0")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
 		  .append(" else round(sum(mcs.camp_succ_num_total)/sum(mcs.camp_user_num_total),4)  end camp_succ_rate")
-		  .append(" from mtl_camp_seginfo campseg left join (select campseg_id,camp_user_num_total,camp_succ_num_total")
+		  .append(" from mcd_camp_def campseg left join (select campseg_id,camp_user_num_total,camp_succ_num_total")
 		  .append(" from mtl_campseg_sort where stat_date = (select max(stat_date) from mtl_campseg_sort) and CAMPSEG_TYPE=0) mcs on mcs.campseg_id= campseg.campseg_id ")
 		  .append(" group by campseg.city_id,campseg.campseg_id")
 		  .append(" ) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.city_id=meicd.city_id ")
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=1  and mct.exec_status in (50,51,59)")
+		  .append(" where mcoa.is_manual=1  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=1 ");
 		if(StringUtil.isNotEmpty(channelId)){
@@ -125,24 +125,24 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		List<CampsegPriorityBean> listResult = new ArrayList<CampsegPriorityBean>();
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from(")
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcoa.chn_adiv_id,mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcoa.chn_adiv_id,mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,")
 		  .append(" CEIL(sysdate-TO_DATE(to_char(mcs.create_time,'yyyy-mm-dd'), 'YYYY-MM-DD ')) IsNewDays,meicd.camp_succ_rate")
-		  .append(" from MTL_CAMPESEG_ORDER_ATTR mcoa")
-		  .append(" left join mtl_camp_seginfo mcs on mcoa.campseg_id=mcs.campseg_id")
-		  .append(" left join mtl_stc_plan msp on mcs.plan_id=msp.plan_id")
-		  .append(" left join MTL_CAMPSEG_CUSTGROUP mcc on mcc.campseg_id=mcs.campseg_id")
+		  .append(" from mcd_camp_order mcoa")
+		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
+		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
+		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
 		  .append(" else round(sum(mcs.camp_succ_num_total)/sum(mcs.camp_user_num_total),4)  end camp_succ_rate")
-		  .append(" from mtl_camp_seginfo campseg left join (select campseg_id,camp_user_num_total,camp_succ_num_total")
+		  .append(" from mcd_camp_def campseg left join (select campseg_id,camp_user_num_total,camp_succ_num_total")
 		  .append(" from mtl_campseg_sort where stat_date = (select max(stat_date) from mtl_campseg_sort) and CAMPSEG_TYPE=0) mcs on mcs.campseg_id= campseg.campseg_id ")
 		  .append(" group by campseg.city_id,campseg.campseg_id")
 		  .append(" ) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.city_id=meicd.city_id ")
 		  //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0 AND (MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDCG+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDZX+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_PAUSE+")");
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0  and mct.exec_status in (50,51,59)")
+		  .append(" where mcoa.is_manual=0  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0");
 		if(StringUtil.isNotEmpty(channelId)){
@@ -229,16 +229,16 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	public int getAutoPriorityCampsegNum(String channelId,String adivId, String cityId,String keyWords) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select count(1) from (")
-		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcs.campseg_name,msp.plan_id,msp.plan_name,mcc.custgroup_number,mgi.custom_num,")
+		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays")
-		  .append(" from MTL_CAMPESEG_ORDER_ATTR mcoa")
-		  .append(" left join mtl_camp_seginfo mcs on mcoa.campseg_id=mcs.campseg_id")
-		  .append(" left join mtl_stc_plan msp on mcs.plan_id=msp.plan_id")
-		  .append(" left join MTL_CAMPSEG_CUSTGROUP mcc on mcc.campseg_id=mcs.campseg_id")
+		  .append(" from mcd_camp_order mcoa")
+		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
+		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
+		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		   .append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on mcoa.campseg_id = mct.campseg_id")
+		   .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0 AND (MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDCG+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDZX+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_PAUSE+")");
-		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0  and mct.exec_status in (50,51,59) ")
+		  .append(" where  mcoa.is_manual=0  and mct.exec_status in (50,51,59) ")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 		if(StringUtil.isNotEmpty(channelId)){
 			sb.append(" and mcoa.channel_id='"+channelId+"'");
@@ -263,7 +263,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	public void editPriorityCampseg(String campsegId, String channelId,
 			String cityId) {
 		StringBuffer sbuffer = new StringBuffer();
-		sbuffer.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.is_manual = 1  ")
+		sbuffer.append("update mcd_camp_order mcoa set mcoa.is_manual = 1  ")
 			   .append(" where mcoa.campseg_id='"+campsegId+"'")
 			   .append(" and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
 		int result = this.getJdbcTemplate().update(sbuffer.toString());
@@ -275,10 +275,10 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	@Override
 	public void eidtManualPriority(String channelId,String cityId,String chnAdivId){
 		StringBuffer sbuffer = new StringBuffer();
-		sbuffer.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.pri_order_num = (mcoa.pri_order_num+1) ")
+		sbuffer.append("update mcd_camp_order mcoa set mcoa.pri_order_num = (mcoa.pri_order_num+1) ")
 			   .append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.is_manual=1")
-			   .append(" and exists (select 1 from mtl_camp_seginfo mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0 and mcoa.campseg_id=mcs.campseg_id)");  //不对失效的策略进行计算
-//			   .append(" and mcoa.campseg_id in (select campseg_id from mtl_camp_seginfo mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");
+			   .append(" and exists (select 1 from mcd_camp_def mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0 and mcoa.campseg_id=mcs.campseg_id)");  //不对失效的策略进行计算
+//			   .append(" and mcoa.campseg_id in (select campseg_id from mcd_camp_def mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");
 		if(StringUtil.isNotEmpty(chnAdivId)){
 			sbuffer.append(" and mcoa.chn_adiv_id ='"+chnAdivId+"'");
 		}
@@ -290,12 +290,12 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	public void changeManualToAutoPriority(String campsegId,String channelId,String cityId,String chnAdivId){
 //		添加注释begin edit by lixq10 2016年6月24日09:35:43  PS:去掉前台手动优先级只显示10条的限制
 //		StringBuffer sbuffer = new StringBuffer();
-//		sbuffer.append("select count(1) from  MTL_CAMPESEG_ORDER_ATTR mcoa ")
+//		sbuffer.append("select count(1) from  mcd_camp_order mcoa ")
 //			   .append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.is_manual=1");
 //		int num = this.getJdbcTemplate().queryForInt(sbuffer.toString());
 //		if(num > 9){ //当置顶优先级中策略大于十条的时候，取出最后一条策略，并且将该策略改成系统自动优先级
 //			StringBuffer sbuffer2 = new StringBuffer();
-//			sbuffer2.append("select * from  MTL_CAMPESEG_ORDER_ATTR mcoa ")
+//			sbuffer2.append("select * from  mcd_camp_order mcoa ")
 //			   		.append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.is_manual=1 order by mcoa.pri_order_num ");
 //			List<Map> list  = this.getJdbcTemplate().queryForList(sbuffer2.toString());
 //			String campsegIdTemp = "";
@@ -311,7 +311,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		
 		//将要置顶的策略状态就行修改
 		StringBuffer sbuffer3 = new StringBuffer();
-		sbuffer3.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.pri_order_num = 1, mcoa.is_manual = 1")
+		sbuffer3.append("update mcd_camp_order mcoa set mcoa.pri_order_num = 1, mcoa.is_manual = 1")
 		.append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.campseg_id='"+campsegId+"'");
 		if(StringUtil.isNotEmpty(chnAdivId)){
 			sbuffer3.append(" and mcoa.chn_adiv_id='"+chnAdivId+"'");
@@ -337,7 +337,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	 */
 	private void changeManualToAutoCampseg(String campsegId,String channelId,String cityId){
 		StringBuffer sbuffer = new StringBuffer();
-		sbuffer.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.is_manual = 0")
+		sbuffer.append("update mcd_camp_order mcoa set mcoa.is_manual = 0")
 			   .append(" where mcoa.campseg_id='"+campsegId+"' and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
 		this.getJdbcTemplate().update(sbuffer.toString());
 	}
@@ -345,11 +345,11 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	@Override
 	public void editManualPriorityCampseg(final List<Map<String, Object>> list1,final List<Map<String, Object>> list2) {
 		StringBuffer sbuffer1 = new StringBuffer();   //针对有运营位的list
-		sbuffer1.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.pri_order_num =?")
+		sbuffer1.append("update mcd_camp_order mcoa set mcoa.pri_order_num =?")
 				.append(" where mcoa.city_id=? and mcoa.channel_id=? and mcoa.campseg_id=? and mcoa.chn_adiv_id=?");
 		
 		StringBuffer sbuffer2 = new StringBuffer();   //针对有运营位的list
-		sbuffer2.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.pri_order_num =?")
+		sbuffer2.append("update mcd_camp_order mcoa set mcoa.pri_order_num =?")
 				.append(" where mcoa.city_id=? and mcoa.channel_id=? and mcoa.campseg_id=?");
 		//将两个策略的优先级字段互换
 //		this.getJdbcTemplate().update(sbuffer0.toString());
@@ -397,7 +397,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	@Override
 	public void cancleTopManualPriorityCampseg1(String campsegId,String cityId,String channelId,String chnAdivId) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.is_manual=0 where campseg_id='"+campsegId+"' and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
+		buffer.append("update mcd_camp_order mcoa set mcoa.is_manual=0 where campseg_id='"+campsegId+"' and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
 		if(StringUtil.isNotEmpty(chnAdivId)){
 			buffer.append(" and mcoa.chn_adiv_id='"+chnAdivId+"'");
 		}
@@ -408,9 +408,9 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	@Override
 	public void cancleTopManualPriorityCampseg2(String campsegId,String cityId,String channelId,String chnAdivId) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("select mcoa.campseg_id,mcoa.channel_id,mcoa.chn_adiv_id,mcoa.city_id from MTL_CAMPESEG_ORDER_ATTR mcoa ");
-		buffer.append(" left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on mcoa.campseg_id = mct.campseg_id")
-			  .append(" left join mtl_camp_seginfo mcs on mcoa.campseg_id=mcs.campseg_id ")
+		buffer.append("select mcoa.campseg_id,mcoa.channel_id,mcoa.chn_adiv_id,mcoa.city_id from mcd_camp_order mcoa ");
+		buffer.append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
+			  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id ")
 		  	  .append(" where  mcoa.is_manual=1 and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'and mct.exec_status in (50,51,59)")
 		  	  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");
 		if(StringUtil.isNotEmpty(chnAdivId)){
@@ -425,7 +425,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			String cityIdT = String.valueOf(list.get(i).get("city_id"));
 			String channelIdT = String.valueOf(list.get(i).get("channel_id"));
 			String adivId = String.valueOf(list.get(i).get("CHN_ADIV_ID"));
-			sbuffer.append("update MTL_CAMPESEG_ORDER_ATTR mcoa set mcoa.pri_order_num = "+(i+1)+" where campseg_id='"+campsegIdT+"' and mcoa.city_id='"+cityIdT+"' and mcoa.channel_id='"+channelIdT+"' AND mcoa.chn_adiv_id='"+chnAdivId+"'");
+			sbuffer.append("update mcd_camp_order mcoa set mcoa.pri_order_num = "+(i+1)+" where campseg_id='"+campsegIdT+"' and mcoa.city_id='"+cityIdT+"' and mcoa.channel_id='"+channelIdT+"' AND mcoa.chn_adiv_id='"+chnAdivId+"'");
 			log.info("********************sql="+sbuffer.toString());
 			this.getJdbcTemplate().update(sbuffer.toString());
 		}

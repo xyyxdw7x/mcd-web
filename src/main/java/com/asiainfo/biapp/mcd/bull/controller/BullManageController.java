@@ -117,7 +117,7 @@ public class BullManageController extends BaseMultiActionController {
 	}
 
 	@RequestMapping(params = "cmd=setSendType")
-	public void setSendType(HttpServletRequest request, HttpServletResponse response) {// MTL_SMS_SEND_CITY_CONFIG 各地市群发类型
+	public void setSendType(HttpServletRequest request, HttpServletResponse response) {// mcd_sms_send_city_config 各地市群发类型
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
 		String sendType = request.getParameter("sendType");

@@ -46,8 +46,8 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		 .append(" A.CREATE_USER_NAME, B.NAME AS USER_TYPE_NAME,C.CAMPSEG_TYPE_NAME,D.CHANNEL_NAME")
 		 .append(" FROM MCD_CORE_AD.mcd_bother_avoid A")
 		 .append(" INNER JOIN DIM_BOTHER_AVOID_USER_TYPE B ON A.USER_TYPE_ID  = B.ID")
-		 .append(" INNER JOIN DIM_CAMPSEG_TYPE C ON A.AVOID_CUST_TYPE = C.CAMPSEG_TYPE_ID")
-		 .append(" INNER JOIN DIM_Mtl_Channel D ON A.AVOID_BOTHER_TYPE = D.CHANNELTYPE_ID");
+		 .append(" INNER JOIN mcd_dim_camp_type C ON A.AVOID_CUST_TYPE = C.CAMPSEG_TYPE_ID")
+		 .append(" INNER JOIN mcd_dim_channel D ON A.AVOID_BOTHER_TYPE = D.CHANNELTYPE_ID");
 		 
 		if(mtlBotherAvoid.getKeywords() != null && !"".equals(mtlBotherAvoid.getKeywords())) {
 			buffer.append(" and (A.PRODUCT_NO like '%" + mtlBotherAvoid.getKeywords() + "%')");
@@ -247,7 +247,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		MtlBotherContactConfig mtlBotherContactConfig = new MtlBotherContactConfig();
 		try {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(" SELECT CAMPSEG_TYPE_ID,CHANNEL_ID,AVOID_BOTHER_FLAG,CONTACT_CONTROL_FLAG,PARAM_DAYS,PARAM_NUM FROM MTL_BOTHER_CONTACT_CONFIG WHERE CAMPSEG_TYPE_ID = ? AND CHANNEL_ID = ? AND CAMPSEG_CITY_TYPE=?");
+			buffer.append(" SELECT CAMPSEG_TYPE_ID,CHANNEL_ID,AVOID_BOTHER_FLAG,CONTACT_CONTROL_FLAG,PARAM_DAYS,PARAM_NUM FROM mcd_bother_contact_config WHERE CAMPSEG_TYPE_ID = ? AND CHANNEL_ID = ? AND CAMPSEG_CITY_TYPE=?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] { campsegTypeId,channelId,campsegCityType });
 			if(CollectionUtils.isNotEmpty(list)){
 				for (Map map : list) {

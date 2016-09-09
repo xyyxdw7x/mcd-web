@@ -67,23 +67,26 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	@SuppressWarnings("unchecked")
 	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect){
 		List<DimMtlChannel> list=null;
-		String sql = "select * from dim_mtl_channel dmc where 1=1 ";
+		String sql = "select * from mcd_dim_channel dmc where 1=1 ";
 		if("1".equals(isDoubleSelect)){
 			sql += " and dmc.channel_id in (902,903,906)";
 		}
-		sql += " order by dmc.display_order";
-		list = this.getJdbcTemplate().query(sql,new RowMapper(){
-
-			@Override
-			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				DimMtlChannel dimMtlChannel=new DimMtlChannel();
-				dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
-				dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
-				dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
-				return dimMtlChannel;
-			}
-			
-		});
+		sql += " order by dmc.DISPLAY_ORDER";
+		try {
+			list = this.getJdbcTemplate().query(sql,new RowMapper(){
+				@Override
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					DimMtlChannel dimMtlChannel=new DimMtlChannel();
+					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
+					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
+					dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
+					return dimMtlChannel;
+				}
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			throw e;
+		}
 		return list;
 	}
 	
@@ -94,9 +97,9 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			if("1".equals(isDoubleSelect)){//社会渠道，营业厅、手机APP支持多选
-				sbuffer.append("select DIM_MTL_CHANNEL.CHANNEL_ID,DIM_MTL_CHANNEL.CHANNELTYPE_ID,DIM_MTL_CHANNEL.CHANNEL_NAME from DIM_MTL_CHANNEL where channel_id in('902','903','906') ORDER BY ORDER_NUM ASC");
+				sbuffer.append("select mcd_dim_channel.CHANNEL_ID,mcd_dim_channel.CHANNELTYPE_ID,mcd_dim_channel.CHANNEL_NAME from mcd_dim_channel where channel_id in('902','903','906') ORDER BY ORDER_NUM ASC");
 			}else{
-				sbuffer.append("select DIM_MTL_CHANNEL.CHANNEL_ID,DIM_MTL_CHANNEL.CHANNELTYPE_ID,DIM_MTL_CHANNEL.CHANNEL_NAME from DIM_MTL_CHANNEL ORDER BY ORDER_NUM ASC");
+				sbuffer.append("select mcd_dim_channel.CHANNEL_ID,mcd_dim_channel.CHANNELTYPE_ID,mcd_dim_channel.CHANNEL_NAME from mcd_dim_channel ORDER BY ORDER_NUM ASC");
 			}
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
 			for (Map map : list) {
@@ -153,14 +156,14 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		}
 	};
 	public DimMtlChanneltype getMtlChanneltype(Short channeltypeId) throws Exception {
-		String sql = "select * from Dim_Mtl_Channeltype where CHANNELTYPE_ID = ?";
+		String sql = "select * from mcd_dim_channeltype where CHANNELTYPE_ID = ?";
 		Object[] params = new String[1];
 		params[0] = channeltypeId;
 		
 		return this.getJdbcTemplate().queryForObject(sql, params, DimMtlChanneltype.class);
 	}
 	public List<DimMtlChanneltype> findMtlChanneltype(DimMtlChanneltype type) throws Exception {
-		String sql = "select * from Dim_Mtl_Channeltype dmc where 1=1 ";
+		String sql = "select * from mcd_dim_channeltype dmc where 1=1 ";
 		Object[] params = new Object[0];
 		if (type != null) {
 			if (type.getChanneltypeId() != null) {
@@ -186,7 +189,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		if (null != channelTypeId) {
 			Object[] params = new String[1];
 			params[0] = channelTypeId;
-			String sql = "delete from Dim_Mtl_Channeltype a where a.CHANNELTYPE_ID=?";
+			String sql = "delete from mcd_dim_channeltype a where a.CHANNELTYPE_ID=?";
 			List<Object[]> list = new ArrayList<Object[]>(1);
 			list.add(params);
 			this.getJdbcTemplate().batchUpdate(sql, list);
@@ -195,7 +198,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	public void save(DimMtlChanneltype dimMtlChanneltype) throws MpmException {
 		if (null != dimMtlChanneltype && null != dimMtlChanneltype.getChanneltypeId()) {
 			this.delete(dimMtlChanneltype.getChanneltypeId());
-			String sql = "insert into Dim_Mtl_Channeltype(CHANNELTYPE_ID, CHANNELTYPE_NAME, ACTIVE_FLAG, CONTACT_TYPE, AUTO_SENDODD, INITIATIVE_TYPE, DISPLAY_ORDER) values (?,?,?,?,?,?,?)";
+			String sql = "insert into mcd_dim_channeltype(CHANNELTYPE_ID, CHANNELTYPE_NAME, ACTIVE_FLAG, CONTACT_TYPE, AUTO_SENDODD, INITIATIVE_TYPE, DISPLAY_ORDER) values (?,?,?,?,?,?,?)";
 			Object[] args = new Object[7];
 			args[0] = dimMtlChanneltype.getChanneltypeId();
 			args[1] = dimMtlChanneltype.getChanneltypeName();
@@ -212,7 +215,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	 */
 	public Map searchMtlChanneltype(DimMtlChanneltypeForm searchForm, final Integer curPage, final Integer pageSize) throws MpmException {
 		// TODO 自动生成方法存根
-		String fromPart = "from  Dim_Mtl_Channeltype a where 1=1 ";
+		String fromPart = "from  mcd_dim_channeltype a where 1=1 ";
 		if (searchForm.getChanneltypeId().shortValue() != -1) {
 			fromPart += " and a.CHANNELTYPE_ID=" + searchForm.getChanneltypeId();
 		}
@@ -240,7 +243,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 
 
 	public Integer findContactTypeByChannelType(final Integer channelTypeId) throws MpmException {
-		final String sql = "select a.CONTACT_TYPE from DIM_MTL_CHANNELTYPE a where a.CHANNELTYPE_ID=?";
+		final String sql = "select a.CONTACT_TYPE from mcd_dim_channelTYPE a where a.CHANNELTYPE_ID=?";
 		Object[] args = new String[1];
 		args[0] = channelTypeId;
 		Long contactType = this.getJdbcTemplate().query(sql, args, this.longResultSetExtractor);
@@ -298,7 +301,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 
 	public Integer getSendOddTypeByChannelType(final Integer channelTypeId)
 			throws MpmException {
-		final String sql = "select a.AUTO_SENDODD from DIM_MTL_CHANNELTYPE a where a.CHANNELTYPE_ID=?" ;
+		final String sql = "select a.AUTO_SENDODD from mcd_dim_channelTYPE a where a.CHANNELTYPE_ID=?" ;
 		Object[] args = new String[1];
 		args[0] = channelTypeId;
 		Integer autoSendOdd = this.getJdbcTemplate().query(sql, this.longResultSetExtractor).intValue();
@@ -306,7 +309,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	}
 
 	public List<DimMtlChanneltype> getAllChannelType(String containsEvent) throws MpmException {
-		String sql = "select * from DIM_MTL_CHANNELTYPE where 1 = 1 ";
+		String sql = "select * from mcd_dim_channelTYPE where 1 = 1 ";
 		Object[] args = new String[0];
 		if(StringUtil.isNotEmpty(containsEvent) && "1".equals(containsEvent)){
 			sql += " and INITIATIVE_TYPE = ? order by DISPLAY_ORDER ";
@@ -321,7 +324,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	
 	
 	public List<DimMtlChanneltype> getAllChannelType(String containsEvent,String isRejectWebGateWay) throws MpmException {
-		StringBuffer sql = new StringBuffer("select * from DIM_MTL_CHANNELTYPE where 1 = 1 ");
+		StringBuffer sql = new StringBuffer("select * from mcd_dim_channelTYPE where 1 = 1 ");
 		if(StringUtil.isNotEmpty(isRejectWebGateWay) && "1".equals(isRejectWebGateWay)){
 			sql.append(" and CHANNELTYPE_ID !=914");
 		}
@@ -340,7 +343,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	}
 	
 	public List<DimMtlChanneltype> getAllChannelTypeForSys(String SysId) throws MpmException {
-		String sql = "select distinct dim.* from DIM_MTL_CHANNELTYPE dim,MTL_SYS_CHANNEL_RELATION b where 1 = 1 and dim.CHANNELTYPE_ID=b.CHANNEL_TYPE_ID and b.system_id=?";
+		String sql = "select distinct dim.* from mcd_dim_channelTYPE dim,MTL_SYS_CHANNEL_RELATION b where 1 = 1 and dim.CHANNELTYPE_ID=b.CHANNEL_TYPE_ID and b.system_id=?";
 		Object[] args = new String[1];
 		args[0] = SysId;
 		return this.getJdbcTemplate().query(sql,args, this.resultSetExtractorDimMtlChanneltype);
@@ -388,7 +391,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	@Override
 	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
 		List<DimCampsegType> list = null;
-		String sql = "select * from DIM_CAMPSEG_TYPE order by CAMPSEG_TYPE_ID asc";
+		String sql = "select * from mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 		try {
 			list = this.getJdbcTemplate().query(sql,new RowMapper(){
 
@@ -415,14 +418,14 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("select DMC.CHANNEL_ID,DMC.CHANNELTYPE_ID,DMC.CHANNEL_NAME,TEMP.NUM ")
-				   .append(" from DIM_MTL_CHANNEL DMC left join")
-				   .append(" (select count(1) num ,MTL_CAMPESEG_ORDER_ATTR.channel_id from MTL_CAMPESEG_ORDER_ATTR ")
-				   .append("  left join (select unique campseg_id ,exec_status from mcd_campseg_task) mct on MTL_CAMPESEG_ORDER_ATTR.campseg_id = mct.campseg_id")
-				   .append(" left join mtl_camp_seginfo mcs on MTL_CAMPESEG_ORDER_ATTR.campseg_id=mcs.campseg_id")
-				   .append(" where MTL_CAMPESEG_ORDER_ATTR.city_id='"+cityId+"'")
+				   .append(" from mcd_dim_channel DMC left join")
+				   .append(" (select count(1) num ,mcd_camp_order.channel_id from mcd_camp_order ")
+				   .append("  left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcd_camp_order.campseg_id = mct.campseg_id")
+				   .append(" left join mcd_camp_def mcs on mcd_camp_order.campseg_id=mcs.campseg_id")
+				   .append(" where mcd_camp_order.city_id='"+cityId+"'")
 				   .append(" and  mct.exec_status in (50,51,59)")
 				   .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0")  //失效的策略不统计
-				   .append(" group by  MTL_CAMPESEG_ORDER_ATTR.channel_id")
+				   .append(" group by  mcd_camp_order.channel_id")
 				   .append(" ) temp on DMC.CHANNEL_ID = TEMP.CHANNEL_ID");
 			if(isOnLine){ //线上
 				   sbuffer.append(" where DMC.channel_class=1");

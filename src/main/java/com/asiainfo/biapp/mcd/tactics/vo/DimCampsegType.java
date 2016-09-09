@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.tactics.vo;
 
 /**
  * @ClassName: DimCampsegType
- * @Description: 营销类型维表 dim_campseg_type 实体类
+ * @Description: 营销类型维表 mcd_dim_camp_type 实体类
  * @author jinlong
  * @date 2015-7-16 下午8:56:53
  * 1：营销类

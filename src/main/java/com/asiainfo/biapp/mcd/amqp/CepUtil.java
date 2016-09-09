@@ -29,8 +29,8 @@ public class CepUtil {
 
 	private static final long expireTime = 2*60*60;
 	private static final long expireTime5 = 5*60;
-	private static final String QUERY_CAMPSEG_ID_BY_EVENT_ID = "select campseg_id from mtl_camp_seginfo where cep_event_id = ? and campseg_stat_id = 54";
-	private static final String QUERY_SEND_CONTENT = "select CHANNEL_CAMP_CONTENT FROM MTL_CHANNEL_DEF  WHERE CAMPSEG_ID=?";
+	private static final String QUERY_CAMPSEG_ID_BY_EVENT_ID = "select campseg_id from mcd_camp_def where cep_event_id = ? and campseg_stat_id = 54";
+	private static final String QUERY_SEND_CONTENT = "select CHANNEL_CAMP_CONTENT FROM mcd_camp_channel_list  WHERE CAMPSEG_ID=?";
 	/**
 	 * 消息通知cep复杂事件开始执行
 	 * @param cepEventId
