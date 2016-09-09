@@ -23,20 +23,16 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DateConvert;
-import com.asiainfo.biapp.mcd.common.util.MpmCache;
-import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
-import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustUpdateCycle;
-import com.asiainfo.biapp.mcd.jms.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -49,15 +45,11 @@ import com.asiainfo.biapp.mcd.tactics.vo.DataGridData;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.MpmCampSegInfoBean;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
-import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
 import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
-import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -103,7 +95,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/viewPolicyDetail")
     public ModelAndView viewPolicyDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        MpmCampSegInfoBean segInfoBean = new MpmCampSegInfoBean();
+        MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
 
         String campsegId = request.getParameter("campsegId");
         MtlCampSeginfo segInfo;
@@ -116,8 +108,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         try{
             
             BeanUtils.copyProperties(segInfoBean, segInfo);
-            segInfoBean.setCampStartDate(segInfo.getStartDate());
-            segInfoBean.setCampEndDate(segInfo.getEndDate());
+            segInfoBean.setStartDate(segInfo.getStartDate());
+            segInfoBean.setEndDate(segInfo.getEndDate());
             segInfoBean.setStartDate(segInfo.getStartDate());
             segInfoBean.setEndDate(segInfo.getEndDate());
             
@@ -174,7 +166,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             map.put("endDate", segInfoBean.getEndDate());
             map.put("createUserid", segInfoBean.getCreateUserid());
             map.put("createUserName", userName);
-            map.put("campDrvId", segInfoBean.getCampDrvId());
             map.put("campDrvName", campDrvName);
             map.put("campsegTypeId", segInfoBean.getCampsegTypeId());
             map.put("campsegTypeName", campsegTypeName);
@@ -233,8 +224,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/getMtlStcPlan")
     public ModelAndView getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        
-        MpmCampSegInfoBean segInfoBean = new MpmCampSegInfoBean();
+    	MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
         //String planid = request.getParameter("planid");
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
@@ -294,7 +284,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @RequestMapping("/getTargetCustomerbase")
     public ModelAndView getTargetCustomerbase(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        MpmCampSegInfoBean segInfoBean = new MpmCampSegInfoBean();        
+        MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -461,7 +451,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/getDeliveryChannel")
     public ModelAndView getDeliveryChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        MpmCampSegInfoBean segInfoBean = new MpmCampSegInfoBean();        
+    	MtlCampSeginfo segInfoBean = new MtlCampSeginfo();        
         
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
