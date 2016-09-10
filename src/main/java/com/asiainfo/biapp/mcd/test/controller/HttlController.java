@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,8 +22,8 @@ import com.asiainfo.biapp.mcd.test.vo.Book;
 @RequestMapping("/action/test/httl")
 public class HttlController extends BaseMultiActionController {
 
-	//@Autowired
-	@Resource(name="bookService")
+	@Autowired
+	//@Resource(name="bookService")
 	private IBookService bookService;
 	
 	@RequestMapping

@@ -3,6 +3,7 @@ package com.asiainfo.biapp.mcd.privilege.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
+import com.asiainfo.biapp.framework.util.AppConfigUtil;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 
 @RequestMapping("/privilege/login")
@@ -31,6 +33,8 @@ public class LoginController extends BaseMultiActionController {
 		if(user!=null){
 			request.getSession().setAttribute("USER_ID", user.getId());
 			request.getSession().setAttribute("USER", user);
+			ServletContext application=this.getServletContext();
+			application.setAttribute("APP_PROVINCES","zj");
 			suc=true;
 		}
 		return suc;

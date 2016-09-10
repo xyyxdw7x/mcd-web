@@ -36,6 +36,10 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/classes/conf/**/app*-conf.xml</param-value>
   </context-param>
+  <context-param>
+  	<param-name>spring.profiles.active</param-name>
+  	<param-value>zj</param-value>
+  </context-param>
   <listener>
     <listener-class>com.asiainfo.biapp.framework.web.context.WebContextLoaderListener</listener-class>
   </listener>

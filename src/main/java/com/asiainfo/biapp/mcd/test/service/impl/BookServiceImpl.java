@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.mcd.test.dao.IBookDao;
@@ -12,6 +13,7 @@ import com.asiainfo.biapp.mcd.test.vo.Book;
 
 
 @Repository("bookService")
+@Profile("zj")
 public class BookServiceImpl implements IBookService {
 
 	@Resource(name="bookDao")
@@ -40,6 +42,7 @@ public class BookServiceImpl implements IBookService {
 	@Override
 	public Book getBook(String bookId) throws Exception {
 		Book book=bookDao.getBook(bookId);
+		book.setTitle("我是浙江的");
 		return book;
 	}
 
