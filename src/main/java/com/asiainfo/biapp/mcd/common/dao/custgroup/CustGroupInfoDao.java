@@ -99,10 +99,7 @@ public interface CustGroupInfoDao {
      */
     public int getOriCustGroupNum(String custom_group_id);
     
-	/**
-	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group
-	 */
-	public int getCustInfoCountInMem(String customgroupid, String bussinessLableSql,String basicEventSql, String orderProductNo, String excludeProductNo);
+	
 	List getMtlCustomListInfo(String customgroupid); 
 	/**
 	 * 
@@ -150,4 +147,8 @@ public interface CustGroupInfoDao {
 	 */
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
 	MtlGroupInfo getCustGroupInfoById(String custGroupId);
+	/**
+	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group
+	 */
+	int getCustInfoCountInMem(String sql);
 }

@@ -291,7 +291,130 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
     }
 	@Override
 	public int getCustInfoCount(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo) {
-		return custGroupInfoDao.getCustInfoCountInMem(customgroupid,bussinessLableSql,ARPUSql,orderProductNo,excludeProductNo);
+		String sql = this.getCountCustGrpSqlStr(bussinessLableSql, ARPUSql, customgroupid,orderProductNo,excludeProductNo);
+		return custGroupInfoDao.getCustInfoCountInMem(sql);
+	}
+	
+	/**
+	 * 查询客户群与时机组合的客户群清单数量语句
+	 * @param bussinessLableSql
+	 * @param basicEventSql
+	 * @param customgroupid
+	 * @return
+	 */
+	private String getCountCustGrpSqlStr(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
+		StringBuffer buffer = new StringBuffer();
+		String sql = "";
+		boolean useCountSql = StringUtil.isEmpty(orderProductNo) && StringUtil.isEmpty(excludeProductNo) ;
+		String countStr = " count(PRODUCT_NO) CUSTOM_CNT ";
+		String selectStr = " PRODUCT_NO ";
+		if(useCountSql){
+			selectStr = countStr;
+		}
+		log.info("查询客户群与时机组合的客户群数量 in param"+"----bussinessLableSql----" + bussinessLableSql + "-----\n"
+				+ " ----basicEventSql----"+ basicEventSql+" \n  -----customgroupid:"+customgroupid +" \n"  +
+				" ------orderProductNo----" + orderProductNo + "----excludeProductNo----"+excludeProductNo);
+		
+		StringBuffer singleCustBuffer = new StringBuffer();
+		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+					  buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1")
+					  .append(" and T4.product_no in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				if(useCountSql){
+					buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1");
+				} else {
+					buffer.append(bussinessLableSql);
+				}
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				if(useCountSql){
+					buffer.append("select ").append(selectStr).append(" from ("+basicEventSql+") T4 where 1=1");
+				} else {
+					buffer.append(basicEventSql);
+				}
+			}
+		}else{
+			List<Map> listTemp = custGroupInfoDao.getMtlCustomListInfo(customgroupid);
+			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
+			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql+")")
+					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
+			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where PRODUCT_NO in (")
+					  .append(bussinessLableSql)
+					  .append(")");
+			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+				      .append(" where PRODUCT_NO in (")
+				      .append(basicEventSql)
+				      .append(")");
+			}else{					//值选择基础客户群
+				buffer.append("select ").append(selectStr).append(" from ")
+					  .append(tableListName)
+					  .append(" where 1=1");
+			}
+		}
+		
+		sql = buffer.toString();
+
+		StringBuffer sbuffer1 = new StringBuffer();
+		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+			String orderProductNos[] = orderProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<orderProductNos.length;i++){
+				if(i != orderProductNos.length-1){
+					temp += ("'"+orderProductNos[i]+"',");
+				}else{
+					temp += ("'"+orderProductNos[i]+"'");
+				}
+			}
+			
+			if(StringUtil.isNotEmpty(sql)){
+				if(StringUtil.isNotEmpty(excludeProductNo)){
+					sbuffer1.append("select PRODUCT_NO from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
+				} else {
+					sbuffer1.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
+				}
+				sbuffer1.append(" and ttt.PRODUCT_NO in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer1.append(" SELECT count(PRODUCT_NO) CUSTOM_CNT FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append(")");
+			}
+			sql = sbuffer1.toString();
+		}
+		StringBuffer sbuffer2 = new StringBuffer();
+		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+			String excludeProductNos[] = excludeProductNo.split("&");
+			String temp = "";
+			for(int i=0;i<excludeProductNos.length;i++){
+				if(i != excludeProductNos.length-1){
+					temp += ("'"+excludeProductNos[i]+"',");
+				}else{
+					temp += ("'"+excludeProductNos[i]+"'");
+				}
+			}
+			if(StringUtil.isNotEmpty(sql)){
+				sbuffer2.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") tttt where 1=1 ");  //modify at 2015-12-05
+				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
+						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
+						.append(temp).append("))");
+			}else{
+				sbuffer2.append(" SELECT count(PRODUCT_NO) CUSTOM_CNT FROM MCD_PROD_ORDER WHERE PROD_ID NOT IN (")  //modify at 2015-12-05
+						.append(temp).append(")");
+			}
+			sql = sbuffer2.toString();
+		}
+
+		log.info("查询客户群与时机组合的客户群数量语句"+sql);
+		return sql;
 	}
 	
 	/**
