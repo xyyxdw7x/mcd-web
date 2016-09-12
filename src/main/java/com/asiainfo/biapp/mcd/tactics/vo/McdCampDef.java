@@ -38,6 +38,8 @@ public class McdCampDef {
 	private String custgroupId; // 客户群
 	@Transient
 	private List<MtlChannelDef> mtlChannelDefList; // 渠道执行
+	@Transient
+	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
 	
 
 	@Column(name = "CAMPSEG_STAT_ID")
@@ -64,86 +66,38 @@ public class McdCampDef {
 	private Integer deptId; // 策划人部门id
 	@Column(name = "CREATE_TIME")
 	private Date createTime; // 本活动定义时间
-
+	@Column(name = "CREATE_USERNAME")
+	private String createUserName;
+	@Column(name = "CITY_ID")
+	private String cityId; // 策划人所属地市
+	@Column(name = "APPROVE_FLOW_ID")
+	private String approveFlowId; // 默认内部审批流程
+	@Column(name = "TARGER_USER_NUMS")
+	private Integer targerUserNums; // 目标客户数
+	@Column(name = "INIT_CUST_LIST_TAB")
+	private String custListTab;// 策略初始清单表
+	@Column(name = "APPROVE_REMIND_TIME")
+	private Date lastRemindTime;
+	
 	@Column(name = "campseg_no")
 	private String campNo; // 多规则时，规则序号
 	@Column(name = "CEP_EVENT_ID")
 	private String cepEventId; // 复杂事件ID
 	@Column(name = "event_rule_desc")
 	private String eventRuleDesc; // 实时事件名称
-	@Column(name = "CITY_ID")
-	private String cityId; // 策划人所属地市
-	@Column(name = "APPROVE_FLOW_ID")
-	private String approveFlowid; // 默认内部审批流程
+	@Column(name = "CAMP_CLASS")
+	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
 	
 	@Transient
 	private Short approveResult; // 审批结果
 	@Transient
 	private String approveResultDesc;// 审批结果描述
-	@Transient
-	private String selectTempletId; // 筛选规则模板id
-	@Transient
-	private String custGroupAttrId;
-	@Transient
-	private Integer waveContactType; // 规则接触类型
-	@Transient
-	private Integer waveContactCount;
-	@Column(name = "CAMP_CLASS")
-	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
-	@Transient
-	private Integer isRelativeExecTime; // 执行时间是否相对时间
-	@Transient
-	private String absoluteDates; // 绝对时间串，逗号分隔
-	@Transient
-	private String siteCategoryIdClassId;// 活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联(json字符串)
-	@Transient
-	private String channelCampContent; // 营销用语
-	@Transient
-	private String filePath;
-	@Transient
-	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
-	@Transient
-	private String eventActiveTempletId;// 事件规则模板ID
-	@Transient
-	private String custBaseDay;
-	@Transient
-	private String custBaseMonth;
-	@Column(name = "CREATE_USERNAME")
-	private String createUserName;
-	@Transient
-	private String campsegDesc; // 活动描述
-	@Transient
-	private Integer contactedUserNums; // 联系客户数
-	@Transient
-	private Integer contactOkuserNums; // 联系成功客户数
-	@Transient
-	private Integer receivedOkuserNums; // 营销成功客户数
-	@Transient
-	private Integer campsegContactUsernums; // 活动被接触控制的用户数
-	@Transient
-	private Short campsegContactFlag; // 是否进行接触控制
-	@Transient
-	private String evaluateComment; // 活动中止原因
-	@Transient
-	private String custListTabName;// 客户群清单表名
-	@Transient
-	private String timeInterval;
-	@Column(name = "TARGER_USER_NUMS")
-	private Integer targerUserNums; // 目标客户数
-	@Transient
-	private String currentTaskId;// 当前任务编号
+	
+
 	@Transient
 	private String avoidBotherTypeIds;// 免打扰客户类型ID
-	@Transient
-	private Integer targetCustType;// 客户群类型(0:无 ,1:客户群 2:来自其他活动规则的反馈)
-	@Transient
-	private String activeTempletId;// 时机规则模板ID
-	@Column(name = "INIT_CUST_LIST_TAB")
-	private String initCustListTab;// 策略初始清单表
-	@Column(name = "APPROVE_REMIND_TIME")
-	private Date approveRemindTime;
-	@Transient
-	private String eventSourceId; // 外部事件源
+
+
 	@Transient
 	private String planName;
 
@@ -163,29 +117,6 @@ public class McdCampDef {
 		this.isFatherNode = isFatherNode;
 	}
 
-	public String getCustBaseMonth() {
-		return custBaseMonth;
-	}
-
-	public void setCustBaseMonth(String custBaseMonth) {
-		this.custBaseMonth = custBaseMonth;
-	}
-
-	public String getCustBaseDay() {
-		return custBaseDay;
-	}
-
-	public void setCustBaseDay(String custBaseDay) {
-		this.custBaseDay = custBaseDay;
-	}
-
-	public String getEventActiveTempletId() {
-		return eventActiveTempletId;
-	}
-
-	public void setEventActiveTempletId(String eventActiveTempletId) {
-		this.eventActiveTempletId = eventActiveTempletId;
-	}
 
 	public MtlChannelDefCall getMtlChannelDefCall() {
 		return mtlChannelDefCall;
@@ -195,45 +126,6 @@ public class McdCampDef {
 		this.mtlChannelDefCall = mtlChannelDefCall;
 	}
 
-	public String getSiteCategoryIdClassId() {
-		return siteCategoryIdClassId;
-	}
-
-	public void setSiteCategoryIdClassId(String siteCategoryIdClassId) {
-		this.siteCategoryIdClassId = siteCategoryIdClassId;
-	}
-
-	public String getChannelCampContent() {
-		return channelCampContent;
-	}
-
-	public void setChannelCampContent(String channelCampContent) {
-		this.channelCampContent = channelCampContent;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public String getAbsoluteDates() {
-		return absoluteDates;
-	}
-
-	public void setAbsoluteDates(String absoluteDates) {
-		this.absoluteDates = absoluteDates;
-	}
-
-	public Integer getIsRelativeExecTime() {
-		return isRelativeExecTime;
-	}
-
-	public void setIsRelativeExecTime(Integer isRelativeExecTime) {
-		this.isRelativeExecTime = isRelativeExecTime;
-	}
 
 	public Short getCampPriId() {
 		return priId;
@@ -251,30 +143,6 @@ public class McdCampDef {
 		this.campClass = campClass;
 	}
 
-	public Integer getWaveContactCount() {
-		return waveContactCount;
-	}
-
-	public void setWaveContactCount(Integer waveContactCount) {
-		this.waveContactCount = waveContactCount;
-	}
-
-	public Integer getWaveContactType() {
-		return waveContactType;
-	}
-
-	public void setWaveContactType(Integer waveContactType) {
-		this.waveContactType = waveContactType;
-	}
-
-	public String getCustGroupAttrId() {
-		return custGroupAttrId;
-	}
-
-	public void setCustGroupAttrId(String custGroupAttrId) {
-		this.custGroupAttrId = custGroupAttrId;
-	}
-
 	public String getCampsegId() {
 		return campId;
 	}
@@ -283,20 +151,12 @@ public class McdCampDef {
 		this.campId = campsegId;
 	}
 
-	public String getSelectTempletId() {
-		return selectTempletId;
-	}
-
-	public void setSelectTempletId(String selectTempletId) {
-		this.selectTempletId = selectTempletId;
-	}
-
 	public String getApproveFlowid() {
-		return approveFlowid;
+		return approveFlowId;
 	}
 
 	public void setApproveFlowid(String approveFlowid) {
-		this.approveFlowid = approveFlowid;
+		this.approveFlowId = approveFlowid;
 	}
 
 	public Short getApproveResult() {
@@ -515,77 +375,6 @@ public class McdCampDef {
 		this.createUserName = createUserName;
 	}
 
-	public String getCampsegDesc() {
-		return campsegDesc;
-	}
-
-	public void setCampsegDesc(String campsegDesc) {
-		this.campsegDesc = campsegDesc;
-	}
-
-	public Integer getContactedUserNums() {
-		return contactedUserNums;
-	}
-
-	public void setContactedUserNums(Integer contactedUserNums) {
-		this.contactedUserNums = contactedUserNums;
-	}
-
-	public Integer getContactOkuserNums() {
-		return contactOkuserNums;
-	}
-
-	public void setContactOkuserNums(Integer contactOkuserNums) {
-		this.contactOkuserNums = contactOkuserNums;
-	}
-
-	public Integer getReceivedOkuserNums() {
-		return receivedOkuserNums;
-	}
-
-	public void setReceivedOkuserNums(Integer receivedOkuserNums) {
-		this.receivedOkuserNums = receivedOkuserNums;
-	}
-
-	public Short getCampsegContactFlag() {
-		return campsegContactFlag;
-	}
-
-	public void setCampsegContactFlag(Short campsegContactFlag) {
-		this.campsegContactFlag = campsegContactFlag;
-	}
-
-	public Integer getCampsegContactUsernums() {
-		return campsegContactUsernums;
-	}
-
-	public void setCampsegContactUsernums(Integer campsegContactUsernums) {
-		this.campsegContactUsernums = campsegContactUsernums;
-	}
-
-	public String getEvaluateComment() {
-		return evaluateComment;
-	}
-
-	public void setEvaluateComment(String evaluateComment) {
-		this.evaluateComment = evaluateComment;
-	}
-
-	public String getCustListTabName() {
-		return custListTabName;
-	}
-
-	public void setCustListTabName(String custListTabName) {
-		this.custListTabName = custListTabName;
-	}
-
-	public String getTimeInterval() {
-		return timeInterval;
-	}
-
-	public void setTimeInterval(String timeInterval) {
-		this.timeInterval = timeInterval;
-	}
 
 	public Integer getTargerUserNums() {
 		return targerUserNums;
@@ -595,13 +384,7 @@ public class McdCampDef {
 		this.targerUserNums = targerUserNums;
 	}
 
-	public String getCurrentTaskId() {
-		return currentTaskId;
-	}
 
-	public void setCurrentTaskId(String currentTaskId) {
-		this.currentTaskId = currentTaskId;
-	}
 
 	public String getAvoidBotherTypeIds() {
 		return avoidBotherTypeIds;
@@ -611,44 +394,24 @@ public class McdCampDef {
 		this.avoidBotherTypeIds = avoidBotherTypeIds;
 	}
 
-	public Integer getTargetCustType() {
-		return targetCustType;
-	}
 
-	public void setTargetCustType(Integer targetCustType) {
-		this.targetCustType = targetCustType;
-	}
-
-	public String getActiveTempletId() {
-		return activeTempletId;
-	}
-
-	public void setActiveTempletId(String activeTempletId) {
-		this.activeTempletId = activeTempletId;
-	}
 
 	public String getInitCustListTab() {
-		return initCustListTab;
+		return custListTab;
 	}
 
 	public void setInitCustListTab(String initCustListTab) {
-		this.initCustListTab = initCustListTab;
+		this.custListTab = initCustListTab;
 	}
 
 	public Date getApproveRemindTime() {
-		return approveRemindTime;
+		return lastRemindTime;
 	}
 
 	public void setApproveRemindTime(Date approveRemindTime) {
-		this.approveRemindTime = approveRemindTime;
+		this.lastRemindTime = approveRemindTime;
 	}
 
-	public String getEventSourceId() {
-		return eventSourceId;
-	}
 
-	public void setEventSourceId(String eventSourceId) {
-		this.eventSourceId = eventSourceId;
-	}
 
 }

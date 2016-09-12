@@ -155,22 +155,5 @@ public class CepUtil {
 		}
 		return planId;
 	}
-	public static boolean isCamspegTaskExecute(String campsegId){
-		Boolean flag = (Boolean)SimpleCache.getInstance().get("CAMPSEG_IS_EXECUTE_"+campsegId);
-		if(flag == null) {
-			IMpmCampSegInfoDao seginfoDao = SpringContext.getBean("mpmCampSegInfoDao", IMpmCampSegInfoDao.class);
-			try {
-				if(StringUtil.isEmpty(seginfoDao.getCampSegInfo(campsegId).getCurrentTaskId()) ){
-					flag = false;
-				} else {
-					flag = true;
-				}
-				SimpleCache.getInstance().put("CAMPSEG_IS_EXECUTE_"+campsegId, flag, expireTime);
-			} catch (Exception e) {
-				log.error("",e);
-				flag = false;
-			}
-		}
-		return flag;
-	}
+	
 }

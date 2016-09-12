@@ -187,18 +187,16 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public void updateCampSegInfo(McdCampDef segInfo) throws Exception {
 		//TODO: this.getHibernateTemplate().update(segInfo);
 	    final String sql = "update mcd_camp_def set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
-	                    + "approve_result=?,approve_result_desc=?,create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,campseg_desc=?,PLAN_ID=?,contacted_user_nums=?,"
-	                    + "contact_okuser_nums=?,received_okuser_nums=?,CAMPSEG_CONTACT_FLAG=?,campseg_contact_usernums=?,evaluate_comment=?,CUST_LIST_TAB_NAME=?,TIME_INTERVAL=?,"
-	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,CURRENT_TASK_ID=?,avoid_bother_type_ids=?,TARGET_CUST_TYPE=?,select_templet_id=?,ACTIVE_TEMPLET_ID=?,"
+	                    + "approve_result=?,approve_result_desc=?,create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,PLAN_ID=?,"
+	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,avoid_bother_type_ids=?,"
 	                    + "init_cust_list_tab = ?,event_rule_desc=?,approve_remind_time=?,is_filter_disturb=? where campseg_id = ?";
 	    this.getJdbcTemplate().update(sql);
 	    Object[] objects = new Object[]{segInfo.getCampsegName(),segInfo.getCampsegNo(),segInfo.getStartDate(),segInfo.getEndDate(),segInfo.getCampsegStatId(),
 	                    segInfo.getCampsegTypeId(),segInfo.getCampPriId(),segInfo.getApproveFlowid(),segInfo.getApproveResult(),segInfo.getApproveResultDesc(),
-	                    segInfo.getCreateUserName(),segInfo.getCreateUserid(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),segInfo.getCampsegDesc(),
-	                    segInfo.getPlanId(),segInfo.getContactedUserNums(),segInfo.getContactOkuserNums(),segInfo.getReceivedOkuserNums(),segInfo.getCampsegContactFlag(),
-	                    segInfo.getCampsegContactUsernums(),segInfo.getEvaluateComment(),segInfo.getCustListTabName(),segInfo.getTimeInterval(),segInfo.getCampsegPid(),
-	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),segInfo.getCurrentTaskId(),segInfo.getAvoidBotherTypeIds(),segInfo.getTargetCustType(),
-	                    segInfo.getSelectTempletId(),segInfo.getActiveTempletId(),segInfo.getInitCustListTab(),segInfo.getEventRuleDesc(),segInfo.getApproveRemindTime(),
+	                    segInfo.getCreateUserName(),segInfo.getCreateUserid(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),
+	                    segInfo.getPlanId(),segInfo.getCampsegPid(),
+	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),segInfo.getAvoidBotherTypeIds(),
+	                    segInfo.getInitCustListTab(),segInfo.getEventRuleDesc(),segInfo.getApproveRemindTime(),
 	                    segInfo.getIsFileterDisturb(),segInfo.getCampsegId()};
 	   
         this.getJdbcTemplate().update(sql,objects);
@@ -336,18 +334,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                 this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             }
             
-            // 删除活动用户表
-            try {
-                String custListTableName = segInfo.getCustListTabName();
-                if (custListTableName != null && !"".equals(custListTableName)) {
-                    sql = "drop table " + custListTableName;
-                    log.debug(sql);
-                    this.getJdbcTemplate().update(sql);
-                }
-            } catch (Exception e) {
-                // 用户表有可能不存在，错误暂不做处理
-                // log.error("活动用户表不存在", e);
-            }
+            
         } catch (Exception e) {
             throw e;
         } finally {

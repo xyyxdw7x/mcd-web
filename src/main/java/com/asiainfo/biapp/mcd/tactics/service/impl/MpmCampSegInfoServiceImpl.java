@@ -160,17 +160,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				isApprove = segInfo.getIsApprove();
 				boolean isFatherNode = segInfo.getIsFatherNode();
 				campsegId = segInfo.getCampsegId();
-				Integer contactType = segInfo.getWaveContactType();//关联表
-				Integer contactCount = segInfo.getWaveContactCount();//关联表
 				Integer campClass = segInfo.getCampClass();
 				String custgroupId = segInfo.getCustgroupId();//关联表
-				Integer isRelativeExecTime = segInfo.getIsRelativeExecTime();
-				String absoluteDates = segInfo.getAbsoluteDates(); //关联表
 				String channelId = segInfo.getChannelId(); //渠道类型ID&渠道ID(关联表)
-				String siteCategoryIdClassId = segInfo.getSiteCategoryIdClassId(); //(云南的)活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联
-				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
-				String attachements = segInfo.getFilePath();
-				String custGroupAttrId = segInfo.getCustGroupAttrId();
 //				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
 				String[] campsegIds = null;
 				String[] channelIds = null;
@@ -190,7 +182,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				segInfo.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_CHZT)); // 活动初始状态
 				segInfo.setApproveFlowid(null);
 				segInfo.setApproveResultDesc("测试");
-				segInfo.setSelectTempletId("XXXXXX");
 				if(isFatherNode){
 					campSegInfoDao.saveCampSegInfo(segInfo);   //不用删除旧策略  后台调用savaOrUpdate
 					campsegPid = campsegId;
@@ -336,7 +327,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				segInfo.setCreateTime(new Date()); // 活动创建时间
 				segInfo.setCampsegStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_CHZT)); // 活动初始状态
 				segInfo.setApproveFlowid(null);
-				segInfo.setSelectTempletId("XXXXXX");
 				if(isFatherNode){
 					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);//Duang Duang Duang 保存策略！！！
 					campsegPid = campsegId;
@@ -469,10 +459,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			mtlCampsegCustGroup.setCampsegId(campsegId);
 			mtlCampsegCustGroup.setCustgroupName("test");
 			mtlCampsegCustGroup.setCustgroupType("CG"); //客户群类型
-			mtlCampsegCustGroup.setCustBaseDay(segInfo.getCustBaseDay());
-			if (StringUtils.isEmpty(segInfo.getCustBaseDay())) {
-				mtlCampsegCustGroup.setCustBaseMonth(segInfo.getCustBaseMonth());
-			}
+		
 			try {
 				mtlCampsegCustGroup.setCampsegCustgroupId(DataBaseAdapter.generaterPrimaryKey());
 			} catch (Exception e) {
