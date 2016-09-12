@@ -12,7 +12,7 @@ import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.utils.string.StringUtil;
 @Service("mtlStcPlanManagementService")
 public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementService  {
@@ -37,7 +37,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 		}
 		//		关联channel信息
 		if(CollectionUtils.isNotEmpty(resultList)){
-			List<MtlStcPlanChannel> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
+			List<McdPlanChannelList> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
 			
 			for(int i = 0;i<resultList.size();i++){
 				MtlStcPlanBean bean = resultList.get(i);
@@ -45,7 +45,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 				String channelIds = "";
 				String planChannelId = "";
 				for(int j = 0;j<mtlStcPlanChannels.size();j++){
-					MtlStcPlanChannel mtlStcPlanChannel = mtlStcPlanChannels.get(j);
+					McdPlanChannelList mtlStcPlanChannel = mtlStcPlanChannels.get(j);
 					if(planId.equals(mtlStcPlanChannel.getPlanId())){
 						planChannelId = mtlStcPlanChannel.getId();
 						channelIds += mtlStcPlanChannel.getChannelId() + ",";
@@ -82,14 +82,14 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 		}
 		//		关联channel信息
 		if(StringUtil.isNotEmpty(planIds)){
-			List<MtlStcPlanChannel> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
+			List<McdPlanChannelList> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
 			for(int i = 0;i<resultList.size();i++){
 				MtlStcPlanBean bean = resultList.get(i);
 				String planId = bean.getPlanId();
 				String channelIds = "";
 				String planChannelId = "";
 				for(int j = 0;j<mtlStcPlanChannels.size();j++){
-					MtlStcPlanChannel mtlStcPlanChannel = mtlStcPlanChannels.get(j);
+					McdPlanChannelList mtlStcPlanChannel = mtlStcPlanChannels.get(j);
 					if(planId.equals(mtlStcPlanChannel.getPlanId())){
 						planChannelId = mtlStcPlanChannel.getId();
 						if(channelIds.indexOf(mtlStcPlanChannel.getChannelId())<0){

@@ -22,7 +22,7 @@ import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biframe.utils.database.jdbc.ConnectionEx;
 import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -389,15 +389,15 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
-		List<DimCampsegType> list = null;
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception {
+		List<McdDimCampType> list = null;
 		String sql = "select * from mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 		try {
 			list = this.getJdbcTemplate().query(sql,new RowMapper(){
 
 				@Override
 				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-					DimCampsegType tmp = new DimCampsegType();
+					McdDimCampType tmp = new McdDimCampType();
 					tmp.setCampsegTypeDesc(rs.getString("CAMPSEG_TYPE_DESC"));
 					tmp.setCampsegTypeId(rs.getShort("CAMPSEG_TYPE_ID"));
 					tmp.setCampsegTypeName(rs.getString("CAMPSEG_TYPE_NAME"));

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.tactics.dao.IDimCampsegTypeDao;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 /**
  * @ClassName: DimCampsegTypeDaoImpl
@@ -42,15 +42,15 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 	 * @see com.asiainfo.biapp.mcd.dao.IDimCampsegTypeDao#getDimCampsegType(java.lang.Short)
 	 */
 	@Override
-	public DimCampsegType getDimCampsegType(Short campsegTypeId)
+	public McdDimCampType getDimCampsegType(Short campsegTypeId)
 			throws Exception {
 		// TODO Auto-generated method stub
-		DimCampsegType obj = null;
+		McdDimCampType obj = null;
 		try {
 			String sql = "SELECT * FROM mcd_dim_camp_type WHERE CAMPSEG_TYPE_ID = ? order by CAMPSEG_TYPE_ID asc";
 			
 			Object args[] = new Object[]{campsegTypeId};  
-	        return (DimCampsegType)this.getJdbcTemplate().queryForObject(sql,args,new BeanPropertyRowMapper(DimCampsegType.class));
+	        return (McdDimCampType)this.getJdbcTemplate().queryForObject(sql,args,new BeanPropertyRowMapper(McdDimCampType.class));
 			
 		} catch (Exception e) {
 			log.error("",e);
@@ -58,14 +58,14 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 		return obj;
 	}
 	@Override
-	public List<DimCampsegType> getAllDimCampsegType() throws Exception {
-		List<DimCampsegType> list = null;
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception {
+		List<McdDimCampType> list = null;
 		try {
 			String sql = "SELECT * FROM mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 			return (List) this.getJdbcTemplate().query(sql, new RowMapperResultSetExtractor(new RowMapper() {
 				@Override
 				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-					DimCampsegType campsegType = new DimCampsegType();
+					McdDimCampType campsegType = new McdDimCampType();
 					campsegType.setCampsegTypeId(Short.parseShort(rs.getString("CAMPSEG_TYPE_ID")));
 					campsegType.setCampsegTypeName(rs.getString("CAMPSEG_TYPE_NAME"));
 					return campsegType;

@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.custgroup.vo;
  * @version 1.0
  */
 
-public class MtlBotherContactConfig {
+public class McdBotherContactConfig {
 	
 	private int campsegTypeId;
 	private String channelId;

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
 @Repository(value="task4BullDao")
@@ -55,7 +55,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	}
 	
 	@Override
-	public void batchUpdate(final List<McdCampsegTask> list){
+	public void batchUpdate(final List<McdCampTask> list){
 	    
 		String sql="update mcd_camp_task t set t.exec_status=? where t.task_id=? and t.exec_status!= ?";
 		

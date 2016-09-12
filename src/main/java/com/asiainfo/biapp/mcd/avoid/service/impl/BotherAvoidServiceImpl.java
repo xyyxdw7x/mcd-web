@@ -4,7 +4,7 @@ import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,7 +119,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 	}
 	
 	@Override
-	public MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType){
+	public McdBotherContactConfig getMtlBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType){
 		return this.mcdMtlBotherAvoidDao.getBotherContactConfig(campsegTypeId, channelId,campsegCityType);
 	}
 }

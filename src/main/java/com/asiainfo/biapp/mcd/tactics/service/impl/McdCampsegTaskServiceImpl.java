@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 @Service("mcdCampsegTaskService")
 public class McdCampsegTaskServiceImpl implements IMcdCampsegTaskService{
     @Resource(name = "mcdCampsegTaskDao")
@@ -31,7 +31,7 @@ public class McdCampsegTaskServiceImpl implements IMcdCampsegTaskService{
      * @throws Exception
      */
     @Override
-    public List<McdCampsegTask> findByCampsegIdAndChannelId(String campSegId, String channelId) {
+    public List<McdCampTask> findByCampsegIdAndChannelId(String campSegId, String channelId) {
         return mcdCampsegTaskDao.findByCampsegIdAndChannelId(campSegId,channelId);
 
     }

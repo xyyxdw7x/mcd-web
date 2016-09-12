@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.McdSysDic;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
@@ -78,9 +78,9 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
         String reserve24 = "";
         String reserve25 = "";
         String sendWSURL = "";        
-        List<MtlSysCampConfig> list = mtlSysCampConfigDao.getAll();//获取配置项
+        List<McdSysDic> list = mtlSysCampConfigDao.getAll();//获取配置项
         
-        for(MtlSysCampConfig config:list){
+        for(McdSysDic config:list){
             if("SMS_TEST_SEND_CHANNELID".equals(config.getConfigKey())){
                 reserve21 = config.getConfigValue();
             }
@@ -725,8 +725,8 @@ private String simpleSmsSendTask(String campsegPho, String sendNo, String messag
     String reserve24 = "";
     String reserve25 = "";
     String sendWSURL = "";
-    List<MtlSysCampConfig> list = mtlSysCampConfigDao.getAll();//获取配置项
-    for(MtlSysCampConfig config:list){
+    List<McdSysDic> list = mtlSysCampConfigDao.getAll();//获取配置项
+    for(McdSysDic config:list){
         if("SMS_TEST_SEND_CHANNELID".equals(config.getConfigKey())){
             reserve21 = config.getConfigValue();
         }

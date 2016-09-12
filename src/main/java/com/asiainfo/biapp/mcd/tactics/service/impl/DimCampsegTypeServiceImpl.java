@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.tactics.dao.IDimCampsegTypeDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 /**
  * 策略类型相关Service
  * @author AsiaInfo-jie
@@ -34,7 +34,7 @@ public class DimCampsegTypeServiceImpl implements IDimCampsegTypeService {
      */
     @Override
     public String getDimCampsegTypeName(Short campsegTypeId) {
-        DimCampsegType obj = null;
+        McdDimCampType obj = null;
         try {
             obj = dimCampsegTypeDao.getDimCampsegType(campsegTypeId);
         } catch (Exception e) {
@@ -49,12 +49,12 @@ public class DimCampsegTypeServiceImpl implements IDimCampsegTypeService {
      * @param @param campsegTypeId
      * @param @return
      * @param @throws Exception    
-     * @return DimCampsegType 
+     * @return McdDimCampType 
      * @throws
      */
     @Override
-    public DimCampsegType getDimCampsegType(Short campsegTypeId) {
-        DimCampsegType obj = null;
+    public McdDimCampType getDimCampsegType(Short campsegTypeId) {
+        McdDimCampType obj = null;
         try {
             obj = dimCampsegTypeDao.getDimCampsegType(campsegTypeId);
         } catch (Exception e) {

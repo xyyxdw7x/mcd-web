@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 
 
 public interface IMcdCampsegTaskService {
@@ -19,7 +19,7 @@ public interface IMcdCampsegTaskService {
      * @return
      * @throws Exception
      */
-    List<McdCampsegTask> findByCampsegIdAndChannelId(String campSegId, String channelId);
+    List<McdCampTask> findByCampsegIdAndChannelId(String campSegId, String channelId);
     /**
      * 删除免打扰过滤后生成的表
      * @param taskSendoddTabName

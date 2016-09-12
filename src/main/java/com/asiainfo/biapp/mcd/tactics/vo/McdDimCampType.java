@@ -1,5 +1,5 @@
 /**   
- * @Title: DimCampsegType.java
+ * @Title: McdDimCampType.java
  * @Package com.asiainfo.biapp.mcd.model
  * @Description: TODO(用一句话描述该文件做什么)
  * @author A18ccms A18ccms_gmail_com   
@@ -9,14 +9,14 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
 /**
- * @ClassName: DimCampsegType
+ * @ClassName: McdDimCampType
  * @Description: 营销类型维表 mcd_dim_camp_type 实体类
  * @author jinlong
  * @date 2015-7-16 下午8:56:53
  * 1：营销类
  * 2：服务类
  */
-public class DimCampsegType implements java.io.Serializable {
+public class McdDimCampType implements java.io.Serializable {
 
 	/**
 	 * 

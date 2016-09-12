@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
 /**
  * 
@@ -130,7 +130,7 @@ public interface CustGroupInfoService {
 	 * @return
 	 */
 	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,String cityId,String campsegId,int avoidBotherFlag,int flag);
-	MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId, String channelId, int campsegCityType);
+	McdBotherContactConfig getMtlBotherContactConfig(String campsegTypeId, String channelId, int campsegCityType);
 	
     /**
      * 根据代替SQLFIRE内的表在MCD里创建表的同义词

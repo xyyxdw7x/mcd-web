@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 /**
  * @ClassName: IDimCampsegTypeDao
@@ -27,12 +27,12 @@ public interface IDimCampsegTypeDao {
 	 * @return 营销类型对象
 	 * @throws Exception
 	 */
-	public DimCampsegType getDimCampsegType(Short campsegTypeId) throws Exception;
+	public McdDimCampType getDimCampsegType(Short campsegTypeId) throws Exception;
 
 	/**
 	 * 获取所有的营销类型列表
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DimCampsegType> getAllDimCampsegType() throws Exception;
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception;
 }

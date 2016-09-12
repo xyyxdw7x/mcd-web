@@ -20,7 +20,7 @@ import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
 /**
  * 免打扰页面的增删改查Dao。
@@ -242,9 +242,9 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	}
 	
 	@Override
-	public MtlBotherContactConfig getBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType) {
+	public McdBotherContactConfig getBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType) {
 		List<Map<String,Object>> list = null;
-		MtlBotherContactConfig mtlBotherContactConfig = new MtlBotherContactConfig();
+		McdBotherContactConfig mtlBotherContactConfig = new McdBotherContactConfig();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(" SELECT CAMPSEG_TYPE_ID,CHANNEL_ID,AVOID_BOTHER_FLAG,CONTACT_CONTROL_FLAG,PARAM_DAYS,PARAM_NUM FROM mcd_bother_contact_config WHERE CAMPSEG_TYPE_ID = ? AND CHANNEL_ID = ? AND CAMPSEG_CITY_TYPE=?");

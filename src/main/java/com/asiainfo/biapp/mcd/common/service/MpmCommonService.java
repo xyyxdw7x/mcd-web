@@ -5,17 +5,17 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 public interface MpmCommonService {
 	/**
 	 *  新建策略页面---初始化政策类别
 	 * @return
 	 */
-	public  List<DimPlanType> initDimPlanType();
+	public  List<McdDimPlanType> initDimPlanType();
 	/**
 	 * 新建策略页面---初始化政策粒度
 	 * @return
@@ -43,6 +43,6 @@ public interface MpmCommonService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DimCampsegType> getAllDimCampsegType() throws Exception;
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception;
 	
 }

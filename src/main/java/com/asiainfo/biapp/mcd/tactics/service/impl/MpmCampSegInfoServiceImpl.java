@@ -38,7 +38,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
@@ -50,17 +50,17 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
@@ -413,7 +413,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public MtlStcPlan getMtlStcPlanByPlanId(String planId) {
+    public McdPlanDef getMtlStcPlanByPlanId(String planId) {
         try {
             return stcPlanDao.getMtlStcPlanByPlanId(planId);
         } catch (Exception e) {
@@ -722,8 +722,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             if (MpmCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
                 if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_STOP);
-                    List<McdCampsegTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,MpmCONST.CHANNEL_TYPE_SMS);
-                    for(McdCampsegTask mcdCampsegTask : mcdCampsegTakList){
+                    List<McdCampTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,MpmCONST.CHANNEL_TYPE_SMS);
+                    for(McdCampTask mcdCampsegTask : mcdCampsegTakList){
                         String taskSendoddTabName = mcdCampsegTask.getTaskSendoddTabName();
                         if(taskSendoddTabName != null && "".equals(taskSendoddTabName)){
                             mcdCampsegTaskService.dropTaskSendoddTabNameInMem(taskSendoddTabName);
@@ -869,7 +869,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
+    public McdDimCampStatus getDimCampsegStat(String dimCampsegStatID) {
         return campSegInfoDao.getDimCampsegStat(dimCampsegStatID);
     }
     /**
@@ -951,15 +951,15 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         return list;
     }
     
-    public List<MtlStcPlanChannel> getStcPlanChannel(String planId){
-		List<MtlStcPlanChannel> mtlStcPlanChannels = stcPlanDao.getChannelIds(planId);
-		List<MtlStcPlanChannel> result = new ArrayList<MtlStcPlanChannel>();
+    public List<McdPlanChannelList> getStcPlanChannel(String planId){
+		List<McdPlanChannelList> mtlStcPlanChannels = stcPlanDao.getChannelIds(planId);
+		List<McdPlanChannelList> result = new ArrayList<McdPlanChannelList>();
 		String channelIds = "";
 		String planChannelId = "";
-		Map<String, MtlStcPlanChannel> map = new HashMap<String, MtlStcPlanChannel>();
+		Map<String, McdPlanChannelList> map = new HashMap<String, McdPlanChannelList>();
 		
 		for(int j = 0;j<mtlStcPlanChannels.size();j++){
-			MtlStcPlanChannel mtlStcPlanChannel = mtlStcPlanChannels.get(j);
+			McdPlanChannelList mtlStcPlanChannel = mtlStcPlanChannels.get(j);
 			map.put(mtlStcPlanChannel.getId(), mtlStcPlanChannel);
 		}
 		
@@ -1118,7 +1118,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                 isSMS = true;                    
                                 
                             }else{
-                                McdCampsegTask task = new McdCampsegTask();
+                                McdCampTask task = new McdCampTask();
                                 McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(pidSampsegId);
                                 task.setCampsegId(childMtl.getCampsegId());
                                 //生成清单表（任务的基础清客户单表和派单客户清单表

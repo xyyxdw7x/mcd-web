@@ -22,11 +22,11 @@ import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biframe.utils.config.Configure;
 
 /**
@@ -75,7 +75,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		this.dimMtlChanneltypeDao = dimMtlChanneltypeDao;
 	}
 	@Override
-	public List<DimPlanType> initDimPlanType() {
+	public List<McdDimPlanType> initDimPlanType() {
 		try {
 			return mtlStcPlanDao.initDimPlanType();
 		} catch (Exception e) {
@@ -208,8 +208,8 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	    } 
 	    
 		@Override
-		public List<DimCampsegType> getAllDimCampsegType() throws Exception {
-			List<DimCampsegType> list = null;
+		public List<McdDimCampType> getAllDimCampsegType() throws Exception {
+			List<McdDimCampType> list = null;
 			try {
 				list = dimMtlChanneltypeDao.getAllDimCampsegType();
 			} catch (Exception e) {

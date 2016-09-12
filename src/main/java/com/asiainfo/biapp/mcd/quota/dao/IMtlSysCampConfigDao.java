@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.quota.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.McdSysDic;
 
 /**
  * 
@@ -15,7 +15,7 @@ import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
  */
 
 public interface IMtlSysCampConfigDao {
-	public List<MtlSysCampConfig> getAll();
+	public List<McdSysDic> getAll();
 	
 	public Object getProperety(String key);
 }

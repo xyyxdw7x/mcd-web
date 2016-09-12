@@ -17,10 +17,10 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -39,13 +39,13 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	private static Logger log = LogManager.getLogger();
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DimPlanType> initDimPlanType() throws Exception {
+	public List<McdDimPlanType> initDimPlanType() throws Exception {
 		String sql = "select * from mcd_dim_plan_type d order by d.sort_Num";
-		//String hql = "from DimPlanType";
+		//String hql = "from McdDimPlanType";
 		return this.getJdbcTemplate().query(sql,new RowMapper() {
 			@Override
 			public Object mapRow(ResultSet rs, int index) throws SQLException {
-				DimPlanType tmp = new DimPlanType();
+				McdDimPlanType tmp = new McdDimPlanType();
 				tmp.setChannelType(rs.getString("channel_type"));
 				tmp.setSortNum(rs.getString("sort_num"));
 				tmp.setTypeId(rs.getString("type_id"));
@@ -93,10 +93,10 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	
 //	根据planId从mtl_stc_plan_channel表中查询多个channelId
 	@Override
-	public List<MtlStcPlanChannel> getChannelIds(String planIds){
+	public List<McdPlanChannelList> getChannelIds(String planIds){
 		StringBuffer buffer = new StringBuffer();
 		List<Map<String, Object>> list = null;
-		List<MtlStcPlanChannel> resultList = new ArrayList<MtlStcPlanChannel>();
+		List<McdPlanChannelList> resultList = new ArrayList<McdPlanChannelList>();
 		try {
 				buffer.append("select mcd_plan_channel_list.*,mtl_stc_plan_resource.adiv_id,dim_mtl_adiv_resouce.adiv_resource_id,dim_mtl_adiv_resouce.adiv_resource_name,")
 				  .append(" dim_mtl_adiv_resouce.adiv_resource_desc,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url")
@@ -106,7 +106,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" where mcd_plan_channel_list.plan_id in ("+planIds+")");
 			list = this.getJdbcTemplate().queryForList(buffer.toString());
 			for (Map map : list) {
-				MtlStcPlanChannel mtlStcPlanChannel = new MtlStcPlanChannel();
+				McdPlanChannelList mtlStcPlanChannel = new McdPlanChannelList();
 				mtlStcPlanChannel.setId((String) map.get("ID"));
 				mtlStcPlanChannel.setChannelId((String) map.get("CHANNEL_ID"));
 				mtlStcPlanChannel.setPlanId((String) map.get("PLAN_ID"));
@@ -390,12 +390,12 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
      * @return
      */
     @Override
-    public MtlStcPlan getMtlStcPlanByPlanId(String planId) {
+    public McdPlanDef getMtlStcPlanByPlanId(String planId) {
         String sql = " select * from mcd_plan_def A where A.PLAN_ID=?";
         Object[] args=new Object[]{planId};
         int[] argTypes=new int[]{Types.VARCHAR};
         log.info("执行sql="+sql);
-        List<MtlStcPlan> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlStcPlan>(MtlStcPlan.class));
+        List<McdPlanDef> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));
         if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
@@ -408,12 +408,12 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
      * @return
      */
     @Override
-    public DimPlanType getPlanTypeById(String planTypeId) {
+    public McdDimPlanType getPlanTypeById(String planTypeId) {
         String sql = " select * from mcd_dim_plan_type A where A.TYPE_ID=?";
         Object[] args=new Object[]{planTypeId};
         int[] argTypes=new int[]{Types.VARCHAR};
         log.info("执行sql="+sql);
-        List<DimPlanType> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimPlanType>(DimPlanType.class));
+        List<McdDimPlanType> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
         if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
@@ -421,12 +421,12 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
         }
     }
     
-	public MtlStcPlan getMtlStcPlanByPlanID(String planID){
+	public McdPlanDef getMtlStcPlanByPlanID(String planID){
 		final String sql="select * from mcd_plan_def where plan_id=?";
 		log.info("执行sql="+sql);
-		List<MtlStcPlan> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, new VoPropertyRowMapper(MtlStcPlan.class));
+		List<McdPlanDef> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, new VoPropertyRowMapper(McdPlanDef.class));
 		if(list!=null&&list.size()>0){
-			return (MtlStcPlan) list.get(0);
+			return (McdPlanDef) list.get(0);
 		}else{
 			return null;
 		}

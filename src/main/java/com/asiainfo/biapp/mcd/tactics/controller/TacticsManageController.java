@@ -36,10 +36,10 @@ import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
@@ -49,13 +49,13 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -879,7 +879,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			MtlCallwsUrl createCode = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE);
 			MtlCallwsUrl createCodeCallBack = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE_CALLBACK);
 			
-			List<DimPlanType> typeList = mpmCommonService.initDimPlanType();
+			List<McdDimPlanType> typeList = mpmCommonService.initDimPlanType();
 			if(!CollectionUtils.isEmpty(typeList)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(typeList));
@@ -1257,7 +1257,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
-		List<DimCampsegType> list = null;
+		List<McdDimCampType> list = null;
 		try {
 			list = mpmCommonService.getAllDimCampsegType();
 			if(!CollectionUtils.isEmpty(list)){
@@ -1395,10 +1395,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						
 						//添加新逻辑
 						String planIdArray[] = mtlCampSeginfo.getPlanId().split(",");
-						List<MtlStcPlan> planList = new ArrayList<MtlStcPlan>();
+						List<McdPlanDef> planList = new ArrayList<McdPlanDef>();
 						for(int j = 0; j<planIdArray.length;j++){
 							String planIdTemp = planIdArray[j];
-							MtlStcPlan mtlStcPlan = mtlStcPlanService.getMtlStcPlanByPlanID(planIdTemp);
+							McdPlanDef mtlStcPlan = mtlStcPlanService.getMtlStcPlanByPlanID(planIdTemp);
 							planList.add(mtlStcPlan);
 						}
 						if(CollectionUtils.isNotEmpty(planList)){
@@ -1434,10 +1434,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						//保存策略与渠道的关系
 						List<McdCampChannelList> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(campsegId); 
 						//所有适配的渠道
-						List<MtlStcPlanChannel> AllChannel = mpmCampSegInfoService.getStcPlanChannel(mtlCampSeginfo.getPlanId());
+						List<McdPlanChannelList> AllChannel = mpmCampSegInfoService.getStcPlanChannel(mtlCampSeginfo.getPlanId());
 						
 						for(int j = 0;j<AllChannel.size();j++){
-							MtlStcPlanChannel mtlStcPlanChannel = AllChannel.get(j);
+							McdPlanChannelList mtlStcPlanChannel = AllChannel.get(j);
 							for(int k = 0;k<mtlChannelDefList.size();k++){
 								if(mtlStcPlanChannel.getChannelId().equals(mtlChannelDefList.get(k).getChannelId())){
 									mtlStcPlanChannel.setChoose(true);   //如果之前做个修改  则设置为false
@@ -1453,7 +1453,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						}*/
 						
 						for(int m = 0;m<AllChannel.size();m++){
-							MtlStcPlanChannel planChannel = AllChannel.get(m);
+							McdPlanChannelList planChannel = AllChannel.get(m);
 							if(!planChannel.isChoose()){ //如果之前没做过操作
 								McdCampChannelList def = new McdCampChannelList();
 								/*MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
@@ -1633,7 +1633,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				buffer.append("[");
 				for(int i = 0;i<channelId.length;i++){
 					//免打扰、频次控制
-					MtlBotherContactConfig config = botherAvoidService.getMtlBotherContactConfig(campsegTypeId, channelId[i],campsegCityType);
+					McdBotherContactConfig config = botherAvoidService.getMtlBotherContactConfig(campsegTypeId, channelId[i],campsegCityType);
 					int mdrNum = 0;
 					int pcNum = 0;
 					int pcMdrNum = 0;

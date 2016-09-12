@@ -14,7 +14,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.bull.dao.SendType4CitysDao;
 import com.asiainfo.biapp.mcd.bull.dao.Task4BullDao;
 import com.asiainfo.biapp.mcd.bull.dao.UserDeptDao;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
@@ -150,9 +150,9 @@ public class BullMonitorServiceImp implements BullMonitorService {
 		}
 		//end
 		
-		List<McdCampsegTask> list = new ArrayList<McdCampsegTask>();
+		List<McdCampTask> list = new ArrayList<McdCampTask>();
 		for (int i = 0; i < ids.length; i++) {
-			McdCampsegTask temp = new McdCampsegTask();
+			McdCampTask temp = new McdCampTask();
 			temp.setTaskId(ids[i]);
 			temp.setExecStatus(targetStaus);
 			list.add(temp);

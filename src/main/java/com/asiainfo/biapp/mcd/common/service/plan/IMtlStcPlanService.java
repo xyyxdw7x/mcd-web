@@ -1,7 +1,7 @@
 package com.asiainfo.biapp.mcd.common.service.plan;
 
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 
 public interface IMtlStcPlanService {
     
@@ -10,12 +10,12 @@ public interface IMtlStcPlanService {
      * @param planType
      * @return
      */
-    DimPlanType getPlanTypeById(String planType);
+    McdDimPlanType getPlanTypeById(String planType);
 	/**
 	 * 根据plan_id查询推荐业务
 	 * @param planID
 	 * @return
 	 */
-	public MtlStcPlan getMtlStcPlanByPlanID(String planID);
+	public McdPlanDef getMtlStcPlanByPlanID(String planID);
 
 }

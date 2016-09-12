@@ -8,7 +8,7 @@ import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 /**
  * Created on Jan 4, 2008 4:56:34 PM
@@ -86,5 +86,5 @@ public interface DimMtlChanneltypeDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<DimCampsegType> getAllDimCampsegType() throws Exception;
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception;
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 
 public interface IMcdCampsegTaskDao {
     /**
@@ -25,7 +25,7 @@ public interface IMcdCampsegTaskDao {
      * @return
      * @throws Exception
      */
-    List<McdCampsegTask> findByCampsegIdAndChannelId(String campSegId, String channelId);
+    List<McdCampTask> findByCampsegIdAndChannelId(String campSegId, String channelId);
     /**
      * 删除免打扰过滤后生成的表
      * @param taskSendoddTabName
@@ -35,7 +35,7 @@ public interface IMcdCampsegTaskDao {
      * 保存相关任务
      * @param task
      */
-    void saveTask(McdCampsegTask task);
+    void saveTask(McdCampTask task);
     /**
      * 新增任务对应时间表
      * @param taskId 任务ID

@@ -21,7 +21,7 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biframe.utils.string.StringUtil;
 /**
  * 策略任务相关DAO
@@ -128,11 +128,11 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
      * @throws Exception
      */
     @Override
-    public List<McdCampsegTask> findByCampsegIdAndChannelId(String campSegId, String channelId) {
+    public List<McdCampTask> findByCampsegIdAndChannelId(String campSegId, String channelId) {
         String sql="select * from mcd_camp_task where campseg_id = ? and channel_id = ? ";
         Object[] args=new Object[]{campSegId,channelId};
         int[] argTypes=new int[]{Types.VARCHAR,Types.VARCHAR};
-        List<McdCampsegTask> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampsegTask>(McdCampsegTask.class));
+        List<McdCampTask> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampTask>(McdCampTask.class));
         return list;
     }
     /**
@@ -172,7 +172,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
      * @param task
      */
     @Override
-    public void saveTask(McdCampsegTask task) {
+    public void saveTask(McdCampTask task) {
           try {
               this.getJdbcTemplateTool().save(task);
             } catch (Exception e) {

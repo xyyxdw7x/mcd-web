@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
@@ -143,7 +143,7 @@ public interface IMpmCampSegInfoDao {
    * @param string
    * @return
    */
-    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
+    public McdDimCampStatus getDimCampsegStat(String dimCampsegStatID);
     /**
      * 获取细分规则信息（时机）
      */

@@ -5,14 +5,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 
 /*
  * Created on 11:31:19 AM
@@ -74,7 +74,7 @@ public interface IMpmCampSegInfoService {
      * @param planId
      * @return
      */
-    public MtlStcPlan getMtlStcPlanByPlanId(String planId);
+    public McdPlanDef getMtlStcPlanByPlanId(String planId);
     /**
      * 取客户群选择（目标客户群”及“对比客户群”信息）
      * @param campsegId
@@ -176,7 +176,7 @@ public interface IMpmCampSegInfoService {
 	 * @param string
 	 * @return
 	 */
-    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID);
+    public McdDimCampStatus getDimCampsegStat(String dimCampsegStatID);
     /**
      * add by jinl 20150717
      * @Title: getTargetCustomerbase
@@ -229,7 +229,7 @@ public interface IMpmCampSegInfoService {
 	 * @param planId
 	 * @return
 	 */
-	public List<MtlStcPlanChannel> getStcPlanChannel(String planId);
+	public List<McdPlanChannelList> getStcPlanChannel(String planId);
     /**
      * 浙江处理策略审批结束（通过或退回）后的信息
      * @param campsegId 营销活动编号
