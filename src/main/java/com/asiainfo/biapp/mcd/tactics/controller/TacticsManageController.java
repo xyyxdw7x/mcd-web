@@ -333,12 +333,12 @@ public class TacticsManageController extends BaseMultiActionController {
 						String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
 						// //Ftp存放的文件名称
 						mtlChannelDef.setChannelAdivId(adivId);
-						mtlChannelDef.setExecTitle(execTitle);
-						mtlChannelDef.setFileName(fileName);
+						mtlChannelDef.setWcTitle(execTitle);
+						mtlChannelDef.setWcFileName(fileName);
 					} 
 
 
-					mtlChannelDef.setIfHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
+					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
 					if (StringUtil.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
 						mtlChannelDef.setChannelAdivId("1");
@@ -690,8 +690,8 @@ public class TacticsManageController extends BaseMultiActionController {
 								String execTitle = String.valueOf(obj.get("execTitle"));  //微信标题
 								String fileName = String.valueOf(obj.get("fileName"));  //微信本地文件名称
 								mtlChannelDef.setChannelAdivId(adivId);
-								mtlChannelDef.setExecTitle(execTitle);
-								mtlChannelDef.setFileName(fileName);
+								mtlChannelDef.setWcTitle(execTitle);
+								mtlChannelDef.setWcFileName(fileName);
 							}else if("913".equals(channelId)){
 							    String taskCode = String.valueOf(obj.get("taskCode"));//任务编码
 								String taskName = String.valueOf(obj.get("taskName"));//任务名称
@@ -741,7 +741,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							if(StringUtil.isEmpty(adivId)){  //当adivId为空的时候，默认为1
 								mtlChannelDef.setChannelAdivId("1");
 							}
-							mtlChannelDef.setIfHaveVar(!ifHasVariate ? Short.parseShort("0"):Short.parseShort("1"));
+							mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0"):Short.parseShort("1"));
 							
 							//保存将筛选后的客户群数量
 							String afterComputeCustNum[] = afterComputCustNum.split(",");
@@ -1461,7 +1461,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								mtlChannelDefId.setChannelNo(m+10);
 								mtlChannelDefId.setUsersegId((short) 0);
 								def.setId(mtlChannelDefId);*/
-								def.setCampsegId(campsegId);
+								def.setCampId(campsegId);
 								
 								def.setChannelId(planChannel.getChannelId());
 //								def.setChoose(false);

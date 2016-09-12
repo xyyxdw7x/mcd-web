@@ -209,7 +209,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
 							McdCampChannelList mtlChannelDef = mtlChannelDefList.get(i);
-							mtlChannelDef.setCampsegId(campsegId);
+							mtlChannelDef.setCampId(campsegId);
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
@@ -353,7 +353,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 //							mtlChannelDefId.setChannelNo(i);
 //							mtlChannelDefId.setUsersegId((short) 0);
 //							mtlChannelDef.setId(mtlChannelDefId);
-							mtlChannelDef.setCampsegId(campsegId);
+							mtlChannelDef.setCampId(campsegId);
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
