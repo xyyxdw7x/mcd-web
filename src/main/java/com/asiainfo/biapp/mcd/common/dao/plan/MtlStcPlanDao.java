@@ -3,10 +3,10 @@ package com.asiainfo.biapp.mcd.common.dao.plan;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 
 /*
  * Created on 4:00:43 PM
@@ -20,7 +20,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
  */
 public interface MtlStcPlanDao {
 
-	List<DimPlanType> initDimPlanType() throws Exception;
+	List<McdDimPlanType> initDimPlanType() throws Exception;
 	/**
 	 * 添加规则弹出页面  产品关系选择  按照类型和关键字查询   只查询政策力度为营销档次的产品信息
 	 * @param keyWords
@@ -32,7 +32,7 @@ public interface MtlStcPlanDao {
 	 * 获取所有的渠道信息
 	 * @return
 	 */
-	public List<MtlStcPlanChannel> getChannelIds(String planIds);
+	public List<McdPlanChannelList> getChannelIds(String planIds);
 	/**
 	 * 添加规则弹出页面  产品关系选择  按照类型和关键字查询   只查询政策力度为营销档次的产品信息
 	 * @param keyWords
@@ -63,17 +63,17 @@ public interface MtlStcPlanDao {
      * @param planId
      * @return
      */
-    MtlStcPlan getMtlStcPlanByPlanId(String planId);
+    McdPlanDef getMtlStcPlanByPlanId(String planId);
     /**
      * 根据渠道类型ID获取渠道
      * @param planType
      * @return
      */
-    DimPlanType getPlanTypeById(String planTypeId);
+    McdDimPlanType getPlanTypeById(String planTypeId);
 	/**
 	 * 根据plan_id查询推荐业务
 	 * @param planID
 	 * @return
 	 */
-	public MtlStcPlan getMtlStcPlanByPlanID(String planID);
+	public McdPlanDef getMtlStcPlanByPlanID(String planID);
 }

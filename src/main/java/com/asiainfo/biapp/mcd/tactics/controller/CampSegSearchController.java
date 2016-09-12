@@ -28,7 +28,7 @@ import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
@@ -218,7 +218,7 @@ public class CampSegSearchController extends BaseMultiActionController {
             for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
                 JSONObject dataJson1 = new JSONObject();
                 String ruleDesc = "";
-                MtlStcPlan stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(mtlCampSeginfo.getPlanId());// 查询产品信息
+                McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(mtlCampSeginfo.getPlanId());// 查询产品信息
                 dataJson1.put("planName", stcPlan != null ? stcPlan.getPlanName(): "");
                 List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampsegId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
                 String ruleDescShowSql = "";

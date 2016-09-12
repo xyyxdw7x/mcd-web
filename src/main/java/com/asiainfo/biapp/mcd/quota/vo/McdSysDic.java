@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.quota.vo;
  * @version 1.0
  */
 
-public class MtlSysCampConfig {
+public class McdSysDic {
 	private String configKey;
 	private String configValue;
 	private String configName;

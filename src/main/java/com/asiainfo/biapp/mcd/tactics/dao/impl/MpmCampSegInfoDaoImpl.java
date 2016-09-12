@@ -21,7 +21,7 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
@@ -132,7 +132,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
     @Override
     public List getDimCampsegStatList() {
         String sql="select * from mcd_dim_camp_status where 1=1 and CAMPSEG_STAT_VISIBLE = 0 order by CAMPSEG_STAT_SITEID";
-        List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
+        List<McdDimCampStatus> list = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<McdDimCampStatus>(McdDimCampStatus.class));
         return list;
     }
 	@Override
@@ -623,11 +623,11 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
    * @return
    */
     @Override
-    public DimCampsegStat getDimCampsegStat(String dimCampsegStatID) {
+    public McdDimCampStatus getDimCampsegStat(String dimCampsegStatID) {
         String sql="select * from mcd_dim_camp_status where campseg_stat_ID = ?";
         Object[] args=new Object[]{dimCampsegStatID};
         int[] argTypes=new int[]{Types.VARCHAR};
-        List<DimCampsegStat> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<DimCampsegStat>(DimCampsegStat.class));
+        List<McdDimCampStatus> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdDimCampStatus>(McdDimCampStatus.class));
         if(list != null &&list.size() > 0){
             return list.get(0);
 

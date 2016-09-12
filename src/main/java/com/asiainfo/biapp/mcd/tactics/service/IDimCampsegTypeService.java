@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 public interface IDimCampsegTypeService {
     /**
@@ -21,9 +21,9 @@ public interface IDimCampsegTypeService {
      * @param @param campsegTypeId
      * @param @return
      * @param @throws Exception    
-     * @return DimCampsegType 
+     * @return McdDimCampType 
      * @throws
      */
-    DimCampsegType getDimCampsegType(Short campsegTypeId);
+    McdDimCampType getDimCampsegType(Short campsegTypeId);
 
 }

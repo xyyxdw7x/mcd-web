@@ -3,10 +3,10 @@ package com.asiainfo.biapp.mcd.common.vo.plan;
 import javax.persistence.Column;
 
 /**
- * DimPlanType entity. @author MyEclipse Persistence Tools
+ * McdDimPlanType entity. @author MyEclipse Persistence Tools
  */
 
-public class DimPlanType implements java.io.Serializable {
+public class McdDimPlanType implements java.io.Serializable {
 
 	// Fields
 
@@ -41,11 +41,11 @@ public class DimPlanType implements java.io.Serializable {
 	}
 
 	/** default constructor */
-	public DimPlanType() {
+	public McdDimPlanType() {
 	}
 
 	/** full constructor */
-	public DimPlanType(String typeName, String typePid) {
+	public McdDimPlanType(String typeName, String typePid) {
 		this.typeName = typeName;
 		this.typePid = typePid;
 	}

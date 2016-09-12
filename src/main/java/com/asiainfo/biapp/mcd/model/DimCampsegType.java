@@ -1,5 +1,5 @@
 /**   
- * @Title: DimCampsegType.java
+ * @Title: McdDimCampType.java
  * @Package com.asiainfo.biapp.mcd.model
  * @Description: TODO(用一句话描述该文件做什么)
  * @author A18ccms A18ccms_gmail_com   
@@ -9,7 +9,7 @@
 package com.asiainfo.biapp.mcd.model;
 
 /**
- * @ClassName: DimCampsegType
+ * @ClassName: McdDimCampType
  * @Description: 营销类型维表 mcd_dim_camp_type 实体类
  * @author jinlong
  * @date 2015-7-16 下午8:56:53

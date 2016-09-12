@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.tactics.vo;
  * @version 1.0
  */
 
-public class MtlStcPlanChannel {
+public class McdPlanChannelList {
 	private String id;
 	private String planId;
 	private String channelId;

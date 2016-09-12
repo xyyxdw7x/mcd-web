@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 
 
-public class McdCampsegTask implements java.io.Serializable{
+public class McdCampTask implements java.io.Serializable{
 
     /**
      * 
@@ -66,16 +66,16 @@ public class McdCampsegTask implements java.io.Serializable{
 
     // Constructors
     /** default constructor */
-    public McdCampsegTask() {
+    public McdCampTask() {
     }
 
     /** minimal constructor */
-    public McdCampsegTask(String campsegId) {
+    public McdCampTask(String campsegId) {
         this.campsegId = campsegId;
     }
 
     /** full constructor */
-    public McdCampsegTask(String campsegId, Short execStatus, String execInfoDesc, Date execTime, Date taskStartTime,
+    public McdCampTask(String campsegId, Short execStatus, String execInfoDesc, Date execTime, Date taskStartTime,
             Date taskEndTime, String custListTabName, String taskSendoddTabName,String channelId) {
         this.campsegId = campsegId;
         this.execStatus = execStatus;
@@ -184,7 +184,7 @@ public class McdCampsegTask implements java.io.Serializable{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        McdCampsegTask other = (McdCampsegTask) obj;
+        McdCampTask other = (McdCampTask) obj;
         if (taskId == null) {
             if (other.taskId != null)
                 return false;

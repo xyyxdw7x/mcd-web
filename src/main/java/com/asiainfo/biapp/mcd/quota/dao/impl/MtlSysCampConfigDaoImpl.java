@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
+import com.asiainfo.biapp.mcd.quota.vo.McdSysDic;
 
 /**
  * 
@@ -31,15 +31,15 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
-	public List<MtlSysCampConfig> getAll() {
-		List<MtlSysCampConfig> list = new ArrayList<MtlSysCampConfig>();
+	public List<McdSysDic> getAll() {
+		List<McdSysDic> list = new ArrayList<McdSysDic>();
 		try {
 			List<Map> listTemp = null;
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(" select * from mcd_sys_dic");
 			listTemp = this.jdbcTemplate.queryForList(buffer.toString(),Map.class);
 			for (Map map : listTemp) {
-				MtlSysCampConfig mtlSysCampConfig = new MtlSysCampConfig();
+				McdSysDic mtlSysCampConfig = new McdSysDic();
 				mtlSysCampConfig.setConfigKey(map.get("CONFIG_KEY").toString());
 				mtlSysCampConfig.setConfigName(map.get("CONFIG_NAME").toString());
 				mtlSysCampConfig.setConfigValue(map.get("CONFIG_VALUE").toString());

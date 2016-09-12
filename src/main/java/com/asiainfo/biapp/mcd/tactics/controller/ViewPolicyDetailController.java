@@ -30,8 +30,8 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DateConvert;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustUpdateCycle;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
@@ -42,8 +42,8 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DataGridData;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
-import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
@@ -124,10 +124,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             if(StringUtil.isNotEmpty(segInfo.getPlanId()) && segInfo.getPlanId().indexOf(",") != -1){
                 String planArr[] = segInfo.getPlanId().split(",");
                 for(int i = 0;i<planArr.length;i++){
-                    MtlStcPlan stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(planArr[i]);
+                    McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(planArr[i]);
                     if(stcPlan != null){
                         if(StringUtil.isNotEmpty(stcPlan.getPlanType())){
-                            DimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
+                            McdDimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
                             if(null != dimPlanType){
                                 campDrvName += dimPlanType.getTypeName()+",";
                             }
@@ -136,10 +136,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 }
                 campDrvName = campDrvName.substring(0, campDrvName.length()-1);
             }else{
-                MtlStcPlan stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(segInfo.getPlanId());
+                McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(segInfo.getPlanId());
                 if(stcPlan != null){
                     if(StringUtil.isNotEmpty(stcPlan.getPlanType())){
-                        DimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
+                        McdDimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
                         if(null != dimPlanType){
                             campDrvName = dimPlanType.getTypeName();
                         }
@@ -151,12 +151,12 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             String createTime = DateConvert.formatLongDateTime(segInfo.getCreateTime());
             Short campsegStatId = Short.valueOf(segInfo.getCampsegStatId());
             //营销活动状态名
-            DimCampsegStat dimCampsegStat = mpmCampSegInfoService.getDimCampsegStat(segInfo.getCampsegStatId().toString()); 
+            McdDimCampStatus dimCampsegStat = mpmCampSegInfoService.getDimCampsegStat(segInfo.getCampsegStatId().toString()); 
             String statusName = dimCampsegStat.getCampsegStatName(); //MpmCache.getInstance().getNameByTypeAndKey(MpmCONST.MPM_CAMPSEG_STAT_DEFINE,segInfo.getCampsegStatId().toString());
             //营销类型
             Short campsegTypeId = segInfo.getCampsegTypeId() == null ? 0 : segInfo.getCampsegTypeId();
             String campsegTypeName = dimCampsegTypeService.getDimCampsegTypeName(campsegTypeId);
-            DimCampsegType campsegType = dimCampsegTypeService.getDimCampsegType(campsegTypeId);
+            McdDimCampType campsegType = dimCampsegTypeService.getDimCampsegType(campsegTypeId);
             
             Map map= new HashMap();
             map.put("campsegId", segInfoBean.getCampsegId());
@@ -238,8 +238,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
              String planid = segInfo.getPlanId();//获取产品编号qzd548
              JSONObject stcPlanJSON = new JSONObject();
              if(planid!=null&&!"".equals(planid)){
-                MtlStcPlan stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(planid);//查询产品信息
-                DimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
+                McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(planid);//查询产品信息
+                McdDimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
                 stcPlanJSON.put("campDrvName", dimPlanType != null ? dimPlanType.getTypeName(): "");    //业务类型
                 stcPlanJSON.put("stcPlanName", stcPlan != null ? stcPlan.getPlanName() : "");   //“政策名称”,政策即产品
                 stcPlanJSON.put("stcPlanId", stcPlan != null ? stcPlan.getPlanId() : "");       //“编号”

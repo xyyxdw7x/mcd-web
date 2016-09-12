@@ -9,7 +9,7 @@ import javax.persistence.Column;
  * 产品信息
  */
 
-public class MtlStcPlan implements java.io.Serializable {
+public class McdPlanDef implements java.io.Serializable {
 	/**
 	 *
 	 */
@@ -212,18 +212,18 @@ public class MtlStcPlan implements java.io.Serializable {
 	
 	
 	/** default constructor */
-	public MtlStcPlan() {
+	public McdPlanDef() {
 	}
 
 	/** minimal constructor */
-	public MtlStcPlan(String planId, String id, Date createDate) {
+	public McdPlanDef(String planId, String id, Date createDate) {
 		this.planId = planId;
 		this.id = id;
 		this.createDate = createDate;
 	}
 
 	/** full constructor */
-	public MtlStcPlan(String planId, String id, String planName, Date planStartdate, Date planEnddate, String planDesc,
+	public McdPlanDef(String planId, String id, String planName, Date planStartdate, Date planEnddate, String planDesc,
 			String status, String createUserid, Date createDate, String planType) {
 		this.planId = planId;
 		this.id = id;

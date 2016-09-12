@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 
 /**
  * 渠道相关Service
@@ -30,11 +30,11 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
      * @return
      */
     @Override
-    public DimPlanType getPlanTypeById(String planTypeId) {
+    public McdDimPlanType getPlanTypeById(String planTypeId) {
         return mtlStcPlanDao.getPlanTypeById(planTypeId);
     }
     
-	public MtlStcPlan getMtlStcPlanByPlanID(String planID){
+	public McdPlanDef getMtlStcPlanByPlanID(String planID){
 		return mtlStcPlanDao. getMtlStcPlanByPlanID(planID);
 	}
 }

@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.model;
 import java.util.Date;
 
 /**
- * McdCampsegTask entity. @author MyEclipse Persistence Tools
+ * McdCampTask entity. @author MyEclipse Persistence Tools
  */
 
 public class McdCampsegTask implements java.io.Serializable {
