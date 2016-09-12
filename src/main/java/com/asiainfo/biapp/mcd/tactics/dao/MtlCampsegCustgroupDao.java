@@ -3,10 +3,10 @@ package com.asiainfo.biapp.mcd.tactics.dao;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 
 public interface MtlCampsegCustgroupDao {
-	public abstract void save(MtlCampsegCustgroup transientInstance);
+	public abstract void save(McdCampCustgroupList transientInstance);
 	/**
 	 * 根据campsegId删除业务标签或者基础标签 add by lixq10
 	 * @param campsegId

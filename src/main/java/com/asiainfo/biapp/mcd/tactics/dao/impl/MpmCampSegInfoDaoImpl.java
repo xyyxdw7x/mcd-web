@@ -24,7 +24,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;
 /**
@@ -209,7 +209,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         String sql="select * from mcd_camp_custgroup_list where CAMPSEG_ID = ?";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
-        List<MtlCampsegCustgroup> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampsegCustgroup>(MtlCampsegCustgroup.class));
+        List<McdCampCustgroupList> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampCustgroupList>(McdCampCustgroupList.class));
         return list;
     }
     

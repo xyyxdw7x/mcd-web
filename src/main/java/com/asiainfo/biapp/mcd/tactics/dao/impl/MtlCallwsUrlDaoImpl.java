@@ -12,7 +12,7 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCallwsUrlDao;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 
 /**
  * Created on Oct 23, 2007 10:50:07 AM

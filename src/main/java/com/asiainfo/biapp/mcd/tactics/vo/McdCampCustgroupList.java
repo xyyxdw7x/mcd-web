@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -7,17 +8,23 @@ import javax.persistence.Transient;
  * MtlCampsegCustgroup entity. @author MyEclipse Persistence Tools
  */
 @Table(name="mcd_camp_custgroup_list")
-public class MtlCampsegCustgroup implements java.io.Serializable {
+public class McdCampCustgroupList implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Column(name="CAMPSEG_ID")
+	private String campId;
+	@Column(name="CUSTGROUP_ID")
+	private String custgroupId;
+	
 	// Fields
     @Transient
 	private String campsegCustgroupId;
-	@javax.persistence.Column(name="CAMPSEG_ID")
-	private String campsegId;
 	@Transient
 	private String custgroupType;
-	@javax.persistence.Column(name="CUSTGROUP_ID")
-	private String custgroupId;
 	@Transient
 	private String custgroupName;
 	@Transient
@@ -44,22 +51,22 @@ public class MtlCampsegCustgroup implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public MtlCampsegCustgroup() {
+	public McdCampCustgroupList() {
 	}
 
 	/** minimal constructor */
-	public MtlCampsegCustgroup(String campsegId, String custgroupType,String custgroupId, String custgroupName) {
-		this.campsegId = campsegId;
+	public McdCampCustgroupList(String campsegId, String custgroupType,String custgroupId, String custgroupName) {
+		this.campId = campsegId;
 		this.custgroupType = custgroupType;
 		this.custgroupId = custgroupId;
 		this.custgroupName = custgroupName;
 	}
 
 	/** full constructor */
-	public MtlCampsegCustgroup(String campsegId, String custgroupType,
+	public McdCampCustgroupList(String campsegId, String custgroupType,
 			String custgroupId, String custgroupName, Integer custgroupNumber,
 			String custBaseMonth, String custBaseDay, String custgroupDesc) {
-		this.campsegId = campsegId;
+		this.campId = campsegId;
 		this.custgroupType = custgroupType;
 		this.custgroupId = custgroupId;
 		this.custgroupName = custgroupName;
@@ -80,11 +87,11 @@ public class MtlCampsegCustgroup implements java.io.Serializable {
 	}
 
 	public String getCampsegId() {
-		return campsegId;
+		return campId;
 	}
 
 	public void setCampsegId(String campsegId) {
-		this.campsegId = campsegId;
+		this.campId = campsegId;
 	}
 
 	public String getCustgroupType() {

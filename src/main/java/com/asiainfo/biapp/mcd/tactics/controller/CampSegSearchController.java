@@ -36,7 +36,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.MarketApproveInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 import net.sf.json.JSONArray;
@@ -223,7 +223,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampsegId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
                 String ruleDescShowSql = "";
                 for (int i = 0; i < custGroupSelectList.size(); i++) {
-                    MtlCampsegCustgroup mtlCampsegCustGroup = (MtlCampsegCustgroup) custGroupSelectList.get(i);
+                    McdCampCustgroupList mtlCampsegCustGroup = (McdCampCustgroupList) custGroupSelectList.get(i);
                     if ("CG".equals(mtlCampsegCustGroup.getCustgroupType())) {
                          //待定
                          MtlGroupInfo mtlGroupInfo = custGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());

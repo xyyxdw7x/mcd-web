@@ -57,7 +57,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampsegTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
@@ -448,7 +448,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	@Override
 	public void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId,McdCampDef segInfo,String flag) throws MpmException {
 //		if(flag.equals("0")){	//基础客户群
-			MtlCampsegCustgroup mtlCampsegCustGroup = new MtlCampsegCustgroup();
+			McdCampCustgroupList mtlCampsegCustGroup = new McdCampCustgroupList();
 			mtlCampsegCustGroup.setCustgroupId(segInfo.getCustgroupId());
 			mtlCampsegCustGroup.setCampsegId(campsegId);
 			mtlCampsegCustGroup.setCustgroupName("test");
