@@ -82,9 +82,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 McdCampDef segInfo = new McdCampDef();
                 segInfo.setIsZJ(true);
                 segInfo.setKeywords(keywords);
-                if (campDrvId != null && !"".equals(campDrvId)) {
-                    segInfo.setCampDrvIds(campDrvId);
-                }
+               
                 if (campsegStatId != null && !"".equals(campsegStatId)) {
                     segInfo.setCampsegStatId(Short.parseShort(campsegStatId));
                 }
@@ -99,9 +97,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 
                 // 不是省公司人员，则只可以产看本地市和省公司，省公司的则可查看全部
                 String cityId = user.getCityId();
-                if (!"999".equals(cityId)) {
-                    segInfo.setAreaId(cityId);
-                }
+               
 
                 String channelCampCont = request.getParameter("channelCampCont");
                 String clickQueryFlag = "true";
@@ -736,7 +732,7 @@ public class CampSegSearchController extends BaseMultiActionController {
             // JSONObject dataJson = new JSONObject();
             for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
                 JSONObject dataJson = new JSONObject();
-                dataJson.put("campsegName","规则" + mtlCampSeginfo.getCampsegNo());
+//                dataJson.put("campsegName","规则" + mtlCampSeginfo.getCampsegNo());
                 dataJson.put("campsegId", mtlCampSeginfo.getCampsegId());
                 // 获取有营销用语的渠道的营销用语
                 List execContentList = mpmCampSegInfoService.getExecContentList(mtlCampSeginfo.getCampsegId());

@@ -381,7 +381,6 @@ public class TacticsManageController extends BaseMultiActionController {
 				campSeginfo.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 				// 渠道基本信息
 				campSeginfo.setChannelId(channelIds); // 渠道id
-				campSeginfo.setChannelTypeId(channelTypeId); // 渠道类型ID
 
 				campSeginfo.setFatherNode(false);
 				campSeginfo.setIsApprove(isApprove);
@@ -391,10 +390,8 @@ public class TacticsManageController extends BaseMultiActionController {
 				if (execContentStr.indexOf("cepInfo") != -1) {
 				}
 				campSeginfo.setCepEventId(streamsId);
-				campSeginfo.setEventRuleDesc(streamName);
 				// 客户群基本信息
 				campSeginfo.setCustgroupId(customgroupid);
-				campSeginfo.setUpdatecycle(updateCycle);
 
 				campSeginfo.setMtlChannelDefList(mtlChannelDefList);
 				campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
@@ -419,7 +416,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 				/*campSeginfo.setBussinessLableTemplate(bussinessLableTemplate);
 				campSeginfo.setBasicEventTemplate(basicEventTemplate);*/
-				campSeginfo.setRequestLocal(request.getLocale());
 				campSegInfoList.add(campSeginfo);
 
 			}
@@ -789,7 +785,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						campSeginfo.setCreateUserName(user.getName());
 						//渠道基本信息
 						campSeginfo.setChannelId(channelIds);           //渠道id
-						campSeginfo.setChannelTypeId(channelTypeId);		   //渠道类型ID
 						
 						//客户群清单表名称
 						campSeginfo.setInitCustListTab(initCustListTab);
@@ -806,7 +801,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						
 						//客户群基本信息
 						campSeginfo.setCustgroupId(customgroupid);	
-						campSeginfo.setUpdatecycle(updateCycle);
 						
 						campSeginfo.setMtlChannelDefList(mtlChannelDefList);
 						campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
@@ -833,7 +827,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						
 						/*campSeginfo.setBussinessLableTemplate(bussinessLableTemplate);
 						campSeginfo.setBasicEventTemplate(basicEventTemplate);*/
-						campSeginfo.setRequestLocal(request.getLocale());
 						//保存基本信息     渠道与活动关系表     活动与客户群关系表
 						campSegInfoList.add(campSeginfo);
 					}

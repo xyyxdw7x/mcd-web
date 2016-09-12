@@ -172,16 +172,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String attachements = segInfo.getFilePath();
 				String custGroupAttrId = segInfo.getCustGroupAttrId();
 //				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
-				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
 				String[] campsegIds = null;
 				String[] channelIds = null;
 				String[] channeltypeIds = null;
 				
 				List<MtlChannelDef> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
-				int updateCycle = 0;
-				if(StringUtil.isNotEmpty(segInfo.getUpdatecycle())){
-					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
-				}
+			
 			
 				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
 				if (user != null) {
@@ -473,7 +469,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			mtlCampsegCustGroup.setCampsegId(campsegId);
 			mtlCampsegCustGroup.setCustgroupName("test");
 			mtlCampsegCustGroup.setCustgroupType("CG"); //客户群类型
-			mtlCampsegCustGroup.setCustgroupNumber(segInfo.getCustgroupNumber());
 			mtlCampsegCustGroup.setCustBaseDay(segInfo.getCustBaseDay());
 			if (StringUtils.isEmpty(segInfo.getCustBaseDay())) {
 				mtlCampsegCustGroup.setCustBaseMonth(segInfo.getCustBaseMonth());
@@ -550,7 +545,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	//策略基本信息
 	    	xmlStr.append("<campsegId>" + mtlCampSeginfo.getCampsegId()+ "</campsegId>");//营销策略编号 
 	    	xmlStr.append("<campsegName>" + mtlCampSeginfo.getCampsegName()+ "</campsegName>");//策略名称 
-	    	xmlStr.append("<campDrvName>" + mtlCampSeginfo.getCampDrvName()+ "</campDrvName>");//业务类型 
 	    	xmlStr.append("<campsegType>" + mtlCampSeginfo.getCampsegTypeId()+ "</campsegType>");//营销类别	
 	    	xmlStr.append("<startDate>" + mtlCampSeginfo.getStartDate()+ "</startDate>");//策略开始时间
 	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间

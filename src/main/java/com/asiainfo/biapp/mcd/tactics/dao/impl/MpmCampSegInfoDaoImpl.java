@@ -61,11 +61,11 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
               
               
             //业务状态改为多选
-        if (segInfo.getCampDrvIds() != null && !"".equals(segInfo.getCampDrvIds())) {
+       /* if (segInfo.getCampDrvIds() != null && !"".equals(segInfo.getCampDrvIds())) {
             buffer.append("  and  msi.campseg_id in (select mcdr.campseg_id from mtl_campseg_drv_rel mcdr where ")
             .append(" mcdr.camp_drv_id in ( "+ segInfo.getCampDrvIds() +")")
             .append(")");
-        }
+        }*/
         
         if (StringUtil.isNotEmpty(segInfo.getKeywords())) {
             if(segInfo.getKeywords().contains("%")){
@@ -93,10 +93,10 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             parameterList.add(segInfo.getChannelId());
         }
         //省公司还是分公司人查看
-        if(StringUtil.isNotEmpty(segInfo.getAreaId())){
+     /*   if(StringUtil.isNotEmpty(segInfo.getAreaId())){
             buffer.append(" and msi.area_id= ?");
             parameterList.add(segInfo.getAreaId());
-        }
+        }*/
         
         //状态
         if (segInfo.getCampsegStatId() != null && !"".equals(segInfo.getCampsegStatId())) {
