@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 
 /**
  * 调用ws url和log类；
@@ -14,6 +14,6 @@ public interface IMtlCallWsUrlService {
 	 * @return
 	 * @throws Exception
 	 */
-	public MtlCallwsUrl getCallwsURL(String ws_jndi) throws Exception;
+	public McdSysInterfaceDef getCallwsURL(String ws_jndi) throws Exception;
 	
 }

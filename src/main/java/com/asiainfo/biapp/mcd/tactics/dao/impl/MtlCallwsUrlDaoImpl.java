@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCallwsUrlDao;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 
 /**
@@ -27,12 +27,12 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 @Repository("mtlCallwsUrlDao")
 public class MtlCallwsUrlDaoImpl extends JdbcDaoBase implements IMtlCallwsUrlDao {
 	private static Logger log = LogManager.getLogger();
-	public List findByCond(MtlCallwsUrl mtlCallwsUrl) throws Exception {
+	public List findByCond(McdSysInterfaceDef mtlCallwsUrl) throws Exception {
 		String sql = "select * from mcd_sys_interface_def  a where 1=1 ";
 		if (mtlCallwsUrl.getCallwsUrlCode() != null) {
 			sql = sql + " and a.callws_url_code = '" + mtlCallwsUrl.getCallwsUrlCode() + "'";
 		}
-		List<MtlCallwsUrl>	result = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<MtlCallwsUrl>(MtlCallwsUrl.class));
+		List<McdSysInterfaceDef>	result = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<McdSysInterfaceDef>(McdSysInterfaceDef.class));
 
 		return result;
 	}

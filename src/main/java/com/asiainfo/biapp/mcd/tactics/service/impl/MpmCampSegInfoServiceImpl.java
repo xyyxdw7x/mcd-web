@@ -55,7 +55,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
@@ -559,7 +559,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			String result_desc = "";
 			
 			log.info("开始提交审批 ！");
-			MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+			McdSysInterfaceDef url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
 		
 			QName name=new QName("http://impl.biz.web.tz","commitApproveInfo");
 			org.apache.axis.client.Service service = new  org.apache.axis.client.Service();
