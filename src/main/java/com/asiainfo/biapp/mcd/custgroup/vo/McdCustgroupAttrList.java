@@ -10,7 +10,7 @@ package com.asiainfo.biapp.mcd.custgroup.vo;
  * @version 1.0
  */
 
-public class MtlGroupAttrRel {
+public class McdCustgroupAttrList {
 	private String listTableName;
 	private String attrCol;
 	private String customGroupId;

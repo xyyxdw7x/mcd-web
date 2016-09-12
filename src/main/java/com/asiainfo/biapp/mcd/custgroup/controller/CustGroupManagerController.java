@@ -29,7 +29,7 @@ import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -105,13 +105,13 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			pager.getTotalPage();
 			if ("true".equals(clickQueryFlag)) {
 				//TODO:List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom(user.getUserid(),keyWords,pager);
-				List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
+				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
 				pager = pager.pagerFlip();
 				pager.setResult(resultList);
 			} else {
 				pager = pager.pagerFlip();
 				//TODO:List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom(user.getUserid(),keyWords,pager);
-				List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
+				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
 				pager.setResult(resultList);
 			}
 			dataJson.put("status", "200");
@@ -147,7 +147,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		JSONObject dataJson = new JSONObject();
 		try {
 			//TODO:List<MtlGroupInfo> custGroupList = custGroupInfoService.getMyCustGroup(user.getUserid());
-			List<MtlGroupInfo> custGroupList = custGroupInfoService.getMyCustGroup("chenyg");
+			List<McdCustgroupDef> custGroupList = custGroupInfoService.getMyCustGroup("chenyg");
 			if(!CollectionUtils.isEmpty(custGroupList)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(custGroupList));

@@ -7,21 +7,21 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 @Repository("custGroupAttrRelDao")
 public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAttrRelDao{
 	@Override
-	public List<MtlGroupAttrRel> initTermLable(String custGroupId) {
+	public List<McdCustgroupAttrList> initTermLable(String custGroupId) {
 		List<Map<String, Object>> list = null;
-		List<MtlGroupAttrRel> mtlGroupAttrRelList = new ArrayList<MtlGroupAttrRel>();
+		List<McdCustgroupAttrList> mtlGroupAttrRelList = new ArrayList<McdCustgroupAttrList>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT  * FROM mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?")
 				   .append(" and list_table_name=(select max(list_table_name) from mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?)");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new String[]{custGroupId,custGroupId});
 			for (Map map : list) {
-				MtlGroupAttrRel mtlGroupAttrRel = new MtlGroupAttrRel();
+				McdCustgroupAttrList mtlGroupAttrRel = new McdCustgroupAttrList();
 				mtlGroupAttrRel.setAttrCol((String) map.get("ATTR_COL"));
 				mtlGroupAttrRel.setAttrColName((String) map.get("ATTR_COL_NAME"));
 				mtlGroupAttrRel.setAttrColLength((String) map.get("ATTR_COL_LENGTH"));

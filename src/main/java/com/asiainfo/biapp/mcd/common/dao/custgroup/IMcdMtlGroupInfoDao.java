@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.common.dao.custgroup;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 
 public interface IMcdMtlGroupInfoDao {
 
@@ -12,14 +12,14 @@ public interface IMcdMtlGroupInfoDao {
      * @param custgroupId
      * @return
      */
-    MtlGroupInfo getMtlGroupInfo(String custgroupId);
+    McdCustgroupDef getMtlGroupInfo(String custgroupId);
 
 	/**
 	 * 新建策略页面   选取营销人群    初始化我的客户群信息
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
+	public List<McdCustgroupDef> getMyCustGroup(String currentUserId);
 	
 	/**
 	 * 点击更多按钮  关键字查询，分页方式展示我的客户群 
@@ -32,7 +32,7 @@ public interface IMcdMtlGroupInfoDao {
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
+	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
 	
 	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
 	
@@ -60,6 +60,6 @@ public interface IMcdMtlGroupInfoDao {
 	 * @param custGroupId
 	 * @return
 	 */
-	public MtlGroupInfo getCustGroupInfoById(String custGroupId);
+	public McdCustgroupDef getCustGroupInfoById(String custGroupId);
 
 }

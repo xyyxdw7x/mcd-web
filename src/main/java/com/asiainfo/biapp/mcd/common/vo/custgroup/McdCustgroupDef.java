@@ -12,7 +12,11 @@ import java.util.Date;
  * @version 1.0
  */
 
-public class MtlGroupInfo implements java.io.Serializable {
+public class McdCustgroupDef implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -540338883022707256L;
 	private String customGroupId;
 	private String customGroupName;
 	private String customGroupDesc;

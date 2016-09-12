@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.common.service.custgroup;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 
 /**
@@ -21,7 +21,7 @@ public interface CustGroupAttrRelService {
 	 * @param custGroupId
 	 * @return
 	 */
-	public List<MtlGroupAttrRel> initTermLable(String custGroupId);
+	public List<McdCustgroupAttrList> initTermLable(String custGroupId);
 	public List<RuleTimeTermLable> getFunctionNameById(String functionId);
 	
 }

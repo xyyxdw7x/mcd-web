@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 
@@ -92,9 +92,9 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 	*/}
 	
 	@Override
-	public List<MtlGroupInfo> getChoiceCustom(String campsegId) {
+	public List<McdCustgroupDef> getChoiceCustom(String campsegId) {
 		List<Map<String,Object>> list = null;
-		List<MtlGroupInfo> result = new ArrayList<MtlGroupInfo>();
+		List<McdCustgroupDef> result = new ArrayList<McdCustgroupDef>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("select mcd_camp_custgroup_list.*,mcd_custgroup_def.Custom_Group_Name,mcd_custgroup_def.Custom_Num,mcd_custgroup_def.Create_User_Id,mcd_custgroup_def.Custom_Status_Id,mcd_custgroup_def.Update_Cycle from mcd_camp_custgroup_list ")
@@ -103,7 +103,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
 			
 			for (Map map : list) {
-				MtlGroupInfo mtlGroupInfo = new MtlGroupInfo();
+				McdCustgroupDef mtlGroupInfo = new McdCustgroupDef();
 				mtlGroupInfo.setCampsegCustGroupId((String) map.get("CAMPSEG_CUSTGROUP_ID"));
 				mtlGroupInfo.setCustomGroupId((String) map.get("CUSTGROUP_ID"));
 				mtlGroupInfo.setCreateUserId((String) map.get("CREATE_USER_ID"));

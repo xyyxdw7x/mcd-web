@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.avoid.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
+import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;;
 
@@ -18,17 +18,17 @@ import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;;
 
 public interface IMcdMtlBotherAvoidDao {
 	
-	public List searchBotherAvoidUser(Pager pager, MtlBotherAvoid mtlBotherAvoid);
+	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid);
 
-	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception;
+	public void addBotherAvoidUserInMem(List<McdBotherAvoid> list) throws Exception;
 	
-	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl);
+	public int findBotherAvoidUserInMem(McdBotherAvoid mtl);
 		
-	public void updateBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
+	public void updateBotherAvoidUserInMem(List<McdBotherAvoid> list) ;
 	
-	public void updateDelBotherAvoidUserInMem(MtlBotherAvoid mtl) ;
+	public void updateDelBotherAvoidUserInMem(McdBotherAvoid mtl) ;
 	
-	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) ;
+	public void updatebBatchDelBotherAvoidUserInMem(List<McdBotherAvoid> list) ;
 	
 	/**
 	 * 条件查询

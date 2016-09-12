@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.avoid.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
+import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 
@@ -17,17 +17,17 @@ import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
  */
 public interface IMcdMtlBotherAvoidService {
 
-	public List searchBotherAvoidUser(Pager pager, MtlBotherAvoid mtlBotherAvoid);
+	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid);
 	
-	public void addBotherAvoidUser(List<MtlBotherAvoid> list);
+	public void addBotherAvoidUser(List<McdBotherAvoid> list);
 	
-	public int chkIsExist(MtlBotherAvoid mtl);
+	public int chkIsExist(McdBotherAvoid mtl);
 		
-	public void mdfBotherAvoidUser(List<MtlBotherAvoid> list);
+	public void mdfBotherAvoidUser(List<McdBotherAvoid> list);
 	
-	public void delBotherAvoidUser(MtlBotherAvoid mtl);
+	public void delBotherAvoidUser(McdBotherAvoid mtl);
 	
-	public void batchDelBotherAvoidUser(List<MtlBotherAvoid> list);
+	public void batchDelBotherAvoidUser(List<McdBotherAvoid> list);
 	
 	public MtlBotherContactConfig getMtlBotherContactConfig(String campsegTypeId,String channelId,int campsegCityType);
 	

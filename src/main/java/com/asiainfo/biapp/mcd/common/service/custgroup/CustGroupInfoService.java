@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 
 /**
@@ -29,13 +29,13 @@ public interface CustGroupInfoService {
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
+	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
 	/**
 	 * 新建策略页面   选取营销人群    初始化我的客户群信息
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
+	public List<McdCustgroupDef> getMyCustGroup(String currentUserId);
 	
 	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
 
@@ -87,7 +87,7 @@ public interface CustGroupInfoService {
      * @param custgroupId
      * @return
      */
-    MtlGroupInfo getMtlGroupInfo(String custgroupId);
+    McdCustgroupDef getMtlGroupInfo(String custgroupId);
     /**
      * @Title: getDataDateCustomNum
      * @Description: 最新数据日期，初始客户群规模

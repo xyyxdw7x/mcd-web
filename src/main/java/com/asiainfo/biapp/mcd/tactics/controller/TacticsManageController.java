@@ -34,13 +34,13 @@ import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -1189,7 +1189,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		String custGroupId = request.getParameter("custGroupId");
-		List<MtlGroupAttrRel> list = null;
+		List<McdCustgroupAttrList> list = null;
 		try {
 			if(StringUtil.isNotEmpty(custGroupId)){
 				list = custGroupAttrRelService.initTermLable(custGroupId);
@@ -1413,7 +1413,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						//策略和标签的关系信息
 						//List<MtlCampsegCustgroup> campsegCiCustgroupsListAll = mpmCampSegInfoService.findCustGroupListByCampsegId(campsegId);  
 						//策略与客户群的关心信息
-						List<MtlGroupInfo> custGroupList = mtlCampsegCustgroupService.getChoiceCustom(campsegId);
+						List<McdCustgroupDef> custGroupList = mtlCampsegCustgroupService.getChoiceCustom(campsegId);
 						//基础标签
 						//List<MtlCampsegCustgroup> basicLableList = new ArrayList<MtlCampsegCustgroup>();
 						//业务标签

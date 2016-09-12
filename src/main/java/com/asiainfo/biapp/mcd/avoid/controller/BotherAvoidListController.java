@@ -21,7 +21,7 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
-import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
+import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 //migration
 //import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -78,7 +78,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		if(!MpmUtil.isNumeric(pageNum)){
 			pageNum = "1";
 		}
-		MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+		McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 		
 		//查询关键字
 		mtlBotherAvoid.setKeywords(request.getParameter("keywords"));
@@ -159,7 +159,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		
 		JSONObject dataJson = new JSONObject();
 		
-		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
+		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
 		
 		if(StringUtils.isEmpty(request.getParameter("productNo")) ||
 				StringUtils.isEmpty(request.getParameter("avoidBotherType")) ||
@@ -181,7 +181,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		}
 		
 		for (int i = 0; i < productNo.length; i++) {
-			MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+			McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 			mtlBotherAvoid.setAvoidBotherType(request.getParameter("avoidBotherType")); 
 			mtlBotherAvoid.setAvoidCustType(Short.parseShort(request.getParameter("avoidCustType"))); 
 			mtlBotherAvoid.setProductNo(productNo[i].trim()); 
@@ -226,7 +226,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			return;
 		}
 		
-		MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+		McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 		mtlBotherAvoid.setAvoidBotherType(request.getParameter("avoidBotherType")); //渠道类型id
 		mtlBotherAvoid.setAvoidCustType(Short.parseShort(request.getParameter("avoidCustType"))); //营销类型id
 		mtlBotherAvoid.setProductNo(request.getParameter("productNo")); //手机号码
@@ -259,14 +259,14 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			return;
 		}
 		
-		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
+		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
 		
 		String[] batchRemoveArr = request.getParameterValues("batchRemove");
 		String[] key = null;
 		for (int i = 0; i < batchRemoveArr.length; i++) {
 			key = batchRemoveArr[i].split(",");
 			
-			MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+			McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 			mtlBotherAvoid.setProductNo(key[0]); //手机号码
 			mtlBotherAvoid.setAvoidCustType(Short.parseShort(key[1])); //营销类型id
 			mtlBotherAvoid.setAvoidBotherType(key[2]); //渠道类型id
@@ -306,7 +306,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			return;
 		}
 		
-		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
+		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
 		
 		String[] productNo =(new String(multiFile.getBytes())).split("\r\n");
 		
@@ -338,7 +338,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		}
 		
 		for (int i = 0; i < telNo.size(); i++) {
-			MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+			McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 			mtlBotherAvoid.setAvoidBotherType(request.getParameter("avoidBotherType")); //
 			mtlBotherAvoid.setAvoidCustType(Short.parseShort(request.getParameter("avoidCustType"))); //
 			mtlBotherAvoid.setProductNo(telNo.get(i)); //
@@ -384,19 +384,19 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			return;
 		}
 		
-		List<MtlBotherAvoid> list = new ArrayList<MtlBotherAvoid>();
+		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
 		
 		String updateConfirmFlg = request.getParameter("updateConfirmFlg"); //确认修改标志
 		
 		//修改前
-		MtlBotherAvoid mtlBotherAvoidBef = new MtlBotherAvoid();
+		McdBotherAvoid mtlBotherAvoidBef = new McdBotherAvoid();
 		mtlBotherAvoidBef.setAvoidBotherType(request.getParameter("avoidBotherTypeBef")); //
 		mtlBotherAvoidBef.setAvoidCustType(Short.parseShort(request.getParameter("avoidCustTypeBef"))); //
 		mtlBotherAvoidBef.setProductNo(request.getParameter("productNoBef")); //
 		list.add(mtlBotherAvoidBef);
 		
 		//修改后
-		MtlBotherAvoid mtlBotherAvoid = new MtlBotherAvoid();
+		McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
 		mtlBotherAvoid.setAvoidBotherType(request.getParameter("avoidBotherType")); //
 		mtlBotherAvoid.setAvoidCustType(Short.parseShort(request.getParameter("avoidCustType"))); //
 		mtlBotherAvoid.setProductNo(request.getParameter("productNoBef")); //

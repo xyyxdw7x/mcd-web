@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 
 public interface CustGroupInfoDao {
 	/**
@@ -18,13 +18,13 @@ public interface CustGroupInfoDao {
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
+	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
 	/**
 	 * 新建策略页面   选取营销人群    初始化我的客户群信息
 	 * @param currentUserId
 	 * @return
 	 */
-	public List<MtlGroupInfo> getMyCustGroup(String currentUserId);
+	public List<McdCustgroupDef> getMyCustGroup(String currentUserId);
 	
 	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
 	
@@ -82,7 +82,7 @@ public interface CustGroupInfoDao {
     /**
      * 根据客户群ID查找客户群信息
      */
-    public MtlGroupInfo getMtlGroupInfo(String custgroupId);
+    public McdCustgroupDef getMtlGroupInfo(String custgroupId);
     /**
      * @Title: getDataDateCustomNum
      * @Description: 最新数据日期，初始客户群规模
@@ -146,7 +146,7 @@ public interface CustGroupInfoDao {
 	 * @return
 	 */
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
-	MtlGroupInfo getCustGroupInfoById(String custGroupId);
+	McdCustgroupDef getCustGroupInfoById(String custGroupId);
 	/**
 	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group
 	 */

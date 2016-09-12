@@ -27,7 +27,7 @@ import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -226,7 +226,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                     McdCampCustgroupList mtlCampsegCustGroup = (McdCampCustgroupList) custGroupSelectList.get(i);
                     if ("CG".equals(mtlCampsegCustGroup.getCustgroupType())) {
                          //待定
-                         MtlGroupInfo mtlGroupInfo = custGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
+                         McdCustgroupDef mtlGroupInfo = custGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
                          if(mtlGroupInfo != null && mtlGroupInfo.getCustomGroupName() != null){
                              ruleDesc = "客户群：" + mtlGroupInfo.getCustomGroupName();// +"<br>" + ruleDesc;
                          }

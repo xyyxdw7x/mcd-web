@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 @Service("mtlCampsegCustgroupService")
@@ -13,7 +13,7 @@ public class MtlCampsegCustgroupServiceImpl implements MtlCampsegCustgroupServic
 	
 	private MtlCampsegCustgroupDao mtlCampsegCustgroupDao;
 	@Override
-	public List<MtlGroupInfo> getChoiceCustom(String campsegId) {
+	public List<McdCustgroupDef> getChoiceCustom(String campsegId) {
 		return mtlCampsegCustgroupDao.getChoiceCustom(campsegId);
 	}
 }

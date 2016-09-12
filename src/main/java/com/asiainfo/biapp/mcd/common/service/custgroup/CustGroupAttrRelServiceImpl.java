@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupAttrRelDao;
-import com.asiainfo.biapp.mcd.custgroup.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 @Service("custGroupAttrRelService")
 public class CustGroupAttrRelServiceImpl implements CustGroupAttrRelService{
@@ -15,8 +15,8 @@ public class CustGroupAttrRelServiceImpl implements CustGroupAttrRelService{
 	private CustGroupAttrRelDao custGroupAttrRelDao;
 
 	@Override
-	public List<MtlGroupAttrRel> initTermLable(String custGroupId) {
-		List<MtlGroupAttrRel> mtlGroupAttrRelList = null;
+	public List<McdCustgroupAttrList> initTermLable(String custGroupId) {
+		List<McdCustgroupAttrList> mtlGroupAttrRelList = null;
 		try {
 			mtlGroupAttrRelList = this.custGroupAttrRelDao.initTermLable(custGroupId);
 		} catch (Exception e) {

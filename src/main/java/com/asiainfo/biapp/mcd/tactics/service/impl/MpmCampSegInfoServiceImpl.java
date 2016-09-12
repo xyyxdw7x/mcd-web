@@ -37,7 +37,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlan;
 import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
@@ -1277,7 +1277,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 		String province = Configure.getInstance().getProperty("PROVINCE");
 		//查询客户群的周期性
-		MtlGroupInfo groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+		McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
 		if(StringUtil.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
@@ -1302,7 +1302,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String ss[] = tableName.split("_");
 				
 				//查询客户群的周期性
-				MtlGroupInfo groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+				McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
 				int updateCycle = groupInfo.getUpdateCycle();
 				String sql = "";
 				if("2".equals(updateCycle) || "3".equals(updateCycle)){

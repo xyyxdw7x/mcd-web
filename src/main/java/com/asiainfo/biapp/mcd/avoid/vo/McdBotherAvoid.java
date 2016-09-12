@@ -12,7 +12,11 @@ import java.util.Date;
  * @version 1.0
  */
 
-public class MtlBotherAvoid implements java.io.Serializable {
+public class McdBotherAvoid implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3287967961146327866L;
 	private String avoidBotherType;
 	private Short avoidCustType;
 	private String productNo;

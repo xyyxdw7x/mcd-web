@@ -16,7 +16,7 @@ import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
+import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
@@ -53,13 +53,13 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		return num;
 	}
 	@Override
-	public List<MtlGroupInfo> getMoreMyCustom(String currentUserId,String keyWords,Pager pager) {
-		List<MtlGroupInfo> custGroupList = null;
+	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords,Pager pager) {
+		List<McdCustgroupDef> custGroupList = null;
 		try {
 			custGroupList = custGroupInfoDao.getMoreMyCustom(currentUserId,keyWords,pager);
 			if(CollectionUtils.isNotEmpty(custGroupList)){
 				for(int i = 0 ; i < custGroupList.size(); i++) {
-					MtlGroupInfo mtlGroupInfo = custGroupList.get(i);
+					McdCustgroupDef mtlGroupInfo = custGroupList.get(i);
 					String userName = "";
 					if((StringUtil.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtil.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
 						IUser user = mpmUserPrivilegeService.getUser(mtlGroupInfo.getCreateUserId());
@@ -76,8 +76,8 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	}
 	
 	@Override
-	public List<MtlGroupInfo> getMyCustGroup(String currentUserId) {
-		List<MtlGroupInfo> custGroupList = null;
+	public List<McdCustgroupDef> getMyCustGroup(String currentUserId) {
+		List<McdCustgroupDef> custGroupList = null;
 		try {
 			custGroupList = custGroupInfoDao.getMyCustGroup(currentUserId);
 		} catch (Exception e) {
@@ -264,7 +264,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
      * 根据客户群ID查找客户群信息
      */
     @Override
-    public MtlGroupInfo getMtlGroupInfo(String custgroupId) {
+    public McdCustgroupDef getMtlGroupInfo(String custgroupId) {
         return custGroupInfoDao.getMtlGroupInfo(custgroupId);
     }
     /**
@@ -452,7 +452,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		List listResult = null;
 		if(avoidBotherFlag !=0 || contactControlFlag != 0){
 			//根据客户群ID获取客户群信息
-			MtlGroupInfo mtlGroupInfo = custGroupInfoDao.getMtlGroupInfo(customgroupid);
+			McdCustgroupDef mtlGroupInfo = custGroupInfoDao.getMtlGroupInfo(customgroupid);
 			int updateCycle = 0;
 			if(null != mtlGroupInfo){
 				updateCycle = mtlGroupInfo.getUpdateCycle();  //客户群生成周期:1,一次性;2,月周期;3,日周期

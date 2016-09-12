@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
-import com.asiainfo.biapp.mcd.avoid.vo.MtlBotherAvoid;
+import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.MtlBotherContactConfig;
@@ -36,7 +36,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public List searchBotherAvoidUser(Pager pager, MtlBotherAvoid mtlBotherAvoid) {
+	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
 		
 		StringBuffer buffer = new StringBuffer();
 
@@ -95,7 +95,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtl 免打扰客户vo
 	 */
 	@Override
-	public void addBotherAvoidUserInMem(List<MtlBotherAvoid> list) throws Exception {
+	public void addBotherAvoidUserInMem(List<McdBotherAvoid> list) throws Exception {
 		StringBuffer insertSql = new StringBuffer("INSERT INTO mcd_bother_avoid ");
 		insertSql
 				.append("(AVOID_BOTHER_TYPE,AVOID_CUST_TYPE,PRODUCT_NO,ENTER_TIME,USER_TYPE_ID,CREATE_USER_ID,CREATE_USER_NAME)")
@@ -109,7 +109,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 				Iterator it = Locallist.iterator();
 				int i = 0;
 				while (it.hasNext()) {
-					MtlBotherAvoid mtl = (MtlBotherAvoid) it.next();
+					McdBotherAvoid mtl = (McdBotherAvoid) it.next();
 			
 					ps.setString(1,mtl.getAvoidBotherType());
 					ps.setInt(2,mtl.getAvoidCustType());
@@ -137,7 +137,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtl 免打扰客户vo
 	 */
 	@Override
-	public int findBotherAvoidUserInMem(MtlBotherAvoid mtl) {
+	public int findBotherAvoidUserInMem(McdBotherAvoid mtl) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT COUNT(1) FROM mcd_bother_avoid WHERE ");
 		sb.append(" AVOID_BOTHER_TYPE = '"+mtl.getAvoidBotherType()+"'");
@@ -153,9 +153,9 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtl 更新前后的免打扰客户vo
 	 */
 	@Override
-	public void updateBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
-		MtlBotherAvoid oldMtl = list.get(0);//修改前
-		MtlBotherAvoid newMtl = list.get(1);//修改后
+	public void updateBotherAvoidUserInMem(List<McdBotherAvoid> list) {
+		McdBotherAvoid oldMtl = list.get(0);//修改前
+		McdBotherAvoid newMtl = list.get(1);//修改后
 		
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
@@ -185,7 +185,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtl 免打扰客户vo
 	 */
 	@Override
-	public void updateDelBotherAvoidUserInMem(MtlBotherAvoid mtl) {
+	public void updateDelBotherAvoidUserInMem(McdBotherAvoid mtl) {
 	
 		List<Object> plist = new ArrayList<Object>();
 		StringBuffer sb = new StringBuffer();
@@ -208,7 +208,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtl 免打扰客户vo的list
 	 */
 	@Override
-	public void updatebBatchDelBotherAvoidUserInMem(List<MtlBotherAvoid> list) {
+	public void updatebBatchDelBotherAvoidUserInMem(List<McdBotherAvoid> list) {
 		StringBuffer deleteSql = new StringBuffer();
 		deleteSql.append("DELETE FROM mcd_bother_avoid WHERE ")
 		.append("AVOID_BOTHER_TYPE = ? ")
@@ -224,7 +224,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 				Iterator it = Locallist.iterator();
 				int i = 0;
 				while (it.hasNext()) {
-					MtlBotherAvoid mtl = (MtlBotherAvoid) it.next();
+					McdBotherAvoid mtl = (McdBotherAvoid) it.next();
 					ps.setString(1,mtl.getAvoidBotherType());
 					ps.setInt(2,mtl.getAvoidCustType());
 					ps.setString(3,mtl.getProductNo());
