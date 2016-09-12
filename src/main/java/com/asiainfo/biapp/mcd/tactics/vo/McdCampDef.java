@@ -18,34 +18,10 @@ public class McdCampDef {
 	@Column(name = "CAMPSEG_ID")
 	private String campId; // 活动编号
 
-	@Transient
-	private Integer pageNum; // 当前页
-	@Transient
-	private Integer isSelectMy; // 查询的是否是自己的 0 ：是 1 ：不是
-	@Transient
-	private Boolean isZJ;// 是否是浙江
-	@Transient
-	private Integer isMy;// 是否是自己创建的 0 ：是 1 ：不是
-	@Transient
-	private String channelId;
-	@Transient
-	private String keywords;// 关键字
-	@Transient
-	private boolean isFatherNode; // 是否为策略基础信息；true:是基本信息；false:子规则
-	@Transient
-	private String isApprove;
-	@Transient
-	private String custgroupId; // 客户群
-	@Transient
-	private List<MtlChannelDef> mtlChannelDefList; // 渠道执行
-	@Transient
-	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
-	
-
 	@Column(name = "CAMPSEG_STAT_ID")
 	private Short statId; // 营销活动状态ID
 	@Column(name = "CREATE_USERID")
-	private String createUserid; // 活动策划人
+	private String createUserId; // 活动策划人
 	@Column(name = "CAMP_PRI_ID")
 	private Short priId;// 活动优先级,见维表:dim_camp_pri
 	@Column(name = "CAMPSEG_NAME")
@@ -89,25 +65,32 @@ public class McdCampDef {
 	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
 	
 	@Transient
+	private Integer pageNum; // 当前页
+	@Transient
+	private Integer isSelectMy; // 查询的是否是自己的 0 ：是 1 ：不是
+	@Transient
+	private Boolean isZJ;// 是否是浙江
+	@Transient
+	private Integer isMy;// 是否是自己创建的 0 ：是 1 ：不是
+	@Transient
+	private String channelId;
+	@Transient
+	private String keywords;// 关键字
+	@Transient
+	private boolean isFatherNode; // 是否为策略基础信息；true:是基本信息；false:子规则
+	@Transient
+	private String isApprove;
+	@Transient
+	private String custgroupId; // 客户群
+	@Transient
+	private List<MtlChannelDef> mtlChannelDefList; // 渠道执行
+	@Transient
+	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
+	@Transient
 	private Short approveResult; // 审批结果
 	@Transient
 	private String approveResultDesc;// 审批结果描述
 	
-
-	@Transient
-	private String avoidBotherTypeIds;// 免打扰客户类型ID
-
-
-	@Transient
-	private String planName;
-
-	public String getPlanName() {
-		return planName;
-	}
-
-	public void setPlanName(String planName) {
-		this.planName = planName;
-	}
 
 	public boolean getIsFatherNode() {
 		return isFatherNode;
@@ -116,7 +99,6 @@ public class McdCampDef {
 	public void setFatherNode(boolean isFatherNode) {
 		this.isFatherNode = isFatherNode;
 	}
-
 
 	public MtlChannelDefCall getMtlChannelDefCall() {
 		return mtlChannelDefCall;
@@ -352,11 +334,11 @@ public class McdCampDef {
 	}
 
 	public String getCreateUserid() {
-		return createUserid;
+		return createUserId;
 	}
 
 	public void setCreateUserid(String createUserid) {
-		this.createUserid = createUserid;
+		this.createUserId = createUserid;
 	}
 
 	public String getKeywords() {
@@ -375,7 +357,6 @@ public class McdCampDef {
 		this.createUserName = createUserName;
 	}
 
-
 	public Integer getTargerUserNums() {
 		return targerUserNums;
 	}
@@ -383,18 +364,6 @@ public class McdCampDef {
 	public void setTargerUserNums(Integer targerUserNums) {
 		this.targerUserNums = targerUserNums;
 	}
-
-
-
-	public String getAvoidBotherTypeIds() {
-		return avoidBotherTypeIds;
-	}
-
-	public void setAvoidBotherTypeIds(String avoidBotherTypeIds) {
-		this.avoidBotherTypeIds = avoidBotherTypeIds;
-	}
-
-
 
 	public String getInitCustListTab() {
 		return custListTab;
@@ -411,7 +380,5 @@ public class McdCampDef {
 	public void setApproveRemindTime(Date approveRemindTime) {
 		this.lastRemindTime = approveRemindTime;
 	}
-
-
 
 }

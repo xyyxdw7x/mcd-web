@@ -187,15 +187,15 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public void updateCampSegInfo(McdCampDef segInfo) throws Exception {
 		//TODO: this.getHibernateTemplate().update(segInfo);
 	    final String sql = "update mcd_camp_def set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
-	                    + "approve_result=?,approve_result_desc=?,create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,PLAN_ID=?,"
-	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,avoid_bother_type_ids=?,"
+	                    + "create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,PLAN_ID=?,"
+	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,"
 	                    + "init_cust_list_tab = ?,event_rule_desc=?,approve_remind_time=?,is_filter_disturb=? where campseg_id = ?";
 	    this.getJdbcTemplate().update(sql);
 	    Object[] objects = new Object[]{segInfo.getCampsegName(),segInfo.getCampsegNo(),segInfo.getStartDate(),segInfo.getEndDate(),segInfo.getCampsegStatId(),
-	                    segInfo.getCampsegTypeId(),segInfo.getCampPriId(),segInfo.getApproveFlowid(),segInfo.getApproveResult(),segInfo.getApproveResultDesc(),
+	                    segInfo.getCampsegTypeId(),segInfo.getCampPriId(),segInfo.getApproveFlowid(),
 	                    segInfo.getCreateUserName(),segInfo.getCreateUserid(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),
 	                    segInfo.getPlanId(),segInfo.getCampsegPid(),
-	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),segInfo.getAvoidBotherTypeIds(),
+	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),
 	                    segInfo.getInitCustListTab(),segInfo.getEventRuleDesc(),segInfo.getApproveRemindTime(),
 	                    segInfo.getIsFileterDisturb(),segInfo.getCampsegId()};
 	   

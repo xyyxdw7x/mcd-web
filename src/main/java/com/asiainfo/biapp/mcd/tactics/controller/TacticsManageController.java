@@ -1394,7 +1394,6 @@ public class TacticsManageController extends BaseMultiActionController {
 					String ruleName = "";
 					McdCampDef mtlCampSeginfo = campsegList.get(i);
 					if("0".equals(mtlCampSeginfo.getCampsegPid())){
-						mtlCampSeginfo.setPlanName(planName);
 						basicCampSeginfoList.add(mtlCampSeginfo);
 						map.put("commonAttr", basicCampSeginfoList);
 						
