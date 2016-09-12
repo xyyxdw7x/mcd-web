@@ -9,10 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.asiainfo.biapp.mcd.model.quota.DeptsQuotaStatistics;
 
 public class QuotaUtils {
 	//private static Logger log = LogManager.getLogger();

@@ -1,7 +1,5 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
-import com.asiainfo.biapp.mcd.bean.BaseBean;
-
 /**
  * 
  * Title: 
@@ -12,7 +10,7 @@ import com.asiainfo.biapp.mcd.bean.BaseBean;
  * @version 1.0
  */
 
-public class McdApproveLog extends BaseBean{
+public class McdApproveLog{
 	private String approveFlowId;
 	private String approveResult;
 	
