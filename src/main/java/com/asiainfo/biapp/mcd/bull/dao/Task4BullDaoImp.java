@@ -13,13 +13,13 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.model.McdCampsegTask;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
 @Repository(value="task4BullDao")
 public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 	private static final Logger log = LogManager.getLogger();
 	@Override
-	public void updateCampPri(final List<MtlCampSeginfo> campsegs){
+	public void updateCampPri(final List<McdCampDef> campsegs){
 		
 		String sql="update mcd_camp_def t set t.camp_pri_id=? where t.campseg_id=?";
 		String sql2="update mcd_sms_schedule t set t.pri_id=? where t.campseg_id=?";

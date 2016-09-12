@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.kafka.cep.CepKafKaProducer;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.wsclient.impl.gansu.MpmCampsegEventUtil;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;

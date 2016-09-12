@@ -11,7 +11,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 
 /*
@@ -32,13 +32,13 @@ public interface IMpmCampSegInfoService {
 	 * @param campsegId
 	 * @return
 	 */
-	public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo,Pager pager);
+	public List searchIMcdCampsegInfo(McdCampDef segInfo,Pager pager);
 	/**
 	 * 修改营销活动信息  浙江IMCD
 	 * @param seginfoList
 	 * @throws MpmException
 	 */
-	public String updateCampSegWaveInfoZJ(List<MtlCampSeginfo> seginfoList) throws MpmException;
+	public String updateCampSegWaveInfoZJ(List<McdCampDef> seginfoList) throws MpmException;
 	
     /**
      * gaowj3
@@ -53,9 +53,9 @@ public interface IMpmCampSegInfoService {
      */
     public List getDimCampsegStatList();
 
-	public String saveCampSegWaveInfoZJ(List<MtlCampSeginfo> campSegInfoList);
+	public String saveCampSegWaveInfoZJ(List<McdCampDef> campSegInfoList);
 
-	void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId, MtlCampSeginfo segInfo,String flag) throws MpmException;
+	void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId, McdCampDef segInfo,String flag) throws MpmException;
 
 
 	/**
@@ -68,7 +68,7 @@ public interface IMpmCampSegInfoService {
 	 */
 	public String submitApprovalXml(String campsegId);
 
-	List<MtlCampSeginfo> getChildCampSeginfo(String campsegId);
+	List<McdCampDef> getChildCampSeginfo(String campsegId);
     /**
      * 根据渠道ID获取渠道
      * @param planId
@@ -111,7 +111,7 @@ public interface IMpmCampSegInfoService {
      * @return
      * @throws MpmException
      */
-    public MtlCampSeginfo getCampSegInfo(String campSegId) throws MpmException;
+    public McdCampDef getCampSegInfo(String campSegId) throws MpmException;
     /**
      * 撤销工单
      * @param campsegId  策略ID
@@ -162,7 +162,7 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 * @throws MpmException
 	 */
-	public List<MtlCampSeginfo> getCampSeginfoListByCampsegId(String campsegId) throws MpmException;
+	public List<McdCampDef> getCampSeginfoListByCampsegId(String campsegId) throws MpmException;
 	
 	/**
 	 * 根据campsegId删除业务标签或者基础标签 add by lixq10  只删除时机对应的数据
@@ -170,7 +170,7 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 */
 	public boolean deleteLableByCampsegId(String campsegId);
-	void updateCampsegInfo(MtlCampSeginfo segInfo);
+	void updateCampsegInfo(McdCampDef segInfo);
 	/**
 	 * 根据营销状态ID获取营销状态
 	 * @param string

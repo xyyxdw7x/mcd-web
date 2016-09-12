@@ -23,7 +23,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -36,7 +36,7 @@ import com.asiainfo.biframe.utils.string.StringUtil;
 public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegInfoDao {
 	protected final Log log = LogFactory.getLog(getClass());
     @Override
-    public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager) {
+    public List searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager) {
         List parameterList = new ArrayList();
         JdbcTemplate jt = this.getJdbcTemplate();
         StringBuffer buffer = new StringBuffer();
@@ -136,14 +136,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         return list;
     }
 	@Override
-	public void updateCampsegInfo(MtlCampSeginfo segInfo) {
+	public void updateCampsegInfo(McdCampDef segInfo) {
 		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
 	}
 	/**
 	 * 保存活动信息
 	 */
 	@Override
-	public Serializable saveCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
+	public Serializable saveCampSegInfo(McdCampDef segInfo) throws Exception {
 		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
 		this.getJdbcTemplateTool().save(segInfo);
 		return segInfo.getCampsegId();
@@ -152,13 +152,13 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	 * 根据活动编号取活动信息
 	 */
 	@Override
-	public MtlCampSeginfo getCampSegInfo(String campSegId) throws Exception {
-        MtlCampSeginfo obj = null;
+	public McdCampDef getCampSegInfo(String campSegId) throws Exception {
+        McdCampDef obj = null;
         try {
             final String sql = "select * from mcd_camp_def seginfo where seginfo.campseg_id = ? ";
             Object[] args=new Object[]{campSegId};
             int[] argTypes=new int[]{Types.VARCHAR};
-            List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
+            List<McdCampDef> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampDef>(McdCampDef.class));
             if(list != null && list.size() > 0){
                 obj = list.get(0);
             }
@@ -177,14 +177,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         final String sql = "select * from mcd_camp_def seginfo where seginfo.campseg_pid = ? order by CREATE_TIME asc ";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
-        List<MtlCampSeginfo> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<MtlCampSeginfo>(MtlCampSeginfo.class));
+        List<McdCampDef> list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampDef>(McdCampDef.class));
         return list;
 	}
 	/**
 	 * 更新活动信息
 	 */
 	@Override
-	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
+	public void updateCampSegInfo(McdCampDef segInfo) throws Exception {
 		//TODO: this.getHibernateTemplate().update(segInfo);
 	    final String sql = "update mcd_camp_def set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
 	                    + "approve_result=?,approve_result_desc=?,create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,campseg_desc=?,PLAN_ID=?,contacted_user_nums=?,"
@@ -241,7 +241,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      * 根据活动编号删除活动信息
      */
     @Override
-    public void deleteCampSegInfo(MtlCampSeginfo segInfo) throws Exception {
+    public void deleteCampSegInfo(McdCampDef segInfo) throws Exception {
         String campsegId = segInfo.getCampsegId();
         try {
             // 1 取活动下属活动在属性设置阶段设置的活动模版编号
@@ -811,8 +811,8 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	 * @throws Exception
 	 * */
 	@Override
-	public MtlCampSeginfo getCampsegTopId(String campsegId) throws Exception {
-		MtlCampSeginfo mtlCampSeginfo = getCampSegInfo(campsegId);
+	public McdCampDef getCampsegTopId(String campsegId) throws Exception {
+		McdCampDef mtlCampSeginfo = getCampSegInfo(campsegId);
 		if (mtlCampSeginfo != null && !StringUtils.isEmpty(mtlCampSeginfo.getCampsegPid())) {
 			if ("0".equals(mtlCampSeginfo.getCampsegPid())) {
 				return mtlCampSeginfo;

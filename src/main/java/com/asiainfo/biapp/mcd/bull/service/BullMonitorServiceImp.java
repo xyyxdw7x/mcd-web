@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.bull.dao.UserDeptDao;
 import com.asiainfo.biapp.mcd.model.McdCampsegTask;
 import com.asiainfo.biapp.mcd.model.bull.BullMonitor;
 import com.asiainfo.biapp.mcd.model.quota.UserDept;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.util.QuotaUtils;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -112,10 +112,10 @@ public class BullMonitorServiceImp implements BullMonitorService {
 
 	@Override
 	public void batchModifyCampPri(String[] ids) {
-		List<MtlCampSeginfo> list = new ArrayList<MtlCampSeginfo>();
+		List<McdCampDef> list = new ArrayList<McdCampDef>();
 
 		for (int i = 0; i < ids.length; i++) {
-			MtlCampSeginfo temp = new MtlCampSeginfo();
+			McdCampDef temp = new McdCampDef();
 			temp.setCampPriId((short) (i + 1));
 			temp.setCampsegId(ids[i]);
 			list.add(temp);

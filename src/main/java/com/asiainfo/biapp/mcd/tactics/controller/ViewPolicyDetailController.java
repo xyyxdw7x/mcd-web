@@ -46,7 +46,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biframe.utils.date.DateUtil;
 import com.asiainfo.biframe.utils.string.DES;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -95,10 +95,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/viewPolicyDetail")
     public ModelAndView viewPolicyDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
+        McdCampDef segInfoBean = new McdCampDef();     
 
         String campsegId = request.getParameter("campsegId");
-        MtlCampSeginfo segInfo;
+        McdCampDef segInfo;
         if(campsegId!=null&&!"".equals(campsegId)){
             segInfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
         }else{
@@ -170,7 +170,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             map.put("campsegTypeId", segInfoBean.getCampsegTypeId());
             map.put("campsegTypeName", campsegTypeName);
             map.put("createTime", createTime);
-            List<MtlCampSeginfo> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
+            List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
     
             //mtlCampSeginfoList.addAll(mtlCampSeginfoList1);
             map.put("childMtlCampSeginfo", mtlCampSeginfoList);
@@ -224,7 +224,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/getMtlStcPlan")
     public ModelAndView getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
-    	MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
+    	McdCampDef segInfoBean = new McdCampDef();     
         //String planid = request.getParameter("planid");
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
@@ -234,7 +234,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
          // “匹配的政策”
         try{
             String campsegId = request.getParameter("campsegId");
-            MtlCampSeginfo segInfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
+            McdCampDef segInfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
              String planid = segInfo.getPlanId();//获取产品编号qzd548
              JSONObject stcPlanJSON = new JSONObject();
              if(planid!=null&&!"".equals(planid)){
@@ -284,7 +284,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @RequestMapping("/getTargetCustomerbase")
     public ModelAndView getTargetCustomerbase(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        MtlCampSeginfo segInfoBean = new MtlCampSeginfo();     
+        McdCampDef segInfoBean = new McdCampDef();     
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -451,7 +451,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      */
     @RequestMapping("/getDeliveryChannel")
     public ModelAndView getDeliveryChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
-    	MtlCampSeginfo segInfoBean = new MtlCampSeginfo();        
+    	McdCampDef segInfoBean = new McdCampDef();        
         
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
@@ -687,7 +687,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter out = response.getWriter();
         String campsegId = request.getParameter("campsegId");
-        MtlCampSeginfo mtlCampSeginfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
+        McdCampDef mtlCampSeginfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
         JSONObject result = new JSONObject();
         try{
             //调用接口获取请求返回的XML

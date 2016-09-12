@@ -52,7 +52,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
@@ -105,7 +105,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		
 		JSONObject dataJson = new JSONObject();
-		List<MtlCampSeginfo> campSegInfoList = new ArrayList<MtlCampSeginfo>();
+		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();
 		
 		try {
 			User user = this.getUser(request, response);
@@ -131,7 +131,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			// 审批标识
 			String isApprove = commonAttr.get("isApprove").toString();
 			// 先保存基本信息 父亲节点
-			MtlCampSeginfo campSeginfoBasic = new MtlCampSeginfo();
+			McdCampDef campSeginfoBasic = new McdCampDef();
 			campSeginfoBasic.setCampsegId(MpmUtil.generateCampsegAndTaskNo());//TODO:wb
 			campSeginfoBasic.setCampsegName(campsegName);
 			campSeginfoBasic.setStartDate(putDateStart);
@@ -367,7 +367,7 @@ public class TacticsManageController extends BaseMultiActionController {
 					mtlChannelDefList.add(mtlChannelDef);
 				}
 
-				MtlCampSeginfo campSeginfo = new MtlCampSeginfo();
+				McdCampDef campSeginfo = new McdCampDef();
 				campSeginfo.setCampsegName(campsegName);
 				campSeginfo.setStartDate(putDateStart);
 				campSeginfo.setEndDate(putDateEnd);
@@ -457,7 +457,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
-		List<MtlCampSeginfo> campSegInfoList = new ArrayList<MtlCampSeginfo>();
+		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();
 		try {
 			//TODO:initActionAttributes(request);
 			/*McdTempletForm bussinessLableTemplate = new McdTempletForm();
@@ -483,12 +483,12 @@ public class TacticsManageController extends BaseMultiActionController {
 //					审批标识
 					String isApprove = commonAttr.get("isApprove").toString(); 
 					//查询子策略信息
-					List<MtlCampSeginfo> campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
+					List<McdCampDef> campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
 					//先保存基本信息  父亲节点
-					MtlCampSeginfo campSeginfoBasic = null;
-					Map<String, MtlCampSeginfo> campSeginfoMap = new HashMap<String, MtlCampSeginfo>();
+					McdCampDef campSeginfoBasic = null;
+					Map<String, McdCampDef> campSeginfoMap = new HashMap<String, McdCampDef>();
 					for(int m = 0;m<campsegList.size();m++){
-						MtlCampSeginfo temp = campsegList.get(m);
+						McdCampDef temp = campsegList.get(m);
 						campSeginfoMap.put(temp.getCampsegId(), temp);
 						if("0".equals(campsegList.get(m).getCampsegPid())){ // 取父策略
 							campSeginfoBasic = temp;
@@ -525,7 +525,7 @@ public class TacticsManageController extends BaseMultiActionController {
 					for(int i = 0;i<planIdArray.length;i++){
 						String campsegId = "";
 						for(int j=0;j<campsegList.size();j++){
-							MtlCampSeginfo mtlCampSeginfo = campsegList.get(j);
+							McdCampDef mtlCampSeginfo = campsegList.get(j);
 							if(!("0").equals(mtlCampSeginfo.getCampsegPid()) && mtlCampSeginfo.getPlanId().equals(planIdArray[i])){
 								campsegId = mtlCampSeginfo.getCampsegId();
 							}
@@ -774,7 +774,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							mtlChannelDefList.add(mtlChannelDef);
 						}
 						
-						MtlCampSeginfo campSeginfo = campSeginfoMap.get(campsegId);
+						McdCampDef campSeginfo = campSeginfoMap.get(campsegId);
 						campSeginfo.setCampsegId(campsegId);
 						campSeginfo.setCampsegName(campsegName);
 						campSeginfo.setStartDate(putDateStart);
@@ -1388,8 +1388,8 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			//父策略id
 			String campsegPid = StringUtil.isNotEmpty(request.getParameter("campsegPid")) ? request.getParameter("campsegPid") : "2016061317242609";				
-			List<MtlCampSeginfo> campsegList = null;
-			List<MtlCampSeginfo> basicCampSeginfoList = new ArrayList<MtlCampSeginfo>();  //父策略
+			List<McdCampDef> campsegList = null;
+			List<McdCampDef> basicCampSeginfoList = new ArrayList<McdCampDef>();  //父策略
 			String planName = "";   //
 			String planType=""; //政策类别
 			Map map = new HashMap();  //存放最终拼装的参数		
@@ -1399,7 +1399,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				Map paramMap = new HashMap();
 				for(int i = 0;i<campsegList.size();i++){  //区分出子策略和父策略  （兼容多规则）
 					String ruleName = "";
-					MtlCampSeginfo mtlCampSeginfo = campsegList.get(i);
+					McdCampDef mtlCampSeginfo = campsegList.get(i);
 					if("0".equals(mtlCampSeginfo.getCampsegPid())){
 						mtlCampSeginfo.setPlanName(planName);
 						basicCampSeginfoList.add(mtlCampSeginfo);

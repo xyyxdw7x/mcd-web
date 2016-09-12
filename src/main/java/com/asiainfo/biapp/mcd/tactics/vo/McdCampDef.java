@@ -16,7 +16,7 @@ import javax.persistence.Transient;
  *
  */
 @Table(name="mcd_camp_def")
-public class MtlCampSeginfo {
+public class McdCampDef {
 	@Id
 	@Column(name="CAMPSEG_ID")
 	private String campsegId; // 活动编号

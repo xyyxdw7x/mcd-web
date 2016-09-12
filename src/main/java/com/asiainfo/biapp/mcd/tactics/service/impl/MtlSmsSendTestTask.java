@@ -33,7 +33,7 @@ import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.vo.MtlSysCampConfig;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.huawei.msp.mmap.server.MspWebServiceLocator;
 import com.huawei.msp.mmap.server.MspWebServicePortType;
 import com.huawei.msp.mmap.server.domain.AddTaskRsp;
@@ -571,7 +571,7 @@ public String getSmsTestReplayContent(String replyXml) {
             if(replyContent.equals("1")){//回复内容为1  进行 判断是否需要暂停，如果需要暂停，则 判断 策略状态是否为测试不通过，如果不是，则修改 策略状态为 测试不通过
                 //获取当前策略状态
                 try {
-                    MtlCampSeginfo mtlCampSeginfo = mpmCampSegInfoDao.getCampSegInfo(campsegid);
+                    McdCampDef mtlCampSeginfo = mpmCampSegInfoDao.getCampSegInfo(campsegid);
                     //看状态是否为49  不是设置为49测试不通过
                     String status = mtlCampSeginfo.getCampsegStatId()+"";
                     if(!status.equals(MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG)){

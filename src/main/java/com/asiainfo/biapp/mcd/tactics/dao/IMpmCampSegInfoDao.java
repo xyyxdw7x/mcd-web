@@ -8,7 +8,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegStat;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCampSeginfo;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
 public interface IMpmCampSegInfoDao {
     /**
@@ -16,7 +16,7 @@ public interface IMpmCampSegInfoDao {
      * @param 
      * @return
      */
-    public List searchIMcdCampsegInfo(MtlCampSeginfo segInfo, Pager pager);
+    public List searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager);
     /**
      * gaowj3
      * JDBC查询业务状态
@@ -34,21 +34,21 @@ public interface IMpmCampSegInfoDao {
 	 * @param tableName
 	 * @param campsegId
 	 */
-	public void updateCampsegInfo(MtlCampSeginfo segInfo);
+	public void updateCampsegInfo(McdCampDef segInfo);
     
 	/**
 	 * 保存活动波次信息
 	 * @param segInfo
 	 * @throws Exception
 	 */
-	public Serializable saveCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
+	public Serializable saveCampSegInfo(McdCampDef segInfo) throws Exception;
 	/**
 	 * 根据编号取具体的某个活动波次信息
 	 * @param campSegId
 	 * @return
 	 * @throws Exception
 	 */
-	public MtlCampSeginfo getCampSegInfo(String campSegId) throws Exception;
+	public McdCampDef getCampSegInfo(String campSegId) throws Exception;
 	/**
 	 * 查询活动下所有子活下一级活动信息
 	 * @param campsegId
@@ -68,7 +68,7 @@ public interface IMpmCampSegInfoDao {
 	 * @param segInfo
 	 * @throws Exception
 	 */
-	public void updateCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
+	public void updateCampSegInfo(McdCampDef segInfo) throws Exception;
     /**
      * 根据营销活动父节点查询父节点下所有节点 营销活动编码
      * 2013-6-4 16:38:32
@@ -84,7 +84,7 @@ public interface IMpmCampSegInfoDao {
      * @author Mazh
      * @param segInfo
      */
-    public void deleteCampSegInfo(MtlCampSeginfo segInfo) throws Exception;
+    public void deleteCampSegInfo(McdCampDef segInfo) throws Exception;
     /**
      * 修改策略完成时间（延期）
      * @param campsegId
@@ -183,7 +183,7 @@ public interface IMpmCampSegInfoDao {
 	 * @param campsegId
 	 * @return
 	 */
-	public MtlCampSeginfo getCampsegTopId(String campsegId) throws Exception;
+	public McdCampDef getCampsegTopId(String campsegId) throws Exception;
     /**
      * 根据工单 编号获取子策略（规则）
      * @param assing_id 审批工单号
