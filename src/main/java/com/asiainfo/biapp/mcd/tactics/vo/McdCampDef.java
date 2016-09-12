@@ -83,7 +83,7 @@ public class McdCampDef {
 	@Transient
 	private String custgroupId; // 客户群
 	@Transient
-	private List<MtlChannelDef> mtlChannelDefList; // 渠道执行
+	private List<McdCampChannelList> mtlChannelDefList; // 渠道执行
 	@Transient
 	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
 	@Transient
@@ -165,11 +165,11 @@ public class McdCampDef {
 		this.cityId = cityId;
 	}
 
-	public List<MtlChannelDef> getMtlChannelDefList() {
+	public List<McdCampChannelList> getMtlChannelDefList() {
 		return mtlChannelDefList;
 	}
 
-	public void setMtlChannelDefList(List<MtlChannelDef> mtlChannelDefList) {
+	public void setMtlChannelDefList(List<McdCampChannelList> mtlChannelDefList) {
 		this.mtlChannelDefList = mtlChannelDefList;
 	}
 

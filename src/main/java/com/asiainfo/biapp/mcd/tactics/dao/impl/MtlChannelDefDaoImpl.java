@@ -15,7 +15,7 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 
 /**
@@ -32,7 +32,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefDao {
     private static Logger log = LogManager.getLogger();
 
-	public void save(MtlChannelDef def) throws Exception {
+	public void save(McdCampChannelList def) throws Exception {
 		//TODO: this.getHibernateTemplate().save(def);
 		this.getJdbcTemplateTool().save(def);
 	}
@@ -168,7 +168,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		});
 	*/
 		String sql = "select * from mcd_camp_channel_list mcd where mcd.id.campseg_id='" + campsegId + "'";
-		List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
+		List<McdCampChannelList> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
 		return mtlChannelDefs;
 	}
 	
@@ -250,11 +250,11 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      * @return
      */
     @Override
-    public List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
+    public List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
         StringBuffer sql = new StringBuffer(" select * from mcd_camp_channel_list mcd where mcd.id.campseg_id in (select campseg_id from mcd_camp_def where campseg_pid = ?) ");
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};
-        List<MtlChannelDef> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<MtlChannelDef>(MtlChannelDef.class));
+        List<McdCampChannelList> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
         return mtlChannelDefs;
     }
 	

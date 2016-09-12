@@ -53,7 +53,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
@@ -209,7 +209,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				// 获取渠道执行的基本信息
 				String execContentStr = rule.get("execContent").toString();
 				org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);
-				List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
+				List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
 				MtlChannelDefCall mtlChannelDefCall = null;
 
 				String streamsId = "";
@@ -226,7 +226,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						}
 					}
 
-					MtlChannelDef mtlChannelDef = new MtlChannelDef();
+					McdCampChannelList mtlChannelDef = new McdCampChannelList();
 					String channelId = String.valueOf(obj.get("chanelId"));
 					String content = "";
 					boolean ifHasVariate = false;
@@ -575,7 +575,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						//获取渠道执行的基本信息
 						String execContentStr = rule.get("execContent").toString();
 						org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);
-						List<MtlChannelDef> mtlChannelDefList = new ArrayList<MtlChannelDef>();
+						List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
 						
 						String streamsId = "";
 						String streamName = "";
@@ -591,7 +591,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								}
 							}
 							
-							MtlChannelDef mtlChannelDef = new MtlChannelDef();
+							McdCampChannelList mtlChannelDef = new McdCampChannelList();
 							String channelId = String.valueOf(obj.get("chanelId")) ;
 							String content = "";
 							boolean ifHasVariate = false;
@@ -1436,7 +1436,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 						}*/
 						//保存策略与渠道的关系
-						List<MtlChannelDef> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(campsegId); 
+						List<McdCampChannelList> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(campsegId); 
 						//所有适配的渠道
 						List<MtlStcPlanChannel> AllChannel = mpmCampSegInfoService.getStcPlanChannel(mtlCampSeginfo.getPlanId());
 						
@@ -1459,18 +1459,15 @@ public class TacticsManageController extends BaseMultiActionController {
 						for(int m = 0;m<AllChannel.size();m++){
 							MtlStcPlanChannel planChannel = AllChannel.get(m);
 							if(!planChannel.isChoose()){ //如果之前没做过操作
-								MtlChannelDef def = new MtlChannelDef();
+								McdCampChannelList def = new McdCampChannelList();
 								/*MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
 								mtlChannelDefId.setCampsegId(campsegId);
 								mtlChannelDefId.setChannelNo(m+10);
 								mtlChannelDefId.setUsersegId((short) 0);
 								def.setId(mtlChannelDefId);*/
 								def.setCampsegId(campsegId);
-								def.setChannelNo(m+10);
-								def.setUsersegId((short) 0);
 								
 								def.setChannelId(planChannel.getChannelId());
-								def.setChanneltypeId(Integer.parseInt(planChannel.getChannelId()));
 								def.setChoose(false);
 								mtlChannelDefList.add(def);
 							}
@@ -1478,7 +1475,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						
 						//实时事件中回显场景信息
 						for(int q = 0;q<mtlChannelDefList.size();q++){
-							MtlChannelDef channelDefTemp = mtlChannelDefList.get(q);
+							McdCampChannelList channelDefTemp = mtlChannelDefList.get(q);
 							String channelId = channelDefTemp.getChannelId();
 							String functionId= "";
 							String functionName = "";

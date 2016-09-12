@@ -58,7 +58,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCampsegCustgroup;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biframe.privilege.IUser;
@@ -168,7 +168,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String[] channelIds = null;
 				String[] channeltypeIds = null;
 				
-				List<MtlChannelDef> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
+				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
 			
 			
 				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
@@ -208,11 +208,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					//3、保存渠道
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
-							MtlChannelDef mtlChannelDef = mtlChannelDefList.get(i);
+							McdCampChannelList mtlChannelDef = mtlChannelDefList.get(i);
 							mtlChannelDef.setCampsegId(campsegId);
-							mtlChannelDef.setChannelNo(i);
-							mtlChannelDef.setUsersegId((short) 0);
-							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
@@ -310,7 +307,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 //				String[] channelIds = null;
 //				String[] channeltypeIds = null;
 				
-				List<MtlChannelDef> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
+				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
 /*				int updateCycle = 0;
 				if(StringUtil.isNotEmpty(segInfo.getUpdatecycle())){
 					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
@@ -350,16 +347,13 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					//3、保存渠道     ------------------无需判断是否已经存在
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
-							MtlChannelDef mtlChannelDef = mtlChannelDefList.get(i);
+							McdCampChannelList mtlChannelDef = mtlChannelDefList.get(i);
 //							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
 //							mtlChannelDefId.setCampsegId(campsegId);
 //							mtlChannelDefId.setChannelNo(i);
 //							mtlChannelDefId.setUsersegId((short) 0);
 //							mtlChannelDef.setId(mtlChannelDefId);
 							mtlChannelDef.setCampsegId(campsegId);
-							mtlChannelDef.setChannelNo(i);
-							mtlChannelDef.setUsersegId((short) 0);
-							mtlChannelDef.setChanneltypeId(Integer.parseInt(mtlChannelDef.getChannelId()));							
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
 					}
@@ -1114,12 +1108,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     boolean isSMSTest = false;
                     for(McdCampDef childMtl : childMtlCampSeginfoList){
                         //查找活动下的所有渠道
-                        List<MtlChannelDef> mtlChannelDefList = this.getChannelByCampsegId(childMtl.getCampsegId());
+                        List<McdCampChannelList> mtlChannelDefList = this.getChannelByCampsegId(childMtl.getCampsegId());
                         boolean isSMS = false;
                     
-                        for(MtlChannelDef mtlChannelDef : mtlChannelDefList){
+                        for(McdCampChannelList mtlChannelDef : mtlChannelDefList){
                             //是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
-                            if(mtlChannelDef.getChanneltypeId().intValue() ==MpmCONST.CHANNEL_TYPE_SMS_INT){
+                            if(Integer.parseInt(mtlChannelDef.getChannelId()) ==MpmCONST.CHANNEL_TYPE_SMS_INT){
                                 //短信测试流程，暂时不写
                                 isSMS = true;                    
                                 
@@ -1240,7 +1234,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @param campsegId
      * @return
      */
-    private List<MtlChannelDef> getChannelByCampsegId(String campsegId) {
+    private List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
         return mtlChannelDefDao.getChannelByCampsegId(campsegId);
     }
     /**

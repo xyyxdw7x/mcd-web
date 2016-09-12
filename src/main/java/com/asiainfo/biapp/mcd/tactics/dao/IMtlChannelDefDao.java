@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.tactics.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 
 /**
@@ -22,7 +22,7 @@ public interface IMtlChannelDefDao {
 	 * @param def
 	 * @throws Exception
 	 */
-	public void save(MtlChannelDef def) throws Exception;
+	public void save(McdCampChannelList def) throws Exception;
 	/**
 	 * 删除活动波次下所有分组的营销渠道设置
 	 * @param campsegId
@@ -114,5 +114,5 @@ public interface IMtlChannelDefDao {
      * @param campsegId
      * @return
      */
-    public List<MtlChannelDef> getChannelByCampsegId(String campsegId);
+    public List<McdCampChannelList> getChannelByCampsegId(String campsegId);
 }
