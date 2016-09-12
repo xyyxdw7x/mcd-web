@@ -10,12 +10,12 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.model.MtlChannelDef;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.util.MpmConfigure;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -113,7 +113,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 				String xnwjcy = MpmConfigure.getInstance().getProperty("RULE_TIME_XNWJCY");
 				String functionId = "";
 				for(int j = 0;j<list.size();j++){
-					MtlChannelDef mtlChannelDef = (MtlChannelDef) list.get(j);
+					McdCampChannelList mtlChannelDef = (McdCampChannelList) list.get(j);
 					functionId = mtlChannelDef.getFunctionId();
 					if(StringUtil.isNotEmpty(functionId)){
 						if(functionId.equals(qqwjcy) || functionId.equals(qqwzw) || functionId.equals(xnwjcy)){
