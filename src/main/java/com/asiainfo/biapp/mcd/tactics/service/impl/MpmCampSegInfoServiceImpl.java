@@ -450,7 +450,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 //		if(flag.equals("0")){	//基础客户群
 			McdCampCustgroupList mtlCampsegCustGroup = new McdCampCustgroupList();
 			mtlCampsegCustGroup.setCustgroupId(segInfo.getCustgroupId());
-			mtlCampsegCustGroup.setCampsegId(campsegId);
+			mtlCampsegCustGroup.setCampId(campsegId);
 			mtlCampsegCustGroup.setCustgroupName("test");
 			mtlCampsegCustGroup.setCustgroupType("CG"); //客户群类型
 		
