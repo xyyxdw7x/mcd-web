@@ -90,295 +90,221 @@ public class McdCampDef {
 	private Short approveResult; // 审批结果
 	@Transient
 	private String approveResultDesc;// 审批结果描述
-	
-
-	public boolean getIsFatherNode() {
-		return isFatherNode;
-	}
-
-	public void setFatherNode(boolean isFatherNode) {
-		this.isFatherNode = isFatherNode;
-	}
-
-	public MtlChannelDefCall getMtlChannelDefCall() {
-		return mtlChannelDefCall;
-	}
-
-	public void setMtlChannelDefCall(MtlChannelDefCall mtlChannelDefCall) {
-		this.mtlChannelDefCall = mtlChannelDefCall;
-	}
-
-
-	public Short getCampPriId() {
-		return priId;
-	}
-
-	public void setCampPriId(Short campPriId) {
-		this.priId = campPriId;
-	}
-
-	public Integer getCampClass() {
-		return campClass;
-	}
-
-	public void setCampClass(Integer campClass) {
-		this.campClass = campClass;
-	}
-
-	public String getCampsegId() {
+	public String getCampId() {
 		return campId;
 	}
-
-	public void setCampsegId(String campsegId) {
-		this.campId = campsegId;
+	public void setCampId(String campId) {
+		this.campId = campId;
 	}
-
-	public String getApproveFlowid() {
-		return approveFlowId;
+	public Short getStatId() {
+		return statId;
 	}
-
-	public void setApproveFlowid(String approveFlowid) {
-		this.approveFlowId = approveFlowid;
+	public void setStatId(Short statId) {
+		this.statId = statId;
 	}
-
-	public Short getApproveResult() {
-		return approveResult;
+	public String getCreateUserId() {
+		return createUserId;
 	}
-
-	public void setApproveResult(Short approveResult) {
-		this.approveResult = approveResult;
+	public void setCreateUserId(String createUserId) {
+		this.createUserId = createUserId;
 	}
-
-	public String getApproveResultDesc() {
-		return approveResultDesc;
+	public Short getPriId() {
+		return priId;
 	}
-
-	public void setApproveResultDesc(String approveResultDesc) {
-		this.approveResultDesc = approveResultDesc;
+	public void setPriId(Short priId) {
+		this.priId = priId;
 	}
-
-	public String getCityId() {
-		return cityId;
-	}
-
-	public void setCityId(String cityId) {
-		this.cityId = cityId;
-	}
-
-	public List<McdCampChannelList> getMtlChannelDefList() {
-		return mtlChannelDefList;
-	}
-
-	public void setMtlChannelDefList(List<McdCampChannelList> mtlChannelDefList) {
-		this.mtlChannelDefList = mtlChannelDefList;
-	}
-
-	public String getCustgroupId() {
-		return custgroupId;
-	}
-
-	public void setCustgroupId(String custgroupId) {
-		this.custgroupId = custgroupId;
-	}
-
-	public String getEventRuleDesc() {
-		return eventRuleDesc;
-	}
-
-	public void setEventRuleDesc(String eventRuleDesc) {
-		this.eventRuleDesc = eventRuleDesc;
-	}
-
-	public String getCepEventId() {
-		return cepEventId;
-	}
-
-	public void setCepEventId(String cepEventId) {
-		this.cepEventId = cepEventId;
-	}
-
-	public String getCampsegNo() {
-		return campNo;
-	}
-
-	public void setCampsegNo(String campsegNo) {
-		this.campNo = campsegNo;
-	}
-
-	public String getIsApprove() {
-		return isApprove;
-	}
-
-	public void setIsApprove(String isApprove) {
-		this.isApprove = isApprove;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Integer getDeptId() {
-		return deptId;
-	}
-
-	public void setDeptId(Integer deptId) {
-		this.deptId = deptId;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getCampsegPid() {
-		return pid;
-	}
-
-	public void setCampsegPid(String campsegPid) {
-		this.pid = campsegPid;
-	}
-
-	public Short getCampsegTypeId() {
-		return typeId;
-	}
-
-	public void setCampsegTypeId(Short campsegTypeId) {
-		this.typeId = campsegTypeId;
-	}
-
-	public String getPlanId() {
-		return planId;
-	}
-
-	public void setPlanId(String planId) {
-		this.planId = planId;
-	}
-
-	public Integer getIsFileterDisturb() {
-		return isFileterDisturb;
-	}
-
-	public void setIsFileterDisturb(Integer isFileterDisturb) {
-		this.isFileterDisturb = isFileterDisturb;
-	}
-
-	public String getCampsegName() {
+	public String getCampName() {
 		return campName;
 	}
-
-	public void setCampsegName(String campsegName) {
-		this.campName = campsegName;
+	public void setCampName(String campName) {
+		this.campName = campName;
 	}
-
 	public String getStartDate() {
 		return startDate;
 	}
-
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-
-	public Integer getPageNum() {
-		return pageNum;
+	public String getEndDate() {
+		return endDate;
 	}
-
-	public void setPageNum(Integer pageNum) {
-		this.pageNum = pageNum;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
-
-	public Integer getIsSelectMy() {
-		return isSelectMy;
+	public String getPid() {
+		return pid;
 	}
-
-	public void setIsSelectMy(Integer isSelectMy) {
-		this.isSelectMy = isSelectMy;
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
-
-	public Boolean getIsZJ() {
-		return isZJ;
+	public Short getTypeId() {
+		return typeId;
 	}
-
-	public void setIsZJ(Boolean isZJ) {
-		this.isZJ = isZJ;
+	public void setTypeId(Short typeId) {
+		this.typeId = typeId;
 	}
-
-	public Integer getIsMy() {
-		return isMy;
+	public String getPlanId() {
+		return planId;
 	}
-
-	public void setIsMy(Integer isMy) {
-		this.isMy = isMy;
+	public void setPlanId(String planId) {
+		this.planId = planId;
 	}
-
-	public Short getCampsegStatId() {
-		return statId;
+	public Integer getIsFileterDisturb() {
+		return isFileterDisturb;
 	}
-
-	public void setCampsegStatId(Short campsegStatId) {
-		this.statId = campsegStatId;
+	public void setIsFileterDisturb(Integer isFileterDisturb) {
+		this.isFileterDisturb = isFileterDisturb;
 	}
-
-	public String getChannelId() {
-		return channelId;
+	public Integer getDeptId() {
+		return deptId;
 	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
 	}
-
-	public String getCreateUserid() {
-		return createUserId;
+	public Date getCreateTime() {
+		return createTime;
 	}
-
-	public void setCreateUserid(String createUserid) {
-		this.createUserId = createUserid;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
-
-	public String getKeywords() {
-		return keywords;
-	}
-
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
-
 	public String getCreateUserName() {
 		return createUserName;
 	}
-
 	public void setCreateUserName(String createUserName) {
 		this.createUserName = createUserName;
 	}
-
+	public String getCityId() {
+		return cityId;
+	}
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
+	}
+	public String getApproveFlowId() {
+		return approveFlowId;
+	}
+	public void setApproveFlowId(String approveFlowId) {
+		this.approveFlowId = approveFlowId;
+	}
 	public Integer getTargerUserNums() {
 		return targerUserNums;
 	}
-
 	public void setTargerUserNums(Integer targerUserNums) {
 		this.targerUserNums = targerUserNums;
 	}
-
-	public String getInitCustListTab() {
+	public String getCustListTab() {
 		return custListTab;
 	}
-
-	public void setInitCustListTab(String initCustListTab) {
-		this.custListTab = initCustListTab;
+	public void setCustListTab(String custListTab) {
+		this.custListTab = custListTab;
 	}
-
-	public Date getApproveRemindTime() {
+	public Date getLastRemindTime() {
 		return lastRemindTime;
 	}
-
-	public void setApproveRemindTime(Date approveRemindTime) {
-		this.lastRemindTime = approveRemindTime;
+	public void setLastRemindTime(Date lastRemindTime) {
+		this.lastRemindTime = lastRemindTime;
+	}
+	public String getCampNo() {
+		return campNo;
+	}
+	public void setCampNo(String campNo) {
+		this.campNo = campNo;
+	}
+	public String getCepEventId() {
+		return cepEventId;
+	}
+	public void setCepEventId(String cepEventId) {
+		this.cepEventId = cepEventId;
+	}
+	public String getEventRuleDesc() {
+		return eventRuleDesc;
+	}
+	public void setEventRuleDesc(String eventRuleDesc) {
+		this.eventRuleDesc = eventRuleDesc;
+	}
+	public Integer getCampClass() {
+		return campClass;
+	}
+	public void setCampClass(Integer campClass) {
+		this.campClass = campClass;
+	}
+	public Integer getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+	public Integer getIsSelectMy() {
+		return isSelectMy;
+	}
+	public void setIsSelectMy(Integer isSelectMy) {
+		this.isSelectMy = isSelectMy;
+	}
+	public Boolean getIsZJ() {
+		return isZJ;
+	}
+	public void setIsZJ(Boolean isZJ) {
+		this.isZJ = isZJ;
+	}
+	public Integer getIsMy() {
+		return isMy;
+	}
+	public void setIsMy(Integer isMy) {
+		this.isMy = isMy;
+	}
+	public String getChannelId() {
+		return channelId;
+	}
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	public boolean getIsFatherNode() {
+		return isFatherNode;
+	}
+	public void setIsFatherNode(boolean isFatherNode) {
+		this.isFatherNode = isFatherNode;
+	}
+	public String getIsApprove() {
+		return isApprove;
+	}
+	public void setIsApprove(String isApprove) {
+		this.isApprove = isApprove;
+	}
+	public String getCustgroupId() {
+		return custgroupId;
+	}
+	public void setCustgroupId(String custgroupId) {
+		this.custgroupId = custgroupId;
+	}
+	public List<McdCampChannelList> getMtlChannelDefList() {
+		return mtlChannelDefList;
+	}
+	public void setMtlChannelDefList(List<McdCampChannelList> mtlChannelDefList) {
+		this.mtlChannelDefList = mtlChannelDefList;
+	}
+	public MtlChannelDefCall getMtlChannelDefCall() {
+		return mtlChannelDefCall;
+	}
+	public void setMtlChannelDefCall(MtlChannelDefCall mtlChannelDefCall) {
+		this.mtlChannelDefCall = mtlChannelDefCall;
+	}
+	public Short getApproveResult() {
+		return approveResult;
+	}
+	public void setApproveResult(Short approveResult) {
+		this.approveResult = approveResult;
+	}
+	public String getApproveResultDesc() {
+		return approveResultDesc;
+	}
+	public void setApproveResultDesc(String approveResultDesc) {
+		this.approveResultDesc = approveResultDesc;
 	}
 
 }

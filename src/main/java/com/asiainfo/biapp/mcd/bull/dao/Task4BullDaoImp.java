@@ -28,8 +28,8 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
-				ps.setShort(1, campsegs.get(index).getCampPriId());
-				ps.setString(2, campsegs.get(index).getCampsegId());
+				ps.setShort(1, campsegs.get(index).getPriId());
+				ps.setString(2, campsegs.get(index).getCampId());
 			}
 			
 			@Override
@@ -42,8 +42,8 @@ public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
-				ps.setShort(1, campsegs.get(index).getCampPriId());
-				ps.setString(2, campsegs.get(index).getCampsegId());
+				ps.setShort(1, campsegs.get(index).getPriId());
+				ps.setString(2, campsegs.get(index).getCampId());
 				
 			}
 			

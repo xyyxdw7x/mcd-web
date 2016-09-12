@@ -573,7 +573,7 @@ public String getSmsTestReplayContent(String replyXml) {
                 try {
                     McdCampDef mtlCampSeginfo = mpmCampSegInfoDao.getCampSegInfo(campsegid);
                     //看状态是否为49  不是设置为49测试不通过
-                    String status = mtlCampSeginfo.getCampsegStatId()+"";
+                    String status = mtlCampSeginfo.getStatId()+"";
                     if(!status.equals(MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG)){
                         updateCampsegInfoState(campsegid, MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG);
                     }
