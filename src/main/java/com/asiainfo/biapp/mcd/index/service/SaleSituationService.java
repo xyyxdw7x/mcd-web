@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.index.service;
 
-import com.asiainfo.biapp.mcd.model.index.SaleSituation;
+import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 public interface SaleSituationService {

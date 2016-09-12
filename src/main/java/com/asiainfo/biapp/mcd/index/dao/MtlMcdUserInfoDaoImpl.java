@@ -8,7 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.asiainfo.biapp.mcd.model.index.MtlMcdUserInfo;
+import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
 public class MtlMcdUserInfoDaoImpl extends  JdbcDaoSupport  implements MtlMcdUserInfoDao{
 	@Override

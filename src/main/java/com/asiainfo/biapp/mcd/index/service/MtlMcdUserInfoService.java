@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.index.service;
 
-import com.asiainfo.biapp.mcd.model.index.MtlMcdUserInfo;
+import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
 public interface MtlMcdUserInfoService {
 

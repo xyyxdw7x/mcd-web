@@ -2,8 +2,8 @@ package com.asiainfo.biapp.mcd.bull.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.model.quota.CityQuotaStatic;
-import com.asiainfo.biapp.mcd.model.quota.CurrentDateQuota;
+import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
+import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 
 public interface CurrentDateQuotaService {
 

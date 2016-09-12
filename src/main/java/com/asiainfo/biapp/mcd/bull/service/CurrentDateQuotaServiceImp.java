@@ -7,8 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.model.quota.CityQuotaStatic;
-import com.asiainfo.biapp.mcd.model.quota.CurrentDateQuota;
+import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
+import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.quota.dao.DeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.util.QuotaUtils;
 

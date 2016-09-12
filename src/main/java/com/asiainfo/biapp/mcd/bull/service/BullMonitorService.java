@@ -2,8 +2,8 @@ package com.asiainfo.biapp.mcd.bull.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.model.bull.BullMonitor;
-import com.asiainfo.biapp.mcd.model.quota.UserDept;
+import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
+import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 
 public interface BullMonitorService {
 

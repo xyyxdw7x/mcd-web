@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.index.dao.SaleSituationDao;
-import com.asiainfo.biapp.mcd.model.index.CampChannel;
-import com.asiainfo.biapp.mcd.model.index.RecommendCamp;
-import com.asiainfo.biapp.mcd.model.index.SaleSituation;
+import com.asiainfo.biapp.mcd.index.vo.CampChannel;
+import com.asiainfo.biapp.mcd.index.vo.RecommendCamp;
+import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 @Service("saleSituationService")

@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.index.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.model.index.RecommendCamp;
+import com.asiainfo.biapp.mcd.index.vo.RecommendCamp;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 public interface SaleSituationDao {

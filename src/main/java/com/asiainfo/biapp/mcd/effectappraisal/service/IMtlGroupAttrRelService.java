@@ -2,9 +2,9 @@ package com.asiainfo.biapp.mcd.effectappraisal.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.model.DimMtlAdivInfo;
-import com.asiainfo.biapp.mcd.model.MtlGroupAttrRel;
-import com.asiainfo.biapp.mcd.model.RuleTimeTermLable;
+import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
+import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
 
 /**
  * 

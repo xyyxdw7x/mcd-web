@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.bean.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.effectappraisal.dao.IcampsegPriorityDao;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 import com.asiainfo.biframe.utils.string.StringUtil;

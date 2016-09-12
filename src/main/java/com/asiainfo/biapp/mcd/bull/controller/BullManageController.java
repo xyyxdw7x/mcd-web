@@ -19,11 +19,11 @@ import com.asiainfo.biapp.mcd.bull.service.CurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.quota.service.QuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.enums.TasKStatus;
-import com.asiainfo.biapp.mcd.model.bull.BullMonitor;
-import com.asiainfo.biapp.mcd.model.quota.CityQuotaStatic;
+import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
+import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
-import com.asiainfo.biapp.mcd.model.quota.CurrentDateQuota;
-import com.asiainfo.biapp.mcd.model.quota.UserDept;
+import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
+import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 
 
 @Controller

@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.index.dao;
 
-import com.asiainfo.biapp.mcd.model.index.MtlMcdUserInfo;
+import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
 public interface MtlMcdUserInfoDao {
 
