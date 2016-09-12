@@ -255,7 +255,6 @@ public class TacticsManageController extends BaseMultiActionController {
 						if (StringUtil.isNotEmpty(channelCycle)) {
 							mtlChannelDef.setContactType(Integer.parseInt(channelCycle));
 						}
-						mtlChannelDef.setCepTriggerFlag(Integer.parseInt(channelTrigger));
 						if (StringUtil.isEmpty(paramDays)) {
 							paramDays = "0";
 						}
@@ -277,7 +276,6 @@ public class TacticsManageController extends BaseMultiActionController {
 							org.json.JSONObject ruleTimeParamObj = new org.json.JSONObject(eventParamJson);
 							String functionId = String.valueOf(ruleTimeParamObj.get("funcId")); // 场景id
 							mtlChannelDef.setFunctionId(functionId);
-							mtlChannelDef.setEventActiveTempletId(streamsId);
 							mtlChannelDef.setEventInstanceDesc(p.matcher(eventInstanceDesc).replaceAll(""));
 							if ("20160309093621645766".equals(functionId)|| "20160309093745413830".equals(functionId)) { // 汪斌修改回显场景，特殊处理
 								mtlChannelDef.setEventInstanceDesc(eventInstanceDesc);
@@ -620,7 +618,6 @@ public class TacticsManageController extends BaseMultiActionController {
 								if(StringUtil.isNotEmpty(channelCycle)){
 									mtlChannelDef.setContactType(Integer.parseInt(channelCycle));
 								}
-								mtlChannelDef.setCepTriggerFlag(Integer.parseInt(channelTrigger));
 								if(StringUtil.isEmpty(paramDays)){
 									paramDays = "0";
 								}
@@ -641,7 +638,6 @@ public class TacticsManageController extends BaseMultiActionController {
 									org.json.JSONObject ruleTimeParamObj = new org.json.JSONObject(eventParamJson);
 									String functionId = String.valueOf(ruleTimeParamObj.get("funcId")) ;  //场景id
 									mtlChannelDef.setFunctionId(functionId);
-									mtlChannelDef.setEventActiveTempletId(streamsId);
 									mtlChannelDef.setEventInstanceDesc(p.matcher(eventInstanceDesc).replaceAll(""));
 									if("20160309093621645766".equals(functionId)||"20160309093745413830".equals(functionId)){  //汪斌修改回显场景，特殊处理
 										mtlChannelDef.setEventInstanceDesc(eventInstanceDesc);
@@ -1452,9 +1448,9 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 						}
 						
-						for(int n=0;n<mtlChannelDefList.size();n++){
+						/*for(int n=0;n<mtlChannelDefList.size();n++){
 							mtlChannelDefList.get(n).setChoose(true);  //这个是已经做过处理的channel
-						}
+						}*/
 						
 						for(int m = 0;m<AllChannel.size();m++){
 							MtlStcPlanChannel planChannel = AllChannel.get(m);
@@ -1468,7 +1464,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								def.setCampsegId(campsegId);
 								
 								def.setChannelId(planChannel.getChannelId());
-								def.setChoose(false);
+//								def.setChoose(false);
 								mtlChannelDefList.add(def);
 							}
 						}

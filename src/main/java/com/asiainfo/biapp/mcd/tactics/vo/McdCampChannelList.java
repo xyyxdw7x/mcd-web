@@ -18,71 +18,50 @@ public class McdCampChannelList implements java.io.Serializable {
 	private String channelId;
 	@Column(name="CONTACT_TYPE")
 	private Integer contactType;
+	@Column(name="IF_HAVE_VAR")
+	private Short isHaveVar; //是否具有替换符,0:无;1:有
+	@Column(name="EXEC_CONTENT")
+	private String execContent;
+	@Column(name="TARGER_USER_NUMS")
+	private int targetUserNums;  //目标客户群
+	@Column(name="UPDATE_CYCLE")
+	private int updateCycle;
+	@Column(name="PARAM_DAYS")
+	private int paramDays;  //频次控制间隔天数
+	@Column(name="PARAM_NUM")
+	private int paramNum;   //频次控制发送次数
+	@Column(name="AWARD_MOUNT")
+	private Double awardMount; //奖励金额
+	@Column(name="EDIT_URL")
+	private String editUrl; //采编路径
+	@Column(name="HANDLE_URL")
+	private String handleUrl; // 办理路径
+	@Column(name="SEND_SMS")
+	private String sendSms ; // 短信用语
+	@Column(name="CHANNEL_ADIV_ID")
+	private String channelAdivId;  //运营位id
+	@Column(name="EXEC_TITLE")
+	private String wcTitle; // 微信标题
+	@Column(name="FILE_NAME")
+	private String wcFileName;  //微信本地文件名称
+	@Column(name="EVENT_INSTANCE_DESC")
+	private String eventInstanceDesc;
+	@Column(name="EVENT_PARAM_JSON")
+	private String eventParamJson;
+	@Column(name="FUNCTION_ID")
+	private String functionId;
+	
 	
 	@Transient
-	private String channelExtendInfo;
-	@Transient
-	private Short fmtMessFlag;
-	@Transient
-	private String testProductNo;
+	private String messageType;   //boss运营位  引用语类型
 	@Transient
 	private String channelName;
 	@Transient
-	private String feedbackinfo;
-	@Transient
-	private String oriChannelContent;
-	@javax.persistence.Column(name="IF_HAVE_VAR")
-	private Short ifHaveVar; //是否具有替换符,0:无;1:有
-	@javax.persistence.Column(name="EXEC_CONTENT")
-	private String execContent;
-	@Transient
-	private String sxRecommendDesc;//陕西推荐对象描述
-	@Transient
-	private String onlineServiceUrl;//陕西网上营业厅url
-	@Transient
-	private String exeContentType;//营销用语类型
-	@Transient
-	private String campsegInstruct;//营销指令
-	@javax.persistence.Column(name="TARGER_USER_NUMS")
-	private int targetUserNums;  //目标客户群
-	@Transient
-	private Integer sendTimeLimit;//短信派发时限字段，用于限定渠道短信派发的时间（单位：天）:
-	@javax.persistence.Column(name="UPDATE_CYCLE")
-	private int updateCycle;
-	@javax.persistence.Column(name="PARAM_DAYS")
-	private int paramDays;  //频次控制间隔天数
-	@javax.persistence.Column(name="PARAM_NUM")
-	private int paramNum;   //频次控制发送次数
-	@javax.persistence.Column(name="AWARD_MOUNT")
-	private Double awardMount; //奖励金额
-	@javax.persistence.Column(name="EDIT_URL")
-	private String editUrl; //采编路径
-	@javax.persistence.Column(name="HANDLE_URL")
-	private String handleUrl; // 办理路径
-	@javax.persistence.Column(name="SEND_SMS")
-	private String sendSms ; // 短信用语
-	@javax.persistence.Column(name="CHANNEL_ADIV_ID")
-	private String channelAdivId;  //运营位id
-	@Transient
-	private int cepTriggerFlag;  //判断是否是实施触发
-	@Transient
-	private boolean isChoose;  //该渠道在修改之前是否进行过操作  比如增删改查
-	@Transient
-	private String messageType;   //boss运营位  引用语类型
-	@javax.persistence.Column(name="EXEC_TITLE")
-	private String execTitle; // 微信标题
-	@javax.persistence.Column(name="FILE_NAME")
-	private String fileName;  //微信本地文件名称
-	@javax.persistence.Column(name="EVENT_ACTIVE_TEMPLET_ID")
-	private String eventActiveTempletId;
-	@javax.persistence.Column(name="EVENT_INSTANCE_DESC")
-	private String eventInstanceDesc;
-	@javax.persistence.Column(name="EVENT_PARAM_JSON")
-	private String eventParamJson;
-	@javax.persistence.Column(name="FUNCTION_ID")
-	private String functionId;
-	@Transient
 	private String functionName;
+	/*@Transient
+	private boolean isChoose;  //该渠道在修改之前是否进行过操作  比如增删改查
+*/	
+
 
 	public String getCampsegId() {
 		return campId;
@@ -108,13 +87,6 @@ public class McdCampChannelList implements java.io.Serializable {
 		this.functionId = functionId;
 	}
 
-	public String getEventActiveTempletId() {
-		return eventActiveTempletId;
-	}
-
-	public void setEventActiveTempletId(String eventActiveTempletId) {
-		this.eventActiveTempletId = eventActiveTempletId;
-	}
 
 	public String getEventInstanceDesc() {
 		return eventInstanceDesc;
@@ -156,38 +128,6 @@ public class McdCampChannelList implements java.io.Serializable {
 		this.updateCycle = updateCycle;
 	}
 
-	public Integer getSendTimeLimit() {
-		return sendTimeLimit;
-	}
-
-	public void setSendTimeLimit(Integer sendTimeLimit) {
-		this.sendTimeLimit = sendTimeLimit;
-	}
-
-	public String getExeContentType() {
-		return exeContentType;
-	}
-
-	public void setExeContentType(String exeContentType) {
-		this.exeContentType = exeContentType;
-	}
-
-	public String getCampsegInstruct() {
-		return campsegInstruct;
-	}
-
-	public void setCampsegInstruct(String campsegInstruct) {
-		this.campsegInstruct = campsegInstruct;
-	}
-
-	public boolean getIsChoose() {
-		return isChoose;
-	}
-
-	public void setChoose(boolean isChoose) {
-		this.isChoose = isChoose;
-	}
-
 	/**
 	 * 扩展字段，用于派单也面显礄1�7
 	 * @return
@@ -204,29 +144,6 @@ public class McdCampChannelList implements java.io.Serializable {
 	public McdCampChannelList() {
 	}
 
-	public String getChannelExtendInfo() {
-		return channelExtendInfo;
-	}
-
-	public void setChannelExtendInfo(String channelExtendInfo) {
-		this.channelExtendInfo = channelExtendInfo;
-	}
-
-	public Short getFmtMessFlag() {
-		return fmtMessFlag;
-	}
-
-	public void setFmtMessFlag(Short fmtMessFlag) {
-		this.fmtMessFlag = fmtMessFlag;
-	}
-
-	public String getTestProductNo() {
-		return testProductNo;
-	}
-
-	public void setTestProductNo(String testProductNo) {
-		this.testProductNo = testProductNo;
-	}
 
 	public String getChannelId() {
 		return channelId;
@@ -244,28 +161,13 @@ public class McdCampChannelList implements java.io.Serializable {
 		this.contactType = contactType;
 	}
 
-	public String getFeedbackinfo() {
-		return feedbackinfo;
-	}
-
-	public void setFeedbackinfo(String feedbackinfo) {
-		this.feedbackinfo = feedbackinfo;
-	}
-
-	public String getOriChannelContent() {
-		return oriChannelContent;
-	}
-
-	public void setOriChannelContent(String oriChannelContent) {
-		this.oriChannelContent = oriChannelContent;
-	}
 
 	public Short getIfHaveVar() {
-		return ifHaveVar;
+		return isHaveVar;
 	}
 
 	public void setIfHaveVar(Short ifHaveVar) {
-		this.ifHaveVar = ifHaveVar;
+		this.isHaveVar = ifHaveVar;
 	}
 
 	public String getExecContent() {
@@ -274,30 +176,6 @@ public class McdCampChannelList implements java.io.Serializable {
 
 	public void setExecContent(String execContent) {
 		this.execContent = execContent;
-	}
-
-	public String getSxRecommendDesc() {
-		return sxRecommendDesc;
-	}
-
-	public void setSxRecommendDesc(String sxRecommendDesc) {
-		this.sxRecommendDesc = sxRecommendDesc;
-	}
-
-	public String getOnlineServiceUrl() {
-		return onlineServiceUrl;
-	}
-
-	public void setOnlineServiceUrl(String onlineServiceUrl) {
-		this.onlineServiceUrl = onlineServiceUrl;
-	}
-
-	public int getCepTriggerFlag() {
-		return cepTriggerFlag;
-	}
-
-	public void setCepTriggerFlag(int cepTriggerFlag) {
-		this.cepTriggerFlag = cepTriggerFlag;
 	}
 
 	public int getParamDays() {
@@ -349,19 +227,19 @@ public class McdCampChannelList implements java.io.Serializable {
 	}
 
 	public String getExecTitle() {
-		return execTitle;
+		return wcTitle;
 	}
 
 	public void setExecTitle(String execTitle) {
-		this.execTitle = execTitle;
+		this.wcTitle = execTitle;
 	}
 
 	public String getFileName() {
-		return fileName;
+		return wcFileName;
 	}
 
 	public void setFileName(String fileName) {
-		this.fileName = fileName;
+		this.wcFileName = fileName;
 	}
 
 	public String getMessageType() {
