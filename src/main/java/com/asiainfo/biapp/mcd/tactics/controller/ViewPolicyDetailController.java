@@ -45,7 +45,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DataGridData;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biframe.utils.date.DateUtil;
 import com.asiainfo.biframe.utils.string.DES;
@@ -694,7 +694,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             log.info("=========获取XML开始===========");
             
 
-            MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+            McdSysInterfaceDef url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
 //          
 //          Client client = new Client(new URL(url.getCallwsUrl()));
 //          

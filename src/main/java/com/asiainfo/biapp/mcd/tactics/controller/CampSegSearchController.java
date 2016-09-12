@@ -34,7 +34,7 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.MarketApproveInfo;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biframe.utils.string.StringUtil;
@@ -459,7 +459,7 @@ public class CampSegSearchController extends BaseMultiActionController {
         try {
             //
 
-            MtlCallwsUrl url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
+            McdSysInterfaceDef url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
 
             QName name = new QName("http://impl.biz.web.tz", "cancelAssignment");
             Service serviceWs = new Service();

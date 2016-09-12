@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlCallwsUrlDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 @Service("mtlCallWsUrlService")
 public class MtlCallWsUrlServiceImpl implements IMtlCallWsUrlService {
 	@Resource(name="mtlCallwsUrlDao")
@@ -19,15 +19,15 @@ public class MtlCallWsUrlServiceImpl implements IMtlCallWsUrlService {
 	public void setMtlCallwsUrlDao(IMtlCallwsUrlDao mtlCallwsUrlDao) {
 		this.mtlCallwsUrlDao = mtlCallwsUrlDao;
 	}
-	public MtlCallwsUrl getCallwsURL(String ws_jndi) throws Exception {
-		MtlCallwsUrl result = null;
+	public McdSysInterfaceDef getCallwsURL(String ws_jndi) throws Exception {
+		McdSysInterfaceDef result = null;
 		try {
 			//获取调用web service的URL
-			MtlCallwsUrl mtlCallwsUrl = new MtlCallwsUrl();
+			McdSysInterfaceDef mtlCallwsUrl = new McdSysInterfaceDef();
 			mtlCallwsUrl.setCallwsUrlCode(ws_jndi);
 			List objList = mtlCallwsUrlDao.findByCond(mtlCallwsUrl);
 			if (objList != null && objList.size() > 0) {
-				result = (MtlCallwsUrl) objList.get(0);
+				result = (McdSysInterfaceDef) objList.get(0);
 			}
 		} catch (Exception e) {
 		}

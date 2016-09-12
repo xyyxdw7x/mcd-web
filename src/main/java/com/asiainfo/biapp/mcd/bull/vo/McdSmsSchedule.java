@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.bull.vo;
 
-public class MtlSmsChannelSchedule {
+public class McdSmsSchedule {
 	private String taskId;
 	private String campsegId;
 	private String cityId;
