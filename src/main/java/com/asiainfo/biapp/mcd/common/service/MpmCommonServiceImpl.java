@@ -19,7 +19,7 @@ import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanType;
@@ -86,7 +86,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	public List<DimPlanSrvType> getGradeList() throws MpmException {
 		return dimMtlChanneltypeDao.getGradeList();
 	}
-	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect){
+	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
 		try {
 			return dimMtlChanneltypeDao.getMtlChannelByCondition(isDoubleSelect);
 		} catch (Exception e) {

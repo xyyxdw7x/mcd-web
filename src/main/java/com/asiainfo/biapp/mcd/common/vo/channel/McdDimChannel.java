@@ -6,7 +6,7 @@ package com.asiainfo.biapp.mcd.common.vo.channel;
  * @author MyEclipse Persistence Tools
  */
 
-public class DimMtlChannel implements java.io.Serializable {
+public class McdDimChannel implements java.io.Serializable {
 
 	// Fields
 
@@ -58,17 +58,17 @@ public class DimMtlChannel implements java.io.Serializable {
 	}
 
 	/** default constructor */
-	public DimMtlChannel() {
+	public McdDimChannel() {
 	}
 
 	/** minimal constructor */
-	public DimMtlChannel(String channelId, String channelName) {
+	public McdDimChannel(String channelId, String channelName) {
 		this.channelId = channelId;
 		this.channelName = channelName;
 	}
 
 	/** full constructor */
-	public DimMtlChannel(String channelId, Short channeltypeId, String channelName) {
+	public McdDimChannel(String channelId, Short channeltypeId, String channelName) {
 		this.channelId = channelId;
 		this.channeltypeId = channeltypeId;
 		this.channelName = channelName;

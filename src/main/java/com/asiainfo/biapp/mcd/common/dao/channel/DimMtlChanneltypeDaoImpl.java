@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
@@ -65,8 +65,8 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		return dimPlanSrvTypeList;
 	}
 	@SuppressWarnings("unchecked")
-	public List<DimMtlChannel> getMtlChannelByCondition(String isDoubleSelect){
-		List<DimMtlChannel> list=null;
+	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
+		List<McdDimChannel> list=null;
 		String sql = "select * from mcd_dim_channel dmc where 1=1 ";
 		if("1".equals(isDoubleSelect)){
 			sql += " and dmc.channel_id in (902,903,906)";
@@ -76,7 +76,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 			list = this.getJdbcTemplate().query(sql,new RowMapper(){
 				@Override
 				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-					DimMtlChannel dimMtlChannel=new DimMtlChannel();
+					McdDimChannel dimMtlChannel=new McdDimChannel();
 					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
 					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
 					dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
@@ -135,13 +135,13 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		}
 	};
 
-	private ResultSetExtractor<List<DimMtlChannel>> resultSetExtractorDimMtlChannel = new ResultSetExtractor<List<DimMtlChannel>>() {
+	private ResultSetExtractor<List<McdDimChannel>> resultSetExtractorDimMtlChannel = new ResultSetExtractor<List<McdDimChannel>>() {
 		@Override
-		public List<DimMtlChannel> extractData(ResultSet rs) throws SQLException, DataAccessException {  
-			List<DimMtlChannel> list = new ArrayList<DimMtlChannel>();
+		public List<McdDimChannel> extractData(ResultSet rs) throws SQLException, DataAccessException {  
+			List<McdDimChannel> list = new ArrayList<McdDimChannel>();
 			if (null != rs) {
 				while (rs.next()) {
-					DimMtlChannel dimMtlChannel = new DimMtlChannel();
+					McdDimChannel dimMtlChannel = new McdDimChannel();
 					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
 					dimMtlChannel.setChanneltypeId(rs.getShort("CHANNELTYPE_ID"));
 					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));

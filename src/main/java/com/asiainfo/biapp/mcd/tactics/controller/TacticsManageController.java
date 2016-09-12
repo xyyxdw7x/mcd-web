@@ -32,7 +32,7 @@ import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.MtlGroupInfo;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
@@ -50,10 +50,10 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampsegType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlCallwsUrl;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlStcPlanChannel;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
@@ -962,8 +962,8 @@ public class TacticsManageController extends BaseMultiActionController {
 				
 		try {
 			User user = this.getUser(request, response);
-			List<DimMtlChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
-			List<DimMtlChannel> listTemp = new ArrayList<DimMtlChannel>();
+			List<McdDimChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
+			List<McdDimChannel> listTemp = new ArrayList<McdDimChannel>();
 			
 			String cityId =user.getCityId();
 			if(!CollectionUtils.isEmpty(list)){
@@ -972,13 +972,13 @@ public class TacticsManageController extends BaseMultiActionController {
 					if(!cityId.equals("577")){
 						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
 						if(!"912".equals(channelIdTemp)){
-						    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+						    McdDimChannel dimMtlChannel = new McdDimChannel();
 						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
 						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
 							listTemp.add(dimMtlChannel);
 						}
 					}else{
-                        DimMtlChannel dimMtlChannel = new DimMtlChannel();
+                        McdDimChannel dimMtlChannel = new McdDimChannel();
                         dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
                         dimMtlChannel.setTypeName(list.get(i).getChannelName());
 						listTemp.add(dimMtlChannel);

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChannel;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -57,8 +57,8 @@ public class StcPlanController extends BaseMultiActionController {
 				? request.getParameter("isDoubleSelect") : "0";
 
 		try {
-			List<DimMtlChannel> list = commonService.getMtlChannelByCondition(isDoubleSelect);
-			List<DimMtlChannel> listTemp = new ArrayList<DimMtlChannel>();
+			List<McdDimChannel> list = commonService.getMtlChannelByCondition(isDoubleSelect);
+			List<McdDimChannel> listTemp = new ArrayList<McdDimChannel>();
 			String cityId = this.getUser(request,response).getCityId();
 			if (!CollectionUtils.isEmpty(list)) {
 				for (int i = 0; i < list.size(); i++) {
@@ -66,13 +66,13 @@ public class StcPlanController extends BaseMultiActionController {
 					if (!cityId.equals("577")) {
 						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
 						if (!"912".equals(channelIdTemp)) {
-						    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+						    McdDimChannel dimMtlChannel = new McdDimChannel();
 						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
 						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
 							listTemp.add(dimMtlChannel);
 						}
 					} else {
-					    DimMtlChannel dimMtlChannel = new DimMtlChannel();
+					    McdDimChannel dimMtlChannel = new McdDimChannel();
 						dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
 						dimMtlChannel.setTypeName(list.get(i).getChannelName());
 						listTemp.add(dimMtlChannel);
