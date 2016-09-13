@@ -28,7 +28,7 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	/**
 	 * 自身的代理对象
 	 */
-	private IBookDao selfProxy;
+	//private IBookDao selfProxy;
 
 	@Override
 	public void save(Book book) {
@@ -55,7 +55,7 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	public Book getBook(String bookId) throws Exception {
 		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
 		
-		int size=selfProxy.queryDatInMem();
+		//int size=selfProxy.queryDatInMem();
 		return book;
 	}
 
@@ -77,6 +77,6 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	}
 	@Override
 	public void setSelfProxy(Object proxyObj) {
-		this.selfProxy=(IBookDao) proxyObj;
+		//this.selfProxy=(IBookDao) proxyObj;
 	}
 }
