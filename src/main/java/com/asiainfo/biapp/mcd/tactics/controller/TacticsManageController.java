@@ -973,13 +973,13 @@ public class TacticsManageController extends BaseMultiActionController {
 						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
 						if(!"912".equals(channelIdTemp)){
 						    McdDimChannel dimMtlChannel = new McdDimChannel();
-						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
 						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
 							listTemp.add(dimMtlChannel);
 						}
 					}else{
                         McdDimChannel dimMtlChannel = new McdDimChannel();
-                        dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+                        dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
                         dimMtlChannel.setTypeName(list.get(i).getChannelName());
 						listTemp.add(dimMtlChannel);
 					}
