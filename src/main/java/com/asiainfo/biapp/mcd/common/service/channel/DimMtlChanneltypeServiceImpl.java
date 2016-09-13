@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.exception.MpmException;
-import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.util.MpmLocaleUtil;
 
 /**
@@ -45,18 +44,7 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 		}
 	}
 
-	/* （非 Javadoc）
-	 * @see com.asiainfo.biapp.mcd.service.IDimChannelUserRelationService#searchChannelUserRelation(com.asiainfo.biapp.mcd.form.DimChannelUserRelationForm)
-	 */
-	public Map searchMtlChanneltype(DimMtlChanneltypeForm searchForm, Integer curPage, Integer pageSize) throws MpmException {
-		// TODO 自动生成方法存根
-		try {
-			return dimMtlChanneltypeDao.searchMtlChanneltype(searchForm, curPage, pageSize);
-		} catch (Exception e) {
-			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cxqdlxdyxx"));
-		}
-	}
+
 
 	/* （非 Javadoc）
 	 * @see com.asiainfo.biapp.mcd.service.IDimChannelUserRelationService#getChannelUserRelation(int, java.lang.Short)
@@ -71,18 +59,6 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 		}
 	}
 
-	/* （非 Javadoc）
-	 * @see com.asiainfo.biapp.mcd.service.IDimChannelUserRelationService#delete(com.asiainfo.biapp.mcd.form.DimChannelUserRelationForm)
-	 */
-	public void delete(DimMtlChanneltypeForm searchForm) throws MpmException {
-		// TODO 自动生成方法存根
-		try {
-			dimMtlChanneltypeDao.delete(searchForm);
-		} catch (Exception e) {
-			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.scqdlxdyxx1"));
-		}
-	}
 
 	/**
 	 * @return dimMtlChanneltypeDao

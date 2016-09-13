@@ -20,7 +20,6 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biframe.utils.database.jdbc.ConnectionEx;
@@ -176,14 +175,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		final String strSql = sql;
 		return this.getJdbcTemplate().queryForList(strSql, DimMtlChanneltype.class);
 	}
-	/**
-	 * 
-	 */
-	public void delete(final DimMtlChanneltypeForm searchForm) throws MpmException {
-		if (null != searchForm && null != searchForm.getChanneltypeId()) {
-			this.delete(searchForm.getChanneltypeId());
-		}
-	}
+
 
 	public void delete(Object channelTypeId) {
 		if (null != channelTypeId) {
@@ -210,37 +202,6 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 			this.getJdbcTemplate().update(sql, args);
 		}
 	}
-	/* （非 Javadoc）
-	 * @see com.asiainfo.biapp.mcd.dao.IDimMtlChanneltypeDao#searchMtlChanneltype(com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm, java.lang.Integer, java.lang.Integer)
-	 */
-	public Map searchMtlChanneltype(DimMtlChanneltypeForm searchForm, final Integer curPage, final Integer pageSize) throws MpmException {
-		// TODO 自动生成方法存根
-		String fromPart = "from  mcd_dim_channeltype a where 1=1 ";
-		if (searchForm.getChanneltypeId().shortValue() != -1) {
-			fromPart += " and a.CHANNELTYPE_ID=" + searchForm.getChanneltypeId();
-		}
-		fromPart += " order by a.CHANNELTYPE_ID";
-		
-		final String sql0 = "select count(*) " + fromPart;
-		Long totalCount = this.getJdbcTemplate().query(sql0, this.longResultSetExtractor);
-		final String sql1 = DataBaseAdapter.getPagedSql("select * " + fromPart, curPage, pageSize);
-		
-		JdbcTemplate jdbcTemplete = this.getJdbcTemplate();
-		List<DimMtlChanneltype> list = jdbcTemplete.query(sql1, this.resultSetExtractorDimMtlChanneltype);
-		
-		Map map = new HashMap();
-		if (totalCount < 1) {
-			map.put("total", Integer.valueOf(0));
-			map.put("result", new ArrayList());
-			return map;
-		}
-		map.put("total", totalCount);
-		map.put("result", list);
-
-		return map;
-		
-	}
-
 
 	public Integer findContactTypeByChannelType(final Integer channelTypeId) throws MpmException {
 		final String sql = "select a.CONTACT_TYPE from mcd_dim_channelTYPE a where a.CHANNELTYPE_ID=?";
