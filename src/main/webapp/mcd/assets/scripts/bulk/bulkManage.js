@@ -343,7 +343,6 @@ define(["backbone","jqueryUI","jqueryExtend","navManage"],function(require, expo
 											success:function(model){
 												if(model.attributes.status == 200){
 //													alert("更新优先级成功！");
-													debugger
 													_that.loadList($(".bulk-dept-list").find(".selected").attr("deptid"));
 												}else{
 													alert("更新优先级失败！");
