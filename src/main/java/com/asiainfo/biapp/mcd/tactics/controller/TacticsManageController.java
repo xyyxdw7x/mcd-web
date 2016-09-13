@@ -132,16 +132,16 @@ public class TacticsManageController extends BaseMultiActionController {
 			String isApprove = commonAttr.get("isApprove").toString();
 			// 先保存基本信息 父亲节点
 			McdCampDef campSeginfoBasic = new McdCampDef();
-			campSeginfoBasic.setCampsegId(MpmUtil.generateCampsegAndTaskNo());//TODO:wb
-			campSeginfoBasic.setCampsegName(campsegName);
+			campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());//TODO:wb
+			campSeginfoBasic.setCampName(campsegName);
 			campSeginfoBasic.setStartDate(putDateStart);
 			campSeginfoBasic.setEndDate(putDateEnd);
-			campSeginfoBasic.setCampsegPid("0");// 父节点
-			campSeginfoBasic.setCreateUserid(user.getId());
+			campSeginfoBasic.setPid("0");// 父节点
+			campSeginfoBasic.setCreateUserId(user.getId());
 			campSeginfoBasic.setCreateUserName(user.getName());
-			campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
+			campSeginfoBasic.setTypeId(Short.parseShort(campsegTypeId));
 			campSeginfoBasic.setPlanId(planId);
-			campSeginfoBasic.setFatherNode(true);
+			campSeginfoBasic.setIsFatherNode(true);
 			campSeginfoBasic.setCityId(user.getCityId()); // 策划人所属城市
 			campSeginfoBasic.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
 			/*if (user != null) {
@@ -333,12 +333,12 @@ public class TacticsManageController extends BaseMultiActionController {
 						String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
 						// //Ftp存放的文件名称
 						mtlChannelDef.setChannelAdivId(adivId);
-						mtlChannelDef.setExecTitle(execTitle);
-						mtlChannelDef.setFileName(fileName);
+						mtlChannelDef.setWcTitle(execTitle);
+						mtlChannelDef.setWcFileName(fileName);
 					} 
 
 
-					mtlChannelDef.setIfHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
+					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
 					if (StringUtil.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
 						mtlChannelDef.setChannelAdivId("1");
@@ -366,12 +366,12 @@ public class TacticsManageController extends BaseMultiActionController {
 				}
 
 				McdCampDef campSeginfo = new McdCampDef();
-				campSeginfo.setCampsegName(campsegName);
+				campSeginfo.setCampName(campsegName);
 				campSeginfo.setStartDate(putDateStart);
 				campSeginfo.setEndDate(putDateEnd);
-				campSeginfo.setCampsegStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
-				campSeginfo.setCampsegTypeId(Short.parseShort(campsegTypeId));// 策略类型
-				campSeginfo.setCreateUserid(user.getId()); // 活动策划人
+				campSeginfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
+				campSeginfo.setTypeId(Short.parseShort(campsegTypeId));// 策略类型
+				campSeginfo.setCreateUserId(user.getId()); // 活动策划人
 				campSeginfo.setCityId(user.getCityId()); // 策划人所属城市
 				campSeginfo.setCreateTime(format.parse(format.format(new Date())));
 				campSeginfo.setPlanId(planIdArray[i]); // 产品编号
@@ -380,9 +380,9 @@ public class TacticsManageController extends BaseMultiActionController {
 				// 渠道基本信息
 				campSeginfo.setChannelId(channelIds); // 渠道id
 
-				campSeginfo.setFatherNode(false);
+				campSeginfo.setIsFatherNode(false);
 				campSeginfo.setIsApprove(isApprove);
-				campSeginfo.setCampsegNo(String.valueOf(i)); // 多规则时，规则序号
+				campSeginfo.setCampNo(String.valueOf(i)); // 多规则时，规则序号
 
 				// 添加实时事件支持
 				if (execContentStr.indexOf("cepInfo") != -1) {
@@ -483,21 +483,21 @@ public class TacticsManageController extends BaseMultiActionController {
 					Map<String, McdCampDef> campSeginfoMap = new HashMap<String, McdCampDef>();
 					for(int m = 0;m<campsegList.size();m++){
 						McdCampDef temp = campsegList.get(m);
-						campSeginfoMap.put(temp.getCampsegId(), temp);
-						if("0".equals(campsegList.get(m).getCampsegPid())){ // 取父策略
+						campSeginfoMap.put(temp.getCampId(), temp);
+						if("0".equals(campsegList.get(m).getPid())){ // 取父策略
 							campSeginfoBasic = temp;
 						}
 					}
-					campSeginfoBasic.setCampsegId(campsegPid);
-					campSeginfoBasic.setCampsegName(campsegName);
+					campSeginfoBasic.setCampId(campsegPid);
+					campSeginfoBasic.setCampName(campsegName);
 					campSeginfoBasic.setStartDate(putDateStart);
 					campSeginfoBasic.setEndDate(putDateEnd);
-					campSeginfoBasic.setCampsegPid("0");//父节点
-					campSeginfoBasic.setCreateUserid(user.getId());
+					campSeginfoBasic.setPid("0");//父节点
+					campSeginfoBasic.setCreateUserId(user.getId());
 					campSeginfoBasic.setCreateUserName(user.getName());
-					campSeginfoBasic.setCampsegTypeId(Short.parseShort(campsegTypeId));
+					campSeginfoBasic.setTypeId(Short.parseShort(campsegTypeId));
 					campSeginfoBasic.setPlanId(planId);
-					campSeginfoBasic.setFatherNode(true);
+					campSeginfoBasic.setIsFatherNode(true);
 					campSeginfoBasic.setCityId(user.getCityId());
 					String deptId = "";
 					/*if(user != null){
@@ -520,8 +520,8 @@ public class TacticsManageController extends BaseMultiActionController {
 						String campsegId = "";
 						for(int j=0;j<campsegList.size();j++){
 							McdCampDef mtlCampSeginfo = campsegList.get(j);
-							if(!("0").equals(mtlCampSeginfo.getCampsegPid()) && mtlCampSeginfo.getPlanId().equals(planIdArray[i])){
-								campsegId = mtlCampSeginfo.getCampsegId();
+							if(!("0").equals(mtlCampSeginfo.getPid()) && mtlCampSeginfo.getPlanId().equals(planIdArray[i])){
+								campsegId = mtlCampSeginfo.getCampId();
 							}
 						}
 						String ruleIndex = "rule0";
@@ -690,8 +690,8 @@ public class TacticsManageController extends BaseMultiActionController {
 								String execTitle = String.valueOf(obj.get("execTitle"));  //微信标题
 								String fileName = String.valueOf(obj.get("fileName"));  //微信本地文件名称
 								mtlChannelDef.setChannelAdivId(adivId);
-								mtlChannelDef.setExecTitle(execTitle);
-								mtlChannelDef.setFileName(fileName);
+								mtlChannelDef.setWcTitle(execTitle);
+								mtlChannelDef.setWcFileName(fileName);
 							}else if("913".equals(channelId)){
 							    String taskCode = String.valueOf(obj.get("taskCode"));//任务编码
 								String taskName = String.valueOf(obj.get("taskName"));//任务名称
@@ -741,7 +741,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							if(StringUtil.isEmpty(adivId)){  //当adivId为空的时候，默认为1
 								mtlChannelDef.setChannelAdivId("1");
 							}
-							mtlChannelDef.setIfHaveVar(!ifHasVariate ? Short.parseShort("0"):Short.parseShort("1"));
+							mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0"):Short.parseShort("1"));
 							
 							//保存将筛选后的客户群数量
 							String afterComputeCustNum[] = afterComputCustNum.split(",");
@@ -767,13 +767,13 @@ public class TacticsManageController extends BaseMultiActionController {
 						}
 						
 						McdCampDef campSeginfo = campSeginfoMap.get(campsegId);
-						campSeginfo.setCampsegId(campsegId);
-						campSeginfo.setCampsegName(campsegName);
+						campSeginfo.setCampId(campsegId);
+						campSeginfo.setCampName(campsegName);
 						campSeginfo.setStartDate(putDateStart);
 						campSeginfo.setEndDate(putDateEnd);
-						campSeginfo.setCampsegStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));
-						campSeginfo.setCampsegTypeId(Short.parseShort(campsegTypeId));//策略类型
-						campSeginfo.setCreateUserid(user.getId());  //活动策划人
+						campSeginfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));
+						campSeginfo.setTypeId(Short.parseShort(campsegTypeId));//策略类型
+						campSeginfo.setCreateUserId(user.getId());  //活动策划人
 						campSeginfo.setCityId(user.getCityId());			   //策划人所属城市
 						campSeginfo.setDeptId(Integer.parseInt(deptId));				   //策划人部门id
 						campSeginfo.setCreateTime(format.parse(format.format(new Date())));
@@ -783,10 +783,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						campSeginfo.setChannelId(channelIds);           //渠道id
 						
 						//客户群清单表名称
-						campSeginfo.setInitCustListTab(initCustListTab);
-						campSeginfo.setFatherNode(false);
+						campSeginfo.setCustListTab(initCustListTab);
+						campSeginfo.setIsFatherNode(false);
 						campSeginfo.setIsApprove(isApprove);
-						campSeginfo.setCampsegNo(String.valueOf(i));   //多规则时，规则序号
+						campSeginfo.setCampNo(String.valueOf(i));   //多规则时，规则序号
 						
 						//添加实时事件支持
 						if(execContentStr.indexOf("cepInfo") != -1){
@@ -1389,7 +1389,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				for(int i = 0;i<campsegList.size();i++){  //区分出子策略和父策略  （兼容多规则）
 					String ruleName = "";
 					McdCampDef mtlCampSeginfo = campsegList.get(i);
-					if("0".equals(mtlCampSeginfo.getCampsegPid())){
+					if("0".equals(mtlCampSeginfo.getPid())){
 						basicCampSeginfoList.add(mtlCampSeginfo);
 						map.put("commonAttr", basicCampSeginfoList);
 						
@@ -1406,10 +1406,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						}else{
 							map.put("planList", "");
 						}
-					}else if(!"0".equals(mtlCampSeginfo.getCampsegPid())){ //子策略
+					}else if(!"0".equals(mtlCampSeginfo.getPid())){ //子策略
 						ruleName = "rule" + i;
-						String campsegId = mtlCampSeginfo.getCampsegId();
-						String initCustListTab = mtlCampSeginfo.getInitCustListTab();
+						String campsegId = mtlCampSeginfo.getCampId();
+						String initCustListTab = mtlCampSeginfo.getCustListTab();
 						//策略和标签的关系信息
 						//List<MtlCampsegCustgroup> campsegCiCustgroupsListAll = mpmCampSegInfoService.findCustGroupListByCampsegId(campsegId);  
 						//策略与客户群的关心信息
@@ -1461,7 +1461,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								mtlChannelDefId.setChannelNo(m+10);
 								mtlChannelDefId.setUsersegId((short) 0);
 								def.setId(mtlChannelDefId);*/
-								def.setCampsegId(campsegId);
+								def.setCampId(campsegId);
 								
 								def.setChannelId(planChannel.getChannelId());
 //								def.setChoose(false);

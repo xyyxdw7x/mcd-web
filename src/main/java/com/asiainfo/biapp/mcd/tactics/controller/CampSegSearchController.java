@@ -84,13 +84,13 @@ public class CampSegSearchController extends BaseMultiActionController {
                 segInfo.setKeywords(keywords);
                
                 if (campsegStatId != null && !"".equals(campsegStatId)) {
-                    segInfo.setCampsegStatId(Short.parseShort(campsegStatId));
+                    segInfo.setStatId(Short.parseShort(campsegStatId));
                 }
                 if (isSelectMy != null) {
                     segInfo.setIsSelectMy(Integer.parseInt(isSelectMy));
                 }
                 segInfo.setChannelId(channelId);
-                segInfo.setCreateUserid("chenyg");//(userId);
+                segInfo.setCreateUserId("chenyg");//(userId);
                 
                 
                 
@@ -220,7 +220,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 String ruleDesc = "";
                 McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(mtlCampSeginfo.getPlanId());// 查询产品信息
                 dataJson1.put("planName", stcPlan != null ? stcPlan.getPlanName(): "");
-                List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampsegId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
+                List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
                 String ruleDescShowSql = "";
                 for (int i = 0; i < custGroupSelectList.size(); i++) {
                     McdCampCustgroupList mtlCampsegCustGroup = (McdCampCustgroupList) custGroupSelectList.get(i);
@@ -236,7 +236,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                     dataJson1.put("ruleDesc", ruleDesc);
                     
                 }
-                List mcdList = mpmCampSegInfoService.getMtlChannelDefs(mtlCampSeginfo.getCampsegId());
+                List mcdList = mpmCampSegInfoService.getMtlChannelDefs(mtlCampSeginfo.getCampId());
                 List<Map> mtltlChannelDefList = new ArrayList<Map>(); 
                 
                  for(int i=0;i< mcdList.size();i++){
@@ -392,7 +392,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
                 mpmCampSegInfoService.updateCampsegEndDate(campsegId, endDate);
                 for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-                    mpmCampSegInfoService.updateCampsegEndDate(mtlCampSeginfo.getCampsegId(),endDate);
+                    mpmCampSegInfoService.updateCampsegEndDate(mtlCampSeginfo.getCampId(),endDate);
                 }
 
             } else {
@@ -448,7 +448,7 @@ public class CampSegSearchController extends BaseMultiActionController {
         StringBuffer xml = new StringBuffer(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         xml.append("<MARKET_ASSIGNMENT_INFO><ASSIGNMENT_INFO>");
-        xml.append("<ASSIGN_ID>" + segInfo.getApproveFlowid() + "</ASSIGN_ID>");
+        xml.append("<ASSIGN_ID>" + segInfo.getApproveFlowId() + "</ASSIGN_ID>");
         xml.append("<CANCEL_DESC>" + anceldesc + "</CANCEL_DESC>");
         xml.append("</ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>");
 
@@ -495,7 +495,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 mpmCampSegInfoService.cancelAssignment(campsegId, ampsegStatId, approve_desc);
                 List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
                 for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-                    mpmCampSegInfoService.cancelAssignment(mtlCampSeginfo.getCampsegId(),
+                    mpmCampSegInfoService.cancelAssignment(mtlCampSeginfo.getCampId(),
                             ampsegStatId, approve_desc);
                 }
             } else {
@@ -556,7 +556,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 mpmCampSegInfoService.updateCampStat(campsegId,
                         MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
                 for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(),
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(),
                             MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
                 }
                 //保存停止原因
@@ -619,7 +619,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 mpmCampSegInfoService.updateCampStat(campsegId,MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
                 
                 for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(), MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
                 }
                 //保存暂停原因
                 mpmCampSegInfoService.updatMtlCampSeginfoPauseComment(campsegId,pauseComment);
@@ -678,7 +678,7 @@ public class CampSegSearchController extends BaseMultiActionController {
                 List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
                 mpmCampSegInfoService.updateCampStat(campsegId, MpmCONST.MPM_CAMPSEG_STAT_DDCG);
                 for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampsegId(),MpmCONST.MPM_CAMPSEG_STAT_DDCG);
+                    mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(),MpmCONST.MPM_CAMPSEG_STAT_DDCG);
                 }
 
             }
@@ -733,13 +733,13 @@ public class CampSegSearchController extends BaseMultiActionController {
             for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
                 JSONObject dataJson = new JSONObject();
 //                dataJson.put("campsegName","规则" + mtlCampSeginfo.getCampsegNo());
-                dataJson.put("campsegId", mtlCampSeginfo.getCampsegId());
+                dataJson.put("campsegId", mtlCampSeginfo.getCampId());
                 // 获取有营销用语的渠道的营销用语
-                List execContentList = mpmCampSegInfoService.getExecContentList(mtlCampSeginfo.getCampsegId());
+                List execContentList = mpmCampSegInfoService.getExecContentList(mtlCampSeginfo.getCampId());
                 JSONArray jsonArray = JSONArray.fromObject(execContentList);
                 dataJson.put("channelExecContent", jsonArray);
                 // 获取营销用语变量
-                List execContentVariableList = mpmCampSegInfoService.getExecContentVariableList(mtlCampSeginfo.getCampsegId());
+                List execContentVariableList = mpmCampSegInfoService.getExecContentVariableList(mtlCampSeginfo.getCampId());
                 JSONArray execContentVariableJsonArray = JSONArray.fromObject(execContentVariableList);
                 dataJson.put("execContentVariableJsonArray",
                         execContentVariableJsonArray);

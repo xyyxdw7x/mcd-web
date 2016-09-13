@@ -116,8 +116,8 @@ public class BullMonitorServiceImp implements BullMonitorService {
 
 		for (int i = 0; i < ids.length; i++) {
 			McdCampDef temp = new McdCampDef();
-			temp.setCampPriId((short) (i + 1));
-			temp.setCampsegId(ids[i]);
+			temp.setPriId((short) (i + 1));
+			temp.setCampId(ids[i]);
 			list.add(temp);
 		}
 		task4BullDao.updateCampPri(list);

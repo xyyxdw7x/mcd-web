@@ -41,7 +41,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         JdbcTemplate jt = this.getJdbcTemplate();
         StringBuffer buffer = new StringBuffer();
         buffer.append("select msi.campseg_name as  \"campsegName\",msi.campseg_id as \"campsegId\" ,msi.start_date as \"startDate\",msi.end_date as \"endDate\",msi.campseg_stat_id as \"campsegStatId\",dcs.campseg_stat_name as \"campsegStatName\",create_username as \"createUserName\",decode(msi.create_userid,'")
-        .append(segInfo.getCreateUserid())
+        .append(segInfo.getCreateUserId())
         .append("',0,1) as \"isMy\",dcs.CAMPSEG_STAT_SITEID as \"campsegStatSiteId\",msi.pause_comment as  \"pauseComment\" ");
         
         if(segInfo.getIsSelectMy() != null && segInfo.getIsSelectMy() == 0){
@@ -83,7 +83,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         if(segInfo.getIsSelectMy() != null && segInfo.getIsSelectMy() == 0){
             buffer.append(" and msi.create_userid= ? ");
-            parameterList.add(segInfo.getCreateUserid());
+            parameterList.add(segInfo.getCreateUserId());
         }
         if(StringUtil.isNotEmpty(segInfo.getChannelId()) ){
             buffer.append(" and msi.campseg_id in(")
@@ -99,9 +99,9 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }*/
         
         //状态
-        if (segInfo.getCampsegStatId() != null && !"".equals(segInfo.getCampsegStatId())) {
+        if (segInfo.getStatId() != null && !"".equals(segInfo.getStatId())) {
             buffer.append(" and msi.campseg_stat_id = ? ");
-            parameterList.add(segInfo.getCampsegStatId());
+            parameterList.add(segInfo.getStatId());
         }
         buffer.append(" order by msi.create_time desc");
         
@@ -146,7 +146,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public Serializable saveCampSegInfo(McdCampDef segInfo) throws Exception {
 		//TODO:this.getHibernateTemplate().saveOrUpdate(segInfo);
 		this.getJdbcTemplateTool().save(segInfo);
-		return segInfo.getCampsegId();
+		return segInfo.getCampId();
 	}
 	/**
 	 * 根据活动编号取活动信息
@@ -191,13 +191,13 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,"
 	                    + "init_cust_list_tab = ?,event_rule_desc=?,approve_remind_time=?,is_filter_disturb=? where campseg_id = ?";
 	    this.getJdbcTemplate().update(sql);
-	    Object[] objects = new Object[]{segInfo.getCampsegName(),segInfo.getCampsegNo(),segInfo.getStartDate(),segInfo.getEndDate(),segInfo.getCampsegStatId(),
-	                    segInfo.getCampsegTypeId(),segInfo.getCampPriId(),segInfo.getApproveFlowid(),
-	                    segInfo.getCreateUserName(),segInfo.getCreateUserid(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),
-	                    segInfo.getPlanId(),segInfo.getCampsegPid(),
+	    Object[] objects = new Object[]{segInfo.getCampName(),segInfo.getCampNo(),segInfo.getStartDate(),segInfo.getEndDate(),segInfo.getStatId(),
+	                    segInfo.getTypeId(),segInfo.getPriId(),segInfo.getApproveFlowId(),
+	                    segInfo.getCreateUserName(),segInfo.getCreateUserId(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),
+	                    segInfo.getPlanId(),segInfo.getPid(),
 	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),
-	                    segInfo.getInitCustListTab(),segInfo.getEventRuleDesc(),segInfo.getApproveRemindTime(),
-	                    segInfo.getIsFileterDisturb(),segInfo.getCampsegId()};
+	                    segInfo.getCustListTab(),segInfo.getEventRuleDesc(),segInfo.getLastRemindTime(),
+	                    segInfo.getIsFileterDisturb(),segInfo.getCampId()};
 	   
         this.getJdbcTemplate().update(sql,objects);
 
@@ -240,7 +240,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
      */
     @Override
     public void deleteCampSegInfo(McdCampDef segInfo) throws Exception {
-        String campsegId = segInfo.getCampsegId();
+        String campsegId = segInfo.getCampId();
         try {
             // 1 取活动下属活动在属性设置阶段设置的活动模版编号
             String sql = "select t2.proform_result from mtl_campseg_progress t2 where t2.campseg_id=? and t2.step_id=?";
@@ -800,11 +800,11 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	@Override
 	public McdCampDef getCampsegTopId(String campsegId) throws Exception {
 		McdCampDef mtlCampSeginfo = getCampSegInfo(campsegId);
-		if (mtlCampSeginfo != null && !StringUtils.isEmpty(mtlCampSeginfo.getCampsegPid())) {
-			if ("0".equals(mtlCampSeginfo.getCampsegPid())) {
+		if (mtlCampSeginfo != null && !StringUtils.isEmpty(mtlCampSeginfo.getPid())) {
+			if ("0".equals(mtlCampSeginfo.getPid())) {
 				return mtlCampSeginfo;
 			} else {
-				return getCampsegTopId(mtlCampSeginfo.getCampsegPid());
+				return getCampsegTopId(mtlCampSeginfo.getPid());
 			}
 		}
 		return null;

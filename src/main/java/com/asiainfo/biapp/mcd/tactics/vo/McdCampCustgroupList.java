@@ -76,7 +76,21 @@ public class McdCampCustgroupList implements java.io.Serializable {
 		this.custgroupDesc = custgroupDesc;
 	}
 
-	// Property accessors
+	public String getCampId() {
+		return campId;
+	}
+
+	public void setCampId(String campId) {
+		this.campId = campId;
+	}
+
+	public String getCustgroupId() {
+		return custgroupId;
+	}
+
+	public void setCustgroupId(String custgroupId) {
+		this.custgroupId = custgroupId;
+	}
 
 	public String getCampsegCustgroupId() {
 		return campsegCustgroupId;
@@ -86,28 +100,12 @@ public class McdCampCustgroupList implements java.io.Serializable {
 		this.campsegCustgroupId = campsegCustgroupId;
 	}
 
-	public String getCampsegId() {
-		return campId;
-	}
-
-	public void setCampsegId(String campsegId) {
-		this.campId = campsegId;
-	}
-
 	public String getCustgroupType() {
 		return custgroupType;
 	}
 
 	public void setCustgroupType(String custgroupType) {
 		this.custgroupType = custgroupType;
-	}
-
-	public String getCustgroupId() {
-		return custgroupId;
-	}
-
-	public void setCustgroupId(String custgroupId) {
-		this.custgroupId = custgroupId;
 	}
 
 	public String getCustgroupName() {
@@ -221,5 +219,11 @@ public class McdCampCustgroupList implements java.io.Serializable {
 	public void setElementValueId(String elementValueId) {
 		this.elementValueId = elementValueId;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
 	
 }

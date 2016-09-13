@@ -32,7 +32,7 @@ import net.sf.json.JSONObject;
 public class StcPlanController extends BaseMultiActionController {
 
 	@Resource(name = "mpmCommonService")
-	private MpmCommonService commonService;
+	private MpmCommonService mpmCommonService;
 
 	/**
 	 * describe:新建策略页面，初始化适用渠道
@@ -57,7 +57,7 @@ public class StcPlanController extends BaseMultiActionController {
 				? request.getParameter("isDoubleSelect") : "0";
 
 		try {
-			List<McdDimChannel> list = commonService.getMtlChannelByCondition(isDoubleSelect);
+			List<McdDimChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
 			List<McdDimChannel> listTemp = new ArrayList<McdDimChannel>();
 			String cityId = this.getUser(request,response).getCityId();
 			if (!CollectionUtils.isEmpty(list)) {

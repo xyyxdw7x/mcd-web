@@ -60,196 +60,138 @@ public class McdCampChannelList implements java.io.Serializable {
 	private String functionName;
 	/*@Transient
 	private boolean isChoose;  //该渠道在修改之前是否进行过操作  比如增删改查
-*/	
-
-
-	public String getCampsegId() {
+*/
+	public String getCampId() {
 		return campId;
 	}
-
-	public void setCampsegId(String campsegId) {
-		this.campId = campsegId;
+	public void setCampId(String campId) {
+		this.campId = campId;
 	}
-
-	public String getFunctionName() {
-		return functionName;
-	}
-
-	public void setFunctionName(String functionName) {
-		this.functionName = functionName;
-	}
-
-	public String getFunctionId() {
-		return functionId;
-	}
-
-	public void setFunctionId(String functionId) {
-		this.functionId = functionId;
-	}
-
-
-	public String getEventInstanceDesc() {
-		return eventInstanceDesc;
-	}
-
-	public void setEventInstanceDesc(String eventInstanceDesc) {
-		this.eventInstanceDesc = eventInstanceDesc;
-	}
-
-	public String getEventParamJson() {
-		return eventParamJson;
-	}
-
-	public void setEventParamJson(String eventParamJson) {
-		this.eventParamJson = eventParamJson;
-	}
-
-	public String getChannelAdivId() {
-		return channelAdivId;
-	}
-
-	public void setChannelAdivId(String channelAdivId) {
-		this.channelAdivId = channelAdivId;
-	}
-
-	public int getTargetUserNums() {
-		return targetUserNums;
-	}
-
-	public void setTargetUserNums(int targetUserNums) {
-		this.targetUserNums = targetUserNums;
-	}
-
-	public int getUpdateCycle() {
-		return updateCycle;
-	}
-
-	public void setUpdateCycle(int updateCycle) {
-		this.updateCycle = updateCycle;
-	}
-
-	/**
-	 * 扩展字段，用于派单也面显礄1�7
-	 * @return
-	 */
-	public String getChannelName() {
-		return channelName;
-	}
-
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-	}
-
-	/** default constructor */
-	public McdCampChannelList() {
-	}
-
-
 	public String getChannelId() {
 		return channelId;
 	}
-
 	public void setChannelId(String channelId) {
 		this.channelId = channelId;
 	}
-
 	public Integer getContactType() {
 		return contactType;
 	}
-
 	public void setContactType(Integer contactType) {
 		this.contactType = contactType;
 	}
-
-
-	public Short getIfHaveVar() {
+	public Short getIsHaveVar() {
 		return isHaveVar;
 	}
-
-	public void setIfHaveVar(Short ifHaveVar) {
-		this.isHaveVar = ifHaveVar;
+	public void setIsHaveVar(Short isHaveVar) {
+		this.isHaveVar = isHaveVar;
 	}
-
 	public String getExecContent() {
 		return execContent;
 	}
-
 	public void setExecContent(String execContent) {
 		this.execContent = execContent;
 	}
-
+	public int getTargetUserNums() {
+		return targetUserNums;
+	}
+	public void setTargetUserNums(int targetUserNums) {
+		this.targetUserNums = targetUserNums;
+	}
+	public int getUpdateCycle() {
+		return updateCycle;
+	}
+	public void setUpdateCycle(int updateCycle) {
+		this.updateCycle = updateCycle;
+	}
 	public int getParamDays() {
 		return paramDays;
 	}
-
 	public void setParamDays(int paramDays) {
 		this.paramDays = paramDays;
 	}
-
 	public int getParamNum() {
 		return paramNum;
 	}
-
 	public void setParamNum(int paramNum) {
 		this.paramNum = paramNum;
 	}
-
 	public Double getAwardMount() {
 		return awardMount;
 	}
-
 	public void setAwardMount(Double awardMount) {
 		this.awardMount = awardMount;
 	}
-
 	public String getEditUrl() {
 		return editUrl;
 	}
-
 	public void setEditUrl(String editUrl) {
 		this.editUrl = editUrl;
 	}
-
 	public String getHandleUrl() {
 		return handleUrl;
 	}
-
 	public void setHandleUrl(String handleUrl) {
 		this.handleUrl = handleUrl;
 	}
-
 	public String getSendSms() {
 		return sendSms;
 	}
-
 	public void setSendSms(String sendSms) {
 		this.sendSms = sendSms;
 	}
-
-	public String getExecTitle() {
+	public String getChannelAdivId() {
+		return channelAdivId;
+	}
+	public void setChannelAdivId(String channelAdivId) {
+		this.channelAdivId = channelAdivId;
+	}
+	public String getWcTitle() {
 		return wcTitle;
 	}
-
-	public void setExecTitle(String execTitle) {
-		this.wcTitle = execTitle;
+	public void setWcTitle(String wcTitle) {
+		this.wcTitle = wcTitle;
 	}
-
-	public String getFileName() {
+	public String getWcFileName() {
 		return wcFileName;
 	}
-
-	public void setFileName(String fileName) {
-		this.wcFileName = fileName;
+	public void setWcFileName(String wcFileName) {
+		this.wcFileName = wcFileName;
 	}
-
+	public String getEventInstanceDesc() {
+		return eventInstanceDesc;
+	}
+	public void setEventInstanceDesc(String eventInstanceDesc) {
+		this.eventInstanceDesc = eventInstanceDesc;
+	}
+	public String getEventParamJson() {
+		return eventParamJson;
+	}
+	public void setEventParamJson(String eventParamJson) {
+		this.eventParamJson = eventParamJson;
+	}
+	public String getFunctionId() {
+		return functionId;
+	}
+	public void setFunctionId(String functionId) {
+		this.functionId = functionId;
+	}
 	public String getMessageType() {
 		return messageType;
 	}
-
 	public void setMessageType(String messageType) {
 		this.messageType = messageType;
 	}
+	public String getChannelName() {
+		return channelName;
+	}
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+	public String getFunctionName() {
+		return functionName;
+	}
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}	
 
-
-	
 }

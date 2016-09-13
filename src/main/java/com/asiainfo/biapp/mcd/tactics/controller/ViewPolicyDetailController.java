@@ -102,7 +102,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         if(campsegId!=null&&!"".equals(campsegId)){
             segInfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
         }else{
-            segInfo = mpmCampSegInfoService.getCampSegInfo(segInfoBean.getCampsegId());
+            segInfo = mpmCampSegInfoService.getCampSegInfo(segInfoBean.getCampId());
         }
         
         try{
@@ -114,7 +114,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             segInfoBean.setEndDate(segInfo.getEndDate());
             
             //根据ID获取用户类
-            User user = this.getUserPrivilege().queryUserById(segInfo.getCreateUserid());//mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
+            User user = this.getUserPrivilege().queryUserById(segInfo.getCreateUserId());//mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
             String userName = "";
             if(user!=null){
                 userName = user.getName();
@@ -149,25 +149,25 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             
             //创建时间 日期格式 yyyy-MM-dd
             String createTime = DateConvert.formatLongDateTime(segInfo.getCreateTime());
-            Short campsegStatId = Short.valueOf(segInfo.getCampsegStatId());
+            Short campsegStatId = Short.valueOf(segInfo.getStatId());
             //营销活动状态名
-            McdDimCampStatus dimCampsegStat = mpmCampSegInfoService.getDimCampsegStat(segInfo.getCampsegStatId().toString()); 
+            McdDimCampStatus dimCampsegStat = mpmCampSegInfoService.getDimCampsegStat(segInfo.getStatId().toString()); 
             String statusName = dimCampsegStat.getCampsegStatName(); //MpmCache.getInstance().getNameByTypeAndKey(MpmCONST.MPM_CAMPSEG_STAT_DEFINE,segInfo.getCampsegStatId().toString());
             //营销类型
-            Short campsegTypeId = segInfo.getCampsegTypeId() == null ? 0 : segInfo.getCampsegTypeId();
+            Short campsegTypeId = segInfo.getTypeId() == null ? 0 : segInfo.getTypeId();
             String campsegTypeName = dimCampsegTypeService.getDimCampsegTypeName(campsegTypeId);
             McdDimCampType campsegType = dimCampsegTypeService.getDimCampsegType(campsegTypeId);
             
             Map map= new HashMap();
-            map.put("campsegId", segInfoBean.getCampsegId());
-            map.put("campsegName", segInfoBean.getCampsegName());
+            map.put("campsegId", segInfoBean.getCampId());
+            map.put("campsegName", segInfoBean.getCampName());
             map.put("statusName", statusName);
             map.put("startDate", segInfoBean.getStartDate());
             map.put("endDate", segInfoBean.getEndDate());
-            map.put("createUserid", segInfoBean.getCreateUserid());
+            map.put("createUserid", segInfoBean.getCreateUserId());
             map.put("createUserName", userName);
             map.put("campDrvName", campDrvName);
-            map.put("campsegTypeId", segInfoBean.getCampsegTypeId());
+            map.put("campsegTypeId", segInfoBean.getTypeId());
             map.put("campsegTypeName", campsegTypeName);
             map.put("createTime", createTime);
             List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
@@ -487,8 +487,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                     list = mtlChannelDefService.getDeliveryChannel(campsegId);//20130916114353920  baseForm.getCampsegId()
                     list2 = mtlChannelDefService.getDeliveryChannelCall(campsegId);
                 }else{
-                    list = mtlChannelDefService.getDeliveryChannel(segInfoBean.getCampsegId());//20130916114353920  baseForm.getCampsegId()
-                    list2 = mtlChannelDefService.getDeliveryChannelCall(segInfoBean.getCampsegId());
+                    list = mtlChannelDefService.getDeliveryChannel(segInfoBean.getCampId());//20130916114353920  baseForm.getCampsegId()
+                    list2 = mtlChannelDefService.getDeliveryChannelCall(segInfoBean.getCampId());
                 } 
          JSONArray dChannelDataJSONArray=new JSONArray();
          //boss运营位短信模板
@@ -710,16 +710,16 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
 //          call.setOperationName("commitApproveInfo");
             call.setTimeout(50000);//超时时间5秒
             
-            if(mtlCampSeginfo.getApproveFlowid() != null){
+            if(mtlCampSeginfo.getApproveFlowId() != null){
                 //先从本地库去日志信息，如果该日志信息已经存在，则直接使用，否则再次调用
-                McdApproveLog mcdApproveLog = mpmCampSegInfoService.getLogByFlowId(mtlCampSeginfo.getApproveFlowid());
+                McdApproveLog mcdApproveLog = mpmCampSegInfoService.getLogByFlowId(mtlCampSeginfo.getApproveFlowId());
                 String childxml = null;
                
                     
                 if(mcdApproveLog != null && null != mcdApproveLog.getApproveResult()){
                     childxml = mcdApproveLog.getApproveResult();
                 }else{
-                    childxml = call.invoke(new Long[] { Long.parseLong(mtlCampSeginfo.getApproveFlowid()) }).toString();
+                    childxml = call.invoke(new Long[] { Long.parseLong(mtlCampSeginfo.getApproveFlowId()) }).toString();
                 }
             
                 
