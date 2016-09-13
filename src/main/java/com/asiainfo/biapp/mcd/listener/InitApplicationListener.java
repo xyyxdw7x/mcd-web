@@ -25,11 +25,11 @@ public class InitApplicationListener implements ServletContextListener{
 	private ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*4);
 	
 	/**全局缓存Map*/
-	public static Map<String,Object> cacheDatas = new HashMap<String, Object>();
+	public static Map<String,Object> cacheDatas2 = new HashMap<String, Object>();
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		cacheDatas = null;
+		cacheDatas2 = null;
 	}
 
 	@Override

@@ -1,14 +1,19 @@
 package com.asiainfo.biapp.mcd.tactics.thread;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.context.IApplicationContextRefreshed;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
@@ -29,7 +34,8 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * @version 1.0
  */
 
-public class McdCreateDuserTableRunnable implements Runnable {
+@Service
+public class McdCreateDuserTableRunnable implements Runnable,IApplicationContextRefreshed {
 	protected final Log log = LogFactory.getLog(getClass());
 	@Resource(name="mpmCampSegInfoDao")
 	private IMpmCampSegInfoDao mpmCampSegInfoDao;
@@ -43,16 +49,14 @@ public class McdCreateDuserTableRunnable implements Runnable {
 	private IMtlChannelDefDao mtlChannelDefDao;
 	
 	public McdCreateDuserTableRunnable() {
-		/*try {
-			log.info("begin initParam...................");
-			this.mpmCampSegInfoDao = (IMpmCampSegInfoDao)SystemServiceLocator.getInstance().getService("mpmCampSegInfoDao");
-			this.mpmCampSegInfoService = (IMpmCampSegInfoService)SystemServiceLocator.getInstance().getService("mpmCampSegInfoService");
-			this.mtlCampsegCustgroupDao = (MtlCampsegCustgroupDao)SystemServiceLocator.getInstance().getService("mtlCampsegCustGroupDao"); 
-			this.mcdCampsegTaskDao = (IMcdCampsegTaskDao)SystemServiceLocator.getInstance().getService("mcdCampsegTaskDao");
-			this.mtlChannelDefDao = (IMtlChannelDefDao)SystemServiceLocator.getInstance().getService("mtlChannelDefDao");
-		} catch (Exception e) {
-			log.error(e);
-		}*/
+		
+	}
+	
+	@Override
+	public boolean executeAuto() {
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+		executor.execute(this);
+		return true;
 	}
 	
 	@Override
@@ -149,6 +153,10 @@ public class McdCreateDuserTableRunnable implements Runnable {
 		}
 	}
 
+	@Override
+	public int getOrder() {
+		return 100;
+	}
 }
 
 
