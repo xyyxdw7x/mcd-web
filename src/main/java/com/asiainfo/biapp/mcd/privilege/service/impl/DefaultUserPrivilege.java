@@ -3,18 +3,15 @@ package com.asiainfo.biapp.mcd.privilege.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.framework.core.ApplicationContextUtil;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.framework.util.AppConfigUtil;
 import com.asiainfo.biapp.framework.util.MD5Util;
 import com.asiainfo.biapp.mcd.privilege.service.dao.IUserPrivilegeDao;
 
@@ -57,7 +54,6 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 		}
 		return topMenu;
 	}
-	
 	private List<Menu> getSubMenuList(List<Menu> menus,String pid){
 		List<Menu> subMenu=new ArrayList<>();
 		for (int i = 0,size=menus.size(); i < size; i++) {
@@ -74,21 +70,11 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 		return true;
 	}
 	
-	
-	
 	public IUserPrivilegeDao getUserPrivilegeDao() {
 		return userPrivilegeDao;
 	}
 
 	public void setUserPrivilegeDao(IUserPrivilegeDao userPrivilegeDao) {
 		this.userPrivilegeDao = userPrivilegeDao;
-	}
-	
-	//@PostConstruct
-	public void setUserPrivilegeDao2() {
-		String ss=AppConfigUtil.APP_PROVINCES;
-		System.out.println("ss");
-		IUserPrivilegeDao upd=(IUserPrivilegeDao) ApplicationContextUtil.getBean("userPrivilegeDao");
-		setUserPrivilegeDao(upd);
 	}
 }

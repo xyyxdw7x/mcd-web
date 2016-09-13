@@ -12,15 +12,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.framework.util.AppConfigUtil;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 
 @RequestMapping("/privilege/login")
 public class LoginController extends BaseMultiActionController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
+	
 	
 	@RequestMapping("/login")
 	@ResponseBody
@@ -31,21 +32,31 @@ public class LoginController extends BaseMultiActionController {
 		String userPwd=request.getParameter("userPwd");
 		User user=this.getUserPrivilege().validationUserPwd(userId, userPwd);
 		if(user!=null){
+			request.getSession().setAttribute("USER_MENU",null);
 			request.getSession().setAttribute("USER_ID", user.getId());
 			request.getSession().setAttribute("USER", user);
 			ServletContext application=this.getServletContext();
-			application.setAttribute("APP_PROVINCES","zj");
+			String provinces=AppConfigService.PROFILE_ACTIVE;
+			application.setAttribute("APP_PROVINCES",provinces);
 			suc=true;
 		}
 		return suc;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/getUserMenu")
 	@ResponseBody
 	public List<Menu> getUserMenu(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String userId=getUserId(request, response);
-		List<Menu> list=this.getUserPrivilege().getUserMenuInfos(userId);
+		List<Menu> list=null;
+		list=(List<Menu>) request.getSession().getAttribute("USER_MENU");
+		if(list!=null){
+			return list;
+		}else{
+			list=this.getUserPrivilege().getUserMenuInfos(userId);
+			request.getSession().setAttribute("USER_MENU",list);
+		}
 		return list;
 	}
 }
