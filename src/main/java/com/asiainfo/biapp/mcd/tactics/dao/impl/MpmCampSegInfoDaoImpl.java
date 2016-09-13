@@ -69,13 +69,11 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         
         if (StringUtil.isNotEmpty(segInfo.getKeywords())) {
             if(segInfo.getKeywords().contains("%")){
-                buffer.append(" and (msi.campseg_name like ?  escape '\' or msi.campseg_desc like ?  escape '\' or msi.campseg_id like ?  escape '\') ");
-                parameterList.add("%" + segInfo.getKeywords().replaceAll("%", "\\\\%") + "%");
+                buffer.append(" and (msi.campseg_name like ?  escape '\' or msi.campseg_id like ?  escape '\') ");
                 parameterList.add("%" + segInfo.getKeywords().replaceAll("%", "\\\\%") + "%");
                 parameterList.add("%" + segInfo.getKeywords().replaceAll("%", "\\\\%") + "%");
             }else{
-                buffer.append(" and (msi.campseg_name like ? or msi.campseg_desc like ? or msi.campseg_id like ?) ");
-                parameterList.add("%" + segInfo.getKeywords() + "%");
+                buffer.append(" and (msi.campseg_name like ?  or msi.campseg_id like ?) ");
                 parameterList.add("%" + segInfo.getKeywords() + "%");
                 parameterList.add("%" + segInfo.getKeywords() + "%");
             }

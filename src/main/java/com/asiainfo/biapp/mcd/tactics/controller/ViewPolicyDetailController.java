@@ -225,7 +225,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @RequestMapping("/getMtlStcPlan")
     public ModelAndView getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
     	McdCampDef segInfoBean = new McdCampDef();     
-        //String planid = request.getParameter("planid");
         response.setContentType("application/json; charset=UTF-8");
         response.setHeader("progma", "no-cache");
         response.setHeader("Access-Control-Allow-Origin", "*");
