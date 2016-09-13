@@ -3,7 +3,6 @@ package  com.asiainfo.biapp.mcd.common.service;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
