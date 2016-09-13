@@ -1,7 +1,5 @@
 package com.asiainfo.biapp.mcd.amqp;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 
-import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.kafka.cep.CepKafKaProducer;
-import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.wsclient.impl.gansu.MpmCampsegEventUtil;
-import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
 import net.sf.json.JSONObject;
@@ -36,39 +29,19 @@ public class CepUtil {
 	 * @param cepEventId
 	 */
 	public static void registCepEvent(String cepEventId) throws Exception {
-		if("gansu".equals(Configure.getInstance().getProperty("PROVINCE"))){
-			//订阅华为事件
-			MpmCampsegEventUtil.subscribe(cepEventId);
-		} else {
-			sendCepEplMessage(cepEventId, "1");
-		}
+		sendCepEplMessage(cepEventId, "1");
 	}
 
 	public static void restartCepEvent(String cepEventId) throws Exception {
-		if("gansu".equals(Configure.getInstance().getProperty("PROVINCE"))){
-			//订阅华为事件
-			MpmCampsegEventUtil.subscribe(cepEventId);
-		} else {
-			sendCepEplMessage(cepEventId, "4");
-		}
+		sendCepEplMessage(cepEventId, "4");
 	}
 
 	public static void stopCepEvent(String cepEventId) throws Exception {
-		if("gansu".equals(Configure.getInstance().getProperty("PROVINCE"))){
-			//取消华为事件订阅
-			MpmCampsegEventUtil.unsubscribe(cepEventId);
-		} else {
-			sendCepEplMessage(cepEventId, "2");
-		}
+		sendCepEplMessage(cepEventId, "2");
 	}
 
 	public static void finishCepEvent(String cepEventId) throws Exception {
-		if("gansu".equals(Configure.getInstance().getProperty("PROVINCE"))){
-			//取消华为事件订阅
-			MpmCampsegEventUtil.unsubscribe(cepEventId);
-		} else {
-			sendCepEplMessage(cepEventId, "3");
-		}
+		sendCepEplMessage(cepEventId, "3");
 	}
 
 	private static void sendCepEplMessage(String cepEventId, String ctrlType) {
