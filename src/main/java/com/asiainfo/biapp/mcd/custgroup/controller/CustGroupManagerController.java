@@ -36,7 +36,6 @@ import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.utils.config.Configure;
 
 import net.sf.json.JSONObject;
@@ -60,9 +59,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	
 	@Resource(name="mpmCommonService")
 	private MpmCommonService mpmCommonService;
-	
-	@Resource(name="mpmUserPrivilegeService")
-	private IMpmUserPrivilegeService userPrivilegeService;
 	
 	@Resource(name="custGroupService")
 	private MtlCustGroupService custGroupService;

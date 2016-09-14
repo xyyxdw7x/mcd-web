@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.asiainfo.biapp.mcd.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.util.HazelcastCacheClient;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.hazelcast.core.IMap;

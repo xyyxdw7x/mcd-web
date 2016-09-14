@@ -109,4 +109,7 @@ public class MpmCONST {
 
     //活动波次审批结果标志-未�?�?
     public static final short MPM_SEG_APPROVE_RESULT_NOTPASSED = 2;
+    
+	//客户群清单表名 前缀   浙江
+	public static final String MCD_ZD_USER_PREFIX = "mcd_zd_user_";
 }
