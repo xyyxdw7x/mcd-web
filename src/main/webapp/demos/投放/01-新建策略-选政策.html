@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>选政策</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+    <!--江西 公共导航头部 -->
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-header.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/put/newCreateTactics.css" />
+	
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');//奇数行添加背景色
+			$('.public-table tbody tr:nth-child(2n)').addClass('even');//偶数行添加背景色
+		})
+	</script>
+
+</head>
+<body class="bg-fa">
+    <!-- 头部导航 用原来的 st -->
+	<div class="header" id="headerDiv">
+		<div class="inner">
+			<div class="logo">
+				<img style="display: inline;" src="../../assets/images/logos/logo.png">
+			</div>
+			<ul class="loginfo">
+				<li>
+					<a href="javascript(void:0)">导航地图<span class="icon_arrDown"></span></a>
+				</li>
+				<li>
+					<a href="#"><span class="J_userInfo"></span><span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<div class="userImg"><img src="../../assets/images/temp/administrator.png"></div>
+						<dl class="userinfo">
+							<dt class="J_userInfo"></dt>
+							<dd class="J_userDept"></dd>
+							<dd>
+								<span class="icon_activeuser"></span>
+								<div class="activeuser">活跃用户</div>
+							</dd>
+						</dl>
+						<ul class="logout">
+							<li><a href="#">修改密码</a></li>
+							<li><a href="#">个人中心</a></li>
+							<li><a href="#">退出</a></li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">我的收藏<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>最新加入收藏的</dt>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+						</dl>
+						<div class="gotoFav"><input class="btn_blue" type="button" value="去收藏夹"></div>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">消息<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>未读新消息</dt>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+						</dl>
+						<div class="gotoFav">
+							<a class="set" href="javascript:void(0)">设置</a>
+							<input class="btn_blue" type="button" value="查看历史消息">
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="nav">
+				<li>
+					首页<span class="icon_arrDown"></span>
+					<ul class="J_children hidden"></ul>
+				</li>
+				<li class="active">
+					投放<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>新建策略</li>
+						<li>策略管理</li>
+						<li>优先级管理</li>
+						<li>群发执行</li>
+						<li>配额管理</li>
+						<li>免打扰管理</li>
+					</ul>
+				</li>
+				<li>
+					人群<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>客户群管理</li>
+						<li>新建客户群</li>
+					</ul>
+				</li>
+				<li>
+					效果<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>效果总览</li>
+						<li>政策效果</li>
+						<li>媒体</li>
+						<li>一线人员效果</li>
+						<li>报表</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="subnav">
+		<!-- 950px -->
+		<div class="width950">
+			<ul class="ul01"></ul>
+			<ul class="ul02"><li class="active" >新建策略</li>
+			<li>策略管理</li>
+			<li>优先级管理</li>
+			<li>群发执行</li>
+			<li>配额管理</li>
+			<li>免打扰管理</li></ul>
+			<ul class="ul03"></ul>
+			<ul class="ul04"></ul>
+			<ul class="ul05"></ul>
+		</div>
+	</div>
+	</div>
+		
+	<!-- 头部导航 用原来的 end -->
+
+	<!-- 新建策略 st -->
+	<div class="put-container w-1200">
+		<!-- 左 -->
+		<div class="put-left fleft ft14 mtop_47">
+			<ol>
+				<li class="active">
+					<span>选政策</span><i>1</i>
+				</li>
+				<li class="line"></li>
+				<li>
+					<span>选客户</span><i>2</i>
+				</li>
+				<li class="line"></li>
+				<li>
+					<span>选渠道</span><i>3</i>
+				</li>
+			</ol>
+		</div>
+		<!-- 中 -->
+		<div class="put-center w-818 fleft">
+			<!--step1***************************st-->
+			<div class="step-title color-333 ft18">选政策</div>
+			<div class="policy-selected-box bg-ebf0f3 over-hidden">
+				<span class="fleft row-name">已选政策：</span>
+				<div class="fleft ft12 color-666 policy-selected-right">
+					<span class="policy">
+						<i class="close"> &times;</i>
+						<em>河南手机报安阳流量包版</em>
+					</span>
+					<span class="policy">
+						<i class="close"> &times;</i>
+						<em>600000379265 新生礼包-飞享10月底前保底58返58</em>
+					</span>
+					<span class="policy">
+						<i class="close"> &times;</i>
+						<em>河南手机报安阳流量包版</em>
+					</span>
+					<span class="policy">
+						<i class="close"> &times;</i>
+						<em>600000379265 新生礼包-飞享10月底...</em>
+					</span>
+				</div>
+			</div>
+			<div class="bg-fff">
+				<!--输入框-->
+				<div class="search-box-wrp">
+					<div class="search-box">
+						<p class="fleft">
+							<input placeholder="请输入关键字" type="text">
+						</p>
+						<i class="searchBtn fright"></i>
+					</div>
+				</div>
+				<!--选择-->
+				<div class="select-item-wrp ft12">
+					<div class="item-box">
+						<span class="fleft select-left">产品类别：</span>
+						<div class="fleft color-666 select-right">
+							<span class="active">不限</span>
+							<span>终端 </span>
+							<span>资费</span>
+							<span>流量</span>
+							<span>宽带</span>
+							<span>促销</span>
+							<span>应用</span>
+							<span>内容</span>
+							<span>政企</span>
+							<span>服务</span>
+							<span>其他</span>
+						</div>
+					</div>
+					<div class="item-box">
+						<span class="fleft select-left">产品类型：</span>
+						<div class="fleft color-666 select-right">
+							<span>不限</span>
+							<span>单产品 </span>
+							<span>政策</span>
+						</div>
+					</div>
+					<div class="item-box">
+						<span class="fleft select-left">渠道类型：</span>
+						<div class="fleft color-666 select-right">
+							<span>不限</span>
+							<span>和我信 </span>
+							<span>短信</span>
+							<span>短信夹带</span>
+							<span>营业厅</span>
+							<span>社会渠道</span>
+							<span>HUI买</span>
+							<span>VOP</span>
+							<span>10086热线</span>
+							<span>摩天轮</span>
+						</div>
+					</div>
+				</div>
+				<!--搜索结果表格-->
+				<div class="search-tab-wrp">
+					<table class="table ft12 public-table">
+						<thead>
+							<tr>
+								<th class="text-center" width="8%"><input type="checkbox" /></th>
+								<th class="text-center" width="10%">序号</th>
+								<th class="text-left" width="40%">政策编号及名称</th>                                                                  
+								<th class="text-center" width="12%">政策粒度</th>
+								<th class="text-center" width="15%">政策归属</th>
+								<th class="text-center" width="15%">是否已匹配</th>
+							</tr>
+						<thead>
+						<tbody class="color-666">
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+							<tr>
+								<td class="text-center"><input type="checkbox" /></td>
+								<td class="text-center">1-8</td>
+								<td class="text-left"><a href="#" class="hover-a color-666"><em>600000367240</em>&nbsp;&nbsp;亲情网扩网费月优惠3个月</a></td>
+								<td class="text-center">营销策划</td>
+								<td class="text-center">全省</td>
+								<td class="text-center"> 否</td>
+							</tr>
+						</tbody>
+					</table>
+					<!--分页-->
+					<div class="content-table-page">
+						<div class="fright clearfix centent-page-box">
+							<a href="javascript:;" class="page-button fleft">上一页 </a>
+							<a href="javascript:;" class="page-num fleft active">1</a>
+							<a href="javascript:;" class="page-num fleft ">2</a>
+							<a href="javascript:;" class="page-num fleft ">3</a>
+							<a href="javascript:;" class="page-num fleft ">4</a>
+							<a href="javascript:;" class="page-num fleft" data-flag="last-dot" style="pointer-events:none;">···</a>
+							<a href="javascript:;" class="page-num fleft ">14788</a>
+							<a href="javascript:;" class="page-num fleft ">14789</a>
+							<a href="javascript:;" class="page-button fleft" data-flag="next">下一页</a>
+							<span class="fleft">
+								<input class="ui-page-num" type="text">
+							</span>
+							<a href="javascript:;" class="ui-page-button fleft">跳转</a>
+						</div>
+					</div>
+				</div>
+				<!--按钮区-->
+				<div class="btn-wrp text-center bg-ebf0f3">
+					<a href="javascript:;" class="btn-a btn-a-blue btn100-30">下一步</a>
+				</div>
+			</div>
+			<!--step1***************************end-->
+		</div>
+		<!-- 右 -->
+		<div class="put-right fright bg-fff">
+			<div class="top-hd">工作站 </div>
+			<div class="btn-box bg-ebf0f3">
+				<div class="dropdown caret-drop">
+				  <button class="caret-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="caret-box dropdown-menu" style="display: block;" role="menu" aria-labelledby="dropdownMenu1">
+				    <li role="presentation" class="caret-edit"><a role="menuitem" tabindex="-1" class="active" href="javascript:;"></a></li>
+				    <li role="presentation" class="caret-save"><a role="menuitem" tabindex="-1" href="javascript:;"></a></li>
+				  </ul>
+				</div>
+				<span class="del-icon delete"></span>
+			</div>
+			<div class="info-box">
+				<h5>营销政策</h5>
+				<ul>
+					<li><span>.</span>600000379265 新生礼包-飞享10月底前保底58返58-7月受理</li>
+					<li><span>.</span>600000379265 新生礼包-飞享10月底前保底58</li>
+					<li><span>.</span>600000379265 新生礼包-飞享10月底前保</li>
+				</ul>
+			</div>
+			<div class="info-box">
+				<h5>适配客户群</h5>
+				<div class="custom">
+					<span class="color-333 mright_10">北京测试客户群3</span>
+				</div>
+			</div>
+			<div class="info-box">
+				<h5>适配渠道</h5>
+				<div class="custom">
+					<p class="ft14">短信</p>
+					<div>
+						<p><span class="color-666">短信触发时机：</span><em class="color-333">***********</em> </p>
+						<p><span class="color-666">营销用语替换变量：</span><em class="color-333">*********** *********** *********** *********** </em> </p>
+    					<p><span class="color-666">发送周期：</span><em class="color-333">周期性</em> </p>
+    					<p><span class="color-666">派发时间：</span><em class="color-333">从2016-08开始，每个月1号 </em> </p>
+    					<p><span class="color-666">频次控制：</span><em class="color-333">*********** </em> </p>
+    					<p><span class="color-666">免打扰用户：</span><em class="color-333">主动要求屏蔽客户；敏感投诉客户；黑名单******</em> </p>
+    					<p><span class="color-666 block">群发用语：</span><em class="color-333">***************************************************************</em> </p>
+					</div>
+					<hr />
+					<p class="ft14">BOSS运营位</p>
+					<p><span class="color-333 mright_10">***********</span><span class="color-333 mright_10">***********</span><span class="color-333 mright_10">***********</span></p>
+				</div>
+			</div>
+			<!--保存按钮-->
+			<div class="btn-wrp  btn-wrp10 text-center bg-ebf0f3">
+				<a href="javascript:;" class="btn140-40">保存</a>
+			</div>
+		</div>
+	</div>
+	<!-- 新建策略 end -->
+</div>
+</body>
+</html>
