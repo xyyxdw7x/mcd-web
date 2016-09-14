@@ -10,11 +10,7 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 public interface MpmCommonService {
-	/**
-	 *  新建策略页面---初始化政策类别
-	 * @return
-	 */
-	public  List<McdDimPlanType> initDimPlanType();
+
 	/**
 	 * 新建策略页面---初始化政策粒度
 	 * @return
