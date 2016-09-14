@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.effectappraisal.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
@@ -51,5 +52,5 @@ public interface IMtlGroupAttrRelDao {
 	 * @param channelId
 	 * @return
 	 */
-	public List initAdivInfoByChannelId(String cityId);
+	public List<Map<String,Object>> initAdivInfoByChannelId(String cityId);
 }

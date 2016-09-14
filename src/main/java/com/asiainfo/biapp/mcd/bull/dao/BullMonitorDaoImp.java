@@ -16,7 +16,10 @@ import com.asiainfo.biapp.mcd.util.QuotaUtils;
 public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 	private static final Logger log = LogManager.getLogger();
 
-	// 50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停，79---周期性任务当天完成
+	/**
+	 * 50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停，79---周期性任务当天完成
+	 * @return
+	 */
 	private String getBullShowStaus() {
 		StringBuffer sb = new StringBuffer("");
 		sb.append(MpmCONST.TASK_STATUS_UNDO).append(",");// 待执行
@@ -28,8 +31,10 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 		return sb.toString();
 	}
 
-	// 查询短信渠道(901)所有没有完成的列表（50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停。
-	// 待执行无法进行任务操作；正在执行可以变暂停；暂停可以变正在执行。）
+	/**
+	 * 查询短信渠道(901)所有没有完成的列表（50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停。
+	 * 待执行无法进行任务操作；正在执行可以变暂停；暂停可以变正在执行。）
+	 */
 	@Override
 	public List<Map<String, Object>> getBullMonitorList(String cityId)throws DataAccessException {
 		List<Map<String, Object>> list = null;
@@ -58,11 +63,9 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 	    sql.append(" and  CAMP.cep_event_id is null");
 		sql.append(" order by CAMP.camp_pri_id  ");
 
-		String[] parm = {day,cityId};
-
 		try {
 			log.info("getBullMonitorList执行sql=" + sql);
-			list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
+			list = this.getJdbcTemplate().queryForList(sql.toString(), day, cityId);
 		} catch (DataAccessException e) {
 			return null;
 		}
@@ -70,7 +73,6 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getBullMonitorListByDept(String cityId,String deptId) throws DataAccessException {
 		List<Map<String, Object>> list = null;
@@ -101,10 +103,9 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 		sql.append(" and  CAMP.cep_event_id is null");
 		sql.append(" order by CAMP.camp_pri_id  ");
 
-		String[] parm = {day,cityId, deptId};
 		try {
 			log.info("getBullMonitorListByDept执行sql=" + sql);
-			list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
+			list = this.getJdbcTemplate().queryForList(sql.toString(), day, cityId, deptId);
 		} catch (DataAccessException e) {
 			return null;
 		}
@@ -120,9 +121,8 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 		StringBuffer sql = new StringBuffer("update mcd_camp_def set PAUSE_COMMENT=? where CAMPSEG_ID in(");
 		sql.append(campIds);
 		sql.append(")");
-		String[] parms={pauseComment};
 		log.info("updatePauseComment执行sql="+sql);
-		this.getJdbcTemplate().update(sql.toString(),parms);
+		this.getJdbcTemplate().update(sql.toString(), pauseComment);
 		
 	}
     /**
@@ -142,11 +142,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
         sql.append(" and  CAMP.cep_event_id is null");
         sql.append(" ) where mcs.campseg_id = ?");
 
-        String[] parm = { cityId, campsegId };
         log.info("updateCampSegInfoCampPriId执行sql=" + sql);
-        this.getJdbcTemplate().update(sql.toString(), parm);
+        this.getJdbcTemplate().update(sql.toString(), cityId, campsegId);
     }
-	
-	
-
 }

@@ -25,6 +25,7 @@ import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
 @Repository(value="mtlGroupAttrRelDao")
 public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttrRelDao {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<MtlGroupAttrRel> initTermLable(String custGroupId) {
 		List<Map> list = null;
@@ -51,6 +52,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		return mtlGroupAttrRelList;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<DimMtlAdivInfo> initDimMtlAdivInfo(String channelId,String planId) {
 		List<Map> list = null;
@@ -101,6 +103,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		return resultList;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<DimMtlAdivInfo> getAdivInfo(String adivids){
 		List<Map> list = null;
@@ -131,6 +134,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		return resultList;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<RuleTimeTermLable> initRuleTimeTermLable() {
 		List<Map> list = null;
@@ -156,6 +160,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		return resultList;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<RuleTimeTermLable> getFunctionNameById(String functionId){
 		List<Map> list = null;
@@ -173,6 +178,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		return resultList;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<RuleTimeTermLable> initRuleTimeTermSonLable(String sceneId){
 		List<Map> list = null;
@@ -191,7 +197,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 	}
 
 	@Override
-	public List initAdivInfoByChannelId(String cityId) {
+	public List<Map<String,Object>> initAdivInfoByChannelId(String cityId) {
 		JdbcTemplate jt = this.getJdbcTemplate();
 		StringBuffer sb = new StringBuffer();
 		sb.append("select dmai.*,num,case when num is null then 0 else num end sortNum from dim_mtl_adiv_info dmai left join (")
@@ -208,7 +214,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		  .append(" order by sortNum desc");
 		
 		Log.info("根据渠道id查询运营位信息："+sb.toString());
-		List list  = jt.queryForList(sb.toString());
+		List<Map<String,Object>> list  = jt.queryForList(sb.toString());
 		return list;
 	}
 }
