@@ -5,5 +5,5 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 
 public interface IMtlCallwsUrlDao {
-	public List findByCond(McdSysInterfaceDef mtlCallwsUrl) throws Exception;
+	public List<McdSysInterfaceDef> findByCond(McdSysInterfaceDef mtlCallwsUrl) throws Exception;
 }

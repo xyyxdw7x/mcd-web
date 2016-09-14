@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.xml.namespace.QName;
@@ -19,14 +18,12 @@ import org.apache.axis.client.Call;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
@@ -131,8 +128,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager) {
-        List list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
+    public List<Map<String,Object>> searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager) {
+        List<Map<String,Object>> list = campSegInfoDao.searchIMcdCampsegInfo(segInfo,pager);
         return list;
     }
     
@@ -142,7 +139,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		try {
 			String campsegId = null;
 			String campsegPid = null;
-			String province = Configure.getInstance().getProperty("PROVINCE");
 			String isApprove = "false";
 			//在保存和其他表的对应关系
 			for(int j = 0;j<seginfoList.size();j++){
@@ -150,13 +146,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				isApprove = segInfo.getIsApprove();
 				boolean isFatherNode = segInfo.getIsFatherNode();
 				campsegId = segInfo.getCampId();
-				Integer campClass = segInfo.getCampClass();
 				String custgroupId = segInfo.getCustgroupId();//关联表
 				String channelId = segInfo.getChannelId(); //渠道类型ID&渠道ID(关联表)
-//				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
-				String[] campsegIds = null;
-				String[] channelIds = null;
-				String[] channeltypeIds = null;
 				
 				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
 			
@@ -262,8 +253,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getDimCampsegStatList() {
-        List list = campSegInfoDao.getDimCampsegStatList();
+    public List<McdDimCampStatus> getDimCampsegStatList() {
+        List<McdDimCampStatus> list = campSegInfoDao.getDimCampsegStatList();
         return list;
     }
 	@Override
@@ -272,44 +263,17 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		try {
 			String campsegId = null;
 			String campsegPid = null;
-			String province = Configure.getInstance().getProperty("PROVINCE");
 			String isApprove = "false";
 			for(int j = 0;j<seginfoList.size();j++){
 				McdCampDef segInfo = seginfoList.get(j);
 				isApprove = segInfo.getIsApprove();
 				boolean isFatherNode = segInfo.getIsFatherNode();
 				campsegId = segInfo.getCampId();
-//				Integer contactType = segInfo.getWaveContactType();//关联表
-//				Integer contactCount = segInfo.getWaveContactCount();//关联表
-//				Integer campClass = segInfo.getCampClass();
 				String custgroupId = segInfo.getCustgroupId();//关联表
-//				Integer isRelativeExecTime = segInfo.getIsRelativeExecTime();
-//				String absoluteDates = segInfo.getAbsoluteDates(); //关联表
 				String channelId = segInfo.getChannelId(); //渠道类型ID&渠道ID(关联表)
-//				String siteCategoryIdClassId = segInfo.getSiteCategoryIdClassId(); //(云南的)活动规则的渠道执行为综合网关时的内容站点、网站分类ID的关联
-//				String channelCampContent = segInfo.getChannelCampContent(); //(关联表)
-//				String attachements = segInfo.getFilePath();
-//				String custGroupAttrId = segInfo.getCustGroupAttrId();
-//				List<McdCampsegPolicyRelation> policyList = segInfo.getPolicyList();
-//				int splitCampSegInfo = segInfo.getSplitCampSegInfo();
-//				String[] campsegIds = null;
-//				String[] channelIds = null;
-//				String[] channeltypeIds = null;
 				
 				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
-/*				int updateCycle = 0;
-				if(StringUtils.isNotEmpty(segInfo.getUpdatecycle())){
-					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
-				}*/
-
 					
-				//1、保存活动信息(波次条件、父活动编号、活动实际含义、推荐业务、营销时机)
-//				TODO LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
-				/*if (user != null) {
-					segInfo.setCityId(user.getCityid());
-					String deptMsg = user.getDepId();
-					segInfo.setDeptId(Integer.parseInt(deptMsg.split("&&")[0]));
-				}*/
 				segInfo.setCreateTime(new Date()); // 活动创建时间
 				segInfo.setStatId(Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_CHZT)); // 活动初始状态
 				segInfo.setApproveFlowId(null);
@@ -321,27 +285,13 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					segInfo.setCampId(MpmUtil.generateCampsegAndTaskNo());
 					campsegId = (String) campSegInfoDao.saveCampSegInfo(segInfo);//Duang Duang Duang 保存策略！！！
 					log.debug("****************新生成的波次活动ID:{}", campsegId);
-					//2、保存客户群与策略的关系 
-					/*String basicEventTemplateId = segInfo.getBasicEventTemplateId();
-					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
-//					TODO:saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
+					//1、保存客户群与策略的关系 
 					saveCampsegCustGroupZJ(campsegId, custgroupId, "chenyg",segInfo,"0");//基础客户群必须保存
-					/*if(StringUtils.isNotEmpty(basicEventTemplateId)){  //选择时机
-						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
-					}
-					if(StringUtils.isNotEmpty(bussinessLableTemplateId)){
-						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"2");//保存业务标签 
-					}*/
 					
-					//3、保存渠道     ------------------无需判断是否已经存在
+					//2、保存渠道     ------------------无需判断是否已经存在
 					if (CollectionUtils.isNotEmpty(mtlChannelDefList) && !isFatherNode) {
 						for(int i = 0;i<mtlChannelDefList.size();i++){
 							McdCampChannelList mtlChannelDef = mtlChannelDefList.get(i);
-//							MtlChannelDefId mtlChannelDefId = new MtlChannelDefId();
-//							mtlChannelDefId.setCampsegId(campsegId);
-//							mtlChannelDefId.setChannelNo(i);
-//							mtlChannelDefId.setUsersegId((short) 0);
-//							mtlChannelDef.setId(mtlChannelDefId);
 							mtlChannelDef.setCampId(campsegId);
 							mtlChannelDefDao.save(mtlChannelDef);
 						}
@@ -353,32 +303,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 						mtlChannelDefCall.setChannelId(channelId);
 						mtlChannelDefDao.save(mtlChannelDefCall);
 					}
-	
-					
-					/*IMpmInteractiveRuleService mpmInteractiveRuleService = (IMpmInteractiveRuleService) SystemServiceLocator.getInstance().getService("mpmInteractiveRuleService");
-					//先删除该活动原来的事件规则，再新增
-					mpmInteractiveRuleService.deleteEventRuleByActivityCode(campsegId, "2");
-					if (StringUtils.isNotEmpty(segInfo.getEventActiveTempletId())) {
-						MtlCampSeginfo baseCampsegInfo = getBaseCampsegInfo(campsegId);
-						segInfo.setStartDate(baseCampsegInfo.getStartDate());
-						segInfo.setEndDate(baseCampsegInfo.getEndDate());
-						McdRuleTempletAction mrt = new McdRuleTempletAction();
-						mrt.setUserId(segInfo.getCreateUserid());
-						this.saveInteractiveRule(segInfo, mrt.getEventRule(segInfo.getEventActiveTempletId()));
-					}*/
-					
-					/*
-					//在保存和其他表的对应关系
-					IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-					//保存产品订购或者剔除关系
-					IMtlCampSeginfoPlanOrderService planOrderService = (IMtlCampSeginfoPlanOrderService) SystemServiceLocator.getInstance().getService(MpmCONST.MTL_CAMPSEG_INFO_PLAN_ORDER_SERVICE);
-					MtlCampSeginfoPlanOrder campSeginfoPlanOrder = new MtlCampSeginfoPlanOrder();
-					campSeginfoPlanOrder.setCampsegId(campsegId);
-					campSeginfoPlanOrder.setOrderPlanIds(segInfo.getOrderPlanIds());
-					campSeginfoPlanOrder.setExcludePlanIds(segInfo.getExcludePlanIds());
-					planOrderService.save(campSeginfoPlanOrder);*/
-					
-					
+
 				}
 			}
 			
@@ -435,7 +360,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     
 	@Override
 	public void saveCampsegCustGroupZJ(String campsegId, String custGroupIdStr, String userId,McdCampDef segInfo,String flag) throws MpmException {
-//		if(flag.equals("0")){	//基础客户群
 			McdCampCustgroupList mtlCampsegCustGroup = new McdCampCustgroupList();
 			mtlCampsegCustGroup.setCustgroupId(segInfo.getCustgroupId());
 			mtlCampsegCustGroup.setCampId(campsegId);
@@ -448,27 +372,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				e.printStackTrace();
 			}
 			mtlCampsegCustgroupDao.save(mtlCampsegCustGroup);
-		/*}else{
-			//时机  或者基础标签
-			MtlCampsegCiCustgroup mtlCampsegCustGroup1 = new MtlCampsegCiCustgroup();
-			mtlCampsegCustGroup1.setCampsegId(campsegId);
-			mtlCampsegCustGroup1.setCustgroupName("test");
-			mtlCampsegCustGroup1.setCustgroupType("CGT"); //客户群类型
-			mtlCampsegCustGroup1.setCustgroupNumber(segInfo.getCustgroupNumber());
-			mtlCampsegCustGroup1.setCustBaseDay(segInfo.getCustBaseDay());
-			if (StringUtils.isEmpty(segInfo.getCustBaseDay())) {
-				mtlCampsegCustGroup1.setCustBaseMonth(segInfo.getCustBaseMonth());
-			}
-			if(flag.equalsIgnoreCase("1")){  //保存基础标签
-				mtlCampsegCustGroup1.setAttrClassId("888");
-				mtlCampsegCustGroup1.setCustgroupId(segInfo.getBasicEventTemplateId());
-				mtlCampsegCiCustDao.save(mtlCampsegCustGroup1);
-			}else if(flag.equalsIgnoreCase("2")){
-				mtlCampsegCustGroup1.setAttrClassId("999");
-				mtlCampsegCustGroup1.setCustgroupId(segInfo.getBussinessLableTemplateId());
-				mtlCampsegCiCustDao.save(mtlCampsegCustGroup1);
-			}
-		}*/
 	}
 	public McdCampDef getBaseCampsegInfo(String campsegId) throws Exception {
 		McdCampDef campsegInfo = null;
@@ -501,10 +404,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			//策略包下子策略基本信息
 			List<McdCampDef> mtlCampSeginfoList = this.getChildCampSeginfo(campsegId);
 			//取渠道信息
-			List approveChannelIdList = mtlChannelDefDao.findChildChannelIdList(campsegId);
-			Set channeIdSet = new HashSet();
+			List<Map<String,Object>> approveChannelIdList = mtlChannelDefDao.findChildChannelIdList(campsegId);
+			Set<String> channeIdSet = new HashSet<String>();
 			for(int i = 0;i< approveChannelIdList.size();i++){
-				Map map = (Map) approveChannelIdList.get(i);
+				Map<String,Object> map = (Map<String,Object>) approveChannelIdList.get(i);
 				String channelId = map.get("channel_id").toString();
 				channeIdSet.add(channelId);
 			}
@@ -534,9 +437,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<approveChannelId>" + channeIds.substring(1,channeIds.length()-1) + "</approveChannelId>");//审批渠道类型（判断采用哪个流程）：渠道ID
 	    	xmlStr.append("<approveFlowId>" + mtlCampSeginfo.getApproveFlowId() + "</approveFlowId>");//审批流程ID
 	    	String campsegInfoViewUrl = MpmConfigure.getInstance().getProperty("CAMPSEGINFO_VIEWURL");
-			final String webPath = "http://" + Configure.getInstance().getProperty("HOST_ADDRESS") + ":"
-					+ Configure.getInstance().getProperty("HOST_PORT")
-					+ Configure.getInstance().getProperty("CONTEXT_PATH");
 			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
 	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
 	    	xmlStr.append("</campsegInfo>");
@@ -697,10 +597,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      */
     @Override
     public void updateCampStat(String campSegId, String type) {
-        List rList = null;
+        List<String> rList = null;
         try {
-            McdCampDef baseSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
-            rList = new ArrayList();
+            rList = new ArrayList<String>();
             rList.add(campSegId);           
             McdCampDef segInfo = campSegInfoDao.getCampSegInfo(campSegId);
             boolean cepEventFlag = false;
@@ -780,7 +679,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getExecContentList(String campsegId) {
+    public List<Map<String,Object>> getExecContentList(String campsegId) {
         return campSegInfoDao.getExecContentList(campsegId);
     }
     /**
@@ -789,7 +688,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getExecContentVariableList(String campsegId) {
+    public List<Map<String,Object>> getExecContentVariableList(String campsegId) {
         return campSegInfoDao.getExecContentVariableList(campsegId);
 
     }
@@ -811,7 +710,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	 */
 	@Override
 	public List<McdCampDef> getCampSeginfoListByCampsegId(String campsegId) throws MpmException {
-		List<McdCampDef> allTreeList = new ArrayList();
+		List<McdCampDef> allTreeList = new ArrayList<McdCampDef>();
 		try {
 			if (StringUtils.isNotEmpty(campsegId)) {
 				allTreeList = new ArrayList<McdCampDef>();
@@ -875,7 +774,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @throws
      */
     @Override
-    public List getTargetCustomerbase(String campsegId) throws Exception {
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId) throws Exception {
         return custGroupInfoService.getTargetCustomerbase(campsegId);
     }
     /**
@@ -906,7 +805,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getChannelsByCampIds(String campsegIds) {
+    public List<Map<String,Object>> getChannelsByCampIds(String campsegIds) {
         return campSegInfoDao.getChannelsByCampIds(campsegIds);
 
     }
@@ -919,7 +818,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate) {
+    public List<Map<String,Object>> getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate) {
         return campSegInfoDao.getCampChannelDetail(campsegId,channelId,startDate,endDate);
 
     }
@@ -931,11 +830,11 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      */
     @Override
-    public List getCampsChannelSituation(String campsegIds, String channelId, String statDate) {
+    public List<Map<String,Object>> getCampsChannelSituation(String campsegIds, String channelId, String statDate) {
         String[] campsegs = campsegIds.split(",");
-        List list = new ArrayList();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=0;i<campsegs.length;i++){
-            Map map =campSegInfoDao.getCampChannelSituation(campsegs[i],channelId,statDate);
+            Map<String, Object> map =campSegInfoDao.getCampChannelSituation(campsegs[i],channelId,statDate);
             if(map!=null){
                 list.add(map);
             }
@@ -946,8 +845,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     public List<McdPlanChannelList> getStcPlanChannel(String planId){
 		List<McdPlanChannelList> mtlStcPlanChannels = stcPlanDao.getChannelIds(planId);
 		List<McdPlanChannelList> result = new ArrayList<McdPlanChannelList>();
-		String channelIds = "";
-		String planChannelId = "";
 		Map<String, McdPlanChannelList> map = new HashMap<String, McdPlanChannelList>();
 		
 		for(int j = 0;j<mtlStcPlanChannels.size();j++){
@@ -980,19 +877,19 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
          String approve_flag = null;
          String approve_desc = null;
          String channel_id = null;
-         String isSystemApprove = null;
 
         String flag ="0";
         String processingResults = "";
         //用来判断策略包最终是否审批通过
         boolean isapprove = true;
         //短信渠道是否通过
-        boolean approveSMS = false;
-
+        StringBuffer xmlStr = new StringBuffer();
         try{
              Document dom=DocumentHelper.parseText(approveInfoXML); 
-             Element root=dom.getRootElement();  
-             List<Element> elementList=root.elements("ASSIGNMENT_INFO"); 
+             Element root=dom.getRootElement();
+             
+             @SuppressWarnings("unchecked")
+			List<Element> elementList=root.elements("ASSIGNMENT_INFO"); 
     
              for(int i=0;i<elementList.size();i++){
                  Element element= (org.dom4j.Element) elementList.get(i);
@@ -1000,7 +897,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                  approve_flag = element.element("APPROVE_FLAG").getText(); 
                  approve_desc = null != element.element("APPROVE_DESC") ? element.element("APPROVE_DESC").getText():null; 
                  channel_id = element.element("CHANNEL_ID").getText(); 
-                 isSystemApprove = element.element("IS_SYSTEM_APPROVE") == null ? "1" : "0";  //0:人工（soupUI）审批，1:审批系统审批(默认)
                 short approveResult;
                 if("1".equals(approve_flag)){//通过
                     approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_PASSED;
@@ -1020,15 +916,14 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 //------------------------------------新增功能，生成营销任务记录------------------------------------------------------------------
                 int channelId = channel_id == null ? 0 : Integer.parseInt(channel_id);
                 if(channelId == MpmCONST.CHANNEL_TYPE_SMS_INT){
-                    approveSMS = true;
                 }
              }
              
                 String campsegStatId = null;
-                List list = campSegInfoDao.getCampSegInfoByApproveFlowId(assing_id);
-                Map campSegInfoMap = null;
+                List<Map<String,Object>> list = campSegInfoDao.getCampSegInfoByApproveFlowId(assing_id);
+                Map<String,Object> campSegInfoMap = null;
                 if(list != null && list.size() > 0){
-                    campSegInfoMap = (Map)list.get(0);
+                    campSegInfoMap = (Map<String,Object>)list.get(0);
                 }
                 //只有策略包邮开始时间与结束时间，根据开始时间与结束时间破判断所有策略状态
                 int startDate = campSegInfoMap.get("start_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("start_date").toString().replaceAll("-",""));
@@ -1037,15 +932,15 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 String pidSampsegId = campSegInfoMap.get("campseg_id") == null ? "" : campSegInfoMap.get("campseg_id").toString();
              
              //根据工单 编号获取子策略（规则）
-            List mtlCampSeginfoList = campSegInfoDao.getChildCampSeginfoByAssingId(assing_id);
+            List<Map<String,Object>> mtlCampSeginfoList = campSegInfoDao.getChildCampSeginfoByAssingId(assing_id);
             for(int i=0 ;i<mtlCampSeginfoList.size();i++){
-                Map mtlCampSeginfoMap = (Map)mtlCampSeginfoList.get(i);
+                Map<String,Object> mtlCampSeginfoMap = (Map<String,Object>)mtlCampSeginfoList.get(i);
                 String childCampseg_id = mtlCampSeginfoMap.get("campseg_id").toString();
                 //查找子策略下有的所有渠道有几种审批状态
-                List mtlChannelDefApproveFlowList = mtlChannelDefDao.getMtlChannelDefApproveFlowList(childCampseg_id);
+                List<Map<String,Object>> mtlChannelDefApproveFlowList = mtlChannelDefDao.getMtlChannelDefApproveFlowList(childCampseg_id);
                 //当策略下有的所有渠道只有一种审批状态时，该策略状态即为渠道审批状态
                 if(mtlChannelDefApproveFlowList != null && mtlChannelDefApproveFlowList.size() == 1){
-                    Map approveFlowMap = (Map)mtlChannelDefApproveFlowList.get(0);
+                    Map<String,Object> approveFlowMap = (Map<String,Object>)mtlChannelDefApproveFlowList.get(0);
                     String channelApproveResult = approveFlowMap.get("approve_result").toString();
                     //String approve_result_desc = approveFlowMap.get("approve_result_desc").toString();
                     short approveResult;
@@ -1070,13 +965,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     campSegInfoDao.updateCampSegInfo(segInfo);                   
                 }else if(mtlChannelDefApproveFlowList != null && mtlChannelDefApproveFlowList.size() > 1){
                 //当策略下有的所有渠道有两种审批状态时，该策略状态一定为不通过，因为状态只有通过与不通过两种
-                    Map approveFlowMap = (Map)mtlChannelDefApproveFlowList.get(0);
-                    String channelApproveResult = approveFlowMap.get("approve_result").toString();
-                    //String approve_result_desc = approveFlowMap.get("approve_result_desc").toString();
                     short approveResult = MpmCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED;
                     McdCampDef segInfo = this.getCampSegInfo(childCampseg_id);
                     segInfo.setApproveResult(approveResult);
-                    //segInfo.setApproveResultDesc(approve_result_desc);
                     segInfo.setStatId(Short.parseShort(campsegStatId));
                     campsegStatId = MpmCONST.MPM_CAMPSEG_STAT_SPYG;
                     campSegInfoDao.updateCampSegInfo(segInfo);   
@@ -1101,13 +992,11 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     for(McdCampDef childMtl : childMtlCampSeginfoList){
                         //查找活动下的所有渠道
                         List<McdCampChannelList> mtlChannelDefList = this.getChannelByCampsegId(childMtl.getCampId());
-                        boolean isSMS = false;
                     
                         for(McdCampChannelList mtlChannelDef : mtlChannelDefList){
                             //是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
                             if(Integer.parseInt(mtlChannelDef.getChannelId()) ==MpmCONST.CHANNEL_TYPE_SMS_INT){
                                 //短信测试流程，暂时不写
-                                isSMS = true;                    
                                 
                             }else{
                                 McdCampTask task = new McdCampTask();
@@ -1119,17 +1008,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                 task.setExecStatus(MpmCONST.TASK_STATUS_INIT);
                                 task.setChannelId(mtlChannelDef.getChannelId());
                                 //把从策略获取表的过程个去掉   edit by lixq10  2016年6月3日10:43:33
-//                              String custListTabName = childMtl.getInitCustListTab();
-//                              task.setCustListTabName(custListTabName);
-//                              String currentTime = MpmUtil.convertLongMillsToYYYYMMDDHHMMSS(new Date().getTime());
-//                              task.setTaskSendoddTabName(MpmCONST.MTL_DUSER_O_PREFIX + currentTime);
-//                              mcdCampsegTaskDao.createTaskSendoddTab(task.getTaskSendoddTabName());
                                 task.setRetry(0);
                                 task.setBotherAvoidNum(0);
                                 task.setContactControlNum(0);
                                 task.setCycleType((short)mtlChannelDef.getContactType().intValue());
-//                              int intGroupNum = mcdCampsegTaskDao.getSqlFireTableNum(custListTabName);
-//                              task.setIntGroupNum(intGroupNum);
                                 mcdCampsegTaskDao.saveTask(task);
                                 
                                 String taskId = task.getTaskId();
@@ -1138,9 +1020,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                     String custgroupId = campSegInfoDao.getMtlCampsegCustGroupId(childMtl.getCampId());
                                     String dataDate = "";
                                     if(custgroupId != null){
-                                        List mtlCustomList = mcdMtlGroupInfoDao.getMtlCustomListInfo(custgroupId);
+                                        List<Map<String,Object>> mtlCustomList = mcdMtlGroupInfoDao.getMtlCustomListInfo(custgroupId);
                                         if(mtlCustomList != null && mtlCustomList.size() > 0){
-                                            Map mtlCustomMap = (Map)mtlCustomList.get(0);
+                                            Map<String,Object> mtlCustomMap = (Map<String,Object>)mtlCustomList.get(0);
                                             dataDate = mtlCustomMap.get("data_date") == null ? "" : mtlCustomMap.get("data_date").toString();
                                         }
                                     }
@@ -1151,7 +1033,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                     Date planExecTime = new Date();
                                     mcdCampsegTaskDao.insertMcdCampsegTaskDate(taskId,dataDate,execStatus,tableNum,planExecTime);
                                 } catch (Exception e) {
-                                    // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
                                     
@@ -1211,14 +1092,14 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             processingResults = "处理失败，原因：" + e.getMessage();
             log.error("",e);
         }finally{
-            StringBuffer xmlStr = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlStr.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             xmlStr.append("<MARKET_ASSIGNMENT_INFO><ASSIGNMENT_INFO>");
             xmlStr.append("<ASSIGN_ID>"+ assing_id +"</ASSIGN_ID>");
             xmlStr.append("<PROCESS_FLAG>"+ flag +"</PROCESS_FLAG>");
             xmlStr.append("<PROCESS_DESC>"+ processingResults +"</PROCESS_DESC>");
             xmlStr.append("</ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>");
-            return xmlStr.toString();
         }
+        return xmlStr.toString();
     }
     
     /**
@@ -1229,42 +1110,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
         return mtlChannelDefDao.getChannelByCampsegId(campsegId);
     }
-    /**
-     * 当是soupUI审批系统的时候，拼装审批日志xml文件，保存至数据库
-     * @param list
-     * @return
-     */
-    private String assembleXmlLog(Map campSegInfoMap){
-        //针对soapUI审批的策略，只是针对父策略，只需要拼一个参数即可
-        int startDate = campSegInfoMap.get("start_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("start_date").toString().replaceAll("-",""));
-        int endDate = campSegInfoMap.get("end_date") == null ? 0 : Integer.parseInt(campSegInfoMap.get("end_date").toString().replaceAll("-",""));
-        int newDate = Integer.parseInt(DateTool.getStringDate(new Date(), "yyyyMMdd"));
-        String pidSampsegId = campSegInfoMap.get("campseg_id") == null ? "" : campSegInfoMap.get("campseg_id").toString();
-        String approveFlowId = campSegInfoMap.get("APPROVE_FLOW_ID") == null ? "" : campSegInfoMap.get("APPROVE_FLOW_ID").toString();
-        String creator = campSegInfoMap.get("CREATE_USERNAME") == null ? "" : campSegInfoMap.get("CREATE_USERNAME").toString();
-        
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-              .append("<MARKET_APPROVE_INFO>")
-              .append("<ASSIGN_ID>").append(approveFlowId).append("</ASSIGN_ID>")
-              .append("<CREATOR>").append(creator).append("</CREATOR>")
-              .append("<ASSIGN_NAME>系统管理员审批</ASSIGN_NAME>")
-              .append("<APPROVE_INFO>")
-              .append("<NODE_NO>").append(UUID.randomUUID()).append("</NODE_NO>")
-              .append("<NODE_NAME>系统管理员审批</NODE_NAME>")
-              .append("<APPROVE_RESULT>同意</APPROVE_RESULT>")
-              .append("<APPROVE_VIEW>111</APPROVE_VIEW>")
-              .append("<APPROVALER_NAME>系统管理员审批</APPROVALER_NAME>")
-              .append("<APPROVE_DATE>").append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).append("</APPROVE_DATE>")
-              .append("<IF_CURRENT_NODE>N</IF_CURRENT_NODE>")
-              .append("</APPROVE_INFO>")
-              .append("</MARKET_APPROVE_INFO>");
-        return buffer.toString();
-    }
-    
+     
     @Override
 	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
-		List<Map> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
+		List<Map<String,Object>> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 		String province = Configure.getInstance().getProperty("PROVINCE");
@@ -1319,7 +1168,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	 */
 	private String getCreateDuserSQLForSqlfire(String tableName,String tableModle,int updateCycle){
 		String result = "";
-		List columnList = this.getSqlFireTableColumns(tableModle);
+		List<Map<String,Object>> columnList = this.getSqlFireTableColumns(tableModle);
 		StringBuffer buffer = new StringBuffer();
 		for(int i = 0;i<columnList.size();i++){
 			Map<String,Object> tmap = (Map<String, Object>) columnList.get(i);
@@ -1365,7 +1214,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
   * @param tableName
   * @return
   */
- private List getSqlFireTableColumns(String tableName){
+ private List<Map<String,Object>> getSqlFireTableColumns(String tableName){
      return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
  }
  

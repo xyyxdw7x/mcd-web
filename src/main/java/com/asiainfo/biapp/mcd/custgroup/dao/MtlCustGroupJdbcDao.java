@@ -50,7 +50,7 @@ public interface MtlCustGroupJdbcDao {
 	 * @param customGroupId
 	 * @return
 	 */
-	public List getSqlLoderISyncDataCfg(String customGroupId);
+	public List<Map<String,Object>> getSqlLoderISyncDataCfg(String customGroupId);
 	/**
 	 * 周期性SQLLODER任务，更新任务信息
 	 * @param fileNameCsv
@@ -67,7 +67,7 @@ public interface MtlCustGroupJdbcDao {
      * @param mtlCuserTableName
      * @return
      */
-	public List getSqlLoderISyncDataCfgEnd(String mtlCuserTableName);
+	public List<Map<String,Object>> getSqlLoderISyncDataCfgEnd(String mtlCuserTableName);
     /**
      * sqlLoder导入完成后更改状态
      * @param customGroupId 客户群ID

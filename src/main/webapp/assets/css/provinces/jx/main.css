@@ -1,5 +1,105 @@
-@CHARSET "UTF-8";
-p{
-	font-size: 24px;
-	color: #FF00FF;
+/*江西公共样式../../../images*/
+body{font-family:"microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-serif,"宋体";}
+label{font-weight: normal;}
+.w-1200{width: 1200px;margin:0 auto;}
+*{word-break: break-all;}
+/*輸入框*/
+.search-box-wrp{padding:15px 0;}
+.search-box{width: 292px;height: 30px;overflow: hidden;margin: 0 0 0 25px; border: 1px solid #e3e3e3; background: #fff;}
+.search-box input{width: 225px;height: 30px; color: #000; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
+.search-box i{width: 62px;height: 30px;background: #278bdd url(../../../images/imcd-bg.png) no-repeat 6px -75px;}
+/*关于table表格*/
+.table.public-table > thead> tr > th{border: 1px solid #d4dfe7 !important;border-right:0 !important;border-left:0 !important;background-color: #edf1f4;}
+.table.public-table > tbody > tr > th, .table.public-table > tfoot > tr > th, .table.public-table > thead > tr > td, .table.public-table > tbody > tr > td, .table.public-table > tfoot > tr > td{border:0;}
+.table.public-table tr.odd td{background-color: #fff;}
+.table.public-table tr.even td{background-color: #f7f9fa;}
+.table.public-table tr:hover td{background-color: #ecf4fc;}
+.table.public-table tr:hover a.hover-a{text-decoration: underline; color: #278cde;}
+/*关于边线*/
+.border-item{display: inline-block; padding:4px 6px; cursor: pointer; border:1px solid #efefef; margin:0 5px 5px 0;}
+.border-item:hover,.border-item.active{border:1px dashed #003EFF;}
+/*关于按钮*/
+.btn-wrp{height:60px;}
+.btn-wrp a{margin-top:15px;}
+.btn-wrp0 a{margin-top:10px;}
+.btn-a{text-align: center;display: inline-block;}
+.btn-a:hover{text-decoration: none;}
+.btn-a.btn-a-blue{background: #278cde; color: #fff;border:1px solid #278cde;}
+.btn-a.btn-a-white{background: #fff;border:1px solid #278cde; color: #278cde;}
+.btn100-30{ width: 100px; height:30px;line-height: 30px;}
+.btn100-30:hover,.btn140-40:hover{color: #fff;}
+.btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #278cde;}
+.btn60-26{width: 60px; height:26px;line-height: 26px;font-size: 12px;}
+。
+/*关于分页*/
+.content-table-page {
+  width: 100%;
+  height: 66px;
+  overflow: hidden;
+}
+ .content-table-page .centent-page-box {
+  width: auto;
+  height: 32px;
+  overflow: hidden;
+  margin: 15px 20px 15px 0;
+  position: relative;
+}
+ .content-table-page .centent-page-box .page-button ,
+.ui-page-button {
+  width: 66px;
+  height: 22px;
+  overflow: hidden;
+  margin: 3px 10px 0 0;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: #333;
+  line-height: 22px;
+  border: 1px solid #e8ebec;
+  background: #fff;
+}
+.content-table-page .centent-page-box .page-button:hover {
+  border: 1px solid #278bdd;
+  background: #fff;
+}
+.content-table-page .centent-page-box .page-button.disabled {
+  border: 1px solid #e8ebec;
+  background: #fff;
+  text-align: center;
+  font-size: 12px;
+  cursor: auto;
+  color: #999;
+  line-height: 22px;
+}
+.content-table-page .centent-page-box .page-num {
+  width: auto;
+  height: 22px;
+  overflow: hidden;
+  margin: 3px 6px 0 0;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: #000;
+  line-height: 22px;
+  font-weight: 600;
+  padding: 0 5px;
+}
+
+ .content-table-page .centent-page-box .page-num.active,
+ .content-table-page .centent-page-box .page-num:hover {
+  width: auto;
+  height: 22px;
+  overflow: hidden;
+  margin: 3px 6px 0 0;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: #fff;
+  line-height: 22px;
+  border: none;
+  background: #278bdd;
+  padding: 0 5px;
 }

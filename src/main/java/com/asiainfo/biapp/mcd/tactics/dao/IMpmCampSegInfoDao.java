@@ -9,6 +9,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
 public interface IMpmCampSegInfoDao {
@@ -17,7 +18,7 @@ public interface IMpmCampSegInfoDao {
      * @param 
      * @return
      */
-    public List searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager);
+    public List<Map<String,Object>> searchIMcdCampsegInfo(McdCampDef segInfo, Pager pager);
     /**
      * gaowj3
      * JDBC查询业务状态
@@ -29,7 +30,7 @@ public interface IMpmCampSegInfoDao {
      * JDBC查询策略状态
      * @return
      */
-    public List getDimCampsegStatList();
+    public List<McdDimCampStatus> getDimCampsegStatList();
 	/**
 	 * IMCD_ZJ 清单表生成成功的时候，更新策略信息清单表表名
 	 * @param tableName
@@ -56,7 +57,7 @@ public interface IMpmCampSegInfoDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List getChildCampSeginfo(String campsegId) throws Exception;
+	public List<McdCampDef> getChildCampSeginfo(String campsegId) throws Exception;
     /**
      * 取客户群选择（目标客户群”及“对比客户群”信息）
      * @param campsegId
@@ -118,13 +119,13 @@ public interface IMpmCampSegInfoDao {
      * @param campsegId
      * @return
      */
-    public List getExecContentList(String campsegId);
+    public List<Map<String,Object>> getExecContentList(String campsegId);
     /**
      * 获取营销用语变量
      * @param campsegId
      * @return
      */
-    public List getExecContentVariableList(String campsegId);
+    public List<Map<String,Object>> getExecContentVariableList(String campsegId);
     /**
      * 保存营销用语
      * @param campsegId
@@ -138,7 +139,7 @@ public interface IMpmCampSegInfoDao {
 	 * @param campsegId
 	 * @return
 	 */
-	public List getSubCampsegInfo(String campsegId);
+	public List<McdCampDef> getSubCampsegInfo(String campsegId);
     /**
    * 根据营销状态ID获取营销状态
    * @param string
@@ -160,7 +161,7 @@ public interface IMpmCampSegInfoDao {
      * @param campsegId
      * @return
      */
-    public List getChannelsByCampIds(String campsegIds);
+    public List<Map<String,Object>> getChannelsByCampIds(String campsegIds);
     /**
      * 查询指定策略指定渠道在指定时间段内的营销情况
      * @param campsegId
@@ -169,7 +170,7 @@ public interface IMpmCampSegInfoDao {
      * @param endDate
      * @return
      */
-    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
+    public List<Map<String,Object>> getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
     /**
      * 查询某策略某个指定渠道的所有子策略某天的执行情况   
      * @param campsegId
@@ -177,7 +178,7 @@ public interface IMpmCampSegInfoDao {
      * @param statDate
      * @return
      */
-    public Map getCampChannelSituation(String campsegId, String channelId, String statDate);
+    public Map<String,Object> getCampChannelSituation(String campsegId, String channelId, String statDate);
     
 	/**
 	 * 通过活动ID,向上递归拿到最顶父活动
@@ -190,13 +191,13 @@ public interface IMpmCampSegInfoDao {
      * @param assing_id 审批工单号
      * @return
      */
-    public List getChildCampSeginfoByAssingId(String assing_id);
+    public List<Map<String,Object>> getChildCampSeginfoByAssingId(String assing_id);
     /**
      * 根据工单 编号获取策略（规则）
      * @param assing_id 审批工单号
      * @return
      */
-    public List getCampSegInfoByApproveFlowId(String assing_id);
+    public List<Map<String,Object>> getCampSegInfoByApproveFlowId(String assing_id);
     /**
      *  add by gaowj3 20150728
      * @Title: updateCampsegApproveStatusZJ
@@ -227,13 +228,13 @@ public interface IMpmCampSegInfoDao {
 	 * @param campsegId
 	 * @return
 	 */
-	public List getCampsegInfoById(String campsegId);
+	public List<Map<String,Object>> getCampsegInfoById(String campsegId);
     /**
      * 根据表明读取表结构（SQLFire）
      * @param tableName
      * @return
      */
-    public List getSqlFireTableColumnsInMem(String tableName);
+    public List<Map<String,Object>> getSqlFireTableColumnsInMem(String tableName);
     
     /**
      * 

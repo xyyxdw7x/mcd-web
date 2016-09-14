@@ -13,12 +13,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.CallableStatementCallback;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
-import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
@@ -53,10 +51,10 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
         if(type == MpmCONST.TASK_STATUS_RUNNING){//重启
             //当任务没拆分的时候，短信渠道策略状态需要更改为待执行，不能是执行中
             String mtlSmsChannelScheduleSql="select * from mcd_sms_schedule t  where t.task_id in (select task_id from mcd_camp_task where campseg_id=?)";
-            List list = this.getJdbcTemplate().queryForList(mtlSmsChannelScheduleSql,new Object[]{campsegId});
+            List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(mtlSmsChannelScheduleSql,new Object[]{campsegId});
             if(list != null && list.size() > 0){
                 String taskSql="select task_id from mcd_camp_task where campseg_id=? and channel_id = ?";
-                List taskList = this.getJdbcTemplate().queryForList(taskSql,new Object[]{campsegId,MpmCONST.CHANNEL_TYPE_SMS});
+                List<Map<String,Object>> taskList = this.getJdbcTemplate().queryForList(taskSql,new Object[]{campsegId,MpmCONST.CHANNEL_TYPE_SMS});
                 if(taskList != null && taskList.size() > 0){
                     //重启任务主表
                     String sql="update mcd_camp_task t set t.exec_status=? where t.campseg_id=? and t.channel_id = ?";
@@ -202,7 +200,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 
 
 	@Override
-	public List getCampsegByStatus(short status){
+	public List<Map<String, Object>> getCampsegByStatus(short status){
 		List<Map<String, Object>> list = null;
 		try {
 			StringBuffer buffer = new StringBuffer();
@@ -226,10 +224,9 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 			List<Map<String, Object>> list = getJdbcTemplate().queryForList(builder.toString());
 			log.info(" **********查询Cuser表size="+list.size());
 			if(CollectionUtils.isNotEmpty(list)){
-				Map map = list.get(0);
+				Map<String,Object> map = list.get(0);
 				String cuserTableName = String.valueOf(map.get("LIST_TABLE_NAME"));
 				log.info(" **********cuserTableName="+cuserTableName);
-				JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 				StringBuffer buffer = new StringBuffer();
 				buffer.append(" select count(1) from ").append(cuserTableName);
 				log.info("******************查询Cuser表记录条数"+buffer.toString());
@@ -250,7 +247,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 		List<Map<String, Object>> list = getJdbcTemplate().queryForList(sql.toString());
 		log.info("**********检查策略中是否存在D表list.size="+list.size());
 		if(CollectionUtils.isNotEmpty(list)){
-			Map map = list.get(0);
+			Map<String,Object> map = list.get(0);
 			log.info("**********查询D表***********");
 			String duseTableName = String.valueOf(map.get("init_cust_list_tab"));
 			log.info(" **********duseTableName="+duseTableName);
@@ -289,7 +286,6 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	
 	@Override
 	public int getDuserNum(String DuserName) {
-		JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(" select count(1) from ").append(DuserName);
 		log.info("******************查询Duser表记录条数"+buffer.toString());
@@ -300,16 +296,15 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	@Override
 	public void updateCampsegTaskStatusById(String campsegId,String DuserName,int groupNum,short status){
 		try {
-			JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(" update mcd_camp_task set exec_status = ?,CUST_LIST_TAB_NAME=?,INT_GROUP_NUM=? where campseg_id=?");
 			log.info("更新MCD_CAMPSEG_TASK表状态sql:"+buffer.toString()+"campsegId="+campsegId);
-			jt.update(buffer.toString(), new Object[] {status,DuserName,groupNum,campsegId });
+			this.getJdbcTemplate().update(buffer.toString(), new Object[] {status,DuserName,groupNum,campsegId });
 			
 			//调用存储过程，重排序
 			
 			String sql1 = "call UPDATE_CAMPSEG_PRIORITY(?,?,?)";
-			this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
+			this.getJdbcTemplate().execute(sql1,new CallableStatementCallback<Object>(){
 		        public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
 		        	Calendar dataCalendar1 = Calendar.getInstance();
 		    		dataCalendar1.setTime(new java.util.Date());
@@ -337,7 +332,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 			this.getJdbcTemplate().update(buffer.toString(), new Object[] {status,groupNum,campsegId });
 			//调用存储过程，重排序
 			String sql1 = "call UPDATE_CAMPSEG_PRIORITY(?,?,?)";
-			this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
+			this.getJdbcTemplate().execute(sql1,new CallableStatementCallback<Object>(){
 		        public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
 		        	Calendar dataCalendar1 = Calendar.getInstance();
 		    		dataCalendar1.setTime(new java.util.Date());

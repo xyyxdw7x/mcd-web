@@ -44,13 +44,12 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 	@Override
 	public McdDimCampType getDimCampsegType(Short campsegTypeId)
 			throws Exception {
-		// TODO Auto-generated method stub
 		McdDimCampType obj = null;
 		try {
 			String sql = "SELECT * FROM mcd_dim_camp_type WHERE CAMPSEG_TYPE_ID = ? order by CAMPSEG_TYPE_ID asc";
 			
 			Object args[] = new Object[]{campsegTypeId};  
-	        return (McdDimCampType)this.getJdbcTemplate().queryForObject(sql,args,new BeanPropertyRowMapper(McdDimCampType.class));
+	        return (McdDimCampType)this.getJdbcTemplate().queryForObject(sql,args,new BeanPropertyRowMapper<McdDimCampType>(McdDimCampType.class));
 			
 		} catch (Exception e) {
 			log.error("",e);
@@ -62,9 +61,10 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 		List<McdDimCampType> list = null;
 		try {
 			String sql = "SELECT * FROM mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
-			return (List) this.getJdbcTemplate().query(sql, new RowMapperResultSetExtractor(new RowMapper() {
+			return (List<McdDimCampType>) this.getJdbcTemplate().query(sql, 
+					new RowMapperResultSetExtractor<McdDimCampType>(new RowMapper<McdDimCampType>() {
 				@Override
-				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public McdDimCampType mapRow(ResultSet rs, int rowNum) throws SQLException {
 					McdDimCampType campsegType = new McdDimCampType();
 					campsegType.setCampsegTypeId(Short.parseShort(rs.getString("CAMPSEG_TYPE_ID")));
 					campsegType.setCampsegTypeName(rs.getString("CAMPSEG_TYPE_NAME"));

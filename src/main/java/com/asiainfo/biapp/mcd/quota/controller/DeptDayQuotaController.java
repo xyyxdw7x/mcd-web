@@ -37,7 +37,6 @@ import net.sf.json.JSONObject;
 @RequestMapping("/dayQuota")
 public class DeptDayQuotaController  extends BaseMultiActionController {
 
-    //private static final Logger log = LogManager.getLogger();
     private static final Logger log = LogManager.getLogger(DeptDayQuotaController.class);
 
     @Resource(name = "quotaConfigCityDayService")
@@ -105,7 +104,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         } else {// 将“yyyy年MM月 ”格式转化成“yyyyMM”格式
             dataDate = showDate;
         }
-        Map maps= new HashMap();
+        Map<String, Object> maps= new HashMap<String, Object>();
         //add by zhuyq3 2015-10-30 17:15:01
 //      dataDate = "201510";
         List<Map<String, Object>> list = quotaConfigCityDayService.queryCityDayQuotas(cityId, dataDate);
@@ -218,13 +217,12 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         //月剩余配额
         String quotaM= request.getParameter("monthQuota");
         //月配额
-        String monthQuotaSum = request.getParameter("monthQuotaSum");
         JSONObject result = new JSONObject();
         int rows = 0;
         try {
             org.json.JSONObject jsonObject = new org.json.JSONObject(day); 
             
-            for (Iterator iter = jsonObject.keys(); iter.hasNext();) { //先遍历整个 people 对象  
+            for (Iterator<?> iter = jsonObject.keys(); iter.hasNext();) { //先遍历整个 people 对象  
                 String key = (String)iter.next(); 
                 String value = jsonObject.getString(key);
                 org.json.JSONObject jsonObjectValue = new org.json.JSONObject(value);  

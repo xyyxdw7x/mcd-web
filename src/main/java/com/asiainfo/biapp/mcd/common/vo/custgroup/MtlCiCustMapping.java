@@ -2,6 +2,10 @@ package com.asiainfo.biapp.mcd.common.vo.custgroup;
 
 public class MtlCiCustMapping  implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4031806295470797133L;
 	private String ciCustId;
 	private String mtlCustId;
 	private String ciTempleteId;

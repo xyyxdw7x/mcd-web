@@ -1,6 +1,5 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,16 +7,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.annotation.Resource;
 
 import org.jfree.util.Log;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCreateDuserTableService;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.thread.CreateDuserTaskMessageCacheQueue;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -37,8 +33,8 @@ public class McdCreateDuserTableServiceImpl implements IMcdCreateDuserTableServi
 	
 
 	@Override
-	public List getAll() {
-		List<Map> list = null;
+	public List<Map<String, Object>> getAll() {
+		List<Map<String, Object>> list = null;
 		try {
 			list = mcdCampsegTaskDao.getCampsegByStatus(MpmCONST.TASK_STATUS_INIT);
 		} catch (Exception e) {
@@ -48,7 +44,7 @@ public class McdCreateDuserTableServiceImpl implements IMcdCreateDuserTableServi
 	}
 
 	@Override
-	public void doCreateDuserTable(List list) {
+	public void doCreateDuserTable(List<Map<String,Object>> list) {
 		try {
 			//生产者
 			for(int i=0;i<list.size();i++){
@@ -64,29 +60,6 @@ public class McdCreateDuserTableServiceImpl implements IMcdCreateDuserTableServi
 		}
 	}
 	
-	/**
-	 * 根据子策略Id查询出所有策略信息（父策略和子策略）
-	 * @param campsegId
-	 * @return
-	 */
-	private Map getCampsegList(String campsegId){
-		List<Map> list = mpmCampSegInfoDao.getCampsegInfoById(campsegId);
-		Map<String, String> map = new HashMap<String, String>();
-		for(int i=0;i<list.size();i++){
-			Map<String,String> tmap = list.get(i);
-			String campsegPidTemp = (String)tmap.get("campseg_pid");
-			String campsegIdTemp = (String)tmap.get("campseg_id");
-			if(StringUtils.isNotEmpty(campsegPidTemp) && "0".equals(campsegPidTemp)){
-				String initCustListTab = (String)tmap.get("init_cust_list_tab");
-				map.put(campsegIdTemp, initCustListTab);
-			}else{
-				map.put(campsegIdTemp, campsegPidTemp);
-			}
-		}
-		return map;
-	}
-	
-
 }
 
 

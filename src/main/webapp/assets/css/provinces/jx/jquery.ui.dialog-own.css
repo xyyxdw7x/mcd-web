@@ -1,0 +1,27 @@
+.ui-dialog .ui-widget-header {
+    background: #278bdd;
+    color: #fff;
+    font-weight: 400;
+    padding: 0em 1em;
+    font-size: 16px;
+    height: 52px;
+    line-height: 48px;
+}
+.ui-dialog .ui-widget-header .ui-button{
+    background: #7c98b8;
+    border: 0px;
+}
+.ui-dialog .ui-widget-header .ui-button .ui-button-icon.ui-icon.ui-icon-closethick{
+    background: url("../images/owl-index.png") no-repeat -577px -295px;
+    margin-left: -12px;
+}
+.ui-dialog .ui-not-login-btn{
+    width: 144px;
+    height: 48px;
+    background: #2e81e2;
+    color: #fff;
+    font-size: 14px;
+}
+.ui-dialog .ui-dialog-buttonpane {
+    border-width:  0;
+}

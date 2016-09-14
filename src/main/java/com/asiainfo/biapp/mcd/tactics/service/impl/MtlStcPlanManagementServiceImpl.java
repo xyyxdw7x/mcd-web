@@ -133,7 +133,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 		}
 		//匹配是否已经使用
 		if(StringUtils.isNotEmpty(planIds)){
-			List<Map> isUseredList = mtlStcPlanDao.checkIsUserd(planIds.substring(0, planIds.length()-1), cityId);
+			List<Map<String,Object>> isUseredList = mtlStcPlanDao.checkIsUserd(planIds.substring(0, planIds.length()-1), cityId);
 			if(CollectionUtils.isEmpty(isUseredList)){
 				for(int i = 0;i<resultList.size();i++){
 					MtlStcPlanBean bean = resultList.get(i);

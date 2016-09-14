@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>选政策</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+    <!--保存弹窗 -->
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/jquery.ui.dialog-own.css" />
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+	    <script type="text/javascript">
+    		$(function(){
+    			$(".ui-share-dlg").dialog({
+    				width:488,
+    				height:300,
+    				resizable: false,
+			    modal: true,
+			    title:"保存",
+			    buttons: [{
+			        "class":"ui-not-login-btn",
+			        "text":"确定",
+			        "click": function() {
+			            $( this ).dialog( "close" );
+			        }
+			    }]
+    			});
+    		});	 
+    </script>
+
+
+</head>
+<body>
+
+<!-- 分享弹框 -->
+<div class="ui-share-dlg container-fluid">
+	<div class="row">
+		<div class="col-md-6 ui-share-box ui-share-line">
+			<div class="ui-share-header">
+				<span>选择用户</span>
+				<div>
+					<a href="javascript:void(0);" class="ui-mytable-btn btn">定向选择</a>
+				</div>
+			</div>
+			
+</body>
+</html>

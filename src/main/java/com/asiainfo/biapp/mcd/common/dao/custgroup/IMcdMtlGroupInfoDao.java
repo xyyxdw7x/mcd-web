@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.common.dao.custgroup;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
@@ -34,11 +35,11 @@ public interface IMcdMtlGroupInfoDao {
 	 */
 	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords,Pager pager);
 	
-	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
+	public List<Map<String,Object>> searchCustom(String contentType, Pager pager, String userId, String keywords);
 	
 	public String isCustomDeletable(String customGrpId, String userId);
 	
-	public List queryQueueInfo();
+	public List<Map<String,Object>> queryQueueInfo();
 	
 	public String getExistQueueCfgId(String group_into_id, String queue_id)throws Exception;
 	
@@ -48,13 +49,13 @@ public interface IMcdMtlGroupInfoDao {
 
 	public void deleteCustom(String customGrpId);
 	
-	public List searchCustomDetail(String customGrpId);
+	public List<Map<String,Object>> searchCustomDetail(String customGrpId);
     /**
      * 根据客户群编码获取客户群清单信息
      * @param customgroupid
      * @return
      */
-    List getMtlCustomListInfo(String custgroupId);
+	public List<Map<String,Object>> getMtlCustomListInfo(String custgroupId);
 	/**
 	 * 根据客户群id查询客户群信息
 	 * @param custGroupId
