@@ -19,6 +19,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
@@ -62,7 +63,8 @@ public class CampSegSearchController extends BaseMultiActionController {
     private IMtlSmsSendTestTask mtlSmsSendTestTask;
     
     @RequestMapping("/searchIMcdCamp")
-    public ModelAndView searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
+    @ResponseBody
+    public Map<String, Object> searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)throws Exception {
 //                initActionAttributes(request);
 
                 User user = this.getUser(request, response);
@@ -121,19 +123,11 @@ public class CampSegSearchController extends BaseMultiActionController {
                     pager.setResult(resultList);
                 }
 
-                JSONObject dataJson = new JSONObject();
-                dataJson.put("status", "200");
-                dataJson.put("data", JmsJsonUtil.obj2Json(pager));
-                response.setContentType("application/json; charset=UTF-8");
-                response.setHeader("progma", "no-cache");
-                response.setHeader("Access-Control-Allow-Origin", "*");
-                response.setHeader("Cache-Control", "no-cache");
-                PrintWriter out = response.getWriter();
-                out.print(dataJson);
-                out.flush();
-                out.close();
+                Map<String,Object> map = new HashMap<String,Object>();
+                map.put("status", "200");
+                map.put("data",pager);
 
-                return null;
+                return map;
             }
     
     /**
@@ -147,22 +141,16 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/searchCampsegStat")
-    public ModelAndView searchCampsegStat( HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> searchCampsegStat( HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List statList = mpmCampSegInfoService.getDimCampsegStatList();
-        JSONObject dataJson = new JSONObject();
-        dataJson.put("status", "200");
-        dataJson.put("data", JmsJsonUtil.obj2Json(statList));
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
-        out.print(dataJson);
-        out.flush();
-        out.close();
 
-        return null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("status", "200");
+        map.put("data",statList);
+
+        return map;
     }
 
     /**
@@ -176,22 +164,15 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/searchDimCampDrvType")
-    public ModelAndView searchDimCampDrvType( HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> searchDimCampDrvType( HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<DimCampDrvType> dimCampSceneList = mpmCampSegInfoService.getDimCampSceneList();
-        JSONObject dataJson = new JSONObject();
-        dataJson.put("status", "200");
-        dataJson.put("data", JmsJsonUtil.obj2Json(dimCampSceneList));
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
-        out.print(dataJson);
-        out.flush();
-        out.close();
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("status", "200");
+        map.put("data",dimCampSceneList);
 
-        return null;
+        return map;
     }
     
     /**
@@ -205,10 +186,12 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/searchMcdMpmCampSegChild")
-    public ModelAndView searchMcdMpmCampSegChild(HttpServletRequest request,
+    @ResponseBody
+    public Map<String, Object> searchMcdMpmCampSegChild(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         int status = 200;
         String msg = "";
+        Map<String,Object> returnMap = new HashMap<String,Object>();
         JSONArray jsonArray = null;
         try {
             String campsegId = request.getParameter("campsegId") != null ? request.getParameter("campsegId") : null;
@@ -259,23 +242,14 @@ public class CampSegSearchController extends BaseMultiActionController {
             msg = e.getMessage();
         }  finally {
         
-            JSONObject dataJson = new JSONObject();
-            dataJson.put("status", "200");
+            returnMap.put("status", "200");
             if(!"200".equals(status)){
-                dataJson.put("result", msg);
+                returnMap.put("result", msg);
             }
-            dataJson.put("data", jsonArray);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
+            returnMap.put("data", jsonArray);
         }
         
-        return null;
+        return returnMap;
    }
     /**
      * 提交策略信息
@@ -288,29 +262,24 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/submitApproval")
-    public ModelAndView submitApproval(HttpServletRequest request, HttpServletResponse response)
+    @ResponseBody
+    public Map<String, Object> submitApproval(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String campsegId = request.getParameter("campsegId") != null ? request
                 .getParameter("campsegId") : null;
         String message = mpmCampSegInfoService.submitApprovalXml(campsegId);
-        JSONObject dataJson = new JSONObject();
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         if (message.contains("失败")) {
-            dataJson.put("status", 201);
-            dataJson.put("result", message);
+            returnMap.put("status", 201);
+            returnMap.put("result", message);
         } else {
-            dataJson.put("status", 200);
+            returnMap.put("status", 200);
         }
 
-        dataJson.put("data", "");
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
-        out.print(dataJson);
-        out.flush();
-        out.close();
-        return null;
+        returnMap.put("data", "");
+
+        return returnMap;
     }
     /**
      * 删除策略信息
@@ -323,8 +292,10 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/delCampseg")
-    public ModelAndView delCampseg( HttpServletRequest request, HttpServletResponse response)
+    @ResponseBody
+    public Map<String, Object> delCampseg( HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
 
         String msg = "";
         int status = 200;
@@ -341,25 +312,16 @@ public class CampSegSearchController extends BaseMultiActionController {
             status = 201;
             msg = "删除策略信息失败";
         } finally {
-            JSONObject dataJson = new JSONObject();
             if (status != 200) {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             } else {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
-            return null;
+            returnMap.put("data", "");
         }
+        return returnMap;
 
     }
 
@@ -375,8 +337,11 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/updateCampsegEndDate")
-    public ModelAndView updateCampsegEndDate( HttpServletRequest request,
+    @ResponseBody
+    public Map<String, Object> updateCampsegEndDate( HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         String msg = "";
         int status = 200;
         try {
@@ -402,25 +367,17 @@ public class CampSegSearchController extends BaseMultiActionController {
             status = 201;
             msg = "发生未知错误，请联系管理员";
         } finally {
-            JSONObject dataJson = new JSONObject();
             if (status != 200) {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             } else {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
-            return null;
+            returnMap.put("data", "");
+
         }
+        return returnMap;
     }
 
     /**
@@ -434,12 +391,15 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/cancelAssignment")
-    public ModelAndView cancelAssignment (HttpServletRequest request,
+    @ResponseBody
+    public Map<String, Object> cancelAssignment (HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         String campsegId = request.getParameter("campsegId") != null ? request
                 .getParameter("campsegId") : null;
         String anceldesc = request.getParameter("anceldesc") != null ? request
                 .getParameter("anceldesc") : null;
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         String msg = "";
         int status = 200;
 
@@ -507,26 +467,17 @@ public class CampSegSearchController extends BaseMultiActionController {
             e.printStackTrace();
             msg = e.getMessage();
         } finally {
-            JSONObject dataJson = new JSONObject();
             if (status == 200) {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             } else {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
+            returnMap.put("data", "");
         }
 
-        return null;
+        return returnMap;
     }
     
 
@@ -540,8 +491,11 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      */
     @RequestMapping("/campCancel")
-    public ModelAndView campCancel(HttpServletRequest request,HttpServletResponse response)
+    @ResponseBody
+    public Map<String, Object> campCancel(HttpServletRequest request,HttpServletResponse response)
             throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         String msg = "";
         int status = 200;
         try {
@@ -570,26 +524,19 @@ public class CampSegSearchController extends BaseMultiActionController {
             if (StringUtils.isEmpty(msg)) {
                 msg = "策略终止成功";
             }
-            JSONObject dataJson = new JSONObject();
             if (status != 200) {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             } else {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
-            return null;
+            returnMap.put("data", "");
+
 
         }
+        return returnMap;
+
 
     }
 
@@ -603,8 +550,11 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      */
     @RequestMapping("/campPause")
-    public ModelAndView campPause(HttpServletRequest request,HttpServletResponse response)
+    @ResponseBody
+    public Map<String, Object> campPause(HttpServletRequest request,HttpServletResponse response)
             throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         String msg = "";
         String logDesc = "";
         int status = 200;
@@ -633,26 +583,19 @@ public class CampSegSearchController extends BaseMultiActionController {
             } else {
                 msg = "策略暂停成功";
             }
-            JSONObject dataJson = new JSONObject();
             if (status != 200) {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             } else {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
-            return null;
+            returnMap.put("data", "");
+
 
         }
+        return returnMap;
+
     }
 
     /**
@@ -665,7 +608,9 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @return
      */
     @RequestMapping("/campRestart")
-    public ModelAndView campRestart(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> campRestart(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
         String msg = "";
         int status = 200;
         try {
@@ -687,25 +632,18 @@ public class CampSegSearchController extends BaseMultiActionController {
             msg = "重启失败，原因：" + e.getMessage();
             status = 201;
         } finally {
-            JSONObject dataJson = new JSONObject();
             if (status != 200) {
-                dataJson.put("status", status);
-                dataJson.put("result", msg);
+                returnMap.put("status", status);
+                returnMap.put("result", msg);
             } else {
-                dataJson.put("status", status);
+                returnMap.put("status", status);
             }
 
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
-            return null;
+            returnMap.put("data", "");
+
         }
+        return returnMap;
+
     }
     
     /**
@@ -719,7 +657,10 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/searchExecContent")
-    public ModelAndView searchExecContent( HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> searchExecContent( HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
         int status = 200;
         String msg = "";
         JSONArray jsonArrayEnd = null;
@@ -752,22 +693,14 @@ public class CampSegSearchController extends BaseMultiActionController {
             msg = e.getMessage();
         } finally {
 
-            JSONObject dataJson = new JSONObject();
-            dataJson.put("status", "200");
+            returnMap.put("status", "200");
             if (!"200".equals(status)) {
-                dataJson.put("result", msg);
+                returnMap.put("result", msg);
             }
-            dataJson.put("data", jsonArrayEnd);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
+            returnMap.put("data", jsonArrayEnd);
+
         }
-        return null;
+        return returnMap;
     }
 
     /**
@@ -781,7 +714,9 @@ public class CampSegSearchController extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/saveExecContent")
-    public ModelAndView saveExecContent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> saveExecContent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
 
         int status = 200;
         String msg = "";
@@ -835,23 +770,14 @@ public class CampSegSearchController extends BaseMultiActionController {
             msg = e.getMessage();
         } finally {
 
-            JSONObject dataJson = new JSONObject();
-            dataJson.put("status", "200");
+            returnMap.put("status", "200");
             if (!"200".equals(status)) {
-                dataJson.put("result", msg);
+                returnMap.put("result", msg);
             }
-            dataJson.put("data", "");
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(dataJson);
-            out.flush();
-            out.close();
+            returnMap.put("data", "");
         }
 
-        return null;
+        return returnMap;
     }
 
 
