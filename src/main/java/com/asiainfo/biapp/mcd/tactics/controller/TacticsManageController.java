@@ -1732,9 +1732,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		return custCnt;
 	}
 	
-	@RequestMapping("/test")
+	@RequestMapping("/queryPlanTypes")
 	@ResponseBody
-	public List test(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public List queryPlanTypes(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		List all = mcdDimPlanTypeService.getTreeList();
 		return all;
 	}
