@@ -1,3 +1,6 @@
+/*重置*/
+.ui-widget.ui-widget-content{border:0;}
+.ui-dialog{padding:0;}
 .ui-dialog .ui-widget-header {
     background: #278bdd;
     color: #fff;
@@ -7,21 +10,33 @@
     height: 52px;
     line-height: 48px;
 }
+.ui-button{border:0;}
 .ui-dialog .ui-widget-header .ui-button{
-    background: #7c98b8;
+    background: none;
     border: 0px;
 }
+.ui-dialog .ui-dialog-buttonpane {
+    border:  0;
+    background: #ebf0f3;
+}
+.ui-widget-overlay{
+    background: #000;
+}
+/*xin新增与覆盖*/
 .ui-dialog .ui-widget-header .ui-button .ui-button-icon.ui-icon.ui-icon-closethick{
-    background: url("../images/owl-index.png") no-repeat -577px -295px;
+    background: url(../../../images/put-img.png) no-repeat no-repeat -99px -2px;
     margin-left: -12px;
 }
-.ui-dialog .ui-not-login-btn{
+.ui-dialog .dialog-btn{
     width: 144px;
     height: 48px;
     background: #2e81e2;
     color: #fff;
-    font-size: 14px;
+    font-size: 14px; 
 }
-.ui-dialog .ui-dialog-buttonpane {
-    border-width:  0;
+.ui-dialog .dialog-btn-blue{
+    background: #2e81e2;
+}
+.ui-dialog .dialog-btn-orange{
+    background: #ff9314;
 }
