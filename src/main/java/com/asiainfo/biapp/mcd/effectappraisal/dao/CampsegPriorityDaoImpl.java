@@ -23,7 +23,7 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.util.jdbcPage.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -67,13 +67,13 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" where mcoa.is_manual=1  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=1 ");
-		if(StringUtil.isNotEmpty(channelId)){
+		if(StringUtils.isNotEmpty(channelId)){
 			sb.append(" and mcoa.channel_id='"+channelId+"'");
 		}
-		if(StringUtil.isNotEmpty(cityId)){
+		if(StringUtils.isNotEmpty(cityId)){
 			sb.append(" and mcoa.city_id='"+cityId+"'");
 		}
-		if(StringUtil.isNotEmpty(adivId)){
+		if(StringUtils.isNotEmpty(adivId)){
 			sb.append(" and mcoa.chn_adiv_id='"+adivId+"'");
 		}
 		sb.append(" order by mcoa.pri_order_num")
@@ -95,7 +95,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			
 			String campSuccRate = String.valueOf(map.get("camp_succ_rate"));
 			float successRate = 0f;
-			if(StringUtil.isEmpty(campSuccRate) || "null".equals(campSuccRate)){
+			if(StringUtils.isEmpty(campSuccRate) || "null".equals(campSuccRate)){
 				campsegPriorityBean.setSuccRate(0.0000f);
 			}else{
 				successRate = Float.parseFloat(campSuccRate);
@@ -145,16 +145,16 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" where mcoa.is_manual=0  and mct.exec_status in (50,51,59)")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0");
-		if(StringUtil.isNotEmpty(channelId)){
+		if(StringUtils.isNotEmpty(channelId)){
 			sb.append(" and mcoa.channel_id='"+channelId+"'");
 		}
-		if(StringUtil.isNotEmpty(cityId)){
+		if(StringUtils.isNotEmpty(cityId)){
 			sb.append(" and mcoa.city_id='"+cityId+"'");
 		}
-		if(StringUtil.isNotEmpty(adivId)){
+		if(StringUtils.isNotEmpty(adivId)){
 			sb.append(" and mcoa.chn_adiv_id='"+adivId+"'");
 		}
-		if(StringUtil.isNotEmpty(keyWords)){
+		if(StringUtils.isNotEmpty(keyWords)){
 			sb.append(" and (mcs.campseg_id like '%"+keyWords+"%' or mcs.campseg_name like '%"+keyWords+"%' or msp.plan_name like '%"+keyWords+"%')");
 		}
 		sb.append(") order by pri_order_num ");
@@ -210,7 +210,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			
 			String campSuccRate = String.valueOf(map.get("camp_succ_rate"));
 			float successRate = 0f;
-			if(StringUtil.isEmpty(campSuccRate) || "null".equals(campSuccRate)){
+			if(StringUtils.isEmpty(campSuccRate) || "null".equals(campSuccRate)){
 				campsegPriorityBean.setSuccRate(0.0000f);
 			}else{
 				successRate = Float.parseFloat(campSuccRate);
@@ -240,16 +240,16 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 //		  .append(" where mcc.custgroup_type='CG' and mcoa.is_manual=0 AND (MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDCG+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_DDZX+" OR MCS.CAMPSEG_STAT_ID="+MpmCONST.MPM_CAMPSEG_STAT_PAUSE+")");
 		  .append(" where  mcoa.is_manual=0  and mct.exec_status in (50,51,59) ")
 		  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");  //失效的策略不显示
-		if(StringUtil.isNotEmpty(channelId)){
+		if(StringUtils.isNotEmpty(channelId)){
 			sb.append(" and mcoa.channel_id='"+channelId+"'");
 		}
-		if(StringUtil.isNotEmpty(cityId)){
+		if(StringUtils.isNotEmpty(cityId)){
 			sb.append(" and mcoa.city_id='"+cityId+"'");
 		}
-		if(StringUtil.isNotEmpty(adivId)){
+		if(StringUtils.isNotEmpty(adivId)){
 			sb.append(" and mcoa.chn_adiv_id='"+adivId+"'");
 		}
-		if(StringUtil.isNotEmpty(keyWords)){
+		if(StringUtils.isNotEmpty(keyWords)){
 			sb.append(" and (mcs.campseg_id like '%"+keyWords+"%' or mcs.campseg_name like '%"+keyWords+"%' or msp.plan_name like '%"+keyWords+"%')");
 		}
 		sb.append(" order by mcoa.pri_order_num")
@@ -279,7 +279,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			   .append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.is_manual=1")
 			   .append(" and exists (select 1 from mcd_camp_def mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0 and mcoa.campseg_id=mcs.campseg_id)");  //不对失效的策略进行计算
 //			   .append(" and mcoa.campseg_id in (select campseg_id from mcd_camp_def mcs where CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");
-		if(StringUtil.isNotEmpty(chnAdivId)){
+		if(StringUtils.isNotEmpty(chnAdivId)){
 			sbuffer.append(" and mcoa.chn_adiv_id ='"+chnAdivId+"'");
 		}
 		int result = this.getJdbcTemplate().update(sbuffer.toString());
@@ -313,7 +313,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		StringBuffer sbuffer3 = new StringBuffer();
 		sbuffer3.append("update mcd_camp_order mcoa set mcoa.pri_order_num = 1, mcoa.is_manual = 1")
 		.append(" where mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"' and mcoa.campseg_id='"+campsegId+"'");
-		if(StringUtil.isNotEmpty(chnAdivId)){
+		if(StringUtils.isNotEmpty(chnAdivId)){
 			sbuffer3.append(" and mcoa.chn_adiv_id='"+chnAdivId+"'");
 		}
 		this.getJdbcTemplate().update(sbuffer3.toString());
@@ -398,7 +398,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	public void cancleTopManualPriorityCampseg1(String campsegId,String cityId,String channelId,String chnAdivId) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("update mcd_camp_order mcoa set mcoa.is_manual=0 where campseg_id='"+campsegId+"' and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
-		if(StringUtil.isNotEmpty(chnAdivId)){
+		if(StringUtils.isNotEmpty(chnAdivId)){
 			buffer.append(" and mcoa.chn_adiv_id='"+chnAdivId+"'");
 		}
 		log.info("将手动改为自动："+buffer.toString());
@@ -413,7 +413,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id ")
 		  	  .append(" where  mcoa.is_manual=1 and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'and mct.exec_status in (50,51,59)")
 		  	  .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0");
-		if(StringUtil.isNotEmpty(chnAdivId)){
+		if(StringUtils.isNotEmpty(chnAdivId)){
 			buffer.append(" and mcoa.chn_adiv_id='"+chnAdivId+"'");
 		}
 		buffer.append(" order by mcoa.pri_order_num");

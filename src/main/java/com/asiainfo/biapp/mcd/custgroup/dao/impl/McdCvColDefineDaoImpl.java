@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The Class McdCvColDefineDaoImpl.
@@ -29,10 +29,10 @@ public class McdCvColDefineDaoImpl extends JdbcDaoBase  implements McdCvColDefin
 				  .append(" LEFT JOIN MDA_SYS_TABLE_COLUMN ON MCD_CV_COL_DEFINE.ATTR_META_ID = MDA_SYS_TABLE_COLUMN.COLUMN_ID")
 				  .append(" LEFT JOIN DIM_MTL_LABEL_INFO ON DIM_MTL_LABEL_INFO.LABEL_ID = MDA_SYS_TABLE_COLUMN.LABEL_ID")
 				  .append(" WHERE DIM_ATTR_CLASS.P_ATTR_CLASS_ID =?");
-			if(StringUtil.isNotEmpty(keyWords)){
+			if(StringUtils.isNotEmpty(keyWords)){
 				  buffer.append(" AND MCD_CV_COL_DEFINE.ATTR_ALIAS like '%?%'");
 			}
-			if(StringUtil.isNotEmpty(keyWords)){
+			if(StringUtils.isNotEmpty(keyWords)){
 				list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { pAttrClassId,keyWords });
 			}else {
 				list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { pAttrClassId });

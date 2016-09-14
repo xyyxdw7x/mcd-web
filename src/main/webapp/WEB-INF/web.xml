@@ -47,13 +47,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
   <!-- spring  Listener end-->
-  <listener>
-		<listener-class>com.asiainfo.biapp.mcd.listener.MpmCommonListener</listener-class>
-  </listener>
-  	<!--启动服务的时候启动创建D表的线程  -->
- 	<listener>
-	  	<listener-class>com.asiainfo.biapp.mcd.listener.InitApplicationListener</listener-class>
-	</listener>
   <!--dubbo and rest config start  -->
   <listener>
     <listener-class>com.alibaba.dubbo.remoting.http.servlet.RestBootstrapListener</listener-class>

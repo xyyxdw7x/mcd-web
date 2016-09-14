@@ -7,7 +7,7 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Title: ConvertUtils：高效转化方法提供类<br>
@@ -132,7 +132,7 @@ public class ConvertUtils {
 
 	//将二进制字符串转换为十进制
 	public static long transToDecimal(String binary) {
-		if (StringUtil.isNotEmpty(binary)) {
+		if (StringUtils.isNotEmpty(binary)) {
 			BigInteger bi = new BigInteger(binary, 2);
 			return Long.valueOf(bi.toString(10));
 		}

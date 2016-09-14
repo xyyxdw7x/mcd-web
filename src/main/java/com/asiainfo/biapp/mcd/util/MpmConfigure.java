@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class MpmConfigure {
 
@@ -45,7 +45,7 @@ public class MpmConfigure {
 
 	public String getProperty(String configType, String strKey) throws Exception {
 		String province = Configure.getInstance().getProperty("PROVINCE");
-		if (StringUtil.isEmpty(configType)) {
+		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}
 		try {
@@ -61,7 +61,7 @@ public class MpmConfigure {
 				initProperties(configType, (String) fileNameMap.get(configType), province);
 			}
 			Properties properties = (Properties) configMap.get(configType);
-			return StringUtil.obj2Str(properties.getProperty(strKey));
+			return properties.getProperty(strKey) == null ? "" : properties.getProperty(strKey).toString().trim();
 		} catch (Exception excep) {
 			log.error("", excep);
 		}
@@ -69,10 +69,10 @@ public class MpmConfigure {
 	}
 
 	private synchronized boolean initProperties(String configType, String file, String province) throws Exception {
-		if (StringUtil.isEmpty(configType)) {
+		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}
-		if (StringUtil.isEmpty(file)) {
+		if (StringUtils.isEmpty(file)) {
 			throw new Exception("----Configure--err-------:fileName is null");
 		}
 		Properties properties = new Properties();
@@ -87,7 +87,7 @@ public class MpmConfigure {
 			properties.load(fis);
 			File privincePathObj = null;
 			String provincePath = "";
-			if (StringUtil.isNotEmpty(province)) { //把默认配置文件和各个省配置文件合并
+			if (StringUtils.isNotEmpty(province)) { //把默认配置文件和各个省配置文件合并
 				String provinceFile = file.replace("{PROVINCE}", province.toLowerCase());
 				privincePathObj = new File(provinceFile);
 				if (privincePathObj.exists()) {

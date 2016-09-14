@@ -6,7 +6,6 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.form.DimMtlChanneltypeForm;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
@@ -41,21 +40,6 @@ public interface DimMtlChanneltypeDao {
 	 * @throws MpmException
 	 */
 	public void save(DimMtlChanneltype dimMtlChanneltype) throws MpmException;
-
-	/**
-	 * 删除资渠道类型定义信息
-	 * @param dimChannelUserRelation
-	 * @throws MpmException
-	 */
-	public void delete(DimMtlChanneltypeForm searchForm) throws MpmException;
-
-	/**
-	 * 查询渠道类型定义信息(分页)
-	 * @param searchForm
-	 * @return
-	 * @throws MpmException
-	 */
-	public Map searchMtlChanneltype(DimMtlChanneltypeForm searchForm, Integer curPage, Integer pageSize) throws MpmException;
 	/**
 	 * 取某个渠道类型的定义
 	 * @param channeltypeId

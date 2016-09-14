@@ -17,7 +17,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.client.Call;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
@@ -26,6 +28,7 @@ import org.dom4j.Element;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
@@ -63,10 +66,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
-import com.asiainfo.biframe.utils.string.DES;
-import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**
  *
@@ -196,10 +195,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					//修改时,先删除客户群与策略的关系/保存时机与策略关系
 					mtlCampsegCustgroupDao.deleteByCampsegId(campsegId);
 					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
-					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
+					/*if(StringUtils.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
 					}
-					if(StringUtil.isNotEmpty(bussinessLableTemplateId)){
+					if(StringUtils.isNotEmpty(bussinessLableTemplateId)){
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"2");//保存业务标签 
 					}*/
 					
@@ -309,7 +308,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				
 				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
 /*				int updateCycle = 0;
-				if(StringUtil.isNotEmpty(segInfo.getUpdatecycle())){
+				if(StringUtils.isNotEmpty(segInfo.getUpdatecycle())){
 					updateCycle = Integer.parseInt(segInfo.getUpdatecycle());
 				}*/
 
@@ -337,10 +336,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
 //					TODO:saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
 					saveCampsegCustGroupZJ(campsegId, custgroupId, "chenyg",segInfo,"0");//基础客户群必须保存
-					/*if(StringUtil.isNotEmpty(basicEventTemplateId)){  //选择时机
+					/*if(StringUtils.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
 					}
-					if(StringUtil.isNotEmpty(bussinessLableTemplateId)){
+					if(StringUtils.isNotEmpty(bussinessLableTemplateId)){
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"2");//保存业务标签 
 					}*/
 					
@@ -369,7 +368,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					/*IMpmInteractiveRuleService mpmInteractiveRuleService = (IMpmInteractiveRuleService) SystemServiceLocator.getInstance().getService("mpmInteractiveRuleService");
 					//先删除该活动原来的事件规则，再新增
 					mpmInteractiveRuleService.deleteEventRuleByActivityCode(campsegId, "2");
-					if (StringUtil.isNotEmpty(segInfo.getEventActiveTempletId())) {
+					if (StringUtils.isNotEmpty(segInfo.getEventActiveTempletId())) {
 						MtlCampSeginfo baseCampsegInfo = getBaseCampsegInfo(campsegId);
 						segInfo.setStartDate(baseCampsegInfo.getStartDate());
 						segInfo.setEndDate(baseCampsegInfo.getEndDate());
@@ -484,9 +483,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	}
 	public McdCampDef getBaseCampsegInfo(String campsegId) throws Exception {
 		McdCampDef campsegInfo = null;
-		if (StringUtil.isNotEmpty(campsegId)) {
+		if (StringUtils.isNotEmpty(campsegId)) {
 			campsegInfo = this.getCampSegInfo(campsegId);
-			if (!"0".equals(campsegInfo.getPid()) && StringUtil.isNotEmpty(campsegInfo.getPid())) {
+			if (!"0".equals(campsegInfo.getPid()) && StringUtils.isNotEmpty(campsegInfo.getPid())) {
 				campsegInfo = this.getBaseCampsegInfo(campsegInfo.getPid());
 			}
 		}
@@ -529,7 +528,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<campsegType>" + mtlCampSeginfo.getTypeId()+ "</campsegType>");//营销类别	
 	    	xmlStr.append("<startDate>" + mtlCampSeginfo.getStartDate()+ "</startDate>");//策略开始时间
 	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间
-	    	xmlStr.append("<createTime>" + DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
+	    	xmlStr.append("<createTime>" + DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
 	    	
 	    	IUser user  = mpmUserPrivilegeService.getUser(mtlCampSeginfo.getCreateUserId());
 	    	String userName =  user != null ? user.getUsername() : "";
@@ -549,7 +548,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			final String webPath = "http://" + Configure.getInstance().getProperty("HOST_ADDRESS") + ":"
 					+ Configure.getInstance().getProperty("HOST_PORT")
 					+ Configure.getInstance().getProperty("CONTEXT_PATH");
-	    	String token = DES.encrypt(mtlCampSeginfo.getCampId());
+			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
 	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
 	    	xmlStr.append("</campsegInfo>");
 					
@@ -716,7 +715,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             rList.add(campSegId);           
             McdCampDef segInfo = campSegInfoDao.getCampSegInfo(campSegId);
             boolean cepEventFlag = false;
-            if (StringUtil.isNotEmpty(segInfo.getCepEventId())) {
+            if (StringUtils.isNotEmpty(segInfo.getCepEventId())) {
                 cepEventFlag = true;
             }
             if (MpmCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
@@ -746,7 +745,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
                     int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
                     int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
-                    int newDate = Integer.parseInt(DateUtil.date2String(new Date(), "yyyyMMdd"));
+                    int newDate = Integer.parseInt(DateFormatUtils.format(new Date(), "yyyyMMdd"));
                     if(startDate > newDate){//未到策略开始时间
                         status = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
                     }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
@@ -1279,7 +1278,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		//查询客户群的周期性
 		McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
-		if(StringUtil.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
+		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
 			try {
 				campSegInfoDao.excSqlInMcdAdInMem(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
@@ -1334,7 +1333,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			String columnName = (String)tmap.get("column_name");
 			String dataType = (String)tmap.get("data_type");
 			String dataLength = String.valueOf(tmap.get("data_length"));
-			if(StringUtil.isNotEmpty(dataLength)){
+			if(StringUtils.isNotEmpty(dataLength)){
 				buffer.append(" ").append(columnName).append(" ").append(dataType).append("(").append(dataLength).append("),");
 			}else{
 				buffer.append(" ").append(columnName).append(" ").append(dataType);
@@ -1344,7 +1343,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		StringBuilder strRet = new StringBuilder();
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
-		if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 			strRet.append("create table ").append(tabSpace).append(".").append(tableName).append(" ");
 		}else{
 			strRet.append("create table ").append(tabSpace).append(".").append(tableName).append(" ");

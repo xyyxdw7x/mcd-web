@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.effectappraisal.dao.IcampsegPriorityDao;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -59,7 +59,7 @@ public class CampsegPriorityServiceImpl implements IcampsegPriorityService{
 	
 	@Override
 	public void editManualPriorityCampseg(String priOrderNumStr){
-		if(StringUtil.isNotEmpty(priOrderNumStr)){
+		if(StringUtils.isNotEmpty(priOrderNumStr)){
 			org.json.JSONArray priOrderNumStrArray;
 			try {
 				priOrderNumStrArray = new org.json.JSONArray(priOrderNumStr);
@@ -77,7 +77,7 @@ public class CampsegPriorityServiceImpl implements IcampsegPriorityService{
 					map.put("channelId", channelId);
 					map.put("cityId", cityId);
 					map.put("priority", i+1);
-					if(StringUtil.isNotEmpty(chnAdivId)){
+					if(StringUtils.isNotEmpty(chnAdivId)){
 						map.put("chnAdivId", chnAdivId);
 						list1.add(map);
 					}else{

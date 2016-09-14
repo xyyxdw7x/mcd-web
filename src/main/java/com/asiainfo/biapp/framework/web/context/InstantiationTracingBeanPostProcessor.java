@@ -41,14 +41,14 @@ public class InstantiationTracingBeanPostProcessor implements
 		List<IApplicationContextRefreshed> list=new ArrayList<IApplicationContextRefreshed>(acpBeans.values());
 		OrderComparator.sort(list);
 		for (int i = 0,len=list.size(); i < len; i++) {
-			
-			//boolean suc=acp.executeAuto();
+			IApplicationContextRefreshed acp=list.get(i);
+			boolean suc=acp.executeAuto();
 			if(log.isInfoEnabled()){
-				//log.info(acp.getClass()+" executoAuto return "+suc);
+				log.info(acp.getClass()+" executoAuto return "+suc);
 			}
-			//if(!suc){
-			//throw new RuntimeException("IApplicationContextRefreshed executeAuto error:"+acp.toString());
-			//}
+			if(!suc){
+				throw new RuntimeException("IApplicationContextRefreshed executeAuto error:"+acp.toString());
+			}
 		}
 	}
 

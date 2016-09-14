@@ -13,7 +13,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.jms.util.SimpleCache;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.kafka.cep.CepKafKaProducer;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -101,7 +101,7 @@ public class CepUtil {
 	}
 	public static String getSendContent(String campsegId) {
 		String sendContent = (String)SimpleCache.getInstance().get("SEND_CONTENT"+campsegId);
-		if(StringUtil.isEmpty(sendContent)) {
+		if(StringUtils.isEmpty(sendContent)) {
 			JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
 			List list = jt.queryForList(QUERY_SEND_CONTENT, new Object[]{campsegId});
 			if(CollectionUtils.isNotEmpty(list)){

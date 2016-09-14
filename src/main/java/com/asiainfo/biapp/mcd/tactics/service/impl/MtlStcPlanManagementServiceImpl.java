@@ -13,7 +13,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 @Service("mtlStcPlanManagementService")
 public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementService  {
 	@Resource(name="mtlStcPlanDao")
@@ -81,7 +81,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 			planIds += "'"+ resultList.get(i).getPlanId()+"',";
 		}
 		//		关联channel信息
-		if(StringUtil.isNotEmpty(planIds)){
+		if(StringUtils.isNotEmpty(planIds)){
 			List<McdPlanChannelList> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
 			for(int i = 0;i<resultList.size();i++){
 				MtlStcPlanBean bean = resultList.get(i);
@@ -100,7 +100,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 									channelIds += mtlStcPlanChannel.getChannelId() + ",";
 								}
 							}
-							if(StringUtil.isNotEmpty(channelIds)){
+							if(StringUtils.isNotEmpty(channelIds)){
 								bean.setChannelId(channelIds.substring(0, channelIds.length()-1));
 								bean.setPlanChannelId(planChannelId);
 								bean.setChannelTypeId(channelIds.substring(0, channelIds.length()-1));
@@ -110,19 +110,19 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 								bean.setAdivResourceDesc(mtlStcPlanChannel.getAdivResourceDesc());
 								bean.setAdivContentURL(mtlStcPlanChannel.getAdivContentURL());
 								bean.setAdivContentToRUL(mtlStcPlanChannel.getAdivContentToRUL());
-								if(StringUtil.isNotEmpty(mtlStcPlanChannel.getEditURL())){
+								if(StringUtils.isNotEmpty(mtlStcPlanChannel.getEditURL())){
 									bean.setEditURL(mtlStcPlanChannel.getEditURL());
 								}
-								if(StringUtil.isNotEmpty(mtlStcPlanChannel.getHandleURL())){
+								if(StringUtils.isNotEmpty(mtlStcPlanChannel.getHandleURL())){
 									bean.setHandleURL(mtlStcPlanChannel.getHandleURL());
 								}
-								if(StringUtil.isNotEmpty(mtlStcPlanChannel.getSmsContent())){
+								if(StringUtils.isNotEmpty(mtlStcPlanChannel.getSmsContent())){
 									bean.setSmsContent(mtlStcPlanChannel.getSmsContent());
 								}
-								if(StringUtil.isNotEmpty(mtlStcPlanChannel.getAwardMount())&&!mtlStcPlanChannel.getAwardMount().equals("null")){
+								if(StringUtils.isNotEmpty(mtlStcPlanChannel.getAwardMount())&&!mtlStcPlanChannel.getAwardMount().equals("null")){
 									bean.setAwardMount(mtlStcPlanChannel.getAwardMount());
 								}
-								if(StringUtil.isNotEmpty(mtlStcPlanChannel.getExecContent())){
+								if(StringUtils.isNotEmpty(mtlStcPlanChannel.getExecContent())){
 									bean.setExecContent(mtlStcPlanChannel.getExecContent());
 								}
 							}
@@ -132,7 +132,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 			}
 		}
 		//匹配是否已经使用
-		if(StringUtil.isNotEmpty(planIds)){
+		if(StringUtils.isNotEmpty(planIds)){
 			List<Map> isUseredList = mtlStcPlanDao.checkIsUserd(planIds.substring(0, planIds.length()-1), cityId);
 			if(CollectionUtils.isEmpty(isUseredList)){
 				for(int i = 0;i<resultList.size();i++){

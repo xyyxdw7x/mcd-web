@@ -22,7 +22,7 @@ import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 /**
  * 策略任务相关DAO
  * @author AsiaInfo-jie
@@ -266,7 +266,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	public int checkTaskStatus(String campsegId,int status){
 		int i = 0;
 		try {
-			if(StringUtil.isNotEmpty(campsegId)){
+			if(StringUtils.isNotEmpty(campsegId)){
 				StringBuilder sql = new StringBuilder("select count(1) from mcd_camp_task mct where mct.campseg_id='")
 				.append(campsegId).append("'").append(" and mct.exec_status=").append(status);
 				log.info("***********检查任务状态"+sql.toString());

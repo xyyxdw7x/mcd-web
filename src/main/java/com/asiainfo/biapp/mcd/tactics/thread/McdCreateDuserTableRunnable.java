@@ -1,14 +1,19 @@
 package com.asiainfo.biapp.mcd.tactics.thread;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.context.IApplicationContextRefreshed;
 import com.asiainfo.biapp.mcd.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
@@ -17,7 +22,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.util.MpmConfigure;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 多线程创建D表
@@ -29,7 +34,8 @@ import com.asiainfo.biframe.utils.string.StringUtil;
  * @version 1.0
  */
 
-public class McdCreateDuserTableRunnable implements Runnable {
+@Service
+public class McdCreateDuserTableRunnable implements Runnable,IApplicationContextRefreshed {
 	protected final Log log = LogFactory.getLog(getClass());
 	@Resource(name="mpmCampSegInfoDao")
 	private IMpmCampSegInfoDao mpmCampSegInfoDao;
@@ -43,16 +49,14 @@ public class McdCreateDuserTableRunnable implements Runnable {
 	private IMtlChannelDefDao mtlChannelDefDao;
 	
 	public McdCreateDuserTableRunnable() {
-		/*try {
-			log.info("begin initParam...................");
-			this.mpmCampSegInfoDao = (IMpmCampSegInfoDao)SystemServiceLocator.getInstance().getService("mpmCampSegInfoDao");
-			this.mpmCampSegInfoService = (IMpmCampSegInfoService)SystemServiceLocator.getInstance().getService("mpmCampSegInfoService");
-			this.mtlCampsegCustgroupDao = (MtlCampsegCustgroupDao)SystemServiceLocator.getInstance().getService("mtlCampsegCustGroupDao"); 
-			this.mcdCampsegTaskDao = (IMcdCampsegTaskDao)SystemServiceLocator.getInstance().getService("mcdCampsegTaskDao");
-			this.mtlChannelDefDao = (IMtlChannelDefDao)SystemServiceLocator.getInstance().getService("mtlChannelDefDao");
-		} catch (Exception e) {
-			log.error(e);
-		}*/
+		
+	}
+	
+	@Override
+	public boolean executeAuto() {
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+		executor.execute(this);
+		return true;
 	}
 	
 	@Override
@@ -61,7 +65,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 		String campsegId = null;
 		while(true){
 			campsegId = CreateDuserTaskMessageCacheQueue.getMessageQueue().poll();
-			if(StringUtil.isEmpty(campsegId)){
+			if(StringUtils.isEmpty(campsegId)){
 					continue;
 			}
 			if(mcdCampsegTaskDao.getCuserNum(campsegId) == 0){
@@ -90,7 +94,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 				}
 			}
 			log.info("*************custGroupId："+custGroupId);
-			if(StringUtil.isNotEmpty(custGroupId)){
+			if(StringUtils.isNotEmpty(custGroupId)){
 				//创建D表
 				String tableName = mpmCampSegInfoService.createCustGroupTabAsCustTable(MpmCONST.MCD_ZD_USER_PREFIX, custGroupId);
 				//给Duser表创建索引-----------创建索引的方式有待确认
@@ -115,7 +119,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 				for(int j = 0;j<list.size();j++){
 					McdCampChannelList mtlChannelDef = (McdCampChannelList) list.get(j);
 					functionId = mtlChannelDef.getFunctionId();
-					if(StringUtil.isNotEmpty(functionId)){
+					if(StringUtils.isNotEmpty(functionId)){
 						if(functionId.equals(qqwjcy) || functionId.equals(qqwzw) || functionId.equals(xnwjcy)){
 							removeRepeatFlag = false;
 							break;
@@ -128,7 +132,7 @@ public class McdCreateDuserTableRunnable implements Runnable {
 					//保证D表存在，同时有数据，如果没有数据然后就将状态变更，可能就会出现执行中心弹框没数据
 					if(mcdCampsegTaskDao.checkDuserIsExists(tableName) >0 && mcdCampsegTaskDao.getDuserNum(tableName) > 0){
 						//将目标客户群数量、D表名称和策略状态更新至策略主表
-						if(StringUtil.isNotEmpty(tableName)){
+						if(StringUtils.isNotEmpty(tableName)){
 							mpmCampSegInfoDao.updateCampsegById(campsegId, tableName,custCount);
 						}
 						//更新任务的状态之前，先判断此任务的状态是否已经变成50
@@ -149,6 +153,10 @@ public class McdCreateDuserTableRunnable implements Runnable {
 		}
 	}
 
+	@Override
+	public int getOrder() {
+		return 100;
+	}
 }
 
 

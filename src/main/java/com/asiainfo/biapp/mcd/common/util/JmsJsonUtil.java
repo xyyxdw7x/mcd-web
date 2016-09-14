@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.common.util;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -59,7 +59,7 @@ public class JmsJsonUtil {
 	public static <T> T json2Obj(String json, Class<T> type) {
 		JsonParser jp = null;
 		try {
-			if (StringUtil.isNotEmpty(json)) {
+			if (StringUtils.isNotEmpty(json)) {
 				jp = om.getJsonFactory().createJsonParser(json);
 				return jp.readValueAs(type);
 			}

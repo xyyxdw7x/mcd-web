@@ -37,7 +37,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MarketApproveInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -568,7 +568,7 @@ public class CampSegSearchController extends BaseMultiActionController {
             status = 201;
             msg = "策略终止失败";
         } finally {
-            if (StringUtil.isEmpty(msg)) {
+            if (StringUtils.isEmpty(msg)) {
                 msg = "策略终止成功";
             }
             JSONObject dataJson = new JSONObject();

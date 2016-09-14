@@ -17,7 +17,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IcampsegPriorityService;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Controller
 @RequestMapping("/mpm/priorityAction")
@@ -65,10 +65,10 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 		String adivId =  request.getParameter("adivId");  //运营位id
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
-		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
-		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
+		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		Pager pager=new Pager();
-		if(StringUtil.isNotEmpty(pageNum)){
+		if(StringUtils.isNotEmpty(pageNum)){
 			pager.setPageFlag("G");	
 		}
 		try {

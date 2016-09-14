@@ -22,8 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Title: CacheBase.java  <br>
@@ -61,7 +60,7 @@ public class CacheBase {
 		if (dimCitySet == null || dimCitySet.size() == 0) {
 			String dimIdsStr = Configure.getInstance().getProperty("DIM_IDS");
 			String[] dimIds = null;
-			if (StringUtil.isNotEmpty(dimIdsStr)) {
+			if (StringUtils.isNotEmpty(dimIdsStr)) {
 				dimIds = dimIdsStr.split(",");
 				for (String dimId : dimIds) {
 					dimCitySet.add(dimId.toUpperCase());

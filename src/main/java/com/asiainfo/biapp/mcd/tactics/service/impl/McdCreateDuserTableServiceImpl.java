@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCreateDuserTableService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.thread.CreateDuserTaskMessageCacheQueue;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -76,7 +76,7 @@ public class McdCreateDuserTableServiceImpl implements IMcdCreateDuserTableServi
 			Map<String,String> tmap = list.get(i);
 			String campsegPidTemp = (String)tmap.get("campseg_pid");
 			String campsegIdTemp = (String)tmap.get("campseg_id");
-			if(StringUtil.isNotEmpty(campsegPidTemp) && "0".equals(campsegPidTemp)){
+			if(StringUtils.isNotEmpty(campsegPidTemp) && "0".equals(campsegPidTemp)){
 				String initCustListTab = (String)tmap.get("init_cust_list_tab");
 				map.put(campsegIdTemp, initCustListTab);
 			}else{

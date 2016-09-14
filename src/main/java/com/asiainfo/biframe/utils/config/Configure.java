@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class Configure {
 	public static final String URL_PATH = "URL_PATH";
@@ -51,7 +51,7 @@ public class Configure {
 	}
 
 	public String getProperty(String configType, String strKey) throws Exception {
-		if (StringUtil.isEmpty(configType)) {
+		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}
 		try {
@@ -64,7 +64,7 @@ public class Configure {
 				initProperties(configType, (String) fileNameMap.get(configType));
 			}
 			Properties properties = (Properties) configMap.get(configType);
-			return StringUtil.obj2Str(properties.getProperty(strKey));
+			return properties.getProperty(strKey) == null ? "" : properties.getProperty(strKey).toString().trim();
 		} catch (Exception excep) {
 			log.error("", excep);
 		}
@@ -88,10 +88,10 @@ public class Configure {
 	}
 
 	private synchronized boolean initProperties(String configType, String fileName) throws Exception {
-		if (StringUtil.isEmpty(configType)) {
+		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}
-		if (StringUtil.isEmpty(fileName)) {
+		if (StringUtils.isEmpty(fileName)) {
 			throw new Exception("----Configure--err-------:fileName is null");
 		}
 		Properties props = new Properties();
