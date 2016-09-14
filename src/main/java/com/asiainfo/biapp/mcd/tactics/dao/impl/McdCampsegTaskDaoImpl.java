@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
+import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import org.apache.commons.lang3.StringUtils;
@@ -229,7 +229,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 				Map map = list.get(0);
 				String cuserTableName = String.valueOf(map.get("LIST_TABLE_NAME"));
 				log.info(" **********cuserTableName="+cuserTableName);
-				JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
+				JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 				StringBuffer buffer = new StringBuffer();
 				buffer.append(" select count(1) from ").append(cuserTableName);
 				log.info("******************查询Cuser表记录条数"+buffer.toString());
@@ -289,7 +289,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	
 	@Override
 	public int getDuserNum(String DuserName) {
-		JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
+		JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(" select count(1) from ").append(DuserName);
 		log.info("******************查询Duser表记录条数"+buffer.toString());
@@ -300,7 +300,7 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	@Override
 	public void updateCampsegTaskStatusById(String campsegId,String DuserName,int groupNum,short status){
 		try {
-			JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
+			JdbcTemplate jt = SpringContextsUtil.getBean("jdbcTemplate", JdbcTemplate.class);
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(" update mcd_camp_task set exec_status = ?,CUST_LIST_TAB_NAME=?,INT_GROUP_NUM=? where campseg_id=?");
 			log.info("更新MCD_CAMPSEG_TASK表状态sql:"+buffer.toString()+"campsegId="+campsegId);

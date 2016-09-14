@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
