@@ -36,9 +36,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 @Repository("dimMtlChanneltypeDao")
 public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChanneltypeDao {
 	
-	/* (non-Javadoc)
-	 * @see com.asiainfo.biapp.mcd.dao.IDimMtlChanneltypeDao#getMtlChanneltype(java.lang.Short)
-	 */
+
 	private static Logger log = LogManager.getLogger();
 	
 	@Override
@@ -139,11 +137,8 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 				while (rs.next()) {
 					McdDimChannel dimMtlChannel = new McdDimChannel();
 					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
-					dimMtlChannel.setChanneltypeId(rs.getShort("CHANNELTYPE_ID"));
 					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
 					dimMtlChannel.setCampId(rs.getString("PARENT_ID"));
-					dimMtlChannel.setCreateUser(rs.getString("CREATE_USER"));
-					
 					list.add(dimMtlChannel);
 				}
 			}

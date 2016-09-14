@@ -1,13 +1,5 @@
 package com.asiainfo.biapp.mcd.common.constants;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.asiainfo.biframe.utils.config.Configure;
-
 /**
  * Created on 2005-6-8
  *

@@ -10,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -38,7 +36,6 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 		return num;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> queryCityDayQuotasInMem(String cityId,String monthDate) {
 		//String sql = "select DATA_DATE, DAY_QUOTA_NUM, ALTERED from mcd_quota_config_city_D where CITY_ID = ? and DATA_DATE_M = ?";
@@ -56,7 +53,6 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 		return new ArrayList<Map<String, Object>>();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String,Object> getCityStatisDayInMem(String cityId,String dataDate){
 		
@@ -94,7 +90,6 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 		
 	}
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Map<String,Object>> getCityUsedListInMem(String dataDate){
 		List<Map<String,Object>> list = null;
 		String sql="select c.CITY_ID,t.USED_NUM,t.DATA_DATE from mcd_quota_config_city c LEFT OUTER JOIN (select u.USED_NUM,u.DATA_DATE from mcd_quota_used_city_d u where u.DATA_DATE=?)t on c.CITY_ID=t.CITY_ID";
@@ -149,7 +144,7 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements QuotaConfig
 	@Override
 	public void delCityDayQuota4Month(String month){
 		String sql = "delete  from mcd_quota_config_city_D where DATA_DATE_M = ?";
-		String[] param ={month};
+		Object[] param ={month};
 		this.getJdbcTemplate().update(sql,param);
 	}
 	

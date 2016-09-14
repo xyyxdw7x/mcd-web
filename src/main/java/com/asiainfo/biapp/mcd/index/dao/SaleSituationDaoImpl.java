@@ -12,7 +12,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -191,8 +190,9 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 
 	// ---------------------------------------------------以下是推荐优秀策略的--------------------------------------
 
-	// 查询某个地市的推荐策略(分页查询)
-	@SuppressWarnings("unchecked")
+	/**
+	 *  查询某个地市的推荐策略(分页查询)
+	 */
 	@Override
 	public Pager getRecommendCamp( int pageNum, String city_id) {
 		List<RecommendCamp> list = null;
@@ -201,7 +201,6 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		page.setPageSize(20);
 		page.setTotalSize(this.getCampsNum());
 
-		String yesterDay = QuotaUtils.getYesterday("yyyyMMdd");;
 		StringBuffer srcSql = new StringBuffer();
 		String[] paramArr = new String[0];
 
@@ -252,8 +251,9 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		return page;
 	}
 
-	// 查询策略的渠道
-	@SuppressWarnings("unchecked")
+	/**
+	 *  查询策略的渠道
+	 */
 	@Override
 	public List<CampChannel> getCampChannel(String campsegId) {
 		List<CampChannel> list = null;
@@ -266,10 +266,10 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		log.debug("getCampChannel执行sql=" + sql);
 		try {
 			list = this.getJdbcTemplate().query(sql.toString(),
-					new RowMapper() {
+					new RowMapper<CampChannel>() {
 
 						@Override
-						public Object mapRow(ResultSet rs, int index)
+						public CampChannel mapRow(ResultSet rs, int index)
 								throws SQLException {
 							CampChannel cc = new CampChannel();
 							cc.setChannelId(rs.getString("channeltype_id"));
@@ -297,9 +297,9 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 		return total;
 	}
 
-	// ----------------------------------------------------以下是我的营销策略--------------------------------------------
-
-	@SuppressWarnings("unchecked")
+	/**
+	 * 我的营销策略
+	 */
 	@Override
 	public Pager getMySale(String userId, int pageNum,int pageSize) {
 		/*
@@ -374,10 +374,10 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDa
 
 		try {
 			list = this.getJdbcTemplate().query(sqlStr,new String[] { monthFirstDay, today, yesterday, userId },
-					new RowMapper() {
+					new RowMapper<MySale>() {
 
 						@Override
-						public Object mapRow(ResultSet rs, int index)throws SQLException {
+						public MySale mapRow(ResultSet rs, int index)throws SQLException {
 							MySale ms = new MySale();
 							ms.setCampsegId(rs.getString("campseg_id"));
 							ms.setCampsegStatName(rs.getString("campseg_stat_name"));

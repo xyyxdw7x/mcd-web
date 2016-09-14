@@ -57,6 +57,6 @@ public interface QuotaConfigDeptMothDao {
 
 	public void saveBatchSaveInMem(List<QuotaConfigDeptMoth> list);
 
-	public List getQuotas4DeptsInMem(String cityId, String date) throws Exception;
+	public List<Map<String, Object>> getQuotas4DeptsInMem(String cityId, String date) throws Exception;
 	
 }

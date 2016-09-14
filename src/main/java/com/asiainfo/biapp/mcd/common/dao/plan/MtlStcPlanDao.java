@@ -76,4 +76,18 @@ public interface MtlStcPlanDao {
 	 * @return
 	 */
 	public McdPlanDef getMtlStcPlanByPlanID(String planID);
+	
+	/**
+	 * 根据父id获得所有的子类型
+	 * @param pid
+	 * @return
+	 */
+	List<McdDimPlanType> getChildrens(String pid);
+	
+
+	/**
+	 * 查询所有产品类型
+	 * @return
+	 */
+	List<McdDimPlanType> getAll();
 }

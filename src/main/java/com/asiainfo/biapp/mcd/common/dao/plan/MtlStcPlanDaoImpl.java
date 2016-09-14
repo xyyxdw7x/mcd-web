@@ -46,7 +46,6 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			@Override
 			public Object mapRow(ResultSet rs, int index) throws SQLException {
 				McdDimPlanType tmp = new McdDimPlanType();
-				tmp.setChannelType(rs.getString("channel_type"));
 				tmp.setSortNum(rs.getString("sort_num"));
 				tmp.setTypeId(rs.getString("type_id"));
 				tmp.setTypeName(rs.getString("type_name"));
@@ -55,6 +54,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			}
 		});
 	}
+	
 	
 	@Override
 	public int searchPlanCount(String keyWords, String typeId,String cityId) {
@@ -430,5 +430,19 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		}else{
 			return null;
 		}
+	}
+	
+	@Override
+	public List<McdDimPlanType> getChildrens(String pid){
+		String sql = "select TYPE_ID,TYPE_NAME,TYPE_PID from MCD_DIM_PLAN_TYPE where TYPE_PID='"+pid+"'";
+		List<McdDimPlanType> subTypes=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
+		return subTypes;
+	}
+	
+	@Override
+	public List<McdDimPlanType> getAll(){
+		String sql = "select TYPE_ID,TYPE_NAME,TYPE_PID from MCD_DIM_PLAN_TYPE";
+		List<McdDimPlanType> subTypes=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
+		return subTypes;
 	}
 }

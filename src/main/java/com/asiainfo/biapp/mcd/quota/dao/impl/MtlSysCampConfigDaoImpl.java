@@ -1,15 +1,12 @@
 package com.asiainfo.biapp.mcd.quota.dao.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -34,11 +31,11 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 	public List<McdSysDic> getAll() {
 		List<McdSysDic> list = new ArrayList<McdSysDic>();
 		try {
-			List<Map> listTemp = null;
+			List<Map<String,Object>> listTemp = null;
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(" select * from mcd_sys_dic");
-			listTemp = this.jdbcTemplate.queryForList(buffer.toString(),Map.class);
-			for (Map map : listTemp) {
+			listTemp = this.jdbcTemplate.queryForList(buffer.toString());
+			for (Map<String, Object> map : listTemp) {
 				McdSysDic mtlSysCampConfig = new McdSysDic();
 				mtlSysCampConfig.setConfigKey(map.get("CONFIG_KEY").toString());
 				mtlSysCampConfig.setConfigName(map.get("CONFIG_NAME").toString());
@@ -53,12 +50,7 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 	
 	public Object getProperety(String key) {
 		String sql = "select t.* from mcd_sys_dic t where t.CONFIG_KEY = ?";
-		@SuppressWarnings("unchecked")
 		Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql, new Object[] { key });
-//		Iterator<Entry<String, String>> ite = map.entrySet().iterator();
-//		while (ite.hasNext()) {
-//			
-//		}
 		return (String)map.get("CONFIG_VALUE");
 	}
 	
