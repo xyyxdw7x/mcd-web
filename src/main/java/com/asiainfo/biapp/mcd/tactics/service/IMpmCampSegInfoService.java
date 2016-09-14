@@ -8,6 +8,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
@@ -81,13 +82,13 @@ public interface IMpmCampSegInfoService {
      * @return
      * @throws MpmException
      */
-    public List getCustGroupSelectList(String campsegId) throws MpmException;
+    public List<McdCampCustgroupList> getCustGroupSelectList(String campsegId) throws MpmException;
     /**
      * 根据策略ID查询渠道信息
      * @param campsegId
      * @return
      */
-    public List getMtlChannelDefs(String campsegId);
+    public List<Map<String,Object>> getMtlChannelDefs(String campsegId);
     /**
      * 根据编号删除策略信息
      * @param campSegId

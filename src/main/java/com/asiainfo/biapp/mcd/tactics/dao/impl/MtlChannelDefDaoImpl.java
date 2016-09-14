@@ -77,13 +77,13 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      * @return
      */
     @Override
-    public List getMtlChannelDefs(String campsegId) {
+    public List<Map<String,Object>> getMtlChannelDefs(String campsegId) {
         StringBuffer sql = new StringBuffer("  select mcd.targer_user_nums,dmc.channel_name from mcd_camp_channel_list mcd  ");   
         sql.append(" left join mcd_dim_channel dmc on mcd.channel_id = dmc.channel_id   ") ;    
         sql.append(" where mcd.campseg_id = ? ") ;
-        List parameterList = new ArrayList();
+        List<String> parameterList = new ArrayList<String>();
         parameterList.add(campsegId);
-        List list = this.getJdbcTemplate().queryForList(sql.toString(),parameterList.toArray());
+        List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql.toString(),parameterList.toArray());
         return list;
     }
     

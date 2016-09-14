@@ -417,8 +417,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @return
      * @throws MpmException
      */
-    public List getCustGroupSelectList(String campsegId) throws MpmException {
-        // TODO 自动生成方法存根
+    public List<McdCampCustgroupList> getCustGroupSelectList(String campsegId) throws MpmException {
         try {
             return campSegInfoDao.getCustGroupSelectList(campsegId);
         } catch (Exception e) {
@@ -430,8 +429,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * 根绝策略ID查询渠道信息
      */
     @Override
-    public List getMtlChannelDefs(String campsegId) {
-        List list = mtlChannelDefDao.getMtlChannelDefs(campsegId);
+    public List<Map<String,Object>> getMtlChannelDefs(String campsegId) {
+        List<Map<String,Object>> list = mtlChannelDefDao.getMtlChannelDefs(campsegId);
         return list;
     }
     

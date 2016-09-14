@@ -47,7 +47,7 @@ public interface IMtlChannelDefDao {
      * @param campsegId
      * @return
      */
-    List getMtlChannelDefs(String campsegId);
+    List<Map<String,Object>> getMtlChannelDefs(String campsegId);
 
     /**
      * 删除外呼渠道

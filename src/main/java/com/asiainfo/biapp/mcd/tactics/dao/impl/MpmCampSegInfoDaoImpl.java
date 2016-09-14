@@ -201,8 +201,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	}
 	
     @Override
-    public List getCustGroupSelectList(String campsegId) {
-     // TODO 自动生成方法存根
+    public List<McdCampCustgroupList> getCustGroupSelectList(String campsegId) {
         String sql="select * from mcd_camp_custgroup_list where CAMPSEG_ID = ?";
         Object[] args=new Object[]{campsegId};
         int[] argTypes=new int[]{Types.VARCHAR};

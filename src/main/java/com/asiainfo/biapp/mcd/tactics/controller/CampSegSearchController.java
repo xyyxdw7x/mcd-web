@@ -37,6 +37,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.MarketApproveInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
+
 import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONArray;
@@ -220,28 +221,24 @@ public class CampSegSearchController extends BaseMultiActionController {
                 String ruleDesc = "";
                 McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(mtlCampSeginfo.getPlanId());// 查询产品信息
                 dataJson1.put("planName", stcPlan != null ? stcPlan.getPlanName(): "");
-                List custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
-                String ruleDescShowSql = "";
-                for (int i = 0; i < custGroupSelectList.size(); i++) {
-                    McdCampCustgroupList mtlCampsegCustGroup = (McdCampCustgroupList) custGroupSelectList.get(i);
-                    if ("CG".equals(mtlCampsegCustGroup.getCustgroupType())) {
-                         //待定
+                List<McdCampCustgroupList> custGroupSelectList = mpmCampSegInfoService.getCustGroupSelectList(mtlCampSeginfo.getCampId());// 取营销活动“目标群选择”步骤中选择的“目标客户群”及“对比客户群”信息
+                if(custGroupSelectList != null && !custGroupSelectList.isEmpty()){
+                	McdCampCustgroupList mtlCampsegCustGroup = (McdCampCustgroupList) custGroupSelectList.get(0);
                          McdCustgroupDef mtlGroupInfo = custGroupInfoService.getMtlGroupInfo(mtlCampsegCustGroup.getCustgroupId());
                          if(mtlGroupInfo != null && mtlGroupInfo.getCustomGroupName() != null){
-                             ruleDesc = "客户群：" + mtlGroupInfo.getCustomGroupName();// +"<br>" + ruleDesc;
+                             ruleDesc = "客户群：" + mtlGroupInfo.getCustomGroupName();
                          }
                          int originalCustGroupNum = mtlGroupInfo.getCustomNum();   //原始客户群数量
-                        dataJson1.put("originalCustGroupNum", String.valueOf(originalCustGroupNum));
-                    }
-                    dataJson1.put("ruleDesc", ruleDesc);
-                    
+                         dataJson1.put("originalCustGroupNum", String.valueOf(originalCustGroupNum));
+                         dataJson1.put("ruleDesc", ruleDesc);
                 }
-                List mcdList = mpmCampSegInfoService.getMtlChannelDefs(mtlCampSeginfo.getCampId());
-                List<Map> mtltlChannelDefList = new ArrayList<Map>(); 
+                    
+                List<Map<String,Object>> mcdList = mpmCampSegInfoService.getMtlChannelDefs(mtlCampSeginfo.getCampId());
+                List<Map<String,String>> mtltlChannelDefList = new ArrayList<Map<String,String>>(); 
                 
                  for(int i=0;i< mcdList.size();i++){
-                     Map map = (Map)mcdList.get(i);
-                     Map mapNew = new HashMap();
+                     Map<String,Object> map = (Map<String,Object>)mcdList.get(i);
+                     Map<String,String> mapNew = new HashMap<String,String>();
                      mapNew.put("TARGER_USER_NUMS", map.get("TARGER_USER_NUMS") == null ? "" : map.get("TARGER_USER_NUMS").toString());
                      mapNew.put("CHANNEL_NAME", map.get("CHANNEL_NAME") == null ? "" : map.get("CHANNEL_NAME").toString());
                      mtltlChannelDefList.add(mapNew);
@@ -341,7 +338,6 @@ public class CampSegSearchController extends BaseMultiActionController {
             status = 201;
             msg = "删除策略信息失败";
         } finally {
-            String jsonOut = null;
             JSONObject dataJson = new JSONObject();
             if (status != 200) {
                 dataJson.put("status", status);
@@ -359,9 +355,8 @@ public class CampSegSearchController extends BaseMultiActionController {
             out.print(dataJson);
             out.flush();
             out.close();
-            return null;
         }
-
+        return null;
     }
 
 
@@ -381,7 +376,6 @@ public class CampSegSearchController extends BaseMultiActionController {
         String msg = "";
         int status = 200;
         try {
-
             String campsegId = request.getParameter("campsegId") != null ? request
                     .getParameter("campsegId") : null;
             String endDate = request.getParameter("endDate") != null ? request
@@ -420,8 +414,8 @@ public class CampSegSearchController extends BaseMultiActionController {
             out.print(dataJson);
             out.flush();
             out.close();
-            return null;
         }
+        return null;
     }
 
     /**
