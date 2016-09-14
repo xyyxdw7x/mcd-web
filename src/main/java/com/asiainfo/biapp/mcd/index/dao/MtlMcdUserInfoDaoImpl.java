@@ -11,15 +11,16 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
 public class MtlMcdUserInfoDaoImpl extends  JdbcDaoSupport  implements MtlMcdUserInfoDao{
+	
 	@Override
 	public MtlMcdUserInfo getMtlMcdUserInfo(String userId){
 		MtlMcdUserInfo mtlMcdUserInfo = null;
 		String sql = "select t.user_id,t.user_name,t.user_gender,t.user_type,t.user_city_id from MTL_MCD_USER_INFO t where t.user_id='"+userId+"'";
 		try {
-			mtlMcdUserInfo = (MtlMcdUserInfo) this.getJdbcTemplate().queryForObject(sql, new RowMapper() {
+			mtlMcdUserInfo = (MtlMcdUserInfo) this.getJdbcTemplate().queryForObject(sql, new RowMapper<MtlMcdUserInfo>() {
 				
 				@Override
-				public Object mapRow(ResultSet rs, int index) throws SQLException {
+				public MtlMcdUserInfo mapRow(ResultSet rs, int index) throws SQLException {
 					MtlMcdUserInfo mtlMcdUserInfo = new MtlMcdUserInfo();
 					mtlMcdUserInfo.setUserCityId(rs.getString("user_city_id"));
 					mtlMcdUserInfo.setUserName(rs.getString("user_name"));

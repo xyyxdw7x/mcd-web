@@ -23,7 +23,6 @@ public class UserDeptDaoImp  extends JdbcDaoBase implements UserDeptDao{
 		this.sqlFireJdbcTemplate = sqlFireJdbcTemplate;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String,Object>> getCityDeptes(String cityId)throws DataAccessException{
 		String sql="select * from "+TABLE+" where CITY_ID='"+cityId+"'";
@@ -31,7 +30,6 @@ public class UserDeptDaoImp  extends JdbcDaoBase implements UserDeptDao{
 		try {
 			list=this.sqlFireJdbcTemplate.queryForList(sql);
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("查询部门出错！！！");
 			return null;
 		}
@@ -39,19 +37,16 @@ public class UserDeptDaoImp  extends JdbcDaoBase implements UserDeptDao{
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String,Object>> getUserDeptWithId(String useId)throws DataAccessException{
 		List<Map<String,Object>> list=null;
 		String sql = "select MAP.DEPT_ID,DEPT.DEPT_NAME from MTL_USER_DEPT_MAP MAP " +
 				"LEFT OUTER JOIN MTL_USER_DEPT DEPT on MAP.DEPT_ID=DEPT.DEPT_ID  " +
 				"where user_id=?";
-		
-		String[] parm={useId};
+
 		try {
-			list=this.sqlFireJdbcTemplate.queryForList(sql,parm);
+			list=this.sqlFireJdbcTemplate.queryForList(sql,useId);
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("根据用户id查询用户科室名称出错！！！");
 			return null;
 		} 

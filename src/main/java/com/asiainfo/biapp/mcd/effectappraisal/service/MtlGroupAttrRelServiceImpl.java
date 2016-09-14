@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.effectappraisal.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,8 +103,8 @@ public class MtlGroupAttrRelServiceImpl implements IMtlGroupAttrRelService {
 	}
 
 	@Override
-	public List initAdivInfoByChannelId(String cityId) {
-		List list = null;
+	public List<Map<String,Object>> initAdivInfoByChannelId(String cityId) {
+		List<Map<String,Object>> list = null;
 		try {
 			list = this.mtlGroupAttrRelDao.initAdivInfoByChannelId(cityId);
 		} catch (Exception e) {

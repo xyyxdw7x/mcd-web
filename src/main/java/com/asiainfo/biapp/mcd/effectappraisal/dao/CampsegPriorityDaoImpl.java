@@ -4,14 +4,12 @@ package com.asiainfo.biapp.mcd.effectappraisal.dao;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -23,7 +21,6 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.util.jdbcPage.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -81,7 +78,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		  .append(" ) "); //去掉只查询10条的限制
 		log.info("查询手动优先级策略"+sb.toString());
 		List<Map<String, Object>> list  = this.getJdbcTemplate().queryForList(sb.toString());
-		for (Map map : list) {
+		for (Map<String, Object> map : list) {
 			CampsegPriorityBean campsegPriorityBean = new CampsegPriorityBean();
 			campsegPriorityBean.setCampsegId((String) map.get("campseg_id"));
 			campsegPriorityBean.setPriOrderNum(Integer.parseInt(String.valueOf(map.get("pri_order_num"))));
@@ -165,7 +162,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		 String sqlExt = DataBaseAdapter.getPagedSql(sb.toString(), pager.getPageNum(),pager.getPageSize());
 		log.info("查询自动优先级策略"+sqlExt);
 		List<Map<String, Object>> list  = this.getJdbcTemplate().queryForList(sqlExt.toString());
-		for (Map map : list) {
+		for (Map<String, Object> map : list) {
 			CampsegPriorityBean campsegPriorityBean = new CampsegPriorityBean();
 			campsegPriorityBean.setCampsegId((String) map.get("campseg_id"));
 			campsegPriorityBean.setPriOrderNum(Integer.parseInt(String.valueOf(map.get("pri_order_num"))));
@@ -266,7 +263,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		sbuffer.append("update mcd_camp_order mcoa set mcoa.is_manual = 1  ")
 			   .append(" where mcoa.campseg_id='"+campsegId+"'")
 			   .append(" and mcoa.city_id='"+cityId+"' and mcoa.channel_id='"+channelId+"'");
-		int result = this.getJdbcTemplate().update(sbuffer.toString());
+		this.getJdbcTemplate().update(sbuffer.toString());
 	}
 	
 	/**
@@ -282,10 +279,11 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		if(StringUtils.isNotEmpty(chnAdivId)){
 			sbuffer.append(" and mcoa.chn_adiv_id ='"+chnAdivId+"'");
 		}
-		int result = this.getJdbcTemplate().update(sbuffer.toString());
+		this.getJdbcTemplate().update(sbuffer.toString());
 	}
 	
 	//当点击置顶  自动变手动的时候  先将原来的优先级全部加1  当自动超过十条的时候，将最后一条从手动改为自动，然后调用存储过程
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void changeManualToAutoPriority(String campsegId,String channelId,String cityId,String chnAdivId){
 //		添加注释begin edit by lixq10 2016年6月24日09:35:43  PS:去掉前台手动优先级只显示10条的限制
@@ -335,6 +333,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 	 * @param channelId
 	 * @param cityId
 	 */
+	@SuppressWarnings("unused")
 	private void changeManualToAutoCampseg(String campsegId,String channelId,String cityId){
 		StringBuffer sbuffer = new StringBuffer();
 		sbuffer.append("update mcd_camp_order mcoa set mcoa.is_manual = 0")
@@ -405,6 +404,8 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 		this.getJdbcTemplate().update(buffer.toString());
 	}
 	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void cancleTopManualPriorityCampseg2(String campsegId,String cityId,String channelId,String chnAdivId) {
 		StringBuffer buffer = new StringBuffer();
@@ -424,7 +425,6 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPrior
 			String campsegIdT = String.valueOf(list.get(i).get("campseg_id"));
 			String cityIdT = String.valueOf(list.get(i).get("city_id"));
 			String channelIdT = String.valueOf(list.get(i).get("channel_id"));
-			String adivId = String.valueOf(list.get(i).get("CHN_ADIV_ID"));
 			sbuffer.append("update mcd_camp_order mcoa set mcoa.pri_order_num = "+(i+1)+" where campseg_id='"+campsegIdT+"' and mcoa.city_id='"+cityIdT+"' and mcoa.channel_id='"+channelIdT+"' AND mcoa.chn_adiv_id='"+chnAdivId+"'");
 			log.info("********************sql="+sbuffer.toString());
 			this.getJdbcTemplate().update(sbuffer.toString());
