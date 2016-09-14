@@ -25,7 +25,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
@@ -91,8 +91,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws Exception
      */
     @RequestMapping("/viewPolicyDetail")
-    public ModelAndView viewPolicyDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> viewPolicyDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
         McdCampDef segInfoBean = new McdCampDef();     
+        Map<String,Object> returnMap = new HashMap<String,Object>();
 
         String campsegId = request.getParameter("campsegId");
         McdCampDef segInfo;
@@ -172,41 +174,22 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             //mtlCampSeginfoList.addAll(mtlCampSeginfoList1);
             map.put("childMtlCampSeginfo", mtlCampSeginfoList);
             
-            JSONObject jsonMap = JSONObject.fromObject(map); 
-    //      System.out.println("jsonMap========"+jsonMap.toString());  
-            JSONObject result = new JSONObject();
-            result.put("status", "200");
-            result.put("data", jsonMap);
+            returnMap.put("status", "200");
+            returnMap.put("data", map);
             //String result = "{status : 200,data:["+jsonMap.toString()+"]}";
-            System.out.println("campsegresult===="+result);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(result);
-            out.flush();
-            out.close();
+            System.out.println("campsegresult===="+returnMap.toString());
+
          
         }catch(Exception e){
             e.printStackTrace();
-             JSONObject result = new JSONObject();
-             result.put("status", "201");
-             result.put("result", "fail");
+            returnMap.put("status", "201");
+            returnMap.put("result", "fail");
             //String result = "{status : 201, result:fail}";
-            System.out.println("campsegresult===="+result);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setHeader("progma", "no-cache");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Cache-Control", "no-cache");
-            PrintWriter out = response.getWriter();
-            out.print(result);
-            out.flush();
-            out.close();
+            System.out.println("campsegresult===="+returnMap.toString());
         }finally{
             
         }
-         return null;
+         return returnMap;
     }
     
     /**
@@ -220,13 +203,11 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws Exception
      */
     @RequestMapping("/getMtlStcPlan")
-    public ModelAndView getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
-    	McdCampDef segInfoBean = new McdCampDef();     
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
+    @ResponseBody
+    public Map<String, Object> getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	McdCampDef segInfoBean = new McdCampDef();   
+    	Map<String,Object> returnMap = new HashMap<String,Object>();
+
          // “匹配的政策”
         try{
             String campsegId = request.getParameter("campsegId");
@@ -246,24 +227,19 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
              }
              request.setAttribute("stcPlanJSONStr", stcPlanJSON.toString());
              request.setAttribute("stcPlanJSON", stcPlanJSON);
-             JSONObject result = new JSONObject();
-             result.put("status", "200");
-             result.put("data", stcPlanJSON);
+             returnMap.put("status", "200");
+             returnMap.put("data", stcPlanJSON);
              //String result = "{status: 200,data:["+stcPlanJSON.toString()+"]}";
-             System.out.println("stcPlanresult===="+result);
-             out.print(result);
+             System.out.println("stcPlanresult===="+returnMap.toString());
         }catch(Exception e){
             e.printStackTrace();
-            JSONObject result = new JSONObject();
-            result.put("status", "201");
-            result.put("result", "fail");
+            returnMap.put("status", "201");
+            returnMap.put("result", "fail");
             //String result = "{status : 201, result:fail}";
-            System.out.println("stcPlanresult===="+result);
-            out.print(result);
+            System.out.println("stcPlanresult===="+returnMap.toString());
         }
-        out.flush();
-        out.close();
-        return null;
+
+        return returnMap;
     }
 
     
@@ -278,14 +254,12 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws Exception
      */
     @RequestMapping("/getTargetCustomerbase")
-    public ModelAndView getTargetCustomerbase(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> getTargetCustomerbase(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
         McdCampDef segInfoBean = new McdCampDef();     
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
          //投放的渠道
         try{
          String custom_group_id ="";
@@ -396,26 +370,20 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
          JSONArray jsonArray = JSONArray.fromObject(mtltlChannelDefList);
          customDataJSON.put("mtlChannelDefs", jsonArray);
          
-         JSONObject result =new JSONObject();
-         result.put("status", "200");
-         result.put("data", customDataJSON);
+         returnMap.put("status", "200");
+         returnMap.put("data", customDataJSON);
          //String result = "{status : 200,data:["+customDataJSON.toString()+"]}";
-         out.print(result);
-         System.out.println("customDataJSONresult===="+result);
+         System.out.println("customDataJSONresult===="+returnMap.toString());
          
     }catch(Exception e){
         e.printStackTrace();
-        JSONObject result = new JSONObject();
-        result.put("status","201");
-        result.put("result", "fail");
-        //String result = "{status : 201, result:fail}";
-        out.print(result);
-        System.out.println("customDataJSONresult===="+result);
+        returnMap.put("status","201");
+        returnMap.put("result", "fail");
+
+        System.out.println("customDataJSONresult===="+returnMap.toString());
         
     }
-        out.flush();
-        out.close();
-        return null;
+        return returnMap;
     }
 
     
@@ -446,14 +414,10 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws Exception
      */
     @RequestMapping("/getDeliveryChannel")
-    public ModelAndView getDeliveryChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> getDeliveryChannel(HttpServletRequest request,HttpServletResponse response) throws Exception {
     	McdCampDef segInfoBean = new McdCampDef();        
-        
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
+    	Map<String,Object> returnMap = new HashMap<String,Object>();
          //投放的渠道
         try{
          String channel_id ="";
@@ -486,7 +450,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                     list = mtlChannelDefService.getDeliveryChannel(segInfoBean.getCampId());//20130916114353920  baseForm.getCampsegId()
                     list2 = mtlChannelDefService.getDeliveryChannelCall(segInfoBean.getCampId());
                 } 
-         JSONArray dChannelDataJSONArray=new JSONArray();
+         List<Map<String,Object>> jsonList = new ArrayList<Map<String,Object>>();
          //boss运营位短信模板
          List<ChannelBossSmsTemplate> bossSmsTemplatelist = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();;
          for(int i=0;i<list.size();i++){
@@ -554,27 +518,27 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                     }
             }
             
-            JSONObject dChannelDataJSON=new JSONObject();
-            dChannelDataJSON.put("channel_id", channel_id == null ? "" : channel_id);
-            dChannelDataJSON.put("channel_name", channel_name == null ? "" : channel_name);
-            dChannelDataJSON.put("exec_content", exec_content == null ? "" : exec_content);
-            dChannelDataJSON.put("update_cycle", update_cycle == null ? "" : update_cycle);
-            dChannelDataJSON.put("trigger_timing", trigger_timing == null ? "" : trigger_timing);
-            dChannelDataJSON.put("channelAdivId", channelAdivId == null ? "" : channelAdivId);
-            dChannelDataJSON.put("adivName", adivName == null ? "" : adivName);
-            dChannelDataJSON.put("channelAdivName", channelAdivName == null ? "" : channelAdivName);
+            Map<String,Object> dChannelDataMap = new HashMap<String,Object>();
+            dChannelDataMap.put("channel_id", channel_id == null ? "" : channel_id);
+            dChannelDataMap.put("channel_name", channel_name == null ? "" : channel_name);
+            dChannelDataMap.put("exec_content", exec_content == null ? "" : exec_content);
+            dChannelDataMap.put("update_cycle", update_cycle == null ? "" : update_cycle);
+            dChannelDataMap.put("trigger_timing", trigger_timing == null ? "" : trigger_timing);
+            dChannelDataMap.put("channelAdivId", channelAdivId == null ? "" : channelAdivId);
+            dChannelDataMap.put("adivName", adivName == null ? "" : adivName);
+            dChannelDataMap.put("channelAdivName", channelAdivName == null ? "" : channelAdivName);
 //            dChannelDataJSON.put("eventRuleDesc", eventRuleDesc == null ? "" : eventRuleDesc);
-            dChannelDataJSON.put("paramDays", paramDays == null ? "" : paramDays);
-            dChannelDataJSON.put("paramNum", paramNum == null ? "" : paramNum);
-            dChannelDataJSON.put("awardMount", awardMount == 0D ? "" : awardMount);
-            dChannelDataJSON.put("editUrl", editUrl == null ? "" : editUrl);
-            dChannelDataJSON.put("handleUrl", handleUrl == null ? "" : handleUrl);
-            dChannelDataJSON.put("sendSms", sendSms == null ? "" : sendSms);
-            dChannelDataJSON.put("execTitle", execTitle == null ? "" : execTitle);
-            dChannelDataJSON.put("fileName", fileName == null ? "" : fileName);
-            dChannelDataJSON.put("isCall", 0);
+            dChannelDataMap.put("paramDays", paramDays == null ? "" : paramDays);
+            dChannelDataMap.put("paramNum", paramNum == null ? "" : paramNum);
+            dChannelDataMap.put("awardMount", awardMount == 0D ? "" : awardMount);
+            dChannelDataMap.put("editUrl", editUrl == null ? "" : editUrl);
+            dChannelDataMap.put("handleUrl", handleUrl == null ? "" : handleUrl);
+            dChannelDataMap.put("sendSms", sendSms == null ? "" : sendSms);
+            dChannelDataMap.put("execTitle", execTitle == null ? "" : execTitle);
+            dChannelDataMap.put("fileName", fileName == null ? "" : fileName);
+            dChannelDataMap.put("isCall", 0);
             
-            dChannelDataJSONArray.add(dChannelDataJSON);
+            jsonList.add(dChannelDataMap);
          }
          
          for(int i=0;i<list2.size();i++){
@@ -607,58 +571,52 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             String callCityTypeName = (String) tmap.get("callCityTypeName");//外呼属地
 
             
-            JSONObject dChannelDataJSON=new JSONObject();
-            dChannelDataJSON.put("channelId", channelId == null ? "" : channelId);
-            dChannelDataJSON.put("channelName", channelName == null ? "" : channelName);
-            dChannelDataJSON.put("taskCode", taskCode == null ? "" : taskCode);
-            dChannelDataJSON.put("taskName", taskName == null ? "" : taskName);
-            dChannelDataJSON.put("demand", demand == null ? "" : demand);
-            dChannelDataJSON.put("taskClassName", taskClassName == null ? "" : taskClassName);
-            dChannelDataJSON.put("taskLevel1", taskLevel1 == null ? "" : taskLevel1);
-            dChannelDataJSON.put("taskLevel2", taskLevel2 == null ? "" : taskLevel2);
-            dChannelDataJSON.put("taskLevel3", taskLevel3 == null ? "" : taskLevel3);
-            dChannelDataJSON.put("busiLevel1", busiLevel1 == null ? "" : busiLevel1);
-            dChannelDataJSON.put("busiLevel2", busiLevel2 == null ? "" : busiLevel2);
-            dChannelDataJSON.put("inPlanFlag", inPlanFlag == null ? "" : inPlanFlag);
-            dChannelDataJSON.put("monthTaskName",monthTaskName == null ? "" : monthTaskName);
-            dChannelDataJSON.put("callCycle", callCycle == null ? "" : callCycle);
-            dChannelDataJSON.put("callPlanNum", callPlanNum == null ? "" : callPlanNum);
-            dChannelDataJSON.put("finishDate", finishDate == null ? "" : finishDate);
-            dChannelDataJSON.put("taskComment", taskComment == null ? "" : taskComment);
-            dChannelDataJSON.put("userLableInfo", userLableInfo == null ? "" : userLableInfo);
-            dChannelDataJSON.put("callQuestionUrl", callQuestionUrl == null ? "" : callQuestionUrl);
-            dChannelDataJSON.put("callQuestionName", callQuestionName == null ? "" : callQuestionName);
-            dChannelDataJSON.put("callNo", callNo == null ? "" : callNo);
-            dChannelDataJSON.put("avoidFilterFlag", avoidFilterFlag == null ? "" : avoidFilterFlag);
-            dChannelDataJSON.put("callTestFlag", callTestFlag == null ? "" : callTestFlag);
-            dChannelDataJSON.put("freFilterFlag", freFilterFlag == null ? "" : freFilterFlag);
-            dChannelDataJSON.put("callFormName", callFormName == null ? "" : callFormName);
-            dChannelDataJSON.put("callCityTypeName", callCityTypeName == null ? "" : callCityTypeName);
-            dChannelDataJSON.put("isCall", 1);
+            Map<String,Object> dChannelDataMap = new HashMap<String,Object>();
+            dChannelDataMap.put("channelId", channelId == null ? "" : channelId);
+            dChannelDataMap.put("channelName", channelName == null ? "" : channelName);
+            dChannelDataMap.put("taskCode", taskCode == null ? "" : taskCode);
+            dChannelDataMap.put("taskName", taskName == null ? "" : taskName);
+            dChannelDataMap.put("demand", demand == null ? "" : demand);
+            dChannelDataMap.put("taskClassName", taskClassName == null ? "" : taskClassName);
+            dChannelDataMap.put("taskLevel1", taskLevel1 == null ? "" : taskLevel1);
+            dChannelDataMap.put("taskLevel2", taskLevel2 == null ? "" : taskLevel2);
+            dChannelDataMap.put("taskLevel3", taskLevel3 == null ? "" : taskLevel3);
+            dChannelDataMap.put("busiLevel1", busiLevel1 == null ? "" : busiLevel1);
+            dChannelDataMap.put("busiLevel2", busiLevel2 == null ? "" : busiLevel2);
+            dChannelDataMap.put("inPlanFlag", inPlanFlag == null ? "" : inPlanFlag);
+            dChannelDataMap.put("monthTaskName",monthTaskName == null ? "" : monthTaskName);
+            dChannelDataMap.put("callCycle", callCycle == null ? "" : callCycle);
+            dChannelDataMap.put("callPlanNum", callPlanNum == null ? "" : callPlanNum);
+            dChannelDataMap.put("finishDate", finishDate == null ? "" : finishDate);
+            dChannelDataMap.put("taskComment", taskComment == null ? "" : taskComment);
+            dChannelDataMap.put("userLableInfo", userLableInfo == null ? "" : userLableInfo);
+            dChannelDataMap.put("callQuestionUrl", callQuestionUrl == null ? "" : callQuestionUrl);
+            dChannelDataMap.put("callQuestionName", callQuestionName == null ? "" : callQuestionName);
+            dChannelDataMap.put("callNo", callNo == null ? "" : callNo);
+            dChannelDataMap.put("avoidFilterFlag", avoidFilterFlag == null ? "" : avoidFilterFlag);
+            dChannelDataMap.put("callTestFlag", callTestFlag == null ? "" : callTestFlag);
+            dChannelDataMap.put("freFilterFlag", freFilterFlag == null ? "" : freFilterFlag);
+            dChannelDataMap.put("callFormName", callFormName == null ? "" : callFormName);
+            dChannelDataMap.put("callCityTypeName", callCityTypeName == null ? "" : callCityTypeName);
+            dChannelDataMap.put("isCall", 1);
             
-            dChannelDataJSONArray.add(dChannelDataJSON);
+            jsonList.add(dChannelDataMap);
          }
          
 
-         System.out.println("dChannelDataJSONArray=========="+dChannelDataJSONArray);
-         JSONObject result =new JSONObject();
-         result.put("status","200");
-         result.put("data", dChannelDataJSONArray);
+         returnMap.put("status","200");
+         returnMap.put("data", jsonList);
          //String result = "{status : 200,data:["+dChannelDataJSON.toString()+"]}";
-         System.out.println("dChannelDataJSONresult===="+result);
-         out.print(result);
+         System.out.println("dChannelDataJSONresult===="+returnMap.toString());
         }catch(Exception e){
             e.printStackTrace();
-            JSONObject result =new JSONObject();
-            result.put("status", "201");
-            result.put("result", "fail");
+            returnMap.put("status", "201");
+            returnMap.put("result", "fail");
             //String result = "{status : 201, result:fail}";
-            System.out.println("dChannelDataJSONresult===="+result);
-            out.print(result);
+            System.out.println("dChannelDataJSONresult===="+returnMap.toString());
         }
-            out.flush();
-            out.close();
-            return null;                        
+
+            return returnMap;                        
     }
 
     
@@ -675,16 +633,12 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws
      */
     @RequestMapping("/getLogRecord")
-    public ModelAndView getLogRecord(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> getLogRecord(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
 
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
         String campsegId = request.getParameter("campsegId");
         McdCampDef mtlCampSeginfo = mpmCampSegInfoService.getCampSegInfo(campsegId);
-        JSONObject result = new JSONObject();
         try{
             //调用接口获取请求返回的XML
             log.info("=========获取XML开始===========");
@@ -762,10 +716,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
 
                 log.info("=========XML解析结束===========");
                 //转换JSON格式
-                JSONArray jsonArray = JSONArray.fromObject(mapList);
-                JSONObject object = new JSONObject();
-                result.put("status", "200");
-                result.put("data", jsonArray);
+                returnMap.put("status", "200");
+                returnMap.put("data", mapList);
             }else{
                 List<Map> mapList = new ArrayList<Map>();
                 Map<String,String> map = new HashMap<String,String>();
@@ -777,11 +729,9 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 map.put("approve_date", DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 map.put("if_current_node", "");
                 mapList.add(map);
-                JSONArray jsonArray = JSONArray.fromObject(mapList);
-                JSONObject object = new JSONObject();
-                result.put("status", "200");
-                result.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
-                result.put("data", jsonArray);
+                returnMap.put("status", "200");
+                returnMap.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
+                returnMap.put("data", mapList);
             }
 
         }catch(Exception e){
@@ -800,15 +750,12 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             map.put("if_current_node", "");
             mapList.add(map);
             JSONArray jsonArray = JSONArray.fromObject(mapList);
-            JSONObject object = new JSONObject();
-            result.put("status", "200");
-            result.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
-            result.put("data", jsonArray);
+            returnMap.put("status", "200");
+            returnMap.put("result", "无法获取外部审批ID,该策略没有提交审批或提交审批错误");
+            returnMap.put("data", jsonArray);
         }
-        out.print(result);
-        out.flush();
-        out.close();
-        return null;
+
+        return returnMap;
     }
     
     /**
@@ -824,9 +771,11 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws
      */
     @RequestMapping("/tokenVerification")
-    public ModelAndView tokenVerification(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> tokenVerification(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String campsegId = request.getParameter("campsegId");
         String token = request.getParameter("token");
+        Map<String,Object> returnMap = new HashMap<String,Object>();
         boolean verification = false;
         if(!StringUtils.isEmpty(campsegId) && !StringUtils.isEmpty(token)){
             String tokenNew = DESBase64Util.encodeInfo(campsegId);
@@ -834,35 +783,32 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 verification = true;
             }
         }
-        response.setContentType("application/json; charset=UTF-8");
-        response.setHeader("progma", "no-cache");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Cache-Control", "no-cache");
-        PrintWriter out = response.getWriter();
-        JSONObject result = new JSONObject();
-        result.put("status", "200");
+
+        returnMap.put("status", "200");
         JSONObject verificationJSON = new JSONObject();
         verificationJSON.put("verification", verification);
         verificationJSON.put("campsegId", campsegId);
 
-        result.put("data", verificationJSON);
-        
-        out.print(result);
-        out.flush();
-        out.close();
-        return null;
+        returnMap.put("data", verificationJSON);
+        return returnMap;
     }
     
     @RequestMapping("/getCampChannels")
-    public ModelAndView getCampChannels(HttpServletRequest request,HttpServletResponse response) throws IOException  {
+    @ResponseBody
+    public Map<String, Object> getCampChannels(HttpServletRequest request,HttpServletResponse response) throws IOException  {
         String campsegIds = request.getParameter("subCampsegIds");
+        Map<String,Object> returnMap = new HashMap<String,Object>();
         try {
                 List list=mpmCampSegInfoService.getChannelsByCampIds(campsegIds);
-                this.outJson4Ws(response, list, "200", "");
+                returnMap.put("status", "200");
+                returnMap.put("data", list);
+                
         } catch (Exception e) {
-            this.outJson4Ws(response, null, "503", "获取策略渠道异常！！！");
-        }
-        return null;
+            returnMap.put("status", "201");
+            returnMap.put("data", "");
+            returnMap.put("result", e.getMessage());
+        } 
+        return returnMap;
     }
     /**
      * 查询（父）策略某个渠道的从某天到某天的执行情况
@@ -873,12 +819,14 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
      * @throws IOException
      */
     @RequestMapping("/getCampChannelDetail")
-   public ModelAndView getCampChannelDetail(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    @ResponseBody
+   public Map<String, Object> getCampChannelDetail(HttpServletRequest request,HttpServletResponse response) throws IOException {
       
        String campsegId = request.getParameter("campsegId");
        String channelId = request.getParameter("channelId");
        String startDate = request.getParameter("startDate");
        String endDate = request.getParameter("endDate");
+       Map<String,Object> returnMap = new HashMap<String,Object>();
        DataGridData dg = new DataGridData();
        try {
                 List list=mpmCampSegInfoService.getCampChannelDetail(campsegId,channelId,startDate,endDate);
@@ -897,11 +845,15 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                     dg.setDataFields(new String[]{"DATA_DATE","EXPOSURE_NUMS","CUMULAT_EXPOSURE_NUMS","CK_NUMS","CUMULAT_CK_NUMS","SAILSUCC_NUMS","CUMULAT_SAILSUCC_NUMS"});
                 }
                 dg.setDatas(list);
-                this.outJson4Ws(response, dg, "200", "");
-           } catch (Exception e) {
-                this.outJson4Ws(response, null, "503", "获取渠道信息异常！！！");
-          }
-       return null;
+                returnMap.put("status", "200");
+                returnMap.put("data", dg);
+                
+        } catch (Exception e) {
+            returnMap.put("status", "503");
+            returnMap.put("data", "");
+            returnMap.put("result", "获取渠道信息异常！！！");
+        } 
+       return returnMap;
    }
     
   /**
@@ -913,11 +865,13 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
    * @throws IOException
    */
     @RequestMapping("/getCampsChannelSituation") 
-    public ModelAndView getCampsChannelSituation(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    @ResponseBody
+    public Map<String, Object> getCampsChannelSituation(HttpServletRequest request,HttpServletResponse response) throws IOException {
           
            String campsegIds = request.getParameter("subCampsegIds");
            String channelId = request.getParameter("channelId");
            String statDate = request.getParameter("statDate");
+           Map<String,Object> returnMap = new HashMap<String,Object>();
            DataGridData dg = new DataGridData();
            try {
                     List list=mpmCampSegInfoService.getCampsChannelSituation(campsegIds,channelId,statDate);
@@ -936,12 +890,15 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                         dg.setDataFields(new String[]{"PLAN_NAME","EXPOSURE_NUMS","CUMULAT_EXPOSURE_NUMS","CK_NUMS","CUMULAT_CK_NUMS","SAILSUCC_NUMS","CUMULAT_SAILSUCC_NUMS"});
                     }
                     dg.setDatas(list);
-                    this.outJson4Ws(response, dg, "200", "");
-               } catch (Exception e) {
-                   log.error("", e);
-                    this.outJson4Ws(response, null, "503", "获取渠道信息异常！！！");
-              }
-           return null;
+                    returnMap.put("status", "200");
+                    returnMap.put("data", dg);
+                    
+            } catch (Exception e) {
+                returnMap.put("status", "503");
+                returnMap.put("data", "");
+                returnMap.put("result", "获取渠道信息异常！！！");
+            } 
+           return returnMap;
        }
     
 
