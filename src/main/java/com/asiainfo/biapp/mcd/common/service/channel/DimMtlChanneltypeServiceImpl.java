@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.exception.MpmException;
-import com.asiainfo.biapp.mcd.util.MpmLocaleUtil;
 
 /**
  * 
@@ -40,7 +39,7 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 			dimMtlChanneltypeDao.save(dimMtlChanneltype);
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bcqdlxdyxx1"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 
@@ -55,7 +54,7 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 			return dimMtlChanneltypeDao.getMtlChanneltype(Channeltype);
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.qqdlxdyxxs"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 
@@ -82,7 +81,7 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 			return dimMtlChanneltypeDao.getSendOddTypeByChannelType(ChannelTypeId);
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.scqdlxdyxx1"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 

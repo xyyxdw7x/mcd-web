@@ -37,16 +37,13 @@ import org.apache.commons.lang3.StringUtils;
 @Repository("mtlStcPlanDao")
 public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	private static Logger log = LogManager.getLogger();
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<McdDimPlanType> initDimPlanType() throws Exception {
 		String sql = "select * from mcd_dim_plan_type d order by d.sort_Num";
-		//String hql = "from McdDimPlanType";
-		return this.getJdbcTemplate().query(sql,new RowMapper() {
+		return this.getJdbcTemplate().query(sql,new RowMapper<McdDimPlanType>() {
 			@Override
-			public Object mapRow(ResultSet rs, int index) throws SQLException {
+			public McdDimPlanType mapRow(ResultSet rs, int index) throws SQLException {
 				McdDimPlanType tmp = new McdDimPlanType();
-				tmp.setChannelType(rs.getString("channel_type"));
 				tmp.setSortNum(rs.getString("sort_num"));
 				tmp.setTypeId(rs.getString("type_id"));
 				tmp.setTypeName(rs.getString("type_name"));
@@ -56,10 +53,11 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		});
 	}
 	
+	
 	@Override
 	public int searchPlanCount(String keyWords, String typeId,String cityId) {
 		int count = 0;
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("SELECT COUNT(*)")
@@ -105,7 +103,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" left join dim_mtl_adiv_resouce on mtl_stc_plan_resource.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id")
 				  .append(" where mcd_plan_channel_list.plan_id in ("+planIds+")");
 			list = this.getJdbcTemplate().queryForList(buffer.toString());
-			for (Map map : list) {
+			for (Map<String, Object> map : list) {
 				McdPlanChannelList mtlStcPlanChannel = new McdPlanChannelList();
 				mtlStcPlanChannel.setId((String) map.get("ID"));
 				mtlStcPlanChannel.setChannelId((String) map.get("CHANNEL_ID"));
@@ -132,7 +130,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	@Override
 	public int getMtlStcPlanByCondationCount(String keyWords, String typeId,String channelTypeId,String planTypeId,String cityId,String isDoubleSelect) {
 		int count = 0;
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("SELECT COUNT(*)")
@@ -180,7 +178,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	@Override
 	public List<MtlStcPlanBean> searchPlan(String keyWords,String typeId,String cityId,Pager pager) {
 		List<Map<String, Object>> list = null;
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		List<MtlStcPlanBean> resultList = new ArrayList<MtlStcPlanBean>();
 		try {
 			StringBuffer buffer = new StringBuffer();
@@ -216,7 +214,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
 			list = this.getJdbcTemplate().queryForList(sqlExt.toString(),parameterList.toArray());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				MtlStcPlanBean bean = new MtlStcPlanBean();
 				bean.setPlanId((String) map.get("PLAN_ID"));
 				bean.setPlanName((String) map.get("PLAN_NAME"));
@@ -269,7 +267,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		return resultList;
 	}
 	@Override
-	public List checkIsUserd(String planIds,String cityId){
+	public List<Map<String,Object>> checkIsUserd(String planIds,String cityId){
 		List<Map<String, Object>> list = null;
 		try {
 			StringBuffer buffer = new StringBuffer();
@@ -286,7 +284,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
 		List<Map<String, Object>> list = null;
 		List<MtlStcPlanBean> resultList = new ArrayList<MtlStcPlanBean>();
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.PLAN_DESC,A.ID,A.STATUS,A.CREATE_USERID,A.CREATE_DATE,A.FEE_DESC,A.MATERIAL_DESC," +
@@ -332,7 +330,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 			log.info("执行sql="+sqlExt);
 			list = this.getJdbcTemplate().queryForList(sqlExt, parameterList.toArray());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				MtlStcPlanBean bean = new MtlStcPlanBean();
 				bean.setPlanId((String) map.get("PLAN_ID"));
 				bean.setPlanName((String) map.get("PLAN_NAME"));
@@ -424,11 +422,26 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 	public McdPlanDef getMtlStcPlanByPlanID(String planID){
 		final String sql="select * from mcd_plan_def where plan_id=?";
 		log.info("执行sql="+sql);
-		List<McdPlanDef> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, new VoPropertyRowMapper(McdPlanDef.class));
+		List<McdPlanDef> list=this.getJdbcTemplate().query(sql,new Object[]{planID}, 
+				new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));
 		if(list!=null&&list.size()>0){
 			return (McdPlanDef) list.get(0);
 		}else{
 			return null;
 		}
+	}
+	
+	@Override
+	public List<McdDimPlanType> getChildrens(String pid){
+		String sql = "select TYPE_ID,TYPE_NAME,TYPE_PID from MCD_DIM_PLAN_TYPE where TYPE_PID='"+pid+"'";
+		List<McdDimPlanType> subTypes=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
+		return subTypes;
+	}
+	
+	@Override
+	public List<McdDimPlanType> getAll(){
+		String sql = "select TYPE_ID,TYPE_NAME,TYPE_PID from MCD_DIM_PLAN_TYPE";
+		List<McdDimPlanType> subTypes=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
+		return subTypes;
 	}
 }

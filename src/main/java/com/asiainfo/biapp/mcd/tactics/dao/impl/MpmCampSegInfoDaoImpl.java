@@ -21,10 +21,10 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
+import com.asiainfo.biapp.mcd.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
-import com.asiainfo.biframe.utils.config.Configure;
 import org.apache.commons.lang3.StringUtils;
 /**
  * 策略管理相关dao
@@ -326,7 +326,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             
             //浙江版，策略与业务状态可多选，关联删除
-            if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+            if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
                 sql = "delete from mtl_campseg_drv_rel where campseg_id = ?";
                 this.getJdbcTemplate().update(sql, new Object[] { campsegId });
             }

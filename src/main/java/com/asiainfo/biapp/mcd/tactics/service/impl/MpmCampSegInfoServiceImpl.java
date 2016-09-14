@@ -63,7 +63,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
-import com.asiainfo.biframe.utils.config.Configure;
 
 /**
  *
@@ -142,7 +141,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		try {
 			String campsegId = null;
 			String campsegPid = null;
-			String province = Configure.getInstance().getProperty("PROVINCE");
+			String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 			String isApprove = "false";
 			//在保存和其他表的对应关系
 			for(int j = 0;j<seginfoList.size();j++){
@@ -272,7 +271,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		try {
 			String campsegId = null;
 			String campsegPid = null;
-			String province = Configure.getInstance().getProperty("PROVINCE");
+			String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 			String isApprove = "false";
 			for(int j = 0;j<seginfoList.size();j++){
 				McdCampDef segInfo = seginfoList.get(j);
@@ -535,9 +534,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<approveChannelId>" + channeIds.substring(1,channeIds.length()-1) + "</approveChannelId>");//审批渠道类型（判断采用哪个流程）：渠道ID
 	    	xmlStr.append("<approveFlowId>" + mtlCampSeginfo.getApproveFlowId() + "</approveFlowId>");//审批流程ID
 	    	String campsegInfoViewUrl = MpmConfigure.getInstance().getProperty("CAMPSEGINFO_VIEWURL");
-			final String webPath = "http://" + Configure.getInstance().getProperty("HOST_ADDRESS") + ":"
-					+ Configure.getInstance().getProperty("HOST_PORT")
-					+ Configure.getInstance().getProperty("CONTEXT_PATH");
+			final String webPath = "http://" + MpmConfigure.getInstance().getProperty("HOST_ADDRESS") + ":"
+					+ MpmConfigure.getInstance().getProperty("HOST_PORT")
+					+ MpmConfigure.getInstance().getProperty("CONTEXT_PATH");
 			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
 	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
 	    	xmlStr.append("</campsegInfo>");
@@ -709,7 +708,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 cepEventFlag = true;
             }
             if (MpmCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_STOP);
                     List<McdCampTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,MpmCONST.CHANNEL_TYPE_SMS);
                     for(McdCampTask mcdCampsegTask : mcdCampsegTakList){
@@ -732,7 +731,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             } else if (MpmCONST.MPM_CAMPSEG_STAT_DDCG.equals(type)) {//启动
                 String status = type;
                 //浙江版，策略与业务状态可多选，关联删除
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
                     McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
                     int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
                     int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
@@ -755,7 +754,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
 
             } else if (MpmCONST.MPM_CAMPSEG_STAT_PAUSE.equals(type)) {//暂停
-                if ("zhejiang".equalsIgnoreCase(Configure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_PAUSE);
                 }
                 
@@ -1268,7 +1267,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		List<Map> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
-		String province = Configure.getInstance().getProperty("PROVINCE");
+		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 		//查询客户群的周期性
 		McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
