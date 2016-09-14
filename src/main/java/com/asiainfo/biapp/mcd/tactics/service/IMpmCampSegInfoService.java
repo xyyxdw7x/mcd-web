@@ -33,7 +33,7 @@ public interface IMpmCampSegInfoService {
 	 * @param campsegId
 	 * @return
 	 */
-	public List searchIMcdCampsegInfo(McdCampDef segInfo,Pager pager);
+	public List<Map<String,Object>> searchIMcdCampsegInfo(McdCampDef segInfo,Pager pager);
 	/**
 	 * 修改营销活动信息  浙江IMCD
 	 * @param seginfoList
@@ -52,7 +52,7 @@ public interface IMpmCampSegInfoService {
      * JDBC查询策略状态
      * @return
      */
-    public List getDimCampsegStatList();
+    public List<McdDimCampStatus> getDimCampsegStatList();
 
 	public String saveCampSegWaveInfoZJ(List<McdCampDef> campSegInfoList);
 
@@ -142,13 +142,13 @@ public interface IMpmCampSegInfoService {
      * @param campsegId
      * @return
      */
-    public List getExecContentList(String campsegId);
+    public List<Map<String,Object>> getExecContentList(String campsegId);
     /**
      * 获取营销用语变量
      * @param campsegId
      * @return
      */
-    public List getExecContentVariableList(String campsegId);
+    public List<Map<String,Object>> getExecContentVariableList(String campsegId);
     /**
      * 保存营销用语
      * @param campsegId
