@@ -37,7 +37,6 @@ import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
-import com.asiainfo.biframe.utils.config.Configure;
 
 import net.sf.json.JSONObject;
 
@@ -255,7 +254,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			
 			campSegInfoService.createCustGroupTabAsCustTable1("mtl_cuser_",custGroupId);
 		
-            String config_Path = Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
+            String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
             
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
 			String filepath = config_Path + File.separator; 
