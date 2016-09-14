@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
@@ -25,8 +26,8 @@ import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 //migration
 //import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.framework.jdbc.DimIdNameMapper;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biframe.service.IdNameMapper;
 
 /**
  * Created on 2016-8-1 16:00:00
@@ -55,10 +56,10 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	private IMcdMtlBotherAvoidService service;
 
 	@Resource(name="botherAvoidUserTypeIdNameMapper")
-	private IdNameMapper mpmBotherAvoidUserTypeService;
+	private DimIdNameMapper mpmBotherAvoidUserTypeService;
 	
 	@Resource(name="dimCampsegTypeIdNameMapper")
-	private IdNameMapper dimCampsegTypeIdNameMapper;
+	private DimIdNameMapper dimCampsegTypeIdNameMapper;
 	
 	/**
 	 * 免打扰客户查询
@@ -134,7 +135,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	public void searchBotherAvoidUserType(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		List userTypeList = mpmBotherAvoidUserTypeService.getAll();
+		List<McdDimCampType> userTypeList = mpmBotherAvoidUserTypeService.queryDimAllData();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");
@@ -441,7 +442,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	@RequestMapping("searchCampsegType")
 	public void searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	
-		List campsegTypeList = dimCampsegTypeIdNameMapper.getAll();
+		List<McdDimCampType> campsegTypeList = dimCampsegTypeIdNameMapper.queryDimAllData();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");

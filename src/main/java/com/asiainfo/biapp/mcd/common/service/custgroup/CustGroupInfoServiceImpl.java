@@ -10,17 +10,17 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.CustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
-import com.asiainfo.biframe.privilege.IUser;
 import org.apache.commons.lang3.StringUtils;
 
 @Service("custGroupInfoService")
@@ -31,11 +31,8 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	@Resource(name="custGroupInfoDao")
 	CustGroupInfoDao custGroupInfoDao;
 
-	@Resource(name="mpmUserPrivilegeService")
-	IMpmUserPrivilegeService mpmUserPrivilegeService;
-	
-	@Resource(name = "mpmUserPrivilegeService")
-	private IMpmUserPrivilegeService privilegeService;
+	@Autowired
+	private IUserPrivilege userPrivilege;
 	
     @Resource(name="botherAvoidService")
     private IMcdMtlBotherAvoidService botherAvoidService;
@@ -62,9 +59,9 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 					McdCustgroupDef mtlGroupInfo = custGroupList.get(i);
 					String userName = "";
 					if((StringUtils.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtils.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
-						IUser user = mpmUserPrivilegeService.getUser(mtlGroupInfo.getCreateUserId());
+						User user = userPrivilege.queryUserById(mtlGroupInfo.getCreateUserId());
 						if(user != null) {
-							userName = user.getUsername();
+							userName = user.getName();
 						}
 						mtlGroupInfo.setCreateUserName(userName);
 					}
@@ -100,9 +97,9 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				//创建人名称----------------
 				String userName = "";
 				if(map.get("CREATE_USER_ID") != null && map.get("CREATE_USER_NAME") == null) {
-					IUser user = privilegeService.getUser(map.get("CREATE_USER_ID").toString());
+					User user = userPrivilege.queryUserById(map.get("CREATE_USER_ID").toString());
 					if(user != null) {
-						userName = user.getUsername();
+						userName = user.getName();
 					}
 				}else{
 					userName = String.valueOf(map.get("CREATE_USER_NAME"));

@@ -24,6 +24,7 @@ public interface DimIdNameMapper {
 
 	/**
 	 * 根据ID查询对应的名称
+	 * @param <T>
 	 * @param ids
 	 * @return
 	 */
