@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -34,10 +37,7 @@ import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
-import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.date.DateUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -253,12 +253,12 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	  		custInfoBean.setIsPushOther(0);
 		  	custInfoBean.setCustomStatusId(3);
 	  		custInfoBean.setEffectiveTime(new Date());
-	  		custInfoBean.setFailTime( DateUtil.string2Date(failTime)); 
+	  		custInfoBean.setFailTime(DateUtils.parseDateStrictly(failTime, new String[]{"yyyy-MM-dd"}));
 	  		custInfoBean.setCreateUserName(this.getUser(request, response).getName());
 	  		custGroupService.updateMtlGroupinfo(custInfoBean);
 			
-	  		final String date = DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
-	  		custGroupService.savemtlCustomListInfo(tableName, DateUtil.date2String(new Date(), DateUtil.YYYYMMDD) ,custGroupId,i,3,new Date(),"");
+	  		final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
+	  		custGroupService.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId,i,3,new Date(),"");
 	  		custGroupService.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
 	  		custGroupService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
   			result.put("count", ""+i);

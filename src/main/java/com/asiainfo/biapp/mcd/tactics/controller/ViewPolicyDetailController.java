@@ -17,6 +17,8 @@ import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
+import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
@@ -47,9 +50,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.string.DES;
-import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -242,8 +242,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 stcPlanJSON.put("campDrvName", dimPlanType != null ? dimPlanType.getTypeName(): "");    //业务类型
                 stcPlanJSON.put("stcPlanName", stcPlan != null ? stcPlan.getPlanName() : "");   //“政策名称”,政策即产品
                 stcPlanJSON.put("stcPlanId", stcPlan != null ? stcPlan.getPlanId() : "");       //“编号”
-                stcPlanJSON.put("stcPlanStartdate", stcPlan != null ? DateUtil.date2String(stcPlan.getPlanStartdate(), "yyyy/MM/dd") : ""); //“有效期”开始时间
-                stcPlanJSON.put("stcPlanEnddate", stcPlan != null ? DateUtil.date2String(stcPlan.getPlanEnddate(), "yyyy/MM/dd") : "");     //“有效期”结束时间
+                stcPlanJSON.put("stcPlanStartdate", stcPlan != null ? DateFormatUtils.format(stcPlan.getPlanStartdate(), "yyyy/MM/dd") : ""); //“有效期”开始时间
+                stcPlanJSON.put("stcPlanEnddate", stcPlan != null ? DateFormatUtils.format(stcPlan.getPlanEnddate(), "yyyy/MM/dd") : "");     //“有效期”结束时间
                 stcPlanJSON.put("stcPlanDesc", stcPlan != null ? stcPlan.getPlanDesc() : "");   //“描述”
                
              }
@@ -777,7 +777,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 map.put("approve_result", mtlCampSeginfo.getCreateUserName() + "创建了策略");
                 map.put("approve_view", "");
                 map.put("approvaler_name",mtlCampSeginfo.getCreateUserName());
-                map.put("approve_date", DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+                map.put("approve_date", DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 map.put("if_current_node", "");
                 mapList.add(map);
                 JSONArray jsonArray = JSONArray.fromObject(mapList);
@@ -799,7 +799,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             map.put("approve_result", "发生错误，审批系统未返回相关日志");
             map.put("approve_view", "");
             map.put("approvaler_name",mtlCampSeginfo.getCreateUserName());
-            map.put("approve_date", DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+            map.put("approve_date", DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             map.put("if_current_node", "");
             mapList.add(map);
             JSONArray jsonArray = JSONArray.fromObject(mapList);
@@ -832,7 +832,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         String token = request.getParameter("token");
         boolean verification = false;
         if(!StringUtils.isEmpty(campsegId) && !StringUtils.isEmpty(token)){
-            String tokenNew = DES.encrypt(campsegId);
+            String tokenNew = DESBase64Util.encodeInfo(campsegId);
             if(token.equals(tokenNew)){
                 verification = true;
             }

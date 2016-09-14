@@ -17,6 +17,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.client.Call;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
@@ -25,6 +28,7 @@ import org.dom4j.Element;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
@@ -62,10 +66,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.spring.SystemServiceLocator;
-import com.asiainfo.biframe.utils.string.DES;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -528,7 +528,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<campsegType>" + mtlCampSeginfo.getTypeId()+ "</campsegType>");//营销类别	
 	    	xmlStr.append("<startDate>" + mtlCampSeginfo.getStartDate()+ "</startDate>");//策略开始时间
 	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间
-	    	xmlStr.append("<createTime>" + DateUtil.date2String(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
+	    	xmlStr.append("<createTime>" + DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
 	    	
 	    	IUser user  = mpmUserPrivilegeService.getUser(mtlCampSeginfo.getCreateUserId());
 	    	String userName =  user != null ? user.getUsername() : "";
@@ -548,7 +548,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			final String webPath = "http://" + Configure.getInstance().getProperty("HOST_ADDRESS") + ":"
 					+ Configure.getInstance().getProperty("HOST_PORT")
 					+ Configure.getInstance().getProperty("CONTEXT_PATH");
-	    	String token = DES.encrypt(mtlCampSeginfo.getCampId());
+			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
 	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
 	    	xmlStr.append("</campsegInfo>");
 					
@@ -745,7 +745,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
                     int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
                     int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
-                    int newDate = Integer.parseInt(DateUtil.date2String(new Date(), "yyyyMMdd"));
+                    int newDate = Integer.parseInt(DateFormatUtils.format(new Date(), "yyyyMMdd"));
                     if(startDate > newDate){//未到策略开始时间
                         status = MpmCONST.MPM_CAMPSEG_STAT_ZXZT;
                     }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
