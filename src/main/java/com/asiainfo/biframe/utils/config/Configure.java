@@ -12,10 +12,12 @@ import org.apache.logging.log4j.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+@SuppressWarnings("rawtypes")
 public class Configure {
 	public static final String URL_PATH = "URL_PATH";
 	private static Logger log = LogManager.getLogger(Configure.class);
 	private static final Configure CONFIGURE = new Configure();
+	
 	private static Map modifiedTimeMap = new HashMap();
 	private static Map fileNameMap = new HashMap();
 	private static Map absPathMap = new HashMap();
@@ -74,6 +76,7 @@ public class Configure {
 		return getProperty("URL_PATH", key);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map getWebUrlMap() {
 		Map map = new HashMap();
 		Properties props = (Properties) configMap.get("URL_PATH");
@@ -86,6 +89,7 @@ public class Configure {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	private synchronized boolean initProperties(String configType, String fileName) throws Exception {
 		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
