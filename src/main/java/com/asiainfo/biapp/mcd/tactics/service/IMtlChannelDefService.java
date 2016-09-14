@@ -3,6 +3,8 @@ package com.asiainfo.biapp.mcd.tactics.service;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
+
 public interface IMtlChannelDefService {
     /**
      * add by jinl 20150717
@@ -25,7 +27,7 @@ public interface IMtlChannelDefService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List findMtlChannelDef(String campsegId) throws Exception;
+	public List<McdCampChannelList> findMtlChannelDef(String campsegId) throws Exception;
 	
 	/**
 	 * 根据策略ID，渠道ID获取相关信息（外呼渠道）
@@ -33,6 +35,6 @@ public interface IMtlChannelDefService {
 	 * @param channelDefCall
 	 * @return
 	 */
-	Map getMtlChannelDefCall(String campsegId,String channelDefCall);
+	Map<String,Object> getMtlChannelDefCall(String campsegId,String channelDefCall);
 
 }

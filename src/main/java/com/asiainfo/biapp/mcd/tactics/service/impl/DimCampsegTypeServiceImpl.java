@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.tactics.dao.IDimCampsegTypeDao;
-import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 /**

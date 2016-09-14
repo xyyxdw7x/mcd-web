@@ -1,7 +1,6 @@
 package com.asiainfo.biapp.mcd.custgroup.vo;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class McdCvColDefine implements Serializable {
 
@@ -41,7 +40,6 @@ public class McdCvColDefine implements Serializable {
 //	IMCD_ZJ为了前台统一使用模板   别名
 	private String typeId;
 	private String typeName;
-	private List result;
 	
 	public String getValueUnit() {
 		return valueUnit;
@@ -251,13 +249,4 @@ public class McdCvColDefine implements Serializable {
 		this.custGroupUpdateCycle = custGroupUpdateCycle;
 	}
 
-	public List getResult() {
-		return result;
-	}
-
-	public void setResult(List result) {
-		this.result = result;
-	}
-	
-	
 }

@@ -32,7 +32,6 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 	public void save(McdCampCustgroupList transientInstance) {
 		log.debug("saving MtlCampsegCiCustgroup instance");
 		try {
-			//TODO: getHibernateTemplate().saveOrUpdate(transientInstance);
 			this.getJdbcTemplateTool().save(transientInstance);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,7 +41,6 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 	
 	@Override
 	public boolean deleteLableByCampsegId(String campsegId) {
-		boolean flag = true;
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("delete from MCD_TEMPLET_SELECT where active_templet_id in ( ")
@@ -102,7 +100,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 				  .append(" where CUSTGROUP_TYPE='CG' AND mcd_camp_custgroup_list.CAMPSEG_id = ?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
 			
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				McdCustgroupDef mtlGroupInfo = new McdCustgroupDef();
 				mtlGroupInfo.setCampsegCustGroupId((String) map.get("CAMPSEG_CUSTGROUP_ID"));
 				mtlGroupInfo.setCustomGroupId((String) map.get("CUSTGROUP_ID"));
@@ -126,8 +124,8 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 	}
 	
 	@Override
-	public List getCustInfoByCampsegId(String campsegId) {
-		List list = new ArrayList();
+	public List<Map<String,Object>> getCustInfoByCampsegId(String campsegId) {
+		List<Map<String,Object>> list = null;
 		try {
 			StringBuffer sql = new StringBuffer(" select *  from mcd_camp_custgroup_list mcc where mcc.CAMPSEG_ID = ?"); 
 			list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId,});

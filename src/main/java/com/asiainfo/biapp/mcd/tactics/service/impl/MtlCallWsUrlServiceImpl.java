@@ -25,7 +25,7 @@ public class MtlCallWsUrlServiceImpl implements IMtlCallWsUrlService {
 			//获取调用web service的URL
 			McdSysInterfaceDef mtlCallwsUrl = new McdSysInterfaceDef();
 			mtlCallwsUrl.setCallwsUrlCode(ws_jndi);
-			List objList = mtlCallwsUrlDao.findByCond(mtlCallwsUrl);
+			List<McdSysInterfaceDef> objList = mtlCallwsUrlDao.findByCond(mtlCallwsUrl);
 			if (objList != null && objList.size() > 0) {
 				result = (McdSysInterfaceDef) objList.get(0);
 			}

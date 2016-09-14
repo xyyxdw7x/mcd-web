@@ -10,6 +10,11 @@ public class MtlTargetuserFile implements java.io.Serializable {
 
 	// Fields    
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2221646613430064231L;
+
 	private String targetuserFileId;
 
 	private String targetuserFileName;
