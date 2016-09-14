@@ -14,12 +14,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.jms.util.SpringContext;
 import org.apache.commons.lang3.StringUtils;
 
 @Repository("custGroupInfoDao")
@@ -668,7 +668,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}
 			log.info("黑名单过滤sql:"+sql);
 			log.info("黑名单过滤传递参数："+paramList.toString());
-			JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+			JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 			sql = "select count(1) blackFilterNum from ( "+sql+" )";
 			list = this.getJdbcTemplate().queryForList(sql,paramList.toArray());
 		} catch (Exception e) {
@@ -916,7 +916,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
 //		使用sql数据源
-		JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+		JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 		List<Map> list = null;
 		String sql = "";
 		try {
@@ -1030,7 +1030,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @return
 	 */
 	private List checkTableIsPartition(String tableName){
-	    JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+	    JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("select * from user_tables where table_name =UPPER(?)");
 		log.info("查询分区是否存在："+buffer.toString());
@@ -1044,7 +1044,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @return
 	 */
 	private List checkPartitionIsExist(String tableName,String partitionName){
-	    JdbcTemplate jt = SpringContext.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+	    JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("select table_name,partition_name,high_value,tablespace_name from user_tab_partitions ")
 			  .append(" where table_name=UPPER(?) and partition_name=UPPER(?)");
