@@ -32,7 +32,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
-import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
@@ -724,7 +723,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 if (cepEventFlag) {
                     /*CepMessageReceiverThread thread = CepReceiveThreadCache.getInstance().get(segInfo.getCampsegId());
                     if (thread != null) {*/
-                        CepUtil.finishCepEvent(segInfo.getCepEventId());
+                	//TODO CEP需要重构    
+                	//CepUtil.finishCepEvent(segInfo.getCepEventId());
                     /*  thread.stopThread();
                         CepReceiveThreadCache.getInstance().remove(segInfo.getCampsegId());
                     }*/
@@ -748,7 +748,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_RUNNING);
 
                     if (cepEventFlag) {
-                        CepUtil.restartCepEvent(segInfo.getCepEventId());
+                        
+                    	//TODO CEP需要重构
+                    	//CepUtil.restartCepEvent(segInfo.getCepEventId());
                     }
                     campSegInfoDao.updateCampStat(rList, status);
                 }
@@ -759,7 +761,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
                 
                 if (cepEventFlag) {
-                    CepUtil.stopCepEvent(segInfo.getCepEventId());
+                	//TODO CEP需要重构
+                    //CepUtil.stopCepEvent(segInfo.getCepEventId());
                 }
                 campSegInfoDao.updateCampStat(rList, type);
 
