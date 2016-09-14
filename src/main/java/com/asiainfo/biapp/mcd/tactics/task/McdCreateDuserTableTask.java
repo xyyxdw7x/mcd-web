@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.task;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -33,7 +34,7 @@ public class McdCreateDuserTableTask implements Serializable{
 	public void runTask() throws Exception {
 		try {
 			log.info("begin exec*************************************");
-			List list = mcdCreateDuserTableService.getAll();
+			List<Map<String,Object>> list = mcdCreateDuserTableService.getAll();
 			log.info("******************list.size="+list.size());
 			if(!CollectionUtils.isEmpty(list)){
 				mcdCreateDuserTableService.doCreateDuserTable(list);

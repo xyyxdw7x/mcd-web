@@ -33,7 +33,7 @@ public class ChannelBossSmsTemplateDaoImpl  extends JdbcDaoBase implements Chann
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				ChannelBossSmsTemplate mtlChannelBossSmsTemplate = new ChannelBossSmsTemplate();
 				mtlChannelBossSmsTemplate.setTemplateContent(String.valueOf(map.get("TEMPLATE_CONTENT")));
 				mtlChannelBossSmsTemplate.setTemplateId(String.valueOf(map.get("TEMPLATE_ID")));

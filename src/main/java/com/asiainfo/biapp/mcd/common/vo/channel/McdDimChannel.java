@@ -1,29 +1,31 @@
 package com.asiainfo.biapp.mcd.common.vo.channel;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  * DimMtlChannel entity.
  *
  * @author MyEclipse Persistence Tools
  */
-
+@Table(name="mcd_dim_channel")
 public class McdDimChannel implements java.io.Serializable {
 
 	// Fields
 
+	@Column(name="channel_id")
 	private String channelId;
-	private Short channeltypeId;
+	@Column(name="channel_name")
 	private String channelName;
+	@Column(name="display_order")
+    private Integer displayOrder;
+	
 	private String campId;
-	//	private String cityId;
-	private String createUser; //渠道创建人,空代表共有渠道
-	// Constructors
 //  IMCD_ZJ 为了统一前台模板使用  起别名
     private String typeId;
     private String typeName;
-    private Integer displayOrder;
     
-    
-	
+
 	public Integer getDisplayOrder() {
         return displayOrder;
     }
@@ -56,7 +58,25 @@ public class McdDimChannel implements java.io.Serializable {
 	public void setCampId(String campId) {
 		this.campId = campId;
 	}
+	public String getChannelId() {
+		return channelId;
+	}
 
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
+	}
+	
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+
+
+	
+	
 	/** default constructor */
 	public McdDimChannel() {
 	}
@@ -67,53 +87,5 @@ public class McdDimChannel implements java.io.Serializable {
 		this.channelName = channelName;
 	}
 
-	/** full constructor */
-	public McdDimChannel(String channelId, Short channeltypeId, String channelName) {
-		this.channelId = channelId;
-		this.channeltypeId = channeltypeId;
-		this.channelName = channelName;
-	}
-
-	// Property accessors
-
-	public String getChannelId() {
-		return channelId;
-	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
-	}
-
-	public Short getChanneltypeId() {
-		return channeltypeId;
-	}
-
-	public void setChanneltypeId(Short channeltypeId) {
-		this.channeltypeId = channeltypeId;
-	}
-
-	public String getChannelName() {
-		return channelName;
-	}
-
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-	}
-
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	//	public String getCityId() {
-	//		return cityId;
-	//	}
-	//
-	//	public void setCityId(String cityId) {
-	//		this.cityId = cityId;
-	//	}
 
 }

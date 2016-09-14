@@ -13,10 +13,9 @@ public class SendType4CitysDaoImp extends JdbcDaoBase implements SendType4CitysD
 	@Override
 	public void updateType(String cityId,String sendType){
 		String sql = "update mcd_sms_send_city_config t set t.send_type=? where city_id=?";
-		String[] parm ={sendType,cityId};
 		try {
 			log.info("执行sql=" + sql);
-			this.getJdbcTemplate().update(sql, parm);
+			this.getJdbcTemplate().update(sql, sendType,cityId);
 		} catch (DataAccessException e) {
 			log.error("更新失败！！！");
 			throw e;

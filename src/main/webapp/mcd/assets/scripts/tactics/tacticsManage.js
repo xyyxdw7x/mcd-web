@@ -585,7 +585,6 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						var btnType = $(this).attr("btnType");
 						var campsegId = $(this).attr("campsegId");
 						var cmdObj = {"del":"delCampseg","submit":"submitApproval","modify":"editCampseg","copy":"copyCampseg","reset":"cancelAssignment","quickOrder":"reminder"};
-						
 						if(btnType=="modify"){//---------------------修改
 							var endTime = $("td[campsegid="+campsegId+"]").attr("enddate");
 							var invalidFlag=$("td[campsegid="+campsegId+"]").attr("invalidFlag");

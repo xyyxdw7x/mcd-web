@@ -71,7 +71,7 @@ public class MtlCustGroupServiceImpl implements MtlCustGroupService {
 	@Override
 	public void insertSqlLoderISyncDataCfg(String fileNameCsv,String fileNameVerf,String customGroupName,String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
 		//查看该客户群任务是否存在
-		List list  = mtlCustGroupJdbcDao.getSqlLoderISyncDataCfg(customGroupId);
+		List<Map<String,Object>> list  = mtlCustGroupJdbcDao.getSqlLoderISyncDataCfg(customGroupId);
 		if(list != null && list.size() > 0){
 			mtlCustGroupJdbcDao.updateSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
 		}else{
@@ -86,10 +86,10 @@ public class MtlCustGroupServiceImpl implements MtlCustGroupService {
      */
 	@Override
 	public Boolean getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
-		List list = mtlCustGroupJdbcDao.getSqlLoderISyncDataCfgEnd(mtlCuserTableName);
+		List<Map<String,Object>> list = mtlCustGroupJdbcDao.getSqlLoderISyncDataCfgEnd(mtlCuserTableName);
 		boolean isEnd = false;
 		if(list != null && list.size() > 0){
-			Map map = (Map)list.get(0);
+			Map<String,Object> map = (Map<String,Object>)list.get(0);
 			String endDate = map.get("run_end_time") == null ? "" : map.get("run_end_time").toString() ;
 			log.info("客户群表名为："+mtlCuserTableName +"的客户群，endDate ：" + endDate);
 			if(!"".equals(endDate)){
@@ -115,7 +115,6 @@ public class MtlCustGroupServiceImpl implements MtlCustGroupService {
      */
     @Override
     public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-        // TODO Auto-generated method stub
         mtlCustGroupJdbcDao.createSynonymTableMcdBySqlFire(mtlCuserTableName); 
 
     } 
