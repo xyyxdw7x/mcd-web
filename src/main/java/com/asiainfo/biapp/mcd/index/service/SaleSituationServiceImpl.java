@@ -33,6 +33,7 @@ public class SaleSituationServiceImpl implements SaleSituationService{
 		return ss;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Pager getRecommendCamp(int pageNum,String city_id){
 		Pager page =  saleSituationDao.getRecommendCamp(pageNum,city_id);

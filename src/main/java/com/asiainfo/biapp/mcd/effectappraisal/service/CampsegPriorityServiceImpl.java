@@ -88,6 +88,7 @@ public class CampsegPriorityServiceImpl implements IcampsegPriorityService{
 				campsegPriorityDao.editManualPriorityCampseg(list1, list2);
 			} catch (JSONException e) {
 				e.printStackTrace();
+				log.error("", e);
 			} 
 		}
 	}

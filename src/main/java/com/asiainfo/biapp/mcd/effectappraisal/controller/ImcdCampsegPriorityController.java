@@ -1,23 +1,24 @@
 package com.asiainfo.biapp.mcd.effectappraisal.controller;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IcampsegPriorityService;
+import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
-import org.apache.commons.lang3.StringUtils;
 
 @Controller
 @RequestMapping("/mpm/priorityAction")
@@ -36,19 +37,24 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping(params = "cmd=initManualPriorityCampseg")
-	public void initManualPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
+	@ResponseBody
+	public Map<String, Object> initManualPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
 		String adivId =  request.getParameter("adivId");  //运营位id
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			List<CampsegPriorityBean> list = this.campsegPriorityService.initManualPriorityCampseg(channelId,adivId, cityId);
 
-			this.outJson4Ws(response, list, "200", "");
+			resultMap.put("data", list);
+			resultMap.put("status", "200");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.outJson4Ws(response, new ArrayList<CampsegPriorityBean>(), "201", "");
+			resultMap.put("status", "201");
+			resultMap.put("result", "查询数据异常");
 		}
+		return resultMap;
 	}
 	
 	/**
@@ -60,7 +66,8 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping(params = "cmd=initAutoPriorityCampseg")
-	public void initAutoPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
+	@ResponseBody
+	public Map<String, Object> initAutoPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
 		String adivId =  request.getParameter("adivId");  //运营位id
 		User user = this.getUser(request, response);
@@ -71,6 +78,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 		if(StringUtils.isNotEmpty(pageNum)){
 			pager.setPageFlag("G");	
 		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			String clickQueryFlag = "true";
 			pager.setPageSize(10);
@@ -90,11 +98,14 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 				pager.setResult(list);
 			}
 			
-			this.outJson4Ws(response, pager, "200", "");
+			resultMap.put("data", pager);
+			resultMap.put("status", "200");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.outJson4Ws(response, null, "201", "");
+			resultMap.put("status", "201");
+			resultMap.put("result", "查询数据异常");
 		}
+		return resultMap;
 	}
 	
 	/**
@@ -106,21 +117,25 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping(params = "cmd=editPriorityCampseg")
-	public void editPriorityCampseg(HttpServletRequest request,
+	@ResponseBody
+	public Map<String, Object> editPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
 		String channelId = request.getParameter("channelId");
 		String campsegId = request.getParameter("campsegId");
 		String chnAdivId = request.getParameter("chnAdivId");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			this.campsegPriorityService.editPriorityCampseg(campsegId, channelId, cityId, chnAdivId);
-			this.outJson4Ws(response, null, "200", "");
+			resultMap.put("data", "更新完成");
+			resultMap.put("status", "200");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.outJson4Ws(response, null, "201", "");
+			resultMap.put("status", "201");
+			resultMap.put("result", "查询数据异常");
 		}
-		
+		return resultMap;
 	}
 	
 	/**
@@ -132,16 +147,21 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping(params = "cmd=editManualPriorityCampseg")
-	public void editManualPriorityCampseg(HttpServletRequest request,
+	@ResponseBody
+	public Map<String, Object> editManualPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String priOrderNumStr = request.getParameter("priOrderNumStr");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			this.campsegPriorityService.editManualPriorityCampseg(priOrderNumStr);
-			this.outJson4Ws(response, null, "200", "");
+			resultMap.put("data", "更新完成");
+			resultMap.put("status", "200");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.outJson4Ws(response, null, "201", "");
+			resultMap.put("status", "201");
+			resultMap.put("result", "查询数据异常");
 		}
+		return resultMap;
 	}
 	
 	/**
@@ -153,21 +173,25 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping(params = "cmd=cancleTopManualPriorityCampseg")
-	public void cancleTopManualPriorityCampseg(HttpServletRequest request,
+	@ResponseBody
+	public Map<String, Object> cancleTopManualPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String campsegId = request.getParameter("campsegId");
 		String cityId = request.getParameter("cityId");
 		String channelId = request.getParameter("channelId");
 		String chnAdivId = request.getParameter("chnAdivId");
-		PrintWriter out = response.getWriter();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			log.info("************开始执行取消置顶操作*********************");
 			this.campsegPriorityService.cancleTopManualPriorityCampseg(campsegId,cityId,channelId,chnAdivId);
 			log.info("************结束执行取消置顶操作*********************");
-			this.outJson4Ws(response, null, "200", "");
+			resultMap.put("data", "");
+			resultMap.put("status", "200");
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.outJson4Ws(response, null, "201", "");
+			resultMap.put("status", "201");
+			resultMap.put("result", "查询数据异常");
 		}
+		return resultMap;
 	}
 }
