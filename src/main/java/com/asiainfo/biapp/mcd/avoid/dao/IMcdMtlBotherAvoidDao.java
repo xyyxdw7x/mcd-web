@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.avoid.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -18,7 +19,7 @@ import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;;
 
 public interface IMcdMtlBotherAvoidDao {
 	
-	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid);
+	public List<Map<String,Object>> searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid);
 
 	public void addBotherAvoidUserInMem(List<McdBotherAvoid> list) throws Exception;
 	

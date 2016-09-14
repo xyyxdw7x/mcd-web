@@ -2,6 +2,7 @@ package com.asiainfo.biapp.framework.web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,8 @@ import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.SpringContextsUtil;
-import com.asiainfo.biapp.mcd.jms.util.JmsJsonUtil;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.json.JSONObject;
 
@@ -77,7 +79,7 @@ public class BaseMultiActionController extends MultiActionController {
 		protected void outJson4Ws(HttpServletResponse response, Object obj, String status, String errorMsg) {
 			JSONObject dataJson = new JSONObject();
 			if ("200".equals(status)) {
-				String str = JmsJsonUtil.obj2Json(obj);
+				String str = this.obj2Json(obj);
 				dataJson.put("data", str);
 			} else {
 				dataJson.put("result", errorMsg);
@@ -98,7 +100,40 @@ public class BaseMultiActionController extends MultiActionController {
 				e.printStackTrace();
 			}
 		}
+		
 
+		/**
+		 * 对象转换为json字符串
+		 * @param obj
+		 * @return
+		 */
+		@SuppressWarnings("deprecation")
+		private  String obj2Json(Object obj) {
+			ObjectMapper om = new ObjectMapper();
+			
+			String jsonStr = "{}";
+			JsonGenerator jsonGenerator = null;
+			try {
+				if (obj != null) {
+					StringWriter sw = new StringWriter();
+					jsonGenerator = om.getJsonFactory().createJsonGenerator(sw);
+					jsonGenerator.writeObject(obj);
+					jsonStr = sw.toString();
+				}
+			} catch (Exception e) {
+
+			} finally {
+				if (jsonGenerator != null) {
+					try {
+						jsonGenerator.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+			return jsonStr;
+		}
+
+		
 	public IUserPrivilege getUserPrivilege() {
 		IUserPrivilege up=(IUserPrivilege) SpringContextsUtil.getBean("defaultUserPrivilege");
 		return up;

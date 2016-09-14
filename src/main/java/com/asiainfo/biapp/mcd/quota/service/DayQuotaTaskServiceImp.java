@@ -224,7 +224,7 @@ public class DayQuotaTaskServiceImp implements DayQuotaTaskService {
 				}
 			}
 			if (!hasConf) {
-				Map map = new HashMap();
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("CITY_ID", cityId);
 				map.put("DEPT_ID", deptid);
 				map.put("DATA_DATE", tempDate);

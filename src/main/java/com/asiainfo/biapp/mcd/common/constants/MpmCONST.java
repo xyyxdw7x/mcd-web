@@ -1,13 +1,5 @@
 package com.asiainfo.biapp.mcd.common.constants;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.asiainfo.biframe.utils.config.Configure;
-
 /**
  * Created on 2005-6-8
  *
@@ -109,4 +101,7 @@ public class MpmCONST {
 
     //活动波次审批结果标志-未�?�?
     public static final short MPM_SEG_APPROVE_RESULT_NOTPASSED = 2;
+    
+	//客户群清单表名 前缀   浙江
+	public static final String MCD_ZD_USER_PREFIX = "mcd_zd_user_";
 }

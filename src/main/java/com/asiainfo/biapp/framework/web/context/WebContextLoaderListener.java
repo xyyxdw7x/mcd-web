@@ -7,8 +7,6 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
-import com.asiainfo.biapp.mcd.kafka.cep.util.KafKaConfigure;
 import com.asiainfo.biframe.utils.config.Configure;
 
 /**
@@ -19,7 +17,6 @@ import com.asiainfo.biframe.utils.config.Configure;
  */
 public class WebContextLoaderListener extends ContextLoaderListener {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
@@ -30,19 +27,14 @@ public class WebContextLoaderListener extends ContextLoaderListener {
 			ServletContext servletContext = event.getServletContext();
 			String confFilePath1 = servletContext.getRealPath("/WEB-INF/classes/conf/aibi_mpm/mcd.properties");
 			Configure.getInstance().addConfFileName(MpmCONST.MCD_PROPERTY_NAME, confFilePath1);
-			String confFilePath21 = servletContext.getRealPath("/WEB-INF/classes/conf/aibi_mpm/mcd-extends.properties");
-			Configure.getInstance().addConfFileName(MpmCONST.MCD_PROPERTY_NAME, confFilePath21);
+			//String confFilePath21 = servletContext.getRealPath("/WEB-INF/classes/conf/aibi_mpm/mcd-extends.properties");
+			//Configure.getInstance().addConfFileName(MpmCONST.MCD_PROPERTY_NAME, confFilePath21);
 
-			String confFilePath2 = servletContext
-					.getRealPath("/WEB-INF/classes/conf/aibi_mpm/province/{PROVINCE}/mpm.properties");
-			MpmConfigure.getInstance().setConfFileName(confFilePath2);
+			//String confFilePath2 = servletContext
+				//	.getRealPath("/WEB-INF/classes/conf/aibi_mpm/province/{PROVINCE}/mpm.properties");
+			//MpmConfigure.getInstance().setConfFileName(confFilePath2);
 
-			String producerFileName = servletContext
-					.getRealPath("/WEB-INF/classes/conf/aibi_mpm/cep-kafka-producter.properties");
-			String consumerFileName = servletContext
-					.getRealPath("/WEB-INF/classes/conf/aibi_mpm/cep-kafka-consumer.properties");
-
-			KafKaConfigure.getInstance().init(consumerFileName, producerFileName);
+			//KafKaConfigure.getInstance().init(consumerFileName, producerFileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

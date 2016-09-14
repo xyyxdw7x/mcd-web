@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.avoid.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
@@ -25,8 +27,8 @@ import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 //migration
 //import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.framework.jdbc.DimIdNameMapper;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biframe.service.IdNameMapper;
 
 /**
  * Created on 2016-8-1 16:00:00
@@ -55,10 +57,10 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	private IMcdMtlBotherAvoidService service;
 
 	@Resource(name="botherAvoidUserTypeIdNameMapper")
-	private IdNameMapper mpmBotherAvoidUserTypeService;
+	private DimIdNameMapper mpmBotherAvoidUserTypeService;
 	
 	@Resource(name="dimCampsegTypeIdNameMapper")
-	private IdNameMapper dimCampsegTypeIdNameMapper;
+	private DimIdNameMapper dimCampsegTypeIdNameMapper;
 	
 	/**
 	 * 免打扰客户查询
@@ -109,7 +111,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			pager.setPageFlag("G");
 		}
 		
-		List data = service.searchBotherAvoidUser(pager, mtlBotherAvoid);
+		List<Map<String,Object>> data = service.searchBotherAvoidUser(pager, mtlBotherAvoid);
 		pager.getTotalPage();
 		pager = pager.pagerFlip();
 		pager.setResult(data);
@@ -134,7 +136,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	public void searchBotherAvoidUserType(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		List userTypeList = mpmBotherAvoidUserTypeService.getAll();
+		List<McdDimCampType> userTypeList = mpmBotherAvoidUserTypeService.queryDimAllData();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");
@@ -187,8 +189,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			mtlBotherAvoid.setProductNo(productNo[i].trim()); 
 			mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); 
 			mtlBotherAvoid.setCreateUserId(getUserId(request,response)); 
-			//TODO 用户名获得以后修改
-			mtlBotherAvoid.setCreateUserName("admin");
+			mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName());
 			
 			list.add(mtlBotherAvoid);
 		}
@@ -344,8 +345,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			mtlBotherAvoid.setProductNo(telNo.get(i)); //
 			mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); //
 			mtlBotherAvoid.setCreateUserId(getUserId(request,response)); //
-			//TODO 用户名获得以后修改
-			mtlBotherAvoid.setCreateUserName("admin"); //
+			mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName()); 
 			
 			list.add(mtlBotherAvoid);
 		}
@@ -402,8 +402,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		mtlBotherAvoid.setProductNo(request.getParameter("productNoBef")); //
 		mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); //
 		mtlBotherAvoid.setCreateUserId(getUserId(request,response)); //
-		//TODO 用户名获得以后修改
-		mtlBotherAvoid.setCreateUserName("admin"); //
+		mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName()); //
 		list.add(mtlBotherAvoid);
 		
 		if("1".equals(updateConfirmFlg)){
@@ -441,7 +440,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	@RequestMapping("searchCampsegType")
 	public void searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	
-		List campsegTypeList = dimCampsegTypeIdNameMapper.getAll();
+		List<McdDimCampType> campsegTypeList = dimCampsegTypeIdNameMapper.queryDimAllData();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");

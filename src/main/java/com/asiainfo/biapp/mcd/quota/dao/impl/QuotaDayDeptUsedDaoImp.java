@@ -8,13 +8,10 @@ import java.util.Map;
 import org.jfree.util.Log;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaDayDeptUsed;
 
 @Repository(value="quotaDayDeptUsedDao")
@@ -40,7 +37,6 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 		return usedNum;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getUsed4DaysInMem(String cityId, String deptId,
 			String fromDate, String toDate) throws DataAccessException {
@@ -50,7 +46,6 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 		try {
 			list = this.getJdbcTemplate().queryForList(sql, parms);
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			Log.error("查询科室范围内数据出错！！！");
 			throw e;
 		}
@@ -61,13 +56,11 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 	@Override
 	public void saveBatchSaveInMem(final List<QuotaDayDeptUsed> list)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
 		String sql="insert into MTL_QUOTA_D_DEPT_USED(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int index) throws SQLException {
-				// TODO Auto-generated method stub
 				ps.setString(1, list.get(index).getCityId());
 				ps.setString(2, list.get(index).getDeptId());
 				ps.setString(3, list.get(index).getDataDate());
@@ -75,7 +68,6 @@ public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
 			}
 			@Override
 			public int getBatchSize() {
-				// TODO Auto-generated method stub
 				return list.size();
 			}
 		});

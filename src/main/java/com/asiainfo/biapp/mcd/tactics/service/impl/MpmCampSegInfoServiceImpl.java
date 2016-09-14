@@ -25,11 +25,13 @@ import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
-import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
@@ -37,7 +39,6 @@ import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
-import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
@@ -50,11 +51,9 @@ import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
-import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
@@ -64,7 +63,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
-import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 
 /**
@@ -81,6 +79,8 @@ import com.asiainfo.biframe.utils.config.Configure;
 @Service("mpmCampSegInfoService")
 public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private static Logger log = LogManager.getLogger();
+    @Autowired 
+    private IUserPrivilege userPrivilege;
     @Resource(name="mpmCampSegInfoDao")
     private IMpmCampSegInfoDao campSegInfoDao;
     @Resource(name="mtlChannelDefDao")
@@ -89,8 +89,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private MtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCustgroupDao")
     private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
-    @Resource(name="mpmUserPrivilegeService")
-    IMpmUserPrivilegeService mpmUserPrivilegeService;
 	@Resource(name = "createCustGroupTab")
 	private CreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
@@ -109,13 +107,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	}
 	public void setMtlChannelDefDao(IMtlChannelDefDao mtlChannelDefDao) {
 		this.mtlChannelDefDao = mtlChannelDefDao;
-	}
-
-	public IMpmUserPrivilegeService getMcdZjPrivilegeService() {
-		return mpmUserPrivilegeService;
-	}
-	public void setMcdZjPrivilegeService(IMpmUserPrivilegeService mcdZjPrivilegeService) {
-		this.mpmUserPrivilegeService = mcdZjPrivilegeService;
 	}
 
 	private Map<String,String> oaMap; //经分与OA帐号对应关系
@@ -169,11 +160,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				
 				List<McdCampChannelList> mtlChannelDefList = segInfo.getMtlChannelDefList();   //渠道执行信息
 			
-			
-				LkgStaff user = (LkgStaff)mpmUserPrivilegeService.getUser(segInfo.getCreateUserId());
+				User user = userPrivilege.queryUserById(segInfo.getCreateUserId());
 				if (user != null) {
-					segInfo.setCityId(user.getCityid());
-					String deptMsg = user.getDepId();
+					segInfo.setCityId(user.getCityId());
+					String deptMsg = user.getDepartmentId();
 					segInfo.setDeptId(Integer.parseInt(deptMsg.split("&&")[0]));
 				}
 				
@@ -194,7 +184,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					String bussinessLableTemplateId = segInfo.getBussinessLableTemplateId();*/
 					//修改时,先删除客户群与策略的关系/保存时机与策略关系
 					mtlCampsegCustgroupDao.deleteByCampsegId(campsegId);
-					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"0");//基础客户群必须保存
+					saveCampsegCustGroupZJ(campsegId, custgroupId, user.getId(),segInfo,"0");//基础客户群必须保存
 					/*if(StringUtils.isNotEmpty(basicEventTemplateId)){  //选择时机
 						saveCampsegCustGroupZJ(campsegId, custgroupId, user.getUserid(),segInfo,"1");//保存基础标签  ARPU
 					}
@@ -243,7 +233,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bchdxxsb"));
+			throw new MpmException("审批失败");
 		}
 		return approveFlag;
 	}
@@ -402,7 +392,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			}
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bchdxxsb"));
+			throw new MpmException(e.getMessage());
 		}
 		return approveFlag;
 	}
@@ -497,7 +487,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			obj = campSegInfoDao.getCampSegInfo(campSegId);
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.qhd") + campSegId+ MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+			throw new MpmException(e.getMessage());
 		}
 		return obj;
 	}
@@ -530,8 +520,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间
 	    	xmlStr.append("<createTime>" + DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
 	    	
-	    	IUser user  = mpmUserPrivilegeService.getUser(mtlCampSeginfo.getCreateUserId());
-	    	String userName =  user != null ? user.getUsername() : "";
+	    	User user  = userPrivilege.queryUserById(mtlCampSeginfo.getCreateUserId());
+	    	String userName =  user != null ? user.getName() : "";
 	    	xmlStr.append("<createUser>" +userName + "</createUser>");//创建人
 	    	//有些帐号经分帐号和OA帐号不同 提交审批需要OA帐号
 	    	String createUserId=mtlCampSeginfo.getCreateUserId();
@@ -632,8 +622,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             }
         } catch (Exception e) {
             log.error("", e);
-            throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.schd") + campSegId
-                    + MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+            throw new MpmException("删除营销活动" + campSegId
+                    + "失败");
         }
     }
     
@@ -732,7 +722,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 if (cepEventFlag) {
                     /*CepMessageReceiverThread thread = CepReceiveThreadCache.getInstance().get(segInfo.getCampsegId());
                     if (thread != null) {*/
-                        CepUtil.finishCepEvent(segInfo.getCepEventId());
+                	//TODO CEP需要重构    
+                	//CepUtil.finishCepEvent(segInfo.getCepEventId());
                     /*  thread.stopThread();
                         CepReceiveThreadCache.getInstance().remove(segInfo.getCampsegId());
                     }*/
@@ -756,7 +747,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,MpmCONST.TASK_STATUS_RUNNING);
 
                     if (cepEventFlag) {
-                        CepUtil.restartCepEvent(segInfo.getCepEventId());
+                        
+                    	//TODO CEP需要重构
+                    	//CepUtil.restartCepEvent(segInfo.getCepEventId());
                     }
                     campSegInfoDao.updateCampStat(rList, status);
                 }
@@ -767,7 +760,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
                 
                 if (cepEventFlag) {
-                    CepUtil.stopCepEvent(segInfo.getCepEventId());
+                	//TODO CEP需要重构
+                    //CepUtil.stopCepEvent(segInfo.getCepEventId());
                 }
                 campSegInfoDao.updateCampStat(rList, type);
 

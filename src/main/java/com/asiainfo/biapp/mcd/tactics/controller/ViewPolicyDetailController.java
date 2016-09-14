@@ -39,7 +39,6 @@ import com.asiainfo.biapp.mcd.custgroup.vo.CustUpdateCycle;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
-import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
@@ -70,8 +69,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     private IMtlCallWsUrlService callwsUrlService;
     @Resource(name = "mtlSmsSendTestTask")
     private IMtlSmsSendTestTask mtlSmsSendTestTask;
-    @Resource(name = "mpmUserPrivilegeService")
-    private IMpmUserPrivilegeService mpmUserPrivilegeService;
     @Resource(name = "dimCampsegTypeService")
     private IDimCampsegTypeService dimCampsegTypeService;
     @Resource(name = "mtlStcPlanService")
@@ -114,7 +111,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             segInfoBean.setEndDate(segInfo.getEndDate());
             
             //根据ID获取用户类
-            User user = this.getUserPrivilege().queryUserById(segInfo.getCreateUserId());//mpmUserPrivilegeService.getUser(segInfo.getCreateUserid());
+            User user = this.getUserPrivilege().queryUserById(segInfo.getCreateUserId());
             String userName = "";
             if(user!=null){
                 userName = user.getName();

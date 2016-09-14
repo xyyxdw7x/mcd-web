@@ -11,7 +11,7 @@ import org.jfree.util.Log;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCreateDuserTableService;

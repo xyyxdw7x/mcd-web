@@ -8,7 +8,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.amqp.CepUtil;
 import com.asiainfo.biapp.mcd.bull.dao.BullMonitorDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.bull.dao.SendType4CitysDao;
@@ -138,9 +137,9 @@ public class BullMonitorServiceImp implements BullMonitorService {
 				if(StringUtils.isNotEmpty(cepEventId)){
 					try {
 						if(targetStaus == 51){ //开始
-							CepUtil.restartCepEvent(cepEventId);
+							//CepUtil.restartCepEvent(cepEventId);
 						}else if(targetStaus == 59){//暂停
-							CepUtil.stopCepEvent(cepEventId);
+							//CepUtil.stopCepEvent(cepEventId);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

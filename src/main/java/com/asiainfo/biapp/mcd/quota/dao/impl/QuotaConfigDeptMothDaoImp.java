@@ -33,7 +33,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	@Override
 	public void updateDepMonthQuotaInMem(QuotaConfigDeptMoth depMonthQuota,
 			int newQuota) throws DataAccessException {
-		// TODO Auto-generated method stub
 		String sql = "update " + TABLE + "  set day_num=" + newQuota
 				+ " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { depMonthQuota.getCityId(), depMonthQuota.getDeptId(),
@@ -45,7 +44,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	@Override
 	public QuotaConfigDeptMoth getByKeysInMem(QuotaConfigDeptMoth depDayQuota)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
 		QuotaConfigDeptMoth renObj = null;
 		String sql = "select * from " + TABLE
 				+ " where city_id=? and dept_id=? and data_date=?";
@@ -53,7 +51,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 		try {
 			renObj = (QuotaConfigDeptMoth) this.getJdbcTemplate()
-					.queryForObject(sql, para, new RowMapper() {
+					.queryForObject(sql, para, new RowMapper<QuotaConfigDeptMoth>() {
 						@Override
 						public QuotaConfigDeptMoth mapRow(ResultSet rs,int rowNum) throws SQLException {
 							QuotaConfigDeptMoth quotaDeptMonth = new QuotaConfigDeptMoth();
@@ -66,7 +64,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("根据主键查询数据出错");
 			throw e;
 
@@ -77,13 +74,12 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	@Override
 	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,
 			String dataDate) throws DataAccessException {
-		// TODO Auto-generated method stub
 		QuotaConfigDeptMoth renObj = null;
 		String sql = "select * from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { cityID, deptId, dataDate };
 		try {
 			renObj = (QuotaConfigDeptMoth)this.getJdbcTemplate()
-					.queryForObject(sql, para, new RowMapper() {
+					.queryForObject(sql, para, new RowMapper<QuotaConfigDeptMoth>() {
 						@Override
 						public QuotaConfigDeptMoth mapRow(ResultSet rs,int rowNum) throws SQLException {
 							QuotaConfigDeptMoth quotaDeptMonth = new QuotaConfigDeptMoth();
@@ -96,18 +92,15 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("根据主键查询部门月配额出错");
 			throw e;
 		}
 		return renObj;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getDeptsByDateInMem(String cityId,
 			String dataDate) throws DataAccessException {
-		// TODO Auto-generated method stub
 
 		List<Map<String, Object>> list = null;
 		String sql = "select * from " + TABLE + " where CITY_ID=? and DATA_DATE=? order by DEPT_ID";
@@ -120,15 +113,13 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	@Override
 	public int getTotal4CityDeptMonthInMem(String cityId, String month)
 			throws DataAccessException {
-		// TODO Auto-generated method stub
 		int total = 0;
 		String sql = "select MONTH_QUOTA_NUM from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
-		String[] parms = { cityId, month };
+		Object[] parms = { cityId, month };
 
-		@SuppressWarnings({ "rawtypes" })
-		List<Map> list = this.getJdbcTemplate().queryForList(sql, parms,Map.class);
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql, parms);
 		
-		for (Map map : list) {
+		for (Map<String,Object> map : list) {
 			int tempQuota = Integer.parseInt(map.get("MONTH_QUOTA_NUM").toString());
 			total += tempQuota;
 		}
@@ -145,7 +136,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setInt(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
@@ -155,12 +145,10 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			// TODO: handle exception
 			log.error("批量保存数据异常");
 			throw e;
 		}
@@ -169,7 +157,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 	@Override
 	public void saveBatchSaveOrUpdateInMem(final List<DeptsQuotaStatistics> list) {
-		// TODO Auto-generated method stub
 
 		String delSql = "delete from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
 
@@ -180,19 +167,16 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setString(1, list.get(index).getCityId());
 							ps.setString(2, list.get(index).getDataDate());
 						}
 
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("批量删除时报错....");
 			throw e;
 		}
@@ -203,7 +187,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setLong(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
@@ -213,12 +196,10 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("批量保存时报错....");
 			throw e;
 		}
@@ -227,7 +208,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 	@Override
 	public int getQuotaByKeysInMem(String cityID, String deptId, String dataDate)throws DataAccessException {
-		// TODO Auto-generated method stub
 		int num = 0;
 		String sql = "select MONTH_QUOTA_NUM from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { cityID, deptId, dataDate };
@@ -235,7 +215,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 			num = this.getJdbcTemplate().queryForObject(  
                     sql, new Object[] { para }, Integer.class);  
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("未查询到指定的科室，将返回0");
 			return 0;
 		}
@@ -252,7 +231,6 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setInt(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
@@ -262,19 +240,16 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("批量保存时报错....");
 			throw e;
 		}
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getQuotas4DeptsInMem(String cityId, String date) throws Exception {
 		String sql = "select * from mtl_user_dept t right join mcd_quota_config_dept t1 on t.city_id = t1.city_id and t.dept_id = t1.dept_id where t1.city_id = ? and t1.data_date = ? order by t1.dept_id";
