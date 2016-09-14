@@ -5,7 +5,7 @@
 	<title>选政策</title>
     <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
     <!--保存弹窗 -->
 	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/jquery.ui.dialog-own.css" />
@@ -14,19 +14,25 @@
 	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
 	    <script type="text/javascript">
     		$(function(){
-    			$(".ui-share-dlg").dialog({
+    			$(".save-dialog").dialog({
     				width:488,
     				height:300,
     				resizable: false,
 			    modal: true,
 			    title:"保存",
 			    buttons: [{
-			        "class":"ui-not-login-btn",
-			        "text":"确定",
+			         "class":"dialog-btn dialog-btn-blue",
+			        "text":"保存",
 			        "click": function() {
-			            $( this ).dialog( "close" );
-			        }
-			    }]
+			            	$( this ).dialog( "close" );
+			        	}
+			    	},{
+			        "class":"dialog-btn dialog-btn-orange",
+			        "text":"提交审批",
+			        "click": function() {
+			            	$( this ).dialog( "close" );
+			        	}
+			    	}]
     			});
     		});	 
     </script>
@@ -35,16 +41,16 @@
 </head>
 <body>
 
-<!-- 分享弹框 -->
-<div class="ui-share-dlg container-fluid">
-	<div class="row">
-		<div class="col-md-6 ui-share-box ui-share-line">
-			<div class="ui-share-header">
-				<span>选择用户</span>
-				<div>
-					<a href="javascript:void(0);" class="ui-mytable-btn btn">定向选择</a>
-				</div>
-			</div>
+<!-- 新建策略-保存弹窗 -->
+<div class="save-dialog-box">
+	<div class="save-dialog">
+		<!-- 内容区 -->
+		<div class="dialog-con-wrp">
 			
+		</div>
+	</div>
+	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div>
+</div>
+		
 </body>
 </html>
