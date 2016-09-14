@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.jdbc.DimIdNameMapper;
 import com.asiainfo.biapp.mcd.avoid.dao.IDimBotherAvoidUserTypeDao;
-import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 
 /*
  * Created on 2016-8-2 15:42:05

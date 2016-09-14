@@ -35,12 +35,11 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtlBotherAvoid 免打扰客户的查询条件
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
+	public List<Map<String,Object>> searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
 		
 		StringBuffer buffer = new StringBuffer();
 
-		List plist = new ArrayList();
+		List<Object> plist = new ArrayList<Object>();
 
 		buffer.append("SELECT A.AVOID_BOTHER_TYPE, A.AVOID_CUST_TYPE, A.PRODUCT_NO, to_char(A.ENTER_TIME, 'yyyy.mm.dd') as ENTER_TIME, A.USER_TYPE_ID, A.CREATE_USER_ID,")
 		 .append(" A.CREATE_USER_NAME, B.NAME AS USER_TYPE_NAME,C.CAMPSEG_TYPE_NAME,D.CHANNEL_NAME")
@@ -83,8 +82,8 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		log.info("执行sql="+buffer);
 		
 		String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
-		List list = this.getJdbcTemplate().queryForList(sqlExt.toString(), plist.toArray());
-		List listSize = this.getJdbcTemplate().queryForList(buffer.toString(), plist.toArray());
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sqlExt.toString(), plist.toArray());
+		List<Map<String,Object>> listSize = this.getJdbcTemplate().queryForList(buffer.toString(), plist.toArray());
 		pager.setTotalSize(listSize.size());  // 总记录数
 		
 		return list;
@@ -101,13 +100,12 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 				.append("(AVOID_BOTHER_TYPE,AVOID_CUST_TYPE,PRODUCT_NO,ENTER_TIME,USER_TYPE_ID,CREATE_USER_ID,CREATE_USER_NAME)")
 				.append(" VALUES(?,?,?,SYSTIMESTAMP,?,?,?)");
 		long startTime=new Date().getTime();
-		final List Locallist = list;
+		final List<McdBotherAvoid> Locallist = list;
 		
-		this.getJdbcTemplate().execute(insertSql.toString(), new PreparedStatementCallback() {
+		this.getJdbcTemplate().execute(insertSql.toString(), new PreparedStatementCallback<Object>() {
 			@Override
 			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				Iterator it = Locallist.iterator();
-				int i = 0;
+				Iterator<McdBotherAvoid> it = Locallist.iterator();
 				while (it.hasNext()) {
 					McdBotherAvoid mtl = (McdBotherAvoid) it.next();
 			
@@ -119,7 +117,6 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 					ps.setString(6,mtl.getCreateUserName());
 
 					ps.addBatch();
-					i++;
 				}
 				int[] results = ps.executeBatch();
 				log.info("免打扰客户新增结果:"+results.length);
@@ -216,20 +213,18 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		.append("AND PRODUCT_NO = ? ");
 		
 		long startTime=new Date().getTime();
-		final List Locallist = list;
+		final List<McdBotherAvoid> Locallist = list;
 		
-		this.getJdbcTemplate().execute(deleteSql.toString(), new PreparedStatementCallback() {
+		this.getJdbcTemplate().execute(deleteSql.toString(), new PreparedStatementCallback<Object>() {
 			@Override
 			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				Iterator it = Locallist.iterator();
-				int i = 0;
+				Iterator<McdBotherAvoid> it = Locallist.iterator();
 				while (it.hasNext()) {
 					McdBotherAvoid mtl = (McdBotherAvoid) it.next();
 					ps.setString(1,mtl.getAvoidBotherType());
 					ps.setInt(2,mtl.getAvoidCustType());
 					ps.setString(3,mtl.getProductNo());
 					ps.addBatch();
-					i++;
 				}
 				int[] results = ps.executeBatch();
 				log.info("批量免打扰客户刪除结果:"+results.length);
@@ -250,7 +245,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 			buffer.append(" SELECT CAMPSEG_TYPE_ID,CHANNEL_ID,AVOID_BOTHER_FLAG,CONTACT_CONTROL_FLAG,PARAM_DAYS,PARAM_NUM FROM mcd_bother_contact_config WHERE CAMPSEG_TYPE_ID = ? AND CHANNEL_ID = ? AND CAMPSEG_CITY_TYPE=?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] { campsegTypeId,channelId,campsegCityType });
 			if(CollectionUtils.isNotEmpty(list)){
-				for (Map map : list) {
+				for (Map<String, Object> map : list) {
 					mtlBotherContactConfig.setChannelId((String) map.get("CHANNEL_ID"));
 					mtlBotherContactConfig.setCampsegTypeId(Integer.parseInt(String.valueOf(map.get("CAMPSEG_TYPE_ID"))));
 					mtlBotherContactConfig.setAvoidBotherFlag(Integer.parseInt(String.valueOf(map.get("AVOID_BOTHER_FLAG"))));
@@ -262,7 +257,6 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		} catch (Exception e) {
 			log.error("",e);
 		}
-		StringBuffer buffer = new StringBuffer();
 		return mtlBotherContactConfig;
 	}
 }

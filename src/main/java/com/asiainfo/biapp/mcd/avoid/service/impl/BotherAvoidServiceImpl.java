@@ -6,11 +6,10 @@ import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -25,15 +24,14 @@ import javax.annotation.Resource;
  */
 @Service("botherAvoidService")
 public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
-	private static Logger log = LogManager.getLogger();
 	
 	@Resource(name = "botherAvoidDao")
 	private IMcdMtlBotherAvoidDao mcdMtlBotherAvoidDao;
 	
 	@Override
-	public List searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
+	public List<Map<String,Object>> searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
 		
-		List data = null;
+		List<Map<String,Object>> data = null;
 		try {
 			data = mcdMtlBotherAvoidDao.searchBotherAvoidUser(pager, mtlBotherAvoid);
 

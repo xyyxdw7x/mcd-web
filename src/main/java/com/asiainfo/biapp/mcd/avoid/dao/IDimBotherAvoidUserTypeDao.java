@@ -2,6 +2,8 @@ package com.asiainfo.biapp.mcd.avoid.dao;
 
 import java.util.List;
 
+import com.asiainfo.biapp.mcd.avoid.vo.DimBotherAvoidUserType;
+
 /*
  * Created on 2016-8-2 15:24:25
  * 
@@ -14,6 +16,6 @@ import java.util.List;
  */
 public interface IDimBotherAvoidUserTypeDao {
 
-	public List getAllUserType() throws Exception;
+	public List<DimBotherAvoidUserType> getAllUserType() throws Exception;
 
 }

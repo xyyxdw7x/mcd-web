@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.avoid.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -110,7 +111,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			pager.setPageFlag("G");
 		}
 		
-		List data = service.searchBotherAvoidUser(pager, mtlBotherAvoid);
+		List<Map<String,Object>> data = service.searchBotherAvoidUser(pager, mtlBotherAvoid);
 		pager.getTotalPage();
 		pager = pager.pagerFlip();
 		pager.setResult(data);
@@ -188,8 +189,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			mtlBotherAvoid.setProductNo(productNo[i].trim()); 
 			mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); 
 			mtlBotherAvoid.setCreateUserId(getUserId(request,response)); 
-			//TODO 用户名获得以后修改
-			mtlBotherAvoid.setCreateUserName("admin");
+			mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName());
 			
 			list.add(mtlBotherAvoid);
 		}
@@ -345,8 +345,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			mtlBotherAvoid.setProductNo(telNo.get(i)); //
 			mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); //
 			mtlBotherAvoid.setCreateUserId(getUserId(request,response)); //
-			//TODO 用户名获得以后修改
-			mtlBotherAvoid.setCreateUserName("admin"); //
+			mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName()); 
 			
 			list.add(mtlBotherAvoid);
 		}
@@ -403,8 +402,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		mtlBotherAvoid.setProductNo(request.getParameter("productNoBef")); //
 		mtlBotherAvoid.setUserTypeId(Short.parseShort(request.getParameter("userTypeId"))); //
 		mtlBotherAvoid.setCreateUserId(getUserId(request,response)); //
-		//TODO 用户名获得以后修改
-		mtlBotherAvoid.setCreateUserName("admin"); //
+		mtlBotherAvoid.setCreateUserName(this.getUser(request, response).getName()); //
 		list.add(mtlBotherAvoid);
 		
 		if("1".equals(updateConfirmFlg)){

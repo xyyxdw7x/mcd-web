@@ -1,7 +1,5 @@
 package com.asiainfo.biapp.mcd.avoid.vo;
 
-import java.util.Date;
-
 /**
  * 
  * Title: 
