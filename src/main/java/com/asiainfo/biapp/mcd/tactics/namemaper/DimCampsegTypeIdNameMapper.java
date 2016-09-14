@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.tactics.nameMaper;
+package com.asiainfo.biapp.mcd.tactics.namemaper;
 
 import java.util.List;
 

@@ -35,7 +35,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
 		Object[] argdbs = null;
 		String sql = "select * from mcd_custgroup_def where custom_group_id = ?";
 		Object[] args = new Object[]{custInfoBean.getCustomGroupId()};
-		List mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+		List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
 		if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
 			sqldb = "update mcd_custgroup_def set custom_group_id= ?,custom_group_name= ?,custom_group_desc= ?,create_user_id= ?,create_time= ?,rule_desc= ? " +
 		",custom_source_id = ?,custom_num= ?,custom_status_id= ?,effective_time= ?,fail_time= ?,update_cycle = ?,CREATE_USER_NAME=? ,IS_PUSH_OTHER =? where custom_group_id = ?";
@@ -61,9 +61,9 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
 		String sql = "select list_table_name from mcd_custgroup_tab_list where custom_group_id = ? and data_date = ?";
 		Object[] args = new Object[]{customGroupId,customGroupDataDate};
 //		List mtlGroupInfoList = jt.queryForList(sql, args);
-		List mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+		List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
 		if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
-			Map map = (Map) mtlGroupInfoList.get(0);
+			Map<String, Object> map = (Map<String, Object>) mtlGroupInfoList.get(0);
 			String tableName  = map.get("list_table_name").toString();
 			String dropsql = "drop  table "+ tableName;
 			this.getJdbcTemplate().execute(dropsql);
@@ -89,7 +89,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
 		Object[] argdbs = null;
 		String sql = "select * from mcd_custgroup_attr_list where custom_group_id = ? and list_table_name = ? and attr_col = ?";
 		Object[] args = new Object[]{customGroupId,mtlCuserTableName,columnName};
-		List mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+		List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
 		if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
 			sqldb = "update mcd_custgroup_attr_list set attr_col=?,attr_col_name=?,attr_col_type=?,attr_col_length=? where  custom_group_id = ? and list_table_name = ? and attr_col = ?";
 			argdbs = new Object[]{columnName,columnCnName,columnDataType,columnLength,customGroupId,mtlCuserTableName,columnName};
@@ -102,7 +102,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
 
 	}
 	@Override
-	public List getSqlLoderISyncDataCfg(String customGroupId) {
+	public List<Map<String,Object>> getSqlLoderISyncDataCfg(String customGroupId) {
 		String sql = "select * From i_sync_data_cfg where POLICY_ID = ?";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{customGroupId});
 	}
@@ -112,7 +112,7 @@ public class MtlCustGroupJdbcDaoImpl  extends JdbcDaoBase implements MtlCustGrou
      * @return
      */
 	@Override
-	public List getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
+	public List<Map<String,Object>> getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
 		String sql = "select run_end_time From i_sync_data_cfg where EXEC_SQL = ?";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{mtlCuserTableName});
 	}

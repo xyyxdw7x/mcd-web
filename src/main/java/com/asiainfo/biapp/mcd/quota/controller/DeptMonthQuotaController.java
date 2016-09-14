@@ -77,14 +77,11 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         try {
             deptMonConfStati = quotaConfigDeptMothService.getDeptsQuotaStatistics(cityid, dataDate);
             cityMonthConfig = quotaConfigDeptMothService.getCityMonthQuota(cityid);
-            /*int deptMonthConfigTotal = this.getQuotaConfigDeptMothService().getTotal4CityDeptMonth(cityid, dataDate);
-            allowances = cityMonthConfig - deptMonthConfigTotal;*/
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             log.error("查询月配额或者月使用额出错");
             e.printStackTrace();
         }
-        Map map= new HashMap();
+        Map<String, Object> map= new HashMap<String, Object>();
         //地市整体月配额
         if("999".equals(cityid)){
             //request.setAttribute("allowances", "无限制");
@@ -153,7 +150,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         
         renFlag=quotaConfigDeptMothService.saveOrUpdate(list, cityid,dataDate);
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("result", renFlag);
 
         dataJson.put("status", "200");

@@ -19,8 +19,8 @@ public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAt
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT  * FROM mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?")
 				   .append(" and list_table_name=(select max(list_table_name) from mcd_custgroup_attr_list WHERE CUSTOM_GROUP_ID=?)");
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new String[]{custGroupId,custGroupId});
-			for (Map map : list) {
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new Object[]{custGroupId,custGroupId});
+			for (Map<String,Object> map : list) {
 				McdCustgroupAttrList mtlGroupAttrRel = new McdCustgroupAttrList();
 				mtlGroupAttrRel.setAttrCol((String) map.get("ATTR_COL"));
 				mtlGroupAttrRel.setAttrColName((String) map.get("ATTR_COL_NAME"));
@@ -44,7 +44,7 @@ public class CustGroupAttrRelDaoImpl extends JdbcDaoBase  implements CustGroupAt
 		StringBuffer sbuffer = new StringBuffer();
 		sbuffer.append("select * from dim_function_map_zj where function_id=? ");
 		list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[]{functionId});
-		for (Map map : list) {
+		for (Map<String,Object> map : list) {
 			RuleTimeTermLable temp = new RuleTimeTermLable();
 			temp.setFunctionId((String) map.get("function_id"));
 			temp.setFunctionNameDesc((String) map.get("function_name"));

@@ -37,7 +37,6 @@ import net.sf.json.JSONObject;
 @RequestMapping("/dayQuota")
 public class DeptDayQuotaController  extends BaseMultiActionController {
 
-    //private static final Logger log = LogManager.getLogger();
     private static final Logger log = LogManager.getLogger(DeptDayQuotaController.class);
 
     @Resource(name = "quotaConfigCityDayService")
@@ -223,7 +222,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         try {
             org.json.JSONObject jsonObject = new org.json.JSONObject(day); 
             
-            for (Iterator<Object> iter = jsonObject.keys(); iter.hasNext();) { //先遍历整个 people 对象  
+            for (Iterator<?> iter = jsonObject.keys(); iter.hasNext();) { //先遍历整个 people 对象  
                 String key = (String)iter.next(); 
                 String value = jsonObject.getString(key);
                 org.json.JSONObject jsonObjectValue = new org.json.JSONObject(value);  

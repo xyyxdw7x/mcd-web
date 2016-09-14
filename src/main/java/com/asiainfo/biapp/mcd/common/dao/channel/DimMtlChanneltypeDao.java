@@ -1,7 +1,6 @@
 package com.asiainfo.biapp.mcd.common.dao.channel;
 
 import java.util.List;
-import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
@@ -64,7 +63,7 @@ public interface DimMtlChanneltypeDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List getAllChannelTypeForSys(String SysId) throws MpmException;
+	public List<DimMtlChanneltype> getAllChannelTypeForSys(String SysId) throws MpmException;
 	/**
 	 * 获取所有的营销类型列表
 	 * @return

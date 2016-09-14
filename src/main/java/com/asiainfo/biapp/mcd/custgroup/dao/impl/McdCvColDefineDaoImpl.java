@@ -37,7 +37,7 @@ public class McdCvColDefineDaoImpl extends JdbcDaoBase  implements McdCvColDefin
 			}else {
 				list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { pAttrClassId });
 			}
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				McdCvColDefine mcdCvColDefine = new McdCvColDefine();
 				mcdCvColDefine.setAttrId((String) map.get("ATTR_ID"));
 				mcdCvColDefine.setAttrAlias((String) map.get("ATTR_ALIAS"));

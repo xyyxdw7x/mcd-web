@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -17,13 +18,13 @@ public interface IMcdCreateDuserTableService {
 	 * 定时任务调度，查询出状态是xxxxx的策略
 	 * @return
 	 */
-	public List getAll();
+	public List<Map<String, Object>> getAll();
 	
 	/**
 	 * 创建D表，请客户群信息
 	 * @param list：满足条件的策略
 	 */
-	public void doCreateDuserTable(List list);
+	public void doCreateDuserTable(List<Map<String,Object>> list);
 }
 
 
