@@ -16,7 +16,6 @@ public class Configure {
 	public static final String URL_PATH = "URL_PATH";
 	private static Logger log = LogManager.getLogger(Configure.class);
 	private static final Configure CONFIGURE = new Configure();
-	private static final String DEFAULT_CONFIG_TYPE = "ASIAINFO_PROPERTIES";
 	private static Map modifiedTimeMap = new HashMap();
 	private static Map fileNameMap = new HashMap();
 	private static Map absPathMap = new HashMap();

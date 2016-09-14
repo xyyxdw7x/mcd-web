@@ -59,7 +59,7 @@ public class BullMonitor {
 		return campsegNo;
 	}
 	public void setCampsegNo(String campsegNo) {
-		campsegNo = campsegNo;
+		this.campsegNo = campsegNo;
 	}
 	public int getSendNum() {
 		return sendNum;

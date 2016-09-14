@@ -30,7 +30,6 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
 
 	// 查询短信渠道(901)所有没有完成的列表（50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停。
 	// 待执行无法进行任务操作；正在执行可以变暂停；暂停可以变正在执行。）
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getBullMonitorList(String cityId)throws DataAccessException {
 		List<Map<String, Object>> list = null;
