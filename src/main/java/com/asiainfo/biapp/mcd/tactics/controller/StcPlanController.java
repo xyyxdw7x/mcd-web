@@ -64,10 +64,10 @@ public class StcPlanController extends BaseMultiActionController {
 				for (int i = 0; i < list.size(); i++) {
 					// 当不是温州的时候，不显示微信温州渠道
 					if (!cityId.equals("577")) {
-						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
+						String channelIdTemp = String.valueOf(list.get(i).getChannelId());
 						if (!"912".equals(channelIdTemp)) {
 						    McdDimChannel dimMtlChannel = new McdDimChannel();
-						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChanneltypeId()));
+						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
 						    dimMtlChannel.setTypeName(list.get(i).getChannelName());
 							listTemp.add(dimMtlChannel);
 						}

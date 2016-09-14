@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,10 @@ import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
+import com.asiainfo.biapp.mcd.common.service.channel.McdDimChannelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
-import com.asiainfo.biapp.mcd.common.service.plan.McdDimPlanTypeService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -59,7 +60,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
-import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 @RequestMapping("/tactics/tacticsManage")
@@ -88,9 +88,8 @@ public class TacticsManageController extends BaseMultiActionController {
     private IMtlChannelDefService mtlChannelDefService;//策略和渠道关系表
     @Resource(name="botherAvoidService")
     private IMcdMtlBotherAvoidService botherAvoidService;
-    
-    @Resource(name="mcdDimPlanTypeService")
-    private McdDimPlanTypeService mcdDimPlanTypeService;
+    @Resource(name="mcdDimChannelService")
+    private McdDimChannelService mcdDimChannelService;
     
     
     private static Logger log = LogManager.getLogger();
@@ -885,7 +884,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			McdSysInterfaceDef createCode = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE);
 			McdSysInterfaceDef createCodeCallBack = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE_CALLBACK);
 			
-			List<McdDimPlanType> typeList = mpmCommonService.initDimPlanType();
+			List<McdDimPlanType> typeList = mtlStcPlanService.initDimPlanType();
 			if(!CollectionUtils.isEmpty(typeList)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(typeList));
@@ -976,7 +975,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				for(int i = 0;i<list.size();i++){
 					//当不是温州的时候，不显示微信温州渠道
 					if(!cityId.equals("577")){
-						String channelIdTemp = String.valueOf(list.get(i).getChanneltypeId());
+						String channelIdTemp = String.valueOf(list.get(i).getChannelId());
 						if(!"912".equals(channelIdTemp)){
 						    McdDimChannel dimMtlChannel = new McdDimChannel();
 						    dimMtlChannel.setTypeId(String.valueOf(list.get(i).getChannelId()));
@@ -1732,11 +1731,26 @@ public class TacticsManageController extends BaseMultiActionController {
 		return custCnt;
 	}
 	
+	//----------------------------------------------新代码------------------------------------------------------------
+	/**
+	 * 新建产品界面初始化产品分类界面
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/queryPlanTypes")
 	@ResponseBody
-	public List queryPlanTypes(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		List all = mcdDimPlanTypeService.getTreeList();
-		return all;
+	public JSONObject queryPlanTypes(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		JSONObject dataJson = new JSONObject();
+		List<McdDimPlanType> planTypes = mtlStcPlanService.initDimPlanType();
+		List<McdDimChannel> channels = mcdDimChannelService.getAllChannels();
+		dataJson.put("planTypes", planTypes);
+		dataJson.put("channels", channels);
+		return dataJson;
 	}
+	
+
+	
 	
 }

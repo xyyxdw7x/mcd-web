@@ -73,14 +73,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	public void setDimMtlChanneltypeDao(DimMtlChanneltypeDao dimMtlChanneltypeDao) {
 		this.dimMtlChanneltypeDao = dimMtlChanneltypeDao;
 	}
-	@Override
-	public List<McdDimPlanType> initDimPlanType() {
-		try {
-			return mtlStcPlanDao.initDimPlanType();
-		} catch (Exception e) {
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cshzclbsb"));
-		}
-	}
+
 	@Override
 	public List<DimPlanSrvType> getGradeList() throws MpmException {
 		return dimMtlChanneltypeDao.getGradeList();
