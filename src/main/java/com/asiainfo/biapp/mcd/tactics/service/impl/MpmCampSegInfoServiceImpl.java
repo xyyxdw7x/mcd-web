@@ -39,7 +39,6 @@ import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
-import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
@@ -234,7 +233,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bchdxxsb"));
+			throw new MpmException("审批失败");
 		}
 		return approveFlag;
 	}
@@ -393,7 +392,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			}
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.bchdxxsb"));
+			throw new MpmException(e.getMessage());
 		}
 		return approveFlag;
 	}
@@ -488,7 +487,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			obj = campSegInfoDao.getCampSegInfo(campSegId);
 		} catch (Exception e) {
 			log.error("", e);
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.qhd") + campSegId+ MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+			throw new MpmException(e.getMessage());
 		}
 		return obj;
 	}
@@ -623,8 +622,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             }
         } catch (Exception e) {
             log.error("", e);
-            throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.schd") + campSegId
-                    + MpmLocaleUtil.getMessage("mcd.java.xxsb"));
+            throw new MpmException("删除营销活动" + campSegId
+                    + "失败");
         }
     }
     

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
-import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
@@ -78,7 +77,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		try {
 			return mtlStcPlanDao.initDimPlanType();
 		} catch (Exception e) {
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cshzclbsb"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 	@Override
@@ -89,7 +88,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		try {
 			return dimMtlChanneltypeDao.getMtlChannelByCondition(isDoubleSelect);
 		} catch (Exception e) {
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cxqdlxdysb"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 	@Override

@@ -341,7 +341,6 @@ public class CampSegSearchController extends BaseMultiActionController {
             status = 201;
             msg = "删除策略信息失败";
         } finally {
-            String jsonOut = null;
             JSONObject dataJson = new JSONObject();
             if (status != 200) {
                 dataJson.put("status", status);

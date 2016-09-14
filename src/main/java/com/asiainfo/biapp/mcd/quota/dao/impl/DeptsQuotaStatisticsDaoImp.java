@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -18,9 +14,7 @@ import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 @Repository(value="deptsQuotaStatisticsDao")
 public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		DeptsQuotaStatisticsDao {
-	private static final Logger log = LogManager.getLogger();
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getStatisticsInMem(String cityId, String month)
 			throws DataAccessException {
@@ -47,7 +41,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getCurrentMonthInMem(String cityId)
 			throws DataAccessException {
@@ -76,7 +69,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getCurrentDayInMem(String cityId)
 			throws DataAccessException {
@@ -103,7 +95,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> getCityStatisInMem(String cityId)throws DataAccessException {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -126,7 +117,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getConfigedCityUsedInMem(String month)
 			throws DataAccessException {
 		List<Map<String, Object>> list = null;
@@ -138,7 +128,7 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 //		String sql = "select cc.city_id,cu.used_num,cu.data_date from mcd_quota_config_city cc "
 //				+ "LEFT OUTER JOIN (select city_id,data_date,used_num from mcd_quota_used_city where data_date=?)cu "
 //				+ "on cc.city_id=cu.city_id";
-		String[] parm = { month };
+		Object[] parm = { month };
 
 		try {
 			list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
@@ -149,7 +139,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getDeptQuotaStaticInMem(String month) {
 		List<Map<String, Object>> list = null;
 		// MTL_USER_DEPT为地市科室表（哪些地市下有哪些科室。。。所有科室都将记录在该表中）
@@ -169,7 +158,6 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
 		return list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> getConfigedDayInMem(String date) {
 		List<Map<String, Object>> list = null;

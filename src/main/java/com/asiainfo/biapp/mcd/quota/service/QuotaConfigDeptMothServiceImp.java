@@ -261,7 +261,6 @@ public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService
 			try {
 				QuotaUtils.map2Bean(map, tempObj);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			renObj.add(tempObj);
@@ -280,7 +279,6 @@ public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService
 			try {
 				QuotaUtils.map2Bean(map, tempObj);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			renObj.add(tempObj);
@@ -308,7 +306,6 @@ public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService
 
 	@Override
 	public int getNum4Dept(String cityId, String deptId, String month) {
-		// TODO Auto-generated method stub
 		return quotaConfigDeptMothDao.getQuotaByKeysInMem(cityId, deptId, month);
 	}
 
