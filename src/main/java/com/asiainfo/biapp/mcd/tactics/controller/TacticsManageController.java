@@ -1749,8 +1749,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		dataJson.put("channels", channels);
 		return dataJson;
 	}
-	
 
-	
 	
 }

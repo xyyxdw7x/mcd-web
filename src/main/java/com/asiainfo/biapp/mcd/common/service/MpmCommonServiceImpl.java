@@ -18,14 +18,13 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
-import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
+import com.asiainfo.biapp.mcd.util.MpmLocaleUtil;
 import com.asiainfo.biframe.utils.config.Configure;
 
 /**

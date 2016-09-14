@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
-import com.asiainfo.biapp.mcd.common.util.MpmLocaleUtil;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
@@ -39,7 +38,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		try {
 			return mtlStcPlanDao.initDimPlanType();
 		} catch (Exception e) {
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cshzclbsb"));
+			throw new MpmException("mcd.java.cshzclbsb");
 		}
 	}
     
