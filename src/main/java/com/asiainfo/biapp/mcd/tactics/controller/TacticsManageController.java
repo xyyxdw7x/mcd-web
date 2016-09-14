@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -29,11 +30,12 @@ import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.service.plan.McdDimPlanTypeService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
@@ -49,13 +51,13 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
-import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
-import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 import com.asiainfo.biframe.utils.string.StringUtil;
 
@@ -86,6 +88,10 @@ public class TacticsManageController extends BaseMultiActionController {
     private IMtlChannelDefService mtlChannelDefService;//策略和渠道关系表
     @Resource(name="botherAvoidService")
     private IMcdMtlBotherAvoidService botherAvoidService;
+    
+    @Resource(name="mcdDimPlanTypeService")
+    private McdDimPlanTypeService mcdDimPlanTypeService;
+    
     
     private static Logger log = LogManager.getLogger();
     
@@ -1725,4 +1731,12 @@ public class TacticsManageController extends BaseMultiActionController {
 		
 		return custCnt;
 	}
+	
+	@RequestMapping("/test")
+	@ResponseBody
+	public List test(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		List all = mcdDimPlanTypeService.getTreeList();
+		return all;
+	}
+	
 }

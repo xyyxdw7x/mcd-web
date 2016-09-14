@@ -1,6 +1,9 @@
 package com.asiainfo.biapp.mcd.common.vo.plan;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 /**
  * McdDimPlanType entity. @author MyEclipse Persistence Tools
@@ -29,8 +32,21 @@ public class McdDimPlanType implements java.io.Serializable {
 	
 	@Column(name="SORT_NUM")
 	private String sortNum;
+	@Transient
+	private List<McdDimPlanType> subTypes;
 
-	// Constructors
+
+	public List<McdDimPlanType> getSubTypes() {
+		return subTypes;
+	}
+
+	public void setSubTypes(List<McdDimPlanType> subTypes) {
+		this.subTypes = subTypes;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public String getSortNum() {
 		return sortNum;
