@@ -49,7 +49,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biframe.utils.date.DateUtil;
 import com.asiainfo.biframe.utils.string.DES;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -121,12 +121,12 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             }
             //业务类型
             String campDrvName ="";
-            if(StringUtil.isNotEmpty(segInfo.getPlanId()) && segInfo.getPlanId().indexOf(",") != -1){
+            if(StringUtils.isNotEmpty(segInfo.getPlanId()) && segInfo.getPlanId().indexOf(",") != -1){
                 String planArr[] = segInfo.getPlanId().split(",");
                 for(int i = 0;i<planArr.length;i++){
                     McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(planArr[i]);
                     if(stcPlan != null){
-                        if(StringUtil.isNotEmpty(stcPlan.getPlanType())){
+                        if(StringUtils.isNotEmpty(stcPlan.getPlanType())){
                             McdDimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
                             if(null != dimPlanType){
                                 campDrvName += dimPlanType.getTypeName()+",";
@@ -138,7 +138,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             }else{
                 McdPlanDef stcPlan = mpmCampSegInfoService.getMtlStcPlanByPlanId(segInfo.getPlanId());
                 if(stcPlan != null){
-                    if(StringUtil.isNotEmpty(stcPlan.getPlanType())){
+                    if(StringUtils.isNotEmpty(stcPlan.getPlanType())){
                         McdDimPlanType dimPlanType = mtlStcPlanService.getPlanTypeById(stcPlan.getPlanType());
                         if(null != dimPlanType){
                             campDrvName = dimPlanType.getTypeName();
@@ -357,7 +357,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
 //           }
 //           custgroup_number =  tmap.get("custgroup_number") == null ? null :(BigDecimal) tmap.get("custgroup_number");
          }
-         if(StringUtil.isNotEmpty(resultStr)){
+         if(StringUtils.isNotEmpty(resultStr)){
              customDataJSON.put("show_sql", resultStr.substring(0, resultStr.length()-1));
          }else{
              customDataJSON.put("show_sql", "");
@@ -500,7 +500,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             update_cycle = String.valueOf(tmap.get("update_cycle"));
             channelAdivId = (String) tmap.get("channel_adiv_id");
             String templateName = "";
-            if(StringUtil.isNotEmpty(channelAdivId)){
+            if(StringUtils.isNotEmpty(channelAdivId)){
                 String[] adivId = channelAdivId.split(",");
                 for(int n = 0;n<adivId.length;n++){
                     for(int m = 0;m<bossSmsTemplatelist.size();m++){
@@ -509,7 +509,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                         }
                     }
                 }
-                if(StringUtil.isNotEmpty(templateName)){
+                if(StringUtils.isNotEmpty(templateName)){
                     channelAdivName = templateName.substring(0, templateName.length()-1);
                 }
             }else{
@@ -536,7 +536,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             sendSms = String.valueOf(tmap.get("send_sms"));
             
             trigger_timing ="";
-            if(StringUtil.isNotEmpty(channel_id) && "901".equals(channel_id)){  //当时短信渠道的时候
+            if(StringUtils.isNotEmpty(channel_id) && "901".equals(channel_id)){  //当时短信渠道的时候
                 if("1".equals(contactType)){
                     update_cycle = "一次性";
                 }else if("2".equals(contactType)){
@@ -831,7 +831,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         String campsegId = request.getParameter("campsegId");
         String token = request.getParameter("token");
         boolean verification = false;
-        if(!StringUtil.isEmpty(campsegId) && !StringUtil.isEmpty(token)){
+        if(!StringUtils.isEmpty(campsegId) && !StringUtils.isEmpty(token)){
             String tokenNew = DES.encrypt(campsegId);
             if(token.equals(tokenNew)){
                 verification = true;

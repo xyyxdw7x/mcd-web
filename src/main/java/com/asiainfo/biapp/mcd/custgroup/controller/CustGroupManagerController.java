@@ -37,7 +37,7 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
 import com.asiainfo.biframe.utils.config.Configure;
 import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -91,13 +91,13 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
-		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		try {
 			String clickQueryFlag = "true";
 			pager.setPageSize(6);  //每页显示6条
 			pager.setPageNum(pageNum);  //当前页
-			if(StringUtil.isNotEmpty(pageNum)){
+			if(StringUtils.isNotEmpty(pageNum)){
 				pager.setPageFlag("G");	
 			}
 			//TODO: pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getUserid(),keyWords));

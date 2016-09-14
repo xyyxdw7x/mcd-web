@@ -21,7 +21,7 @@ import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmUserPrivilegeService;
 import com.asiainfo.biframe.privilege.IUser;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Service("custGroupInfoService")
 public class CustGroupInfoServiceImpl implements CustGroupInfoService{
@@ -61,7 +61,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				for(int i = 0 ; i < custGroupList.size(); i++) {
 					McdCustgroupDef mtlGroupInfo = custGroupList.get(i);
 					String userName = "";
-					if((StringUtil.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtil.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
+					if((StringUtils.isEmpty(mtlGroupInfo.getCreateUserName()) || mtlGroupInfo.getCreateUserName() == "null") && StringUtils.isNotEmpty(mtlGroupInfo.getCreateUserId())) {
 						IUser user = mpmUserPrivilegeService.getUser(mtlGroupInfo.getCreateUserId());
 						if(user != null) {
 							userName = user.getUsername();
@@ -183,9 +183,9 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 			int success = 0;
 
 			String cfg_id = custGroupInfoDao.getExistQueueCfgId(group_into_id,queue_id);
-			if(StringUtil.isEmpty(cfg_id)){
+			if(StringUtils.isEmpty(cfg_id)){
 				cfg_id = custGroupInfoDao.getMaxQueueCfgId();
-				if(StringUtil.isNotEmpty(cfg_id)){
+				if(StringUtils.isNotEmpty(cfg_id)){
 					int i = custGroupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
 					String exec_sql = "select '"+queue_id+"'||'|'||product_no||'|'||substr(product_no,9,10)||'|'||(select queue_code from DIM_PUB_10086_QUEUE where queue_id='"+queue_id+"') from " +group_table_name+
 							" where data_date=(select max(DATA_DATE) from mcd_custgroup_tab_list where CUSTOM_GROUP_ID='"+group_into_id+"' );";
@@ -305,7 +305,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	private String getCountCustGrpSqlStr(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
 		StringBuffer buffer = new StringBuffer();
 		String sql = "";
-		boolean useCountSql = StringUtil.isEmpty(orderProductNo) && StringUtil.isEmpty(excludeProductNo) ;
+		boolean useCountSql = StringUtils.isEmpty(orderProductNo) && StringUtils.isEmpty(excludeProductNo) ;
 		String countStr = " count(PRODUCT_NO) CUSTOM_CNT ";
 		String selectStr = " PRODUCT_NO ";
 		if(useCountSql){
@@ -316,17 +316,17 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				" ------orderProductNo----" + orderProductNo + "----excludeProductNo----"+excludeProductNo);
 		
 		StringBuffer singleCustBuffer = new StringBuffer();
-		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+		if(StringUtils.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 					  buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1")
 					  .append(" and T4.product_no in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				if(useCountSql){
 					buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1");
 				} else {
 					buffer.append(bussinessLableSql);
 				}
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				if(useCountSql){
 					buffer.append("select ").append(selectStr).append(" from ("+basicEventSql+") T4 where 1=1");
 				} else {
@@ -336,19 +336,19 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		}else{
 			List<Map> listTemp = custGroupInfoDao.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select ").append(selectStr).append(" from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql+")")
 					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				buffer.append("select ").append(selectStr).append(" from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql)
 					  .append(")");
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				buffer.append("select ").append(selectStr).append(" from ")
 					  .append(tableListName)
 				      .append(" where PRODUCT_NO in (")
@@ -364,7 +364,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		sql = buffer.toString();
 
 		StringBuffer sbuffer1 = new StringBuffer();
-		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+		if(StringUtils.isNotEmpty(orderProductNo)){  //订购产品
 			String orderProductNos[] = orderProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<orderProductNos.length;i++){
@@ -375,8 +375,8 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				}
 			}
 			
-			if(StringUtil.isNotEmpty(sql)){
-				if(StringUtil.isNotEmpty(excludeProductNo)){
+			if(StringUtils.isNotEmpty(sql)){
+				if(StringUtils.isNotEmpty(excludeProductNo)){
 					sbuffer1.append("select PRODUCT_NO from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
 				} else {
 					sbuffer1.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") ttt where 1=1");  //modify at 2015-12-05
@@ -391,7 +391,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 			sql = sbuffer1.toString();
 		}
 		StringBuffer sbuffer2 = new StringBuffer();
-		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+		if(StringUtils.isNotEmpty(excludeProductNo)){  //剔除产品
 			String excludeProductNos[] = excludeProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<excludeProductNos.length;i++){
@@ -401,7 +401,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 					temp += ("'"+excludeProductNos[i]+"'");
 				}
 			}
-			if(StringUtil.isNotEmpty(sql)){
+			if(StringUtils.isNotEmpty(sql)){
 				sbuffer2.append("select count(PRODUCT_NO) CUSTOM_CNT from ("+sql+") tttt where 1=1 ");  //modify at 2015-12-05
 				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
 						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")

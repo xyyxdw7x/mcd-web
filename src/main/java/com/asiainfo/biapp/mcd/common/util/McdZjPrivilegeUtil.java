@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.asiainfo.biapp.mcd.tactics.vo.LkgStaff;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 
@@ -55,7 +55,7 @@ public class McdZjPrivilegeUtil {
 	 * @throws JSONException
 	 */
 	public static LkgStaff parseUserXmlToList(String resultJson) throws JSONException{
-		if(StringUtil.isNotEmpty(resultJson)){
+		if(StringUtils.isNotEmpty(resultJson)){
 			JSONObject jsonObj = new JSONObject(resultJson);
 			String resulttype = String.valueOf(jsonObj.get("resulttype")) ;
 			String responsemessage = String.valueOf(jsonObj.get("responsemessage")) ;

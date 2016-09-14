@@ -22,7 +22,7 @@ import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created on 4:02:56 PM
@@ -67,7 +67,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN mcd_dim_plan_type D ON A.PLAN_TYPE = D.TYPE_ID")
 				  .append(" WHERE 1=1");
-			if(StringUtil.isNotEmpty(keyWords)){  //关键字查询
+			if(StringUtils.isNotEmpty(keyWords)){  //关键字查询
 				if(keyWords.equals("%")){
 					buffer.append(" and (A.PLAN_NAME like ").append("'%\\%%' escape '\\'").append(" OR A.PLAN_PNAME like ").append("'%\\%%' escape '\\')");
 				}else{
@@ -76,12 +76,12 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 					parameterList.add("%" + keyWords + "%");
 				}
 			}
-			if(StringUtil.isNotEmpty(typeId)){   //查询政策类别
+			if(StringUtils.isNotEmpty(typeId)){   //查询政策类别
 				buffer.append(" and D.TYPE_ID = ?");
 				parameterList.add(typeId);
 			}
 
-			if(StringUtil.isNotEmpty(cityId) && !cityId.equals(Configure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(Configure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
 				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
 			}
 			buffer.append(" and B.PLAN_TYPE_ID ='2'");
@@ -140,7 +140,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN mcd_dim_plan_type D ON A.PLAN_TYPE = D.TYPE_ID")
 				  .append(" WHERE 1=1");
-			if(StringUtil.isNotEmpty(keyWords)){  //关键字查询
+			if(StringUtils.isNotEmpty(keyWords)){  //关键字查询
 				if(keyWords.equals("%")){
 					buffer.append(" and (A.PLAN_NAME like ").append("'%\\%%' escape '\\'").append(" OR A.PLAN_ID like ").append("'%\\%%' escape '\\')");
 				}else{
@@ -149,24 +149,24 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 					parameterList.add("%" + keyWords + "%");
 				}
 			}
-			if(StringUtil.isNotEmpty(typeId)){   //查询政策类别
+			if(StringUtils.isNotEmpty(typeId)){   //查询政策类别
 				buffer.append(" and D.TYPE_ID =?");
 				parameterList.add(typeId);
 			}
-			if(StringUtil.isNotEmpty(planTypeId)){ //查询粒度
+			if(StringUtils.isNotEmpty(planTypeId)){ //查询粒度
 				buffer.append(" and B.PLAN_TYPE_ID =?");
 				parameterList.add(planTypeId);
 			}
 	
-			if(StringUtil.isNotEmpty(cityId) && !cityId.equals("999")){  //地市限制
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals("999")){  //地市限制
 				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
 			}
-			if(StringUtil.isNotEmpty(channelTypeId)){ //渠道类型查询
+			if(StringUtils.isNotEmpty(channelTypeId)){ //渠道类型查询
 				buffer.append(" and A.PLAN_ID in ( select PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID = ?)");
 				parameterList.add(channelTypeId);
 			}
 			
-			if("1".equals(isDoubleSelect) && StringUtil.isEmpty(channelTypeId)){   //多产品默认选择三个三个渠道
+			if("1".equals(isDoubleSelect) && StringUtils.isEmpty(channelTypeId)){   //多产品默认选择三个三个渠道
 				buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID in ('902','903','906'))");
 			}
 			
@@ -194,7 +194,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN mcd_dim_plan_type D ON A.PLAN_TYPE = D.TYPE_ID")
 				  .append(" WHERE 1=1");
-			if(StringUtil.isNotEmpty(keyWords)){  //关键字查询
+			if(StringUtils.isNotEmpty(keyWords)){  //关键字查询
 				if(keyWords.equals("%")){
 					buffer.append(" and (A.PLAN_NAME like ").append("'%\\%%' escape '\\'").append(" OR A.PLAN_PNAME like ").append("'%\\%%' escape '\\')");
 				}else{
@@ -203,12 +203,12 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 					parameterList.add("%" + keyWords + "%");
 				}
 			}
-			if(StringUtil.isNotEmpty(typeId)){   //查询政策类别
+			if(StringUtils.isNotEmpty(typeId)){   //查询政策类别
 				buffer.append(" and D.TYPE_ID = ?");
 				parameterList.add(typeId);
 			}
 		
-			if(StringUtil.isNotEmpty(cityId) && !cityId.equals(Configure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(Configure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
 				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
 			}
 			buffer.append(" and B.PLAN_TYPE_ID ='2'");
@@ -240,7 +240,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				bean.setLevelName((String) map.get("LEVEL_NAME"));
 				bean.setCampCode((String) map.get("CAMP_CODE"));
 				bean.setCampName((String) map.get("CAMP_NAME"));
-				if(StringUtil.isEmpty((String) map.get("CAMP_NAME"))){
+				if(StringUtils.isEmpty((String) map.get("CAMP_NAME"))){
 					bean.setCampName("---");
 				}
 				bean.setReward((String) map.get("REWARD"));
@@ -255,7 +255,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				
 				bean.setPlanPid((String) map.get("PLAN_PID"));//营销案编号
 				bean.setIsUserd(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
-				if(StringUtil.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
+				if(StringUtils.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
 					bean.setPlanTypeName((String) map.get("PLAN_TYPE_NAME"));//政策粒度
 				}else{
 					bean.setPlanTypeName("其他");//政策粒度
@@ -297,7 +297,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				  .append(" LEFT JOIN DIM_PLAN_SRV_TYPE B ON A.PLAN_SRV_TYPE = B.PLAN_TYPE_ID")
 				  .append(" LEFT JOIN mcd_dim_plan_type D ON A.PLAN_TYPE = D.TYPE_ID")
 			 	  .append(" WHERE 1=1 ");
-			if(StringUtil.isNotEmpty(keyWords)){  //关键字查询
+			if(StringUtils.isNotEmpty(keyWords)){  //关键字查询
 				if(keyWords.equals("%")){
 					buffer.append(" and (A.PLAN_NAME like ").append("'%\\%%' escape '\\'").append(" OR A.PLAN_ID like ").append("'%\\%%' escape '\\')");
 				}else{
@@ -306,23 +306,23 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 					parameterList.add("%" + keyWords + "%");
 				}
 			}
-			if(StringUtil.isNotEmpty(typeId)){   //查询政策类别
+			if(StringUtils.isNotEmpty(typeId)){   //查询政策类别
 				buffer.append(" and D.TYPE_ID =?");
 				parameterList.add(typeId);
 			}
-			if(StringUtil.isNotEmpty(planTypeId)){ //查询粒度
+			if(StringUtils.isNotEmpty(planTypeId)){ //查询粒度
 				buffer.append(" and B.PLAN_TYPE_ID =?");
 				parameterList.add(planTypeId);
 			}
-			if(StringUtil.isNotEmpty(cityId) && !cityId.equals("999")){ //地市人员只能看本地市的产品
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals("999")){ //地市人员只能看本地市的产品
 				buffer.append(" and instr(A.CITY_ID,'"+cityId+"',1,1)>0 ");//CITY_ID字段中包含当前地市
 			}
-			if(StringUtil.isNotEmpty(channelTypeId)){ //渠道类型查询
+			if(StringUtils.isNotEmpty(channelTypeId)){ //渠道类型查询
 				buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID = ?)");
 				parameterList.add(channelTypeId);
 			}
 			
-			if("1".equals(isDoubleSelect) && StringUtil.isEmpty(channelTypeId)){   //多产品默认选择三个三个渠道
+			if("1".equals(isDoubleSelect) && StringUtils.isEmpty(channelTypeId)){   //多产品默认选择三个三个渠道
 				buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID in ('902','903','906'))");
 			}
 			
@@ -366,7 +366,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 				bean.setMaterialDesc((String) map.get("MATERIAL_DESC"));
 				bean.setPlanPid((String) map.get("PLAN_PID"));//营销案编号
 				bean.setIsUserd(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
-				if(StringUtil.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
+				if(StringUtils.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
 					bean.setPlanTypeName((String) map.get("PLAN_TYPE_NAME"));//政策粒度
 				}else{
 					bean.setPlanTypeName("其他");//政策粒度

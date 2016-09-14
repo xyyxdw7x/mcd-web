@@ -14,7 +14,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IMtlGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 
 @Controller
@@ -30,7 +30,7 @@ public class IMcdChannelExecuteController extends BaseMultiActionController {
 	
 	@RequestMapping(params = "cmd=initOfflineChannel")
 	public void initOfflineChannel(HttpServletRequest request, HttpServletResponse response) {
-		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
 		List<DimMtlChanneltype> list = null;
 		try {
 			User user = this.getUser(request, response);

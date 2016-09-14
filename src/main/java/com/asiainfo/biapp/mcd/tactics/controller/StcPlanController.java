@@ -16,7 +16,7 @@ import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -53,7 +53,7 @@ public class StcPlanController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		// 新建策略是否单选
-		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect"))
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect"))
 				? request.getParameter("isDoubleSelect") : "0";
 
 		try {

@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.json.JSONArray;
 
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class CommonUtil {
 	
@@ -24,7 +24,7 @@ public class CommonUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String dateStr = sdf.format(new Date());
 		// 唯一性保证
-		if (StringUtil.isNotEmpty(lastTime)
+		if (StringUtils.isNotEmpty(lastTime)
 				&& Long.valueOf(lastTime) >= Long.valueOf(dateStr)) {
 			dateStr = generateId();
 		} else {
@@ -96,7 +96,11 @@ public class CommonUtil {
 	
 	public static String optString(Map<String, Object> map, String key) {
 		Object value = map.get(key);
-		return StringUtil.isNotEmpty(value) ? String.valueOf(value) : "";
+		if ((value == null) || (String.valueOf(value).trim().length() < 1)){
+			return "";
+		}else{
+			return String.valueOf(value);
+		}
 	}
 	
 }

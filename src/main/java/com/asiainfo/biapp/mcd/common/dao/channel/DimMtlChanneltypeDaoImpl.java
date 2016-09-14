@@ -3,10 +3,10 @@ package com.asiainfo.biapp.mcd.common.dao.channel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -22,9 +22,6 @@ import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
-import com.asiainfo.biframe.utils.database.jdbc.ConnectionEx;
-import com.asiainfo.biframe.utils.database.jdbc.Sqlca;
-import com.asiainfo.biframe.utils.string.StringUtil;
 
 /**
  * Created on Jan 4, 2008 5:03:41 PM
@@ -52,7 +49,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("select * from DIM_PLAN_SRV_TYPE");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
-			for (Map map : list) {
+			for (Map<String, Object> map : list) {
 				DimPlanSrvType dimPlanSrvType = new DimPlanSrvType();
 				dimPlanSrvType.setTypeId((String) map.get("PLAN_TYPE_ID"));
 				dimPlanSrvType.setTypeName((String) map.get("PLAN_TYPE_NAME"));
@@ -272,7 +269,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	public List<DimMtlChanneltype> getAllChannelType(String containsEvent) throws MpmException {
 		String sql = "select * from mcd_dim_channelTYPE where 1 = 1 ";
 		Object[] args = new String[0];
-		if(StringUtil.isNotEmpty(containsEvent) && "1".equals(containsEvent)){
+		if(StringUtils.isNotEmpty(containsEvent) && "1".equals(containsEvent)){
 			sql += " and INITIATIVE_TYPE = ? order by DISPLAY_ORDER ";
 			args = new String[1];
 			args[0] = containsEvent;
@@ -286,11 +283,11 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	
 	public List<DimMtlChanneltype> getAllChannelType(String containsEvent,String isRejectWebGateWay) throws MpmException {
 		StringBuffer sql = new StringBuffer("select * from mcd_dim_channelTYPE where 1 = 1 ");
-		if(StringUtil.isNotEmpty(isRejectWebGateWay) && "1".equals(isRejectWebGateWay)){
+		if(StringUtils.isNotEmpty(isRejectWebGateWay) && "1".equals(isRejectWebGateWay)){
 			sql.append(" and CHANNELTYPE_ID !=914");
 		}
 		Object[] args = new String[0];
-		if(StringUtil.isNotEmpty(containsEvent) && "1".equals(containsEvent)){
+		if(StringUtils.isNotEmpty(containsEvent) && "1".equals(containsEvent)){
 			sql.append(" and INITIATIVE_TYPE = ? order by DISPLAY_ORDER ");
 			args = new String[1];
 			args[0] = containsEvent;
@@ -317,35 +314,15 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	 */
 	public List getAllChannelTypeFromUserChannelRelation() throws MpmException {
 		
-		ConnectionEx conn = null;
-		Sqlca sqlca = null;
-
 		String sql = "select distinct(cr.prefer_channel) as prefer_channel from mcd_user_channel_relation cr order by cr.prefer_channel";
 		List<String> list = new ArrayList<String>();
 
 		try {
-			conn = new ConnectionEx("JDBC_MPM");
-			sqlca = new Sqlca(conn);
-			String finaSQL = sqlca.getPagedSql(sql, 1, 1000);
-			sqlca.execute(finaSQL);
-			String channeltype_id = null;
-			while (sqlca.next()) {
-				channeltype_id = sqlca.getString("prefer_channel");
-				list.add(channeltype_id);
-			}
+			String sqlExt = DataBaseAdapter.getPagedSql(sql, 1,1000);
+			list = this.getJdbcTemplate().queryForList(sqlExt,String.class);
 		} catch (Exception e) {
 			log.error("", e);
-		} finally {
-			if (sqlca != null)
-				sqlca.close();
-			try {
-				if (!conn.isClosed()) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		} 
 		return list;
 	}
 	@SuppressWarnings("unchecked")

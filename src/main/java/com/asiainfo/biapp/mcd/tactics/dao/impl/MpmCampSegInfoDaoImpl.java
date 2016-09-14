@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,7 +25,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biframe.utils.config.Configure;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 /**
  * 策略管理相关dao
  * @author AsiaInfo-jie
@@ -67,7 +66,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             .append(")");
         }*/
         
-        if (StringUtil.isNotEmpty(segInfo.getKeywords())) {
+        if (StringUtils.isNotEmpty(segInfo.getKeywords())) {
             if(segInfo.getKeywords().contains("%")){
                 buffer.append(" and (msi.campseg_name like ?  escape '\' or msi.campseg_id like ?  escape '\') ");
                 parameterList.add("%" + segInfo.getKeywords().replaceAll("%", "\\\\%") + "%");
@@ -83,7 +82,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             buffer.append(" and msi.create_userid= ? ");
             parameterList.add(segInfo.getCreateUserId());
         }
-        if(StringUtil.isNotEmpty(segInfo.getChannelId()) ){
+        if(StringUtils.isNotEmpty(segInfo.getChannelId()) ){
             buffer.append(" and msi.campseg_id in(")
                   .append(" select unique mcs.campseg_pid from mcd_camp_def mcs")
                   .append(" left join mcd_camp_channel_list mcd on mcs.campseg_id=mcd.campseg_id")
@@ -91,7 +90,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             parameterList.add(segInfo.getChannelId());
         }
         //省公司还是分公司人查看
-     /*   if(StringUtil.isNotEmpty(segInfo.getAreaId())){
+     /*   if(StringUtils.isNotEmpty(segInfo.getAreaId())){
             buffer.append(" and msi.area_id= ?");
             parameterList.add(segInfo.getAreaId());
         }*/
@@ -887,14 +886,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	
 	@Override
 	public void excSqlInMcdAdInMem(String sqlStr) {
-		if(StringUtil.isNotEmpty(sqlStr)){
+		if(StringUtils.isNotEmpty(sqlStr)){
 			this.getJdbcTemplate().execute(sqlStr);
 		}
 	} 
 
 	@Override
 	public void excSqlInMcd(String sqlStr) {
-		if(StringUtil.isNotEmpty(sqlStr)){
+		if(StringUtils.isNotEmpty(sqlStr)){
 			try {
 				this.getJdbcTemplate().execute(sqlStr);
 			} catch (Exception e) {

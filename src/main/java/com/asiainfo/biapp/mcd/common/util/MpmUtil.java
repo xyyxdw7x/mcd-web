@@ -11,8 +11,8 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.asiainfo.biframe.utils.date.DateUtil;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class MpmUtil {
 	private static Logger log = LogManager.getLogger();
@@ -39,7 +39,7 @@ public class MpmUtil {
 		StringBuilder strRet = new StringBuilder();
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
-		if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" NOLOGGING as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2");
 		}else{
 			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2").append(" WITH NO DATA");
@@ -54,7 +54,7 @@ public class MpmUtil {
 	 * @return
 	 */
 	public static boolean isNumeric(String str) {
-		if (StringUtil.isEmpty(str)) {
+		if (StringUtils.isEmpty(str)) {
 			return false;
 		}
 		Pattern pattern = Pattern.compile("[0-9]*");
@@ -76,7 +76,7 @@ public class MpmUtil {
         }
         String parsed = "";
         try {
-            parsed = DATE_US_FORMATER.format(DateUtil.string2Date(date, DATE_DB_FORMAT));
+        	parsed = DATE_US_FORMATER.format(DateUtils.parseDateStrictly(date, DATE_DB_FORMAT));
         } catch (Exception e) {
             log.debug("--------date parse to out error, orign date is " + date);
             parsed = date;
@@ -92,7 +92,7 @@ public class MpmUtil {
 	public synchronized static String generateCampsegAndTaskNo() {
 		FastDateFormat df = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
 		String dateStr = getFixLenStr(df.format(new Date()));
-		if (StringUtil.isNotEmpty(lastCampsegTaskId)) {
+		if (StringUtils.isNotEmpty(lastCampsegTaskId)) {
 			while (Long.parseLong(dateStr) == Long.parseLong(lastCampsegTaskId)) {
 				dateStr = getFixLenStr(df.format(new Date()));
 			}
@@ -103,7 +103,7 @@ public class MpmUtil {
 	public static String getFixLenStr(String data) {
 		String dateStr = data;
 		String noLen = MpmConfigure.getInstance().getProperty("CAMPSEG_TASK_NO_LENGTH");
-		if (StringUtil.isNotEmpty(noLen)) {
+		if (StringUtils.isNotEmpty(noLen)) {
 			int len = Integer.valueOf(noLen);
 			if (data.length() < len) {
 				dateStr += genFixLenNumStr(len - data.length());
@@ -134,7 +134,7 @@ public class MpmUtil {
 	public synchronized static String convertLongMillsToYYYYMMDDHHMMSSSSS() {
 		FastDateFormat df = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
 		String dateStr = df.format(new Date());
-		if (StringUtil.isNotEmpty(lastTabTime)) {
+		if (StringUtils.isNotEmpty(lastTabTime)) {
 			while (Long.parseLong(dateStr) == Long.parseLong(lastTabTime)) {
 				dateStr = df.format(new Date());
 			}

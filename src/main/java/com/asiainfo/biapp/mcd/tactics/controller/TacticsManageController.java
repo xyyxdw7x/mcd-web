@@ -57,7 +57,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 @RequestMapping("/tactics/tacticsManage")
@@ -122,7 +122,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			String putDateStart = commonAttr.get("putDateStart").toString();
 			String putDateEnd = commonAttr.get("putDateEnd").toString();
 			String campsegTypeId = commonAttr.get("campsegTypeId").toString();
-			if (StringUtil.isEmpty(campsegTypeId)) {
+			if (StringUtils.isEmpty(campsegTypeId)) {
 				campsegTypeId = "1";
 			}
 
@@ -165,14 +165,14 @@ public class TacticsManageController extends BaseMultiActionController {
 
 				// 业务标签
 				/*String labelArr = rule.get("labelArr").toString();
-				if (StringUtil.isEmpty(labelArr) || labelArr.equals("[]")) {
+				if (StringUtils.isEmpty(labelArr) || labelArr.equals("[]")) {
 					bussinessLableTemplate = null;
 				} else {
 					bussinessLableTemplate = this.createTemplateForm(labelArr, "0", true);
 				}*/
 				// 获取ARPU 基础标签
 				/*String basicProp = rule.get("basicProp").toString();
-				if (StringUtil.isEmpty(basicProp) || basicProp.equals("[]")) {
+				if (StringUtils.isEmpty(basicProp) || basicProp.equals("[]")) {
 					basicEventTemplate = null;
 				} else {
 					basicEventTemplate = createTemplateForm(basicProp, "1", true);
@@ -188,7 +188,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				// 获取客户群ID
 				String customgroupid = null;
 				String updateCycle = null;
-				if (StringUtil.isNotEmpty(rule.get("customer").toString())) {
+				if (StringUtils.isNotEmpty(rule.get("customer").toString())) {
 					customgroupid = new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
 					updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle").toString();
 				}
@@ -252,13 +252,13 @@ public class TacticsManageController extends BaseMultiActionController {
 						// modify by zhuml end 20151203
 						ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
 						mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
-						if (StringUtil.isNotEmpty(channelCycle)) {
+						if (StringUtils.isNotEmpty(channelCycle)) {
 							mtlChannelDef.setContactType(Integer.parseInt(channelCycle));
 						}
-						if (StringUtil.isEmpty(paramDays)) {
+						if (StringUtils.isEmpty(paramDays)) {
 							paramDays = "0";
 						}
-						if (StringUtil.isEmpty(paramNum)) {
+						if (StringUtils.isEmpty(paramNum)) {
 							paramNum = "0";
 						}
 						mtlChannelDef.setParamDays(Integer.parseInt(paramDays));
@@ -298,7 +298,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						sendSms = URLDecoder.decode(URLDecoder.decode(sendSms, "UTF-8"), "UTF-8");
 						content = String.valueOf(obj.get("exec_content")); // 推荐用语
 						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
-						if (StringUtil.isNotEmpty(awardMount)) {
+						if (StringUtils.isNotEmpty(awardMount)) {
 							mtlChannelDef.setAwardMount(Double.parseDouble(awardMount));
 						}
 						mtlChannelDef.setEditUrl(editUrl);
@@ -340,7 +340,7 @@ public class TacticsManageController extends BaseMultiActionController {
 
 					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
-					if (StringUtil.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
+					if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
 						mtlChannelDef.setChannelAdivId("1");
 					}
 					// 保存将筛选后的客户群数量
@@ -354,7 +354,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 						}
 					}
-					if (StringUtil.isEmpty(channelCycle) && StringUtil.isNotEmpty(updateCycle)) { // 当channelCycle为空的时候保持与updateCycle一致
+					if (StringUtils.isEmpty(channelCycle) && StringUtils.isNotEmpty(updateCycle)) { // 当channelCycle为空的时候保持与updateCycle一致
 						mtlChannelDef.setContactType(Integer.parseInt(updateCycle));
 						mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
 					}
@@ -400,14 +400,14 @@ public class TacticsManageController extends BaseMultiActionController {
 				// 保存业务标签
 				/*if (bussinessLableTemplate != null) {
 					String bussinessLableTemplateId = this.handleTemplet(request.getLocale(), bussinessLableTemplate);
-					if (StringUtil.isNotEmpty(bussinessLableTemplateId)) {
+					if (StringUtils.isNotEmpty(bussinessLableTemplateId)) {
 						campSeginfo.setBussinessLableTemplateId(bussinessLableTemplateId);
 					}
 				}*/
 				// 保存时机规则
 				/*if (basicEventTemplate != null) {
 					String basicEventTemplateId = this.handleTemplet(request.getLocale(), basicEventTemplate);
-					if (StringUtil.isNotEmpty(basicEventTemplateId)) {
+					if (StringUtils.isNotEmpty(basicEventTemplateId)) {
 						campSeginfo.setBasicEventTemplateId(basicEventTemplateId);
 					}
 				}*/
@@ -460,17 +460,17 @@ public class TacticsManageController extends BaseMultiActionController {
 			
 //			策略包    先循环迭代出每个规则
 			String test = request.getParameter("ruleList");
-			if(StringUtil.isNotEmpty(test)){
+			if(StringUtils.isNotEmpty(test)){
 				org.json.JSONObject ruleList = new org.json.JSONObject(test);
 				//获取公共属性
 				org.json.JSONObject commonAttr = new org.json.JSONObject(ruleList.get("commonAttr").toString());
 				String campsegPid = commonAttr.get("campsegPid").toString();   //父策略id
-				if(StringUtil.isNotEmpty(campsegPid)){  //判断为修改
+				if(StringUtils.isNotEmpty(campsegPid)){  //判断为修改
 					String campsegName = commonAttr.get("campsegName").toString();
 					String putDateStart = commonAttr.get("putDateStart").toString();
 					String putDateEnd = commonAttr.get("putDateEnd").toString();
 					String campsegTypeId = commonAttr.get("campsegTypeId").toString();
-					if(StringUtil.isEmpty(campsegTypeId)){
+					if(StringUtils.isEmpty(campsegTypeId)){
 						campsegTypeId = "1";
 					}
 					String planId = commonAttr.get("planid").toString();
@@ -528,14 +528,14 @@ public class TacticsManageController extends BaseMultiActionController {
 						org.json.JSONObject rule = new org.json.JSONObject(ruleList.get(ruleIndex).toString());  //迭代每一个规则进行计算
 						//业务标签
 						/*String labelArr = rule.get("labelArr").toString();
-						if(StringUtil.isEmpty(labelArr) || labelArr.equals("[]")){
+						if(StringUtils.isEmpty(labelArr) || labelArr.equals("[]")){
 							bussinessLableTemplate = null;
 						}else{
 							bussinessLableTemplate = this.createTemplateForm(labelArr,"0",true);
 						}*/
 //						获取ARPU   基础标签
 						/*String basicProp = rule.get("basicProp").toString();
-						if(StringUtil.isEmpty(basicProp) || basicProp.equals("[]")){
+						if(StringUtils.isEmpty(basicProp) || basicProp.equals("[]")){
 							basicEventTemplate = null;
 						}else{
 							basicEventTemplate = createTemplateForm(basicProp,"1",true);
@@ -552,7 +552,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						//获取客户群ID
 						String customgroupid = null;
 						String updateCycle = null;
-						if(StringUtil.isNotEmpty(rule.get("customer").toString())){
+						if(StringUtils.isNotEmpty(rule.get("customer").toString())){
 							customgroupid =  new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
 							updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle").toString();
 						}
@@ -615,13 +615,13 @@ public class TacticsManageController extends BaseMultiActionController {
 								
 								ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
 								mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
-								if(StringUtil.isNotEmpty(channelCycle)){
+								if(StringUtils.isNotEmpty(channelCycle)){
 									mtlChannelDef.setContactType(Integer.parseInt(channelCycle));
 								}
-								if(StringUtil.isEmpty(paramDays)){
+								if(StringUtils.isEmpty(paramDays)){
 									paramDays = "0";
 								}
-								if(StringUtil.isEmpty(paramNum)){
+								if(StringUtils.isEmpty(paramNum)){
 									paramNum = "0";
 								}
 								mtlChannelDef.setParamDays(Integer.parseInt(paramDays));
@@ -738,7 +738,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 							
 							
-							if(StringUtil.isEmpty(adivId)){  //当adivId为空的时候，默认为1
+							if(StringUtils.isEmpty(adivId)){  //当adivId为空的时候，默认为1
 								mtlChannelDef.setChannelAdivId("1");
 							}
 							mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0"):Short.parseShort("1"));
@@ -755,7 +755,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								}
 							}
 							
-							if(StringUtil.isEmpty(channelCycle) && StringUtil.isNotEmpty(updateCycle)){  //当channelCycle为空的时候  保持与updateCycle一致
+							if(StringUtils.isEmpty(channelCycle) && StringUtils.isNotEmpty(updateCycle)){  //当channelCycle为空的时候  保持与updateCycle一致
 								mtlChannelDef.setContactType(Integer.parseInt(updateCycle));
 								mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
 							}
@@ -809,14 +809,14 @@ public class TacticsManageController extends BaseMultiActionController {
 //						保存业务标签
 						/*if(bussinessLableTemplate != null){
 							String bussinessLableTemplateId = this.handleTemplet(request.getLocale(), bussinessLableTemplate);
-							if(StringUtil.isNotEmpty(bussinessLableTemplateId)){
+							if(StringUtils.isNotEmpty(bussinessLableTemplateId)){
 								campSeginfo.setBussinessLableTemplateId(bussinessLableTemplateId);
 							}
 						}*/
 						//保存时机规则
 						/*if(basicEventTemplate != null){
 							String basicEventTemplateId = this.handleTemplet(request.getLocale(), basicEventTemplate);
-							if(StringUtil.isNotEmpty(basicEventTemplateId)){
+							if(StringUtils.isNotEmpty(basicEventTemplateId)){
 								campSeginfo.setBasicEventTemplateId(basicEventTemplateId);
 							}
 						}*/
@@ -883,12 +883,12 @@ public class TacticsManageController extends BaseMultiActionController {
 			if(!CollectionUtils.isEmpty(typeList)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(typeList));
-				if(null != createCode && StringUtil.isNotEmpty(createCode.getCallwsUrl())){
+				if(null != createCode && StringUtils.isNotEmpty(createCode.getCallwsUrl())){
 					dataJson.put("cepCreateCode", createCode.getCallwsUrl());
 				}else{
 					dataJson.put("cepCreateCode", "");
 				}
-				if(null != createCode && StringUtil.isNotEmpty(createCodeCallBack.getCallwsUrl())){
+				if(null != createCode && StringUtils.isNotEmpty(createCodeCallBack.getCallwsUrl())){
 					dataJson.put("cepCreateCodeCallBack", createCodeCallBack.getCallwsUrl());
 				}else{
 					dataJson.put("cepCreateCodeCallBack", "");
@@ -958,7 +958,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		//新建策略是否单选
-		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
 				
 		try {
 			User user = this.getUser(request, response);
@@ -1019,9 +1019,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
-		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
-		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
-		String typeId = StringUtil.isNotEmpty(request.getParameter("typeid")) ? request.getParameter("typeid") : null;
+		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
+		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String typeId = StringUtils.isNotEmpty(request.getParameter("typeid")) ? request.getParameter("typeid") : null;
 		User user = this.getUser(request, response);
 		String cityId =user.getCityId();
 		try {
@@ -1077,19 +1077,19 @@ public class TacticsManageController extends BaseMultiActionController {
 		User user = this.getUser(request, response);
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
-		String pageNum = StringUtil.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
-		String keyWords = StringUtil.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum") : "1";
+		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		//政策类别
-		String typeId = StringUtil.isNotEmpty(request.getParameter("typeId")) ? request.getParameter("typeId") : null;
+		String typeId = StringUtils.isNotEmpty(request.getParameter("typeId")) ? request.getParameter("typeId") : null;
 		//使用渠道
 		String channelTypeId = request.getParameter("channelTypeId") != null ? request.getParameter("channelTypeId") : null;
 		//查询粒度
 		String planTypeId = request.getParameter("planTypeId") != null ? request.getParameter("planTypeId") : null;
 		//新建策略是否单选
-		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";
 		
 		String cityId = user.getCityId();
-		if(StringUtil.isNotEmpty(pageNum)){
+		if(StringUtils.isNotEmpty(pageNum)){
 			pager.setPageFlag("G");	
 		}
 		try {
@@ -1143,7 +1143,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();   
 		
-		String isDoubleSelect = StringUtil.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect")) ? request.getParameter("isDoubleSelect") : "0";//是否单选  单选：0   多选：1
 		List<DimMtlChanneltype> list = null;
 		
 		try {
@@ -1191,7 +1191,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		String custGroupId = request.getParameter("custGroupId");
 		List<McdCustgroupAttrList> list = null;
 		try {
-			if(StringUtil.isNotEmpty(custGroupId)){
+			if(StringUtils.isNotEmpty(custGroupId)){
 				list = custGroupAttrRelService.initTermLable(custGroupId);
 			}
 			if(!CollectionUtils.isEmpty(list)){
@@ -1305,13 +1305,13 @@ public class TacticsManageController extends BaseMultiActionController {
 				String  channelIds = rule.get("channelIds").toString();
 				//获取客户群ID
 				String customgroupid = null;
-				if(StringUtil.isNotEmpty(rule.get("customer").toString())){
+				if(StringUtils.isNotEmpty(rule.get("customer").toString())){
 					customgroupid =  new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
 				}
 				int afterBotherAvoidNum = 0;
 				int originalCustGroupNum = custGroupInfoService.getOriginalCustGroupNum(customgroupid);   //原始客户群数量
 				
-				if(StringUtil.isNotEmpty(channelIds)){
+				if(StringUtils.isNotEmpty(channelIds)){
 					String channelIdTemp[] = channelIds.split(",");
 					for(int j = 0;j<channelIdTemp.length;j++){
 						Map<String, String> map = new HashMap<String, String>();
@@ -1376,13 +1376,13 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		try {
 			//父策略id
-			String campsegPid = StringUtil.isNotEmpty(request.getParameter("campsegPid")) ? request.getParameter("campsegPid") : "2016061317242609";				
+			String campsegPid = StringUtils.isNotEmpty(request.getParameter("campsegPid")) ? request.getParameter("campsegPid") : "2016061317242609";				
 			List<McdCampDef> campsegList = null;
 			List<McdCampDef> basicCampSeginfoList = new ArrayList<McdCampDef>();  //父策略
 			String planName = "";   //
 			String planType=""; //政策类别
 			Map map = new HashMap();  //存放最终拼装的参数		
-			if(StringUtil.isNotEmpty(campsegPid)){
+			if(StringUtils.isNotEmpty(campsegPid)){
 				//获取策略的基本信息
 				campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
 				Map paramMap = new HashMap();
@@ -1475,7 +1475,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							String channelId = channelDefTemp.getChannelId();
 							String functionId= "";
 							String functionName = "";
-							if("910".equals(channelDefTemp.getChannelId()) && StringUtil.isNotEmpty(channelDefTemp.getExecContent())){
+							if("910".equals(channelDefTemp.getChannelId()) && StringUtils.isNotEmpty(channelDefTemp.getExecContent())){
 								channelDefTemp.setMessageType("1");
 								if(channelDefTemp.getExecContent().indexOf("服务提醒") != -1){
 									channelDefTemp.setMessageType("2");
@@ -1484,7 +1484,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							if("901".equals(channelId)){
 								functionId = channelDefTemp.getFunctionId();
 								//获取场景名称
-								if(StringUtil.isNotEmpty(functionId)){
+								if(StringUtils.isNotEmpty(functionId)){
 									List<RuleTimeTermLable> termLableList = custGroupAttrRelService.getFunctionNameById(functionId);
 									if(termLableList.size()>0){
 										functionName = termLableList.get(0).getFunctionNameDesc();
@@ -1506,10 +1506,10 @@ public class TacticsManageController extends BaseMultiActionController {
 						List<MtlStcPlanBean> planOrderList = null;
 						List<MtlStcPlanBean> planExcludeList = null;
 						if(null != mtlCampSeginfoPlanOrder){
-							if(StringUtil.isNotEmpty(mtlCampSeginfoPlanOrder.getOrderPlanIds())){
+							if(StringUtils.isNotEmpty(mtlCampSeginfoPlanOrder.getOrderPlanIds())){
 								planOrderList = stcPlanService.getPlanByIds(mtlCampSeginfoPlanOrder.getOrderPlanIds());
 							}
-							if(StringUtil.isNotEmpty(mtlCampSeginfoPlanOrder.getExcludePlanIds())){
+							if(StringUtils.isNotEmpty(mtlCampSeginfoPlanOrder.getExcludePlanIds())){
 								planExcludeList = stcPlanService.getPlanByIds(mtlCampSeginfoPlanOrder.getExcludePlanIds());
 							}
 						}*/
@@ -1599,7 +1599,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			
 			//获取客户群ID
 			String customgroupid = null;
-			if(StringUtil.isNotEmpty(request.getParameter("customer"))){
+			if(StringUtils.isNotEmpty(request.getParameter("customer"))){
 				customgroupid = new org.json.JSONObject(request.getParameter("customer")).getString("id");
 			}
 //			产品订购
@@ -1617,11 +1617,11 @@ public class TacticsManageController extends BaseMultiActionController {
 			org.json.JSONObject baseAttr = new org.json.JSONObject(baseAttrStr);
 			String channelIds = baseAttr.getString("channelid");
 			String campsegTypeId =  baseAttr.getString("campsegtypeid");
-			if(StringUtil.isEmpty(campsegTypeId) || "undefined".equals(campsegTypeId)){
+			if(StringUtils.isEmpty(campsegTypeId) || "undefined".equals(campsegTypeId)){
 				campsegTypeId = "1";
 			}
 			String channelId[] = channelIds.split(",");
-			if(channelId.length>0 && StringUtil.isNotEmpty(channelIds)){
+			if(channelId.length>0 && StringUtils.isNotEmpty(channelIds)){
 				/*String bussinessLableSql = this.getSql(bussinessLableTemplate, request.getLocale());
 				String basicEventSql = this.getSql(basicEventTemplate, request.getLocale());*/
 				String cityId = user.getCityId();

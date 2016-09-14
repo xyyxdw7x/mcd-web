@@ -20,7 +20,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.jms.util.SpringContext;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Repository("custGroupInfoDao")
 public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoDao{
@@ -40,7 +40,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_def.create_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 			   .append(" and custom_status_id not in (2,9)")
 		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
-			if(StringUtil.isNotEmpty(keyWords)){
+			if(StringUtils.isNotEmpty(keyWords)){
 				if(keyWords.equals("%")){
 					buffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
 				}else{
@@ -75,7 +75,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_tab_list.max_data_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 		 	   .append(" and custom_status_id not in (2,9)")
 		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
-			if(StringUtil.isNotEmpty(keyWords)){
+			if(StringUtils.isNotEmpty(keyWords)){
 				if(keyWords.equals("%")){
 					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
 				}else{
@@ -484,7 +484,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
         List<Map> listTemp = this.getMtlCustomTableName(custom_group_id);
         String custom_num = listTemp.get(0).get("custom_num").toString();  
         int result = 0;
-        if(StringUtil.isNotEmpty(custom_num)){
+        if(StringUtils.isNotEmpty(custom_num)){
             result = Integer.parseInt(custom_num);
         }
         return result;
@@ -558,21 +558,21 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			String sql = "";
 			List paramList = new ArrayList();
 			StringBuffer buffer = new StringBuffer();
-			if(StringUtil.isEmpty(customgroupid)  || customgroupid.equals("undefined")){
-				if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
+			if(StringUtils.isEmpty(customgroupid)  || customgroupid.equals("undefined")){
+				if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
 					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
 						  .append(" and basicData.product_no in ("+basicEventSql+")")
 						  .append("and basicData.product_no in (")
 						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
-				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
+				}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){ //只勾选业务标签
 					buffer.append("select basicData.PRODUCT_NO from ("+bussinessLableSql+") basicData where 1=1")
 						  .append(" and basicData.PRODUCT_NO in ")
 						  .append(" (SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
-				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
+				}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //只勾选基础标签
 					buffer.append("select basicData.PRODUCT_NO from ("+basicEventSql+") basicData where 1=1")
 						  .append(" and basicData.PRODUCT_NO in ")
 						  .append(" (SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
@@ -582,7 +582,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}else{
 				List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
 				String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");   
-				if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
+				if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
 					buffer.append("select PRODUCT_NO from ")
 						  .append(tableListName)
 						  .append(" where PRODUCT_NO in (")
@@ -593,7 +593,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
-				}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){ //只勾选业务标签
+				}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){ //只勾选业务标签
 					buffer.append("select PRODUCT_NO from ")
 						  .append(tableListName)
 						  .append(" where PRODUCT_NO in (")
@@ -602,7 +602,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						  .append(" SELECT PRODUCT_NO FROM  mcd_bother_avoid WHERE AVOID_BOTHER_TYPE = ? AND AVOID_CUST_TYPE  = ?)") ;
 					paramList.add(channelId);
 					paramList.add(String.valueOf(campsegTypeId));
-				}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //只勾选基础标签
+				}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //只勾选基础标签
 					buffer.append("select PRODUCT_NO from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
@@ -624,7 +624,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			sql = buffer.toString();
 
 			StringBuffer sbuffer1 = new StringBuffer();
-			if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+			if(StringUtils.isNotEmpty(orderProductNo)){  //订购产品
 				String orderProductNos[] = orderProductNo.split("&");
 				String temp = "";
 				for(int i=0;i<orderProductNos.length;i++){
@@ -634,7 +634,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						temp += ("'"+orderProductNos[i]+"'");
 					}
 				}
-				if(StringUtil.isNotEmpty(sql)){
+				if(StringUtils.isNotEmpty(sql)){
 					sbuffer1.append(sql +" and PRODUCT_NO in (")
 							.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
 							.append(temp).append("))");
@@ -645,7 +645,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				sql = sbuffer1.toString();
 			}
 			StringBuffer sbuffer2 = new StringBuffer();
-			if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+			if(StringUtils.isNotEmpty(excludeProductNo)){  //剔除产品
 				String excludeProductNos[] = excludeProductNo.split("&");
 				String temp = "";
 				for(int i=0;i<excludeProductNos.length;i++){
@@ -655,7 +655,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						temp += ("'"+excludeProductNos[i]+"'");
 					}
 				}
-				if(StringUtil.isNotEmpty(sql)){
+				if(StringUtils.isNotEmpty(sql)){
 					sbuffer2.append(sql +" and PRODUCT_NO NOT in (")
 							.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
 							.append(temp).append("))");
@@ -811,31 +811,31 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	private String createSqlStr(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
 		StringBuffer buffer = new StringBuffer();
 		String sql = "";
-		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+		if(StringUtils.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 					  buffer.append("select * from ("+bussinessLableSql+") T4 where 1=1")
 					  .append(" and T4.product_no in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				buffer.append(bussinessLableSql);
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				buffer.append(basicEventSql);
 			}
 		}else{
 			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select PRODUCT_NO from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql+")")
 					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				buffer.append("select PRODUCT_NO from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql)
 					  .append(")");
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				buffer.append("select PRODUCT_NO from ")
 					  .append(tableListName)
 				      .append(" where PRODUCT_NO in (")
@@ -850,7 +850,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		
 		sql = buffer.toString();
 		StringBuffer sbuffer1 = new StringBuffer();
-		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+		if(StringUtils.isNotEmpty(orderProductNo)){  //订购产品
 			String orderProductNos[] = orderProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<orderProductNos.length;i++){
@@ -862,7 +862,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}
 			
 
-			if(StringUtil.isNotEmpty(sql)){
+			if(StringUtils.isNotEmpty(sql)){
 				sbuffer1.append("select PRODUCT_NO from ("+sql+") ttt where 1=1");
 				sbuffer1.append(" and ttt.PRODUCT_NO in (")
 						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
@@ -874,7 +874,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			sql = sbuffer1.toString();
 		}
 		StringBuffer sbuffer2 = new StringBuffer();
-		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+		if(StringUtils.isNotEmpty(excludeProductNo)){  //剔除产品
 			String excludeProductNos[] = excludeProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<excludeProductNos.length;i++){
@@ -885,7 +885,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				}
 			}
 
-			if(StringUtil.isNotEmpty(sql)){
+			if(StringUtils.isNotEmpty(sql)){
 				sbuffer2.append("select PRODUCT_NO from ("+sql+") tttt where 1=1 ");
 				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
 						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
@@ -945,7 +945,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			if(CollectionUtils.isNotEmpty(isPartitionTable)){
 				tableSpaceName = String.valueOf(((Map)isPartitionTable.get(0)).get("TABLESPACE_NAME"));
 			}
-			if(StringUtil.isEmpty(tableSpaceName) || "null".equals(tableSpaceName) ){ //为空，代表的就是分区表
+			if(StringUtils.isEmpty(tableSpaceName) || "null".equals(tableSpaceName) ){ //为空，代表的就是分区表
 				if(partitionList.size() == 0){  //该分区不存在 
 					String createPartition = "";
 					String createPartition1 = "";
@@ -960,7 +960,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 						createPartition1 = "alter table "+tabSpace+"."+tableName+" split partition p_max at ('"+df1.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
 					}
 					log.info("为mcd_ad库创建分区语句："+createPartition1);
-					if(StringUtil.isNotEmpty(createPartition1)){
+					if(StringUtils.isNotEmpty(createPartition1)){
 						jt.execute(createPartition1);
 					}
 				}
@@ -968,7 +968,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			
-			if(StringUtil.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+			if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 				if(removeRepeatFlag){  //当是true的时候需要去重复数据
 					buffer.append("DECLARE ");
 					buffer.append("CURSOR cur IS ");
@@ -1078,31 +1078,31 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	private String createSqlStrTemp(String bussinessLableSql,String basicEventSql,String customgroupid,String orderProductNo,String excludeProductNo){
 		StringBuffer buffer = new StringBuffer();
 		String sql = "";
-		if(StringUtil.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+		if(StringUtils.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 					  buffer.append("select * from ("+bussinessLableSql+") T4 where 1=1")
 					  .append(" and T4.product_no in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				buffer.append(bussinessLableSql);
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				buffer.append(basicEventSql);
 			}
 		}else{
 			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
-			if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
+			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select * from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql+")")
 					  .append(" and PRODUCT_NO in ("+basicEventSql+")");
-			}else if(StringUtil.isNotEmpty(bussinessLableSql) && StringUtil.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
+			}else if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isEmpty(basicEventSql)){//只选择业务标签  不选择基本标签
 				buffer.append("select * from ")
 					  .append(tableListName)
 					  .append(" where PRODUCT_NO in (")
 					  .append(bussinessLableSql)
 					  .append(")");
-			}else if(StringUtil.isEmpty(bussinessLableSql) && StringUtil.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
+			}else if(StringUtils.isEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){//只选择基础标签  不选择业务标签
 				buffer.append("select * from ")
 					  .append(tableListName)
 				      .append(" where PRODUCT_NO in (")
@@ -1117,7 +1117,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		
 		sql = buffer.toString();
 		StringBuffer sbuffer1 = new StringBuffer();
-		if(StringUtil.isNotEmpty(orderProductNo)){  //订购产品
+		if(StringUtils.isNotEmpty(orderProductNo)){  //订购产品
 			String orderProductNos[] = orderProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<orderProductNos.length;i++){
@@ -1127,7 +1127,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 					temp += ("'"+orderProductNos[i]+"'");
 				}
 			}
-			if(StringUtil.isNotEmpty(sql)){
+			if(StringUtils.isNotEmpty(sql)){
 				sbuffer1.append("select * from ("+sql+") ttt where 1=1");
 				sbuffer1.append(" and ttt.PRODUCT_NO in (")
 						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")
@@ -1139,7 +1139,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			sql = sbuffer1.toString();
 		}
 		StringBuffer sbuffer2 = new StringBuffer();
-		if(StringUtil.isNotEmpty(excludeProductNo)){  //剔除产品
+		if(StringUtils.isNotEmpty(excludeProductNo)){  //剔除产品
 			String excludeProductNos[] = excludeProductNo.split("&");
 			String temp = "";
 			for(int i=0;i<excludeProductNos.length;i++){
@@ -1149,7 +1149,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 					temp += ("'"+excludeProductNos[i]+"'");
 				}
 			}
-			if(StringUtil.isNotEmpty(sql)){
+			if(StringUtils.isNotEmpty(sql)){
 				sbuffer2.append("select * from ("+sql+") tttt where 1=1 ");
 				sbuffer2.append(" and tttt.PRODUCT_NO NOT in (")
 						.append(" SELECT PRODUCT_NO FROM MCD_PROD_ORDER WHERE PROD_ID IN (")

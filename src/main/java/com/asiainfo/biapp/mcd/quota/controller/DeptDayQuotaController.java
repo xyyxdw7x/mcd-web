@@ -30,7 +30,7 @@ import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -68,7 +68,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         
         CityQuotaStatisDay cityDayQuota = quotaConfigCityDayService.getCityQuotaStatisDay(cityId);
         
-        if (StringUtil.isEmpty(showDate)) {
+        if (StringUtils.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }
         showDate = QuotaUtils.getFullDate();
@@ -99,7 +99,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         String cityId = this.getUser(request, response).getCityId();
         String dataDate = "";
         String showDate = request.getParameter("dataDate");
-        if (StringUtil.isEmpty(showDate)) {
+        if (StringUtils.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
             showDate = dataDate;
         } else {// 将“yyyy年MM月 ”格式转化成“yyyyMM”格式
@@ -268,7 +268,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         String cityid = this.getUser(request, response).getCityId();
         String dataDate;
         String showDate = request.getParameter("dataDate");
-        if (StringUtil.isEmpty(showDate)) {
+        if (StringUtils.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }else{//将“yyyy年MM月 ”格式转化成“yyyyMM”格式
         	

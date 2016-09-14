@@ -25,7 +25,7 @@ import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -58,7 +58,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         String dataDate;
         String showDate = request.getParameter("dataDate");
         boolean couldAdjust = true;
-        if (StringUtil.isEmpty(showDate)) {
+        if (StringUtils.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
             showDate = dataDate;
         } else {
@@ -142,7 +142,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
 
         String cityid = this.getUser(request, response).getCityId();
         String dataDate = request.getParameter("dataDate");
-        if (StringUtil.isEmpty(dataDate)) {
+        if (StringUtils.isEmpty(dataDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }
         String jsonStr = request.getParameter("beans");

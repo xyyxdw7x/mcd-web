@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang.time.FastDateFormat;
 
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 日期转换工具类 ，使用BeanUtils时，Date类型值为空的解决办法
@@ -42,7 +42,7 @@ public class DateConvert implements Converter {
 			}
 		} else {//java.util.Date,java.sql.Date
 			String p = arg1 != null ? dateTimeLongFormat.format(arg1) : "";
-			if (StringUtil.isEmpty(p)) {
+			if (StringUtils.isEmpty(p)) {
 				return null;
 			}
 			try {

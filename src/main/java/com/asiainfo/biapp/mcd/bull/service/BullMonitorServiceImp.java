@@ -19,7 +19,7 @@ import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.util.QuotaUtils;
-import com.asiainfo.biframe.utils.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Service("bullMonitorService")
 public class BullMonitorServiceImp implements BullMonitorService {
@@ -64,7 +64,7 @@ public class BullMonitorServiceImp implements BullMonitorService {
 
 		List<BullMonitor> list = new ArrayList<BullMonitor>();
 		List<Map<String, Object>> list4Map = null;
-		if(!StringUtil.isEmpty(deptId)){
+		if(!StringUtils.isEmpty(deptId)){
 			list4Map = bullMonitorDao.getBullMonitorListByDept(cityId, deptId);
 		}else{
 			list4Map = bullMonitorDao.getBullMonitorList(cityId);
@@ -135,7 +135,7 @@ public class BullMonitorServiceImp implements BullMonitorService {
 		if(CollectionUtils.isNotEmpty(listCampsegMsg)){
 			for (Map<String, Object> map : listCampsegMsg) {
 				String cepEventId = (String) map.get("cep_event_id");
-				if(StringUtil.isNotEmpty(cepEventId)){
+				if(StringUtils.isNotEmpty(cepEventId)){
 					try {
 						if(targetStaus == 51){ //开始
 							CepUtil.restartCepEvent(cepEventId);
@@ -173,7 +173,7 @@ public class BullMonitorServiceImp implements BullMonitorService {
 		if(pauseComment==null){
 			pauseComment="";
 		}
-		if(!StringUtil.isEmpty(campIds)){
+		if(!StringUtils.isEmpty(campIds)){
 			String[] ids = campIds.split(",");
 			String inClause = this.getInClause(ids);
 			bullMonitorDao.batchUpdatePauseComment(inClause,pauseComment);
