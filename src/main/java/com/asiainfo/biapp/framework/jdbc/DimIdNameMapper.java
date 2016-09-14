@@ -20,12 +20,12 @@ public interface DimIdNameMapper {
 	 * 查询一个纬度下的所有信息
 	 * @return
 	 */
-	public List<Object> queryDimAllData();
+	public <T> List<T> queryDimAllData();
 
 	/**
 	 * 根据ID查询对应的名称
 	 * @param ids
 	 * @return
 	 */
-	public List<Object> queryDimNameListByCondition(List<String> ids);
+	public <T> List<T> queryDimNameListByCondition(List<String> ids);
 }
