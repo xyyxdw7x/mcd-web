@@ -26,11 +26,11 @@ public interface CustGroupInfoDao {
 	 */
 	public List<McdCustgroupDef> getMyCustGroup(String currentUserId);
 	
-	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
+	public List<Map<String,Object>> searchCustom(String contentType, Pager pager, String userId, String keywords);
 	
 	public String isCustomDeletable(String customGrpId, String userId);
 	
-	public List searchCustomDetail(String customGrpId);
+	public List<Map<String,Object>> searchCustomDetail(String customGrpId);
 	
 	public String getExistQueueCfgId(String group_into_id, String queue_id)throws Exception;
 	
@@ -40,7 +40,7 @@ public interface CustGroupInfoDao {
 	
 	public void deleteCustom(String customGrpId);
 	
-	public List queryQueueInfo();
+	public List<Map<String,Object>> queryQueueInfo();
 	/**
 	 * 获取原始客户群数量
 	 * @param custGroupId
@@ -66,7 +66,7 @@ public interface CustGroupInfoDao {
 	 * @param customGroupId
 	 * @return
 	 */
-	public List getSqlLoderISyncDataCfg(String customGroupId);
+	public List<Map<String,Object>> getSqlLoderISyncDataCfg(String customGroupId);
 	void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName,String mtlCuserTableName, String ftpStorePath, String filenameTemp, String customGroupId);
     /**
      * add by jinl 20150717
@@ -78,7 +78,7 @@ public interface CustGroupInfoDao {
      * @return List 
      * @throws
      */
-    public List getTargetCustomerbase(String campsegId);
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId);
     /**
      * 根据客户群ID查找客户群信息
      */
@@ -100,7 +100,7 @@ public interface CustGroupInfoDao {
     public int getOriCustGroupNum(String custom_group_id);
     
 	
-	List getMtlCustomListInfo(String customgroupid); 
+	List<Map<String,Object>> getMtlCustomListInfo(String customgroupid); 
 	/**
 	 * 
 	 * @param bussinessLableSql 业务标签拼装的SQL  过滤黑名单
@@ -109,7 +109,7 @@ public interface CustGroupInfoDao {
 	 * @param campsegTypeId  策略类型ID 
 	 * @return
 	 */
-	public List getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
+	public List<Map<String,Object>> getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
 	
 	/**
 	 * 免打扰  频次过滤
@@ -125,8 +125,8 @@ public interface CustGroupInfoDao {
 	 * @param updateCycle：客户群周期
 	 * @return
 	 */
-	public List getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId);
-	List getAfterBotherAvoid1(String bussinessLableSql, String basicEventSql, String channelId, int campsegTypeId,
+	public List<Map<String,Object>> getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId);
+	List<Map<String,Object>> getAfterBotherAvoid1(String bussinessLableSql, String basicEventSql, String channelId, int campsegTypeId,
 			String customgroupid, String orderProductNo, String excludeProductNo, int avoidBotherFlag,
 			int contactControlFlag, String cityId, String cityType, String frequencyTime, int updateCycle,String campsegId);
 	

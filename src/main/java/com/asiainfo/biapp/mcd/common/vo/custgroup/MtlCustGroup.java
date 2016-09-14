@@ -10,6 +10,11 @@ public class MtlCustGroup implements java.io.Serializable {
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5687616771425100867L;
+
 	private String custGroupId;
 
 	private String custGroupName;
