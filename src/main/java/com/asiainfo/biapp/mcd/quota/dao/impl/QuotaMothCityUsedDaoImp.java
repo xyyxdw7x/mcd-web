@@ -8,8 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.QuotaMothCityUsedDao;
@@ -31,7 +29,6 @@ public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
 						@Override
 						public void setValues(PreparedStatement ps, int index)
 								throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setString(1, list.get(index).getCityId());
 							ps.setString(2, list.get(index).getDataDate());
 							ps.setInt(3, list.get(index).getUsedNum());
@@ -39,12 +36,10 @@ public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
 
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("插入地市月使用额出错！！！");
 			throw e;
 		}
