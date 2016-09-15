@@ -663,7 +663,8 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 log.info("*********************日志信息："+childxml);
                  Document dom=DocumentHelper.parseText(childxml); 
                  Element root=dom.getRootElement();  
-                 List<Element> elementList=root.elements("APPROVE_INFO"); 
+                 @SuppressWarnings("unchecked")
+				List<Element> elementList=root.elements("APPROVE_INFO"); 
                  List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
         
                  

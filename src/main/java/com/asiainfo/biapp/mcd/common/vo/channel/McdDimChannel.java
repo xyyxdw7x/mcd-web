@@ -13,6 +13,11 @@ public class McdDimChannel implements java.io.Serializable {
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -81148059180044511L;
+	
 	@Column(name="channel_id")
 	private String channelId;
 	@Column(name="channel_name")

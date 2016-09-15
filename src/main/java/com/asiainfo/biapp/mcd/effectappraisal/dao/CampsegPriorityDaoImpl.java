@@ -18,9 +18,9 @@ import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
-import com.asiainfo.biapp.mcd.util.jdbcPage.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 /**
  * 

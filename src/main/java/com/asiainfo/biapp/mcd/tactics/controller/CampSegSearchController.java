@@ -384,7 +384,6 @@ public class CampSegSearchController extends BaseMultiActionController {
 		xml.append("<CANCEL_DESC>" + anceldesc + "</CANCEL_DESC>");
 		xml.append("</ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>");
 
-		String assing_id = null;
 		String approve_flag = null;
 		String approve_desc = null;
 		log.info("开始工单撤销 ！");
@@ -402,10 +401,10 @@ public class CampSegSearchController extends BaseMultiActionController {
 			log.info("撤销工单返回responed xml " + childxml);
 			Document dom = DocumentHelper.parseText(childxml);
 			Element root = dom.getRootElement();
+			@SuppressWarnings("unchecked")
 			List<Element> elementList = root.elements("ASSIGNMENT_INFO");
 			for (int i = 0; i < elementList.size(); i++) {
 				Element element = (org.dom4j.Element) elementList.get(i);
-				assing_id = element.element("ASSIGN_ID") != null ? element.element("ASSIGN_ID").getText() : "";
 				approve_flag = element.element("PROCESS_FLAG") != null ? element.element("PROCESS_FLAG").getText() : "";
 				approve_desc = element.element("PROCESS_DESC") != null ? element.element("PROCESS_DESC").getText() : "";
 			}

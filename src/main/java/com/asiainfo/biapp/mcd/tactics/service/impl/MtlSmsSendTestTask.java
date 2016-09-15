@@ -191,7 +191,7 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
                 MspWebServicePortType wbPortType = locator.getMspWebServiceHttpPort(endpoint);
                 //MspWebServiceHttpBindingStub service = new MspWebServiceHttpBindingStub();
             
-                for (int i = 0; i < taskList.size(); i++) {
+                for (int i = 0; i < taskList.size();) {
                     TaskValue[] values ;
                     if(i==(taskList.size()-1)){
                         values = Arrays.copyOf(taskList.get(i), totalcount-150*i);
@@ -239,7 +239,6 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
                 }
         
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return "操作失败";
             }
@@ -252,7 +251,6 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
  */
 private void saveMtkSmsSendTestTaskInfo(String port,
             Date schduleTime, Date endTime, String message, String cAMPSEG_ID) throws SQLException {
-        // TODO Auto-generated method stub
     String sql = "";
     try {
         conn = this.getJdbcTemplate().getDataSource().getConnection();
@@ -312,7 +310,6 @@ private void saveMtkSmsSendTestTaskInfo(String port,
         conn.commit();
         
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -341,7 +338,6 @@ public String getMessage(String CAMPSEG_ID,String channel_id) throws SQLExceptio
                 message = rs.getString(1);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             if(ps!=null) ps.close();
@@ -416,7 +412,6 @@ public String getPort(String CAMPSEG_ID) throws SQLException{
                 }
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             if(ps!=null) ps.close();
@@ -449,7 +444,6 @@ public String getCityandCampsegNameCreUID(String CAMPSEG_ID) throws SQLException
             createUserId = rs.getString(3);
         }
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -464,8 +458,8 @@ public String getCityandCampsegNameCreUID(String CAMPSEG_ID) throws SQLException
  * @return
  * @throws SQLException 
  */
-public Map getUserPhone(String cityid) throws SQLException{
-    Map map = new HashMap();
+public Map<Integer, String> getUserPhone(String cityid) throws SQLException{
+    Map<Integer, String> map = new HashMap<Integer, String>();
     
     String sql = " select * from mcd_sms_test_group where city_id=?";
     try {
@@ -479,7 +473,6 @@ public Map getUserPhone(String cityid) throws SQLException{
             count++;
         }
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -495,7 +488,6 @@ public Map getUserPhone(String cityid) throws SQLException{
  */
 @Override
 public void updateCampsegInfoState(String campseg_id, String status) throws SQLException {
-    // TODO Auto-generated method stub
     
     String sql = " update mcd_camp_def a set a.campseg_stat_id = ? where a.campseg_id = ? or a.campseg_id =(select campseg_pid from mcd_camp_def where campseg_id = ?)";
     try {
@@ -509,7 +501,6 @@ public void updateCampsegInfoState(String campseg_id, String status) throws SQLE
         
         conn.commit();
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -523,7 +514,6 @@ public void updateCampsegInfoState(String campseg_id, String status) throws SQLE
 @SuppressWarnings("finally")
 @Override
 public String getSmsTestReplayContent(String replyXml) {
-    // TODO Auto-generated method stub
     String sendNo = "";
     String replyPhoneNo = "";
     String replyContent = "";
@@ -541,7 +531,6 @@ public String getSmsTestReplayContent(String replyXml) {
         dom = DocumentHelper.parseText(repXml);
         log.info("-------------------------out------------------------------------>");
         Element root=dom.getRootElement();  
-        List<Element> elementList=root.elements();  
         sendNo = root.element("sendNo")==null?"":root.element("sendNo").getText(); //短信回复端口
         replyPhoneNo  = root.element("replyPhoneNo")==null?"":root.element("replyPhoneNo").getText(); //回复人号码
         replyContent = root.element("replyContent")==null?"":root.element("replyContent").getText(); //回复内容
@@ -577,20 +566,17 @@ public String getSmsTestReplayContent(String replyXml) {
                         updateCampsegInfoState(campsegid, MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG);
                     }
                     } catch (Exception e) {
-                    // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 //根据模版给策划人发送短信
                     String campsegPho="";
                     String valueRet = getCityandCampsegNameCreUID(campsegid);//city|campsegName|create_userid
-                    String cUID = valueRet.split("[|]")[2];
                     String campsegName = valueRet.split("[|]")[1];
                     
                     try {
                         // 暂时注释，因为这块迁移不能实现
 //                        campsegPho = PrivilegeServiceUtil.getUserById(cUID).getMobilePhone();//根据权限接口 获取策划人对象  得到 电话号码
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     String replyPhoName = getReplyPhoNameByPho(replyPhoneNo);
@@ -611,7 +597,6 @@ public String getSmsTestReplayContent(String replyXml) {
                 
             }
     } catch (DocumentException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
         xmlStr.append("<flag>"+Flag+"</flag>");
         xmlStr.append("<msg>接收失败</msg>");
@@ -634,7 +619,6 @@ public String getSmsTestReplayContent(String replyXml) {
 
 private void saveFailLinformInfo(String campsegid, String campsegPho,
         String message, Timestamp sendTime) throws SQLException {
-    // TODO Auto-generated method stub
     
     String sql ="";
     try {
@@ -669,7 +653,6 @@ private void saveFailLinformInfo(String campsegid, String campsegPho,
         
         conn.commit();
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -686,7 +669,6 @@ private void saveFailLinformInfo(String campsegid, String campsegPho,
  */
 
 private String getReplyPhoNameByPho(String replyPhoneNo) throws SQLException {
-    // TODO Auto-generated method stub
     
     String sql = " select USER_NAME from mcd_sms_test_group where PRODUCT_NO=?";
     String userName = "";
@@ -699,7 +681,6 @@ private String getReplyPhoNameByPho(String replyPhoneNo) throws SQLException {
             userName = rs.getString(1);
         }
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -715,7 +696,6 @@ private String getReplyPhoNameByPho(String replyPhoneNo) throws SQLException {
  * @return
  */
 private String simpleSmsSendTask(String campsegPho, String sendNo, String message) {
-    // TODO Auto-generated method stub
     
 
     String reserve21 = "";
@@ -787,10 +767,8 @@ private String simpleSmsSendTask(String campsegPho, String sendNo, String messag
         result = resultXml.getResultCode().toString();
         
     } catch (ServiceException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }catch (RemoteException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }
     
@@ -848,7 +826,6 @@ private String simpleSmsSendTask(String campsegPho, String sendNo, String messag
             }
             
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }*/ 
     
@@ -865,7 +842,6 @@ private String simpleSmsSendTask(String campsegPho, String sendNo, String messag
  */
 private void saveSmsTestReplayInfo(String campsegid, String sendNo,
         String replyPhoneNo, String replyContent, String replyTime) throws SQLException {
-    // TODO Auto-generated method stub
     
     String sql ="";
     try {
@@ -907,10 +883,8 @@ private void saveSmsTestReplayInfo(String campsegid, String sendNo,
         conn.commit();
         
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     } catch (ParseException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -929,7 +903,6 @@ private void saveSmsTestReplayInfo(String campsegid, String sendNo,
  */
 
 private String getCampidAndisOverByPort(String sendNo,String replyTime) throws SQLException {
-    // TODO Auto-generated method stub
     String campsegid ="";
     Timestamp overTime ;
     
@@ -955,10 +928,8 @@ private String getCampidAndisOverByPort(String sendNo,String replyTime) throws S
             }
         }
     } catch (SQLException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     } catch (ParseException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }finally{
         if(ps!=null) ps.close();
@@ -973,7 +944,6 @@ private String getCampidAndisOverByPort(String sendNo,String replyTime) throws S
      */
     @Override
     public void updateMtlSmsTestCampsegInfoSendTime(String campsegId)  throws SQLException {
-        // TODO Auto-generated method stub
         String sql = " update mcd_sms_test_camp a set a.send_time = ? where a.campseg_id = ?";
         final java.sql.Date sqlDate=new java.sql.Date(System.currentTimeMillis());
         try {
@@ -986,7 +956,6 @@ private String getCampidAndisOverByPort(String sendNo,String replyTime) throws S
             
             conn.commit();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             if(ps!=null) ps.close();

@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.effectappraisal.dao.IcampsegPriorityDao;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 import org.apache.commons.lang3.StringUtils;
 
 /**

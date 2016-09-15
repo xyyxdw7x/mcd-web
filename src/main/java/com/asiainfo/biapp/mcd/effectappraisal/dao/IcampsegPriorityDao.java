@@ -3,8 +3,8 @@ package com.asiainfo.biapp.mcd.effectappraisal.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 /**
  * 

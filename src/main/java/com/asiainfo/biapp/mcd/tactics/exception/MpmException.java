@@ -15,6 +15,11 @@ public class MpmException extends RuntimeException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -6274769042872197927L;
+
+	/**
+	 * 
+	 */
 	public MpmException() {
 		super();
 		// TODO Auto-generated constructor stub

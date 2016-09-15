@@ -2,8 +2,8 @@ package com.asiainfo.biapp.mcd.index.dao;
 
 import java.util.List;
 
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.vo.CampChannel;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 public interface SaleSituationDao {
 
