@@ -13,6 +13,11 @@ public class McdDimChannel implements java.io.Serializable {
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -81148059180044511L;
+	
 	@Column(name="channel_id")
 	private String channelId;
 	@Column(name="channel_name")
@@ -25,6 +30,16 @@ public class McdDimChannel implements java.io.Serializable {
     private String typeId;
     private String typeName;
     
+    private String Num;//优先级模块使用
+    
+
+	public String getNum() {
+		return Num;
+	}
+
+	public void setNum(String num) {
+		Num = num;
+	}
 
 	public Integer getDisplayOrder() {
         return displayOrder;

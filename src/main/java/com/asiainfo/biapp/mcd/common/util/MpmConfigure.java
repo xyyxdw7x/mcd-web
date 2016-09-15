@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -96,11 +97,11 @@ public class MpmConfigure {
 					Properties propsProvince = new Properties();
 					propsProvince.load(fisp);
 					fisp.close();
-					Set entries = propsProvince.entrySet();
+					Set<Entry<Object, Object>> entries = propsProvince.entrySet();
 					if (entries != null) {
-						Iterator iterator = entries.iterator();
+						Iterator<Entry<Object, Object>> iterator = entries.iterator();
 						while (iterator.hasNext()) {
-							Map.Entry entry = (Map.Entry) iterator.next();
+							Map.Entry<Object,Object> entry = (Map.Entry<Object,Object>) iterator.next();
 							Object key = entry.getKey();
 							Object value = entry.getValue();
 							if (!properties.containsKey(key.toString())) {
@@ -136,9 +137,9 @@ public class MpmConfigure {
 	private static final Logger log = LogManager.getLogger();
 	private static MpmConfigure configure = new MpmConfigure();
 	private static final String DEFAULT_CONFIG_TYPE = "MPM_PROPERTIES";
-	private static Map modifiedTimeMap = new HashMap();
-	private static Map fileMap = new HashMap();
-	private static Map fileNameMap = new HashMap();
-	private static Map configMap = new HashMap();
+	private static Map<String, Long> modifiedTimeMap = new HashMap<String, Long>();
+	private static Map<String, String> fileMap = new HashMap<String, String>();
+	private static Map<String, String> fileNameMap = new HashMap<String, String>();
+	private static Map<String, Properties> configMap = new HashMap<String, Properties>();
 
 }

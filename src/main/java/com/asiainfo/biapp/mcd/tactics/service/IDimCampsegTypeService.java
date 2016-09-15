@@ -1,5 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
+import java.util.List;
+
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 public interface IDimCampsegTypeService {
@@ -25,5 +27,6 @@ public interface IDimCampsegTypeService {
      * @throws
      */
     McdDimCampType getDimCampsegType(Short campsegTypeId);
+	List<McdDimCampType> getAllDimCampsegType() throws Exception;
 
 }

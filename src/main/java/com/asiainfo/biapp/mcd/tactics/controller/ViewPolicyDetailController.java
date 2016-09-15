@@ -1,7 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DateConvert;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
@@ -45,7 +44,6 @@ import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.DataGridData;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
-import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
@@ -74,7 +72,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @Resource(name = "mtlStcPlanService")
     private IMtlStcPlanService mtlStcPlanService;
     @Resource(name = "custGroupInfoService")
-    private CustGroupInfoService custGroupInfoService;
+    private ICustGroupInfoService custGroupInfoService;
     @Resource(name = "mtlChannelDefService")
     private IMtlChannelDefService mtlChannelDefService;
     @Resource(name = "channelBossSmsTemplateService")
@@ -148,16 +146,14 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
             
             //创建时间 日期格式 yyyy-MM-dd
             String createTime = DateConvert.formatLongDateTime(segInfo.getCreateTime());
-            Short campsegStatId = Short.valueOf(segInfo.getStatId());
             //营销活动状态名
             McdDimCampStatus dimCampsegStat = mpmCampSegInfoService.getDimCampsegStat(segInfo.getStatId().toString()); 
             String statusName = dimCampsegStat.getCampsegStatName(); //MpmCache.getInstance().getNameByTypeAndKey(MpmCONST.MPM_CAMPSEG_STAT_DEFINE,segInfo.getCampsegStatId().toString());
             //营销类型
             Short campsegTypeId = segInfo.getTypeId() == null ? 0 : segInfo.getTypeId();
             String campsegTypeName = dimCampsegTypeService.getDimCampsegTypeName(campsegTypeId);
-            McdDimCampType campsegType = dimCampsegTypeService.getDimCampsegType(campsegTypeId);
             
-            Map map= new HashMap();
+            Map<String,Object> map= new HashMap<String,Object>();
             map.put("campsegId", segInfoBean.getCampId());
             map.put("campsegName", segInfoBean.getCampName());
             map.put("statusName", statusName);
@@ -205,7 +201,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @RequestMapping("/getMtlStcPlan")
     @ResponseBody
     public Map<String, Object> getMtlStcPlan(HttpServletRequest request,HttpServletResponse response) throws Exception {
-    	McdCampDef segInfoBean = new McdCampDef();   
     	Map<String,Object> returnMap = new HashMap<String,Object>();
 
          // “匹配的政策”
@@ -257,7 +252,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @ResponseBody
     public Map<String, Object> getTargetCustomerbase(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        McdCampDef segInfoBean = new McdCampDef();     
         Map<String,Object> returnMap = new HashMap<String,Object>();
 
          //投放的渠道
@@ -302,13 +296,11 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
          System.out.println("customDataJSON=========="+customDataJSON);
          //获取细分规则信息（时机）
          List<Map<String,Object>> ruleList= mpmCampSegInfoService.getrule(campsegId);
-         String show_sql="";
          String resultStr ="";
          for(int i=0;i<ruleList.size();i++){
              Map<String,Object> tmap = ruleList.get(i);
              String elementValue = (String) tmap.get("ELEMENT_VALUE");
              String columnCnName = (String) tmap.get("COLUMN_CN_NAME");
-             String ctrlTypeId = (String)tmap.get("CTRL_TYPE_ID");   //预留，可以根据标签类型进行拼接，暂时不错
              if(elementValue.indexOf(",") != -1){
                  resultStr += columnCnName + "in ("+elementValue+") &";
              }else{
@@ -321,12 +313,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                      resultStr += " "+columnCnName +"like "+elementValue+" &";
                  }
              }
-//           if ("".equals(show_sql)) {
-//              show_sql = (String) tmap.get("show_sql");
-//           } else {
-//              show_sql = show_sql + ";" + (String) tmap.get("show_sql");
-//           }
-//           custgroup_number =  tmap.get("custgroup_number") == null ? null :(BigDecimal) tmap.get("custgroup_number");
          }
          if(StringUtils.isNotEmpty(resultStr)){
              customDataJSON.put("show_sql", resultStr.substring(0, resultStr.length()-1));
@@ -344,25 +330,23 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
          List<Map<String,Object>> getDataDateCustomNumlist  = custGroupInfoService.getDataDateCustomNum(campsegId);//20130916114353920  
         String max_data_time=null;
         BigDecimal sum_custom_num=null;
-//       for(int i=0;i<getDataDateCustomNumlist.size();i++){
          if(CollectionUtils.isNotEmpty(getDataDateCustomNumlist)){
              Map<String,Object> tmap = getDataDateCustomNumlist.get(0);
              max_data_time = tmap.get("max_data_time") == null ? null : (String) tmap.get("max_data_time");
              sum_custom_num = tmap.get("sum_custom_num") == null ? null : (BigDecimal) tmap.get("sum_custom_num");
          }
-//       }
          customDataJSON.put("max_data_time", max_data_time == null ? "" : max_data_time);
          customDataJSON.put("sum_custom_num", sum_custom_num == null ? "" : sum_custom_num); 
          System.out.println("customDataJSON=========="+customDataJSON);
          //取 渠道信息，包含渠道成名，客户群规模。实际客户群规模
-         List mcdList = mpmCampSegInfoService.getMtlChannelDefs(campsegId);
+         List<Map<String,Object>> mcdList = mpmCampSegInfoService.getMtlChannelDefs(campsegId);
          
          //取原始客户群数量
          int oricustGroupNum = custGroupInfoService.getOriCustGroupNum(custom_group_id);
          
-         List<Map> mtltlChannelDefList = new ArrayList<Map>(); 
+         List<Map<String,Object>> mtltlChannelDefList = new ArrayList<Map<String,Object>>(); 
          for(int i=0;i< mcdList.size();i++){
-             Map map = (Map)mcdList.get(i);
+             Map<String,Object> map = (Map<String, Object>)mcdList.get(i);
              map.put("custgroup_number", custgroup_number == null ? "" : custgroup_number.toString());
              map.put("TARGER_USER_NUMS", oricustGroupNum);
              mtltlChannelDefList.add(map);
@@ -679,8 +663,9 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 log.info("*********************日志信息："+childxml);
                  Document dom=DocumentHelper.parseText(childxml); 
                  Element root=dom.getRootElement();  
-                 List<Element> elementList=root.elements("APPROVE_INFO"); 
-                 List<Map> mapList = new ArrayList<Map>();
+                 @SuppressWarnings("unchecked")
+				List<Element> elementList=root.elements("APPROVE_INFO"); 
+                 List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
         
                  
                  for(int i=0;i<elementList.size();i++){
@@ -719,7 +704,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 returnMap.put("status", "200");
                 returnMap.put("data", mapList);
             }else{
-                List<Map> mapList = new ArrayList<Map>();
+                List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
                 Map<String,String> map = new HashMap<String,String>();
                 map.put("node_name", "草稿");
                 map.put("node_no", "1");
@@ -739,7 +724,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
 //          e.getStackTrace();
 //          result.put("status", "201");
 //          result.put("result", "fail");
-            List<Map> mapList = new ArrayList<Map>();
+            List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
             Map<String,String> map = new HashMap<String,String>();
             map.put("node_name", "错误");
             map.put("node_no", "1");
@@ -799,7 +784,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         String campsegIds = request.getParameter("subCampsegIds");
         Map<String,Object> returnMap = new HashMap<String,Object>();
         try {
-                List list=mpmCampSegInfoService.getChannelsByCampIds(campsegIds);
+                List<Map<String,Object>> list=mpmCampSegInfoService.getChannelsByCampIds(campsegIds);
                 returnMap.put("status", "200");
                 returnMap.put("data", list);
                 
@@ -829,7 +814,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
        Map<String,Object> returnMap = new HashMap<String,Object>();
        DataGridData dg = new DataGridData();
        try {
-                List list=mpmCampSegInfoService.getCampChannelDetail(campsegId,channelId,startDate,endDate);
+                List<Map<String,Object>> list=mpmCampSegInfoService.getCampChannelDetail(campsegId,channelId,startDate,endDate);
                 dg.setDatas(list);
                 if("901".equals(channelId)){
                     dg.setHeaderTexts(new String[]{"执行时间","计划群发客户量","已发送量/过滤数量","当日成功办理量","累计接触客户量","累计成功办理量"});
@@ -874,7 +859,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
            Map<String,Object> returnMap = new HashMap<String,Object>();
            DataGridData dg = new DataGridData();
            try {
-                    List list=mpmCampSegInfoService.getCampsChannelSituation(campsegIds,channelId,statDate);
+                    List<Map<String,Object>> list=mpmCampSegInfoService.getCampsChannelSituation(campsegIds,channelId,statDate);
                     dg.setDatas(list);
                     if("901".equals(channelId)){
                         dg.setHeaderTexts(new String[]{"政策名称","计划群发客户量","已发送量/过滤数量","当日成功办理量","累计接触客户量","累计成功办理量"});

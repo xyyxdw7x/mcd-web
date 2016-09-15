@@ -5,8 +5,6 @@ package com.asiainfo.biapp.mcd.tactics.vo;
  */
 public class McdTempletForm  {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -7616317188130434008L;
 	/** 模版ID   */
 	private String templetId;
 	/** 模版选择的属性 对应MetaDataElementForm对象*/

@@ -61,7 +61,8 @@ public class Pager {
     public static final String GO_PAGE = "G";
 
     /** 当前页记录集 */
-    private List result = new ArrayList();
+    @SuppressWarnings("rawtypes")
+	private List result = new ArrayList();
 
     /** 总页数 */
     private int totalPage = 0;
@@ -277,11 +278,13 @@ public class Pager {
         this.pageStart = pageStart;
     }
 
-    public List getResult() {
+    @SuppressWarnings("rawtypes")
+	public List getResult() {
         return result;
     }
 
-    public void setResult(List result) {
+    @SuppressWarnings("rawtypes")
+	public void setResult(List result) {
         this.result = result;
     }
 
@@ -310,9 +313,7 @@ public class Pager {
     }
 
     public int getTotalPage() {
-//        if (totalPage == 0) {
-            this.setTotalPage((int) Math.ceil(totalSize / (double) pageSize));
-//        }
+         this.setTotalPage((int) Math.ceil(totalSize / (double) pageSize));
         return totalPage;
     }
 

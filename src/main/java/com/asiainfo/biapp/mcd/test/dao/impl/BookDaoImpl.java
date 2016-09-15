@@ -11,6 +11,7 @@ import com.asiainfo.biapp.framework.aop.BeanSelfAware;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.test.dao.IBookDao;
 import com.asiainfo.biapp.mcd.test.vo.Book;
+import com.esotericsoftware.minlog.Log;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 
 /**
@@ -54,7 +55,7 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	@Override
 	public Book getBook(String bookId) throws Exception {
 		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
-		
+		Log.info("getBook from database");
 		//int size=selfProxy.queryDatInMem();
 		return book;
 	}

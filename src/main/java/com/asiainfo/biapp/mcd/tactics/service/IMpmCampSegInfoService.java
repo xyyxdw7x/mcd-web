@@ -8,6 +8,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
@@ -32,7 +33,7 @@ public interface IMpmCampSegInfoService {
 	 * @param campsegId
 	 * @return
 	 */
-	public List searchIMcdCampsegInfo(McdCampDef segInfo,Pager pager);
+	public List<Map<String,Object>> searchIMcdCampsegInfo(McdCampDef segInfo,Pager pager);
 	/**
 	 * 修改营销活动信息  浙江IMCD
 	 * @param seginfoList
@@ -51,7 +52,7 @@ public interface IMpmCampSegInfoService {
      * JDBC查询策略状态
      * @return
      */
-    public List getDimCampsegStatList();
+    public List<McdDimCampStatus> getDimCampsegStatList();
 
 	public String saveCampSegWaveInfoZJ(List<McdCampDef> campSegInfoList);
 
@@ -81,13 +82,13 @@ public interface IMpmCampSegInfoService {
      * @return
      * @throws MpmException
      */
-    public List getCustGroupSelectList(String campsegId) throws MpmException;
+    public List<McdCampCustgroupList> getCustGroupSelectList(String campsegId) throws MpmException;
     /**
      * 根据策略ID查询渠道信息
      * @param campsegId
      * @return
      */
-    public List getMtlChannelDefs(String campsegId);
+    public List<Map<String,Object>> getMtlChannelDefs(String campsegId);
     /**
      * 根据编号删除策略信息
      * @param campSegId
@@ -141,13 +142,13 @@ public interface IMpmCampSegInfoService {
      * @param campsegId
      * @return
      */
-    public List getExecContentList(String campsegId);
+    public List<Map<String,Object>> getExecContentList(String campsegId);
     /**
      * 获取营销用语变量
      * @param campsegId
      * @return
      */
-    public List getExecContentVariableList(String campsegId);
+    public List<Map<String,Object>> getExecContentVariableList(String campsegId);
     /**
      * 保存营销用语
      * @param campsegId
@@ -187,7 +188,7 @@ public interface IMpmCampSegInfoService {
      * @return List 
      * @throws
      */
-    public List getTargetCustomerbase(String campsegId) throws Exception;
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId) throws Exception;
     /**
      * 获取细分规则信息（时机）
      * @param campsegId
@@ -205,7 +206,7 @@ public interface IMpmCampSegInfoService {
      * @param campsegId
      * @return
      */
-    public List getChannelsByCampIds(String campsegIds);
+    public List<Map<String,Object>> getChannelsByCampIds(String campsegIds);
     /**
      * 查询指定策略指定渠道在指定时间段内的营销情况
      * @param campsegId
@@ -214,7 +215,7 @@ public interface IMpmCampSegInfoService {
      * @param endDate
      * @return
      */
-    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
+    public List<Map<String,Object>> getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
     /**
      * 查询某策略某个指定渠道的所有子策略某天的执行情况   
      * @param campsegIds
@@ -222,7 +223,7 @@ public interface IMpmCampSegInfoService {
      * @param statDate
      * @return
      */
-    public List getCampsChannelSituation(String campsegIds, String channelId, String statDate);
+    public List<Map<String,Object>> getCampsChannelSituation(String campsegIds, String channelId, String statDate);
     
     /**
 	 * 根据产品id查询适配渠道

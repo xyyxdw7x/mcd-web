@@ -38,9 +38,6 @@ public class DimCampsegTypeDaoImpl extends JdbcDaoBase  implements IDimCampsegTy
 	public DimCampsegTypeDaoImpl() {
 		super();
 	}
-	/* (non-Javadoc)
-	 * @see com.asiainfo.biapp.mcd.dao.IDimCampsegTypeDao#getDimCampsegType(java.lang.Short)
-	 */
 	@Override
 	public McdDimCampType getDimCampsegType(Short campsegTypeId)
 			throws Exception {

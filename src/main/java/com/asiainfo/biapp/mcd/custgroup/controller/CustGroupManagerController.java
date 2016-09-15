@@ -27,9 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.IMtlCustGroupService;
+import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -55,17 +55,17 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	static Logger log = LogManager.getLogger(); 
 	
 	@Resource(name="custGroupInfoService")
-	private CustGroupInfoService custGroupInfoService;
+	private ICustGroupInfoService custGroupInfoService;
 	
 	@Resource(name="mpmCommonService")
-	private MpmCommonService mpmCommonService;
+	private IMpmCommonService mpmCommonService;
 	
 	@Resource(name="custGroupService")
-	private MtlCustGroupService custGroupService;
+	private IMtlCustGroupService custGroupService;
 	
 	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService campSegInfoService;
-	public void setCustGroupInfoService(CustGroupInfoService custGroupInfoService) {
+	public void setCustGroupInfoService(ICustGroupInfoService custGroupInfoService) {
 		this.custGroupInfoService = custGroupInfoService;
 	}
 	/**

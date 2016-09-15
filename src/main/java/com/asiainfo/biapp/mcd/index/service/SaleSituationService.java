@@ -1,7 +1,7 @@
 package com.asiainfo.biapp.mcd.index.service;
 
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 public interface SaleSituationService {
 	SaleSituation querySaleSituation(String cityId) throws Exception;

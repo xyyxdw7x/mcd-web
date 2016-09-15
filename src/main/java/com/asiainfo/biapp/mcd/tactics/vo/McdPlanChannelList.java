@@ -1,5 +1,8 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  * 
  * Title: 
@@ -9,11 +12,15 @@ package com.asiainfo.biapp.mcd.tactics.vo;
  * @author lixq10 2015-7-17 上午10:02:16
  * @version 1.0
  */
-
+@Table(name="mcd_plan_city_list")
 public class McdPlanChannelList {
 	private String id;
+	
+	@Column(name="plan_id")
 	private String planId;
+	@Column(name="channel_id")
 	private String channelId;
+	
 	private String adivId; //运营位
 	private String adivResourceId;  //素材编号
 	private String adivResourceName; //素材名称

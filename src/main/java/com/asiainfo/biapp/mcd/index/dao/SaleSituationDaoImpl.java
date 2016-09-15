@@ -15,12 +15,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.vo.CampChannel;
 import com.asiainfo.biapp.mcd.index.vo.MySale;
 import com.asiainfo.biapp.mcd.index.vo.RecommendCamp;
-import com.asiainfo.biapp.mcd.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.util.jdbcPage.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
+import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="saleSituationDao")
 public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDao {
