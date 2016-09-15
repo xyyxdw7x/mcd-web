@@ -10,11 +10,9 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -28,7 +26,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	@Override
 	public int getMoreMyCustomCount(String currentUserId,String keyWords) {
 		int count = 0;
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			parameterList.add(currentUserId);
@@ -57,12 +55,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		return count;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<McdCustgroupDef> getMoreMyCustom(String currentUserId,String keyWords, Pager pager) {
 		List<Map<String,Object>> list = null;
 		List<McdCustgroupDef> custGroupList = new ArrayList<McdCustgroupDef>();
-		List parameterList = new ArrayList();
+		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			parameterList.add(currentUserId);
@@ -88,8 +85,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}
 			String sqlExt = DataBaseAdapter.getPagedSql(sbuffer.toString(), pager.getPageNum(),pager.getPageSize());
 			list = this.getJdbcTemplate().queryForList(sqlExt.toString(),parameterList.toArray());
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			for (Map map : list) {
+			for (Map<String, Object> map : list) {
 				McdCustgroupDef custGroupInfo = new McdCustgroupDef();
 				custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
 				custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));    
@@ -130,8 +126,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
 			 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
 			 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_tab_list.max_data_time desc) WHERE CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?)");
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { currentUserId,currentUserId });
-			for (Map map : list) {
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { currentUserId,currentUserId });
+			for (Map<String, Object> map : list) {
 				McdCustgroupDef custGroupInfo = new McdCustgroupDef();
 				custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
 				custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));    
@@ -157,12 +153,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		return custGroupList;
 	}
 	@Override
-	@SuppressWarnings("unchecked")
-	public List searchCustom(String contentType, Pager pager, String userId, String keywords) {
+	public List<Map<String,Object>> searchCustom(String contentType, Pager pager, String userId, String keywords) {
 		
 		StringBuffer buffer = new StringBuffer();
 
-		List plist = new ArrayList();
+		List<Object> plist = new ArrayList<Object>();
 
 		if("ALL-CUSTOM".equals(contentType) || "MY-CUSTOM".equals(contentType)) {
 			buffer.append("select tbase.*, info.data_date,info.list_table_name from (");
@@ -216,8 +211,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		log.info("执行sql="+buffer);
 		
 		String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
-		List list = this.getJdbcTemplate().queryForList(sqlExt.toString(), plist.toArray());
-		List listSize = this.getJdbcTemplate().queryForList(buffer.toString(), plist.toArray());
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sqlExt.toString(), plist.toArray());
+		List<Map<String,Object>> listSize = this.getJdbcTemplate().queryForList(buffer.toString(), plist.toArray());
 		pager.setTotalSize(listSize.size());  // 总记录数
 		
 		return list;
@@ -234,15 +229,15 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		buffer.append(" and mcs.CAMPSEG_STAT_ID NOT IN (91)");
 		buffer.append(" union select custom_group_id from mcd_custgroup_def where create_user_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
 		buffer.append(" union select custom_group_id from mcd_custgroup_push where create_push_target_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
-		List params = new ArrayList();
+		List<Object> params = new ArrayList<Object>();
 		params.add(customGrpId);
-		List data = this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
+		List<Map<String,Object>> data = this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
 		
 		return data.size()>0?"0":"1";
 	}
 	
 	@Override
-	public List searchCustomDetail(String customGrpId) {
+	public List<Map<String,Object>> searchCustomDetail(String customGrpId) {
 		
 		StringBuffer buffer = new StringBuffer();
 		
@@ -264,7 +259,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		
 		log.info("searchCustomDetail执行sql="+buffer);
 		
-		List params = new ArrayList();
+		List<String> params = new ArrayList<String>();
 		params.add(customGrpId);
 		
 		return this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
@@ -274,12 +269,12 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	public String getExistQueueCfgId(String group_into_id, String queue_id) throws Exception {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT cfg_id from MTL_STC_10086_QUEUE where GROUP_INTO_ID=? and QUEUE_ID=? ");
-		List params = new ArrayList();
+		List<String> params = new ArrayList<String>();
 		params.add(group_into_id);
 		params.add(queue_id);
-		List list = this.getJdbcTemplate().queryForList(sb.toString(),params.toArray());
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sb.toString(),params.toArray());
 		if(null!=list && list.size()!=0){
-			return ((Map)list.get(0)).get("cfg_id")+"";
+			return ((Map<String,Object>)list.get(0)).get("cfg_id")+"";
 		}else {
 			return null;
 		}
@@ -288,9 +283,9 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	public String getMaxQueueCfgId() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT max(CFG_ID)+1 cfg_id from I_SYNC_data_CFG ");
-		List list = this.getJdbcTemplate().queryForList(sb.toString());
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sb.toString());
 		if(null!=list && list.size()!=0){
-			return ((Map)list.get(0)).get("cfg_id")+"";
+			return ((Map<String,Object>)list.get(0)).get("cfg_id")+"";
 		}else {
 			return null;
 		}
@@ -322,16 +317,15 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		
 		StringBuffer buffer = new StringBuffer("update mcd_custgroup_def t set t.custom_status_id = 2 where custom_group_id = ?");
 		
-		List params = new ArrayList();
+		List<String> params = new ArrayList<String>();
 		params.add(customGrpId);
 		
 		this.getJdbcTemplate().update(buffer.toString(), params.toArray());
 	}
 	@Override
-	public List queryQueueInfo() {
-		// TODO Auto-generated method stub
+	public List<Map<String,Object>> queryQueueInfo() {
 		StringBuffer sql = new StringBuffer("select * from dim_pub_10086_queue");
-		List list = this.getJdbcTemplate().queryForList(sql.toString());
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql.toString());
 		return list;
 	}
 	@Override
@@ -341,8 +335,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT * FROM mcd_custgroup_def WHERE CUSTOM_GROUP_ID = ?");
 		log.info("获取原始客户群："+buffer.toString());
-		list = this.getJdbcTemplate().queryForList(buffer.toString(), new String[]{custGroupId});
-		for (Map map : list) {
+		list = this.getJdbcTemplate().queryForList(buffer.toString(), new Object[]{custGroupId});
+		for (Map<String,Object> map : list) {
 			num = Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))); 
 		}
 		return num;
@@ -388,7 +382,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 
 	}
 	@Override
-	public List getSqlLoderISyncDataCfg(String customGroupId) {
+	public List<Map<String,Object>> getSqlLoderISyncDataCfg(String customGroupId) {
 		String sql = "select * From i_sync_data_cfg where POLICY_ID = ?";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{customGroupId});
 	}
@@ -403,8 +397,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
      * @throws
      */
     @Override
-    public List getTargetCustomerbase(String campsegId) {
-        List<Map<String,Object>> list = new ArrayList();
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId) {
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         try {
             StringBuffer sql = new StringBuffer("  select mgi.custom_group_id,  mgi.custom_group_name,mgi.update_cycle,"); 
             sql.append("  mgi.create_time, mgi.create_user_id,mgi.custom_num, ") ;
@@ -412,7 +406,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
             sql.append("  from mcd_custgroup_def mgi, mcd_camp_custgroup_list mcc, mcd_camp_def mcs  ") ;        
             sql.append("  where mgi.custom_group_id =mcc.custgroup_id and mcs.campseg_id = mcc.campseg_id  ") ;     
             sql.append("   and mcs.campseg_id = ?") ;
-            list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
+            list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId });
             //return !CollectionUtils.isEmpty(list);
         } catch (Exception e) {
             log.error("", e);
@@ -424,15 +418,15 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
      */
     @Override
     public McdCustgroupDef getMtlGroupInfo(String custgroupId) {
-        List list = null;
+        List<Map<String,Object>> list = null;
         McdCustgroupDef custGroupInfo = null;
         try {
             StringBuffer sbuffer = new StringBuffer();
             sbuffer.append("SELECT * FROM mcd_custgroup_def WHERE custom_group_id = ?");
             log.info("查询客户群信息："+sbuffer.toString());
-            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { custgroupId });
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { custgroupId });
             for (int i=0;i<list.size();i++) {
-                Map map = (Map)list.get(i);
+                Map<String,Object> map = (Map<String,Object>)list.get(i);
                  custGroupInfo = new McdCustgroupDef();
                 custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
                 custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));    
@@ -462,12 +456,12 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
      */
     @Override
     public List<Map<String, Object>> getDataDateCustomNum(String campsegId) {
-        List<Map<String,Object>> list = new ArrayList();
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         try {
             StringBuffer sql = new StringBuffer("   select mcli.data_date  max_data_time , mcli.custom_num sum_custom_num from mcd_custgroup_tab_list mcli where mcli.custom_group_id in (   "); 
             sql.append("   select mcc.custgroup_id from mcd_camp_def mcs left join mcd_camp_custgroup_list mcc on mcs.campseg_id = mcc.campseg_id ") ;        
             sql.append("  where mcs.campseg_Id= ? ) order by mcli.data_date desc ") ;     
-            list= this.getJdbcTemplate().queryForList(sql.toString(), new String[] { campsegId });
+            list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { campsegId });
             
         } catch (Exception e) {
             log.error("", e);
@@ -481,7 +475,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
      */
     @Override
     public int getOriCustGroupNum(String custom_group_id) {
-        List<Map> listTemp = this.getMtlCustomTableName(custom_group_id);
+        List<Map<String,Object>> listTemp = this.getMtlCustomTableName(custom_group_id);
         String custom_num = listTemp.get(0).get("custom_num").toString();  
         int result = 0;
         if(StringUtils.isNotEmpty(custom_num)){
@@ -491,13 +485,13 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
     }
     
     //查询第一次推送的客户群大小
-    private List getMtlCustomTableName(String customgroupid) {
+    private List<Map<String,Object>> getMtlCustomTableName(String customgroupid) {
         List<Map<String, Object>> list = null;
         try {
             StringBuffer sbuffer = new StringBuffer();
             sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date");
             log.info("查询客户群清单信息："+sbuffer.toString());
-            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+            list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { customgroupid });
         } catch (Exception e) {
             log.error("",e);
         }
@@ -515,7 +509,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			log.info("sql:"+sql);
 			list = this.getJdbcTemplate().queryForList(sql);
 			if(null != list && list.size()>0){
-				Map map = list.get(0);
+				Map<String, Object> map = list.get(0);
 				if(null != map.get("CUSTOM_CNT")) {
 					custCount = Integer.parseInt(String.valueOf(map.get("CUSTOM_CNT")));
 				}
@@ -530,13 +524,13 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	
 	//查询客户群清单信息
 	@Override
-	public List getMtlCustomListInfo(String customgroupid) {
+	public List<Map<String,Object>> getMtlCustomListInfo(String customgroupid) {
 		List<Map<String, Object>> list = null;
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date desc");
 			log.info("查询客户群清单信息："+sbuffer.toString());
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new String[] { customgroupid });
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { customgroupid });
 		} catch (Exception e) {
 			log.error("",e);
 		}
@@ -552,11 +546,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @return
 	 */
 	@Override
-	public List getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
+	public List<Map<String,Object>> getAfterFilterCustGroupListInMem(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
 		List<Map<String, Object>> list = null;
 		try {
 			String sql = "";
-			List paramList = new ArrayList();
+			List<String> paramList = new ArrayList<String>();
 			StringBuffer buffer = new StringBuffer();
 			if(StringUtils.isEmpty(customgroupid)  || customgroupid.equals("undefined")){
 				if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
@@ -580,7 +574,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 					paramList.add(String.valueOf(campsegTypeId));
 				}
 			}else{
-				List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+				List<Map<String,Object>> listTemp = this.getMtlCustomListInfo(customgroupid);
 				String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");   
 				if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){  //同时否选业务标签和基础标签
 					buffer.append("select PRODUCT_NO from ")
@@ -668,7 +662,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}
 			log.info("黑名单过滤sql:"+sql);
 			log.info("黑名单过滤传递参数："+paramList.toString());
-			JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
 			sql = "select count(1) blackFilterNum from ( "+sql+" )";
 			list = this.getJdbcTemplate().queryForList(sql,paramList.toArray());
 		} catch (Exception e) {
@@ -682,7 +675,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * 免打扰频次过滤,计算的是总数
 	 */
 	@Override
-	public List getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+	public List<Map<String,Object>> getAfterBotherAvoid1InMem(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
 			String customgroupid, String orderProductNo, String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId) {
 		List<Map<String, Object>> list = null;
 		String sql = "";
@@ -694,7 +687,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		try {
 			//先拼接 查询客户群与时机组合的客户群清单列表语句
 			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
-			StringBuffer buffer = new StringBuffer();
 			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
@@ -736,7 +728,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * 免打扰频次过滤,计算的是总数
 	 */
 	@Override
-	public List getAfterBotherAvoid1(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+	public List<Map<String,Object>> getAfterBotherAvoid1(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
 			String customgroupid, String orderProductNo, String excludeProductNo,int avoidBotherFlag,int contactControlFlag,String cityId,String cityType,String frequencyTime,int updateCycle,String campsegId) {
 		List<Map<String, Object>> list = null;
 		String sql = "";
@@ -748,7 +740,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		try {
 			//先拼接 查询客户群与时机组合的客户群清单列表语句
 			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
-			StringBuffer buffer = new StringBuffer();
 			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
@@ -821,7 +812,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				buffer.append(basicEventSql);
 			}
 		}else{
-			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			List<Map<String,Object>> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select PRODUCT_NO from ")
@@ -916,8 +907,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
 //		使用sql数据源
-		JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
-		List<Map> list = null;
 		String sql = "";
 		try {
 			sql = this.createSqlStrTemp(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
@@ -939,33 +928,30 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 			}
 			
 			//判断当前分区是否存在
-			List partitionList = this.checkPartitionIsExist(tableName, partitionName);
-			List isPartitionTable = this.checkTableIsPartition(tableName);
+			List<Map<String,Object>> partitionList = this.checkPartitionIsExistInMem(tableName, partitionName);
+			List<Map<String,Object>> isPartitionTable = this.checkTableIsPartitionInMem(tableName);
 			String tableSpaceName = "";
 			if(CollectionUtils.isNotEmpty(isPartitionTable)){
-				tableSpaceName = String.valueOf(((Map)isPartitionTable.get(0)).get("TABLESPACE_NAME"));
+				tableSpaceName = String.valueOf(((Map<String,Object>)isPartitionTable.get(0)).get("TABLESPACE_NAME"));
 			}
 			if(StringUtils.isEmpty(tableSpaceName) || "null".equals(tableSpaceName) ){ //为空，代表的就是分区表
 				if(partitionList.size() == 0){  //该分区不存在 
-					String createPartition = "";
 					String createPartition1 = "";
 					if(updateCycle == 3){  // 日周期
 //						直接添加最新的分区
 						SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-						createPartition = "alter table "+tableName+" split partition p_max at ('"+df.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
 						createPartition1 = "alter table "+tabSpace+"."+tableName+" split partition p_max at ('"+df.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
 					}else if(updateCycle == 2){  //月周期
 						SimpleDateFormat df1 = new SimpleDateFormat("yyyyMM");
-						createPartition = "alter table "+tableName+" split partition p_max at ('"+df1.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
 						createPartition1 = "alter table "+tabSpace+"."+tableName+" split partition p_max at ('"+df1.format(new Date())+"') into (partition "+partitionName+",partition p_max)";
 					}
 					log.info("为mcd_ad库创建分区语句："+createPartition1);
 					if(StringUtils.isNotEmpty(createPartition1)){
-						jt.execute(createPartition1);
+						this.getJdbcTemplate().execute(createPartition1);
 					}
 				}
 			}
-			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			List<Map<String,Object>> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			
 			if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
@@ -1014,7 +1000,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				buffer1.append("INSERT INTO ").append(tabSpace).append(".").append(tableName).append(sql);
 			}
 			log.info("sql:"+buffer.toString());
-			jt.execute(buffer.toString());
+			this.getJdbcTemplate().execute(buffer.toString());
 		} catch (Exception e) {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("update mcd_custgroup_def set custom_status_id=? WHERE custom_group_id = ? ");
@@ -1029,8 +1015,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @param tableName
 	 * @return
 	 */
-	private List checkTableIsPartition(String tableName){
-	    JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+	private List<Map<String,Object>> checkTableIsPartitionInMem(String tableName){
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("select * from user_tables where table_name =UPPER(?)");
 		log.info("查询分区是否存在："+buffer.toString());
@@ -1043,13 +1028,12 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 	 * @param partitionName
 	 * @return
 	 */
-	private List checkPartitionIsExist(String tableName,String partitionName){
-	    JdbcTemplate jt = SpringContextsUtil.getBean("sqlFireJdbcTemplate", JdbcTemplate.class);
+	private List<Map<String,Object>> checkPartitionIsExistInMem(String tableName,String partitionName){
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("select table_name,partition_name,high_value,tablespace_name from user_tab_partitions ")
 			  .append(" where table_name=UPPER(?) and partition_name=UPPER(?)");
 		log.info("查询分区是否存在："+buffer.toString());
-		List list = jt.queryForList(buffer.toString(),new Object[]{tableName,partitionName});
+		List<Map<String,Object>> list =  this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName,partitionName});
 		return list;
 	}
 	@Override
@@ -1057,7 +1041,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 		List<McdCustgroupDef> result = new ArrayList<McdCustgroupDef>();
 		String sqlStr = "select * from mcd_custgroup_def where custom_group_id=?";
 		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sqlStr,new Object[]{custGroupId});
-		for (Map map : list) {
+		for (Map<String,Object> map : list) {
 			McdCustgroupDef info = new McdCustgroupDef();
 			info.setCustomGroupId((String) map.get("custom_group_id"));
 			info.setCustomGroupName((String) map.get("custom_group_name"));
@@ -1088,7 +1072,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements CustGroupInfoD
 				buffer.append(basicEventSql);
 			}
 		}else{
-			List<Map> listTemp = this.getMtlCustomListInfo(customgroupid);
+			List<Map<String,Object>> listTemp = this.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select * from ")

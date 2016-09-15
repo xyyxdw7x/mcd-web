@@ -8,6 +8,11 @@ public class MtlCampsegProgressId implements java.io.Serializable {
 
 	// Fields    
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8580336768087425422L;
+
 	private String campsegId;
 
 	private Short stepId;

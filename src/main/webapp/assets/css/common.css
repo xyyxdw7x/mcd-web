@@ -1,0 +1,273 @@
+/**
+ * 所有页面的重置样式和部分公共样式
+ */
+ @charset "utf-8";
+/* CSS Document */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td
+	{
+	margin: 0;
+	padding: 0;
+}
+input[type='text']::-ms-clear{display:none;}
+i,em {
+	font-style: normal;
+}
+ul,ol {
+	list-style: none;
+}
+
+li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+dt,th {
+	font-weight: normal
+}
+
+.clear {
+	clear: both;
+	font-size: 0px;
+	overflow: hidden;
+	height: 0px;
+}
+
+.inline_block {
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+}
+
+input,img,button {
+	border: none;
+	outline: none;
+}
+
+textarea {
+	resize: none;
+	overflow: auto;
+	outline: none;
+}
+
+blockquote,q {
+	quotes: none;
+}
+
+blockquote:before,blockquote:after,q:before,q:after {
+	content: '';
+	content: none;
+}
+
+body {
+	font-size: 12px;
+	color: #333;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html {
+	*overflow-x: auto;
+	*overflow-y: scroll;
+} /* ie7 scrollbar show */
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	display: inline-block;
+}
+/* Hides from IE-mac \*/
+* html .clearfix {
+	height: 1%;
+}
+
+.clearfix {
+	display: block;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.align_left {
+	text-align: left;
+}
+
+.align_center {
+	text-align: center !important;
+}
+
+.align_right {
+	text-align: right;
+}
+
+.fleft {
+	float: left;
+}
+
+.fright {
+	float: right;
+}
+
+.mleft_25 {
+	margin-left: 25px;
+}
+
+.mleft_15 {
+	margin-left: 15px;
+}
+
+.mleft_10 {
+	margin-left: 10px;
+}
+
+.mright_10 {
+	margin-right: 10px;
+}
+.mright_5{
+	margin-right: 5px;
+}
+.mtop_47{
+	margin-top: 47px;
+}
+.pright_5{
+	padding-right: 5px;
+}
+.font_normal {
+	font-weight: normal;
+}
+
+.v_top {
+	vertical-align: top
+}
+
+.v_middle {
+	vertical-align: middle;
+}
+
+.hidden_text {
+	display: none;
+	overflow: hidden;
+}
+
+.hidden,.none {
+	display: none !important;
+}
+
+.hand {
+	cursor: pointer;
+}
+
+.fB {
+	font-weight: bold;
+}
+
+.yellow {
+	color: #fd9f3a;
+}
+
+
+#dataInfo {
+	left: 220px;
+	top: 5px;
+	position: absolute;
+	width: 190px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-size: 24px;
+	border-left: 1px solid #e4e4e4;
+	font-family: SimHei;
+}
+
+.navHeader {
+	width: 1250px;
+	margin: 15px auto;
+}
+
+.navHeader #dataInfo {
+	top: 15px;
+}
+
+.clearCustomerBtn {
+	width: 42px;
+	height: 24px;
+	background-color: #278bdd;
+	color: #fff;
+}
+
+.ui-page-num {
+	width: 30px;
+	height: 22px;
+	border: 1px solid #e2e2e2;
+	margin: 3px 15px 0px 5px;
+	position: relative;
+	z-index: 100;
+}
+
+.container .content .content-main .content-table .ui-page-button {
+	width: 66px;
+	height: 22px;
+	overflow: hidden;
+	margin: 3px 10px 0 0;
+	position: relative;
+	text-align: center;
+	font-size: 12px;
+	cursor: pointer;
+	color: #333;
+	line-height: 22px;
+	border: 1px solid #e8ebec;
+	background: #fff;
+}
+/*背景色*/
+.bg-fa{
+	background: #fafafa;
+}
+.bg-fff{
+	background: #fff;
+}
+.bg-ebf0f3{
+	background: #ebf0f3;
+}
+/*字体*/
+.ft12{
+	font-size: 12px;
+}
+.ft14{
+	font-size: 14px;
+}
+.ft16{
+	font-size: 16px;
+}
+.ft18{
+	font-size: 18px;
+}
+.color-333{
+	color: #333;
+}
+.color-666{
+	color: #666;
+}
+.color-999{
+	color: #999;
+}
+.over-hidden{
+	overflow: hidden;
+}
+.clear-both{
+	clear: both;
+}
+.block{
+	display: block;
+}
+.inline-block{
+	display: inline-block;
+}

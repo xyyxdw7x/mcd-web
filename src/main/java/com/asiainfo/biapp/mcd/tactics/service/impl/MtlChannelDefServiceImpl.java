@@ -7,10 +7,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
-import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 @Service("mtlChannelDefService")
 public class MtlChannelDefServiceImpl implements IMtlChannelDefService {
     @Resource(name="mtlChannelDefDao")
@@ -22,7 +21,7 @@ public class MtlChannelDefServiceImpl implements IMtlChannelDefService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDeliveryChannel(String campsegId) {        // TODO Auto-generated method stub
+    public List<Map<String, Object>> getDeliveryChannel(String campsegId) {
         return mtlChannelDefDao.getDeliveryChannel(campsegId);
     }
     /**
@@ -34,7 +33,7 @@ public class MtlChannelDefServiceImpl implements IMtlChannelDefService {
     public List<Map<String, Object>> getDeliveryChannelCall(String campsegId) {
         return mtlChannelDefDao.getDeliveryChannelCall(campsegId);
     }
-	public List findMtlChannelDef(String campsegId) throws Exception {
+	public List<McdCampChannelList> findMtlChannelDef(String campsegId) throws Exception {
 		return mtlChannelDefDao.findMtlChannelDef(campsegId);
 	}
 	
@@ -45,7 +44,7 @@ public class MtlChannelDefServiceImpl implements IMtlChannelDefService {
 	 * @return
 	 */
 	@Override
-	public Map getMtlChannelDefCall(String campsegId,String channelDefCall) {
+	public Map<String,Object> getMtlChannelDefCall(String campsegId,String channelDefCall) {
 		return mtlChannelDefDao.searchMtlChnCallPlanMonthTask(campsegId,channelDefCall);
 	}
 }

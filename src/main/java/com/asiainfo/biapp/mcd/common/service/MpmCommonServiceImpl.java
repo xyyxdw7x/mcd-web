@@ -18,14 +18,13 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
-import com.asiainfo.biapp.mcd.util.MpmLocaleUtil;
-import com.asiainfo.biframe.utils.config.Configure;
 
 /**
  * <p>
@@ -81,7 +80,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		try {
 			return dimMtlChanneltypeDao.getMtlChannelByCondition(isDoubleSelect);
 		} catch (Exception e) {
-			throw new MpmException(MpmLocaleUtil.getMessage("mcd.java.cxqdlxdysb"));
+			throw new MpmException(e.getMessage());
 		}
 	}
 	@Override
@@ -98,7 +97,7 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		try {
 			
 			// 取前端存放数据的路径
-			    String filepath =  Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
+			    String filepath =  MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
 				String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
 				//  lingshi  xiugai yixia d a  String filenameTemp = File.separator+"data1"+File.separator ; 
 				String filenameTemp =filepath+tableName + ".ctl"; 

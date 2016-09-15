@@ -62,7 +62,6 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
     
     public MtlSmsSendTestTask() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public String mtlSmsSendTest(String CAMPSEG_ID,String channel_id) throws Exception{
@@ -104,7 +103,7 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
             }
         }
         
-        Map map = new HashMap();//要发送的人放在map里
+        Map<Integer, String> map = new HashMap<Integer, String>();//要发送的人放在map里
         Date beginTime = new Date(System.currentTimeMillis() - 1000);//开始时间
         Calendar schduleTime = Calendar.getInstance();
         schduleTime.add(Calendar.SECOND,-1);

@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.common.dao.plan;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
@@ -48,7 +49,7 @@ public interface MtlStcPlanDao {
 	 * @return
 	 */
 	public int getMtlStcPlanByCondationCount(String keyWords,String typeId,String channelTypeId,String planTypeId,String cityId,String isDoubleSelect);
-	public List checkIsUserd(String planIds,String cityId);
+	public List<Map<String,Object>> checkIsUserd(String planIds,String cityId);
 
 	/**
 	 * add by lixq10 IMCD_ZJ 新建策略页面 根据条件查询政策列表

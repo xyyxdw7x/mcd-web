@@ -37,9 +37,9 @@ public interface CustGroupInfoService {
 	 */
 	public List<McdCustgroupDef> getMyCustGroup(String currentUserId);
 	
-	public List searchCustom(String contentType, Pager pager, String userId, String keywords);
+	public List<Map<String,Object>> searchCustom(String contentType, Pager pager, String userId, String keywords);
 
-	public List queryQueueInfo();
+	public List<Map<String,Object>> queryQueueInfo();
 	
 	/**
 	 *
@@ -51,7 +51,7 @@ public interface CustGroupInfoService {
 
 	public void deleteCustom(String customGrpId);
 	
-	public List searchCustomDetail(String customGrpId);
+	public List<Map<String,Object>> searchCustomDetail(String customGrpId);
 	
 	/**
 	 * 获取原始客户群数量
@@ -80,7 +80,7 @@ public interface CustGroupInfoService {
      * @return List 
      * @throws
      */
-	public List getTargetCustomerbase(String campsegId);
+	public List<Map<String,Object>> getTargetCustomerbase(String campsegId);
 	
     /**
      * 根据客户群ID查找客户群
@@ -116,7 +116,7 @@ public interface CustGroupInfoService {
 	 * @param campsegTypeId  策略类型ID 
 	 * @return
 	 */
-	public List getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
+	public List<Map<String,Object>> getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo);
 
 	/**
 	 * 免打扰  频次过滤
@@ -129,7 +129,7 @@ public interface CustGroupInfoService {
 	 * @param excludeProductNo
 	 * @return
 	 */
-	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,String cityId,String campsegId,int avoidBotherFlag,int flag);
+	public List<Map<String,Object>> getAfterBotherAvoid(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo,String cityId,String campsegId,int avoidBotherFlag,int flag);
 	McdBotherContactConfig getMtlBotherContactConfig(String campsegTypeId, String channelId, int campsegCityType);
 	
     /**

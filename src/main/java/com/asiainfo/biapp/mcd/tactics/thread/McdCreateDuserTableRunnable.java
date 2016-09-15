@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.core.context.IApplicationContextRefreshed;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
-import com.asiainfo.biapp.mcd.util.MpmConfigure;
 import org.apache.commons.lang3.StringUtils;
 
 /**

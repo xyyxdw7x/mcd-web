@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;;
 
 public interface IMcdCampsegTaskDao {
     /**
@@ -59,7 +59,7 @@ public interface IMcdCampsegTaskDao {
 	 * 根据任务状态，查询任务信息  add by lixq10 2016年5月31日10:39:20
 	 * @param status
 	 */
-	public List getCampsegByStatus(short status);
+	public List<Map<String,Object>> getCampsegByStatus(short status);
 	
 	/**
 	 * 查询C表数据数量

@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
@@ -30,5 +31,5 @@ public interface MtlCampsegCustgroupDao {
 	 * @param campsegId   策略id
 	 * @return
 	 */
-	public List getCustInfoByCampsegId(String campsegId);
+	public List<Map<String,Object>> getCustInfoByCampsegId(String campsegId);
 }

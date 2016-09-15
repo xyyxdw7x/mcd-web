@@ -58,7 +58,6 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		}
 		return dimPlanSrvTypeList;
 	}
-	@SuppressWarnings("unchecked")
 	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
 		List<McdDimChannel> list=null;
 		String sql = "select * from mcd_dim_channel dmc where 1=1 ";
@@ -67,9 +66,9 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		}
 		sql += " order by dmc.DISPLAY_ORDER";
 		try {
-			list = this.getJdbcTemplate().query(sql,new RowMapper(){
+			list = this.getJdbcTemplate().query(sql,new RowMapper<McdDimChannel>(){
 				@Override
-				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				public McdDimChannel mapRow(ResultSet rs, int arg1) throws SQLException {
 					McdDimChannel dimMtlChannel=new McdDimChannel();
 					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
 					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
@@ -96,7 +95,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 				sbuffer.append("select mcd_dim_channel.CHANNEL_ID,mcd_dim_channel.CHANNELTYPE_ID,mcd_dim_channel.CHANNEL_NAME from mcd_dim_channel ORDER BY ORDER_NUM ASC");
 			}
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
-			for (Map map : list) {
+			for (Map<String,Object> map : list) {
 				DimMtlChanneltype mtlChannelType = new DimMtlChanneltype();
 				mtlChannelType.setChannelId((String) map.get("CHANNEL_ID"));
 				mtlChannelType.setChanneltypeId(Short.parseShort(map.get("CHANNELTYPE_ID").toString()));
@@ -307,7 +306,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 	 * @return
 	 * @throws Exception
 	 */
-	public List getAllChannelTypeFromUserChannelRelation() throws MpmException {
+	public List<String> getAllChannelTypeFromUserChannelRelation() throws MpmException {
 		
 		String sql = "select distinct(cr.prefer_channel) as prefer_channel from mcd_user_channel_relation cr order by cr.prefer_channel";
 		List<String> list = new ArrayList<String>();
@@ -320,16 +319,15 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		} 
 		return list;
 	}
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<McdDimCampType> getAllDimCampsegType() throws Exception {
 		List<McdDimCampType> list = null;
 		String sql = "select * from mcd_dim_camp_type order by CAMPSEG_TYPE_ID asc";
 		try {
-			list = this.getJdbcTemplate().query(sql,new RowMapper(){
+			list = this.getJdbcTemplate().query(sql,new RowMapper<McdDimCampType>(){
 
 				@Override
-				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				public McdDimCampType mapRow(ResultSet rs, int arg1) throws SQLException {
 					McdDimCampType tmp = new McdDimCampType();
 					tmp.setCampsegTypeDesc(rs.getString("CAMPSEG_TYPE_DESC"));
 					tmp.setCampsegTypeId(rs.getShort("CAMPSEG_TYPE_ID"));

@@ -82,9 +82,9 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		return custGroupList;
 	}
 	@Override
-	public List searchCustom(String contentType, Pager pager, String userId, String keywords) {
+	public List<Map<String,Object>> searchCustom(String contentType, Pager pager, String userId, String keywords) {
 		
-		List data = null;
+		List<Map<String,Object>> data = null;
 		try {
 			SimpleDateFormat spfd = new SimpleDateFormat("yyyyMMdd");
 			SimpleDateFormat spfm = new SimpleDateFormat("yyyyMM");
@@ -92,7 +92,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 			Calendar dataCalendar = Calendar.getInstance();
 			data = custGroupInfoDao.searchCustom(contentType, pager, userId, keywords);
 			for(int i = 0 ; i < data.size(); i++) {
-				Map map = (Map) data.get(i);
+				Map<String, Object> map = (Map<String,Object>) data.get(i);
 				
 				//创建人名称----------------
 				String userName = "";
@@ -171,7 +171,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		return data;
 	}
 	@Override
-	public List searchCustomDetail(String customGrpId) {
+	public List<Map<String,Object>> searchCustomDetail(String customGrpId) {
 		return custGroupInfoDao.searchCustomDetail(customGrpId);
 	}
 	@Override
@@ -184,10 +184,6 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				cfg_id = custGroupInfoDao.getMaxQueueCfgId();
 				if(StringUtils.isNotEmpty(cfg_id)){
 					int i = custGroupInfoDao.insertQueue(group_into_id, group_cycle, queue_id, data_date,cfg_id,group_table_name);
-					String exec_sql = "select '"+queue_id+"'||'|'||product_no||'|'||substr(product_no,9,10)||'|'||(select queue_code from DIM_PUB_10086_QUEUE where queue_id='"+queue_id+"') from " +group_table_name+
-							" where data_date=(select max(DATA_DATE) from mcd_custgroup_tab_list where CUSTOM_GROUP_ID='"+group_into_id+"' );";
-					//int j = custGroupInfoDao.insertCreateFileJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
-					//int k = custGroupInfoDao.insertCreateFtpJob(cfg_id,group_into_id,group_cycle,group_table_name,queue_id,exec_sql);
 					if(i!=0){
 						success=1;
 					}
@@ -210,8 +206,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		custGroupInfoDao.deleteCustom(customGrpId);
 	}
 	@Override
-	public List queryQueueInfo() {
-		// TODO Auto-generated method stub
+	public List<Map<String,Object>> queryQueueInfo() {
 		return custGroupInfoDao.queryQueueInfo();
 	}
 	/**
@@ -235,7 +230,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	@Override
 	public void insertSqlLoderISyncDataCfg(String fileNameCsv,String fileNameVerf,String customGroupName,String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
 		//查看该客户群任务是否存在
-		List list  = custGroupInfoDao.getSqlLoderISyncDataCfg(customGroupId);
+		List<Map<String,Object>> list  = custGroupInfoDao.getSqlLoderISyncDataCfg(customGroupId);
 		if(list != null && list.size() > 0){
 			custGroupInfoDao.updateSqlLoderISyncDataCfg(fileNameCsv,fileNameVerf,customGroupName,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId);
 		}else{
@@ -254,7 +249,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
      * @throws
      */
     @Override
-    public List getTargetCustomerbase(String campsegId) {
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId) {
         return custGroupInfoDao.getTargetCustomerbase(campsegId);
     }
     /**
@@ -312,7 +307,6 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				+ " ----basicEventSql----"+ basicEventSql+" \n  -----customgroupid:"+customgroupid +" \n"  +
 				" ------orderProductNo----" + orderProductNo + "----excludeProductNo----"+excludeProductNo);
 		
-		StringBuffer singleCustBuffer = new StringBuffer();
 		if(StringUtils.isEmpty(customgroupid) || customgroupid.equals("undefined")){  //当客户群不存的时候
 			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 					  buffer.append("select ").append(selectStr).append(" from ("+bussinessLableSql+") T4 where 1=1")
@@ -331,7 +325,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 				}
 			}
 		}else{
-			List<Map> listTemp = custGroupInfoDao.getMtlCustomListInfo(customgroupid);
+			List<Map<String,Object>> listTemp = custGroupInfoDao.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			if(StringUtils.isNotEmpty(bussinessLableSql) && StringUtils.isNotEmpty(basicEventSql)){ //当同时勾选业务标签和基础标签ARPU
 				buffer.append("select ").append(selectStr).append(" from ")
@@ -422,12 +416,12 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 	 * @param campsegTypeId  策略类型ID 
 	 * @return
 	 */
-	public List getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
+	public List<Map<String,Object>> getAfterFilterCustGroupList(String bussinessLableSql,String basicEventSql,String channelId, int campsegTypeId,String customgroupid,String orderProductNo,String excludeProductNo){
 		return custGroupInfoDao.getAfterFilterCustGroupListInMem(bussinessLableSql, basicEventSql, channelId, campsegTypeId,customgroupid,orderProductNo,excludeProductNo);
 	}
 	
 	@Override
-	public List getAfterBotherAvoid(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
+	public List<Map<String,Object>> getAfterBotherAvoid(String bussinessLableSql,String basicEventSql, String channelId, int campsegTypeId,
 			String customgroupid, String orderProductNo, String excludeProductNo,String cityId,String campsegId,int avoidBotherFlagT,int flag) {
 		
 		int campsegCityType = 1;  //地市类型 默认地市
@@ -446,7 +440,7 @@ public class CustGroupInfoServiceImpl implements CustGroupInfoService{
 		int paramDays = mtlBotherContactConfig.getParamDays();  //间隔天数
 		int paramNum = mtlBotherContactConfig.getParamNum();    //在间隔天数内发送次数
 		
-		List listResult = null;
+		List<Map<String,Object>> listResult = null;
 		if(avoidBotherFlag !=0 || contactControlFlag != 0){
 			//根据客户群ID获取客户群信息
 			McdCustgroupDef mtlGroupInfo = custGroupInfoDao.getMtlGroupInfo(customgroupid);

@@ -41,13 +41,13 @@ public interface IMtlChannelDefDao {
 	 * @param campsegId 策略ID
 	 * @return
 	 */
-	public List findChildChannelIdList(String campsegId);
+	public List<Map<String,Object>> findChildChannelIdList(String campsegId);
     /**
      * 根绝策略ID查询渠道信息
      * @param campsegId
      * @return
      */
-    List getMtlChannelDefs(String campsegId);
+	public List<Map<String,Object>> getMtlChannelDefs(String campsegId);
 
     /**
      * 删除外呼渠道
@@ -76,7 +76,7 @@ public interface IMtlChannelDefDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List findMtlChannelDef(String campsegId) throws Exception;
+	public List<McdCampChannelList> findMtlChannelDef(String campsegId) throws Exception;
 	
 	/**
 	 * 根据策略ID，渠道ID获取相关信息（外呼渠道）
@@ -84,7 +84,7 @@ public interface IMtlChannelDefDao {
 	 * @param channelDefCall
 	 * @return
 	 */
-	Map searchMtlChnCallPlanMonthTask(String campsegId,String channelDefCall);
+	public Map<String,Object> searchMtlChnCallPlanMonthTask(String campsegId,String channelDefCall);
 	/**
 	 * 根据工单编号，修改所有子策略（规则）下某渠道的审批状态
 	 * @param assing_id  
@@ -108,7 +108,7 @@ public interface IMtlChannelDefDao {
      * @param childCampseg_id
      * @return
      */
-    public List getMtlChannelDefApproveFlowList(String childCampseg_id);
+    public List<Map<String,Object>> getMtlChannelDefApproveFlowList(String childCampseg_id);
     /**
      * 查找活动下的所有渠道
      * @param campsegId

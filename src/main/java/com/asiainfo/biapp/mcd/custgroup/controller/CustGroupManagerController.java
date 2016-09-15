@@ -31,12 +31,12 @@ import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
-import com.asiainfo.biframe.utils.config.Configure;
 
 import net.sf.json.JSONObject;
 
@@ -80,7 +80,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	@RequestMapping("getMoreMyCustom")
 	public void getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Pager pager=new Pager();
-		//TODO: initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -96,18 +95,15 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			if(StringUtils.isNotEmpty(pageNum)){
 				pager.setPageFlag("G");	
 			}
-			//TODO: pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getUserid(),keyWords));
-			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount("chenyg",keyWords));
+			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(this.getUser(request, response).getId(),keyWords));
 			pager.getTotalPage();
 			if ("true".equals(clickQueryFlag)) {
-				//TODO:List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom(user.getUserid(),keyWords,pager);
-				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
+				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
 				pager = pager.pagerFlip();
 				pager.setResult(resultList);
 			} else {
 				pager = pager.pagerFlip();
-				//TODO:List<MtlGroupInfo> resultList = custGroupInfoService.getMoreMyCustom(user.getUserid(),keyWords,pager);
-				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom("chenyg",keyWords,pager);
+				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
 				pager.setResult(resultList);
 			}
 			dataJson.put("status", "200");
@@ -134,7 +130,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 */
 	@RequestMapping("initMyCustom")
 	public void initMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		//TODO: initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -142,8 +137,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		try {
-			//TODO:List<MtlGroupInfo> custGroupList = custGroupInfoService.getMyCustGroup(user.getUserid());
-			List<McdCustgroupDef> custGroupList = custGroupInfoService.getMyCustGroup("chenyg");
+			List<McdCustgroupDef> custGroupList = custGroupInfoService.getMyCustGroup(this.getUser(request, response).getId());
 			if(!CollectionUtils.isEmpty(custGroupList)){
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(custGroupList));
@@ -176,8 +170,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		try {
-			//TODO:String attrClassIdBussiness = MpmConfigure.getInstance().getProperty("ATTR_CLASS_ID_BUSSINESS");
-			String attrClassIdBussiness = "3";
+			String attrClassIdBussiness = MpmConfigure.getInstance().getProperty("ATTR_CLASS_ID_BUSSINESS");
 			List<McdCvColDefine> bussinessList = mpmCommonService.initCvColDefine(attrClassIdBussiness,"");
 			if(!CollectionUtils.isEmpty(bussinessList)){
 				dataJson.put("status", "200");
@@ -261,7 +254,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			
 			campSegInfoService.createCustGroupTabAsCustTable1("mtl_cuser_",custGroupId);
 		
-            String config_Path = Configure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
+            String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
             
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
 			String filepath = config_Path + File.separator; 
@@ -344,7 +337,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			pager.setPageFlag("G");
 		}
 		
-		List data = custGroupInfoService.searchCustom(contentType, pager, this.getUserId(request,response), keywords);
+		List<Map<String,Object>> data = custGroupInfoService.searchCustom(contentType, pager, this.getUserId(request,response), keywords);
 		pager.getTotalPage();
 		pager = pager.pagerFlip();
 		pager.setResult(data);
@@ -379,14 +372,14 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		
 		String customGrpId = request.getParameter("customGrpId");
 		
-		List data = custGroupInfoService.searchCustomDetail(customGrpId);
+		List<Map<String,Object>> data = custGroupInfoService.searchCustomDetail(customGrpId);
 		
 		JSONObject dataJson = new JSONObject();
 		if(data.size() == 0) {
 			dataJson.put("status", "199");
 		} else {
 			dataJson.put("status", "200");
-			Map map = (Map)data.get(0);
+			Map<String, Object> map = (Map<String,Object>)data.get(0);
 			String userName = "";
 			if(map.get("CREATE_USER_ID") != null) {
 				userName = this.getUser(request, response).getName();
@@ -412,7 +405,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			}
 			map.put("FAIL_TIME_STR", failTime);
 			//接收数据日期
-			String dataTimeStr = "";
 			if(map.get("data_date") != null) {
 //				dataTimeStr = spf.format(map.get("data_date"));
 			}
