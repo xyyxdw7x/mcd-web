@@ -10,7 +10,8 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
+import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
@@ -28,7 +29,7 @@ import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 
 	@Resource(name = "mtlStcPlanDao")
-	private MtlStcPlanDao mtlStcPlanDao;
+	private IMtlStcPlanDao mtlStcPlanDao;
 
 	/**
 	 * 根据渠道类型ID获取渠道
