@@ -38,28 +38,21 @@
 }
 
 .header .inner .loginfo>li {
-	width: auto;
-	height: auto;
 	overflow: 0 10px;
 	margin: relative;
 	position: relative;
 	text-align: left;
 	font-size: 12px;
 	cursor: pointer;
-	color: inherit;
 	line-height: inherit;
 	display: inline-block;
 	display: none;
 	z-index: 3;
 }
 
-.header .inner .loginfo .J_userInfo {
-	font-size: 10px;
-}
-
-.header .inner .loginfo>li>a {
-	width: auto;
-	height: 32px;
+.loginfo .J_userInfo {font-size: 10px;}
+.loginfo>li.user-box-li>a {
+	height: 60px;
 	position: relative;
 	padding: 0 10px;
 	margin: 0;
@@ -67,21 +60,17 @@
 	font-size: 12px;
 	cursor: pointer;
 	color: #288bde;
-	line-height: 30px;
 	display: inline-block;
 	text-decoration: none;
 	z-index: 2;
 	border: 1px solid #fff;
 }
 
-.header .inner .loginfo>li .slidedownCT {
+ .loginfo>li .slidedownCT {
 	width: 298px;
-	height: auto;
 	overflow: hidden;
-	margin: -17px 0 0 0;
 	position: absolute;
-	top: auto;
-	left: auto;
+	top: 60px;
 	right: 0;
 	border: 1px solid #e1e1e1;
 	background-color: #fff;
@@ -149,33 +138,11 @@
 	background-color: #fdcb44;
 }
 
-.header .inner .loginfo>li .slidedownCT .logout {
-	border-top: 1px solid #e1e1e1;
-	clear: both;
-	padding: 10px 0;
-	text-align: center;
-}
-
-.header .inner .loginfo>li .slidedownCT .logout li {
-	display: inline-block;
-	vertical-align: middle;
-	border-right: 1px solid #e1e1e1;
-}
-
-.header .inner .loginfo>li .slidedownCT .logout li a {
-	height: 20px;
-	padding: 0 15px;
-	color: #282828;
-	line-height: 20px;
-}
-
-.header .inner .loginfo>li .slidedownCT .logout li a:hover {
-	color: #288bde;
-}
-
-.header .inner .loginfo>li .slidedownCT .logout li:last-child {
-	border-right: none;
-}
+.logout {border-top: 1px solid #e1e1e1;clear: both;padding: 10px 0;text-align: center;}
+.logout li{display: inline-block;vertical-align: middle;border-right: 1px solid #e1e1e1;}
+.logout li a {padding: 0 15px;color: #282828;}
+.logout li a:hover {color: #288bde;}
+.logout li.last{border-right: none;}
 
 .header .inner .loginfo>li .slidedownCT .newfavList {
 	border-bottom: 1px solid #e1e1e1;
@@ -227,13 +194,12 @@
 	color: #288bde;
 }
 
-.header .inner .loginfo>li:nth-child(2) {
+.header .inner .loginfo>li.user-box-li{
 	display: inline-block;
 }
 
 .header .inner .loginfo>li.active>a,.header .inner .loginfo>li:hover>a {
 	background-color: #fff;
-	height: 30px;
 	border: 1px solid #e1e1e1;
 	border-bottom: none;
 	z-index: 2;
@@ -256,7 +222,7 @@
 }
 
 .header .inner .nav {
-	margin: 0px auto 0 570px;
+	float:right;
 }
 
 .header .inner .nav li {
@@ -306,6 +272,7 @@
 
 .header .subnav {
 	width: 100%;
+	min-width: 1200px;
 	height: 32px;
 	font-size: 12px;
 	margin: 0 auto;
@@ -327,11 +294,11 @@
 	height: 32px;
 	overflow: hidden;
 	margin: 0 auto;
-	position: relative;
-	display: inline-block;
-	position: absolute;
+	display: none;
 }
-
+.header .subnav ul.active{
+	display: inline-block;
+}
 .header .subnav ul li {
 	text-align: center;
 	font-size: 12px;
@@ -357,3 +324,4 @@
 .J_userDept {
 	width: 150px;
 }
+.header .subnav ul.sun-nav-product{margin-right: 200px;}

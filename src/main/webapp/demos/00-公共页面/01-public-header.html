@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>public-header</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+    <!--江西 公共导航头部 -->
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-header.css" />
+	
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+</head>
+<body class="bg-fa">
+    <!-- 头部导航 用原来的 st -->
+	<div class="header">
+		<div class="inner">
+			<div class="logo">
+				<img style="display: inline;" src="../../assets/images/logos/logo.png">
+			</div>
+			<ul class="loginfo">
+				<li>
+					<a href="javascript(void:0)">导航地图<span class="icon_arrDown"></span></a>
+				</li>
+				<li class="user-box-li">
+					<a href="#"><span class="J_userInfo">用户名</span><span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<div class="userImg"><img src="../../assets/images/temp/administrator.png"></div>
+						<dl class="userinfo">
+							<dt class="J_userInfo"></dt>
+							<dd class="J_userDept"></dd>
+							<dd>
+								<span class="icon_activeuser"></span>
+								<div class="activeuser">活跃用户</div>
+							</dd>
+						</dl>
+						<ul class="logout">
+							<li><a href="#">修改密码</a></li>
+							<li><a href="#">个人中心</a></li>
+							<li class="last"><a href="#">退出</a></li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">我的收藏<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>最新加入收藏的</dt>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+						</dl>
+						<div class="gotoFav"><input class="btn_blue" type="button" value="去收藏夹"></div>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">消息<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>未读新消息</dt>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+						</dl>
+						<div class="gotoFav">
+							<a class="set" href="javascript:void(0)">设置</a>
+							<input class="btn_blue" type="button" value="查看历史消息">
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="nav">
+				<li class="nav-index">
+					首页
+					<!--<span class="icon_arrDown"></span>-->
+				</li>
+				<li class="nav-group">
+					 簇群细分  
+					 <!--<span class="icon_arrDown"></span>-->
+				</li>
+				<li class="active nav-product">
+					 产品政策 
+					<span class="icon_arrDown"></span>
+				</li>
+				<li class="nav-put">
+					 营销投放 
+					<span class="icon_arrDown"></span>
+				</li>
+				<li class="nav-assess">
+					效果评估
+					<!--<span class="icon_arrDown"></span>-->
+				</li>
+				<li class="nav-set">
+					系统配置
+					<!--<span class="icon_arrDown"></span>-->
+				</li>
+			</ul>
+		</div>
+		<div class="subnav">
+		<!-- 950px -->
+			<div class="width950">
+				<!--首页-->
+				<ul class="sub-nav-index"></ul>
+				<!--簇群细分-->
+				<ul class="sub-nav-group"></ul>
+				<!--产品政策-->
+				<ul class="sun-nav-product active">
+					<li class="active">产品库</li>
+					<li>政策库</li>
+					<li>内容库</li>
+				</ul>
+				<!--营销投放-->
+				<ul class="sub-nav-put">
+					<li >新建策略</li>
+					<li>策略管理</li>
+					<li>优先级管理</li>
+					<li>群发执行</li>
+					<li>配额管理</li>
+				</ul>
+				<!--效果评估-->
+				<ul class="sub-nav-assess"></ul>
+				<!--系统设置-->
+				<ul class="sub-nav-set"></ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+	$(function(){
+		$('.nav li').click(function(){
+			var index=$(this).index();
+			$(this).addClass('active').siblings().removeClass('active');
+			$('.subnav ul').eq(index).addClass('active').siblings().removeClass('active')
+
+		})
+	})
+</script>
