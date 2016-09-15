@@ -1929,6 +1929,17 @@ public class TacticsManageController extends BaseMultiActionController {
 		rs.put("channels", channels);
 		return rs;
 	}
+	/**
+	 * 创建策略界面：展示渠道列表（选渠道模块）
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/getChannels")
+	@ResponseBody
+	public List<McdDimChannel> getChannels(HttpServletRequest request, HttpServletResponse response){
+		return  mcdDimChannelService.getAllChannels();
+	}
 	
 
 }
