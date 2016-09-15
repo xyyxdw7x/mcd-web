@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.service;
+package com.asiainfo.biapp.mcd.effectappraisal.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.effectappraisal.dao.IcampsegPriorityDao;
+import com.asiainfo.biapp.mcd.effectappraisal.dao.ICampsegPriorityDao;
+import com.asiainfo.biapp.mcd.effectappraisal.service.ICampsegPriorityService;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -26,11 +28,11 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0
  */
 @Service("campsegPriorityService")
-public class CampsegPriorityServiceImpl implements IcampsegPriorityService{
+public class CampsegPriorityServiceImpl implements ICampsegPriorityService{
 	private static Logger log = LogManager.getLogger();
 	
 	@Autowired
-	private IcampsegPriorityDao campsegPriorityDao;
+	private ICampsegPriorityDao campsegPriorityDao;
 	
 	@Override
 	public List<CampsegPriorityBean> initManualPriorityCampseg(String channelId,String adivId,String cityId){
@@ -101,10 +103,10 @@ public class CampsegPriorityServiceImpl implements IcampsegPriorityService{
 		campsegPriorityDao.cancleTopManualPriorityCampseg2(campsegId, cityId, channelId,chnAdivId);
 	}
 	
-	public IcampsegPriorityDao getCampsegPriorityDao() {
+	public ICampsegPriorityDao getCampsegPriorityDao() {
 		return campsegPriorityDao;
 	}
-	public void setCampsegPriorityDao(IcampsegPriorityDao campsegPriorityDao) {
+	public void setCampsegPriorityDao(ICampsegPriorityDao campsegPriorityDao) {
 		this.campsegPriorityDao = campsegPriorityDao;
 	}
 

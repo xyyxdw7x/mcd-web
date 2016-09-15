@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.dao;
+package com.asiainfo.biapp.mcd.effectappraisal.dao.impl;
 
 
 import java.sql.CallableStatement;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.effectappraisal.dao.ICampsegPriorityDao;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
 
 /**
@@ -32,7 +33,7 @@ import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
  * @version 1.0
  */
 @Repository(value="campsegPriorityDao")
-public class CampsegPriorityDaoImpl extends JdbcDaoBase implements IcampsegPriorityDao{
+public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPriorityDao{
 	private static Logger log = LogManager.getLogger();
 	
 	/*
