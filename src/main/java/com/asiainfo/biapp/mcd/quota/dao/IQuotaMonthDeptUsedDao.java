@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
-public interface QuotaMonthDeptUsedDao {
+public interface IQuotaMonthDeptUsedDao {
 	/**
 	 * 修改科室月使用额为新的值
 	 * @param depDayQuota

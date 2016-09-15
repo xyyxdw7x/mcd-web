@@ -10,11 +10,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaMothCityUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaMothCityUsedDao;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
 
 public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
-		QuotaMothCityUsedDao {
+		IQuotaMothCityUsedDao {
 	private static final Logger log = LogManager.getLogger();
 	
 	@Override

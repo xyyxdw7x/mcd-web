@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.service;
+package com.asiainfo.biapp.mcd.quota.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,16 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 @Service("quotaConfigCityDayService")
-public class QuotaConfigCityDayServiceImp implements QuotaConfigCityDayService {
+public class QuotaConfigCityDayServiceImp implements IQuotaConfigCityDayService {
 	
 	@Resource(name = "quotaConfigCityDayDao")
-	private QuotaConfigCityDayDao quotaConfigCityDayDao;
+	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
 
 	@Override
 	public CityQuotaStatisDay getCityQuotaStatisDay(String cityId) {

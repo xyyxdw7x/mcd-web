@@ -6,7 +6,7 @@ import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
-public interface QuotaConfigDeptMothService {
+public interface IQuotaConfigDeptMothService {
 
 	public List<QuotaConfigDeptMoth> queryDeptsConf(String cityId,String dataDate) throws Exception;
 

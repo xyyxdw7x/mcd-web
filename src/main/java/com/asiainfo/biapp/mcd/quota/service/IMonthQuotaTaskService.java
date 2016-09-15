@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.quota.service;
 
-public interface MonthQuotaTaskService {
+public interface IMonthQuotaTaskService {
 
 	public void setCityUsed4CurrentMonth();
 

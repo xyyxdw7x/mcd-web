@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
-import com.asiainfo.biapp.mcd.quota.dao.DeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Service("currentDateQuotaService")
 public class CurrentDateQuotaServiceImp implements CurrentDateQuotaService {
 	@Autowired
-	private DeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
+	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
 	
 	@Override
 	public List<CurrentDateQuota> getCurrentStatis(String cityId) {

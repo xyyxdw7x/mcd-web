@@ -25,7 +25,7 @@ import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.enums.TasKStatus;
-import com.asiainfo.biapp.mcd.quota.service.QuotaConfigCityDayService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 
@@ -39,7 +39,7 @@ public class BullManageController extends BaseMultiActionController {
 	@Autowired
 	private CurrentDateQuotaService currentDateQuotaService;
 	@Autowired
-	private QuotaConfigCityDayService quotaConfigCityDayService;
+	private IQuotaConfigCityDayService quotaConfigCityDayService;
 
 	//群发管理页面入口url
 	@RequestMapping(params = "cmd=viewBull")

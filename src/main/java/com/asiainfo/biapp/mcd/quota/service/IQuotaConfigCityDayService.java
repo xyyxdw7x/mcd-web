@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
-public interface QuotaConfigCityDayService {
+public interface IQuotaConfigCityDayService {
 
 	CityQuotaStatisDay getCityQuotaStatisDay(String cityId);
 	

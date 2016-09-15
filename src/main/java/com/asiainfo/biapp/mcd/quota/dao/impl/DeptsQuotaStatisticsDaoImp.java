@@ -8,12 +8,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.DeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="deptsQuotaStatisticsDao")
 public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements
-		DeptsQuotaStatisticsDao {
+		IDeptsQuotaStatisticsDao {
 
 	@Override
 	public List<Map<String, Object>> getStatisticsInMem(String cityId, String month)

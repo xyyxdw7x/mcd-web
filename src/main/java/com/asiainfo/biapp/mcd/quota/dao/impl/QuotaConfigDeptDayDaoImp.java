@@ -14,11 +14,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 @Repository(value="quotaConfigDeptDayDao")
 public class QuotaConfigDeptDayDaoImp extends JdbcDaoBase implements
-		QuotaConfigDeptDayDao {
+		IQuotaConfigDeptDayDao {
 	private static final Logger log = LogManager.getLogger();
 
 	private static final String TABLE = "mcd_quota_config_dept_D";

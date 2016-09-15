@@ -11,11 +11,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-import com.asiainfo.biapp.mcd.quota.dao.QuotaMonthDeptUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaMonthDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
 public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
-		QuotaMonthDeptUsedDao {
+		IQuotaMonthDeptUsedDao {
 	private static final Logger log = LogManager.getLogger();
 	
 	private static String TABLE = "mcd_quota_used_dept_m";

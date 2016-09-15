@@ -14,13 +14,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 @Repository(value="quotaConfigDeptMothDao")
 public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
-		QuotaConfigDeptMothDao {
+		IQuotaConfigDeptMothDao {
 
 	private static Logger log = LogManager.getLogger();
 

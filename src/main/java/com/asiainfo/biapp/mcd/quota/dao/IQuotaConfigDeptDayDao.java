@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 
-public interface QuotaConfigDeptDayDao {
+public interface IQuotaConfigDeptDayDao {
 	/**
 	 * 修改科室日配置额
 	 * 

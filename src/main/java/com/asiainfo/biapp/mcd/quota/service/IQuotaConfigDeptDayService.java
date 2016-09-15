@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 
-public interface QuotaConfigDeptDayService {
+public interface IQuotaConfigDeptDayService {
 
 	public List<QuotaConfigDeptDay> getMonthDaysQuota(String cityID,
 			String deptId, String month) throws DataAccessException;

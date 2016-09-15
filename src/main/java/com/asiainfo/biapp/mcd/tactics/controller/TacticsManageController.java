@@ -1202,7 +1202,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 
 	/**
-	 * 渠道执行情况 初始化渠道信息：短信、手机APP、营业厅、社会渠道等
+	 * 初始化渠道列表：短信、手机APP、营业厅、社会渠道等
 	 * 
 	 * @param mapping
 	 * @param form
@@ -1295,8 +1295,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/initMtlChannelBossSmsTemplate")
-	public void initMtlChannelBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public void initMtlChannelBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -1364,8 +1363,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @throws MpmException
 	 */
 	@RequestMapping("/getOriginalCustGroupNumTemp")
-	public void getOriginalCustGroupNumTemp(HttpServletRequest request, HttpServletResponse response)
-			throws MpmException {
+	public void getOriginalCustGroupNumTemp(HttpServletRequest request, HttpServletResponse response)throws MpmException {
 		long begin = new Date().getTime();
 		JSONObject dataJson = new JSONObject();
 		PrintWriter out = null;
@@ -1460,8 +1458,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		try {
 			// 父策略id
-			String campsegPid = StringUtils.isNotEmpty(request.getParameter("campsegPid"))
-					? request.getParameter("campsegPid") : "2016061317242609";
+			String campsegPid = StringUtils.isNotEmpty(request.getParameter("campsegPid"))? request.getParameter("campsegPid") : "2016061317242609";
 			List<McdCampDef> campsegList = null;
 			List<McdCampDef> basicCampSeginfoList = new ArrayList<McdCampDef>(); // 父策略
 			String planType = ""; // 政策类别
@@ -1832,8 +1829,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * 
 	 * @return
 	 */
-	private int excuteCustGroupCount(String customgroupid, McdTempletForm bussinessLableTemplate,
-			McdTempletForm basicEventTemplate, Locale local, String orderProductNo, String excludeProductNo) {
+	private int excuteCustGroupCount(String customgroupid, McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate, Locale local, String orderProductNo, String excludeProductNo) {
 		int custCnt = 0;
 		try {
 			/*
@@ -1851,7 +1847,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		return custCnt;
 	}
 
-	// ----------------------------------------------新代码------------------------------------------------------------
+	// -------------------------------------------------------------新代码--------------------------------------------------------------------
 	/**
 	 * 创建活动页面：初始化产品类型模块
 	 * 
@@ -1941,5 +1937,43 @@ public class TacticsManageController extends BaseMultiActionController {
 		return  mcdDimChannelService.getAllChannels();
 	}
 	
-
+	/**
+	 * 创建产品界面显示客户群列表。（选客户群模块）
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("getMoreMyCustom")
+	public List<McdCustgroupDef> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		User user = this.getUser(request, response);
+		List<McdCustgroupDef> resultList =null;
+		Pager pager=new Pager();
+		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
+		try {
+			String clickQueryFlag = "true";
+			pager.setPageSize(6);  //每页显示6条
+			pager.setPageNum(pageNum);  //当前页
+			if(StringUtils.isNotEmpty(pageNum)){
+				pager.setPageFlag("G");	
+			}
+			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
+			pager.getTotalPage();
+			if ("true".equals(clickQueryFlag)) {
+				resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
+				pager = pager.pagerFlip();
+				pager.setResult(resultList);
+			} else {
+				pager = pager.pagerFlip();
+				resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
+				pager.setResult(resultList);
+			}
+			
+		} catch (Exception e) {
+		}
+        return resultList;
+		
+	}
+	
 }

@@ -8,7 +8,7 @@ import org.springframework.dao.DataAccessException;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
-public interface QuotaConfigDeptMothDao {
+public interface IQuotaConfigDeptMothDao {
 
 	/**
 	 * 修改科室月配置额
