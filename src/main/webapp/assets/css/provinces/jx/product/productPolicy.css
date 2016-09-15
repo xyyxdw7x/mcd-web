@@ -1,0 +1,33 @@
+.policy-ul{
+	padding-bottom:30px;
+	overflow: hidden;
+}
+.policy-ul li{
+	width:180px;
+	padding:10px 0 0 40px;
+	margin: 0 15px 10px 0;
+	height:100px;
+	position:relative;
+}
+.num-left{
+	color:#fff;
+	text-align: center;
+	display: inline-block;
+	position: absolute;
+	left:0;
+	top:0;
+	width:30px;
+	height: 30px;
+	background: #ffa100;
+	line-height: 30px;
+	border-radius: 50%;
+	
+}
+.policy-ul-outer{width:100%;height:120px;position:relative;margin:0 auto;}
+.policy-ul-outer .prev,.policy-ul-outer .next{position:absolute;top:36px;}
+.policy-ul-outer .btn{width:15px;height:30px; padding:5px; background: #fff; border-color: #ccc; cursor:pointer;z-index:99;font-size:14px;}
+.policy-ul-outer .btn:hover{color: #fff;background: #003EFF;}
+.policy-ul-outer .prev{left:-10px;}
+.policy-ul-outer .next{right:-10px;}
+.policy-ul-outer .listBox{width:962px;height:110px;margin:0 auto;position:relative;padding:6px 0 10px;overflow:hidden;}
+.policy-ul-outer .listBox ul{height:110px;position:absolute;}
