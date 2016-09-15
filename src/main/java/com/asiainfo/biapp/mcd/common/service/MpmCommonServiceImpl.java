@@ -148,8 +148,6 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		    if (!filename.exists()) { 
 		    	filename.createNewFile(); 
 		    }  
-		    String temp = ""; 
-
 		    FileInputStream fis = null; 
 		    InputStreamReader isr = null; 
 		    BufferedReader br = null; 
@@ -174,7 +172,6 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 			    pw.flush(); 
 			    flag = true; 
 		    } catch (IOException e1) { 
-			    // TODO 自动生成 catch 块 
 			    throw e1; 
 		    } finally { 
 			    if (pw != null) { 

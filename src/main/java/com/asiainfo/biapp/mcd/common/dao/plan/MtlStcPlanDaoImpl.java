@@ -447,9 +447,9 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 
 
 	@Override
-	public List execQuerySql(String sql, List params) {
+	public List<Map<String,Object>> execQuerySql(String sql, List<Object> params) {
 		log.info("执行sql="+sql);
-		List res = null;
+		List<Map<String,Object>> res = null;
 		if(params==null ||params.size()==0){
 			res = this.getJdbcTemplate().queryForList(sql);	
 		}else{	
@@ -458,7 +458,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		return res;
 	}
 	@Override
-	public int execQuerySqlCount(String sql, List params) {
+	public int execQuerySqlCount(String sql, List<Object> params) {
 		log.info("执行sql="+sql);
 		int count = 0;
 		if(params==null ||params.size()==0){

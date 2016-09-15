@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.common.service.plan;
 
 import java.util.List;
+import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
@@ -43,7 +44,7 @@ public interface IMtlStcPlanService {
 	 * @param pager
 	 * @return
 	 */
-	List getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
+	List<Map<String,Object>> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
 	
 
 }

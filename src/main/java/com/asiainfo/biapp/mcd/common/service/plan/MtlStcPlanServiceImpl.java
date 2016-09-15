@@ -92,18 +92,18 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 	}
 
 	@Override
-	public List getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
+	public List<Map<String,Object>> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
 		
 		Map<String,Object> sqlClauseCount = getPlansByConditionSqlCount(cityId, planTypeId, planSrvType, channelId, keyWords);
 		String sql = sqlClauseCount.get("sql").toString();
-		List param = (List) sqlClauseCount.get("params");
+		List<Object> param = (List) sqlClauseCount.get("params");
 		int count =  mtlStcPlanDao.execQuerySqlCount(sql, param);
 		pager.setTotalSize(count);
 		pager.getTotalPage();//设置总页数
 		
 		Map<String,Object> sqlClause = this.getPlansByConditionSql(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 		String sql2 = sqlClause.get("sql").toString();
-		List param2 = (List) sqlClause.get("params");
+		List<Object> param2 = (List<Object>) sqlClause.get("params");
 		
 		return mtlStcPlanDao.execQuerySql(sql2,param2);
 	}

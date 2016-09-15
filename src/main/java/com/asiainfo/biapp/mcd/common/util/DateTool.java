@@ -504,7 +504,6 @@ public class DateTool {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         try {
             Date targetDateWithoutDate = dateFormat.parse(dateFormat.format(targetDate));
-            Date endDateWithoutDate = dateFormat.parse(dateFormat.format(workEndTime));
             Date workStartTimeWithoutDate = dateFormat.parse(dateFormat.format(workStartTime));
             Date workEndTimeWithoutDate = dateFormat.parse(dateFormat.format(workEndTime));
 
@@ -724,9 +723,11 @@ public class DateTool {
     }
 
     public static String getMonthStart(String date) {
-        Date da = getDate(date);
-        Date d = new Date(da.getYear(), da.getMonth(), 01);
-        return getStringDate2(d);
+        
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(getDate(date));
+        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),01);  
+        return getStringDate2(calendar.getTime());
     }
    
 
@@ -805,7 +806,7 @@ public class DateTool {
         if (appointDate == null) {
             appointDate = new Date();
         }
-        int month = appointDate.getMonth();
+        
         Date tempDate = DateUtils.truncate(appointDate, Calendar.YEAR);
 
         if (appointIndex == 1) {
@@ -852,7 +853,6 @@ public class DateTool {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         Date appointDate = calendar.getTime();
-        int month = appointDate.getMonth();
         Date tempDate = DateUtils.truncate(appointDate, Calendar.YEAR);
 
         if (appointIndex == 1) {
@@ -927,7 +927,6 @@ public class DateTool {
         if (appointDate == null) {
             appointDate = new Date();
         }
-        int month = appointDate.getMonth();
         Date tempDate = DateUtils.truncate(appointDate, Calendar.YEAR);
 
         if (appointIndex == 1) {
