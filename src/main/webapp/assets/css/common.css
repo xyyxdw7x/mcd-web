@@ -132,8 +132,17 @@ table {
 .mright_10 {
 	margin-right: 10px;
 }
+.pright_0{
+	padding-right:0 !important;
+}
+.pleft_0{
+	padding-left:0 !important;
+}
 .mright_5{
 	margin-right: 5px;
+}
+.mbot_15{
+	margin-bottom: 15px;
 }
 .mtop_47{
 	margin-top: 47px;
@@ -270,4 +279,14 @@ table {
 }
 .inline-block{
 	display: inline-block;
+}
+
+.unline{
+	text-decoration: underline;
+}
+.border-e9{
+	border:1px solid #e9e9e9;
+}
+.border-top-0{
+	border-top:0 !important;
 }

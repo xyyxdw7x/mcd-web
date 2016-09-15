@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>01-产品库-详情编辑-弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+    <!--有日历控件时引入-->
+     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-date.css" />
+    <!--保存弹窗 -->
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-dialog.css" />
+	<!--用到table表格时引入-->
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-table.css" />
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery.ui.datepicker-zh-TW.js"></script>
+    <script type="text/javascript">
+		$(function(){
+			$(".edit-dialog").dialog({
+				width:1028,
+				height:710,
+				resizable: false,
+				draggable:false,
+		   		modal: true,
+		    	title:"详情"
+		   	});
+		   	//向头部增加 ---编辑按钮i，返回按钮em
+		   var str='';
+		   str+='<i></i><em>&lt;返回</em>'
+		   $('.ui-dialog-title').append(str);
+		});	 
+</script>
+ <script type="text/javascript">
+    		$(function(){
+    			showDatepicker();
+    		});
+    		function showDatepicker(){
+    			 var  from = $( "#date-on" )
+    		        .datepicker({
+    		          changeMonth: true,
+    		          numberOfMonths: 2,
+    		          dateFormat:"yy-mm-dd"
+    		        })
+    		        .on( "change", function() {
+    		          to.datepicker( "option", "minDate", getDate( this ) );
+    		        }),
+    		      to = $( "#date-off" ).datepicker({
+    		        changeMonth: true,
+    		        numberOfMonths: 2,
+  		        dateFormat:"yy-mm-dd"
+    		      })
+    		      .on( "change", function() {
+    		        from.datepicker( "option", "maxDate", getDate( this ) );
+    		      });
+    			 $.datepicker.dpDiv.addClass("ui-datepicker-box");
+			    function getDate( element ) {
+			      var date;
+			      try {
+			        date = $.datepicker.parseDate( "yy-mm-dd", element.value );
+			      } catch( error ) {
+			        date = null;
+			      }
+			      return date;
+			    }
+    		}
+    </script>
+
+</head>
+<body>
+
+<!-- 新建策略-保存弹窗 -->
+<div class="edit-dialog-box container">
+	<div class="own-dialog edit-dialog">
+		<!-- 内容区 -->
+		<form class="form-horizontal ft12">
+			<div class="rows-box">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">单产品编码： </label>
+						    <div class="col-sm-6">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">单产品名称： </label>
+						    <div class="col-sm-6">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">类别：</label>
+						    <div class="col-sm-6">
+							    <div class="input-group">
+							      <input type="text" class="form-control">
+							      <div class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+							        	<span class="caret"></span>
+							        </button>
+							        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							          <li><a href="#">促销类</a></li>
+							          <li><a href="#">促销类222</a></li>
+							          <li><a href="#">促销类333</a></li>
+							        </ul>
+							      </div><!-- /btn-group -->
+							    </div><!-- /input-group -->
+						    </div>
+					    </div> 
+					</div>
+				</div><!-- row -->
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">生效时间： </label>
+						    <div class="col-sm-6">
+						      	<input type="text" id="date-on" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">失效时间： </label>
+						    <div class="col-sm-6">
+						      	<input type="text" id="date-off" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">状态：</label>
+						    <div class="col-sm-6">
+							    <div class="input-group">
+							      <input type="text" class="form-control" value="上线">
+							      <div class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+							        	<span class="caret"></span>
+							        </button>
+							        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							          <li><a href="#">上线</a></li>
+							          <li><a href="#">促销类222</a></li>
+							          <li><a href="#">促销类333</a></li>
+							        </ul>
+							      </div><!-- /btn-group -->
+							    </div><!-- /input-group -->
+						    </div>
+					    </div> 
+					</div>
+				</div><!-- row -->
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label"> 适用渠道：</label>
+						    <div class="col-sm-6">
+							    <div class="input-group">
+							      <input type="text" class="form-control" value="不限">
+							      <div class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+							        	<span class="caret"></span>
+							        </button>
+							        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							          <li><a href="javascript:;">不限</a></li>
+							          <li><a href="javascript:;">和我信</a></li>
+							          <li><a href="javascript:;">短信</a></li>
+							          <li><a href="javascript:;">短信夹带</a></li>
+							          <li><a href="javascript:;">营业厅</a></li>
+							          <li><a href="javascript:;">社会渠道</a></li>
+							          <li><a href="javascript:;">UI买</a></li>
+							          <li><a href="javascript:;">VOP</a></li>
+							          <li><a href="javascript:;">10086热线</a></li>
+							          <li><a href="javascript:;">摩天轮</a></li>
+							        </ul>
+							      </div><!-- /btn-group -->
+							    </div><!-- /input-group -->
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label"> 适用地市：</label>
+						    <div class="col-sm-6">
+							    <div class="input-group">
+							      <input type="text" class="form-control" value="不限">
+							      <div class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+							        	<span class="caret"></span>
+							        </button>
+							        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							          <li><a href="javascript:;">不限</a></li>
+							          <li><a href="javascript:;">地市A</a></li>
+							        </ul>
+							      </div><!-- /btn-group -->
+							    </div><!-- /input-group -->
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-4 control-label">产品经理： </label>
+						    <div class="col-sm-6">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+				</div><!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+						    <label class="col-sm-2 width-118 control-label">描述： </label>
+						    <div class="col-sm-10">
+						      	<input type="text" class="form-control" value="8**************************">
+						    </div>
+					    </div> 
+					</div>
+				</div><!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+						    <label class="col-md-2 width-118 control-label">推荐语： </label>
+						    <div class="col-sm-10">
+						      	<input type="text" class="form-control" value="8**************************">
+						    </div>
+					    </div> 
+					</div>
+				</div><!-- row -->
+			</div><!--rows-box-->
+			<div class="rows-box rows-box-2">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-6 control-label">10086短厅办理代码： </label>
+						    <div class="col-sm-5">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+						    <label class="col-sm-7 control-label">办理链接地址（安卓）： </label>
+						    <div class="col-sm-5">
+						      	<input type="text" class="form-control width-130">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-7 control-label">营业侧产品归属业务类型：</label>
+						    <div class="col-sm-5">
+							    <div class="input-group">
+							      <input type="text" class="form-control">
+							      <div class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+							        	<span class="caret"></span>
+							        </button>
+							        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+							          <li><a href="#">111</a></li>
+							          <li><a href="#">222</a></li>
+							          <li><a href="#">333</a></li>
+							        </ul>
+							      </div><!-- /btn-group -->
+							    </div><!-- /input-group -->
+							</div>
+						</div>
+					</div>
+				</div><!--row-->
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-6 control-label">1008611短厅办理代码： </label>
+						    <div class="col-sm-5">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+						    <label class="col-sm-7 control-label">办理链接地址（苹果）：</label>
+						    <div class="col-sm-5">
+						      	<input type="text" class="form-control  width-130">
+						    </div>
+					    </div> 
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label class="col-sm-7 control-label">归属业务子类代码：</label>
+						    <div class="col-sm-5">
+						      	<input type="text" class="form-control">
+						    </div>
+					    </div> 
+					</div>
+				</div><!--row-->
+			</div><!--rows-box-->
+		</form>
+		<!--员工积分和酬金-->
+		<div class="rows-box">
+		    	<ul class="nav nav-pills ft12 nav-tab-edit" role="tablist">
+				   	<li role="presentation" class="active">
+				   		<a href="#employeeScore" aria-controls="employeeScore" role="tab" data-toggle="tab">员工积分</a>
+				  	</li>
+				   	<li role="presentation">
+				   		<a href="#reward" aria-controls="reward" role="tab" data-toggle="tab">酬金</a>
+				   	</li>
+				</ul>
+				<div class="tab-content">
+					<div role="tabpanel" id="employeeScore"  class="tab-pane active ">
+						<table class="table table-bordered table-edit">
+							<tr>
+								<td class="left-hd">地市</td>
+								<td>南昌</td>
+								<td>九江</td>
+								<td>吉安</td>
+								<td>景德镇</td>
+								<td>萍乡</td>
+								<td>鹰潭</td>
+								<td>赣州</td>
+								<td>上饶   </td>
+								<td>新余</td>
+								<td>抚州</td>
+								<td>宜春</td>
+							</tr>
+							<tr class="tr-2">
+								<td class="left-hd">积分</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+							</tr>
+						</table>
+					</div>
+					<div role="tabpanel" id="reward"  class="tab-pane">
+						<table class="table table-bordered table-edit">
+							<tr>
+								<td class="left-hd">地市</td>
+								<td>南昌</td>
+								<td>九江</td>
+								<td>吉安</td>
+								<td>景德镇</td>
+								<td>萍乡</td>
+								<td>鹰潭</td>
+								<td>赣州</td>
+								<td>上饶   </td>
+								<td>新余</td>
+								<td>抚州</td>
+								<td>宜春</td>
+							</tr>
+							<tr class="tr-2">
+								<td class="left-hd">酬金</td>
+								<td>110.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+								<td>0.0</td>
+							</tr>
+						</table>
+					</div>
+				</div><!--tab-content-->
+				<div class="text-center mbot_15">
+					<a href="javascript:;" class="btn-a btn-a-blue btn100-30">保存</a>
+				</div>
+		    </div><!--rows-box 员工积分和酬金 end-->
+		    <!--轮播图-->
+	</div><!--dialog end-->
+	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div><!--半透明背景-->
+</div>
+		
+</body>
+</html>
