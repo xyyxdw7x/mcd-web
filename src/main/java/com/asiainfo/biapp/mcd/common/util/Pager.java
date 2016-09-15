@@ -310,9 +310,7 @@ public class Pager {
     }
 
     public int getTotalPage() {
-//        if (totalPage == 0) {
-            this.setTotalPage((int) Math.ceil(totalSize / (double) pageSize));
-//        }
+         this.setTotalPage((int) Math.ceil(totalSize / (double) pageSize));
         return totalPage;
     }
 

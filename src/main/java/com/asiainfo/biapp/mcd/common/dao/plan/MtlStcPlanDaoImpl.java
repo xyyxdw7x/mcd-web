@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,6 @@ import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biframe.utils.config.Configure;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created on 4:02:56 PM
@@ -36,7 +36,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Repository("mtlStcPlanDao")
 public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
-	private static Logger log = LogManager.getLogger();
+	protected final Log log = LogFactory.getLog(getClass());
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<McdDimPlanType> initDimPlanType() throws Exception {
@@ -444,5 +445,29 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		String sql = "select TYPE_ID,TYPE_NAME,TYPE_PID from MCD_DIM_PLAN_TYPE";
 		List<McdDimPlanType> subTypes=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
 		return subTypes;
+	}
+
+
+	@Override
+	public List execQuerySql(String sql, List params) {
+		log.info("执行sql="+sql);
+		List res = null;
+		if(params==null ||params.size()==0){
+			res = this.getJdbcTemplate().queryForList(sql);	
+		}else{	
+			res = this.getJdbcTemplate().queryForList(sql, params);		
+		}
+		return res;
+	}
+	@Override
+	public int execQuerySqlCount(String sql, List params) {
+		log.info("执行sql="+sql);
+		int count = 0;
+		if(params==null ||params.size()==0){
+			count = this.getJdbcTemplate().queryForObject(sql,Integer.class);	
+		}else{	
+			count = this.getJdbcTemplate().queryForObject(sql, params.toArray(),Integer.class);		
+		}
+		return count;
 	}
 }
