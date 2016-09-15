@@ -16,8 +16,8 @@ import com.asiainfo.biapp.mcd.bull.dao.UserDeptDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
+import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.util.QuotaUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Service("bullMonitorService")

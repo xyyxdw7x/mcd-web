@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.service.SaleSituationService;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 @Controller
 @RequestMapping("/mpm/homePage")

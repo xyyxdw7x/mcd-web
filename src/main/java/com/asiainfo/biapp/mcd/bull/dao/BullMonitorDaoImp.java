@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="bullMonitorDao")
 public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {

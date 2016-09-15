@@ -1,13 +1,11 @@
 package com.asiainfo.biapp.mcd.tactics.thread;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -83,7 +81,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 				continue;
 			}
 //			查询策略组，针对多产品，每个子策略创建相同的D表。  每次都查询父策略的D表是否创建，如果已创建，则不往下执行，如果没创建，执行此逻辑
-			List campsegCustGroupList = mtlCampsegCustgroupDao.getCustInfoByCampsegId(campsegId);
+			List<Map<String,Object>> campsegCustGroupList = mtlCampsegCustgroupDao.getCustInfoByCampsegId(campsegId);
 			log.info("*************客户群个数："+campsegCustGroupList.size());
 			String custGroupId = "";
 			for(int j=0;j<campsegCustGroupList.size();j++){
@@ -105,7 +103,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 				log.info("*************custCount="+custCount);
 //				三个场景之外客户群在插入数据的时候都要对数据进行去重
 				boolean removeRepeatFlag = true;  //false:不需要去重  true：需要去重
-				List list = null;
+				List<McdCampChannelList> list = null;
 				try {
 					list = mtlChannelDefDao.findMtlChannelDef(campsegId);
 				} catch (Exception e1) {

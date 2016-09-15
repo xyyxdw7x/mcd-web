@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
+import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IcampsegPriorityService;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
-import com.asiainfo.biapp.mcd.util.jdbcPage.Pager;
 
 @Controller
 @RequestMapping("/mpm/priorityAction")
