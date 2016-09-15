@@ -32,12 +32,16 @@
 .group-box{width: 100%;height: 105px;font-size: 12px;}
 .group-box-header{ padding: 0 0 0 15px;height: 30px;line-height: 30px;border-bottom: 1px dashed #e3e3e3;}
 .group-box-header-name{font-size: 15px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;float: left;width:200px;}
+/*有虚线 鼠标经过蓝线 选中对号的ul*/
+.public-border-ul{}
+.public-border-ul li{cursor: pointer;border: 1px solid #e3e3e3;position:relative;float: left;}
+.public-border-ul li.active{border-color:#ffa100;}
+.public-border-ul li:hover{border:1px dashed #278bdd;}
+.public-border-ul .selected-img{width: 31px;height: 31px;display: none;position: absolute;right: -1px;top:0px;background:url(../../../../images/channelSelected.png) no-repeat;}
+.public-border-ul li.active .selected-img{display: inline-block;}
+
 .group-info-ul{margin-left: 10px;width: 100%;overflow: hidden;}
-.group-info-ul-li{ width: 31.7%;float: left;margin:0px 10px 10px 0;cursor: pointer;border: 1px solid #e3e3e3;position:relative;color: #666;}
-.group-info-ul-li .group-box img{display: none;position: absolute; right:0; top:0;}
-.group-info-ul-li.active { border-color:#ffa100;}
-.group-info-ul-li:hover{border:1px dashed #278bdd;}
-.group-info-ul-li.active img{display: inline;}
+.group-info-ul li{ width: 31.7%;margin:0px 10px 10px 0;color: #666;}
 .group-box-info{margin: 5px 15px 0;}
 .group-box-info-item{height: 20px; line-height: 20px;}
 .group-box-detail{float: right; margin-top: -14px; cursor: pointer;}
@@ -54,7 +58,7 @@ ul.nav-tabs-public-34 {height:34px;}
 .row-p p{float: left; margin-right: 20px;}
 
 
-.selected-img{width: 31px;height: 31px;display: none;position: absolute;right: 0;top:0px;}
+
 .content-type-outer-box{background: #f5f8f9;padding-bottom: 15px; margin-bottom: 0;}
 .content-type-outer-box .type-title{font-size:14px;line-height:65px;}
 .content-type-outer-box .pics{height: 50px;width: 50px; padding: 10px; margin-left: 27px;}
