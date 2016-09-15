@@ -12,12 +12,12 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 
 @Repository(value="quotaConfigDeptMonthDefaultDao")
 public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
-		QuotaConfigDeptMonthDefaultDao {
+		IQuotaConfigDeptMonthDefaultDao {
 
 	private static final Logger log = LogManager.getLogger();
 

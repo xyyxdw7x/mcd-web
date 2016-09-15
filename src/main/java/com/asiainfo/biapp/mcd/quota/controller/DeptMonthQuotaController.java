@@ -20,7 +20,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
@@ -35,7 +35,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
     private static final Logger log = LogManager.getLogger();
 
     @Resource(name = "quotaConfigDeptMothService")
-    private QuotaConfigDeptMothService quotaConfigDeptMothService;
+    private IQuotaConfigDeptMothService quotaConfigDeptMothService;
     
     @Resource(name = "sysCampConfigDao")
     private IMtlSysCampConfigDao sysCampConfigDao;

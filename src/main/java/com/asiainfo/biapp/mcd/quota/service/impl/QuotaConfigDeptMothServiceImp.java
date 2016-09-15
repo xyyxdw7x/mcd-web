@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.service;
+package com.asiainfo.biapp.mcd.quota.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.quota.dao.DeptsQuotaStatisticsDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMonthDefaultDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.impl.QuotaDayDeptUsedDaoImp;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
@@ -25,41 +26,41 @@ import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
 
 @Service("quotaConfigDeptMothService")
-public class QuotaConfigDeptMothServiceImp implements QuotaConfigDeptMothService {
+public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothService {
 	private static final Logger log = LogManager.getLogger();
 
 	@Resource(name = "quotaConfigDeptMothDao")
-	private QuotaConfigDeptMothDao quotaConfigDeptMothDao;
+	private IQuotaConfigDeptMothDao quotaConfigDeptMothDao;
 	@Resource(name = "quotaConfigCityMothDao")	
-	private QuotaConfigCityMothDao quotaConfigCityMothDao;
+	private IQuotaConfigCityMothDao quotaConfigCityMothDao;
 	@Resource(name = "quotaDayDeptUsedDao")
-	private QuotaDayDeptUsedDao quotaDayDeptUsedDao;
+	private IQuotaDayDeptUsedDao quotaDayDeptUsedDao;
 	@Resource(name = "quotaConfigDeptDayDao")
-	private QuotaConfigDeptDayDao quotaConfigDeptDayDao;
+	private IQuotaConfigDeptDayDao quotaConfigDeptDayDao;
 	@Resource(name = "quotaConfigDeptMonthDefaultDao")
-	private QuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao;
+	private IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao;
 	@Resource(name = "deptsQuotaStatisticsDao")
-	private DeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
+	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
 	
-	public void setDeptsQuotaStatisticsDao(DeptsQuotaStatisticsDao deptsQuotaStatisticsDao) {
+	public void setDeptsQuotaStatisticsDao(IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao) {
 		this.deptsQuotaStatisticsDao = deptsQuotaStatisticsDao;
 	}
-	public void setQuotaConfigDeptMonthDefaultDao(QuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao) {
+	public void setQuotaConfigDeptMonthDefaultDao(IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao) {
 		this.quotaConfigDeptMonthDefaultDao = quotaConfigDeptMonthDefaultDao;
 	}
-	public void setQuotaDayDeptUsedDao(QuotaDayDeptUsedDao quotaDayDeptUsedDao) {
+	public void setQuotaDayDeptUsedDao(IQuotaDayDeptUsedDao quotaDayDeptUsedDao) {
 		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
 	}
-	public void setQuotaConfigDeptDayDao(QuotaConfigDeptDayDao quotaConfigDeptDayDao) {
+	public void setQuotaConfigDeptDayDao(IQuotaConfigDeptDayDao quotaConfigDeptDayDao) {
 		this.quotaConfigDeptDayDao = quotaConfigDeptDayDao;
 	}
 	public void setQuotaDayDeptUsedDao(QuotaDayDeptUsedDaoImp quotaDayDeptUsedDao) {
 		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
 	}
-	public void setQuotaConfigCityMothDao(QuotaConfigCityMothDao quotaConfigCityMothDao) {
+	public void setQuotaConfigCityMothDao(IQuotaConfigCityMothDao quotaConfigCityMothDao) {
 		this.quotaConfigCityMothDao = quotaConfigCityMothDao;
 	}
-	public void setQuotaConfigDeptMothDao(QuotaConfigDeptMothDao quotaConfigDeptMothDao) {
+	public void setQuotaConfigDeptMothDao(IQuotaConfigDeptMothDao quotaConfigDeptMothDao) {
 		this.quotaConfigDeptMothDao = quotaConfigDeptMothDao;
 	}
 	

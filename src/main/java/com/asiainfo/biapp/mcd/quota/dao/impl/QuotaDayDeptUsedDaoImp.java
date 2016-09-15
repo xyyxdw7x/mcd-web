@@ -11,12 +11,12 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaDayDeptUsed;
 
 @Repository(value="quotaDayDeptUsedDao")
 public class QuotaDayDeptUsedDaoImp extends JdbcDaoBase implements
-		QuotaDayDeptUsedDao {
+		IQuotaDayDeptUsedDao {
 	public static final String TABLE = "MTL_QUOTA_D_DEPT_USED";
 
 	@Override

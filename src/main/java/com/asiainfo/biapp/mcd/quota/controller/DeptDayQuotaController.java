@@ -23,9 +23,9 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.quota.service.QuotaConfigCityDayService;
-import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptDayService;
-import com.asiainfo.biapp.mcd.quota.service.QuotaConfigDeptMothService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptDayService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
@@ -40,13 +40,13 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     private static final Logger log = LogManager.getLogger(DeptDayQuotaController.class);
 
     @Resource(name = "quotaConfigCityDayService")
-    private QuotaConfigCityDayService quotaConfigCityDayService;
+    private IQuotaConfigCityDayService quotaConfigCityDayService;
     
     @Resource(name = "quotaConfigDeptDayService")
-    private QuotaConfigDeptDayService quotaConfigDeptDayService;
+    private IQuotaConfigDeptDayService quotaConfigDeptDayService;
     
     @Resource(name = "quotaConfigDeptMothService")
-    private QuotaConfigDeptMothService quotaConfigDeptMothService;
+    private IQuotaConfigDeptMothService quotaConfigDeptMothService;
     
     /**
      * 调整单日配额

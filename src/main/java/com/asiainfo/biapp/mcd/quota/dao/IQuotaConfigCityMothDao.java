@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-public interface QuotaConfigCityMothDao {
+public interface IQuotaConfigCityMothDao {
 
     /**
      * 查询科室指定月的配额

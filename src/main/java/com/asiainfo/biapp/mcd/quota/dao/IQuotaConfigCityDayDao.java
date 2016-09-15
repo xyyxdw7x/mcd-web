@@ -6,7 +6,7 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
 
 
-public interface QuotaConfigCityDayDao {
+public interface IQuotaConfigCityDayDao {
 
 	Map<String, Object> getCityStatisDayInMem(String cityIds, String dataDate);
    //批量保存地市日使用额

@@ -9,11 +9,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigCityMothDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
 
 @Repository(value="quotaConfigCityMothDao")
 public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements
-		QuotaConfigCityMothDao {
+		IQuotaConfigCityMothDao {
 	private static final Logger log = LogManager.getLogger();
 	private static final String TABLE = "mcd_quota_config_city";
 

@@ -6,10 +6,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.UserDeptLinkDao;
+import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 
 @Repository(value="userDeptLinkDao")
-public class UserDeptLinkDaoImp extends JdbcDaoBase implements UserDeptLinkDao{
+public class UserDeptLinkDaoImp extends JdbcDaoBase implements IUserDeptLinkDao{
 	private static final Logger log = LogManager.getLogger();
 	
 	private static String TAB_USE_DEPT_MAP="MTL_USER_DEPT_MAP";

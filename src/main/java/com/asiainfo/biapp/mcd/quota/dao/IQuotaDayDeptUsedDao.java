@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.asiainfo.biapp.mcd.quota.vo.QuotaDayDeptUsed;
 
-public interface QuotaDayDeptUsedDao {
+public interface IQuotaDayDeptUsedDao {
 
 
 	public int getByKeys(String cityid, String deptid, String day)throws DataAccessException;

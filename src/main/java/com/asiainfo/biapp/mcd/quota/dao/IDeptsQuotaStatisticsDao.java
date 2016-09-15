@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-public interface DeptsQuotaStatisticsDao {
+public interface IDeptsQuotaStatisticsDao {
     /**
      * 科室月限额和科室月使用额链接查询：查询限额和使用额。  展示科室月限额列表时使用
      * @param cityId

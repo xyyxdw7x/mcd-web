@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.quota.service;
+package com.asiainfo.biapp.mcd.quota.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,36 +9,37 @@ import javax.annotation.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptDayDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.QuotaDayDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.dao.UserDeptLinkDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
+import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptDayService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
 
 @Service("quotaConfigDeptDayService")
-public class QuotaConfigDeptDayServiceImp implements QuotaConfigDeptDayService {
+public class QuotaConfigDeptDayServiceImp implements IQuotaConfigDeptDayService {
 	@Resource(name = "quotaConfigDeptMothDao")
-	private QuotaConfigDeptMothDao quotaConfigDeptMothDao;
+	private IQuotaConfigDeptMothDao quotaConfigDeptMothDao;
 	@Resource(name = "quotaConfigDeptDayDao")
-	private QuotaConfigDeptDayDao quotaConfigDeptDayDao;
+	private IQuotaConfigDeptDayDao quotaConfigDeptDayDao;
 	@Resource(name = "userDeptLinkDao")
-	private UserDeptLinkDao userDeptLinkDao;
+	private IUserDeptLinkDao userDeptLinkDao;
 	@Resource(name = "quotaDayDeptUsedDao")
-	private QuotaDayDeptUsedDao quotaDayDeptUsedDao;
+	private IQuotaDayDeptUsedDao quotaDayDeptUsedDao;
 
-	public void setQuotaDayDeptUsedDao(QuotaDayDeptUsedDao quotaDayDeptUsedDao) {
+	public void setQuotaDayDeptUsedDao(IQuotaDayDeptUsedDao quotaDayDeptUsedDao) {
 		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
 	}
-	public void setUserDeptLinkDao(UserDeptLinkDao userDeptLinkDao) {
+	public void setUserDeptLinkDao(IUserDeptLinkDao userDeptLinkDao) {
 		this.userDeptLinkDao = userDeptLinkDao;
 	}
 	public void setQuotaConfigDeptMothDao(
-			QuotaConfigDeptMothDao quotaConfigDeptMothDao) {
+			IQuotaConfigDeptMothDao quotaConfigDeptMothDao) {
 		this.quotaConfigDeptMothDao = quotaConfigDeptMothDao;
 	}
 	public void setQuotaConfigDeptDayDao(
-			QuotaConfigDeptDayDao quotaConfigDeptDayDao) {
+			IQuotaConfigDeptDayDao quotaConfigDeptDayDao) {
 		this.quotaConfigDeptDayDao = quotaConfigDeptDayDao;
 	}
 

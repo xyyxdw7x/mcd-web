@@ -7,7 +7,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 
-public interface QuotaConfigDeptMonthDefaultDao {
+public interface IQuotaConfigDeptMonthDefaultDao {
 
 	public void saveBatchSaveInMem(List<DeptMonQuotaDefault> list, String cityId)throws DataAccessException;
 

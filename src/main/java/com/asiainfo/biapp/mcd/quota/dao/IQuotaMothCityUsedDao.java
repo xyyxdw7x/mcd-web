@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
 
-public interface QuotaMothCityUsedDao {
+public interface IQuotaMothCityUsedDao {
 
 	public void saveBatchSave(List<QuotaMonthCityUsed> list);
 
