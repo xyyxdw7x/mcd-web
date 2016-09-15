@@ -15,7 +15,7 @@ import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
  * @version 1.0
  */
 
-public interface IcampsegPriorityService {
+public interface ICampsegPriorityService {
 	/**
 	 * 首页手动优先级配置
 	 * @param channelId

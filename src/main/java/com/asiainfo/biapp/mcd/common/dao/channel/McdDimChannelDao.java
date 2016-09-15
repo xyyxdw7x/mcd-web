@@ -1,3 +1,4 @@
+
 package com.asiainfo.biapp.mcd.common.dao.channel;
 
 import java.util.List;

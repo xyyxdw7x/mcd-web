@@ -22,20 +22,19 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd
 	">
 	<!-- 启用cacheenable注解 -->
-	<cache:annotation-driven cache-manager="cacheManager" key-generator="memcachedKeyGenerator" />
+	<cache:annotation-driven cache-manager="cacheManagerSpring" key-generator="memcachedKeyGenerator" />
 	<!-- memcached key generator -->
-	<bean id="memcachedKeyGenerator" class="com.xes.framework.cache.memcached.MemcachedKeyGenerator"/>
+	<bean id="memcachedKeyGenerator" class="com.asiainfo.biapp.framework.cache.memcached.MemcachedKeyGenerator"/>
     <!-- spring简单的map缓存管理器 --> 
     <bean id="cacheManagerSpring" class="org.springframework.cache.support.SimpleCacheManager">
     	<property name="caches"> 
        		<set>
          		<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="default" />
-         		<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="defaultMemcache" />
        		</set> 
      	</property>
    	</bean>
-   	<!-- memcached缓存管理器  expireMap中定义了一个默认的缓存 永不失效 但是在晚上调度的时候会清空缓存 -->
-	<bean id="cacheManager" class="com.xes.framework.cache.memcached.MemcachedCacheManager" scope="singleton">  
+   	<!-- memcached缓存管理器  expireMap中定义了一个默认的缓存 永不失效 但是在晚上调度的时候会清空缓存
+	<bean id="cacheManager" class="com.asiainfo.biapp.framework.cache.memcached.MemcachedCacheManager" scope="singleton">  
     	<property name="memcachedClient" ref="memcachedClient" />  
         <property name="expireMap">  
         	<map>  
@@ -43,37 +42,35 @@
             </map>  
         </property>
     </bean>
-    <!-- memcachedClient -->
+     -->
+    <!-- memcachedClient 
    	<bean name="memcachedClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">
     	<property name="servers">
         	<value>${app_memcached_servers}</value>
         </property>
-        <!-- nio connection pool size -->
         <property name="connectionPoolSize" value="5"/>
-         <!-- Use binary protocol,default is TextCommandFactory -->
         <property name="commandFactory">
         	<bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory"/>
         </property>
-        <!-- Distributed strategy -->
         <property name="sessionLocator">
             <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>
         </property>
-        <!-- Serializing transcoder -->
         <property name="transcoder">
             <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
         </property>
-         <!-- ByteBuffer allocator -->
         <property name="bufferAllocator">
             <bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator"></bean>
         </property>
     </bean>
+    -->
+    
     <!-- cache advice -->
-    <cache:advice id="cacheAdvice" cache-manager="cacheManager" key-generator="memcachedKeyGenerator" >
+    <cache:advice id="cacheAdvice" cache-manager="cacheManagerSpring" key-generator="memcachedKeyGenerator" >
     	<cache:caching cache="default">
-    		<cache:cacheable method="find*"  />
-    		<cache:cacheable method="get*"/>
-    		<cache:cacheable method="query*"/>
-    		<cache:cacheable method="search*"/>
+    		<cache:cacheable method="findDim*"  />
+    		<cache:cacheable method="getDim*"/>
+    		<cache:cacheable method="queryDim*"/>
+    		<cache:cacheable method="searchDim*"/>
     		<cache:cache-evict method="delete*" all-entries="true" />
     		<cache:cache-evict method="deleteAll*" all-entries="true"/>
     		<cache:cache-evict method="flush*" all-entries="true"/>
@@ -82,8 +79,8 @@
     </cache:advice>
     <!-- aop config dao and service-->
     <aop:config>
-    	<aop:pointcut id="pointcutService" expression="execution(* com.xes.mobby.service.*.*(..)) and not @annotation(org.springframework.cache.annotation.Cacheable)" />
-    	<aop:pointcut id="pointcutDao" expression="execution(* com.xes.mobby.dao.*.*(..)) and not @annotation(org.springframework.cache.annotation.Cacheable)" />
+    	<aop:pointcut id="pointcutService" expression="execution(* com.asiainfo.biapp.mcd.*.service..*ServiceImpl.*(..)) and not @annotation(org.springframework.cache.annotation.Cacheable)" />
+    	<aop:pointcut id="pointcutDao" expression="execution(* com.asiainfo.biapp.mcd.*.dao..*DaoImpl.*(..)) and not @annotation(org.springframework.cache.annotation.Cacheable)" />
 		<aop:advisor advice-ref="cacheAdvice" pointcut-ref="pointcutDao" />
 		<aop:advisor advice-ref="cacheAdvice" pointcut-ref="pointcutService"/>
     </aop:config>

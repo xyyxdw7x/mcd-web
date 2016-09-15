@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.service;
+package com.asiainfo.biapp.mcd.effectappraisal.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.effectappraisal.dao.IMtlGroupAttrRelDao;
+import com.asiainfo.biapp.mcd.effectappraisal.service.IMtlGroupAttrRelService;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
 import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
