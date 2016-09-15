@@ -8,7 +8,7 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdPlanChannelListDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
-@Repository("mcdPlanChannelList")
+@Repository("mcdPlanChannelListDao")
 public class McdPlanChannelListDaoImpl extends JdbcDaoBase implements IMcdPlanChannelListDao{
 @Override
 public List<McdPlanChannelList> getChannelsByPlanId(String planId){
