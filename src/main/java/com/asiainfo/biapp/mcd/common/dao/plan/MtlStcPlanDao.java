@@ -91,4 +91,18 @@ public interface MtlStcPlanDao {
 	 * @return
 	 */
 	List<McdDimPlanType> getAll();
+	/**
+	 * 执行查询sql 返回结果集
+	 * @param sql sql语句
+	 * @param params 对应的参数
+	 * @return
+	 */
+	List execQuerySql(String sql, List params);
+	/**
+	 * 执行查询条件，返回记录总条数
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	int execQuerySqlCount(String sql, List params);
 }

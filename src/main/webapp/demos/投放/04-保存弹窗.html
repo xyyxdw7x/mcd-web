@@ -7,49 +7,117 @@
     <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-date.css" />
     <!--保存弹窗 -->
-	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/jquery.ui.dialog-own.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-dialog.css" />
 	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
 	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
 	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
-	    <script type="text/javascript">
+	<script src="../../assets/js/jquery/jqueryUI/jquery.ui.datepicker-zh-TW.js"></script>
+    <script type="text/javascript">
+		$(function(){
+			$(".save-dialog").dialog({
+				width:600,
+				height:300,
+				resizable: false,
+		    modal: true,
+		    title:"保存",
+		    buttons: [{
+		         "class":"dialog-btn dialog-btn-blue",
+		        "text":"保存",
+		        "click": function() {
+		            	$( this ).dialog( "close" );
+		        	}
+		    	},{
+		        "class":"dialog-btn dialog-btn-orange",
+		        "text":"提交审批",
+		        "click": function() {
+		            	$( this ).dialog( "close" );
+		        	}
+		    	}]
+			});
+		});	 
+</script>
+ <script type="text/javascript">
     		$(function(){
-    			$(".save-dialog").dialog({
-    				width:488,
-    				height:300,
-    				resizable: false,
-			    modal: true,
-			    title:"保存",
-			    buttons: [{
-			         "class":"dialog-btn dialog-btn-blue",
-			        "text":"保存",
-			        "click": function() {
-			            	$( this ).dialog( "close" );
-			        	}
-			    	},{
-			        "class":"dialog-btn dialog-btn-orange",
-			        "text":"提交审批",
-			        "click": function() {
-			            	$( this ).dialog( "close" );
-			        	}
-			    	}]
-    			});
-    		});	 
+    			showDatepicker();
+    		});
+    		function showDatepicker(){
+    			 var  from = $( "#startDate" )
+    		        .datepicker({
+    		          changeMonth: true,
+    		          numberOfMonths: 2,
+    		          dateFormat:"yymmdd"
+    		        })
+    		        .on( "change", function() {
+    		          to.datepicker( "option", "minDate", getDate( this ) );
+    		        }),
+    		      to = $( "#endDate" ).datepicker({
+    		        changeMonth: true,
+    		        numberOfMonths: 2,
+  		        dateFormat:"yy-mm-dd"
+    		      })
+    		      .on( "change", function() {
+    		        from.datepicker( "option", "maxDate", getDate( this ) );
+    		      });
+    			 $.datepicker.dpDiv.addClass("ui-datepicker-box");
+			    function getDate( element ) {
+			      var date;
+			      try {
+			        date = $.datepicker.parseDate( "yy-mm-dd", element.value );
+			      } catch( error ) {
+			        date = null;
+			      }
+			      return date;
+			    }
+    		}
     </script>
-
 
 </head>
 <body>
 
 <!-- 新建策略-保存弹窗 -->
-<div class="save-dialog-box">
-	<div class="save-dialog">
+<div class="save-dialog-box container">
+	<div class="own-dialog save-dialog">
 		<!-- 内容区 -->
-		<div class="dialog-con-wrp">
-			
-		</div>
-	</div>
-	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div>
+		<form class="form-horizontal">
+			<div class="form-group">
+			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>策略名称:</span></label>
+			    <div class="col-sm-6">
+			      	<input type="text" class="form-control">
+			    </div>
+		    </div> 
+			<div class="form-group form-group-new">
+			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>投放周期：</span></label>
+			    <div class="col-sm-3">
+			      	<input type="text" id="startDate" class="form-control">
+			    </div>
+			    <div class="col-sm-3">
+			    	<span class="color-999 fleft">-</span>
+			      	<input type="text" id="endDate" class="form-control">
+			    </div>
+		    </div> 
+		    <div class="form-group">
+			    <label class="col-sm-4 control-label">营销类型：</label>
+			    <div class="col-sm-6">
+				    <div class="input-group">
+				      <input type="text" class="form-control">
+				      <div class="input-group-btn">
+				        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+				        	<span class="caret"></span>
+				        </button>
+				        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				          <li><a href="#">促销类</a></li>
+				          <li><a href="#">促销类222</a></li>
+				          <li><a href="#">促销类333</a></li>
+				        </ul>
+				      </div><!-- /btn-group -->
+				    </div><!-- /input-group -->
+			    </div>
+		    </div> 
+		</form>
+	</div><!--dialog end-->
+	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div><!--半透明背景-->
 </div>
 		
 </body>

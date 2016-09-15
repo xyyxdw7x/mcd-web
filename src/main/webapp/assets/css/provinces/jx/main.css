@@ -3,7 +3,9 @@ body{font-family:"microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-seri
 label{font-weight: normal;}
 .w-1200{width: 1200px;margin:0 auto;}
 *{word-break: break-all;}
-/*輸入框*/
+/*颜色*/
+.color-red{color: #fe0000;}
+/*搜索输入框*/
 .search-box-wrp{padding:15px 0;}
 .search-box{width: 292px;height: 30px;overflow: hidden;margin: 0 0 0 25px; border: 1px solid #e3e3e3; background: #fff;}
 .search-box input{width: 225px;height: 30px; color: #000; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
@@ -18,6 +20,7 @@ label{font-weight: normal;}
 /*关于边线*/
 .border-item{display: inline-block; padding:4px 6px; cursor: pointer; border:1px solid #efefef; margin:0 5px 5px 0;}
 .border-item:hover,.border-item.active{border:1px dashed #003EFF;}
+.form-control,.btn{border-radius: 0;}
 /*关于按钮*/
 .btn-wrp{height:60px;}
 .btn-wrp a{margin-top:15px;}
@@ -30,27 +33,14 @@ label{font-weight: normal;}
 .btn100-30:hover,.btn140-40:hover{color: #fff;}
 .btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #278cde;}
 .btn60-26{width: 60px; height:26px;line-height: 26px;font-size: 12px;}
-。
+.btn-default-new{padding:14px;}
 /*关于分页*/
-.content-table-page {
-  width: 100%;
-  height: 66px;
-  overflow: hidden;
-}
- .content-table-page .centent-page-box {
-  width: auto;
-  height: 32px;
-  overflow: hidden;
-  margin: 15px 20px 15px 0;
-  position: relative;
-}
- .content-table-page .centent-page-box .page-button ,
-.ui-page-button {
+.content-table-page {width: 100%;height: 66px;overflow: hidden;}
+.content-table-page .centent-page-box {width: auto;height: 32px;overflow: hidden;margin: 15px 20px 15px 0;}
+.content-table-page .centent-page-box .page-button,.ui-page-button {
   width: 66px;
   height: 22px;
-  overflow: hidden;
   margin: 3px 10px 0 0;
-  position: relative;
   text-align: center;
   font-size: 12px;
   cursor: pointer;
@@ -75,9 +65,7 @@ label{font-weight: normal;}
 .content-table-page .centent-page-box .page-num {
   width: auto;
   height: 22px;
-  overflow: hidden;
   margin: 3px 6px 0 0;
-  position: relative;
   text-align: center;
   font-size: 12px;
   cursor: pointer;
@@ -91,9 +79,7 @@ label{font-weight: normal;}
  .content-table-page .centent-page-box .page-num:hover {
   width: auto;
   height: 22px;
-  overflow: hidden;
   margin: 3px 6px 0 0;
-  position: relative;
   text-align: center;
   font-size: 12px;
   cursor: pointer;

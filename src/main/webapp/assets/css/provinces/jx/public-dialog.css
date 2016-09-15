@@ -9,6 +9,10 @@
     font-size: 16px;
     height: 52px;
     line-height: 48px;
+    border:none;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br{
+	border-radius: 0;
 }
 .ui-button{border:0;}
 .ui-dialog .ui-widget-header .ui-button{
@@ -22,14 +26,18 @@
 .ui-widget-overlay{
     background: #000;
 }
+.ui-dialog .ui-dialog-content{
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 /*xin新增与覆盖*/
 .ui-dialog .ui-widget-header .ui-button .ui-button-icon.ui-icon.ui-icon-closethick{
     background: url(../../../images/put-img.png) no-repeat no-repeat -99px -2px;
     margin-left: -12px;
 }
 .ui-dialog .dialog-btn{
-    width: 144px;
-    height: 48px;
+    width: 100px;
+    height: 30px;
     background: #2e81e2;
     color: #fff;
     font-size: 14px; 
@@ -39,4 +47,8 @@
 }
 .ui-dialog .dialog-btn-orange{
     background: #ff9314;
+}
+/*保存*/
+.own-dialog{
+	width:100% !important;
 }
