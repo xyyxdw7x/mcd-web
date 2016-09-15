@@ -121,7 +121,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		buffer.append("WHERE 1=1 ");
 
 		if (!"999".equals(cityId)) {//地市人员只能看到本地市的策略
-			buffer.append(" AND A.PLAN_ID IN (SELECT DISTICT PlAN_ID FROM MTL_STC_PLAN_CITY  WHERE CITY_ID = ?) D ");
+			buffer.append(" AND A.PLAN_ID IN (SELECT DISTICT PlAN_ID FROM mcd_plan_city_list  WHERE CITY_ID = ?) D ");
 			params.add(cityId);
 		}
 
