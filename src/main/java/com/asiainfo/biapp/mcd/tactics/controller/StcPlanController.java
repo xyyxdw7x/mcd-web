@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
+import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 
 import net.sf.json.JSONObject;
 

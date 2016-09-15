@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 

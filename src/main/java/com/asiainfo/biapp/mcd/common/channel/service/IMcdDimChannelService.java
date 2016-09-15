@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.common.channel.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 public interface IMcdDimChannelService {

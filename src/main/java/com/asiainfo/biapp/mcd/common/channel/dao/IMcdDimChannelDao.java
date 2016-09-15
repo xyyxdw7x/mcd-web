@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.common.channel.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
 
 public interface IMcdDimChannelDao {
 

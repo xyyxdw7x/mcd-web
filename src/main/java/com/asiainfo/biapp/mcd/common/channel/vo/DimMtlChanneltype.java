@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.common.vo.channel;
+package com.asiainfo.biapp.mcd.common.channel.vo;
 
 /**
  * DimMtlChanneltype entity.

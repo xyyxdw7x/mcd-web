@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 
 public interface MtlCampsegCustgroupService {
 	
