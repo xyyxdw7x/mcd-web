@@ -15,10 +15,11 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
+
 import org.apache.commons.lang3.StringUtils;
 
 @Repository("custGroupInfoDao")

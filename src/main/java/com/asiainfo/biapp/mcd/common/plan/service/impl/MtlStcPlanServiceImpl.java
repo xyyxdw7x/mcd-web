@@ -14,9 +14,9 @@ import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 /**
@@ -49,6 +49,11 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		} catch (Exception e) {
 			throw new MpmException("mcd.java.cshzclbsb");
 		}
+	}
+	
+	@Override
+	public List<DimPlanSrvType> getGradeList() throws MpmException {
+		return mtlStcPlanDao.getGradeList();
 	}
 
 	public McdPlanDef getMtlStcPlanByPlanID(String planID) {
@@ -109,7 +114,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		
 		return mtlStcPlanDao.execQuerySql(sql2,param2);
 	}
-
+	
 	private Map<String,Object> getPlansByConditionSql(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
 		StringBuffer buffer = new StringBuffer("");
 		Map<String,Object> result = new HashMap<String,Object>();
@@ -118,8 +123,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 				.append("A.CREATE_DATE,A.PLAN_TYPE,A.PLAN_SRV_TYPE,B.TYPE_NAME,NVL2(CAMP.PLAN_ID,'是','否') IS_USED ")
 				.append("  FROM MCD_PLAN_DEF A ")
 				.append(" LEFT OUTER JOIN MCD_DIM_PLAN_TYPE B ").append(" ON A.PLAN_TYPE=B.TYPE_ID ");
-		buffer.append("LEFT OUTER JOIN (SELECT DISTICT PLAN_ID FROM MCD_CAMP_DEF)  CAMP ")
-		          .append("A.PLAN_ID=CAMP.PLAN_ID ");
+		buffer.append("LEFT OUTER JOIN (SELECT distinct PLAN_ID FROM MCD_CAMP_DEF)  CAMP ")
+		          .append(" ON A.PLAN_ID=CAMP.PLAN_ID ");
 		buffer.append("WHERE 1=1 ");
 
 		if (!"999".equals(cityId)) {//地市人员只能看到本地市的策略
@@ -207,8 +212,5 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		return result;
 	}
 	
-	@Override
-	public List<DimPlanSrvType> getGradeList() throws MpmException {
-		return mtlStcPlanDao.getGradeList();
-	}
+	
 }

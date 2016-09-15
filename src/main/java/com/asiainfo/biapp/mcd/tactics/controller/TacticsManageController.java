@@ -26,20 +26,20 @@ import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
+import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
-import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
-import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
@@ -1928,6 +1928,17 @@ public class TacticsManageController extends BaseMultiActionController {
 		String channels = mcdPlanChannelListService.getChannelsByPlanId(planId);
 		rs.put("channels", channels);
 		return rs;
+	}
+	/**
+	 * 创建策略界面：展示渠道列表（选渠道模块）
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/getChannels")
+	@ResponseBody
+	public List<McdDimChannel> getChannels(HttpServletRequest request, HttpServletResponse response){
+		return  mcdDimChannelService.getAllChannels();
 	}
 	
 

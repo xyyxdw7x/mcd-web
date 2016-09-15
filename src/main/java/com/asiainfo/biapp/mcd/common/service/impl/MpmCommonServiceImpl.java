@@ -20,12 +20,9 @@ import com.asiainfo.biapp.mcd.common.custgroup.service.IMtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
+
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 /**
  * <p>

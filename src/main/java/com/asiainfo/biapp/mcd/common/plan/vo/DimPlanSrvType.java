@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.common.vo.plan;
+package com.asiainfo.biapp.mcd.common.plan.vo;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.common.vo.custgroup;
+package com.asiainfo.biapp.mcd.common.custgroup.vo;
 
 public class MtlCiCustMapping  implements java.io.Serializable{
 	

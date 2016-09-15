@@ -19,8 +19,8 @@ import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import org.apache.commons.lang3.StringUtils;
 

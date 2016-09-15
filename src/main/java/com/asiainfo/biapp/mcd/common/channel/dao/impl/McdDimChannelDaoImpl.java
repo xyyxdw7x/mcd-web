@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.channel.dao.IMcdDimChannelDao;
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
 @Repository("mcdDimChannelDao")
 public class McdDimChannelDaoImpl extends JdbcDaoBase implements IMcdDimChannelDao{
 	
