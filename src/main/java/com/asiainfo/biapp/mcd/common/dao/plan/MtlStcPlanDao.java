@@ -97,12 +97,12 @@ public interface MtlStcPlanDao {
 	 * @param params 对应的参数
 	 * @return
 	 */
-	List execQuerySql(String sql, List params);
+	List<Map<String,Object>> execQuerySql(String sql, List<Object> params);
 	/**
 	 * 执行查询条件，返回记录总条数
 	 * @param sql
 	 * @param params
 	 * @return
 	 */
-	int execQuerySqlCount(String sql, List params);
+	int execQuerySqlCount(String sql, List<Object> params);
 }

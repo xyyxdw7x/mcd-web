@@ -1,7 +1,6 @@
 package com.asiainfo.biapp.mcd.common.service.channel;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,14 +26,12 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 
 	public DimMtlChanneltypeServiceImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/* （非 Javadoc）
 	 * @see com.asiainfo.biapp.mcd.service.IDimChannelUserRelationService#save(com.asiainfo.biapp.mcd.model.DimChannelUserRelation)
 	 */
 	public void save(DimMtlChanneltype dimMtlChanneltype) throws MpmException {
-		// TODO 自动生成方法存根
 		try {
 			dimMtlChanneltypeDao.save(dimMtlChanneltype);
 		} catch (Exception e) {
@@ -49,7 +46,6 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 	 * @see com.asiainfo.biapp.mcd.service.IDimChannelUserRelationService#getChannelUserRelation(int, java.lang.Short)
 	 */
 	public DimMtlChanneltype getMtlChanneltype(Short Channeltype) throws MpmException {
-		// TODO 自动生成方法存根
 		try {
 			return dimMtlChanneltypeDao.getMtlChanneltype(Channeltype);
 		} catch (Exception e) {
@@ -75,7 +71,6 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 
 	public Integer getSendOddTypeByChannelType(Integer ChannelTypeId)
 			throws MpmException {
-		// TODO Auto-generated method stub
 
 		try {
 			return dimMtlChanneltypeDao.getSendOddTypeByChannelType(ChannelTypeId);
@@ -87,13 +82,13 @@ public class DimMtlChanneltypeServiceImpl implements DimMtlChanneltypeService {
 
 	
 	
-	public List getMtlChannelTypeList() throws Exception {
+	public List<DimMtlChanneltype> getMtlChannelTypeList() throws Exception {
 		List<DimMtlChanneltype> list = dimMtlChanneltypeDao.getAllChannelType(null);
 		return list;
 	}
 	
-	public List getAllChannelTypeForSys(String SysId) throws MpmException {
-		List list = dimMtlChanneltypeDao.getAllChannelTypeForSys(SysId);
+	public List<DimMtlChanneltype> getAllChannelTypeForSys(String SysId) throws MpmException {
+		List<DimMtlChanneltype> list = dimMtlChanneltypeDao.getAllChannelTypeForSys(SysId);
 		return list;
 	}
 

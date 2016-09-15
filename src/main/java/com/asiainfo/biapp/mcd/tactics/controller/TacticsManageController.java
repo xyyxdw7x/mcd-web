@@ -115,7 +115,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			User user = this.getUser(request, response);
 
-			// TODO: initActionAttributes(request);
 			/*
 			 * McdTempletForm bussinessLableTemplate = new McdTempletForm();
 			 * McdTempletForm basicEventTemplate = new McdTempletForm();
@@ -139,7 +138,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			String isApprove = commonAttr.get("isApprove").toString();
 			// 先保存基本信息 父亲节点
 			McdCampDef campSeginfoBasic = new McdCampDef();
-			campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());// TODO:wb
+			campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());
 			campSeginfoBasic.setCampName(campsegName);
 			campSeginfoBasic.setStartDate(putDateStart);
 			campSeginfoBasic.setEndDate(putDateEnd);
@@ -201,6 +200,7 @@ public class TacticsManageController extends BaseMultiActionController {
 					updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle")
 							.toString();
 				}
+				/*
 				// 获取每个rule中的基础属性
 				String baseAttr = rule.get("baseAttr").toString();
 				org.json.JSONArray basicPropArray = new org.json.JSONArray(baseAttr);
@@ -213,6 +213,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						channelTypeId = obj.get("campsegtypeid").toString(); // 渠道类型ID
 					}
 				}
+				*/
 				// 筛选后的客户群数量
 				String afterComputCustNum = rule.get("afterComputCustNum").toString();
 				// 获取渠道执行的基本信息
@@ -222,7 +223,7 @@ public class TacticsManageController extends BaseMultiActionController {
 				MtlChannelDefCall mtlChannelDefCall = null;
 
 				String streamsId = "";
-				String streamName = "";
+				//String streamName = "";
 				for (int j = 0; j < execContent.length(); j++) {
 					org.json.JSONObject obj = new org.json.JSONObject(execContent.get(j).toString());
 					Map<String, Object> objMap = jsonToMap(execContent.get(j).toString());
@@ -245,7 +246,7 @@ public class TacticsManageController extends BaseMultiActionController {
 
 					if ("901".equals(channelId)) { // 短信渠道
 						channelCycle = String.valueOf(obj.get("channelCycle"));
-						String channelTrigger = String.valueOf(obj.get("channelTrigger"));
+						//String channelTrigger = String.valueOf(obj.get("channelTrigger"));
 						content = String.valueOf(obj.get("exec_content"));
 						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
 						// 策略级频次控制(一次性短信paramDays paramNum前台不传参数
@@ -279,7 +280,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							String eventInstanceDesc = String.valueOf(obj.get("eventInstanceDesc"));
 							streamsId = String.valueOf(obj.get("streamsId"));
 							String eventParamJson = String.valueOf(obj.get("eventParamJson"));
-							streamName = String.valueOf(obj.get("eventName"));
+							//streamName = String.valueOf(obj.get("eventName"));
 
 							Pattern p = Pattern.compile("\\s*|\t|\r|\n");
 
@@ -473,7 +474,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();
 		try {
-			// TODO:initActionAttributes(request);
 			/*
 			 * McdTempletForm bussinessLableTemplate = new McdTempletForm();
 			 * McdTempletForm basicEventTemplate = new McdTempletForm();
@@ -584,6 +584,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle")
 									.toString();
 						}
+						/*
 						// 获取每个rule中的基础属性
 						String baseAttr = rule.get("baseAttr").toString();
 						org.json.JSONArray basicPropArray = new org.json.JSONArray(baseAttr);
@@ -596,6 +597,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								channelTypeId = obj.get("campsegtypeid").toString(); // 渠道类型ID
 							}
 						}
+						*/
 						// 筛选后的客户群数量
 						String afterComputCustNum = rule.get("afterComputCustNum").toString();
 						// 获取渠道执行的基本信息
@@ -626,7 +628,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							String adivId = "";
 							if ("901".equals(channelId)) { // 短信渠道
 								channelCycle = String.valueOf(obj.get("channelCycle"));
-								String channelTrigger = String.valueOf(obj.get("channelTrigger"));
+								//String channelTrigger = String.valueOf(obj.get("channelTrigger"));
 								content = String.valueOf(obj.get("exec_content"));
 								content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
 								// 策略级频次控制(一次性短信paramDays paramNum前台不传参数
@@ -1006,7 +1008,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping("initChannel")
 	public void initChannel(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO：initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -1204,7 +1205,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping("/initChannelMsg")
 	public void initChannelMsg(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO: initActionAttributes(request);
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -1458,13 +1458,12 @@ public class TacticsManageController extends BaseMultiActionController {
 					? request.getParameter("campsegPid") : "2016061317242609";
 			List<McdCampDef> campsegList = null;
 			List<McdCampDef> basicCampSeginfoList = new ArrayList<McdCampDef>(); // 父策略
-			String planName = ""; //
 			String planType = ""; // 政策类别
-			Map map = new HashMap(); // 存放最终拼装的参数
+			Map<String, Object> map = new HashMap<String, Object>(); // 存放最终拼装的参数
 			if (StringUtils.isNotEmpty(campsegPid)) {
 				// 获取策略的基本信息
 				campsegList = mpmCampSegInfoService.getCampSeginfoListByCampsegId(campsegPid);
-				Map paramMap = new HashMap();
+				Map<String, Object> paramMap = new HashMap<String, Object>();
 				for (int i = 0; i < campsegList.size(); i++) { // 区分出子策略和父策略
 																// （兼容多规则）
 					String ruleName = "";
@@ -1633,7 +1632,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						paramMap.put("mtlChannelDef", mtlChannelDefList);
 
 						// 查询外呼渠道相关信息
-						Map mtlChannelDefCallMap = mtlChannelDefService.getMtlChannelDefCall(campsegId,
+						Map<String,Object> mtlChannelDefCallMap = mtlChannelDefService.getMtlChannelDefCall(campsegId,
 								MpmCONST.CHANNEL_TYPE_OUT_CALL);
 						paramMap.put("mtlChannelDefCall", mtlChannelDefCallMap);
 
@@ -1682,7 +1681,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		try {
-			// TODO:initActionAttributes(request);
 			User user = this.getUser(request, response);
 			response.setContentType("application/json; charset=UTF-8");
 			response.setHeader("progma", "no-cache");
@@ -1749,23 +1747,22 @@ public class TacticsManageController extends BaseMultiActionController {
 					if (null != config && ("901".equals(channelId[i]) || "910".equals(channelId[i]))) {
 						int avoidBotherFlag = config.getAvoidBotherFlag(); // 是否需要免打扰
 						int contactControlFlag = config.getContactControlFlag(); // 是否需要接触控制
-						List blackList = null;
-						List avoidCustList = null;
+						List<Map<String,Object>> blackList = null;
+						List<Map<String,Object>> avoidCustList = null;
 
 						if (avoidBotherFlag == 1 && contactControlFlag == 1) { // 同时免打扰和频次控制
 							// 免打扰
 							blackList = custGroupInfoService.getAfterFilterCustGroupList(null, null, channelId[i],
 									Integer.parseInt(campsegTypeId), customgroupid, null, null);
-							// TODO:
 							avoidCustList = custGroupInfoService.getAfterBotherAvoid(null, null, channelId[i],
 									Integer.parseInt(campsegTypeId), customgroupid, null, null, "999", null,
 									avoidBotherFlag, 0);
 							if (CollectionUtils.isNotEmpty(avoidCustList)) {
-								Map mapT = (Map) avoidCustList.get(0);
+								Map<String, Object> mapT = (Map<String, Object>) avoidCustList.get(0);
 								pcNum = Integer.parseInt(String.valueOf(mapT.get("pcNum")));
 							}
 							if (CollectionUtils.isNotEmpty(blackList)) {
-								Map mapT = (Map) blackList.get(0);
+								Map<String, Object> mapT = (Map<String, Object>) blackList.get(0);
 								mdrNum = Integer.parseInt(String.valueOf(mapT.get("blackFilterNum")));
 							}
 							pcMdrNum = pcNum + mdrNum;
@@ -1780,7 +1777,7 @@ public class TacticsManageController extends BaseMultiActionController {
 									Integer.parseInt(campsegTypeId), customgroupid, null, null, "999", null,
 									avoidBotherFlag, 0);
 							if (CollectionUtils.isNotEmpty(avoidCustList)) {
-								Map mapT = (Map) avoidCustList.get(0);
+								Map<String,Object> mapT = (Map<String,Object>) avoidCustList.get(0);
 								pcNum = Integer.parseInt(String.valueOf(mapT.get("pcNum")));
 							}
 							pcMdrNum = pcNum;
@@ -1788,7 +1785,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							blackList = custGroupInfoService.getAfterFilterCustGroupList(null, null, channelId[i],
 									Integer.parseInt(campsegTypeId), customgroupid, null, null);
 							if (CollectionUtils.isNotEmpty(blackList)) {
-								Map mapT = (Map) blackList.get(0);
+								Map<String,Object> mapT = (Map<String,Object>) blackList.get(0);
 								pcMdrNum = Integer.parseInt(String.valueOf(mapT.get("blackFilterNum")));
 								mdrNum = pcMdrNum;
 							}
@@ -1899,7 +1896,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			if (pageNum != null) {
 				pager.setPageFlag("G");
 			}
-			List list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
+			List<Map<String,Object>> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 			pager = pager.pagerFlip();
 			pager.setResult(list);
 

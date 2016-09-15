@@ -128,23 +128,6 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		}
 	};
 
-	private ResultSetExtractor<List<McdDimChannel>> resultSetExtractorDimMtlChannel = new ResultSetExtractor<List<McdDimChannel>>() {
-		@Override
-		public List<McdDimChannel> extractData(ResultSet rs) throws SQLException, DataAccessException {  
-			List<McdDimChannel> list = new ArrayList<McdDimChannel>();
-			if (null != rs) {
-				while (rs.next()) {
-					McdDimChannel dimMtlChannel = new McdDimChannel();
-					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
-					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
-					dimMtlChannel.setCampId(rs.getString("PARENT_ID"));
-					list.add(dimMtlChannel);
-				}
-			}
-			
-			return list;
-		}
-	};
 	public DimMtlChanneltype getMtlChanneltype(Short channeltypeId) throws Exception {
 		String sql = "select * from mcd_dim_channeltype where CHANNELTYPE_ID = ?";
 		Object[] params = new String[1];
