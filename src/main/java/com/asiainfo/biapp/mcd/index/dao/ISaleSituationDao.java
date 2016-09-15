@@ -5,7 +5,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.vo.CampChannel;
 
-public interface SaleSituationDao {
+public interface ISaleSituationDao {
 
 	long getTotalSale(String cityId) throws Exception;
 

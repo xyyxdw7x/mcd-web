@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.index.dao;
 
 import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
-public interface MtlMcdUserInfoDao {
+public interface IMtlMcdUserInfoDao {
 
 	MtlMcdUserInfo getMtlMcdUserInfo(String userId);
 

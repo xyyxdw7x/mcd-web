@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.index.dao;
+package com.asiainfo.biapp.mcd.index.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,9 +8,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import com.asiainfo.biapp.mcd.index.dao.IMtlMcdUserInfoDao;
 import com.asiainfo.biapp.mcd.index.vo.MtlMcdUserInfo;
 
-public class MtlMcdUserInfoDaoImpl extends  JdbcDaoSupport  implements MtlMcdUserInfoDao{
+public class MtlMcdUserInfoDaoImpl extends  JdbcDaoSupport  implements IMtlMcdUserInfoDao{
 	
 	@Override
 	public MtlMcdUserInfo getMtlMcdUserInfo(String userId){
