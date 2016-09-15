@@ -69,7 +69,6 @@
     	<cache:caching cache="default">
     		<cache:cacheable method="findDim*"  />
     		<cache:cacheable method="getDim*"/>
-    		<cache:cacheable method="get*"/>
     		<cache:cacheable method="queryDim*"/>
     		<cache:cacheable method="searchDim*"/>
     		<cache:cache-evict method="delete*" all-entries="true" />
