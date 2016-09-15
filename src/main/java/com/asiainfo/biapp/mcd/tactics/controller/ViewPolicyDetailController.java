@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.DateConvert;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
@@ -72,7 +72,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
     @Resource(name = "mtlStcPlanService")
     private IMtlStcPlanService mtlStcPlanService;
     @Resource(name = "custGroupInfoService")
-    private CustGroupInfoService custGroupInfoService;
+    private ICustGroupInfoService custGroupInfoService;
     @Resource(name = "mtlChannelDefService")
     private IMtlChannelDefService mtlChannelDefService;
     @Resource(name = "channelBossSmsTemplateService")

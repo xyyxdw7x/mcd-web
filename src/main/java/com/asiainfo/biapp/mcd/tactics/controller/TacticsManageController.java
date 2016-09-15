@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
+import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
-import com.asiainfo.biapp.mcd.common.service.channel.McdDimChannelService;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupAttrRelService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
+import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -68,17 +68,17 @@ public class TacticsManageController extends BaseMultiActionController {
 	@Resource(name = "mpmCampSegInfoService")
 	private IMpmCampSegInfoService mpmCampSegInfoService; // 策略信息
 	@Resource(name = "mpmCommonService")
-	private MpmCommonService mpmCommonService;
+	private IMpmCommonService mpmCommonService;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService mtlCallWsUrlService;
 	@Resource(name = "mtlStcPlanManagementService")
 	private IMtlStcPlanManagementService mtlStcPlanManagementService;
 	@Resource(name = "custGroupAttrRelService")
-	private CustGroupAttrRelService custGroupAttrRelService;// 客户群属性
+	private ICustGroupAttrRelService custGroupAttrRelService;// 客户群属性
 	@Resource(name = "channelBossSmsTemplateService")
 	private ChannelBossSmsTemplateService channelBossSmsTemplateService;// Boss运营位模板
 	@Resource(name = "custGroupInfoService")
-	private CustGroupInfoService custGroupInfoService;// 客户群信息
+	private ICustGroupInfoService custGroupInfoService;// 客户群信息
 	@Resource(name = "mtlStcPlanService")
 	private IMtlStcPlanService mtlStcPlanService;// 产品信息
 	@Resource(name = "mtlCampsegCustgroupService")
@@ -88,7 +88,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@Resource(name = "botherAvoidService")
 	private IMcdMtlBotherAvoidService botherAvoidService;
 	@Resource(name = "mcdDimChannelService")
-	private McdDimChannelService mcdDimChannelService;
+	private IMcdDimChannelService mcdDimChannelService;
 	
 	@Resource(name = "dimCampsegTypeService")
 	private IDimCampsegTypeService dimCampsegTypeService;
