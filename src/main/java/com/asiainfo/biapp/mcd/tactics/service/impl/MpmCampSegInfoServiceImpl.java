@@ -30,9 +30,9 @@ import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.dao.custgroup.IMcdMtlGroupInfoDao;
-import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.dao.IMcdMtlGroupInfoDao;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -82,7 +82,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Resource(name="mtlChannelDefDao")
   	private IMtlChannelDefDao mtlChannelDefDao;//活动渠道Dao
     @Resource(name="mtlStcPlanDao")
-    private MtlStcPlanDao stcPlanDao;
+    private IMtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCustgroupDao")
     private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
 	@Resource(name = "createCustGroupTab")
@@ -94,7 +94,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	@Resource(name = "mcdCampsegTaskService")
 	private IMcdCampsegTaskService mcdCampsegTaskService;
 	@Resource(name = "custGroupInfoService")
-	private CustGroupInfoService custGroupInfoService;
+	private ICustGroupInfoService custGroupInfoService;
 	@Resource(name = "mcdMtlGroupInfoDao")
     private IMcdMtlGroupInfoDao mcdMtlGroupInfoDao;
 	

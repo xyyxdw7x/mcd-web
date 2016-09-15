@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
@@ -54,7 +54,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	@Resource(name = "mpmCampSegInfoService")
 	private IMpmCampSegInfoService mpmCampSegInfoService;
 	@Resource(name = "custGroupInfoService")
-	private CustGroupInfoService custGroupInfoService;
+	private ICustGroupInfoService custGroupInfoService;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
 	@Resource(name = "mtlSmsSendTestTask")
