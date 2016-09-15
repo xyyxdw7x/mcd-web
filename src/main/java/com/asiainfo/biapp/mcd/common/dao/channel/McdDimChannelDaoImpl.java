@@ -2,8 +2,11 @@ package com.asiainfo.biapp.mcd.common.dao.channel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 @Repository("mcdDimChannelDao")
 public class McdDimChannelDaoImpl extends JdbcDaoBase implements McdDimChannelDao{
 	
@@ -76,6 +81,33 @@ public class McdDimChannelDaoImpl extends JdbcDaoBase implements McdDimChannelDa
 			
 		} catch (Exception e) {
 			logger.error("",e);
+		}
+		return list;
+	}
+	
+
+	@Override
+	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
+		List<McdDimChannel> list=null;
+		String sql = "select * from mcd_dim_channel dmc where 1=1 ";
+		if("1".equals(isDoubleSelect)){
+			sql += " and dmc.channel_id in (902,903,906)";
+		}
+		sql += " order by dmc.DISPLAY_ORDER";
+		try {
+			list = this.getJdbcTemplate().query(sql,new RowMapper<McdDimChannel>(){
+				@Override
+				public McdDimChannel mapRow(ResultSet rs, int arg1) throws SQLException {
+					McdDimChannel dimMtlChannel=new McdDimChannel();
+					dimMtlChannel.setChannelId(rs.getString("CHANNEL_ID"));
+					dimMtlChannel.setChannelName(rs.getString("CHANNEL_NAME"));
+					dimMtlChannel.setDisplayOrder(rs.getInt("DISPLAY_ORDER"));
+					return dimMtlChannel;
+				}
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			throw e;
 		}
 		return list;
 	}

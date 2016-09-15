@@ -25,4 +25,6 @@ public interface McdDimChannelDao {
 	 */
 	public List<McdDimChannel> initChannel(boolean isOnLine,String cityId);
 
+	List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect);
+
 }

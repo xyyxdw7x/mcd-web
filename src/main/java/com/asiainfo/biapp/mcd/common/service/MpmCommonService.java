@@ -2,26 +2,12 @@ package  com.asiainfo.biapp.mcd.common.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
-import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
-import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 
 public interface MpmCommonService {
 
-	/**
-	 * 新建策略页面---初始化政策粒度
-	 * @return
-	 * @throws MpmException
-	 */
-	public List<DimPlanSrvType> getGradeList() throws MpmException;
-	/**
-	 * 新建策略页面---政策适用渠道
-	 * @return
-	 * @throws MpmException
-	 */
-	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect) throws MpmException;
+
+	
 	/**
 	 * add by lixq10  IMCD_ZJ 新建策略页面视图预定义配置
 	 * pAttrClassId:classId
@@ -32,11 +18,6 @@ public interface MpmCommonService {
 	
 	public void insertCustGroupDataBySqlldr(String custGroupId, String tableName, String customGroupName, String date)throws Exception;
 	
-	/**
-	 * 初始化营销类型列表   add by lixq10
-	 * @return
-	 * @throws Exception
-	 */
-	public List<McdDimCampType> getAllDimCampsegType() throws Exception;
+
 	
 }

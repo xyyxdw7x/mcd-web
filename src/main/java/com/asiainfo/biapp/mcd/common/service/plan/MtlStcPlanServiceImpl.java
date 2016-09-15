@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
@@ -203,5 +204,10 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		result.put("sql", buffer.toString());
 		result.put("params", params);
 		return result;
+	}
+	
+	@Override
+	public List<DimPlanSrvType> getGradeList() throws MpmException {
+		return mtlStcPlanDao.getGradeList();
 	}
 }

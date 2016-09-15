@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 public interface McdDimChannelService {
 	
@@ -24,5 +25,11 @@ public interface McdDimChannelService {
 	 * @return
 	 */
 	public List<McdDimChannel> initChannel(boolean isOnLine,String cityId);
+	/**
+	 * 新建策略页面---政策适用渠道--浙江版本
+	 * @return
+	 * @throws MpmException
+	 */
+	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect) throws MpmException;
 
 }

@@ -19,9 +19,11 @@ import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 
 /**
@@ -280,6 +282,27 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<DimPlanSrvType> getGradeList() throws MpmException {
+		List<Map<String, Object>> list = null;
+		List<DimPlanSrvType> dimPlanSrvTypeList = new ArrayList<DimPlanSrvType>();
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("select * from DIM_PLAN_SRV_TYPE");
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
+			for (Map<String, Object> map : list) {
+				DimPlanSrvType dimPlanSrvType = new DimPlanSrvType();
+				dimPlanSrvType.setTypeId((String) map.get("PLAN_TYPE_ID"));
+				dimPlanSrvType.setTypeName((String) map.get("PLAN_TYPE_NAME"));
+				dimPlanSrvTypeList.add(dimPlanSrvType);
+			}
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		return dimPlanSrvTypeList;
+	}
+	
 	@Override
 	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
 		List<Map<String, Object>> list = null;
@@ -468,4 +491,6 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		}
 		return count;
 	}
+	
+	
 }

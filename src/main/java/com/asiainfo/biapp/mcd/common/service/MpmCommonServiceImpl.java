@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.common.dao.channel.DimMtlChanneltypeDao;
+import com.asiainfo.biapp.mcd.common.dao.channel.McdDimChannelDao;
 import com.asiainfo.biapp.mcd.common.dao.plan.MtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.custgroup.MtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -50,8 +50,8 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	@Resource(name="mtlStcPlanDao")
 	private MtlStcPlanDao mtlStcPlanDao;
 	
-	@Resource(name="dimMtlChanneltypeDao")
-	private DimMtlChanneltypeDao dimMtlChanneltypeDao;
+	@Resource(name="mcdDimChannelDao")
+	private McdDimChannelDao mcdDimChannelDao;
 	
 	@Resource(name="mcdCvColDefineDao")
 	private McdCvColDefineDao mcdCvColDefineDao;
@@ -65,24 +65,10 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 	public void setMtlStcPlanDao(MtlStcPlanDao mtlStcPlanDao) {
 		this.mtlStcPlanDao = mtlStcPlanDao;
 	}
-	public DimMtlChanneltypeDao getDimMtlChanneltypeDao() {
-		return dimMtlChanneltypeDao;
-	}
-	public void setDimMtlChanneltypeDao(DimMtlChanneltypeDao dimMtlChanneltypeDao) {
-		this.dimMtlChanneltypeDao = dimMtlChanneltypeDao;
-	}
 
-	@Override
-	public List<DimPlanSrvType> getGradeList() throws MpmException {
-		return dimMtlChanneltypeDao.getGradeList();
-	}
-	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
-		try {
-			return dimMtlChanneltypeDao.getMtlChannelByCondition(isDoubleSelect);
-		} catch (Exception e) {
-			throw new MpmException(e.getMessage());
-		}
-	}
+
+
+
 	@Override
 	public List<McdCvColDefine> initCvColDefine(String pAttrClassId,String keyWords) {
 		List<McdCvColDefine> list = null;
@@ -192,16 +178,8 @@ public class MpmCommonServiceImpl implements MpmCommonService {
 		    }
 		    
 	        return flag; 
-	    } 
+	    }
+
 	    
-		@Override
-		public List<McdDimCampType> getAllDimCampsegType() throws Exception {
-			List<McdDimCampType> list = null;
-			try {
-				list = dimMtlChanneltypeDao.getAllDimCampsegType();
-			} catch (Exception e) {
-				log.error("", e);
-			}
-			return list;
-		}
+	
 }

@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.dao.channel.McdDimChannelDao;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 @Service("mcdDimChannelService")
 public class McdDimChannelServiceImpl implements McdDimChannelService{
@@ -39,6 +39,14 @@ public class McdDimChannelServiceImpl implements McdDimChannelService{
 			throw e;
 		}
 		return list;
+	}
+	@Override
+	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect){
+		try {
+			return mcdDimChannelDao.getMtlChannelByCondition(isDoubleSelect);
+		} catch (Exception e) {
+			throw new MpmException(e.getMessage());
+		}
 	}
 
 }

@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 
 /*
@@ -105,4 +107,10 @@ public interface MtlStcPlanDao {
 	 * @return
 	 */
 	int execQuerySqlCount(String sql, List<Object> params);
+	/**
+	 * 获取政策粒度
+	 * @return
+	 * @throws MpmException
+	 */
+	List<DimPlanSrvType> getGradeList() throws MpmException;
 }

@@ -1,5 +1,7 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
@@ -61,5 +63,16 @@ public class DimCampsegTypeServiceImpl implements IDimCampsegTypeService {
         }
         return obj;
     }
+    
+	@Override
+	public List<McdDimCampType> getAllDimCampsegType() throws Exception {
+		List<McdDimCampType> list = null;
+		try {
+			list = dimCampsegTypeDao.getAllDimCampsegType();
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return list;
+	}
 
 }

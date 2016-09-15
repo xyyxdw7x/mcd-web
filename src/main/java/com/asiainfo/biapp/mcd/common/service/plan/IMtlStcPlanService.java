@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.vo.plan.McdPlanDef;
+import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 
 public interface IMtlStcPlanService {
     
@@ -45,6 +47,12 @@ public interface IMtlStcPlanService {
 	 * @return
 	 */
 	List<Map<String,Object>> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
+	/**
+	 * 查询政策粒度 ---浙江
+	 * @return
+	 * @throws MpmException
+	 */
+	List<DimPlanSrvType> getGradeList() throws MpmException;
 	
 
 }

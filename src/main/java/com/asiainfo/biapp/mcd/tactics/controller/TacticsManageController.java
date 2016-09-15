@@ -44,6 +44,7 @@ import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
+import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdPlanChannelListService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -88,6 +89,10 @@ public class TacticsManageController extends BaseMultiActionController {
 	private IMcdMtlBotherAvoidService botherAvoidService;
 	@Resource(name = "mcdDimChannelService")
 	private McdDimChannelService mcdDimChannelService;
+	
+	@Resource(name = "dimCampsegTypeService")
+	private IDimCampsegTypeService dimCampsegTypeService;
+	
 	
 	@Resource(name = "mcdPlanChannelListService")
 	private IMcdPlanChannelListService mcdPlanChannelListService;
@@ -982,7 +987,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 		try {
-			List<DimPlanSrvType> list = mpmCommonService.getGradeList();
+			List<DimPlanSrvType> list = mtlStcPlanService.getGradeList();
 			if (!CollectionUtils.isEmpty(list)) {
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(list));
@@ -1022,7 +1027,7 @@ public class TacticsManageController extends BaseMultiActionController {
 
 		try {
 			User user = this.getUser(request, response);
-			List<McdDimChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
+			List<McdDimChannel> list = mcdDimChannelService.getMtlChannelByCondition(isDoubleSelect);
 			List<McdDimChannel> listTemp = new ArrayList<McdDimChannel>();
 
 			String cityId = user.getCityId();
@@ -1334,7 +1339,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		List<McdDimCampType> list = null;
 		try {
-			list = mpmCommonService.getAllDimCampsegType();
+			list = dimCampsegTypeService.getAllDimCampsegType();
 			if (!CollectionUtils.isEmpty(list)) {
 				dataJson.put("status", "200");
 				dataJson.put("data", JmsJsonUtil.obj2Json(list));

@@ -8,14 +8,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
+import com.asiainfo.biapp.mcd.common.service.channel.McdDimChannelService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
-import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -29,9 +30,9 @@ import net.sf.json.JSONObject;
  */
 @RequestMapping("/StcPlan")
 public class StcPlanController extends BaseMultiActionController {
-
-	@Resource(name = "mpmCommonService")
-	private MpmCommonService mpmCommonService;
+	
+	@Resource(name = "mcdDimChannelService")
+	private McdDimChannelService mcdDimChannelService;
 
 	/**
 	 * describe:新建策略页面，初始化适用渠道
@@ -56,7 +57,7 @@ public class StcPlanController extends BaseMultiActionController {
 				? request.getParameter("isDoubleSelect") : "0";
 
 		try {
-			List<McdDimChannel> list = mpmCommonService.getMtlChannelByCondition(isDoubleSelect);
+			List<McdDimChannel> list = mcdDimChannelService.getMtlChannelByCondition(isDoubleSelect);
 			List<McdDimChannel> listTemp = new ArrayList<McdDimChannel>();
 			String cityId = this.getUser(request,response).getCityId();
 			if (!CollectionUtils.isEmpty(list)) {
