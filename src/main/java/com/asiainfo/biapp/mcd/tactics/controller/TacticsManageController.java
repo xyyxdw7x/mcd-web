@@ -46,6 +46,7 @@ import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
+import com.asiainfo.biapp.mcd.tactics.service.IMcdPlanChannelListService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
@@ -91,6 +92,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	private IMcdMtlBotherAvoidService botherAvoidService;
 	@Resource(name = "mcdDimChannelService")
 	private McdDimChannelService mcdDimChannelService;
+	
+	@Resource(name = "mcdPlanChannelListService")
+	private IMcdPlanChannelListService mcdPlanChannelListService;
+	
+	
 
 	private static Logger log = LogManager.getLogger();
 
@@ -1873,6 +1879,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/queryPlansByCondition")
+	@ResponseBody
 	public Pager queryPlansByCondition(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Pager pager = new Pager();
 		User user = this.getUser(request, response);
@@ -1905,5 +1912,23 @@ public class TacticsManageController extends BaseMultiActionController {
 		}
 		return pager;
 	}
+	/**
+	 * 
+	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/selectPlanBackChannels")
+	@ResponseBody
+	public Map<String,String> selectPlanBackChannels(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Map<String,String> rs= new HashMap<String,String>();
+		String planId = request.getParameter("planId");
+		String channels = mcdPlanChannelListService.getChannelsByPlanId(planId);
+		rs.put("channels", channels);
+		return rs;
+	}
+	
 
 }
