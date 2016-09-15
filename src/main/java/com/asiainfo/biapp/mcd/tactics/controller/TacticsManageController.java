@@ -27,7 +27,6 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.service.MpmCommonService;
-import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
 import com.asiainfo.biapp.mcd.common.service.channel.McdDimChannelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.service.custgroup.CustGroupInfoService;
@@ -35,7 +34,6 @@ import com.asiainfo.biapp.mcd.common.service.plan.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.custgroup.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
@@ -74,8 +72,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	private IMtlCallWsUrlService mtlCallWsUrlService;
 	@Resource(name = "mtlStcPlanManagementService")
 	private IMtlStcPlanManagementService mtlStcPlanManagementService;
-	@Resource(name = "dimMtlChanneltypeService")
-	private DimMtlChanneltypeService dimMtlChanneltypeService;// 渠道类型
 	@Resource(name = "custGroupAttrRelService")
 	private CustGroupAttrRelService custGroupAttrRelService;// 客户群属性
 	@Resource(name = "channelBossSmsTemplateService")
@@ -1218,13 +1214,12 @@ public class TacticsManageController extends BaseMultiActionController {
 		PrintWriter out = response.getWriter();
 		JSONObject dataJson = new JSONObject();
 
-		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect"))
-				? request.getParameter("isDoubleSelect") : "0";// 是否单选 单选：0 多选：1
-		List<DimMtlChanneltype> list = null;
+		String isDoubleSelect = StringUtils.isNotEmpty(request.getParameter("isDoubleSelect"))? request.getParameter("isDoubleSelect") : "0";// 是否单选 单选：0 多选：1
+		List<McdDimChannel> list = null;
 
 		try {
 			User user = this.getUser(request, response);
-			list = dimMtlChanneltypeService.getChannelMsg(isDoubleSelect);
+			list = mcdDimChannelService.getChannelMsg(isDoubleSelect);
 			String cityId = user.getCityId();
 			if (!cityId.equals("577")) {// 当不是温州的时候，不显示微信温州渠道
 				for (int i = 0; i < list.size(); i++) {

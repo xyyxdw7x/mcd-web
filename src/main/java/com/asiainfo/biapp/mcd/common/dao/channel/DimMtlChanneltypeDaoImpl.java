@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
@@ -83,29 +84,7 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		return list;
 	}
 	
-	@Override
-	public List<DimMtlChanneltype> getChannelMsg(String isDoubleSelect) {
-		List<Map<String, Object>> list = null;
-		List<DimMtlChanneltype> custGroupList = new ArrayList<DimMtlChanneltype>();
-		try {
-			StringBuffer sbuffer = new StringBuffer();
-			if("1".equals(isDoubleSelect)){//社会渠道，营业厅、手机APP支持多选
-				sbuffer.append("select mcd_dim_channel.CHANNEL_ID,mcd_dim_channel.CHANNELTYPE_ID,mcd_dim_channel.CHANNEL_NAME from mcd_dim_channel where channel_id in('902','903','906') ORDER BY ORDER_NUM ASC");
-			}else{
-				sbuffer.append("select mcd_dim_channel.CHANNEL_ID,mcd_dim_channel.CHANNELTYPE_ID,mcd_dim_channel.CHANNEL_NAME from mcd_dim_channel ORDER BY ORDER_NUM ASC");
-			}
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
-			for (Map<String,Object> map : list) {
-				DimMtlChanneltype mtlChannelType = new DimMtlChanneltype();
-				mtlChannelType.setChannelId((String) map.get("CHANNEL_ID"));
-				mtlChannelType.setChanneltypeId(Short.parseShort(map.get("CHANNELTYPE_ID").toString()));
-				mtlChannelType.setChanneltypeName((String) map.get("CHANNEL_NAME"));
-				custGroupList.add(mtlChannelType);
-			}
-		} catch (Exception e) {
-		}
-		return custGroupList;
-	}
+	
 		private ResultSetExtractor<List<DimMtlChanneltype>> resultSetExtractorDimMtlChanneltype = new ResultSetExtractor<List<DimMtlChanneltype>>() {
 		@Override
 		public List<DimMtlChanneltype> extractData(ResultSet rs) throws SQLException, DataAccessException {  
@@ -149,7 +128,6 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		final String strSql = sql;
 		return this.getJdbcTemplate().queryForList(strSql, DimMtlChanneltype.class);
 	}
-
 
 	public void delete(Object channelTypeId) {
 		if (null != channelTypeId) {
@@ -325,49 +303,6 @@ public class DimMtlChanneltypeDaoImpl  extends JdbcDaoBase implements DimMtlChan
 		return list;
 	}
 	
-	@Override
-	public List<DimMtlChanneltype> initChannel(boolean isOnLine,String cityId) {
-		List<DimMtlChanneltype> list = null;
-		JdbcTemplate jt = this.getJdbcTemplate();
-		try {
-			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("select DMC.CHANNEL_ID,DMC.CHANNELTYPE_ID,DMC.CHANNEL_NAME,TEMP.NUM ")
-				   .append(" from mcd_dim_channel DMC left join")
-				   .append(" (select count(1) num ,mcd_camp_order.channel_id from mcd_camp_order ")
-				   .append("  left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcd_camp_order.campseg_id = mct.campseg_id")
-				   .append(" left join mcd_camp_def mcs on mcd_camp_order.campseg_id=mcs.campseg_id")
-				   .append(" where mcd_camp_order.city_id='"+cityId+"'")
-				   .append(" and  mct.exec_status in (50,51,59)")
-				   .append(" and CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) >=0")  //失效的策略不统计
-				   .append(" group by  mcd_camp_order.channel_id")
-				   .append(" ) temp on DMC.CHANNEL_ID = TEMP.CHANNEL_ID");
-			if(isOnLine){ //线上
-				   sbuffer.append(" where DMC.channel_class=1");
-			}else{//线下
-				   sbuffer.append(" where DMC.channel_class=2");
-			}
-			list = jt.query(sbuffer.toString(), new RowMapper<DimMtlChanneltype>() {
 
-				@Override
-				public DimMtlChanneltype mapRow(ResultSet rs, int index)
-						throws SQLException {
-					DimMtlChanneltype cc = new DimMtlChanneltype();
-					cc.setChannelId(rs.getString("CHANNEL_ID"));
-					cc.setChanneltypeId(rs.getShort("CHANNELTYPE_ID"));
-					cc.setChanneltypeName(rs.getString("CHANNEL_NAME"));
-					if(!"null".equals(String.valueOf(rs.getShort("NUM")))){
-						cc.setNum(String.valueOf(rs.getShort("NUM")));
-					}else{
-						cc.setNum("0");
-					}
-					return cc;
-				}
-			});
-			
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-		return list;
-	}
 }
 	

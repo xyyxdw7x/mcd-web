@@ -2,8 +2,8 @@ package com.asiainfo.biapp.mcd.common.dao.channel;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.common.vo.plan.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
@@ -22,16 +22,8 @@ public interface DimMtlChanneltypeDao {
 
 	public List<DimPlanSrvType> getGradeList() throws MpmException;
 	public List<McdDimChannel> getMtlChannelByCondition(String isDoubleSelect) throws MpmException;
-	/**
-	 * add by lixq10 获取渠道信息表  当渠道和政策有关联时 做标识
-	 * @return
-	 */
-	public List<DimMtlChanneltype> getChannelMsg(String isDoubleSelect);
-	/**
-	 * 查询线上渠道和线下渠道，以及该渠道包含的可进行优先级管理的策略数量
-	 * @return
-	 */
-	public List<DimMtlChanneltype> initChannel(boolean isOnLine,String cityId);
+
+
 	
 	/**
 	 * 保存渠道类型定义信息

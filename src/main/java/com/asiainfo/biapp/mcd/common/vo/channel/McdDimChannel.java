@@ -25,6 +25,16 @@ public class McdDimChannel implements java.io.Serializable {
     private String typeId;
     private String typeName;
     
+    private String Num;//优先级模块使用
+    
+
+	public String getNum() {
+		return Num;
+	}
+
+	public void setNum(String num) {
+		Num = num;
+	}
 
 	public Integer getDisplayOrder() {
         return displayOrder;

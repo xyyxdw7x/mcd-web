@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.service.channel.DimMtlChanneltypeService;
+import com.asiainfo.biapp.mcd.common.service.channel.McdDimChannelService;
 import com.asiainfo.biapp.mcd.common.vo.channel.DimMtlChanneltype;
+import com.asiainfo.biapp.mcd.common.vo.channel.McdDimChannel;
 import com.asiainfo.biapp.mcd.effectappraisal.service.IMtlGroupAttrRelService;
 
 @Controller
@@ -26,19 +27,19 @@ public class IMcdChannelExecuteController extends BaseMultiActionController {
 	private Logger log = Logger.getLogger(IMcdChannelExecuteController.class);
 	
 	@Autowired
-	private DimMtlChanneltypeService dimMtlChannelTypeService;
+	private McdDimChannelService mcdDimChannelService;
 	@Autowired
 	private IMtlGroupAttrRelService mtlGroupAttrRelService;
 	
 	@RequestMapping(params = "cmd=initOfflineChannel")
 	@ResponseBody
 	public Map<String, Object> initOfflineChannel(HttpServletRequest request, HttpServletResponse response) {
-		List<DimMtlChanneltype> list = null;
+		List<McdDimChannel> list = null;
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			User user = this.getUser(request, response);
 			String cityId = user.getCityId();
-			list = dimMtlChannelTypeService.initChannel(false, cityId);
+			list = mcdDimChannelService.initChannel(false, cityId);
 			
 			//当不是温州的时候，不显示微信温州渠道
 			if(!cityId.equals("577")){
@@ -63,12 +64,12 @@ public class IMcdChannelExecuteController extends BaseMultiActionController {
 	@RequestMapping(params = "cmd=initOnlineChannel")
 	@ResponseBody
 	public Map<String, Object> initOnlineChannel(HttpServletRequest request, HttpServletResponse response) {
-		List<DimMtlChanneltype> list = null;
+		List<McdDimChannel> list = null;
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			list = this.dimMtlChannelTypeService.initChannel(true, cityId);
+			list = this.mcdDimChannelService.initChannel(true, cityId);
 
 			//当不是温州的时候，不显示微信温州渠道
 			if(!cityId.equals("577")){
