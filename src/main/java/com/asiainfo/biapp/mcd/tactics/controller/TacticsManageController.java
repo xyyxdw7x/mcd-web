@@ -1774,7 +1774,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							pcMdrNum = pcNum + mdrNum;
 						} else if (avoidBotherFlag == 0 && contactControlFlag == 1) { // 不进行免打扰，只进行频次
 							// 当只进行频次的时候，avoidCustList既是总数又是免打扰的数量
-							// TODO:avoidCustList =
+							// avoidCustList =
 							// custGroupInfoService.getAfterBotherAvoid(null,
 							// null, channelId[i],
 							// Integer.parseInt(campsegTypeId), customgroupid,
