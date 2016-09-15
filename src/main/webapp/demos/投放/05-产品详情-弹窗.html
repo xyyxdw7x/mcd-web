@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>产品详情-弹窗</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-date.css" />
+    <!--保存弹窗 -->
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-dialog.css" />
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$(".productDetail-dialog").dialog({
+				width:600,
+				height:300,
+				resizable: false,
+		    modal: true,
+		    title:"产品详情"
+			});
+		});	 
+	</script>
+
+</head>
+<body>
+
+<!-- 产品详情保存弹窗 -->
+<div class="productDetail-dialog-box container">
+	<div class="own-dialog productDetail-dialog">
+		<!-- 内容区 -->
+		<form class="form-horizontal">
+			<div class="form-group">
+			    <label class="col-sm-4 control-label">产品编号及名称：</label>
+			    <div class="col-sm-6">
+			      	<label class="control-label text-left">产品编号及名称产品编号及名称产品编号及名称产品编号及名称</label>
+			    </div>
+		    </div> 
+		    <div class="row">
+		    	<div class="col-md-6">
+		    		<div class="form-group">
+					    <label class="col-sm-7 control-label">产品类别：</label>
+					    <div class="col-sm-5">
+					      	<label class="control-label text-left">产品类别</label>
+					    </div>
+				    </div> 
+		    	</div>
+		    	<div class="col-md-6">
+		    		<div class="form-group">
+					    <label class="col-sm-5 control-label">产品类型：</label>
+					    <div class="col-sm-7">
+					      	<label class="control-label text-left">产品类型</label>
+					    </div>
+				    </div> 
+		    	</div>
+		    </div><!--row-->
+		    <div class="row">
+		    	<div class="col-md-6">
+		    		<div class="form-group">
+					    <label class="col-sm-7 control-label">生效时间：</label>
+					    <div class="col-sm-5">
+					      	<label class="control-label text-left">2012-02-12</label>
+					    </div>
+				    </div> 
+		    	</div>
+		    	<div class="col-md-6">
+		    		<div class="form-group">
+					    <label class="col-sm-5 control-label">失效时间：</label>
+					    <div class="col-sm-7">
+					      	<label class="control-label text-left">2012-02-12</label>
+					    </div>
+				    </div> 
+		    	</div>
+		    </div><!--row-->
+		    <div class="row">
+		    	<div class="col-md-6">
+		    		<div class="form-group">
+					    <label class="col-sm-7 control-label">是否匹配：</label>
+					    <div class="col-sm-5">
+					      	<label class="control-label text-left">是</label>
+					    </div>
+				    </div> 
+		    	</div>
+		    </div><!--row-->
+		</form>
+	</div><!--dialog end-->
+	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div><!--半透明背景-->
+</div>
+		
+</body>
+</html>

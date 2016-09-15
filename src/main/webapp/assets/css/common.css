@@ -72,6 +72,9 @@ html {
 	*overflow-x: auto;
 	*overflow-y: scroll;
 } /* ie7 scrollbar show */
+.text-left{
+	text-align: left !important;
+}
 .clearfix:after {
 	content: ".";
 	display: block;
