@@ -89,7 +89,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements MtlStcPlanDao {
 		return count;
 	}
 	
-//	根据planId从mtl_stc_plan_channel表中查询多个channelId
+   //	根据planId从mtl_stc_plan_channel表中查询多个channelId
 	@Override
 	public List<McdPlanChannelList> getChannelIds(String planIds){
 		StringBuffer buffer = new StringBuffer();
