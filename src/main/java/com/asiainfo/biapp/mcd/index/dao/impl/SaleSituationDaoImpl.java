@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.index.dao;
+package com.asiainfo.biapp.mcd.index.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,13 +17,14 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.index.dao.ISaleSituationDao;
 import com.asiainfo.biapp.mcd.index.vo.CampChannel;
 import com.asiainfo.biapp.mcd.index.vo.MySale;
 import com.asiainfo.biapp.mcd.index.vo.RecommendCamp;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="saleSituationDao")
-public class SaleSituationDaoImpl extends JdbcDaoBase implements SaleSituationDao {
+public class SaleSituationDaoImpl extends JdbcDaoBase implements ISaleSituationDao {
 	private static Logger log = LogManager.getLogger();
 	
 	// 查询总营销数

@@ -72,9 +72,9 @@ public class CommonUtil {
 		return new ArrayList<String>();
 	}
 	
-	public static List jsonArray2List(String jsonArrayStr,Class clazz){
+	public static List<?> jsonArray2List(String jsonArrayStr,Class<?> clazz){
 		JSONArray jsonarray = JSONArray.fromObject(jsonArrayStr); 
-		List list = (List)JSONArray.toCollection(jsonarray, clazz);
+		List<?> list = (List<?>)JSONArray.toCollection(jsonarray, clazz);
 		return list; 
 	}
 	

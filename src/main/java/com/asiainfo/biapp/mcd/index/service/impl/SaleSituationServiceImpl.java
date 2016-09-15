@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.index.service;
+package com.asiainfo.biapp.mcd.index.service.impl;
 
 import java.util.List;
 
@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.index.dao.SaleSituationDao;
+import com.asiainfo.biapp.mcd.index.dao.ISaleSituationDao;
+import com.asiainfo.biapp.mcd.index.service.ISaleSituationService;
 import com.asiainfo.biapp.mcd.index.vo.CampChannel;
 import com.asiainfo.biapp.mcd.index.vo.RecommendCamp;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
 
 @Service("saleSituationService")
-public class SaleSituationServiceImpl implements SaleSituationService{
+public class SaleSituationServiceImpl implements ISaleSituationService{
 	
 	@Autowired
-	private SaleSituationDao saleSituationDao;
+	private ISaleSituationDao saleSituationDao;
 
 	@Override
 	public SaleSituation querySaleSituation(String cityId) throws Exception{
