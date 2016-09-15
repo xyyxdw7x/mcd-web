@@ -188,7 +188,7 @@ public interface IMpmCampSegInfoService {
      * @return List 
      * @throws
      */
-    public List getTargetCustomerbase(String campsegId) throws Exception;
+    public List<Map<String,Object>> getTargetCustomerbase(String campsegId) throws Exception;
     /**
      * 获取细分规则信息（时机）
      * @param campsegId
@@ -206,7 +206,7 @@ public interface IMpmCampSegInfoService {
      * @param campsegId
      * @return
      */
-    public List getChannelsByCampIds(String campsegIds);
+    public List<Map<String,Object>> getChannelsByCampIds(String campsegIds);
     /**
      * 查询指定策略指定渠道在指定时间段内的营销情况
      * @param campsegId
@@ -215,7 +215,7 @@ public interface IMpmCampSegInfoService {
      * @param endDate
      * @return
      */
-    public List getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
+    public List<Map<String,Object>> getCampChannelDetail(String campsegId, String channelId, String startDate, String endDate);
     /**
      * 查询某策略某个指定渠道的所有子策略某天的执行情况   
      * @param campsegIds
@@ -223,7 +223,7 @@ public interface IMpmCampSegInfoService {
      * @param statDate
      * @return
      */
-    public List getCampsChannelSituation(String campsegIds, String channelId, String statDate);
+    public List<Map<String,Object>> getCampsChannelSituation(String campsegIds, String channelId, String statDate);
     
     /**
 	 * 根据产品id查询适配渠道
