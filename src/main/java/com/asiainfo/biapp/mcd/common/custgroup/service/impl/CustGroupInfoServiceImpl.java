@@ -22,7 +22,6 @@ import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.dao.MtlCustGroupJdbcDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -34,8 +33,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	
 	@Resource(name="custGroupInfoDao")
 	ICustGroupInfoDao custGroupInfoDao;
-    @Resource(name = "custGroupJdbcDao")
-	public MtlCustGroupJdbcDao mtlCustGroupJdbcDao;
+
 
 	@Autowired
 	private IUserPrivilege userPrivilege;
@@ -486,27 +484,27 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	
 	   @Override
 	    public int getGroupSequence(String cityid) {
-	        return  mtlCustGroupJdbcDao.getGroupSequence(cityid); 
+	        return  custGroupInfoDao.getGroupSequence(cityid); 
 	    }
 	    @Override
 	    public void updateMtlGroupinfo(CustInfo custInfoBean) {
-	        mtlCustGroupJdbcDao.updateMtlGroupinfo(custInfoBean);
+	        custGroupInfoDao.updateMtlGroupinfo(custInfoBean);
 	    }
 	    @Override
 	    public void updateMtlGroupStatus(String tableName,String custGroupId){
-	        mtlCustGroupJdbcDao.updateMtlGroupStatusInMem(tableName,custGroupId);
+	        custGroupInfoDao.updateMtlGroupStatusInMem(tableName,custGroupId);
 	    }
 	    @Override
 	    public void savemtlCustomListInfo(String mtlCuserTableName,
 	            String customGroupDataDate, String customGroupId, int rowNumberInt,
 	            int dataStatus, Date newDate, String exceptionMessage) {
-	        mtlCustGroupJdbcDao.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+	        custGroupInfoDao.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
 
 	    }
 	    @Override
 	    public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName) { 
 	        
-	        mtlCustGroupJdbcDao.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
+	        custGroupInfoDao.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
 	    }
 	    /**
 	     * 查看SQLLoader文件导入是否成功了
@@ -515,7 +513,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	     */
 	    @Override
 	    public Boolean getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
-	        List<Map<String,Object>> list = mtlCustGroupJdbcDao.getSqlLoderISyncDataCfgEnd(mtlCuserTableName);
+	        List<Map<String,Object>> list = custGroupInfoDao.getSqlLoderISyncDataCfgEnd(mtlCuserTableName);
 	        boolean isEnd = false;
 	        if(list != null && list.size() > 0){
 	            Map<String,Object> map = (Map<String,Object>)list.get(0);
@@ -535,12 +533,12 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	     */
 	    @Override
 	    public void updateSqlLoderISyncDataCfgStatus(String customGroupId) {
-	        mtlCustGroupJdbcDao.updateSqlLoderISyncDataCfgStatus(customGroupId);
+	        custGroupInfoDao.updateSqlLoderISyncDataCfgStatus(customGroupId);
 	        
 	    }
 
 	    @Override
 	    public void addMtlGroupPushInfos(String customGroupId,String userId,String pushToUserId) {  
-	        mtlCustGroupJdbcDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
+	        custGroupInfoDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
 	    }
 }

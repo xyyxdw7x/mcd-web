@@ -40,7 +40,6 @@ import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
@@ -85,8 +84,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private IMtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCustgroupDao")
     private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
-	@Resource(name = "createCustGroupTab")
-	private CreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
 	@Resource(name = "mcdCampsegTaskDao")
@@ -551,7 +548,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
 		String tabNameModel="mtl_cuser_XXXXXXXX";
 		String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
-		createCustGroupTab.addCreateCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
+		custGroupInfoDao.addCreateCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
 		return tabName;
 	}
 	/**
