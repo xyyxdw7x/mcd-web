@@ -19,12 +19,19 @@ function queryCustomerGroupListSuc(obj){
 	var cgItemEjsUrl=contextPath+"/jsp/test/provinces/"+provinces+"/test_extends_customer_group_item.ejs";
 	var cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj});
 	$("#cgList").html(cgListHtml);
-	addCustomerGroupEvent();
+	addCustomerGroupEvent(obj);
 }
-
-function addCustomerGroupEvent(){
+/**
+ * 注册客户群选择事件
+ * @param obj
+ */
+function addCustomerGroupEvent(obj){
 	$("#cgList li").click(function(event){
+		var index = $("#cgList li").index(this);
+		var item=obj[index];
 		$("#cgList li").removeClass("active");
 		$(event.currentTarget).addClass("active");
+		//派发事件
+		$("#cgDiv").trigger("changeCustomerGroup",item);
 	});
 }

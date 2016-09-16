@@ -13,6 +13,7 @@ $(document).ready(function(){
 function addEventListenter(){
 	addStepNumEventListenter();
 	addNextBtnEventListenter();
+	addChangeCustomerGroupEvent();
 }
 /**
  * 初始化各个子页面
@@ -20,6 +21,7 @@ function addEventListenter(){
 function initView(){
 	//调用子页面的函数
 	initCustomerGroup();
+	initShopCar();
 }
 /**
  * 左侧数字导航事件
@@ -59,4 +61,20 @@ function addNextBtnEventListenter(){
 		//找到相应的li并触发点击事件 要保证事件的入口唯一
 		$("#stepOl li :contains('"+nextIndex+"')").trigger("click");
 	});
+}
+/**
+ *  注册客户群发生变化事件
+ */
+function addChangeCustomerGroupEvent(){
+	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
+}
+/**
+ * 渠道发生变化事件
+ * @param event
+ * @param data
+ */
+function changeCustomerGroupEvent(event,data){
+	//data为客户群的所有信息
+	//派发事件
+	$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
 }
