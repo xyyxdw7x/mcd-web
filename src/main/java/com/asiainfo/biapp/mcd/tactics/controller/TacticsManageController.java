@@ -1856,6 +1856,8 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 
 	// -------------------------------------------------------------新代码--------------------------------------------------------------------
+	
+	
 	/**
 	 * 创建活动页面：初始化产品类型模块
 	 * 
@@ -2028,4 +2030,261 @@ public class TacticsManageController extends BaseMultiActionController {
 		}
 		return list; 
 	}
+	
+
+	/**
+	 * 保存策略基本信息
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/save")
+	public void save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+
+		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略
+
+		try {
+			User user = this.getUser(request, response);
+
+			// 策略包 先循环迭代出每个规则
+			String test = request.getParameter("ruleList");
+			org.json.JSONObject ruleList = new org.json.JSONObject(test);
+			
+			org.json.JSONObject commonAttr = new org.json.JSONObject(ruleList.get("commonAttr").toString());// 获取公共属性
+			String campsegName = commonAttr.get("campsegName").toString();
+			String putDateStart = commonAttr.get("putDateStart").toString();
+			String putDateEnd = commonAttr.get("putDateEnd").toString();
+			String isFilterDisturb = commonAttr.get("isFilterDisturb").toString(); // 是否需要免打扰控制
+			String planId = commonAttr.get("planid").toString();
+			String isApprove = commonAttr.get("isApprove").toString();// 审批标识
+			
+			// 先保存基本信息 父亲节点
+			McdCampDef campSeginfoBasic = new McdCampDef();
+			campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());
+			campSeginfoBasic.setCampName(campsegName);
+			campSeginfoBasic.setStartDate(putDateStart);
+			campSeginfoBasic.setEndDate(putDateEnd);
+			campSeginfoBasic.setPid("0");// 父节点
+			campSeginfoBasic.setCreateUserId(user.getId());
+			campSeginfoBasic.setCreateUserName(user.getName());
+			campSeginfoBasic.setPlanId(planId);
+			campSeginfoBasic.setIsFatherNode(true);
+			campSeginfoBasic.setCityId(user.getCityId()); // 策划人所属城市
+			campSeginfoBasic.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
+			campSegInfoList.add(campSeginfoBasic);
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+			String planIdArray[] = planId.split(","); // 当时多产品的时候
+
+			for (int i = 0; i < planIdArray.length; i++) {
+				org.json.JSONObject rule = new org.json.JSONObject(ruleList.get("rule0").toString()); // 迭代每一个规则进行计算
+
+				 
+
+				// 获取客户群ID
+				String customgroupid = null;
+				String updateCycle = null;
+				if (StringUtils.isNotEmpty(rule.get("customer").toString())) {
+					customgroupid = new org.json.JSONObject(rule.get("customer").toString()).get("id").toString();
+					updateCycle = new org.json.JSONObject(rule.get("customer").toString()).get("updatecycle").toString();
+				}
+				
+				// 筛选后的客户群数量
+				String afterComputCustNum = rule.get("afterComputCustNum").toString();
+			
+				// 获取渠道
+				String execContentStr = rule.get("execContent").toString();
+				org.json.JSONArray execContent = new org.json.JSONArray(execContentStr);				
+				List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
+				MtlChannelDefCall mtlChannelDefCall = null;
+				String streamsId = "";
+				for (int j = 0; j < execContent.length(); j++) {
+					org.json.JSONObject obj = new org.json.JSONObject(execContent.get(j).toString());
+					Map<String, Object> objMap = jsonToMap(execContent.get(j).toString());
+					// 判断是否包含实时事件
+					if (execContentStr.indexOf("cepInfo") != -1) {
+						String cepInfo = obj.get("cepInfo").toString();
+						org.json.JSONObject cepInfoObject = new org.json.JSONObject(cepInfo);
+						org.json.JSONArray functionList = new org.json.JSONArray(cepInfoObject.getString("functionList"));
+						for (int m = 0; m < functionList.length(); m++) {
+						}
+					}
+
+					McdCampChannelList mtlChannelDef = new McdCampChannelList();
+					String channelId = String.valueOf(obj.get("chanelId"));
+					String content = "";
+					boolean ifHasVariate = false;
+					String channelCycle = "";
+					String adivId = "";
+
+					if ("901".equals(channelId)) { // 短信渠道
+						channelCycle = String.valueOf(obj.get("channelCycle"));
+						content = String.valueOf(obj.get("exec_content"));
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						// 策略级频次控制(一次性短信paramDays paramNum前台不传参数
+						Object paramDaysObj = objMap.get("paramDays");
+						String paramDays = "0";
+						if (null != paramDaysObj) {
+							paramDays = String.valueOf(paramDaysObj);
+						}
+						Object paramNumObj = objMap.get("paramNum");
+						String paramNum = "0";
+						if (null != paramNumObj) {
+							paramNum = String.valueOf(paramNumObj);
+						}
+						// modify by zhuml end 20151203
+						ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
+						mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
+						if (StringUtils.isNotEmpty(channelCycle)) {
+							mtlChannelDef.setContactType(Integer.parseInt(channelCycle));
+						}
+						if (StringUtils.isEmpty(paramDays)) {
+							paramDays = "0";
+						}
+						if (StringUtils.isEmpty(paramNum)) {
+							paramNum = "0";
+						}
+						mtlChannelDef.setParamDays(Integer.parseInt(paramDays));
+						mtlChannelDef.setParamNum(Integer.parseInt(paramNum));
+						// 实时事件 参数 保存
+						String execStr = execContent.get(j).toString();
+						if (execStr.indexOf("eventInstanceDesc") != -1) { // 当选择实时的时候才会保存
+							String eventInstanceDesc = String.valueOf(obj.get("eventInstanceDesc"));
+							streamsId = String.valueOf(obj.get("streamsId"));
+							String eventParamJson = String.valueOf(obj.get("eventParamJson"));
+							//streamName = String.valueOf(obj.get("eventName"));
+
+							Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+
+							org.json.JSONObject ruleTimeParamObj = new org.json.JSONObject(eventParamJson);
+							String functionId = String.valueOf(ruleTimeParamObj.get("funcId")); // 场景id
+							mtlChannelDef.setFunctionId(functionId);
+							mtlChannelDef.setEventInstanceDesc(p.matcher(eventInstanceDesc).replaceAll(""));
+							if ("20160309093621645766".equals(functionId)|| "20160309093745413830".equals(functionId)) { // 汪斌修改回显场景，特殊处理
+								mtlChannelDef.setEventInstanceDesc(eventInstanceDesc);
+							}
+							mtlChannelDef.setEventParamJson(eventParamJson);
+						}
+
+					} else if ("902".equals(channelId) || "906".equals(channelId) || "905".equals(channelId)) { // 社会渠道和营业厅和手机crm
+						content = String.valueOf(obj.get("exec_content"));
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
+					} else if ("903".equals(channelId)) { // 手机APP
+						adivId = String.valueOf(obj.get("adivId"));
+						mtlChannelDef.setChannelAdivId(adivId);
+					} else if ("904".equals(channelId)) { // 10086热线
+						String awardMount = String.valueOf(obj.get("awardMount"));
+						String editUrl = String.valueOf(obj.get("editUrl"));
+						String handleUrl = String.valueOf(obj.get("handleUrl"));
+						String sendSms = String.valueOf(obj.get("sendSms")); // 短信用语
+						sendSms = URLDecoder.decode(URLDecoder.decode(sendSms, "UTF-8"), "UTF-8");
+						content = String.valueOf(obj.get("exec_content")); // 推荐用语
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						if (StringUtils.isNotEmpty(awardMount)) {
+							mtlChannelDef.setAwardMount(Double.parseDouble(awardMount));
+						}
+						mtlChannelDef.setEditUrl(editUrl);
+						mtlChannelDef.setHandleUrl(handleUrl);
+						mtlChannelDef.setSendSms(sendSms);
+					} else if ("907".equals(channelId)) { // toolBar +
+						adivId = String.valueOf(obj.get("adivId"));
+						content = String.valueOf(obj.get("exec_content"));
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						mtlChannelDef.setChannelAdivId(adivId);
+					} else if ("910".equals(channelId)) { // boss运营位
+						adivId = String.valueOf(obj.get("adivId"));
+						content = String.valueOf(obj.get("exec_content"));
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						String messageType = String.valueOf(obj.get("messageType"));
+						String temp = "";
+						if ("1".equals(messageType)) {
+							temp += "【业务告知】" + content + "(中国移动)";
+						} else {
+							temp += "【服务提醒】" + content + "(中国移动)";
+						}
+						content = temp;
+						mtlChannelDef.setChannelAdivId(adivId);
+
+					} else if ("911".equals(channelId) || "912".equals(channelId)) { // 微信（全省）
+																						// +
+																						// 微信（温州）
+						adivId = String.valueOf(obj.get("adivId"));
+						content = String.valueOf(obj.get("exec_content"));
+						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
+						String execTitle = String.valueOf(obj.get("execTitle")); // 微信标题
+						String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
+						// //Ftp存放的文件名称
+						mtlChannelDef.setChannelAdivId(adivId);
+						mtlChannelDef.setWcTitle(execTitle);
+						mtlChannelDef.setWcFileName(fileName);
+					}
+
+					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
+
+					if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
+						mtlChannelDef.setChannelAdivId("1");
+					}
+					// 保存将筛选后的客户群数量
+					String afterComputeCustNum[] = afterComputCustNum.split(",");
+					String targetCustNum = "0";
+					if (null != afterComputeCustNum && afterComputeCustNum.length > 0) {
+						for (int k = 0; k < afterComputeCustNum.length; k++) {
+							String temp[] = afterComputeCustNum[k].split("_");
+							if (channelId.equals(temp[0])) {
+								targetCustNum = temp[1];
+							}
+						}
+					}
+					if (StringUtils.isEmpty(channelCycle) && StringUtils.isNotEmpty(updateCycle)) { // 当channelCycle为空的时候保持与updateCycle一致
+						mtlChannelDef.setContactType(Integer.parseInt(updateCycle));
+						mtlChannelDef.setUpdateCycle(Integer.parseInt(updateCycle));
+					}
+
+					mtlChannelDef.setTargetUserNums(Integer.parseInt(targetCustNum));
+					mtlChannelDef.setChannelId(channelId);
+					mtlChannelDef.setExecContent(content);
+					mtlChannelDefList.add(mtlChannelDef);
+				}
+
+				McdCampDef campSeginfo = new McdCampDef();
+				campSeginfo.setCampName(campsegName);
+				campSeginfo.setStartDate(putDateStart);
+				campSeginfo.setEndDate(putDateEnd);
+				campSeginfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
+				campSeginfo.setCreateUserId(user.getId()); // 活动策划人
+				campSeginfo.setCityId(user.getCityId()); // 策划人所属城市
+				campSeginfo.setCreateTime(format.parse(format.format(new Date())));
+				campSeginfo.setPlanId(planIdArray[i]); // 产品编号
+				campSeginfo.setCreateUserName(user.getName());
+				campSeginfo.setIsFileterDisturb(Integer.parseInt(isFilterDisturb));
+				
+
+				campSeginfo.setIsFatherNode(false);
+				campSeginfo.setIsApprove(isApprove);
+				campSeginfo.setCampNo(String.valueOf(i)); // 多规则时，规则序号
+
+				
+				campSeginfo.setCepEventId(streamsId);
+				// 客户群基本信息
+				campSeginfo.setCustgroupId(customgroupid);
+
+				campSeginfo.setMtlChannelDefList(mtlChannelDefList);
+				campSeginfo.setMtlChannelDefCall(mtlChannelDefCall);
+				
+				campSegInfoList.add(campSeginfo);
+
+			}
+
+			// 统一进行保存
+			String flag = mpmCampSegInfoService.saveCampSegWaveInfoZJ(campSegInfoList);
+			
+		} catch (Exception e) {
+			log.error("保存异常", e);
+		} 
+	}
+	
 }
