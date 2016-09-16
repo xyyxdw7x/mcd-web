@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-public interface UserDeptDao {
+public interface IUserDeptDao {
 
 	public List<Map<String, Object>> getCityDeptes(String cityId)
 			throws DataAccessException;

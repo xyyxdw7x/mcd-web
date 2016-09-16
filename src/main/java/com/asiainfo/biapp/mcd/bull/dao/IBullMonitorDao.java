@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-public interface BullMonitorDao {
+public interface IBullMonitorDao {
 
 	public List<Map<String, Object>> getBullMonitorListByDept(String cityId,
 			String deptId) throws DataAccessException;

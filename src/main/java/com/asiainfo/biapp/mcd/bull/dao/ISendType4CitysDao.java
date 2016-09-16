@@ -1,6 +1,6 @@
 package com.asiainfo.biapp.mcd.bull.dao;
 
-public interface SendType4CitysDao {
+public interface ISendType4CitysDao {
 
 	public void updateType(String cityId, String sendType);
 

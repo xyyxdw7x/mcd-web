@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.privilege.service.dao;
+package com.asiainfo.biapp.mcd.privilege.dao;
 
 import java.util.List;
 

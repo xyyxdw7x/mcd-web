@@ -5,7 +5,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 
-public interface CurrentDateQuotaService {
+public interface ICurrentDateQuotaService {
 
 	public List<CurrentDateQuota> getCurrentStatis(String cityId);
 

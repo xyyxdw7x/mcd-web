@@ -13,7 +13,7 @@ import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.MD5Util;
-import com.asiainfo.biapp.mcd.privilege.service.dao.IUserPrivilegeDao;
+import com.asiainfo.biapp.mcd.privilege.dao.IUserPrivilegeDao;
 
 @Service("defaultUserPrivilege")
 public class DefaultUserPrivilege implements IUserPrivilege {

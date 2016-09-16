@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.privilege.service.dao.impl;
+package com.asiainfo.biapp.mcd.privilege.dao.impl;
 
 import java.sql.Types;
 import java.util.List;
@@ -11,7 +11,7 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.mcd.privilege.service.dao.IUserPrivilegeDao;
+import com.asiainfo.biapp.mcd.privilege.dao.IUserPrivilegeDao;
 
 /**
  * 用户权限接口DAO

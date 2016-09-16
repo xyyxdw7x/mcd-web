@@ -19,6 +19,7 @@ import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -1149,5 +1150,144 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		log.info("查询客户群与时机组合的客户群清单列表语句"+sql);
 		return sql;
 	}
-	
+	   @Override
+	    public int getGroupSequence(String cityid) {
+	        int num=0; 
+	        try {   
+	            String sql = "select count(1) from mcd_custgroup_def where  substr( custom_group_id,0,8) = 'J'||'"+cityid+"'|| TO_CHAR(SYSDATE,'YYMM')"; 
+	            log.debug(">>getWhTaskCode(): {}", sql);   
+	            num = this.getJdbcTemplate().queryForObject(sql,Integer.class);  
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }   
+	        return num ; 
+	    }   
+	    
+	    @Override
+	    public void updateMtlGroupinfo(CustInfo custInfoBean) {
+	        String sqldb="";
+	        Object[] argdbs = null;
+	        String sql = "select * from mcd_custgroup_def where custom_group_id = ?";
+	        Object[] args = new Object[]{custInfoBean.getCustomGroupId()};
+	        List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+	        if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
+	            sqldb = "update mcd_custgroup_def set custom_group_id= ?,custom_group_name= ?,custom_group_desc= ?,create_user_id= ?,create_time= ?,rule_desc= ? " +
+	        ",custom_source_id = ?,custom_num= ?,custom_status_id= ?,effective_time= ?,fail_time= ?,update_cycle = ?,CREATE_USER_NAME=? ,IS_PUSH_OTHER =? where custom_group_id = ?";
+	            argdbs = new Object[]{custInfoBean.getCustomGroupId(),custInfoBean.getCustomGroupName(),custInfoBean.getCustomGroupDesc(),custInfoBean.getCreateUserId(),custInfoBean.getCreatetime(),custInfoBean.getRuleDesc(),custInfoBean.getCustomSourceId(),custInfoBean.getCustomNum(),custInfoBean.getCustomStatusId(),custInfoBean.getEffectiveTime(),custInfoBean.getFailTime(),custInfoBean.getUpdateCycle(),custInfoBean.getCreateUserName(),custInfoBean.getIsPushOther(),custInfoBean.getCustomGroupId()};
+
+	        }else{
+	            sqldb = "insert into mcd_custgroup_def(custom_group_id,custom_group_name,custom_group_desc,create_user_id,create_time,rule_desc,custom_source_id,custom_num,custom_status_id,effective_time,fail_time,update_cycle,CREATE_USER_NAME,IS_PUSH_OTHER)" +
+	                    " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	            argdbs = new Object[]{custInfoBean.getCustomGroupId(),custInfoBean.getCustomGroupName(),custInfoBean.getCustomGroupDesc(),custInfoBean.getCreateUserId(),custInfoBean.getCreatetime(),custInfoBean.getRuleDesc(),custInfoBean.getCustomSourceId(),custInfoBean.getCustomNum(),custInfoBean.getCustomStatusId(),custInfoBean.getEffectiveTime(),custInfoBean.getFailTime(),custInfoBean.getUpdateCycle(),custInfoBean.getCreateUserName(),custInfoBean.getIsPushOther()};
+
+	        }
+	        this.getJdbcTemplate().update(sqldb, argdbs);
+	    }
+	    @Override
+	    public void savemtlCustomListInfo(String mtlCuserTableName,
+	            String customGroupDataDate, String customGroupId, int rowNumberInt,
+	            int dataStatus, Date newDate, String exceptionMessage) {
+//	      JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
+	        
+	        String sqldb="";
+	        Object[] argdbs = null;
+//	      JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
+	        String sql = "select list_table_name from mcd_custgroup_tab_list where custom_group_id = ? and data_date = ?";
+	        Object[] args = new Object[]{customGroupId,customGroupDataDate};
+//	      List mtlGroupInfoList = jt.queryForList(sql, args);
+	        List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+	        if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
+	            Map<String, Object> map = (Map<String, Object>) mtlGroupInfoList.get(0);
+	            String tableName  = map.get("list_table_name").toString();
+	            String dropsql = "drop  table "+ tableName;
+	            this.getJdbcTemplate().execute(dropsql);
+	            
+	            String deletemtlGroupAttpRel = "delete from mcd_custgroup_attr_list where list_table_name = ?";
+	            Object[] argdeletes = new Object[]{tableName};
+	            this.getJdbcTemplate().update(deletemtlGroupAttpRel,argdeletes);
+	            
+	            sqldb = "update mcd_custgroup_tab_list set list_table_name= ?,custom_num= ?,data_status= ?,data_time= ?,excp_info= ? where data_date = ? and custom_group_id = ? ";
+	            argdbs = new Object[]{mtlCuserTableName,rowNumberInt,dataStatus,newDate,exceptionMessage,customGroupDataDate,customGroupId};
+	            this.getJdbcTemplate().update(sqldb,argdbs);
+	        }else{
+	            sqldb = "insert into mcd_custgroup_tab_list(list_table_name,data_date,custom_group_id,custom_num,data_status,data_time,excp_info)" +
+	                    " values (?,?,?,?,?,?,?)";
+	            argdbs = new Object[]{mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,newDate,exceptionMessage};
+	            this.getJdbcTemplate().update(sqldb,argdbs);
+	        }
+	    }
+	    @Override
+	    public void updateMtlGroupAttrRel(String customGroupId, String columnName,
+	            String columnCnName, String columnDataType, String columnLength,String mtlCuserTableName) {
+	        String sqldb="";
+	        Object[] argdbs = null;
+	        String sql = "select * from mcd_custgroup_attr_list where custom_group_id = ? and list_table_name = ? and attr_col = ?";
+	        Object[] args = new Object[]{customGroupId,mtlCuserTableName,columnName};
+	        List<Map<String,Object>> mtlGroupInfoList = this.getJdbcTemplate().queryForList(sql,args);
+	        if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
+	            sqldb = "update mcd_custgroup_attr_list set attr_col=?,attr_col_name=?,attr_col_type=?,attr_col_length=? where  custom_group_id = ? and list_table_name = ? and attr_col = ?";
+	            argdbs = new Object[]{columnName,columnCnName,columnDataType,columnLength,customGroupId,mtlCuserTableName,columnName};
+	        }else{
+	            sqldb = "insert into mcd_custgroup_attr_list(list_table_name,attr_col,custom_group_id,attr_col_name,attr_col_type,attr_col_length)" +
+	                    " values (?,?,?,?,?,?)";
+	            argdbs = new Object[]{mtlCuserTableName,columnName,customGroupId,columnCnName,columnDataType,columnLength};
+	        }
+	        this.getJdbcTemplate().update(sqldb, argdbs);
+
+	    }
+
+	    /**
+	     * 查看该任务执行信息
+	     * @param mtlCuserTableName
+	     * @return
+	     */
+	    @Override
+	    public List<Map<String,Object>> getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
+	        String sql = "select run_end_time From i_sync_data_cfg where EXEC_SQL = ?";
+	        return this.getJdbcTemplate().queryForList(sql,new Object[]{mtlCuserTableName});
+	    }
+	    /**
+	     * sqlLoder导入完成后更改状态
+	     * @param customGroupId 客户群ID
+	     */
+	    @Override
+	    public void updateSqlLoderISyncDataCfgStatus(String customGroupId) {
+	        String sql = "update i_sync_data_cfg set time_type = -1 where POLICY_ID = ?";
+	        log.info("sqlloder updateSQL :" + sql  + ",POLICY_ID:" + customGroupId);
+	        this.getJdbcTemplate().update(sql,new Object[]{customGroupId});
+	        
+	    }
+
+	    @Override
+	    public void addMtlGroupPushInfos(String customGroupId, String userId,
+	            String pushToUserId) {
+	        String sqldb = "insert into mcd_custgroup_push(custom_group_id,create_user_id,create_push_target_id)" +
+	                    " values (?,?,?)";
+	        Object[] argdbs = new Object[]{customGroupId,userId,pushToUserId};
+	        this.getJdbcTemplate().update(sqldb, argdbs);
+
+	    }
+	    @Override
+	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId) {
+	        
+	        StringBuilder updateSql = new StringBuilder();
+	        updateSql.append("UPDATE mcd_custgroup_def SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from ")
+	        .append(tableName)
+	        .append(") where custom_group_id=?");
+	        
+	        Object[] args = new Object[]{custGroupId};
+
+	        log.info("updateSql is {}", updateSql.toString());
+	        this.getJdbcTemplate().update(updateSql.toString(), args);
+	    }
+	    
+	    @Override
+	    public void addCreateCustGroupTabInMem(String sql) {
+	        try {   
+	            log.debug("sql: {}", sql);   
+	            this.getJdbcTemplate().execute(sql);  
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }   
+	    }
 }

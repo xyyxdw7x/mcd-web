@@ -13,7 +13,7 @@ public class McdPlanChannelListDaoImpl extends JdbcDaoBase implements IMcdPlanCh
 @Override
 public List<McdPlanChannelList> getChannelsByPlanId(String planId){
 	StringBuffer sb = new StringBuffer();
-	sb.append("SELECT plan_id,channel_id FROM mcd_plan_city_list WHERE plan_id=?");
+	sb.append("SELECT plan_id,channel_id FROM mcd_plan_channel_list WHERE plan_id=?");
 	List<McdPlanChannelList> list = this.getJdbcTemplate().query(sb.toString(),new Object[]{planId},new VoPropertyRowMapper<McdPlanChannelList>(McdPlanChannelList.class));
 	return list;
 	

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.service;
+package com.asiainfo.biapp.mcd.bull.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Service("currentDateQuotaService")
-public class CurrentDateQuotaServiceImp implements CurrentDateQuotaService {
+public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
 	@Autowired
 	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
 	
