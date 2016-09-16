@@ -1750,7 +1750,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 				},
 				render : function() {
 					var ths = this;
-					this.getGroupTypeNew(' ',1);
+					this.getGroupTypeNew('',1);
 					this.getDimCampDrvType();
 					pageNumNow = 1;
 					$('.group-page-span').on('click',function(){
