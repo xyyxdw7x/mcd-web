@@ -63,7 +63,7 @@ function addNextBtnEventListenter(){
 	});
 }
 /**
- *  注册渠道发生变化
+ *  注册客户群发生变化
  */
 function addChangeCustomerGroupEvent(){
 	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
