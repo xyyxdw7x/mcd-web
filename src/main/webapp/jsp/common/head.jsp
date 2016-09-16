@@ -4,5 +4,15 @@
 	String contextPath=request.getContextPath().toString();
 	String provinces=application.getAttribute("APP_PROVINCES").toString(); 
 %>
+<script type="text/javascript">
+	var contextPath="<%=contextPath%>";
+	var provinces="<%=provinces%>";
+</script>
 <link  type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/main.css" rel="stylesheet"  />
-<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jquery-3.1.0.min.js"></script>
+<link  type="text/css" href="<%=contextPath%>/assets/css/common.css" rel="stylesheet" rel="stylesheet" />
+<link  type="text/css" href="<%=contextPath%>/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link  type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-header.css" rel="stylesheet"  />
+<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.min.js"></script>
+
