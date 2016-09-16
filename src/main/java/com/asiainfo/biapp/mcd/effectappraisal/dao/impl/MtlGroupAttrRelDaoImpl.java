@@ -61,26 +61,26 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			/**
-			 * select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,dim_mtl_adiv_info.* from mcd_plan_channel_list 
+			 * select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,mcd_dim_adiv_info.* from mcd_plan_channel_list 
 				left join mcd_plan_resource_list on mcd_plan_channel_list.plan_id=mcd_plan_resource_list.plan_id
-				left join dim_mtl_adiv_info on mcd_plan_resource_list.adiv_id = dim_mtl_adiv_info.adiv_id
-				--left join dim_mtl_adiv_resouce on mcd_plan_resource_list.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id
+				left join mcd_dim_adiv_info on mcd_plan_resource_list.adiv_id = mcd_dim_adiv_info.adiv_id
+				--left join mcd_dim_adiv_resouce on mcd_plan_resource_list.chn_resource_id=mcd_dim_adiv_resouce.adiv_resource_id
 				where mcd_plan_channel_list.plan_id in ('600000274748','600000282454','600000282453','600000298809','600000298808')
 				and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) 
 				or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND
                        nvl2(PLAN_CHN_STARTDATE, PLAN_CHN_STARTDATE, TO_DATE('21000101', 'YYYYMMDD')))
 			 */
 			sbuffer.append("select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,mcd_plan_resource_list.chn_resource_id,mcd_plan_resource_list.chn_resource_desc," +
-					"dim_mtl_adiv_resouce.adiv_resource_name,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url,dim_mtl_adiv_info.* from mcd_plan_channel_list ")
+					"mcd_dim_adiv_resouce.adiv_resource_name,mcd_dim_adiv_resouce.adiv_content_url,mcd_dim_adiv_resouce.adiv_content_to_url,mcd_dim_adiv_info.* from mcd_plan_channel_list ")
 				   .append(" left join mcd_plan_resource_list on mcd_plan_channel_list.plan_id=mcd_plan_resource_list.plan_id")
-				   .append(" left join dim_mtl_adiv_info on mcd_plan_resource_list.adiv_id = dim_mtl_adiv_info.adiv_id")
-				   .append(" left join dim_mtl_adiv_resouce on mcd_plan_resource_list.chn_resource_id = dim_mtl_adiv_resouce.adiv_resource_id")
+				   .append(" left join mcd_dim_adiv_info on mcd_plan_resource_list.adiv_id = mcd_dim_adiv_info.adiv_id")
+				   .append(" left join mcd_dim_adiv_resouce on mcd_plan_resource_list.chn_resource_id = mcd_dim_adiv_resouce.adiv_resource_id")
 				   .append(" where mcd_plan_channel_list.plan_id=? and mcd_plan_channel_list.channel_id=?")
-				   .append(" and mcd_plan_channel_list.channel_id = dim_mtl_adiv_info.channel_id")
+				   .append(" and mcd_plan_channel_list.channel_id = mcd_dim_adiv_info.channel_id")
 				   .append(" and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) ")
 				   .append(" or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND")
 				   .append(" nvl2(PLAN_CHN_ENDDATE, PLAN_CHN_ENDDATE, TO_DATE('21000101', 'YYYYMMDD')))");
-//			sbuffer.append("SELECT  * FROM dim_mtl_adiv_info WHERE channel_id=?");
+//			sbuffer.append("SELECT  * FROM mcd_dim_adiv_info WHERE channel_id=?");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new String[]{planId,channelId}, Map.class);
 			for (Map map : list) {
 				DimMtlAdivInfo temp = new DimMtlAdivInfo();
@@ -111,7 +111,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		List<DimMtlAdivInfo> resultList = new ArrayList<DimMtlAdivInfo>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT  * FROM dim_mtl_adiv_info WHERE adiv_id in("+adivids+")");
+			sbuffer.append("SELECT  * FROM mcd_dim_adiv_info WHERE adiv_id in("+adivids+")");
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), Map.class);
 			for (Map map : list) {
 				DimMtlAdivInfo temp = new DimMtlAdivInfo();
@@ -201,7 +201,7 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 	public List<Map<String,Object>> initAdivInfoByChannelId(String cityId) {
 		JdbcTemplate jt = this.getJdbcTemplate();
 		StringBuffer sb = new StringBuffer();
-		sb.append("select dmai.*,num,case when num is null then 0 else num end sortNum from dim_mtl_adiv_info dmai left join (")
+		sb.append("select dmai.*,num,case when num is null then 0 else num end sortNum from mcd_dim_adiv_info dmai left join (")
 		  .append(" select count(1) num ,mcd_camp_order.channel_id,mcd_camp_order.Chn_Adiv_Id ")
 		  .append(" from mcd_camp_order  ")
 		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcd_camp_order.campseg_id = mct.campseg_id")

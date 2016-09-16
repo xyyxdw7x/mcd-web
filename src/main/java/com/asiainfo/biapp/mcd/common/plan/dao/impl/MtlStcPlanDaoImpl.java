@@ -99,11 +99,11 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 		List<Map<String, Object>> list = null;
 		List<McdPlanChannelList> resultList = new ArrayList<McdPlanChannelList>();
 		try {
-				buffer.append("select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,dim_mtl_adiv_resouce.adiv_resource_id,dim_mtl_adiv_resouce.adiv_resource_name,")
-				  .append(" dim_mtl_adiv_resouce.adiv_resource_desc,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url")
+				buffer.append("select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,mcd_dim_adiv_resouce.adiv_resource_id,mcd_dim_adiv_resouce.adiv_resource_name,")
+				  .append(" mcd_dim_adiv_resouce.adiv_resource_desc,mcd_dim_adiv_resouce.adiv_content_url,mcd_dim_adiv_resouce.adiv_content_to_url")
 				  .append(" from mcd_plan_channel_list")
 				  .append(" left join mcd_plan_resource_list on mcd_plan_channel_list.plan_id=mcd_plan_resource_list.plan_id")
-				  .append(" left join dim_mtl_adiv_resouce on mcd_plan_resource_list.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id")
+				  .append(" left join mcd_dim_adiv_resouce on mcd_plan_resource_list.chn_resource_id=mcd_dim_adiv_resouce.adiv_resource_id")
 				  .append(" where mcd_plan_channel_list.plan_id in ("+planIds+")");
 			list = this.getJdbcTemplate().queryForList(buffer.toString());
 			for (Map<String, Object> map : list) {
