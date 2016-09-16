@@ -61,20 +61,20 @@ public class MtlGroupAttrRelDaoImpl extends JdbcDaoBase implements IMtlGroupAttr
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			/**
-			 * select mcd_plan_channel_list.*,mtl_stc_plan_resource.adiv_id,dim_mtl_adiv_info.* from mcd_plan_channel_list 
-				left join mtl_stc_plan_resource on mcd_plan_channel_list.plan_id=mtl_stc_plan_resource.plan_id
-				left join dim_mtl_adiv_info on mtl_stc_plan_resource.adiv_id = dim_mtl_adiv_info.adiv_id
-				--left join dim_mtl_adiv_resouce on mtl_stc_plan_resource.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id
+			 * select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,dim_mtl_adiv_info.* from mcd_plan_channel_list 
+				left join mcd_plan_resource_list on mcd_plan_channel_list.plan_id=mcd_plan_resource_list.plan_id
+				left join dim_mtl_adiv_info on mcd_plan_resource_list.adiv_id = dim_mtl_adiv_info.adiv_id
+				--left join dim_mtl_adiv_resouce on mcd_plan_resource_list.chn_resource_id=dim_mtl_adiv_resouce.adiv_resource_id
 				where mcd_plan_channel_list.plan_id in ('600000274748','600000282454','600000282453','600000298809','600000298808')
 				and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) 
 				or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND
                        nvl2(PLAN_CHN_STARTDATE, PLAN_CHN_STARTDATE, TO_DATE('21000101', 'YYYYMMDD')))
 			 */
-			sbuffer.append("select mcd_plan_channel_list.*,mtl_stc_plan_resource.adiv_id,mtl_stc_plan_resource.chn_resource_id,mtl_stc_plan_resource.chn_resource_desc," +
+			sbuffer.append("select mcd_plan_channel_list.*,mcd_plan_resource_list.adiv_id,mcd_plan_resource_list.chn_resource_id,mcd_plan_resource_list.chn_resource_desc," +
 					"dim_mtl_adiv_resouce.adiv_resource_name,dim_mtl_adiv_resouce.adiv_content_url,dim_mtl_adiv_resouce.adiv_content_to_url,dim_mtl_adiv_info.* from mcd_plan_channel_list ")
-				   .append(" left join mtl_stc_plan_resource on mcd_plan_channel_list.plan_id=mtl_stc_plan_resource.plan_id")
-				   .append(" left join dim_mtl_adiv_info on mtl_stc_plan_resource.adiv_id = dim_mtl_adiv_info.adiv_id")
-				   .append(" left join dim_mtl_adiv_resouce on mtl_stc_plan_resource.chn_resource_id = dim_mtl_adiv_resouce.adiv_resource_id")
+				   .append(" left join mcd_plan_resource_list on mcd_plan_channel_list.plan_id=mcd_plan_resource_list.plan_id")
+				   .append(" left join dim_mtl_adiv_info on mcd_plan_resource_list.adiv_id = dim_mtl_adiv_info.adiv_id")
+				   .append(" left join dim_mtl_adiv_resouce on mcd_plan_resource_list.chn_resource_id = dim_mtl_adiv_resouce.adiv_resource_id")
 				   .append(" where mcd_plan_channel_list.plan_id=? and mcd_plan_channel_list.channel_id=?")
 				   .append(" and mcd_plan_channel_list.channel_id = dim_mtl_adiv_info.channel_id")
 				   .append(" and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) ")
