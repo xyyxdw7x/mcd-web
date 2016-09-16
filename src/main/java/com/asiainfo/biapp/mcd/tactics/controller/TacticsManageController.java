@@ -1985,9 +1985,9 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping("initDimMtlAdivInfo")
+	@RequestMapping("getAdivInfo")
 	@ResponseBody
-	public Map<String,Object> initDimMtlAdivInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public Map<String,Object> getAdivInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Map<String,Object> res = new HashMap<String,Object>();
 		String planId = request.getParameter("planId");
 		String channelId = request.getParameter("channelId");
@@ -2003,5 +2003,29 @@ public class TacticsManageController extends BaseMultiActionController {
 			log.error("",e);
 		}
 		return res;
+	}
+	
+	/**
+	 * 选择客户群时：初始化该客户群的变量
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getCustGroupVars")
+	@ResponseBody
+	public List<McdCustgroupAttrList> getCustGroupVars(HttpServletRequest request, HttpServletResponse response) throws Exception {	
+		String custGroupId = request.getParameter("custGroupId");
+		List<McdCustgroupAttrList> list = null;
+		try {
+			if (StringUtils.isNotEmpty(custGroupId)) {
+				list = custGroupAttrRelService.initTermLable(custGroupId);
+			}
+			
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return list; 
 	}
 }
