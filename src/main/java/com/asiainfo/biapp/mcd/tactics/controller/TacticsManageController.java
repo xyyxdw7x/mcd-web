@@ -2034,13 +2034,14 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 
 	/**
-	 * 保存策略基本信息
+	 * 保存策略接口
 	 * 
 	 * @param request
 	 * @param response
 	 * @throws Exception
 	 */
 	@RequestMapping("/save")
+	@ResponseBody
 	public Map<String,String> save(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs = new HashMap<String,String>();
 		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略列表
