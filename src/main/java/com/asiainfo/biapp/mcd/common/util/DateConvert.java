@@ -21,7 +21,8 @@ public class DateConvert implements Converter {
 	private static String dateLongFormatStr = dateFormatStr + " HH:mm:ss";
 	private static FastDateFormat dateTimeLongFormat = FastDateFormat.getInstance(dateLongFormatStr);
 
-	public Object convert(Class arg0, Object arg1) {
+	@SuppressWarnings("unchecked")
+	public <T> T convert(Class<T> arg0, Object arg1) {
 		if (arg1 == null) {
 			return null;
 		}
@@ -30,11 +31,11 @@ public class DateConvert implements Converter {
 		if ("java.sql.Timestamp".equalsIgnoreCase(className)) {
 			try {
 				DateFormat df = new SimpleDateFormat(dateFormatStr + " HH:mm:ss");
-				return df.parse(dateTimeLongFormat.format(arg1));
+				return (T)df.parse(dateTimeLongFormat.format(arg1));
 			} catch (Exception e) {
 				try {
 					DateFormat df = new SimpleDateFormat(dateFormatStr);
-					return df.parse(dateTimeFormat.format(arg1));
+					return (T)df.parse(dateTimeFormat.format(arg1));
 				} catch (ParseException ex) {
 					e.printStackTrace();
 					return null;
@@ -47,11 +48,11 @@ public class DateConvert implements Converter {
 			}
 			try {
 				DateFormat df = new SimpleDateFormat(dateFormatStr + " HH:mm:ss");
-				return df.parse(p.trim());
+				return (T)df.parse(p.trim());
 			} catch (Exception e) {
 				try {
 					DateFormat df = new SimpleDateFormat(dateFormatStr);
-					return df.parse(p.trim());
+					return (T)df.parse(p.trim());
 				} catch (ParseException ex) {
 					e.printStackTrace();
 					return null;
