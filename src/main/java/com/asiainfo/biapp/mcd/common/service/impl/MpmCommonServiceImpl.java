@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.channel.dao.IMcdDimChannelDao;
-import com.asiainfo.biapp.mcd.common.custgroup.service.IMtlCustGroupService;
+import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -54,8 +54,8 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 	@Resource(name="mcdCvColDefineDao")
 	private McdCvColDefineDao mcdCvColDefineDao;
 	
-	@Resource(name = "custGroupService")
-	private IMtlCustGroupService custGroupService;
+	@Resource(name = "custGroupInfoService")
+	private ICustGroupInfoService custGroupInfoService;
 	
 	public IMtlStcPlanDao getMtlStcPlanDao() {
 		return mtlStcPlanDao;
@@ -102,18 +102,18 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 				
 				//新增逻辑SQLLODER导入
 				log.info("sqlLoder导入开始.............." );   
-				 custGroupService.insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
-					Boolean isTrue = custGroupService.getSqlLoderISyncDataCfgEnd(tableName);
+				custGroupInfoService.insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
+					Boolean isTrue = custGroupInfoService.getSqlLoderISyncDataCfgEnd(tableName);
 					while(!isTrue){
 						Thread.sleep(60000);
-						isTrue = custGroupService.getSqlLoderISyncDataCfgEnd(tableName);
+						isTrue = custGroupInfoService.getSqlLoderISyncDataCfgEnd(tableName);
 					}
 				    log.info("sqlLoder 插入客户群数据完毕,客户群ID：" + custGroupId);
 				    log.info("本次执行完成，更新任务状态,客户群ID：" + custGroupId);
-				    custGroupService.updateSqlLoderISyncDataCfgStatus(custGroupId);
+				    custGroupInfoService.updateSqlLoderISyncDataCfgStatus(custGroupId);
 //					//在本笃数据库中也创建这个表
-				    custGroupService.createSynonymTableMcdBySqlFire(tableName);
-					custGroupService.updateMtlGroupStatus(tableName,custGroupId);
+				    custGroupInfoService.createSynonymTableMcdBySqlFire(tableName);
+				    custGroupInfoService.updateMtlGroupStatus(tableName,custGroupId);
 
 		} catch (Exception e) {
 			e.printStackTrace();

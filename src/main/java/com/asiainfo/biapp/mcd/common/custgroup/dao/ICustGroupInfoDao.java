@@ -79,7 +79,9 @@ public interface ICustGroupInfoDao {
      */
     public List<Map<String,Object>> getTargetCustomerbase(String campsegId);
     /**
-     * 根据客户群ID查找客户群信息
+     * 根据客户群ID查找客户群
+     * @param custgroupId
+     * @return
      */
     public McdCustgroupDef getMtlGroupInfo(String custgroupId);
     /**
@@ -98,7 +100,11 @@ public interface ICustGroupInfoDao {
      */
     public int getOriCustGroupNum(String custom_group_id);
     
-	
+    /**
+     * 根据客户群编码获取客户群清单信息
+     * @param customgroupid
+     * @return
+     */
 	List<Map<String,Object>> getMtlCustomListInfo(String customgroupid); 
 	/**
 	 * 
@@ -145,6 +151,11 @@ public interface ICustGroupInfoDao {
 	 * @return
 	 */
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	/**
+     * 根据客户群id查询客户群信息
+     * @param custGroupId
+     * @return
+     */
 	McdCustgroupDef getCustGroupInfoById(String custGroupId);
 	/**
 	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group

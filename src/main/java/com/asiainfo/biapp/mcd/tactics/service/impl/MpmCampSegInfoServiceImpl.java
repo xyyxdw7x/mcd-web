@@ -30,7 +30,7 @@ import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.custgroup.dao.IMcdMtlGroupInfoDao;
+import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
@@ -95,8 +95,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	private IMcdCampsegTaskService mcdCampsegTaskService;
 	@Resource(name = "custGroupInfoService")
 	private ICustGroupInfoService custGroupInfoService;
-	@Resource(name = "mcdMtlGroupInfoDao")
-    private IMcdMtlGroupInfoDao mcdMtlGroupInfoDao;
+	@Resource(name = "custGroupInfoDao")
+    private ICustGroupInfoDao custGroupInfoDao;
 	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
@@ -1019,7 +1019,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                     String custgroupId = campSegInfoDao.getMtlCampsegCustGroupId(childMtl.getCampId());
                                     String dataDate = "";
                                     if(custgroupId != null){
-                                        List<Map<String,Object>> mtlCustomList = mcdMtlGroupInfoDao.getMtlCustomListInfo(custgroupId);
+                                        List<Map<String,Object>> mtlCustomList = custGroupInfoDao.getMtlCustomListInfo(custgroupId);
                                         if(mtlCustomList != null && mtlCustomList.size() > 0){
                                             Map<String,Object> mtlCustomMap = (Map<String,Object>)mtlCustomList.get(0);
                                             dataDate = mtlCustomMap.get("data_date") == null ? "" : mtlCustomMap.get("data_date").toString();
@@ -1112,12 +1112,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      
     @Override
 	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
-		List<Map<String,Object>> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
+		List<Map<String,Object>> list = custGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 		//查询客户群的周期性
-		McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+		McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
 		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
@@ -1142,7 +1142,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String ss[] = tableName.split("_");
 				
 				//查询客户群的周期性
-				McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+				McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 				int updateCycle = groupInfo.getUpdateCycle();
 				String sql = "";
 				if("2".equals(updateCycle) || "3".equals(updateCycle)){
