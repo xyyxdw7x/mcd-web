@@ -38,6 +38,7 @@ import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
@@ -50,10 +51,12 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
+import com.asiainfo.biapp.mcd.tactics.service.IPlanChannelAdivResourceService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimAdivInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
@@ -96,6 +99,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	@Resource(name = "mcdPlanChannelListService")
 	private IMcdPlanChannelListService mcdPlanChannelListService;
+	
+	@Resource(name = "planChannelAdivResourceService")
+	private IPlanChannelAdivResourceService planChannelAdivResourceService;
+	
+	
 	
 	
 
@@ -1945,6 +1953,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @throws Exception
 	 */
 	@RequestMapping("getMoreMyCustom")
+	@ResponseBody
 	public List<McdCustgroupDef> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
 		List<McdCustgroupDef> resultList =null;
@@ -1952,7 +1961,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		try {
-			String clickQueryFlag = "true";
 			pager.setPageSize(6);  //每页显示6条
 			pager.setPageNum(pageNum);  //当前页
 			if(StringUtils.isNotEmpty(pageNum)){
@@ -1960,20 +1968,40 @@ public class TacticsManageController extends BaseMultiActionController {
 			}
 			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
 			pager.getTotalPage();
-			if ("true".equals(clickQueryFlag)) {
-				resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
-				pager = pager.pagerFlip();
-				pager.setResult(resultList);
-			} else {
-				pager = pager.pagerFlip();
-				resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
-				pager.setResult(resultList);
-			}
+			resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
+			pager = pager.pagerFlip();
+			pager.setResult(resultList);
 			
 		} catch (Exception e) {
+			log.error("",e);
 		}
         return resultList;
 		
 	}
 	
+	/**
+	 * 创建活动页面，选择渠道时，返回运营位列表
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("initDimMtlAdivInfo")
+	@ResponseBody
+	public Map<String,Object> initDimMtlAdivInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String,Object> res = new HashMap<String,Object>();
+		String planId = request.getParameter("planId");
+		String channelId = request.getParameter("channelId");
+		List<McdDimAdivInfo> list = null;
+		try {
+			String adivdPictureURL = MpmConfigure.getInstance().getProperty("ADIVD_PICTURE_URL");
+			list = planChannelAdivResourceService.getAdivByPlanChannel(planId, channelId);
+			if(!CollectionUtils.isEmpty(list)){
+				res.put("adivdPictureURL", adivdPictureURL);
+				res.put("data", JmsJsonUtil.obj2Json(list));
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return res;
+	}
 }
