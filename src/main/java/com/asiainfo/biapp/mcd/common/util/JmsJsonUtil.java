@@ -33,7 +33,7 @@ public class JmsJsonUtil {
 		try {
 			if (obj != null) {
 				StringWriter sw = new StringWriter();
-				jsonGenerator = om.getJsonFactory().createJsonGenerator(sw);
+				jsonGenerator = om.getFactory().createJsonGenerator(sw);
 				jsonGenerator.writeObject(obj);
 				jsonStr = sw.toString();
 			}
@@ -60,7 +60,7 @@ public class JmsJsonUtil {
 		JsonParser jp = null;
 		try {
 			if (StringUtils.isNotEmpty(json)) {
-				jp = om.getJsonFactory().createJsonParser(json);
+				jp = om.getFactory().createJsonParser(json);
 				return jp.readValueAs(type);
 			}
 		} catch (Exception e) {

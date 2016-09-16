@@ -103,6 +103,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		
 		Map<String,Object> sqlClauseCount = getPlansByConditionSqlCount(cityId, planTypeId, planSrvType, channelId, keyWords);
 		String sql = sqlClauseCount.get("sql").toString();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		List<Object> param = (List) sqlClauseCount.get("params");
 		int count =  mtlStcPlanDao.execQuerySqlCount(sql, param);
 		pager.setTotalSize(count);
@@ -110,7 +111,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		
 		Map<String,Object> sqlClause = this.getPlansByConditionSql(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 		String sql2 = sqlClause.get("sql").toString();
-		List<Object> param2 = (List<Object>) sqlClause.get("params");
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		List<Object> param2 = (List) sqlClause.get("params");
 		
 		return mtlStcPlanDao.execQuerySql(sql2,param2);
 	}
