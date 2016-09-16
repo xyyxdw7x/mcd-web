@@ -1761,7 +1761,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							if('1'==pageNumNow) return;
 							pageNumNow--;
 						}
-						ths.getGroupTypeNew(' ',pageNumNow);
+						ths.getGroupTypeNew('',pageNumNow);
 					});
 					return this;
 				} ,
