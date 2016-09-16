@@ -36,15 +36,15 @@
 		<div class="put-left fleft ft14 mtop_47">
 			<ol>
 				<li class="active">
-					<span onclick="alert("TODO! should go back to step1");>选政策</span><i>1</i>
+					<span onclick="alert('TODO! should go back to step1')">选政策</span><i>1</i>
 				</li>
 				<li class="line"></li>
 				<li>
-					<span onclick="alert("TODO! should go back to step2");>选客户</span><i>2</i>
+					<span onclick="alert('TODO! should go back to step2')">选客户</span><i>2</i>
 				</li>
 				<li class="line"></li>
 				<li>
-					<span onclick="alert("TODO! should go back to step3");>选渠道</span><i>3</i>
+					<span onclick="alert('TODO! should go back to step3')">选渠道</span><i>3</i>
 				</li>
 			</ol>
 		</div>
@@ -124,35 +124,21 @@
 		<!-- 右 -->
 		<div class="put-right fright bg-fff">
 			<div class="top-hd">工作站 </div>
-			<div class="btn-box bg-ebf0f3">
-				<div class="dropdown caret-drop">
-				  <button class="caret-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-				    <span class="caret"></span>
-				  </button>
-				  <ul class="caret-box dropdown-menu" style="display: block;" role="menu" aria-labelledby="dropdownMenu1">
-				    <li role="presentation" class="caret-edit"><a role="menuitem" tabindex="-1" class="active" href="javascript:;"></a></li>
-				    <li role="presentation" class="caret-save"><a role="menuitem" tabindex="-1" href="javascript:;"></a></li>
-				  </ul>
-				</div>
-				<span class="del-icon delete"></span>
-			</div>
 			<div class="info-box">
 				<h5>营销政策</h5>
-				<ul>
-					<li><span>.</span>600000379265 新生礼包-飞享10月底前保底58返58-7月受理</li>
-					<li><span>.</span>600000379265 新生礼包-飞享10月底前保底58</li>
-					<li><span>.</span>600000379265 新生礼包-飞享10月底前保</li>
+				<ul id="ulWorkspacePlanList">
+
 				</ul>
 			</div>
 			<div class="info-box">
 				<h5>适配客户群</h5>
-				<div class="custom">
+				<div class="custom" id="divWorkspaceCustGroupList">
 					<span class="color-333 mright_10">北京测试客户群3</span>
 				</div>
 			</div>
 			<div class="info-box">
 				<h5>适配渠道</h5>
-				<div class="custom">
+				<div class="custom" id="divWorkspaceChannelList">
 					<p class="ft14">短信</p>
 					<div>
 						<p><span class="color-666">短信触发时机：</span><em class="color-333">***********</em> </p>
