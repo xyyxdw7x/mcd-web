@@ -29,8 +29,8 @@ public class PlanChannelAdivResourceDaoImpl extends JdbcDaoBase implements IPlan
 				   .append(" and ((PLAN_CHN_STARTDATE is null and PLAN_CHN_ENDDATE is null) ")
 				   .append(" or SYSDATE BETWEEN nvl2(PLAN_CHN_STARTDATE,PLAN_CHN_STARTDATE,TO_DATE('19000101', 'YYYYMMDD')) AND")
 				   .append(" nvl2(PLAN_CHN_ENDDATE, PLAN_CHN_ENDDATE, TO_DATE('21000101', 'YYYYMMDD')))");
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new String[]{planId,channelId});
-			for (Map map : list) {
+			list = this.getJdbcTemplate().queryForList(sbuffer.toString(), new Object[]{planId,channelId});
+			for (Map<String, Object> map : list) {
 				McdDimAdivInfo temp = new McdDimAdivInfo();
 				temp.setAdivId((String) map.get("adiv_id"));
 				temp.setAdivName((String) map.get("adiv_name"));

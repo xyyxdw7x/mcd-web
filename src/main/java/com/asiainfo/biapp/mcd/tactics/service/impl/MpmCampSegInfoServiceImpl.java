@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1248,6 +1249,67 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		} catch (Exception e) {
 			log.error("",e);
 		}
+	}
+	@Override
+	public String saveCampInfo(User user, List<McdCampDef> campSegInfoList) throws Exception {
+		String approveFlag = "0";  //不走审批
+		String isApprove = "false";
+		String campPid="";
+		for(McdCampDef campInfo:campSegInfoList){
+			McdCampDef tmp = this.saveBefore(user,campInfo);
+			String currentCampId;
+			List<McdCampChannelList> channelList =null;			
+            if(tmp.getPid()!="0"){//子策略
+            	isApprove = tmp.getIsApprove();
+            	currentCampId = MpmUtil.generateCampsegAndTaskNo();
+            	tmp.setCampId(currentCampId);
+            	String custGroupId =tmp.getCustgroupId();
+            	this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 保存策略和客户群关系表！！！
+            	channelList = tmp.getMtlChannelDefList();
+            	for(McdCampChannelList campChannel:channelList){
+            		mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+            	}
+			}else{//父策略
+				campPid = tmp.getPid();
+			}
+			campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
+			
+			if("true".equals(isApprove)){
+				String approveStr = this.submitApprovalXml(campPid);
+				if("提交审批成功".equals(approveStr)){
+					approveFlag = "1"; //走审批，审批成功
+				}else{
+					approveFlag = "2"; //走审批，审批失败
+				}
+		}
+		}
+		return approveFlag;
+	}
+	private McdCampDef saveBefore(User user, McdCampDef campInfo){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		campInfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));//策略状态
+		campInfo.setCreateUserId(user.getId()); // 活动策划人
+		campInfo.setCreateUserName(user.getName());
+		campInfo.setCityId(user.getCityId()); // 策划人所属城市
+		campInfo.setDeptId(Integer.parseInt(user.getDepartmentId()));
+		try {
+			campInfo.setCreateTime(format.parse(format.format(new Date())));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return campInfo;
+	}
+	
+	private void saveCampCustRel(String campId, String custGroupId)  {
+			McdCampCustgroupList mtlCampsegCustGroup = new McdCampCustgroupList();
+			mtlCampsegCustGroup.setCustgroupId(custGroupId);
+			mtlCampsegCustGroup.setCampId(campId);
+			try {
+				mtlCampsegCustgroupDao.save(mtlCampsegCustGroup);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 	}
     
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
@@ -11,6 +12,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
@@ -255,13 +257,19 @@ public interface IMpmCampSegInfoService {
 	/*
 	 * 根据业务标签  ARPU 计算我的客户群数量  added by zhanghy2 2015-12-06
 	 */
-	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,
-			McdTempletForm basicEventTemplate, Locale local,String orderProductNo, String excludeProductNo);
+	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate, Locale local,String orderProductNo, String excludeProductNo);
 	
 	/**
 	 * 新的方式插入清单表数据
 	 */
 	public void insertCustGroupNewWay(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	/**
+	 * 保存策略
+	 * @param user 当前用户
+	 * @param campSegInfoList 策略列表
+	 * @throws Exception 
+	 */
+	public String saveCampInfo(User user, List<McdCampDef> campSegInfoList) throws Exception;
 	
 	
 	

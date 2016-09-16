@@ -39,7 +39,7 @@ public class McdCampChannelList implements java.io.Serializable {
 	@Column(name="SEND_SMS")
 	private String sendSms ; // 短信用语
 	@Column(name="CHANNEL_ADIV_ID")
-	private String channelAdivId;  //运营位id
+	private String adivId;  //运营位id
 	@Column(name="EXEC_TITLE")
 	private String wcTitle; // 微信标题
 	@Column(name="FILE_NAME")
@@ -139,11 +139,11 @@ public class McdCampChannelList implements java.io.Serializable {
 	public void setSendSms(String sendSms) {
 		this.sendSms = sendSms;
 	}
-	public String getChannelAdivId() {
-		return channelAdivId;
+	public String getAdivId() {
+		return adivId;
 	}
-	public void setChannelAdivId(String channelAdivId) {
-		this.channelAdivId = channelAdivId;
+	public void setAdivId(String channelAdivId) {
+		this.adivId = channelAdivId;
 	}
 	public String getWcTitle() {
 		return wcTitle;
