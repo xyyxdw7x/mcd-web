@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<div class="put-right fright bg-fff">
+<div id="shopCar" class="put-right fright bg-fff">
 	<div class="top-hd">工作站</div>
 	<div class="btn-box bg-ebf0f3">
 		<div class="dropdown caret-drop">
@@ -28,7 +28,7 @@
 	<div class="info-box">
 		<h5>适配客户群</h5>
 		<div class="custom">
-			<span class="color-333 mright_10">北京测试客户群3</span>
+			<span id="selectedCg" class="color-333 mright_10"></span>
 		</div>
 	</div>
 	<div class="info-box">
