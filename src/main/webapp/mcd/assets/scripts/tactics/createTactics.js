@@ -129,10 +129,10 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 					var data = model.attributes.data;
 					var _ul=$("#selectedChannel").empty();
 					for(var i = 0,len= data.length;i<len;i++){
-						var imgUrl = "../../assets/images/"+data[i].channeltypeId+".png";
-						var _li = $('<li class="content-channel-box fleft J_channelBox" channelId="'+data[i].channeltypeId+'">' +
+						var imgUrl = "../../assets/images/"+data[i].channelId+".png";
+						var _li = $('<li class="content-channel-box fleft J_channelBox" channelId="'+data[i].channelId+'">' +
 							'<span ><img class="pics" src='+imgUrl+'></span>'+
-							'<span class="my-channel-name">'+data[i].channeltypeName+'</span>'+
+							'<span class="my-channel-name">'+data[i].channelName+'</span>'+
 							'<img class="my-selected-icon" src="../../assets/images/channelSelected.png">'+
 							'</li>').on("click",function(){
 								
