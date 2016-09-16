@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.dao;
+package com.asiainfo.biapp.mcd.bull.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,12 +11,13 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.bull.dao.ITask4BullDao;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
 @Repository(value="task4BullDao")
-public class Task4BullDaoImp extends JdbcDaoBase implements Task4BullDao{
+public class Task4BullDaoImp extends JdbcDaoBase implements ITask4BullDao{
 	private static final Logger log = LogManager.getLogger();
 	@Override
 	public void updateCampPri(final List<McdCampDef> campsegs){

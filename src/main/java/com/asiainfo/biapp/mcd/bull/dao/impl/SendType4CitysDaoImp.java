@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.dao;
+package com.asiainfo.biapp.mcd.bull.dao.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,9 +6,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.bull.dao.ISendType4CitysDao;
 
 @Repository(value="sendType4CitysDao")
-public class SendType4CitysDaoImp extends JdbcDaoBase implements SendType4CitysDao{
+public class SendType4CitysDaoImp extends JdbcDaoBase implements ISendType4CitysDao{
 	private static final Logger log = LogManager.getLogger();
 	@Override
 	public void updateType(String cityId,String sendType){

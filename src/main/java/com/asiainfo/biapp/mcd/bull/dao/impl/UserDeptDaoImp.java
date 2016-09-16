@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.dao;
+package com.asiainfo.biapp.mcd.bull.dao.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -10,9 +10,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.bull.dao.IUserDeptDao;
 
 @Repository(value="userDeptDao")
-public class UserDeptDaoImp  extends JdbcDaoBase implements UserDeptDao{
+public class UserDeptDaoImp  extends JdbcDaoBase implements IUserDeptDao{
 	private static final Logger log = LogManager.getLogger();
 	
 	private static final String TABLE= "MTL_USER_DEPT";

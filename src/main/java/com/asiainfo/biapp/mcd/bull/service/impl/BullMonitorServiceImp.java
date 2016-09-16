@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.service;
+package com.asiainfo.biapp.mcd.bull.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.bull.dao.BullMonitorDao;
+import com.asiainfo.biapp.mcd.bull.dao.IBullMonitorDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
-import com.asiainfo.biapp.mcd.bull.dao.SendType4CitysDao;
-import com.asiainfo.biapp.mcd.bull.dao.Task4BullDao;
-import com.asiainfo.biapp.mcd.bull.dao.UserDeptDao;
+import com.asiainfo.biapp.mcd.bull.dao.ISendType4CitysDao;
+import com.asiainfo.biapp.mcd.bull.dao.ITask4BullDao;
+import com.asiainfo.biapp.mcd.bull.dao.IUserDeptDao;
+import com.asiainfo.biapp.mcd.bull.service.IBullMonitorService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
@@ -21,15 +22,15 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import org.apache.commons.lang3.StringUtils;
 
 @Service("bullMonitorService")
-public class BullMonitorServiceImp implements BullMonitorService {
+public class BullMonitorServiceImp implements IBullMonitorService {
 	@Autowired
-	private BullMonitorDao bullMonitorDao;
+	private IBullMonitorDao bullMonitorDao;
 	@Autowired
-	private UserDeptDao userDeptDao;
+	private IUserDeptDao userDeptDao;
 	@Autowired
-	private Task4BullDao task4BullDao;
+	private ITask4BullDao task4BullDao;
 	@Autowired
-	private SendType4CitysDao sendType4CitysDao;
+	private ISendType4CitysDao sendType4CitysDao;
 	@Autowired
 	private IMcdCampsegTaskDao mcdCampsegTaskDao;
 
@@ -42,19 +43,19 @@ public class BullMonitorServiceImp implements BullMonitorService {
 		this.mcdCampsegTaskDao = mcdCampsegTaskDao;
 	}
 
-	public void setSendType4CitysDao(SendType4CitysDao sendType4CitysDao) {
+	public void setSendType4CitysDao(ISendType4CitysDao sendType4CitysDao) {
 		this.sendType4CitysDao = sendType4CitysDao;
 	}
 
-	public void setTask4BullDao(Task4BullDao task4BullDao) {
+	public void setTask4BullDao(ITask4BullDao task4BullDao) {
 		this.task4BullDao = task4BullDao;
 	}
 
-	public void setUserDeptDao(UserDeptDao userDeptDao) {
+	public void setUserDeptDao(IUserDeptDao userDeptDao) {
 		this.userDeptDao = userDeptDao;
 	}
 
-	public void setBullMonitorDao(BullMonitorDao bullMonitorDao) {
+	public void setBullMonitorDao(IBullMonitorDao bullMonitorDao) {
 		this.bullMonitorDao = bullMonitorDao;
 	}
 

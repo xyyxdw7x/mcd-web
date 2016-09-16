@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.bull.dao;
+package com.asiainfo.biapp.mcd.bull.dao.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +9,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.bull.dao.IBullMonitorDao;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="bullMonitorDao")
-public class BullMonitorDaoImp extends JdbcDaoBase implements BullMonitorDao {
+public class BullMonitorDaoImp extends JdbcDaoBase implements IBullMonitorDao {
 	private static final Logger log = LogManager.getLogger();
 
 	/**

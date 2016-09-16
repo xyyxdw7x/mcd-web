@@ -5,7 +5,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
-public interface Task4BullDao {
+public interface ITask4BullDao {
 
 	public void updateCampPri(final List<McdCampDef> campsegs);
 

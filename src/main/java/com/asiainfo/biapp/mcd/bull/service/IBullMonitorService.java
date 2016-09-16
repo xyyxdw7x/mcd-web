@@ -5,7 +5,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 
-public interface BullMonitorService {
+public interface IBullMonitorService {
 
 	//public List<BullMonitor> getBullMonitorList(String cityId);
 	public List<BullMonitor> getBullMonitorListByDeptId(String cityId,String deptId);
