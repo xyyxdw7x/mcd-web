@@ -14,7 +14,7 @@
     String planUrl="provinces/"+provinces+"/createTacticsPlan.jsp";
 	String customerGroupUrl="provinces/"+provinces+"/createTacticsCustGroup.jsp";
 	String channelUrl="provinces/"+provinces+"/createTacticsChannel.jsp";
-	String shopCarUrl="provinces/"+provinces+"/createTacticsShopCar.jsp";
+	String shoppintCartUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
 	String headerUrl="";
 %>	
 	<jsp:include page="../../mcd/pages/header/header.jsp"></jsp:include>
@@ -36,34 +36,26 @@
 			<jsp:include page="<%=channelUrl%>"></jsp:include>
 		</div>
 		<!-- 右侧购物车 -->
-		<jsp:include page="<%=shopCarUrl%>"></jsp:include>
+		<jsp:include page="<%=shoppintCartUrl%>"></jsp:include>
 	</div>
 </body>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTactics.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js" ></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/CreateTacticsCustGroup.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js" ></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js" ></script>
+
 <script type="text/javascript">
 $(function() {
 	$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');//奇数行添加背景色
 	$('.public-table tbody tr:nth-child(2n)').addClass('even');//偶数行添加背景色
 	// 页面初始化
+	initPage();
+
 	
-	// 初始化tab页
-	initTable();
+	// 初始化全局事件监听
+	addEventListenter();
 	
-	// 初始化查询结果
-	queryPlan(1);
-	tacticsCustGroup.queryCustGroup();
-	
-	// 初始化全局控件
-	addNavigationClickListener()
-	
-	// 初始化产品类型
-	$("#divDimPlanSrvType > span").on("click", function(){
-		var $target = $(this);
-		$target.addClass("active").siblings().removeClass("active");
-		queryPlan(1);
-	});
-	$("#btnSearchCustGroup").on("click", tacticsCustGroup.queryCustGroup());
 })
 </script>
 </html>

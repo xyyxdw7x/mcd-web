@@ -17,12 +17,33 @@ var tacticsCustGroup = {
 					$("#ulCustGroupList li").click(function(event){
 						var index = $("#ulCustGroupList li").index(this);
 						var item=data[index];
-						$("#ulCustGroupList li").removeClass("active");
-						$(event.currentTarget).addClass("active");
 						
+						if ($("#divCustGroupList span[customGroupId=" + item.customGroupId + "]").length > 0) {
+							$("#divCustGroupList span[customGroupId=" + item.customGroupId + "]").remove();
+							$("#ulCustGroupList li[customGroupId=" + item.customGroupId + "]").removeClass("active");
+							// 发布客户群取消选择事件
+							$("#divFrameCustGroup").trigger("custGroupCancel",item);
+						} else {
+							$("#ulCustGroupList li").removeClass("active");
+							$(event.currentTarget).addClass("active");
+							// 如果将来支持多客户群可以不预先删除全部客户群
+							$("#divCustGroupList span").remove();
+							
+							var li = $("<i class=\"close\"> &times;</i>");
+							li.on("click", function(){
+								$("#ulCustGroupList li[customGroupId=" + item.customGroupId + "]").removeClass("active");
+								$("#divCustGroupList span[customGroupId=" + item.customGroupId + "]").remove();
+								// 发布客户群取消选择事件
+								$("#divFrameCustGroup").trigger("custGroupCancel",item);
+							});
+							var span=$("<span class=\"policy\" customGroupId=" + item.customGroupId + "><em>" + item.customGroupName + "</em></span>")
+							span.append(li);
+							$("#divCustGroupList").append(span);
+							
+							//派发事件——客户群发生变化
+							$("#divFrameCustGroup").trigger("custGroupChange",item);
+						}
 						
-						//派发事件
-						$("#divFrameCustGroup").trigger("seleCustomerGroup",item);
 					});
 				} else {
 					// 查询失败

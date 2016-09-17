@@ -4,13 +4,13 @@
 			<div class="top-hd">工作站 </div>
 			<div class="info-box">
 				<h5>营销政策</h5>
-				<ul id="ulWorkspacePlanList">
+				<ul id="ulShoppingCartPlanList">
 
 				</ul>
 			</div>
 			<div class="info-box">
 				<h5>适配客户群</h5>
-				<div class="custom" id="divWorkspaceCustGroupList">
+				<div class="custom" id="divShoppingCartCustGroupList">
 					<span class="color-333 mright_10">北京测试客户群3</span>
 				</div>
 			</div>

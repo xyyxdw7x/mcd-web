@@ -81,6 +81,41 @@ var TacticsPlan = {
 						url : ejsUrlPlansPage
 					}).render({data:data});
 					$("#divPlansPage").html(_HtmlPlansPage);
+					
+					$(".batch_chk_box").on("click", function(event){
+						var index = $("#tbodyPlansList .batch_chk_box").index(this);
+						var item=data.result[index];
+						
+						if ($("#divChoosedPlan span[planId=" + item.PLAN_ID +"]").length > 0) {
+							// 已选中 取消选择
+							$("#divChoosedPlan [planId=" + item.PLAN_ID +"]").remove();
+							$(".batch_chk_box[planId=" + item.PLAN_ID +"]").removeProp("checked");
+							// 发布策略取消事件
+							$("#divFramePlan").trigger("planCancel",item);
+						} else {
+							$(".batch_chk_box").removeProp("checked");
+							$(".batch_chk_box[planId=" + item.PLAN_ID +"]").prop("checked", true);
+							// 未选中，选中该策略
+							// 如果将来支持多选，可以不预先清空已选中列表
+							$("#divChoosedPlan span").remove();
+							var li=$("<i class=\"close\"\"> &times;</i>");
+							li.on("click", function(){
+								// 查询结果列表复选框取消选中状态
+								$(".batch_chk_box[planId=" + item.PLAN_ID +"]").removeProp("checked");
+								// 删除已选政策列表中的展示内容
+								$("#divChoosedPlan [planId=" + item.PLAN_ID +"]").remove();
+								// 发布策略取消事件
+								$("#divFramePlan").trigger("planCancel",item);
+							})
+							var span=$("<span class=\"policy\" planId=" + item.PLAN_ID + "><em>" + item.PLAN_NAME + "</em></span>");
+							span.data=item;
+							span.append(li);
+							//var span="<span class=\"policy\" planId=" + item.PLAN_ID + "><i class=\"close\" onclick=\"unchoosePlan('" + item.PLAN_ID + "')\"> &times;</i><em>" + item.PLAN_NAME + "</em></span>";
+							$("#divChoosedPlan").append(span);
+							// 发布策略变更事件
+							$("#divFramePlan").trigger("planChange",item);
+						}
+					});
 				}
 			}
 		

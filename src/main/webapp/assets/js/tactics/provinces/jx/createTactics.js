@@ -1,128 +1,69 @@
-function initTable() {
-	initTabInfo();
-	initTabInfo();
+function initPage() {
+	// 初始化筛选条件
+	TacticsPlan.initTabInfo();
+	// 初始化查询结果
+	TacticsPlan.queryPolicy(1);
+	tacticsCustGroup.queryCustGroup();
 }
-// 查询政策列表
-function queryPlan(pageNum) {
-	var keyword=$("#inputKeywordPlan").val();
-	var planTypeId = $("#divDimPlanTypes span.active").attr("planTypeId");
-	var planSrvType = $("#divDimPlanSrvType span.active").attr("planSrvType")
-	var channelId = $("#divDimChannels span.active").attr("channelId");
+
+/**
+ * 监听各个子页面冒泡上来的跨页面事件
+ */
+function addEventListenter(){
+	addNavigationClickListener();
+	addPlanChangeListener();
+	addCustGroupChangeListener();
+	addChannelChangeListener();
 	
-	var ejsUrlPlans=contextPath + '/assets/js/tactics/provinces/' + provinces + '/tablePlans.ejs';
-	var ejsUrlPlansPage=contextPath + '/assets/js/tactics/provinces/' + provinces + '/tablePlansPage.ejs';
+	// 初始化产品类型点击事件
+	$("#divDimPlanSrvType > span").on("click", function(){
+		var $target = $(this);
+		$target.addClass("active").siblings().removeClass("active");
+		queryPlan(1);
+	});
+	$("#btnSearchCustGroup").on("click", tacticsCustGroup.queryCustGroup());
+}
+
+/**
+ * 监听政策变化事件
+ */
+function addPlanChangeListener() {
+	$("#divFramePlan").bind("planChange",function(event,data) {
+		// 当政策变化时，更新购物车的政策信息
+		shoppingCart.changePlan(event,data);
+		
+		
+	});
 	
-	var page=pageNum;
-	if (pageNum==null || pageNum=="") {
-		var turnPageVal = $("#turnPageId").val();
-		if(turnPageVal) {
-			page=turnPageVal;
-		}
-	}
-	jQuery.ajax({
-		url:contextPath+"/tactics/tacticsManage/queryPlansByCondition",
-		data:{
-			"keyWords":keyword,
-			"planTypeId":planTypeId,
-			"planSrvType":planSrvType,
-			"channelId":channelId,
-			"pageSize":10,
-			"pageNum":page
-		},
-		type:"POST",
-		success:function(data, textStatus) {
-			if (data) {
-				// 渲染表格部分
-				var _HtmlPlans = new EJS({
-					url : ejsUrlPlans
-				}).render({data:data.result});
-				$("#tbodyPlansList").html(_HtmlPlans);
-				// 渲染分页部分
-				var _HtmlPlansPage = new EJS({
-					url : ejsUrlPlansPage
-				}).render({data:data});
-				$("#divPlansPage").html(_HtmlPlansPage);
-			}
-		}
-	
+	$("#divFramePlan").bind("planCancel",function(event,data) {
+		// 当政策变化时，更新购物车的政策信息
+		shoppingCart.cancelPlan(event,data);
 	});
 }
-// 查询并初始化tab页筛选条件列表
-function initTabInfo() {
+
+/**
+ * 监听客户群变化事件
+ */
+function addCustGroupChangeListener() {
+	$("#divFrameCustGroup").bind("custGroupChange",function(event,data){
+		// 当客户群变化时，更新购物车的客户群信息
+		shoppingCart.changeCustGroup(event,data);
+	});
 	
-	var ejsUrlPlanTypes=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimPlanTypes.ejs';
-	var ejsUrlChannels=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimChannels.ejs';
-	
-	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/queryPlanTypes",
-		data:{},
-		success:function(data, textStatus) {
-			if (data) {
-				var _HtmlPlanTypes = new EJS({
-					url : ejsUrlPlanTypes
-				}).render({data:data.planTypes});
-				$("#divDimPlanTypes").html(_HtmlPlanTypes);
-				var _HtmlChannels = new EJS({
-					url : ejsUrlChannels
-				}).render({data:data.channels});
-				$("#divDimChannels").html(_HtmlChannels);
-				
-				// 初始化产品类别
-				$("#divDimPlanTypes > span").on('click', function(){
-					var $target = $(this);
-					$target.addClass("active").siblings().removeClass("active");
-					queryPlan(1);
-				});
-				// 初始化渠道类型
-				$("#divDimChannels > span").on('click', function(){
-					var $target = $(this);
-					$target.addClass("active").siblings().removeClass("active");
-					queryPlan(1);
-				});
-			} else {
-				// 查询失败
-			}
-		},
-		error:function (XMLHttpRequest, textStatus, errorThrown) {
-			// error happening, do nothing
-		}
+	$("#divFrameCustGroup").bind("custGroupCancel",function(event,data){
+		// 当客户群变化时，更新购物车的客户群信息
+		shoppingCart.cancelCustGroup(event,data);
 	});
 }
-// 点选一个策略的复选框
-function choosePlan(planId, planName) {
-	if ($("#divChoosedPlan span[planId=" + planId +"]").length > 0) {
-		// 已选中 取消选择
-		$("#divChoosedPlan [planId=" + planId +"]").remove();
-		$("#ulWorkspacePlanList [planId=" + planId +"]").remove();
-		$(".batch_chk_box[planId=" + planId +"]").removeProp("checked");
-	} else {
-		$(".batch_chk_box").removeProp("checked");
-		$(".batch_chk_box[planId=" + planId +"]").prop("checked", true);
-		// 未选中，选中该策略
-		var span="<span class=\"policy\" planId=" + planId + "><i class=\"close\" onclick=\"unchoosePlan('" + planId + "')\"> &times;</i><em>" + planName + "</em></span>";
-		$("#divChoosedPlan").html(span);
-		var li="<li planId=" + planId + "><span>.</span>" + planName + "</li>";
-		$("#ulPlanList").html(li);
-		// 查询该策略下对应哪些渠道
-		$.ajax({
-			url:contextPath+"/tactics/tacticsManage/selectPlanBackChannels",
-			data:{"planId":planId},
-			success:function(data, textStatus) {
-				if(data) {
-					// TODO 根据查到的策略下渠道类型列表，调整渠道子页面的显示内容
-				}
-			}
-		});
-	}
-}
-// 已选政策列表中取消一个策略的选中状态
-function unchoosePlan(planId) {
-	// 查询结果列表复选框取消选中状态
-	$(".batch_chk_box[planId=" + planId +"]").removeProp("checked");
-	// 删除已选政策列表中的展示内容
-	$("#divChoosedPlan [planId=" + planId +"]").remove();
-	// 删除右侧工作站的已选政策
-	$("#ulWorkspacePlanList [planId=" + planId +"]").remove();
+
+/**
+ * 监听渠道变化事件
+ */
+function addChannelChangeListener() {
+	$("#divFrameChannel").bind("channelChange",function(event,data){
+		// 当渠道变化时，更新购物车的渠道信息
+		shoppingCart.changeChannel(event,data);
+	});
 }
 
 /**
