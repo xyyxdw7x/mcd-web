@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.common.channel.dao.IMcdDimChannelDao;
 import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
 import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 
 @Service("mcdDimChannelService")
 public class McdDimChannelServiceImpl implements IMcdDimChannelService{

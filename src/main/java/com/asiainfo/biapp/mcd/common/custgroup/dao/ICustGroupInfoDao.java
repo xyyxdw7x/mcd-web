@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 public interface ICustGroupInfoDao {
 	/**
