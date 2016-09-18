@@ -5,13 +5,24 @@ function initCustomerGroup(){
 	queryCustomerGroupList();
 	$("#selCgDiv").hide();
 	clickCloseGroup();
+	selCustGroup();
+}
+
+/**
+ * 查询按钮绑定查询事件
+ */
+function selCustGroup(){
+	$("#searchBtn").click(function(event){
+		queryCustomerGroupList()
+	});
 }
 /**
  *  查询客户群列表
  */
 function queryCustomerGroupList(){
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
-	var data={pageNum:"1",keyWords:""};
+	var keyWords = $("#keyword").val();
+	var data={pageNum:"1",keyWords:keyWords};
 	$.post(url,data,queryCustomerGroupListSuc);
 }
 /**
@@ -24,7 +35,7 @@ function clickCloseGroup(){
 		$("#selcgListName em").html("");
 
 		//派发事件
-		$("#cgDiv").trigger("changeCustomerGroup",item);
+		$("#cgDiv").trigger("changeCustomerGroup",null);
 	});
 }
 /**
@@ -47,7 +58,7 @@ function addCustomerGroupEvent(obj){
 		$("#cgList li").removeClass("active");
 		$("#selCgDiv").show();
 		$("#selcgListName em").html(item.customGroupName);
-		$(event.currentTarget).addClass("active");debugger
+		$(event.currentTarget).addClass("active");
 		//派发事件
 		$("#cgDiv").trigger("changeCustomerGroup",item);
 	});

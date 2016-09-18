@@ -69,6 +69,7 @@ function addNextBtnEventListenter(){
  */
 function addChangeCustomerGroupEvent(){
 	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
+	
 }
 /**
  * 渠道发生变化事件

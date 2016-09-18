@@ -15,9 +15,9 @@
 		<div class="search-box-wrp">
 			<div class="search-box">
 				<p class="fleft">
-					<input placeholder="请输入关键字" type="text">
+					<input placeholder="请输入关键字" type="text"  id ="keyword">
 				</p>
-				<i class="searchBtn fright"></i>
+				<i class="searchBtn fright"  id="searchBtn"></i>
 			</div>
 		</div>
 		<!--搜索结果表格-->
