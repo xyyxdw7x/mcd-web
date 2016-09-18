@@ -146,7 +146,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		}
 		
 		if (StringUtils.isNotEmpty(planTypeId)) { // 查询政策类别
-			buffer.append(" and A.TYPE_ID =?");
+			buffer.append(" and A.PLAN_TYPE =?");
 			params.add(planTypeId);
 		}
 		if (StringUtils.isNotEmpty(planSrvType)) { // 查询粒度
@@ -192,7 +192,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		}
 		
 		if (StringUtils.isNotEmpty(planTypeId)) { // 查询政策类型
-			buffer.append(" and A.TYPE_ID =?");
+			buffer.append(" and A.PLAN_TYPE =?");
 			params.add(planTypeId);
 		}
 		if (StringUtils.isNotEmpty(planSrvType)) { // 查询类别
