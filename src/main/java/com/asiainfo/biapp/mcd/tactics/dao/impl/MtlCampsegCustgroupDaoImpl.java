@@ -87,7 +87,11 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 			log.error("delete failed", re);
 			throw re;
 		}
-	*/}
+	*/
+		String sql = "delete from mcd_camp_custgroup_list group where group.campId= ? ";
+		this.getJdbcTemplate().execute(sql);	
+	}
+	
 	
 	@Override
 	public List<McdCustgroupDef> getChoiceCustom(String campsegId) {

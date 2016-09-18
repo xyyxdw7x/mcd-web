@@ -2042,7 +2042,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public Map<String,String> save(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Map<String,String> saveOrUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs = new HashMap<String,String>();
 		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略列表
 		try {
@@ -2050,13 +2050,22 @@ public class TacticsManageController extends BaseMultiActionController {
 			String test = request.getParameter("ruleList");
 			JSONObject ruleList = JSONObject.fromObject(test);
 			String commonAttr = ruleList.get("commonAttr").toString();// 获取公共属性
-			// 先保存基本信息 父亲节点
+			
+			// 先生成一个父节点，一个子节点
 			McdCampDef campSeginfoBasic = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
-			campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());
-			campSeginfoBasic.setPid("0");// 父节点
-			McdCampDef CampSeginfoSub = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
+			McdCampDef campSeginfoSub = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
+			
+			String pid = campSeginfoBasic.getPid(); // 父策略id
+			boolean isModify = pid==null?false:true;
+			if(!isModify){//创建
+				campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());//设置父节点的Id
+				campSeginfoBasic.setPid("0");// 设置父节点的Pid
+				campSeginfoSub.setPid(campSeginfoBasic.getCampId());//设置子节点的Pid
+			}
+			
 			campSegInfoList.add(campSeginfoBasic);
-			// 针对渠道进行处理
+			
+			// 设置子节点的渠道信息
 		    JSONObject rule =JSONObject.fromObject(ruleList.get("rule0").toString()); 
 			String execContentStr = rule.get("execContent").toString();
 			JSONArray execContentJsonArray = JSONArray.fromObject(execContentStr);				
@@ -2066,12 +2075,12 @@ public class TacticsManageController extends BaseMultiActionController {
 					McdCampChannelList mtlChannelDef = (McdCampChannelList) JSONObject.toBean(obj, McdCampChannelList.class);
 					mtlChannelDefList.add(mtlChannelDef);
 			}
-			CampSeginfoSub.setMtlChannelDefList(mtlChannelDefList);
-			CampSeginfoSub.setPid(campSeginfoBasic.getCampId());
-			campSegInfoList.add(CampSeginfoSub);
+			campSeginfoSub.setMtlChannelDefList(mtlChannelDefList);
+			
+			campSegInfoList.add(campSeginfoSub);
 
 			// 统一进行保存
-			String flag = mpmCampSegInfoService.saveCampInfo(user,campSegInfoList);
+			String flag = mpmCampSegInfoService.saveOrUpdateCampInfo(user,campSegInfoList,isModify);
 			rs.put("flag", flag);
 			
 		} catch (Exception e) {

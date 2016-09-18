@@ -254,4 +254,11 @@ public interface IMpmCampSegInfoDao {
 	 * @param state
 	 */
 	public void updateCampsegById(String campsegId,String tableName,int targetUserNum);
+	/**
+	 * 更新活动基本信息
+	 * @param segInfo
+	 * @return
+	 * @throws Exception
+	 */
+	Serializable updateCamp(McdCampDef segInfo) throws Exception;
 }

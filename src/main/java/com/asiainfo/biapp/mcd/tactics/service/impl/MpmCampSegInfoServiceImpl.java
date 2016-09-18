@@ -567,8 +567,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @param approve_desc  处理结果描述
      */
     @Override
-    public void cancelAssignment(String campsegId, short ampsegStatId,
-            String approve_desc) {
+    public void cancelAssignment(String campsegId, short ampsegStatId,String approve_desc) {
         campSegInfoDao.cancelAssignment(campsegId,ampsegStatId,approve_desc);
         
     }
@@ -1211,9 +1210,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
   * @param tableName
   * @return
   */
- private List<Map<String,Object>> getSqlFireTableColumns(String tableName){
-     return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
- }
+	 private List<Map<String,Object>> getSqlFireTableColumns(String tableName){
+	     return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
+	 }
  
 	@Override
 	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo){
@@ -1251,30 +1250,55 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		}
 	}
 	@Override
-	public String saveCampInfo(User user, List<McdCampDef> campSegInfoList) throws Exception {
+	public String saveOrUpdateCampInfo(User user, List<McdCampDef> campSegInfoList,Boolean isModify) throws Exception {
 		String approveFlag = "0";  //不走审批
 		String isApprove = "false";
 		String campPid="";
 		for(McdCampDef campInfo:campSegInfoList){
 			McdCampDef tmp = this.saveBefore(user,campInfo);
 			String currentCampId;
-			List<McdCampChannelList> channelList =null;			
-            if(tmp.getPid()!="0"){//子策略
-            	isApprove = tmp.getIsApprove();
-            	currentCampId = MpmUtil.generateCampsegAndTaskNo();
-            	tmp.setCampId(currentCampId);
-            	String custGroupId =tmp.getCustgroupId();
-            	this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 保存策略和客户群关系表！！！
-            	channelList = tmp.getMtlChannelDefList();
-            	for(McdCampChannelList campChannel:channelList){
-            		campChannel.setCampId(currentCampId);
-            		mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
-            	}
-			}else{//父策略
-				campPid = tmp.getPid();
-			}
-			campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
+			String custGroupId;
 			
+			List<McdCampChannelList> channelList =null;			
+            if (!isModify) {//-------------创建--------
+				if (tmp.getPid() != "0") {//子策略
+					currentCampId = MpmUtil.generateCampsegAndTaskNo();
+					tmp.setCampId(currentCampId);
+					custGroupId = tmp.getCustgroupId();
+					this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 保存策略和客户群关系表！！！
+					channelList = tmp.getMtlChannelDefList();
+					for (McdCampChannelList campChannel : channelList) {
+						campChannel.setCampId(currentCampId);
+						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+					}
+				} else {//父策略
+					campPid = tmp.getPid();
+					isApprove = tmp.getIsApprove();
+				}
+				campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
+				
+			}else{//-----------------修改-----------------
+				
+				if (tmp.getPid() != "0") {//子策略			
+					currentCampId = tmp.getCampId();
+					custGroupId = tmp.getCustgroupId();
+					mtlCampsegCustgroupDao.deleteByCampsegId(currentCampId);//先删除关系表中数据
+					this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 修改策略和客户群关系表！！！
+					channelList = tmp.getMtlChannelDefList();
+					mtlChannelDefDao.deleteMtlChannelDef(currentCampId);//删除策略渠道关系表中的数据
+					for (McdCampChannelList campChannel : channelList) {
+						campChannel.setCampId(currentCampId);
+						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+					}
+				} else {//父策略
+					campPid = tmp.getPid();
+					isApprove = tmp.getIsApprove();
+				}
+				campSegInfoDao.updateCamp(tmp);//Duang Duang Duang 修改策略！！！
+				
+			}
+            
+            
 			if("true".equals(isApprove)){
 				String approveStr = this.submitApprovalXml(campPid);
 				if("提交审批成功".equals(approveStr)){
@@ -1283,6 +1307,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					approveFlag = "2"; //走审批，审批失败
 				}
 		}
+			
 		}
 		return approveFlag;
 	}

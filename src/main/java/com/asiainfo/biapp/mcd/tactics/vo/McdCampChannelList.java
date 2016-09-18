@@ -58,9 +58,7 @@ public class McdCampChannelList implements java.io.Serializable {
 	private String channelName;
 	@Transient
 	private String functionName;
-	/*@Transient
-	private boolean isChoose;  //该渠道在修改之前是否进行过操作  比如增删改查
-*/
+
 	public String getCampId() {
 		return campId;
 	}
