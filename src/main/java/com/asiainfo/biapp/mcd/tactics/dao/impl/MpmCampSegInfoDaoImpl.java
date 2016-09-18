@@ -142,6 +142,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 		return segInfo.getCampId();
 	}
 	/**
+	 * 更新活动信息
+	 */
+	@Override
+	public Serializable updateCamp(McdCampDef segInfo) throws Exception {
+		this.getJdbcTemplateTool().update(segInfo);
+		return segInfo.getCampId();
+	}
+	/**
 	 * 根据活动编号取活动信息
 	 */
 	@Override

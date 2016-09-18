@@ -268,7 +268,7 @@ public interface IMpmCampSegInfoService {
 	 * @param campSegInfoList 策略列表
 	 * @throws Exception 
 	 */
-	public String saveCampInfo(User user, List<McdCampDef> campSegInfoList) throws Exception;
+	public String saveOrUpdateCampInfo(User user, List<McdCampDef> campSegInfoList,Boolean isModify) throws Exception;
 	
 	
 	

@@ -37,6 +37,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
 		this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql));
 		this.getHibernateTemplate().flush();*/
+		String sql = "delete from mcd_camp_custgroup_list mcd where mcd.id.camp_id='" + campsegId + "'";
+		this.getJdbcTemplate().execute(sql);
 	}
 	
     /**
