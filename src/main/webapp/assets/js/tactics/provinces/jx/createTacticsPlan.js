@@ -18,8 +18,8 @@ var TacticsPlan = {
 					var _HtmlPlanTypes = new EJS({
 						url : ejsUrlPlanTypes
 					}).render({data:data.planTypes});
-					//$("#divDimPlanTypes").html(_HtmlPlanTypes);
-					$("#divDimPlanTypes").html(htmlStr);
+					$("#divDimPlanTypes").html(_HtmlPlanTypes);
+					//$("#divDimPlanTypes").html(htmlStr);
 					var _HtmlChannels = new EJS({
 						url : ejsUrlChannels
 					}).render({data:data.channels});
