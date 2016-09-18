@@ -1957,7 +1957,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping("getMoreMyCustom")
 	@ResponseBody
-	public List<McdCustgroupDef> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public Pager getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
 		List<McdCustgroupDef> resultList =null;
 		Pager pager=new Pager();
@@ -1978,7 +1978,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		} catch (Exception e) {
 			log.error("",e);
 		}
-        return resultList;
+        return pager;
 		
 	}
 	
