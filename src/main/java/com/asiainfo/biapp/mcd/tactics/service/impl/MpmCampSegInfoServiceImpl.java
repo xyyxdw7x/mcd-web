@@ -1267,6 +1267,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             	this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 保存策略和客户群关系表！！！
             	channelList = tmp.getMtlChannelDefList();
             	for(McdCampChannelList campChannel:channelList){
+            		campChannel.setCampId(currentCampId);
             		mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
             	}
 			}else{//父策略
