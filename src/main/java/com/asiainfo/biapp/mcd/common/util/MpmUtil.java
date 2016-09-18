@@ -23,7 +23,6 @@ public class MpmUtil {
     public static final String DATE_DB_FORMAT = "yyyy-MM-dd";
     public static final String DATE_DB_FORMAT_YM = "yyyy-MM";
     /** 当前语言显示的日期格式 */
-    //TODO public static final String DATE_LOCALE_FORMAT = MpmLocaleUtil.getMessage("mcd.dateFormat");
     public static final String DATE_LOCALE_FORMAT = "zh";
     public static final boolean DATE_FORMAT_IS_DEFAULT = DATE_DB_FORMAT.equals(DATE_LOCALE_FORMAT);
     public static final DateFormat DATE_US_FORMATER = new SimpleDateFormat(DATE_LOCALE_FORMAT, Locale.US);

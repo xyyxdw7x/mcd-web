@@ -20,7 +20,6 @@ public class McdCampsegTaskServiceImpl implements IMcdCampsegTaskService{
      */
     @Override
     public void updateCampTaskStat(String campSegId, short type) {
-        // TODO Auto-generated method stub
         mcdCampsegTaskDao.updateCampTaskStat(campSegId, type);
     }
     /**

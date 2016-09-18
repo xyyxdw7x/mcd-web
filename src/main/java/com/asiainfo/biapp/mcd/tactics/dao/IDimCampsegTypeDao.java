@@ -1,7 +1,7 @@
 /**   
  * @Title: IDimCampsegTypeDao.java
  * @Package com.asiainfo.biapp.mcd.dao
- * @Description: TODO(用一句话描述该文件做什么)
+ * @Description:
  * @author A18ccms A18ccms_gmail_com   
  * @date 2015-7-17 上午10:16:41
  * @version V1.0   
