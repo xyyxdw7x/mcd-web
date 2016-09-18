@@ -25,13 +25,13 @@ var TacticsPlan = {
 					$("#divDimPlanTypes > span").on('click', function(){
 						var $target = $(this);
 						$target.addClass("active").siblings().removeClass("active");
-						queryPolicy(1);
+						TacticsPlan.queryPolicy(1);
 					});
 					// 初始化渠道类型
 					$("#divDimChannels > span").on('click', function(){
 						var $target = $(this);
 						$target.addClass("active").siblings().removeClass("active");
-						queryPolicy(1);
+						TacticsPlan.queryPolicy(1);
 					});
 				} else {
 					// 查询失败
