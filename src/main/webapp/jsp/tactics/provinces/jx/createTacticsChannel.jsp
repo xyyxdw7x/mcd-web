@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <!-- 中 -->
-		<div id="divFrameChannel" class="put-center w-818 fleft" style="display:none">
+		<div id="channelDiv" class="put-center w-818 fleft" style="display:none">
 			<!--step3***************************st-->
 			<div class="step-title color-333 ft18">选渠道</div>
 			<div class="bg-fff">
