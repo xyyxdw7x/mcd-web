@@ -477,7 +477,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 		if(params==null ||params.size()==0){
 			res = this.getJdbcTemplate().queryForList(sql);	
 		}else{	
-			res = this.getJdbcTemplate().queryForList(sql, params);		
+			res = this.getJdbcTemplate().queryForList(sql, params.toArray());		
 		}
 		return res;
 	}

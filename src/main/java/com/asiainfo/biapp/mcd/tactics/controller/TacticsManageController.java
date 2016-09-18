@@ -1920,7 +1920,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		return pager;
 	}
 	/**
-	 * 
 	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
 	 * @param request
 	 * @param response
@@ -1936,6 +1935,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		rs.put("channels", channels);
 		return rs;
 	}
+	
 	/**
 	 * 创建策略界面：展示渠道列表（选渠道模块）
 	 * @param request
@@ -2032,7 +2032,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		return list; 
 	}
 	
-
 	/**
 	 * 保存策略接口
 	 * 
