@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div id="shopCar" class="put-right fright bg-fff">
 	<div class="top-hd">工作站</div>
-	<div class="btn-box bg-ebf0f3">
+	<div class="btn-box bg-ebf0f3" style="display:none">
 		<div class="dropdown caret-drop">
 			<button class="caret-btn dropdown-toggle" type="button"
 				id="dropdownMenu1" data-toggle="dropdown">
@@ -19,8 +19,7 @@
 	</div>
 	<div class="info-box">
 		<h5>营销政策</h5>
-		<ul>
-			<li><span>.</span>600000379265 新生礼包-飞享10月底前保底58返58-7月受理</li>
+		<ul id="selectedPlan">
 		</ul>
 	</div>
 	<div class="info-box">
