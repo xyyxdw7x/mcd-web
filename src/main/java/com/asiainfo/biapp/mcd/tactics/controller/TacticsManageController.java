@@ -2039,7 +2039,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping("/save")
+	@RequestMapping("/saveOrUpdate")
 	@ResponseBody
 	public Map<String,String> saveOrUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs = new HashMap<String,String>();
