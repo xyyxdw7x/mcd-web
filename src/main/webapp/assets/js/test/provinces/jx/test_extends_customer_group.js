@@ -3,6 +3,8 @@
  */
 function initCustomerGroup(){
 	queryCustomerGroupList();
+	$("#selCgDiv").hide();
+	clickCloseGroup();
 }
 /**
  *  查询客户群列表
@@ -11,6 +13,19 @@ function queryCustomerGroupList(){
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
 	var data={pageNum:"1",keyWords:""};
 	$.post(url,data,queryCustomerGroupListSuc);
+}
+/**
+ *  删除已选客户群
+ */
+function clickCloseGroup(){
+	$("#closeGroup").click(function(event){
+		$("#cgList li").removeClass("active");
+		$("#selCgDiv").hide();
+		$("#selcgListName em").html("");
+
+		//派发事件
+		$("#cgDiv").trigger("changeCustomerGroup",item);
+	});
 }
 /**
  * 查询客户群列表成功
@@ -30,7 +45,9 @@ function addCustomerGroupEvent(obj){
 		var index = $("#cgList li").index(this);
 		var item=obj[index];
 		$("#cgList li").removeClass("active");
-		$(event.currentTarget).addClass("active");
+		$("#selCgDiv").show();
+		$("#selcgListName em").html(item.customGroupName);
+		$(event.currentTarget).addClass("active");debugger
 		//派发事件
 		$("#cgDiv").trigger("changeCustomerGroup",item);
 	});

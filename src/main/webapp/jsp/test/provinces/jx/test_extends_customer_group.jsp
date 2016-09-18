@@ -4,8 +4,8 @@
 	<div class="step-title color-333 ft18">选客户</div>
 	<div class="policy-selected-box over-hidden">
 		<span class="fleft row-name">已选客户群：</span>
-		<div class="fleft ft12 color-666 policy-selected-right">
-			<span class="policy"> <i class="close"> &times;</i> <em>客户群：北京测试客户群01
+		<div class="fleft ft12 color-666 policy-selected-right" id="selCgDiv">
+			<span class="policy" id = "selcgListName"> <i class="close" id="closeGroup"> &times;</i> <em>
 			</em>
 			</span>
 		</div>
