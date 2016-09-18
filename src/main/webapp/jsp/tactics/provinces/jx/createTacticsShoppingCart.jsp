@@ -27,6 +27,7 @@
 		<h5>适配客户群</h5>
 		<div class="custom">
 			<span id="selectedCg" class="color-333 mright_10"></span>
+			<span id="selectedCgId" style=display:none></span>
 		</div>
 	</div>
 	<div class="info-box">

@@ -44,11 +44,13 @@ function shopCarChangeCustomerGroupEvent(event,data){
 	if(data == null){
 		//设置客户群名称
 		$("#selectedCg").html("");
+		$("#selectedCgId").html("");
 		//将数据绑定到dom元素上
 		$("#selectedCg").data("data","");
 	}else{
 		//设置客户群名称
 		$("#selectedCg").html(data.customGroupName);
+		$("#selectedCgId").html(data.customGroupId);
 		//将数据绑定到dom元素上
 		$("#selectedCg").data("data",data);
 	}
