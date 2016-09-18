@@ -46,7 +46,6 @@ public class QuotaConfigDeptDayServiceImp implements IQuotaConfigDeptDayService 
 	@Override
 	public List<QuotaConfigDeptDay> getMonthDaysQuota(String cityID,
 			String deptId, String month) throws DataAccessException {
-		// TODO Auto-generated method stub
 		List<Map<String, Object>> list = quotaConfigDeptDayDao
 				.getMonthDaysQuotaInMem(cityID, deptId, month);
 		List<QuotaConfigDeptDay> days = new ArrayList<QuotaConfigDeptDay>();
@@ -57,7 +56,6 @@ public class QuotaConfigDeptDayServiceImp implements IQuotaConfigDeptDayService 
 				try {
 					QuotaUtils.map2Bean(map, tempObj);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				days.add(tempObj);
