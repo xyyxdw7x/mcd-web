@@ -19,6 +19,8 @@ function addEventListenter(){
  * 初始化各个子页面
  */
 function initView(){
+	$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');
+	$('.public-table tbody tr:nth-child(2n)').addClass('even');
 	//调用子页面的函数
 	initCustomerGroup();
 	initShopCar();
@@ -67,6 +69,7 @@ function addNextBtnEventListenter(){
  */
 function addChangeCustomerGroupEvent(){
 	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
+	
 }
 /**
  * 渠道发生变化事件

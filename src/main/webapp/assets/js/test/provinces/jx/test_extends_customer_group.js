@@ -3,14 +3,40 @@
  */
 function initCustomerGroup(){
 	queryCustomerGroupList();
+	$("#selCgDiv").hide();
+	clickCloseGroup();
+	selCustGroup();
+}
+
+/**
+ * 查询按钮绑定查询事件
+ */
+function selCustGroup(){
+	$("#searchBtn").click(function(event){
+		queryCustomerGroupList()
+	});
 }
 /**
  *  查询客户群列表
  */
 function queryCustomerGroupList(){
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
-	var data={pageNum:"1",keyWords:""};
+	var keyWords = $("#keyword").val();
+	var data={pageNum:"1",keyWords:keyWords};
 	$.post(url,data,queryCustomerGroupListSuc);
+}
+/**
+ *  删除已选客户群
+ */
+function clickCloseGroup(){
+	$("#closeGroup").click(function(event){
+		$("#cgList li").removeClass("active");
+		$("#selCgDiv").hide();
+		$("#selcgListName em").html("");
+
+		//派发事件
+		$("#cgDiv").trigger("changeCustomerGroup",null);
+	});
 }
 /**
  * 查询客户群列表成功
@@ -30,6 +56,8 @@ function addCustomerGroupEvent(obj){
 		var index = $("#cgList li").index(this);
 		var item=obj[index];
 		$("#cgList li").removeClass("active");
+		$("#selCgDiv").show();
+		$("#selcgListName em").html(item.customGroupName);
 		$(event.currentTarget).addClass("active");
 		//派发事件
 		$("#cgDiv").trigger("changeCustomerGroup",item);

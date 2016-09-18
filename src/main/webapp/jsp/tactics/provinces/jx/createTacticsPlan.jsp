@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <!-- 中 -->
-		<div id="divFramePlan" class="put-center w-818 fleft">
+		<div id="planDiv" class="put-center w-818 fleft">
 			<!--step1***************************st-->
 			<div class="step-title color-333 ft18">选政策</div>
 			<div class="policy-selected-box bg-ebf0f3 over-hidden">
@@ -65,10 +65,5 @@
 						</div>
 					</div>
 				</div>
-				<!--按钮区-->
-				<div class="btn-wrp text-center bg-ebf0f3">
-					<a href="javascript:;" class="btn-a btn-a-blue btn100-30 btn-nextstep">下一步</a>
-				</div>
 			</div>
-			<!--step1***************************end-->
 		</div>

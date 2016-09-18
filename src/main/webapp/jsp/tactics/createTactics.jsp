@@ -1,23 +1,23 @@
-<%@ page contentType="text/html; charset=utf-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>新建策略</title>
+<title>测试页面</title>
 <%@ include file="../../jsp/common/head.jsp" %>
-<link type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" rel="stylesheet"  />
+<link  type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" rel="stylesheet"  />
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/createTactics.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsCustGroup.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js"></script>
 </head>
 <body class="bg-fa">
-<%
-    String planUrl="provinces/"+provinces+"/createTacticsPlan.jsp";
-	String customerGroupUrl="provinces/"+provinces+"/createTacticsCustGroup.jsp";
-	String channelUrl="provinces/"+provinces+"/createTacticsChannel.jsp";
-	String shoppintCartUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
-	String headerUrl="";
-%>	
-	<jsp:include page="../../mcd/pages/header/header.jsp"></jsp:include>
+	<%
+	    String planUrl="provinces/"+provinces+"/createTacticsPlan.jsp";
+		String customerGroupUrl="provinces/"+provinces+"/createTacticsCustGroup.jsp";
+		String channelUrl="provinces/"+provinces+"/createTacticsChannel.jsp";
+		String shopCarUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
+	%>
 	<div class="put-container w-1200">
 		<!-- 左侧数字导航区 -->
 		<div class="put-left fleft ft14 mtop_47">
@@ -34,28 +34,13 @@
 			<jsp:include page="<%=planUrl%>"></jsp:include>
 			<jsp:include page="<%=customerGroupUrl%>"></jsp:include>
 			<jsp:include page="<%=channelUrl%>"></jsp:include>
+			<div class="btn-wrp text-center bg-ebf0f3 clear-both" >
+				<a id="nextBtn" href="javascript:;" class="btn-a btn-a-blue btn100-30">下一步</a>
+			</div>
 		</div>
 		<!-- 右侧购物车 -->
-		<jsp:include page="<%=shoppintCartUrl%>"></jsp:include>
+		<jsp:include page="<%=shopCarUrl%>"></jsp:include>
 	</div>
+</div>
 </body>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTactics.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/CreateTacticsCustGroup.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js" ></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js" ></script>
-
-<script type="text/javascript">
-$(function() {
-	$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');//奇数行添加背景色
-	$('.public-table tbody tr:nth-child(2n)').addClass('even');//偶数行添加背景色
-	// 页面初始化
-	initPage();
-
-	
-	// 初始化全局事件监听
-	addEventListenter();
-	
-})
-</script>
 </html>
