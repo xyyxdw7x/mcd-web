@@ -1,4 +1,5 @@
-package com.asiainfo.biapp.mcd.enums;
+package com.asiainfo.biapp.mcd.common.constants;
+
 
 public enum TasKStatus {
 

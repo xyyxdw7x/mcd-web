@@ -24,7 +24,7 @@ import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.enums.TasKStatus;
+import com.asiainfo.biapp.mcd.common.constants.TasKStatus;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
