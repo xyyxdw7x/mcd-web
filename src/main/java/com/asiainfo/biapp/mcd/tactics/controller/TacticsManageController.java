@@ -1861,11 +1861,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建活动页面：初始化产品类型模块
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/queryPlanTypes")
 	@ResponseBody
@@ -1880,10 +1875,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 	/**
 	 * 创建活动页面：根据条件查询产品列表
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/queryPlansByCondition")
 	@ResponseBody
@@ -1921,10 +1912,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 	/**
 	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/selectPlanBackChannels")
 	@ResponseBody
@@ -1938,9 +1925,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建策略界面：展示渠道列表（选渠道模块）
-	 * @param request
-	 * @param response
-	 * @return
 	 */
 	@RequestMapping("/getChannels")
 	@ResponseBody
@@ -1950,10 +1934,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建产品界面显示客户群列表。（选客户群模块）
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("getMoreMyCustom")
 	@ResponseBody
@@ -1984,9 +1964,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建活动页面，选择渠道时，返回运营位列表
-	 * @param request
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("getAdivInfo")
 	@ResponseBody
@@ -2010,11 +1987,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 选择客户群时：初始化该客户群的变量
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/getCustGroupVars")
 	@ResponseBody
@@ -2034,10 +2006,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 保存策略接口
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/saveOrUpdate")
 	@ResponseBody
@@ -2090,9 +2058,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 	/**
 	 * 根据campsegId修改策略信息 回填修改参数
-	 * @param request
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/getCampInfo")
 	@ResponseBody
@@ -2120,8 +2085,19 @@ public class TacticsManageController extends BaseMultiActionController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return map;
+	}
+	
+	/**
+	 * 创建策略界面：查看客户群详情
+	 */
+	@RequestMapping("/viewCustGroupDetail")
+	@ResponseBody
+	public Map<String,Object> viewCustGroupDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String customGrpId = request.getParameter("customGrpId");
+		Map<String,Object> data = null;
+		data = custGroupInfoService.queryCustGroupDetail(customGrpId);
+		return data;
 	}
 	
 }
