@@ -32,6 +32,8 @@ function initView(){
 	//调用子页面的函数
 	initCustomerGroup();
 	initShopCar();
+	//初始化渠道
+	initChannel();
 }
 /**
  * 左侧数字导航事件
