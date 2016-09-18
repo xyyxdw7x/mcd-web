@@ -2088,6 +2088,40 @@ public class TacticsManageController extends BaseMultiActionController {
 		return rs; 
 	}
 
+	/**
+	 * 根据campsegId修改策略信息 回填修改参数
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/getCampInfo")
+	@ResponseBody
+	public Map<String, Object> getCampInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
+		Map<String, Object> map = new HashMap<String, Object>(); // 存放最终拼装的参数
+		
+		try {
+			// 父策略id
+			String campsegPid = StringUtils.isNotEmpty(request.getParameter("pid"))? request.getParameter("pid") : "2016061317242609";
+			
+			// 获取策略的基本信息
+			McdCampDef subCampInfo = mpmCampSegInfoService.getCampByPid(campsegPid);//获取子策略
+			map.put("campInfo",subCampInfo);
+			//产品信息
+			McdPlanDef mtlStcPlan = mtlStcPlanService.getMtlStcPlanByPlanID(subCampInfo.getPlanId());
+			map.put("planInfo",mtlStcPlan);
+			// 渠道信息
+			List<McdCampChannelList> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(subCampInfo.getCampId());
+			map.put("channelsInfo",mtlChannelDefList);
+			// 策略与客户群的关心信息
+			McdCustgroupDef custGroup = mtlCampsegCustgroupService.getCustGroupByCamp(subCampInfo.getCampId());
+			map.put("custGroupInfo",custGroup);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return map;
+	}
 	
 }
