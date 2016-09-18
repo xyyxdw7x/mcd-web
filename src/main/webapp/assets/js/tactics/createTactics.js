@@ -6,11 +6,11 @@ $(document).ready(function(){
 	//绑定事件
 	addEventListenter();
     initView();
- // 初始化筛选条件
+    // 初始化筛选条件
 	TacticsPlan.initTabInfo();
 	// 初始化查询结果
 	TacticsPlan.queryPolicy(1);
-	tacticsCustGroup.queryCustGroup();
+	//tacticsCustGroup.queryCustGroup();
 });
 
 
@@ -20,6 +20,7 @@ $(document).ready(function(){
 function addEventListenter(){
 	addStepNumEventListenter();
 	addNextBtnEventListenter();
+	addChangePlanEvent();
 	addChangeCustomerGroupEvent();
 }
 /**
@@ -70,6 +71,23 @@ function addNextBtnEventListenter(){
 		//找到相应的li并触发点击事件 要保证事件的入口唯一
 		$("#stepOl li :contains('"+nextIndex+"')").trigger("click");
 	});
+}
+
+/**
+ * 注册产品发生变化事件
+ */
+function addChangePlanEvent(){
+	$("#planDiv").bind("changePlan",changePlanEvent);
+}
+/**
+ * 产品发生变化事件
+ * @param event
+ * @param data
+ */
+function changePlanEvent(event,data){
+	//data为产品的所有信息
+	//派发事件
+	$("#shopCar").trigger("shopCarChangePlan",data);
 }
 /**
  *  注册客户群发生变化事件
