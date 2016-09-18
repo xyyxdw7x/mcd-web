@@ -7,7 +7,7 @@ import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 
 public interface IMtlStcPlanService {
     

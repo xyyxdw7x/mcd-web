@@ -24,7 +24,7 @@ import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 
 /**

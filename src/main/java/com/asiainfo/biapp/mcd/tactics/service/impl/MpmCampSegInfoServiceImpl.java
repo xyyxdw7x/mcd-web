@@ -45,7 +45,7 @@ import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
