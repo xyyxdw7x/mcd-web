@@ -4,8 +4,8 @@
 	<div class="step-title color-333 ft18">选客户</div>
 	<div class="policy-selected-box over-hidden">
 		<span class="fleft row-name">已选客户群：</span>
-		<div class="fleft ft12 color-666 policy-selected-right">
-			<span class="policy"> <i class="close"> &times;</i> <em>客户群：北京测试客户群01
+		<div id="selCgDiv" class="fleft ft12 color-666 policy-selected-right" style="display:none">
+			<span class="policy" id = "selcgListName"> <i class="close" id="closeGroup"> &times;</i> <em>
 			</em>
 			</span>
 		</div>
@@ -15,9 +15,9 @@
 		<div class="search-box-wrp">
 			<div class="search-box">
 				<p class="fleft">
-					<input placeholder="请输入关键字" type="text">
+					<input id="cgSearchInput" placeholder="请输入关键字" type="text">
 				</p>
-				<i class="searchBtn fright"></i>
+				<i id="cgSearchBtn" class="searchBtn fright"></i>
 			</div>
 		</div>
 		<!--搜索结果表格-->

@@ -6,16 +6,20 @@ var TacticsPlan = {
 	initTabInfo:function() {
 		var ejsUrlPlanTypes=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimPlanTypes.ejs';
 		var ejsUrlChannels=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimChannels.ejs';
-		
+		initPlanView();
 		$.ajax({
 			url:contextPath+"/tactics/tacticsManage/queryPlanTypes",
 			data:{},
 			success:function(data, textStatus) {
 				if (data) {
+					
+					 var htmlStr = template(ejsUrlPlanTypes,data.planTypes);
+					 
 					var _HtmlPlanTypes = new EJS({
 						url : ejsUrlPlanTypes
 					}).render({data:data.planTypes});
-					$("#divDimPlanTypes").html(_HtmlPlanTypes);
+					//$("#divDimPlanTypes").html(_HtmlPlanTypes);
+					$("#divDimPlanTypes").html(htmlStr);
 					var _HtmlChannels = new EJS({
 						url : ejsUrlChannels
 					}).render({data:data.channels});
@@ -43,7 +47,7 @@ var TacticsPlan = {
 		});
 	},
 	queryPolicy:function (pageNum) {
-		var keyword=$("#inputKeywordPlan").val();
+		var keyword=$("#inputKeywordPlan").val().replace(/(^\s*)|(\s*$)/g,"");;
 		var planTypeId = $("#divDimPlanTypes span.active").attr("planTypeId");
 		var planSrvType = $("#divDimPlanSrvType span.active").attr("planSrvType")
 		var channelId = $("#divDimChannels span.active").attr("channelId");
@@ -82,8 +86,8 @@ var TacticsPlan = {
 					}).render({data:data});
 					$("#divPlansPage").html(_HtmlPlansPage);
 					
-					$(".batch_chk_box").on("click", function(event){
-						var index = $("#tbodyPlansList .batch_chk_box").index(this);
+					$(".btn-a-blue").on("click", function(event){
+						var index = $("#tbodyPlansList .btn-a-blue").index(this);
 						var item=data.result[index];
 						
 						if ($("#divChoosedPlan span[planId=" + item.PLAN_ID +"]").length > 0) {
@@ -113,7 +117,7 @@ var TacticsPlan = {
 							//var span="<span class=\"policy\" planId=" + item.PLAN_ID + "><i class=\"close\" onclick=\"unchoosePlan('" + item.PLAN_ID + "')\"> &times;</i><em>" + item.PLAN_NAME + "</em></span>";
 							$("#divChoosedPlan").append(span);
 							// 发布策略变更事件
-							$("#divFramePlan").trigger("planChange",item);
+							$("#planDiv").trigger("changePlan",item);
 						}
 					});
 				}
@@ -121,4 +125,13 @@ var TacticsPlan = {
 		
 		});
 	}
+}
+
+function initPlanView(){
+	addPlanSearchEvent();
+}
+function addPlanSearchEvent(){
+	$("#planSearchBtn").click(function(event){
+		TacticsPlan.queryPolicy(1);
+	});
 }

@@ -26,8 +26,33 @@ var shoppingCart={
  * 暂存架页面初始化
  */
 function initShopCar(){
+	addShopCarChangePlanEvent();
 	addShopCarChangeCustomerGroupEvent();
 }
+
+
+/**
+ *  注册产品变化事件
+ */
+function addShopCarChangePlanEvent(){
+	$("#shopCar").bind("shopCarChangePlan",shopCarChangePlanEvent);
+}
+
+/**
+ * 产品变化事件
+ * @param event
+ * @param data
+ */
+function shopCarChangePlanEvent(event,data){
+	var planId=data.PLAN_ID;
+	$("#selectedPlan").html("");
+	//设置产品名称
+	var liStr="<li id='selectedPlan_"+planId+"'><span>."+data.PLAN_NAME+"</span></li>";
+	$("#selectedPlan").append(liStr);
+	//将数据绑定到dom元素上
+	$("#selectedPlan_"+planId).data("data",data);
+}
+
 /**
  *  注册客户群变化事件
  */
@@ -41,16 +66,12 @@ function addShopCarChangeCustomerGroupEvent(){
  * @param data
  */
 function shopCarChangeCustomerGroupEvent(event,data){
-	if(data == null){
-		//设置客户群名称
+	if(data==null){
 		$("#selectedCg").html("");
-		//将数据绑定到dom元素上
-		$("#selectedCg").data("data","");
-	}else{
-		//设置客户群名称
-		$("#selectedCg").html(data.customGroupName);
-		//将数据绑定到dom元素上
-		$("#selectedCg").data("data",data);
+		$("#selectedCg").data("data",null);
 	}
+	//设置客户群名称
+	$("#selectedCg").html(data.customGroupName);
+	//将数据绑定到dom元素上
+	$("#selectedCg").data("data",data);
 }
-
