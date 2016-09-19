@@ -97,10 +97,18 @@ function queryCustomerGroupList(){
  * 查询客户群列表成功
  */
 function queryCustomerGroupListSuc(obj){
-	var cgItemEjsUrl=contextPath+"/jsp/test/provinces/"+provinces+"/test_extends_customer_group_item.ejs";
-	var cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj.result});
+	var cgItemEjsUrl=contextPath+"/assets/js/tactics/provinces/"+provinces+"/createTacticsCustGroup.ejs";
+	var selectCg = $("#selectedCg").data("data");
+	var cgListHtml ;
+	if(selectCg != null){
+		cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj.result,customGroupId:selectCg.customGroupId});
+	}else{
+		cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj.result,customGroupId:null});
+	}
 	$("#cgList").html(cgListHtml);
 	addCustomerGroupEvent(obj.result);
+	addCustomerGroupDetailsEvent(obj.result);
+
 }
 /**
  * 注册客户群选择事件
@@ -116,5 +124,17 @@ function addCustomerGroupEvent(obj){
 		$("#cgDiv").trigger("changeCustomerGroup",item);
 		$("#selCgDiv").show();
 		$("#selcgListName em").html(item.customGroupName);
+	});
+}
+/**
+ * 注册客户群详情事件
+ * @param obj
+ */
+function addCustomerGroupDetailsEvent(obj){
+	$("#cgList li .group-box-detail > a").click(function(event){
+		var event =event || window.event || arguments.callee.caller.arguments[0];
+	    event.stopPropagation(); 
+	    event.cancelBubble = true;
+		 
 	});
 }
