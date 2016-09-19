@@ -2102,7 +2102,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@RequestMapping("/getBossSmsTemplate")
 	@ResponseBody
 	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-       //99999988888886666688888888888111
+
 		List<ChannelBossSmsTemplate> list = null;
 		try {
 			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
