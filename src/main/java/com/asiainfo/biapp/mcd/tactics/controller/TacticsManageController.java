@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -104,7 +104,8 @@ public class TacticsManageController extends BaseMultiActionController {
 	@Resource(name = "planChannelAdivResourceService")
 	private IPlanChannelAdivResourceService planChannelAdivResourceService;
 
-	private static Logger log = LogManager.getLogger();
+	protected final Log log = LogFactory.getLog(getClass());
+
 
 	/**
 	 * 保存策略基本信息
@@ -2094,6 +2095,21 @@ public class TacticsManageController extends BaseMultiActionController {
 		Map<String,Object> data = null;
 		data = custGroupInfoService.queryCustGroupDetail(customGrpId);
 		return data;
+	}
+	/**
+	 * 初始化Boss短信运营位模板
+	 */
+	@RequestMapping("/getBossSmsTemplate")
+	@ResponseBody
+	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
+
+		List<ChannelBossSmsTemplate> list = null;
+		try {
+			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return list; 
 	}
 	
 }
