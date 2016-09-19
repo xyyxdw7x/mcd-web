@@ -24,7 +24,6 @@ public class UserDeptLinkDaoImp extends JdbcDaoBase implements IUserDeptLinkDao{
 		try {
 			deptName=this.getJdbcTemplate().queryForObject(sql, parm,String.class).toString();
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("根据用户id查询用户科室名称出错！！！");
 			throw e;
 		} 
@@ -39,7 +38,6 @@ public class UserDeptLinkDaoImp extends JdbcDaoBase implements IUserDeptLinkDao{
 		try {
 			deptName=this.getJdbcTemplate().queryForObject(sql, parm,String.class).toString();
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("根据用户科室id查询科室名称出错！！！");
 			throw e;
 		} 

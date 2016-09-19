@@ -1,10 +1,12 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
 /**
@@ -149,7 +151,58 @@ public interface ICustGroupInfoService {
 	 */
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
 	
-	
+
+    public int getGroupSequence(String cityid);
+    
+    /**
+     * 根据COC传递数据，修改或新增客户群信息表
+     * @param custInfoBean  详细信息封装累
+     * @return
+     * @throws Exception
+     */
+    public void updateMtlGroupinfo(CustInfo custInfoBean);
+    /**
+     * 更新客户群信息表状态
+     * @param tableName
+     * @param custGroupId
+     * @return
+     */
+    public void updateMtlGroupStatus(String tableName,String custGroupId);
+    /**
+     * 执行传过来的SQL语句，并注入参数
+     * @param mtlCuserTableName   清单表名
+     * @param customGroupDataDate  统计周期
+     * @param customGroupId   客户群ID
+     * @param rowNumberInt  客户数
+     * @param dataStatus 数据状态
+     * @param newDate 数据生成时间
+     * @param exceptionMessage   异常信息 
+     * @return
+     * @throws Exception
+     */
+    public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage);
+
+    public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName);
+   /**
+     * 查看SQLLoader文件导入是否成功了
+     * @param mtlCuserTableName
+     * @return
+     */
+    public Boolean getSqlLoderISyncDataCfgEnd(String mtlCuserTableName);
+    /**
+     * sqlLoder导入完成后更改状态
+     * @param customGroupId 客户群ID
+     */
+    public void updateSqlLoderISyncDataCfgStatus(String customGroupId);
+
+    
+    public void addMtlGroupPushInfos(String customGroupId, String userId,String pushToUserId);
+    /**
+     * 根据客户群id查询客户群信息
+     * @param customGrpId
+     * @return
+     */
+	Map<String, Object> queryCustGroupDetail(String customGrpId);
 	
 }
 

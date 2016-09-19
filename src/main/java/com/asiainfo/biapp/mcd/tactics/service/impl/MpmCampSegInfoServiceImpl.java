@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +31,7 @@ import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.common.custgroup.dao.IMcdMtlGroupInfoDao;
+import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
@@ -40,12 +41,11 @@ import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.dao.CreateCustGroupTabDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
@@ -85,8 +85,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     private IMtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCustgroupDao")
     private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
-	@Resource(name = "createCustGroupTab")
-	private CreateCustGroupTabDao createCustGroupTab;
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
 	@Resource(name = "mcdCampsegTaskDao")
@@ -95,8 +93,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	private IMcdCampsegTaskService mcdCampsegTaskService;
 	@Resource(name = "custGroupInfoService")
 	private ICustGroupInfoService custGroupInfoService;
-	@Resource(name = "mcdMtlGroupInfoDao")
-    private IMcdMtlGroupInfoDao mcdMtlGroupInfoDao;
+	@Resource(name = "custGroupInfoDao")
+    private ICustGroupInfoDao custGroupInfoDao;
 	
     public IMtlChannelDefDao getMtlChannelDefDao() {
 		return mtlChannelDefDao;
@@ -551,7 +549,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
 		String tabNameModel="mtl_cuser_XXXXXXXX";
 		String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
-		createCustGroupTab.addCreateCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
+		custGroupInfoDao.addCreateCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
 		return tabName;
 	}
 	/**
@@ -569,8 +567,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      * @param approve_desc  处理结果描述
      */
     @Override
-    public void cancelAssignment(String campsegId, short ampsegStatId,
-            String approve_desc) {
+    public void cancelAssignment(String campsegId, short ampsegStatId,String approve_desc) {
         campSegInfoDao.cancelAssignment(campsegId,ampsegStatId,approve_desc);
         
     }
@@ -723,6 +720,22 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			log.error("", e);
 		}
 		return allTreeList;
+	}
+	
+	
+	@Override
+	public McdCampDef getCampByPid(String pid) throws MpmException {
+	    McdCampDef seginfo =null;
+		try {
+			List<McdCampDef> seginfos = campSegInfoDao.getCampSegInfoByPid(pid);
+			if(seginfos!=null && seginfos.size()>0){
+				seginfo =  seginfos.get(0);//因为父策略和子策略是一对一关系，所以此处取只有一条数据。如果是多产品，就不能这么做了
+			}
+			
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return seginfo;
 	}
 	
 	/**
@@ -1019,7 +1032,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                     String custgroupId = campSegInfoDao.getMtlCampsegCustGroupId(childMtl.getCampId());
                                     String dataDate = "";
                                     if(custgroupId != null){
-                                        List<Map<String,Object>> mtlCustomList = mcdMtlGroupInfoDao.getMtlCustomListInfo(custgroupId);
+                                        List<Map<String,Object>> mtlCustomList = custGroupInfoDao.getMtlCustomListInfo(custgroupId);
                                         if(mtlCustomList != null && mtlCustomList.size() > 0){
                                             Map<String,Object> mtlCustomMap = (Map<String,Object>)mtlCustomList.get(0);
                                             dataDate = mtlCustomMap.get("data_date") == null ? "" : mtlCustomMap.get("data_date").toString();
@@ -1112,12 +1125,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
      
     @Override
 	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
-		List<Map<String,Object>> list = mcdMtlGroupInfoDao.getMtlCustomListInfo(custGroupId);
+		List<Map<String,Object>> list = custGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 		//查询客户群的周期性
-		McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+		McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
 		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
@@ -1142,7 +1155,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				String ss[] = tableName.split("_");
 				
 				//查询客户群的周期性
-				McdCustgroupDef groupInfo = mcdMtlGroupInfoDao.getCustGroupInfoById(custGroupId);
+				McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 				int updateCycle = groupInfo.getUpdateCycle();
 				String sql = "";
 				if("2".equals(updateCycle) || "3".equals(updateCycle)){
@@ -1213,9 +1226,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
   * @param tableName
   * @return
   */
- private List<Map<String,Object>> getSqlFireTableColumns(String tableName){
-     return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
- }
+	 private List<Map<String,Object>> getSqlFireTableColumns(String tableName){
+	     return campSegInfoDao.getSqlFireTableColumnsInMem(tableName);
+	 }
  
 	@Override
 	public int excuteCustGroupCount(String customgroupid,McdTempletForm bussinessLableTemplate,McdTempletForm basicEventTemplate,Locale local,String orderProductNo,String excludeProductNo){
@@ -1251,6 +1264,94 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		} catch (Exception e) {
 			log.error("",e);
 		}
+	}
+	@Override
+	public String saveOrUpdateCampInfo(User user, List<McdCampDef> campSegInfoList,Boolean isModify) throws Exception {
+		String approveFlag = "0";  //不走审批
+		String isApprove = "false";
+		String campPid="";
+		for(McdCampDef campInfo:campSegInfoList){
+			McdCampDef tmp = this.saveBefore(user,campInfo);
+			String currentCampId;
+			String custGroupId;
+			
+			List<McdCampChannelList> channelList =null;			
+            if (!isModify) {//-------------创建--------
+				if (tmp.getPid() != "0") {//子策略
+					currentCampId = MpmUtil.generateCampsegAndTaskNo();
+					tmp.setCampId(currentCampId);
+					custGroupId = tmp.getCustgroupId();
+					this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 保存策略和客户群关系表！！！
+					channelList = tmp.getMtlChannelDefList();
+					for (McdCampChannelList campChannel : channelList) {
+						campChannel.setCampId(currentCampId);
+						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+					}
+				} else {//父策略
+					campPid = tmp.getPid();
+					isApprove = tmp.getIsApprove();
+				}
+				campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
+				
+			}else{//-----------------修改-----------------
+				
+				if (tmp.getPid() != "0") {//子策略			
+					currentCampId = tmp.getCampId();
+					custGroupId = tmp.getCustgroupId();
+					mtlCampsegCustgroupDao.deleteByCampsegId(currentCampId);//先删除关系表中数据
+					this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 修改策略和客户群关系表！！！
+					channelList = tmp.getMtlChannelDefList();
+					mtlChannelDefDao.deleteMtlChannelDef(currentCampId);//删除策略渠道关系表中的数据
+					for (McdCampChannelList campChannel : channelList) {
+						campChannel.setCampId(currentCampId);
+						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+					}
+				} else {//父策略
+					campPid = tmp.getPid();
+					isApprove = tmp.getIsApprove();
+				}
+				campSegInfoDao.updateCamp(tmp);//Duang Duang Duang 修改策略！！！
+				
+			}
+            
+            
+			if("true".equals(isApprove)){
+				String approveStr = this.submitApprovalXml(campPid);
+				if("提交审批成功".equals(approveStr)){
+					approveFlag = "1"; //走审批，审批成功
+				}else{
+					approveFlag = "2"; //走审批，审批失败
+				}
+		}
+			
+		}
+		return approveFlag;
+	}
+	private McdCampDef saveBefore(User user, McdCampDef campInfo){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		campInfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));//策略状态
+		campInfo.setCreateUserId(user.getId()); // 活动策划人
+		campInfo.setCreateUserName(user.getName());
+		campInfo.setCityId(user.getCityId()); // 策划人所属城市
+		campInfo.setDeptId(Integer.parseInt(user.getDepartmentId()));
+		try {
+			campInfo.setCreateTime(format.parse(format.format(new Date())));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return campInfo;
+	}
+	
+	private void saveCampCustRel(String campId, String custGroupId)  {
+			McdCampCustgroupList mtlCampsegCustGroup = new McdCampCustgroupList();
+			mtlCampsegCustGroup.setCustgroupId(custGroupId);
+			mtlCampsegCustGroup.setCampId(campId);
+			try {
+				mtlCampsegCustgroupDao.save(mtlCampsegCustGroup);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 	}
     
 }

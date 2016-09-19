@@ -37,15 +37,21 @@ public class McdCampCustgroupList implements java.io.Serializable {
 	private String custgroupDesc;
 	@Transient
 	private String attrClassId;
-	
+	@Transient
 	private String attrMetaId;
+	@Transient
 	private String columnCnName;
+	@Transient
 	private String columnTypeId;
+	@Transient
 	private String attrId;
+	@Transient
 	private String cviewId;
+	@Transient
 	private String ctrlTypeId;
-	
+	@Transient
 	private String elementValue;
+	@Transient
 	private String elementValueId;
 
 	// Constructors

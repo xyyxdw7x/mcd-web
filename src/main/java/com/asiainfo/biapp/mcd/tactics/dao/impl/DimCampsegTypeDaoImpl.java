@@ -1,7 +1,7 @@
 /**   
  * @Title: DimCampsegTypeDaoImpl.java
  * @Package com.asiainfo.biapp.mcd.dao.impl
- * @Description: TODO(用一句话描述该文件做什么)
+ * @Description:
  * @author A18ccms A18ccms_gmail_com   
  * @date 2015-7-17 上午10:32:56
  * @version V1.0   

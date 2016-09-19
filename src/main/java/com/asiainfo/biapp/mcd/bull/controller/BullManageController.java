@@ -17,14 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.bull.service.BullMonitorService;
-import com.asiainfo.biapp.mcd.bull.service.CurrentDateQuotaService;
+import com.asiainfo.biapp.mcd.bull.service.IBullMonitorService;
+import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
-import com.asiainfo.biapp.mcd.enums.TasKStatus;
+import com.asiainfo.biapp.mcd.common.constants.TasKStatus;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
@@ -35,9 +35,9 @@ public class BullManageController extends BaseMultiActionController {
 	private static final Logger log = LogManager.getLogger();
 
 	@Autowired
-	private BullMonitorService bullMonitorService;
+	private IBullMonitorService bullMonitorService;
 	@Autowired
-	private CurrentDateQuotaService currentDateQuotaService;
+	private ICurrentDateQuotaService currentDateQuotaService;
 	@Autowired
 	private IQuotaConfigCityDayService quotaConfigCityDayService;
 

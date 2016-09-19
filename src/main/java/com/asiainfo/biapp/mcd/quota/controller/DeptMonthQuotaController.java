@@ -24,7 +24,7 @@ import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;

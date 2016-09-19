@@ -37,6 +37,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
 		this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql));
 		this.getHibernateTemplate().flush();*/
+		String sql = "delete from mcd_camp_custgroup_list mcd where mcd.id.camp_id='" + campsegId + "'";
+		this.getJdbcTemplate().execute(sql);
 	}
 	
     /**
@@ -101,11 +103,11 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
         try {
             StringBuffer buffer = new StringBuffer();
-            buffer.append("select basic.*,dim_mtl_adiv_info.adiv_name,mcd_camp_def.CEP_EVENT_ID from (")
+            buffer.append("select basic.*,mcd_dim_adiv_info.adiv_name,mcd_camp_def.CEP_EVENT_ID from (")
                   .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME ")
                   .append(" from mcd_camp_channel_list mcd, mcd_dim_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id   and mcd.campseg_id = ? ) basic")
-                  .append(" left join  dim_mtl_adiv_info on basic.channel_adiv_id = dim_mtl_adiv_info.adiv_id and basic.channel_id=dim_mtl_adiv_info.channel_id")
+                  .append(" left join  mcd_dim_adiv_info on basic.channel_adiv_id = mcd_dim_adiv_info.adiv_id and basic.channel_id=mcd_dim_adiv_info.channel_id")
                   .append(" left join mcd_camp_def on basic.campseg_id = mcd_camp_def.campseg_id");
             
             list= this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] { campsegId });

@@ -13,4 +13,11 @@ public interface MtlCampsegCustgroupService {
 	 */
 	public abstract List<McdCustgroupDef> getChoiceCustom(String campsegId);
 
+	/**
+	 * 根据策略id获得客户群，策略和客户群是一对多的关系，一个策略只能获得一个客户群
+	 * @param campsegId
+	 * @return
+	 */
+	McdCustgroupDef getCustGroupByCamp(String campsegId);
+
 }

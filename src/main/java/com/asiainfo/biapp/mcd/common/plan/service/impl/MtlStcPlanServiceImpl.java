@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 
 /**
  * 渠道相关Service
@@ -103,6 +103,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		
 		Map<String,Object> sqlClauseCount = getPlansByConditionSqlCount(cityId, planTypeId, planSrvType, channelId, keyWords);
 		String sql = sqlClauseCount.get("sql").toString();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		List<Object> param = (List) sqlClauseCount.get("params");
 		int count =  mtlStcPlanDao.execQuerySqlCount(sql, param);
 		pager.setTotalSize(count);
@@ -110,7 +111,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		
 		Map<String,Object> sqlClause = this.getPlansByConditionSql(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 		String sql2 = sqlClause.get("sql").toString();
-		List<Object> param2 = (List<Object>) sqlClause.get("params");
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		List<Object> param2 = (List) sqlClause.get("params");
 		
 		return mtlStcPlanDao.execQuerySql(sql2,param2);
 	}
@@ -128,7 +130,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		buffer.append("WHERE 1=1 ");
 
 		if (!"999".equals(cityId)) {//地市人员只能看到本地市的策略
-			buffer.append(" AND A.PLAN_ID IN (SELECT DISTICT PlAN_ID FROM mcd_plan_city_list  WHERE CITY_ID = ?) D ");
+			buffer.append(" AND A.PLAN_ID IN (SELECT DISTINCT PlAN_ID FROM mcd_plan_city_list  WHERE CITY_ID = ?)  ");
 			params.add(cityId);
 		}
 
@@ -144,12 +146,12 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		}
 		
 		if (StringUtils.isNotEmpty(planTypeId)) { // 查询政策类别
-			buffer.append(" and A.TYPE_ID =?");
+			buffer.append(" and A.PLAN_TYPE =?");
 			params.add(planTypeId);
 		}
 		if (StringUtils.isNotEmpty(planSrvType)) { // 查询粒度
-			buffer.append(" and B.PLAN_TYPE_ID =?");
-			params.add(planTypeId);
+			buffer.append(" and A.PLAN_SRV_TYPE =?");
+			params.add(planSrvType);
 		}
 	
 		if (StringUtils.isNotEmpty(channelId)) { // 渠道类型查询
@@ -174,7 +176,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		buffer.append("SELECT COUNT(1) FROM MCD_PLAN_DEF A  where 1=1 ");
 
 		if (!"999".equals(cityId)) {//地市人员只能看到本地市的策略
-			buffer.append(" AND A.PLAN_ID IN (SELECT DISTICT PlAN_ID FROM MTL_STC_PLAN_CITY  WHERE CITY_ID = ?) D ");
+			buffer.append(" AND A.PLAN_ID IN (SELECT DISTINCT PlAN_ID FROM mcd_plan_city_list  WHERE CITY_ID = ?)  ");
 			params.add(cityId);
 		}
 
@@ -190,12 +192,12 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		}
 		
 		if (StringUtils.isNotEmpty(planTypeId)) { // 查询政策类型
-			buffer.append(" and A.TYPE_ID =?");
+			buffer.append(" and A.PLAN_TYPE =?");
 			params.add(planTypeId);
 		}
 		if (StringUtils.isNotEmpty(planSrvType)) { // 查询类别
-			buffer.append(" and B.PLAN_TYPE_ID =?");
-			params.add(planTypeId);
+			buffer.append(" and A.PLAN_SRV_TYPE =?");
+			params.add(planSrvType);
 		}
 	
 		if (StringUtils.isNotEmpty(channelId)) { // 渠道类型查询
@@ -206,7 +208,6 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
         //政策在开始和结束之间
 		buffer.append(" AND sysdate BETWEEN nvl2(A.PLAN_STARTDATE,A.PLAN_STARTDATE,TO_DATE('19000101','YYYYMMDD'))  AND nvl2(A.PLAN_ENDDATE,A.PLAN_ENDDATE,TO_DATE('21000101','YYYYMMDD'))");
 		buffer.append(" and A.PLAN_STATUS=1 ");// 产品上线了
-		buffer.append(" ORDER BY A.PLAN_STARTDATE DESC,A.PLAN_ID DESC");
 		result.put("sql", buffer.toString());
 		result.put("params", params);
 		return result;

@@ -37,14 +37,12 @@ public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
 					new BatchPreparedStatementSetter() {
 						@Override
 						public int getBatchSize() {
-							// TODO Auto-generated method stub
 							return list.size();
 						}
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)
 								throws SQLException {
-							// TODO Auto-generated method stub
 							ps.setString(1, list.get(index).getCityId());
 							ps.setString(2, list.get(index).getDeptId());
 							ps.setInt(3, list.get(index).getMonthQuotaNum());
@@ -67,7 +65,6 @@ public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
 		try {
 			list = this.getJdbcTemplate().queryForList(sql, parm);
 		} catch (DataAccessException e) {
-			// TODO Auto-generated catch block
 			log.error("查询模板出错！！！");
 			throw e;
 		}

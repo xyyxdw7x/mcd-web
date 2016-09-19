@@ -2,6 +2,7 @@ package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,6 +33,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	
 	@Resource(name="custGroupInfoDao")
 	ICustGroupInfoDao custGroupInfoDao;
+
 
 	@Autowired
 	private IUserPrivilege userPrivilege;
@@ -174,6 +177,36 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	@Override
 	public List<Map<String,Object>> searchCustomDetail(String customGrpId) {
 		return custGroupInfoDao.searchCustomDetail(customGrpId);
+	}
+	
+	@Override
+	public Map<String,Object> queryCustGroupDetail(String customGrpId) {
+		List<Map<String,Object>> list = custGroupInfoDao.searchCustomDetail(customGrpId);
+		Map<String,Object> map = null;
+		if(list!=null && list.size()>0){
+			map = list.get(0);
+			SimpleDateFormat spf = new SimpleDateFormat("yyyyMMdd");
+			//创建时间
+			String createTime = "";
+			if(map.get("CREATE_TIME") != null) {
+				createTime = spf.format(map.get("CREATE_TIME"));
+			}
+			map.put("CREATE_TIME_STR", createTime);
+			//生效日期
+			String effectiveTime = "";
+			if(map.get("EFFECTIVE_TIME") != null) {
+				effectiveTime = spf.format(map.get("EFFECTIVE_TIME"));
+			}
+			map.put("EFFECTIVE_TIME_STR", effectiveTime);
+			//失效日期
+			String failTime = "";
+			if(map.get("FAIL_TIME") != null) {
+				failTime = spf.format(map.get("FAIL_TIME"));
+			}
+			map.put("FAIL_TIME_STR", failTime);
+			map.put("DATA_TIME_STR", map.get("data_date"));
+		}
+		return map;
 	}
 	@Override
 	public int saveQueue(String group_into_id, String group_cycle, String queue_id,String data_date,String group_table_name) {
@@ -478,4 +511,64 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			String excludeProductNo,String tableName,boolean removeRepeatFlag) {
 		custGroupInfoDao.insertCustGroupNewWay(customgroupid, bussinessLableSql, ARPUSql, orderProductNo, excludeProductNo,tableName,removeRepeatFlag);
 	}
+	
+	   @Override
+	    public int getGroupSequence(String cityid) {
+	        return  custGroupInfoDao.getGroupSequence(cityid); 
+	    }
+	    @Override
+	    public void updateMtlGroupinfo(CustInfo custInfoBean) {
+	        custGroupInfoDao.updateMtlGroupinfo(custInfoBean);
+	    }
+	    @Override
+	    public void updateMtlGroupStatus(String tableName,String custGroupId){
+	        custGroupInfoDao.updateMtlGroupStatusInMem(tableName,custGroupId);
+	    }
+	    @Override
+	    public void savemtlCustomListInfo(String mtlCuserTableName,
+	            String customGroupDataDate, String customGroupId, int rowNumberInt,
+	            int dataStatus, Date newDate, String exceptionMessage) {
+	        custGroupInfoDao.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+
+	    }
+	    @Override
+	    public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName) { 
+	        
+	        custGroupInfoDao.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
+	    }
+	    /**
+	     * 查看SQLLoader文件导入是否成功了
+	     * @param mtlCuserTableName
+	     * @return
+	     */
+	    @Override
+	    public Boolean getSqlLoderISyncDataCfgEnd(String mtlCuserTableName) {
+	        List<Map<String,Object>> list = custGroupInfoDao.getSqlLoderISyncDataCfgEnd(mtlCuserTableName);
+	        boolean isEnd = false;
+	        if(list != null && list.size() > 0){
+	            Map<String,Object> map = (Map<String,Object>)list.get(0);
+	            String endDate = map.get("run_end_time") == null ? "" : map.get("run_end_time").toString() ;
+	            log.info("客户群表名为："+mtlCuserTableName +"的客户群，endDate ：" + endDate);
+	            if(!"".equals(endDate)){
+	                log.info("客户群表名为："+mtlCuserTableName +"的客户群，sqlLoder导入任务结束");
+	                isEnd = true;
+	            }
+	            
+	        }
+	        return isEnd;
+	    }
+	    /**
+	     * sqlLoder导入完成后更改状态
+	     * @param customGroupId 客户群ID
+	     */
+	    @Override
+	    public void updateSqlLoderISyncDataCfgStatus(String customGroupId) {
+	        custGroupInfoDao.updateSqlLoderISyncDataCfgStatus(customGroupId);
+	        
+	    }
+
+	    @Override
+	    public void addMtlGroupPushInfos(String customGroupId,String userId,String pushToUserId) {  
+	        custGroupInfoDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
+	    }
 }

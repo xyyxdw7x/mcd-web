@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.custgroup.service.IMtlCustGroupService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
@@ -60,8 +59,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	@Resource(name="mpmCommonService")
 	private IMpmCommonService mpmCommonService;
 	
-	@Resource(name="custGroupService")
-	private IMtlCustGroupService custGroupService;
+
 	
 	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService campSegInfoService;
@@ -202,7 +200,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		try { 
 			Map<String, String> result = new HashMap<String, String>();
 			result.put("count", "0");  
-			int  num =custGroupService.getGroupSequence(getUser(request,response).getCityId()) +1 ;  
+			int  num =custGroupInfoService.getGroupSequence(getUser(request,response).getCityId()) +1 ;  
 			SimpleDateFormat df = new SimpleDateFormat("yyMM"); 
 			String	month = df.format(new Date());    
 			String code="";   
@@ -244,12 +242,12 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	  		custInfoBean.setEffectiveTime(new Date());
 	  		custInfoBean.setFailTime(DateUtils.parseDateStrictly(failTime, new String[]{"yyyy-MM-dd"}));
 	  		custInfoBean.setCreateUserName(this.getUser(request, response).getName());
-	  		custGroupService.updateMtlGroupinfo(custInfoBean);
+	  		custGroupInfoService.updateMtlGroupinfo(custInfoBean);
 			
 	  		final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
-	  		custGroupService.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId,i,3,new Date(),"");
-	  		custGroupService.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
-	  		custGroupService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
+	  		custGroupInfoService.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId,i,3,new Date(),"");
+	  		custGroupInfoService.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
+	  		custGroupInfoService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
   			result.put("count", ""+i);
 			
 			campSegInfoService.createCustGroupTabAsCustTable1("mtl_cuser_",custGroupId);

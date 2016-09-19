@@ -1,7 +1,7 @@
 /**   
  * @Title: McdDimCampType.java
  * @Package com.asiainfo.biapp.mcd.model
- * @Description: TODO(用一句话描述该文件做什么)
+ * @Description: 
  * @author A18ccms A18ccms_gmail_com   
  * @date 2015-7-16 下午8:56:53
  * @version V1.0   

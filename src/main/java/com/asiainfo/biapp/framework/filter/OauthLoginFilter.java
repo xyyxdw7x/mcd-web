@@ -11,11 +11,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 
-
+/**
+ * 用户登录验证过滤器
+ * @author hjn
+ *
+ */
 public class OauthLoginFilter implements Filter {
 
+	protected final Log log = LogFactory.getLog(getClass());
+	
 	@Override
 	public void destroy() {
 
@@ -27,7 +35,6 @@ public class OauthLoginFilter implements Filter {
 		HttpServletRequest hsr=(HttpServletRequest)request;
 		HttpServletResponse hsrs=(HttpServletResponse)response;
 		String url=hsr.getRequestURI().toLowerCase();
-		System.out.println("url="+url);
 		if(url.indexOf(".jpg")>0||url.indexOf(".png")>0||url.indexOf(".ico")>0||url.indexOf(".gif")>0||url.indexOf(".js")>0||url.indexOf(".css")>0||url.indexOf("/login.jsp")>0){
 			if(url.indexOf(".jsp")<0){
 				chain.doFilter(request, response);
@@ -45,22 +52,9 @@ public class OauthLoginFilter implements Filter {
          
 		String contextPath=hsr.getContextPath();
 		if(hsr.getSession().getAttribute("USER_ID")==null){
-			System.out.println("URL="+url+" sendDIR="+contextPath);
-//			hsrs.setContentType("text/html; charset=UTF-8"); 
-//			 PrintWriter out = hsrs.getWriter();  
-//             StringBuilder builder = new StringBuilder();  
-//             builder.append("<script type=\"text/javascript\" charset=\"UTF-8\">");  
-//            // builder.append("alert(\"页面过期，请重新登录\");");  
-//             builder.append("window.top.location.href=\"");  
-//             builder.append(contextPath);  
-//             builder.append("/login/login.jsp\";</script>");  
-//             out.print(builder.toString());  
-//             out.close();  
-
 			boolean isAjaxRequest = isAjaxRequest(hsr);  
 	        if (isAjaxRequest)  
 	         {  
-	        	System.out.println("isAjaxRequest="+isAjaxRequest+" url="+url);
 	        	 hsr.setCharacterEncoding("UTF-8");
 	        	 hsrs.sendError(HttpStatus.SC_UNAUTHORIZED, "您已经太长时间没有操作,请刷新页面");
 	             return ;  
@@ -68,8 +62,6 @@ public class OauthLoginFilter implements Filter {
 	        	 hsrs.sendRedirect(contextPath+"/login/login.jsp");
 	         }
 		}else{
-			String userId=(String) hsr.getSession().getAttribute("USER_ID");
-			System.out.println("get userId="+userId);
 			chain.doFilter(request, response);
 			return ;
 		}

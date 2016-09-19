@@ -38,11 +38,12 @@ import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCustgroupAttrList;
-import com.asiainfo.biapp.mcd.tactics.exception.MpmException;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.service.IDimCampsegTypeService;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdPlanChannelListService;
@@ -50,10 +51,12 @@ import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlChannelDefService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
+import com.asiainfo.biapp.mcd.tactics.service.IPlanChannelAdivResourceService;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimAdivInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
@@ -61,6 +64,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @RequestMapping("/tactics/tacticsManage")
@@ -97,7 +101,8 @@ public class TacticsManageController extends BaseMultiActionController {
 	@Resource(name = "mcdPlanChannelListService")
 	private IMcdPlanChannelListService mcdPlanChannelListService;
 	
-	
+	@Resource(name = "planChannelAdivResourceService")
+	private IPlanChannelAdivResourceService planChannelAdivResourceService;
 
 	private static Logger log = LogManager.getLogger();
 
@@ -308,7 +313,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
 					} else if ("903".equals(channelId)) { // 手机APP
 						adivId = String.valueOf(obj.get("adivId"));
-						mtlChannelDef.setChannelAdivId(adivId);
+						mtlChannelDef.setAdivId(adivId);
 					} else if ("904".equals(channelId)) { // 10086热线
 						String awardMount = String.valueOf(obj.get("awardMount"));
 						String editUrl = String.valueOf(obj.get("editUrl"));
@@ -327,7 +332,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						adivId = String.valueOf(obj.get("adivId"));
 						content = String.valueOf(obj.get("exec_content"));
 						content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
-						mtlChannelDef.setChannelAdivId(adivId);
+						mtlChannelDef.setAdivId(adivId);
 					} else if ("910".equals(channelId)) { // boss运营位
 						adivId = String.valueOf(obj.get("adivId"));
 						content = String.valueOf(obj.get("exec_content"));
@@ -340,7 +345,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							temp += "【服务提醒】" + content + "(中国移动)";
 						}
 						content = temp;
-						mtlChannelDef.setChannelAdivId(adivId);
+						mtlChannelDef.setAdivId(adivId);
 
 					} else if ("911".equals(channelId) || "912".equals(channelId)) { // 微信（全省）
 																						// +
@@ -351,7 +356,7 @@ public class TacticsManageController extends BaseMultiActionController {
 						String execTitle = String.valueOf(obj.get("execTitle")); // 微信标题
 						String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
 						// //Ftp存放的文件名称
-						mtlChannelDef.setChannelAdivId(adivId);
+						mtlChannelDef.setAdivId(adivId);
 						mtlChannelDef.setWcTitle(execTitle);
 						mtlChannelDef.setWcFileName(fileName);
 					}
@@ -359,7 +364,7 @@ public class TacticsManageController extends BaseMultiActionController {
 					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
 					if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
-						mtlChannelDef.setChannelAdivId("1");
+						mtlChannelDef.setAdivId("1");
 					}
 					// 保存将筛选后的客户群数量
 					String afterComputeCustNum[] = afterComputCustNum.split(",");
@@ -692,7 +697,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								ifHasVariate = Boolean.parseBoolean(String.valueOf(obj.get("ifHasVariate")));
 							} else if ("903".equals(channelId)) { // 手机APP
 								adivId = String.valueOf(obj.get("adivId"));
-								mtlChannelDef.setChannelAdivId(adivId);
+								mtlChannelDef.setAdivId(adivId);
 							} else if ("904".equals(channelId)) { // 10086热线
 								String awardMount = String.valueOf(obj.get("awardMount"));
 								String editUrl = String.valueOf(obj.get("editUrl"));
@@ -709,7 +714,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								adivId = String.valueOf(obj.get("adivId"));
 								content = String.valueOf(obj.get("exec_content"));
 								content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
-								mtlChannelDef.setChannelAdivId(adivId);
+								mtlChannelDef.setAdivId(adivId);
 							} else if ("910".equals(channelId)) { // boss运营位
 								adivId = String.valueOf(obj.get("adivId"));
 								content = String.valueOf(obj.get("exec_content"));
@@ -722,7 +727,7 @@ public class TacticsManageController extends BaseMultiActionController {
 									temp += "【服务提醒】" + content + "(中国移动)";
 								}
 								content = temp;
-								mtlChannelDef.setChannelAdivId(adivId);
+								mtlChannelDef.setAdivId(adivId);
 
 							} else if ("911".equals(channelId) || "912".equals(channelId)) { // 微信（全省）
 																								// +
@@ -732,7 +737,7 @@ public class TacticsManageController extends BaseMultiActionController {
 								content = URLDecoder.decode(URLDecoder.decode(content, "UTF-8"), "UTF-8");
 								String execTitle = String.valueOf(obj.get("execTitle")); // 微信标题
 								String fileName = String.valueOf(obj.get("fileName")); // 微信本地文件名称
-								mtlChannelDef.setChannelAdivId(adivId);
+								mtlChannelDef.setAdivId(adivId);
 								mtlChannelDef.setWcTitle(execTitle);
 								mtlChannelDef.setWcFileName(fileName);
 							} else if ("913".equals(channelId)) {
@@ -786,7 +791,7 @@ public class TacticsManageController extends BaseMultiActionController {
 							}
 
 							if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
-								mtlChannelDef.setChannelAdivId("1");
+								mtlChannelDef.setAdivId("1");
 							}
 							mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
@@ -1848,13 +1853,10 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 
 	// -------------------------------------------------------------新代码--------------------------------------------------------------------
+	
+	
 	/**
 	 * 创建活动页面：初始化产品类型模块
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/queryPlanTypes")
 	@ResponseBody
@@ -1869,10 +1871,6 @@ public class TacticsManageController extends BaseMultiActionController {
 
 	/**
 	 * 创建活动页面：根据条件查询产品列表
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/queryPlansByCondition")
 	@ResponseBody
@@ -1909,12 +1907,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		return pager;
 	}
 	/**
-	 * 
 	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/selectPlanBackChannels")
 	@ResponseBody
@@ -1925,11 +1918,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		rs.put("channels", channels);
 		return rs;
 	}
+	
 	/**
 	 * 创建策略界面：展示渠道列表（选渠道模块）
-	 * @param request
-	 * @param response
-	 * @return
 	 */
 	@RequestMapping("/getChannels")
 	@ResponseBody
@@ -1939,20 +1930,16 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建产品界面显示客户群列表。（选客户群模块）
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("getMoreMyCustom")
-	public List<McdCustgroupDef> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	@ResponseBody
+	public Pager getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
 		List<McdCustgroupDef> resultList =null;
 		Pager pager=new Pager();
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		try {
-			String clickQueryFlag = "true";
 			pager.setPageSize(6);  //每页显示6条
 			pager.setPageNum(pageNum);  //当前页
 			if(StringUtils.isNotEmpty(pageNum)){
@@ -1960,20 +1947,153 @@ public class TacticsManageController extends BaseMultiActionController {
 			}
 			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
 			pager.getTotalPage();
-			if ("true".equals(clickQueryFlag)) {
-				resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
-				pager = pager.pagerFlip();
-				pager.setResult(resultList);
-			} else {
-				pager = pager.pagerFlip();
-				resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
-				pager.setResult(resultList);
+			resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
+			pager = pager.pagerFlip();
+			pager.setResult(resultList);
+			
+		} catch (Exception e) {
+			log.error("",e);
+		}
+        return pager;
+		
+	}
+	
+	/**
+	 * 创建活动页面，选择渠道时，返回运营位列表
+	 */
+	@RequestMapping("getAdivInfo")
+	@ResponseBody
+	public Map<String,Object> getAdivInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String,Object> res = new HashMap<String,Object>();
+		String planId = request.getParameter("planId");
+		String channelId = request.getParameter("channelId");
+		List<McdDimAdivInfo> list = null;
+		try {
+			String adivdPictureURL = MpmConfigure.getInstance().getProperty("ADIVD_PICTURE_URL");
+			list = planChannelAdivResourceService.getAdivByPlanChannel(planId, channelId);
+			if(!CollectionUtils.isEmpty(list)){
+				res.put("adivdPictureURL", adivdPictureURL);
+				res.put("data", JmsJsonUtil.obj2Json(list));
+			}
+		} catch (Exception e) {
+			log.error("",e);
+		}
+		return res;
+	}
+	
+	/**
+	 * 选择客户群时：初始化该客户群的变量
+	 */
+	@RequestMapping("/getCustGroupVars")
+	@ResponseBody
+	public List<McdCustgroupAttrList> getCustGroupVars(HttpServletRequest request, HttpServletResponse response) throws Exception {	
+		String custGroupId = request.getParameter("custGroupId");
+		List<McdCustgroupAttrList> list = null;
+		try {
+			if (StringUtils.isNotEmpty(custGroupId)) {
+				list = custGroupAttrRelService.initTermLable(custGroupId);
 			}
 			
 		} catch (Exception e) {
+			log.error("",e);
 		}
-        return resultList;
+		return list; 
+	}
+	
+	/**
+	 * 保存策略接口
+	 */
+	@RequestMapping("/saveOrUpdate")
+	@ResponseBody
+	public Map<String,String> saveOrUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Map<String,String> rs = new HashMap<String,String>();
+		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略列表
+		try {
+			User user = this.getUser(request, response);
+			String test = request.getParameter("ruleList");
+			JSONObject ruleList = JSONObject.fromObject(test);
+			String commonAttr = ruleList.get("commonAttr").toString();// 获取公共属性
+			
+			// 先生成一个父节点，一个子节点
+			McdCampDef campSeginfoBasic = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
+			McdCampDef campSeginfoSub = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
+			
+			String pid = campSeginfoBasic.getPid(); // 父策略id
+			boolean isModify = pid==null?false:true;
+			if(!isModify){//创建
+				campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());//设置父节点的Id
+				campSeginfoBasic.setPid("0");// 设置父节点的Pid
+				campSeginfoSub.setPid(campSeginfoBasic.getCampId());//设置子节点的Pid
+			}
+			
+			campSegInfoList.add(campSeginfoBasic);
+			
+			// 设置子节点的渠道信息
+		    JSONObject rule =JSONObject.fromObject(ruleList.get("rule0").toString()); 
+			String execContentStr = rule.get("execContent").toString();
+			JSONArray execContentJsonArray = JSONArray.fromObject(execContentStr);				
+			List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
+			for (int j = 0; j < execContentJsonArray.size(); j++) {
+					JSONObject obj = (JSONObject) execContentJsonArray.get(j);
+					McdCampChannelList mtlChannelDef = (McdCampChannelList) JSONObject.toBean(obj, McdCampChannelList.class);
+					mtlChannelDefList.add(mtlChannelDef);
+			}
+			campSeginfoSub.setMtlChannelDefList(mtlChannelDefList);
+			
+			campSegInfoList.add(campSeginfoSub);
+
+			// 统一进行保存
+			String flag = mpmCampSegInfoService.saveOrUpdateCampInfo(user,campSegInfoList,isModify);
+			rs.put("flag", flag);
+			
+		} catch (Exception e) {
+			log.error("保存异常", e);
+		}
+		return rs; 
+	}
+
+	/**
+	 * 根据campsegId修改策略信息 回填修改参数
+	 */
+	@RequestMapping("/getCampInfo")
+	@ResponseBody
+	public Map<String, Object> getCampInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		Map<String, Object> map = new HashMap<String, Object>(); // 存放最终拼装的参数
 		
+		try {
+			// 父策略id
+			String campsegPid = StringUtils.isNotEmpty(request.getParameter("pid"))? request.getParameter("pid") : "2016061317242609";
+			
+			// 获取策略的基本信息
+			McdCampDef subCampInfo = mpmCampSegInfoService.getCampByPid(campsegPid);//获取子策略
+			map.put("campInfo",subCampInfo);
+			//产品信息
+			McdPlanDef mtlStcPlan = mtlStcPlanService.getMtlStcPlanByPlanID(subCampInfo.getPlanId());
+			map.put("planInfo",mtlStcPlan);
+			// 渠道信息
+			List<McdCampChannelList> mtlChannelDefList = mtlChannelDefService.findMtlChannelDef(subCampInfo.getCampId());
+			map.put("channelsInfo",mtlChannelDefList);
+			// 策略与客户群的关心信息
+			McdCustgroupDef custGroup = mtlCampsegCustgroupService.getCustGroupByCamp(subCampInfo.getCampId());
+			map.put("custGroupInfo",custGroup);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 创建策略界面：查看客户群详情
+	 */
+	@RequestMapping("/viewCustGroupDetail")
+	@ResponseBody
+	public Map<String,Object> viewCustGroupDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String customGrpId = request.getParameter("customGrpId");
+		Map<String,Object> data = null;
+		data = custGroupInfoService.queryCustGroupDetail(customGrpId);
+		return data;
 	}
 	
 }
