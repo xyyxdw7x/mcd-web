@@ -92,7 +92,6 @@ function changePlanEvent(event,data){
 	//data为产品的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangePlan",data);
-	debugger;
 	$("#channelList").trigger("getPlanChange",data);
 }
 /**
