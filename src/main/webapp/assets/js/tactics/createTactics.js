@@ -106,6 +106,8 @@ function changeCustomerGroupEvent(event,data){
 	//data为客户群的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
+	//
+	$("#shopCar").trigger("channelSMSChangeCustomerGroup",data);
 }
 
 
