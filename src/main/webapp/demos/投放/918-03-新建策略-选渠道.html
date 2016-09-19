@@ -5,13 +5,17 @@
 	<title>选渠道</title>
     <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
     <!--江西 公共导航头部 -->
     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-header.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-date.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/put/newCreateTactics.css" />
 	
 	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
 	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery.ui.datepicker-zh-TW.js"></script>
 </head>
 <body class="bg-fa">
     <!-- 头部导航 用原来的 st -->
@@ -228,9 +232,9 @@
 									<label class="cbx-radio-label" value="3"><input type="radio" name="sel-radio" />时间范围</label>
 								</div>
 								<!--四种单选结果-->
-								<div class="raidos-box-show">
+								<div class="raidos-box-show hasDate-date">
 									<!--value0 周-->
-									<div>
+									<div style="-display: none;">
 										<div class="cbxs-box">
 											<label class="cbx-radio-label" value="0"><input type="checkbox" checked="checked" />周一</label>
 											<label class="cbx-radio-label" value="1"><input type="checkbox" />周二</label>
@@ -240,18 +244,122 @@
 											<label class="cbx-radio-label" value="2"><input type="checkbox" />周六</label>
 											<label class="cbx-radio-label" value="3"><input type="checkbox" />周日</label>
 										</div>
+										
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
 									</div>
 									<!--value1 月-->
 									<div style="display: none;">
-										11111
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="mright_10">每月</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>15日</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>25日</em>
+												</span>
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
 									</div>
 									<!--value2 时间点-->
 									<div style="display: none;">
-										22222
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9月15日</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9月25日</em>
+												</span>
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
 									</div>
 									<!--value3 时间范围-->
 									<div style="display: none;">
-										333
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>7月15日-7月25日</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>7月15日-7月25日</em>
+												</span>
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft">
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
