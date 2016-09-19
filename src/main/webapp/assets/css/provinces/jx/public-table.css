@@ -10,6 +10,7 @@
 .table.public-table tr.odd td{background-color: #fff;}
 .table.public-table tr.even td{background-color: #f7f9fa;}
 .table.public-table tr:hover td{background-color: #ecf4fc;}
+.table.public-table tr:hover td:nth-child(1){border-left:2px solid #278cde;}
 .table.public-table tr:hover a.hover-a{text-decoration: underline; color: #278cde;}
 /*产品政策弹窗*/
 .table-edit td{text-align: center;}

@@ -3,14 +3,13 @@ body{font-family:"microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-seri
 label{font-weight: normal;}
 .w-1200{width: 1200px;margin:0 auto;}
 *{word-break: break-all;}
-/*颜色*/
-.color-red{color: #fe0000;}
+.dropdown-menu{border-radius: 0;box-shadow: none;}
 /*搜索输入框*/
 .search-box-wrp{padding:15px 0;}
 .search-box-wrp.fright{padding:0;}
-.search-box{width: 292px;height: 30px;overflow: hidden;margin: 0 0 0 25px; border: 1px solid #e3e3e3; background: #fff;}
-.search-box input{width: 225px;height: 30px; color: #000; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
-.search-box i{width: 62px;height: 30px;background: #278bdd url(../../../images/imcd-bg.png) no-repeat 6px -75px;}
+.search-box{width: 287px;height: 30px;overflow: hidden;margin: 0 0 0 15px; background: #fff;}
+.search-box input{width: 225px;height: 30px; border: 1px solid #e3e3e3; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
+.search-box i{cursor: pointer; width: 62px;height: 30px;background: #278bdd url(../../../images/imcd-bg.png) no-repeat 6px -75px;}
 /*关于边线*/
 .border-item{display: inline-block; padding:4px 6px; cursor: pointer; border:1px solid #efefef; margin:0 5px 5px 0;}
 .border-item:hover,.border-item.active{border:1px dashed #003EFF;}
@@ -40,6 +39,7 @@ label{font-weight: normal;}
 .btn100-30{ width: 100px; height:30px;line-height: 30px;}
 .btn100-30:hover,.btn140-40:hover{color: #fff;}
 .btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #278cde;}
+.btn-wrp a.btn140-40{margin-top:10px;}
 .btn60-26{width: 60px; height:26px;line-height: 26px;font-size: 12px;}
 .btn-group-ft12{margin:0 24px 0 0;}
 .btn-group-ft12 .btn{font-size: 12px; border-radius: 0;border-color:#278bdd; background-color: #fff;}
@@ -49,16 +49,19 @@ label{font-weight: normal;}
 .input-group-box .dropdown-toggle{background: #fff;height:28px;border-color: #ccc;padding:6px;}
 .input-group-box .btn-default:focus, .input-group-box .btn-default.focus{background: #fff;}
 /*上一页 下一页*/
-.new-pager-box{padding:10px 0;overflow: hidden;}
+.new-pager-box{height:40px;margin-top:10px;}
 .new-pager-box > div{float: right;}
 .new-pager-box .input-group-box{width:50px;float:left; margin-right:10px;}
 .new-pager-box .input-group-box .form-control{width:40px;}
 .new-pager-box .pager-btn .btn{height:28px; line-height: 13px; font-size: 14px;border-color:#ccc;}
 .new-pager-box .pager-btn .btn-group-ft12{margin: 0;}
+/*checckbox和radio*/
+.cbx-radio-label{font-size: 12px;cursor: pointer;}
+.cbx-radio-label input[type="checkbox"]{position: relative; top:3px; margin-right:3px;}
+.cbx-radio-label input[type="radio"]{position: relative; top:2px; margin-right:3px;}
 /*ul*/
-.public-border-ul{}
 .public-border-ul li{cursor: pointer;border: 1px solid #e3e3e3;position:relative;float: left;}
-.public-border-ul li.active{border-color:#ffa100;}
+.public-border-ul li.active,.public-border-ul li.active:hover{border-color:#ffa100;border-style: solid;}
 .public-border-ul li:hover{border:1px dashed #278bdd;}
 /*关于分页*/
 .content-table-page {width: 100%;height: 66px;overflow: hidden;}
@@ -71,7 +74,6 @@ label{font-weight: normal;}
   font-size: 12px;
   cursor: pointer;
   color: #333;
-  line-height: 22px;
   border: 1px solid #e8ebec;
   background: #fff;
 }
@@ -100,7 +102,6 @@ label{font-weight: normal;}
   font-weight: 600;
   padding: 0 5px;
 }
-
  .content-table-page .centent-page-box .page-num.active,
  .content-table-page .centent-page-box .page-num:hover {
   width: auto;
@@ -115,11 +116,20 @@ label{font-weight: normal;}
   background: #278bdd;
   padding: 0 5px;
 }
+ .content-table-page .centent-page-box .ui-page-num{
+ 	width:40px;
+ 	margin:3px 10px 0 0;
+ 	border:1px solid #e8ebec;
+ 	height:22px;
+ 	line-height: 22px;
+ 	line-height:22px\9;
+ 	font-size: 12px;
+ }
 /*选政策等 左右布局*/
 .step-title{border-bottom: 3px solid #008fca; padding:10px 0;}
 .select-item-wrp{padding:10px 0 20px 0;}
 .item-box{overflow: hidden;margin-bottom: 10px;}
-.item-box .select-left{padding-left: 18px; width:80px;}
+.item-box .select-left{padding-left: 18px; width:80px;line-height: 22px;}
 .item-box .select-right{width: 90%;}
 hr{margin:0 0 10px 0 !important;}
 .item-box .select-right span{cursor: pointer;padding:3px; margin:0 20px 10px 0; display: inline-block;}
