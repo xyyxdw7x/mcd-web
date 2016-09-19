@@ -101,7 +101,8 @@ public class MpmUtil {
 	}
 	public static String getFixLenStr(String data) {
 		String dateStr = data;
-		String noLen = MpmConfigure.getInstance().getProperty("CAMPSEG_TASK_NO_LENGTH");
+		//String noLen = MpmConfigure.getInstance().getProperty("CAMPSEG_TASK_NO_LENGTH");
+		String noLen="16";
 		if (StringUtils.isNotEmpty(noLen)) {
 			int len = Integer.valueOf(noLen);
 			if (data.length() < len) {
