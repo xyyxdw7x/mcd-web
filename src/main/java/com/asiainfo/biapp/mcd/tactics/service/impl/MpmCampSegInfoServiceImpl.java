@@ -722,6 +722,22 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		return allTreeList;
 	}
 	
+	
+	@Override
+	public McdCampDef getCampByPid(String pid) throws MpmException {
+	    McdCampDef seginfo =null;
+		try {
+			List<McdCampDef> seginfos = campSegInfoDao.getCampSegInfoByPid(pid);
+			if(seginfos!=null && seginfos.size()>0){
+				seginfo =  seginfos.get(0);//因为父策略和子策略是一对一关系，所以此处取只有一条数据。如果是多产品，就不能这么做了
+			}
+			
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return seginfo;
+	}
+	
 	/**
 	 * 获取指定活动ID下的所有子节点（向下递归，不包括自身）
 	 * @param savedCampsegId

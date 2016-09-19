@@ -269,6 +269,13 @@ public interface IMpmCampSegInfoService {
 	 * @throws Exception 
 	 */
 	public String saveOrUpdateCampInfo(User user, List<McdCampDef> campSegInfoList,Boolean isModify) throws Exception;
+	/**
+	 * 根据父策略，查询子策略
+	 * @param pid
+	 * @return
+	 * @throws MpmException
+	 */
+	McdCampDef getCampByPid(String pid) throws MpmException;
 	
 	
 	

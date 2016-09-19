@@ -196,8 +196,13 @@ public interface ICustGroupInfoService {
     public void updateSqlLoderISyncDataCfgStatus(String customGroupId);
 
     
-    public void addMtlGroupPushInfos(String customGroupId, String userId,
-            String pushToUserId);
+    public void addMtlGroupPushInfos(String customGroupId, String userId,String pushToUserId);
+    /**
+     * 根据客户群id查询客户群信息
+     * @param customGrpId
+     * @return
+     */
+	Map<String, Object> queryCustGroupDetail(String customGrpId);
 	
 }
 
