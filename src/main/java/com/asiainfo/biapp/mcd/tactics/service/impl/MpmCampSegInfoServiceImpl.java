@@ -1288,7 +1288,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
 					}
 				} else {//父策略
-					campPid = tmp.getPid();
+					campPid = tmp.getCampId();
 					isApprove = tmp.getIsApprove();
 				}
 				campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
@@ -1311,20 +1311,18 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 					isApprove = tmp.getIsApprove();
 				}
 				campSegInfoDao.updateCamp(tmp);//Duang Duang Duang 修改策略！！！
-				
 			}
             
-            
-			if("true".equals(isApprove)){
-				String approveStr = this.submitApprovalXml(campPid);
-				if("提交审批成功".equals(approveStr)){
-					approveFlag = "1"; //走审批，审批成功
-				}else{
-					approveFlag = "2"; //走审批，审批失败
-				}
 		}
-			
-		}
+		
+		if("true".equals(isApprove)){
+			String approveStr = this.submitApprovalXml(campPid);
+			if("提交审批成功".equals(approveStr)){
+				approveFlag = "1"; //走审批，审批成功
+			}else{
+				approveFlag = "2"; //走审批，审批失败
+			}
+	   }
 		return approveFlag;
 	}
 	private McdCampDef saveBefore(User user, McdCampDef campInfo){

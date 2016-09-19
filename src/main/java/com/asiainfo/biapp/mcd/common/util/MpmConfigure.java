@@ -11,8 +11,9 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.apache.commons.lang3.StringUtils;
+
+import com.asiainfo.biapp.framework.core.AppConfigService;
 
 public class MpmConfigure {
 
@@ -45,6 +46,7 @@ public class MpmConfigure {
 
 	public String getProperty(String configType, String strKey) throws Exception {
 		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
+		//String province = AppConfigService.PROFILE_ACTIVE;
 		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}
