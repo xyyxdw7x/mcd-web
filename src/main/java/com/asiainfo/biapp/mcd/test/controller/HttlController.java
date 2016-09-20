@@ -28,7 +28,8 @@ public class HttlController extends BaseMultiActionController {
 	@RequestMapping
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String name=request.getParameter("name");
+		String name=request.getParameter("name2");
+	
 		ModelAndView model = new ModelAndView("test/books");
 		HashMap<String,Object> modelMap=new HashMap<String,Object>();
 		modelMap.put("user", "张三");
