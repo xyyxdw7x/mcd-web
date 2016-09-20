@@ -13,7 +13,7 @@ var TacticsPlan = {
 			success:function(data, textStatus) {
 				if (data) {
 					
-					 var htmlStr = template(ejsUrlPlanTypes,data.planTypes);
+					 //var htmlStr = template(ejsUrlPlanTypes,data.planTypes);
 					 
 					var _HtmlPlanTypes = new EJS({
 						url : ejsUrlPlanTypes
@@ -86,12 +86,8 @@ var TacticsPlan = {
 						url : ejsUrlPlans
 					}).render({data:data.result});
 					$("#tbodyPlansList").html(_HtmlPlans);
-					// 渲染分页部分
-					var _HtmlPlansPage = new EJS({
-						url : ejsUrlPlansPage
-					}).render({data:data});
-					$("#divPlansPage").html(_HtmlPlansPage);
-					
+					// 分页渲染
+					renderPageView1(data);
 					$(".btn-a-blue").on("click", function(event){
 						var index = $("#tbodyPlansList .btn-a-blue").index(this);
 						var item=data.result[index];
@@ -140,4 +136,21 @@ function addPlanSearchEvent(){
 	$("#planSearchBtn").click(function(event){
 		TacticsPlan.queryPolicy(1);
 	});
+}
+
+/**
+ * @param data
+ */
+function renderPageView1(data){
+	$("#divPlansPage").pagination({
+        items: data.totalSize,
+        itemsOnPage: data.pageSize,
+        currentPage:data.pageNum,
+        prevText:'上一页',
+        nextText:'下一页',
+        cssStyle: 'light-theme',
+        onPageClick:function(pageNumber,event){
+        	TacticsPlan.queryPolicy(pageNumber);
+        }
+    });
 }
