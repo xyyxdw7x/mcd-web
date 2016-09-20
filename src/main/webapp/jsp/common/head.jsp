@@ -8,7 +8,7 @@
 	var contextPath="<%=contextPath%>";
 	var provinces="<%=provinces%>";
 </script>
-<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/common.css"/>
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/bootstrap/css/bootstrap.css"/>
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/main.css"/>
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-header.css"/>
