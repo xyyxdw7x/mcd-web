@@ -12,6 +12,10 @@ $(document).ready(function(){
 	TacticsPlan.queryPolicy(1);
 	//tacticsCustGroup.queryCustGroup();
 });
+/**
+ * 全局变量信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
+ */
+var tacticsInfo={plan:null,custGroup:null,channels:null};
 
 
 /**
@@ -22,6 +26,7 @@ function addEventListenter(){
 	addNextBtnEventListenter();
 	addChangePlanEvent();
 	addChangeCustomerGroupEvent();
+	addChangeChannelEvent();
 }
 /**
  * 初始化各个子页面
@@ -93,6 +98,7 @@ function changePlanEvent(event,data){
 	//派发事件
 	$("#shopCar").trigger("shopCarChangePlan",data);
 	$("#channelList").trigger("getPlanChange",data);
+	tacticsInfo.plan=data;
 }
 /**
  *  注册客户群发生变化事件
@@ -101,7 +107,7 @@ function addChangeCustomerGroupEvent(){
 	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
 }
 /**
- * 渠道发生变化事件
+ * 客户群发生变化事件
  * @param event
  * @param data
  */
@@ -109,8 +115,23 @@ function changeCustomerGroupEvent(event,data){
 	//data为客户群的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
+	tacticsInfo.custGroup=data;
+}
+/**
+ * 渠道发生变化
+ * @param event
+ * @param data
+ */
+function addChangeChannelEvent(event,data){
 	//派发客户群变化事件，短信渠道需要相应变化变量
-	$("#shopCar").trigger("channelSMSChangeCustomerGroup",data);
+	$("#shopCar").trigger("shopCarChangeChannel",data);
+	//channels为数组
+	if(tacticsInfo.channels==null){
+		var channelsArr = new Array(data); 
+		tacticsInfo.channels=channelsArr;
+	}else{
+		tacticsInfo.channels.push(data);
+	}
 }
 
 
