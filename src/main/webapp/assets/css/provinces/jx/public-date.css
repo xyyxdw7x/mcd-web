@@ -8,7 +8,7 @@ date format CSS
 .ui-datepicker-box.ui-widget.ui-widget-content{
 	border-color: #9fcafc;
 }
-.ui-datepicker-box > div > .ui-datepicker-header{
+.ui-datepicker-box > div > .ui-widget-header{
 	background:#9fcafc; 
 	border-color: #9fcafc;
 	color: #fff;
@@ -76,3 +76,11 @@ date format CSS
 	left:-20px;
 	top:5px;
 }
+/*添加时分秒*/
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }  
+.ui-timepicker-div dl { text-align: left; }  
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px;font-size:12px;font-weight: normal; padding-left: 10px;}  
+.ui-timepicker-div dl dd { margin: 0 10px 10px 55px; }  
+.ui-timepicker-div td { font-size: 90%; }  
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; } 
+.ui_tpicker_unit_hide{display: none;} 

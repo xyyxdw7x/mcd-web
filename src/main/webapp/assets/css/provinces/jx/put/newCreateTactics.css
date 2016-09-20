@@ -4,6 +4,7 @@
 .w-818{width: 818px;}
 .put-container{overflow: hidden;}
 .put-left{width: 100px;}
+.put-left li{cursor: pointer;}
 .put-left li.line{height:25px;width:1px;border-right:1px dashed #d7d7d7;margin-left: 67px;}
 .put-left li i{display: inline-block;width: 30px;height: 30px;border-radius: 50%;border:2px solid #ccc;text-align: center;line-height: 28px;color: #c7c7c7;margin-left: 10px;}
 .put-left li.active span{color:#ff9314;}
@@ -63,7 +64,7 @@ ul.nav-tabs-public-34 {height:34px;}
 .deliver-btn{padding-left:15px;}
 .deliver-btn-show{background: #f5f8f9;padding:15px; margin:20px 0 0 142px;}
 .raidos-box label,.cbxs-box label{margin:0 24px 10px 0;}
-.add-box{min-height: 30px;margin-bottom: 20px;}
+.add-box{min-height: 30px;margin-bottom: 20px;overflow: hidden;}
 .add-btn{width: 80px; padding-left:22px;height: 30px;line-height: 30px; border:1px solid #278bdd; color:#278bdd ; font-size: 12px; background: #fff; cursor: pointer; display: inline-block;}
 .add-time{background:#fff url(../../../../images/put-img.png) no-repeat -1px -133px;}
 .add-date{background:#fff url(../../../../images/put-img.png) no-repeat -1px -180px;}
@@ -74,8 +75,8 @@ span.per-month{padding:5px 10px;margin-right:0; display: inline-block;}
 .input-hidden-box input{position: absolute; left:0;top:0; width: 80px; height:30px;z-index: 3;background: transparent; cursor: pointer;}
 .input-hidden-box span{position: absolute;left:0;top:0; z-index: 2;}
 input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
-.addConfirmBtn{padding:4px;font-size: 12px;line-height: 1; position: relative;top:-3px;}
-.dateFromTo-box{margin-bottom: 10px;}
+.btn-add{padding:4px;font-size: 12px;line-height: 1; position: relative;top:-3px;}
+.dateFromTo-box{margin-bottom: 10px;margin-top:4px;}
 
 .content-type-outer-box{background: #f5f8f9;padding-bottom: 15px; margin-bottom: 0;}
 .content-type-outer-box .type-title{font-size:14px;line-height:65px;}

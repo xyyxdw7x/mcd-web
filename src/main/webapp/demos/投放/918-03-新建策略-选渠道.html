@@ -16,6 +16,7 @@
 	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
 	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
 	<script src="../../assets/js/jquery/jqueryUI/jquery.ui.datepicker-zh-TW.js"></script>
+	<script src="../../assets/js/jquery/jQueryUI/jquery-ui-timepicker-addon.js"></script>
 </head>
 <body class="bg-fa">
     <!-- 头部导航 用原来的 st -->
@@ -247,18 +248,28 @@
 										
 										<div class="add-box clear-both">
 											<div class="mright_10 width-80 fleft input-hidden-box">
-												<input class="input-hidden" type="text">
+												<input class="input-hidden" type="text" id="datetime" name="datetime">
 												<span class="add-btn add-time">添加时段</span>
 											</div>
 											<div class="con-right fleft">
-												<span class="policy">
-													<i class="close"> &times;</i>
-													<em>9:00-11:00</em>
-												</span>
-												<span class="policy">
-													<i class="close"> &times;</i>
-													<em>9:00-11:00</em>
-												</span>
+												<div class="dateFromTo-box">
+													<label for="timeStart">从</label>
+													<input type="text" class="dateInput" id="timeStart"/>
+													<label for="timeEnd">到</label>
+													<input type="text" class="dateInput" id="timeEnd" />
+													<button class="btn btn-defalut btn-primary btn-add addTime">确定添加</button>
+												</div>
+												<div class="timeBox">
+													<!--<span class="policy">
+														<i class="close"> &times;</i>
+														<em>9:00-11:00</em>
+													</span>
+													<span class="policy">
+														<i class="close"> &times;</i>
+														<em>9:00-11:00</em>
+													</span>-->
+												</div>
+												
 											</div>
 										</div>
 									</div>
@@ -345,7 +356,7 @@
 													<input type="text" class="dateInput" id="dateStart"/>
 													<label for="dateEnd">到</label>
 													<input type="text" class="dateInput" id="dateEnd" />
-													<button class="btn btn-defalut btn-primary addConfirmBtn">确定添加</button>
+													<button class="btn btn-defalut btn-primary btn-add addDate">确定添加</button>
 												</div>
 												<div class="dateBox">
 													<!--<span class="policy">
@@ -443,114 +454,8 @@
 </div>
 </body>
 </html>
-<script type="text/javascript">
-	$(function(){
-		$('.content-type-outer-box  li').click(function(){
-			if($(this).hasClass('active')){
-				$(this).removeClass('active');
-			}else{
-				$(this).addClass('active');
-			}
-		});
-		$('.trench-header li i').click(function(){
-			var index=$(this).parent('li').index();
-			$(this).parent('li').hide();
-			$(this).parents('.trench-header').siblings('.tab-content').find('.tab-pane').eq(index).hide();
-		})
-		//选中指定派发时间
-		$('.deliver-btn').click(function(){
-			if($('.deliver-btn-show:hidden')){
-				$('.deliver-btn-show').show();
-			}
-		});
-		$('.raidos-box label').click(function(){
-			var index=$(this).index();
-			$('.raidos-box-show > div').eq(index).show().siblings().hide();
-		})
-	})
-</script>
-	
-<style type="text/css">
-		 /*.ui-datepicker-prev, .ui-datepicker-next,.ui-datepicker-month{display: none;}
-		 .ui-datepicker-calendar thead{display: none;}
-		 .ui-datepicker{z-index: 3 !important;}*/
-</style>
-	<script type="text/javascript">
-			//关闭带橘黄虚线框的span节点
-			function closeSpan(){
-				$('.policy i').click(function(){
-					$(this).parent('.policy ').hide();
-				});
-			};
-    		$(function(){
-    			//日
-    			$('#dateDD').datepicker({
-				    changeYear: false, 
-				    dateFormat: 'dd', 
-				    beforeShow:function(){
-				    	$('.ui-datepicker-calendar thead').hide();
-				    },
-				    onClose: function(dateText, inst) { 
-				    	$('.input-hidden').val('');
-				        var str='<span class="policy"><i class="close"> ×</i><em>'+dateText+'日</em></span>';
-				       	$(this).parent().siblings('.con-right').append(str);
-				       	closeSpan();
-				    } 
-				});
-				$('#dateDD').datepicker('option','hideIfNoPrevNext',true);
-				//几月几日
-				$('#dateMD').datepicker( {
-				    changeYear: false, 
-				    changeMonth: true,
-				    dateFormat: 'mm-dd',
-				    onClose: function(dateText, inst) { 
-				    	$('.input-hidden').val('');
-				    	var m=dateText.split('-')[0];
-				    	var d=dateText.split('-')[1];
-				        var txt=m+'月'+d+'日';
-				        var str='<span class="policy"><i class="close"> ×</i><em>'+txt+'</em></span>';
-				       	$(this).parent().siblings('.con-right').append(str);
-				       	closeSpan();
-				    } 
-				});
-				//几月几日-几月几日
-				$('#dateStart').datepicker({
-				    changeYear: false, 
-				    changeMonth: true,
-				    numberOfMonths: 2,
-				    dateFormat: 'mm-dd',
-				    isDataChecked:true,
-				    onClose: function(dateText, inst) { 
-				    	var m=dateText.split('-')[0];
-				    	var d=dateText.split('-')[1];
-				        var txt=m+'月'+d+'日';
-				        $('#dateStart').val(txt);
-				        $( "#dateEnd" ).datepicker( "option", "minDate", dateText );
-				    } 
-				});
-				$('#dateEnd').datepicker({
-				    changeYear: false, 
-				    changeMonth: true,
-				    numberOfMonths: 2,
-				    dateFormat: 'mm-dd',
-				    isDataChecked:true,
-				    onClose: function(dateText, inst) { 
-				    	var m=dateText.split('-')[0];
-				    	var d=dateText.split('-')[1];
-				        var txt=m+'月'+d+'日';
-				        $('#dateEnd').val(txt);
-				    }
 
-				});
-				//确定添加按钮
-				$('.addConfirmBtn').click(function(){
-					var valStart=$('#dateStart').val(),
-						valEnd=$('#dateEnd').val(),
-					    valSpan=valEnd+'-'+valStart;
-					 var str='<span class="policy"><i class="close"> ×</i><em>'+valSpan+'</em></span>';
-					 $('.dateBox').append(str);
-					 closeSpan();
-				})
-					
-    		});
-    </script>
+
+<!--展示静态交互用js 可参考 可略过-->
+<script src="../../assets/js/justForShow/put.channelSelection.js" type="text/javascript" charset="utf-8"></script>
+
