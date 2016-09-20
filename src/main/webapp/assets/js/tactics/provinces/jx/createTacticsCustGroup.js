@@ -61,7 +61,7 @@ var tacticsCustGroup = {
  * 客户群选择页面初始化
  */
 function initCustomerGroup(){
-	queryCustomerGroupList();
+	queryCustomerGroupList(1);
 	addCloseCustGroupEvent();
 	addCustomerGroupSearchEvent();
 }
@@ -77,20 +77,22 @@ function addCloseCustGroupEvent(){
 		$("#cgDiv").trigger("changeCustomerGroup",null);
 	});
 }
-
+/**
+ * 客户群搜索事件
+ */
 function addCustomerGroupSearchEvent(){
 	$("#cgSearchBtn").click(function(event){
-		queryCustomerGroupList();
+		queryCustomerGroupList(1);
 	});
 }
 /**
  *  查询客户群列表
  */
-function queryCustomerGroupList(){
+function queryCustomerGroupList(pageNum){
 	//去掉空格
 	var keyWords=$("#cgSearchInput").val().replace(/(^\s*)|(\s*$)/g,"");
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
-	var data={pageNum:"1",keyWords:keyWords};
+	var data={pageNum:pageNum,keyWords:keyWords};
 	$.post(url,data,queryCustomerGroupListSuc);
 }
 /**
@@ -108,8 +110,26 @@ function queryCustomerGroupListSuc(obj){
 	$("#cgList").html(cgListHtml);
 	addCustomerGroupEvent(obj.result);
 	addCustomerGroupDetailsEvent(obj.result);
-
+	renderPageView(obj);
 }
+/**
+ * 测试用的 因此总页数添加了120
+ * @param data
+ */
+function renderPageView(data){
+	$("#custGroupPage").pagination({
+        items: data.totalSize+120,
+        itemsOnPage: data.pageSize,
+        currentPage:data.pageNum,
+        prevText:'上一页',
+        nextText:'下一页',
+        cssStyle: 'light-theme',
+        onPageClick:function(pageNumber,event){
+        	queryCustomerGroupList(pageNumber);
+        }
+    });
+}
+
 /**
  * 注册客户群选择事件
  * @param obj
@@ -135,6 +155,5 @@ function addCustomerGroupDetailsEvent(obj){
 		var event =event || window.event || arguments.callee.caller.arguments[0];
 	    event.stopPropagation(); 
 	    event.cancelBubble = true;
-		 
 	});
 }

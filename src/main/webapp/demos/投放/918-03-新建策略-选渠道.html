@@ -162,17 +162,17 @@
 						<span class="type-title">营业厅</span>
 						<img class="selected-img" src="../../assets/images/channelSelected.png">
 					</li>
-					<li>
+					<li class="active">
 						<span><img class="pics" src="../../assets/images/901.png"></span>
 						<span  class="type-title">短信</span>
 						<img class="selected-img" src="../../assets/images/channelSelected.png">
 					</li>
-					<li>
+					<li class="active">
 						<span><img class="pics" src="../../assets/images/910.png"></span>
 						<span  class="type-title">短信夹带</span>
 						<img class="selected-img" src="../../assets/images/channelSelected.png">
 					</li>
-					<li >
+					<li>
 						<span><img class="pics" src="../../assets/images/913.png"></span>
 						<span  class="type-title">VOP</span>
 						<img  class="selected-img" src="../../assets/images/channelSelected.png">
@@ -182,15 +182,15 @@
 				<div class="trench-header bg-ebf0f3">
 					<ul class="nav nav-tabs nav-tabs-public ft14 inline-block" role="tablist">
 					   	<li role="presentation" class="active">
-					   		<a href="#trench-11" aria-controls="trench-11" role="tab" data-toggle="tab">短信</a>
+					   		<a href="#trench-0" aria-controls="trench-0" role="tab" data-toggle="tab">短信</a>
 					   		<i class="close">&times;</i>
 					  	</li>
 					   	<li role="presentation">
-					   		<a href="#trench-21" aria-controls="trench-21" role="tab" data-toggle="tab">营业厅</a>
+					   		<a href="#trench-1" aria-controls="trench-1" role="tab" data-toggle="tab">营业厅</a>
 					   		<i class="close">&times;</i>
 					   	</li>
 					   	<li role="presentation">
-					   		<a href="#trench-31" aria-controls="trench-31" role="tab" data-toggle="tab">短信夹带</a>
+					   		<a href="#trench-2" aria-controls="trench-2" role="tab" data-toggle="tab">短信夹带</a>
 					   		<i class="close">&times;</i>
 					   	</li>
 					</ul>
@@ -198,7 +198,7 @@
 				<!--tab2 tab-content -->
 				<div class="tab-content trench-tab-content padding-15">
 					<!-- 短信 -->
-					<div role="tabpanel" id="trench-11"  class="tab-pane active ">
+					<div role="tabpanel" id="trench-0"  class="tab-pane active ">
 						<div class="left-right-box">
 							<span class="color-333 left ft14">短信推荐用语：</span>
 							<div class="right text-area-box">
@@ -221,9 +221,9 @@
 							<div class="btn-group btn-group-ft12">
 							  	<button type="button" class="btn">一次性</button>
 							 	<button type="button" class="btn active">周期性</button>
-							 	<label class="cbx-radio-label deliver-btn"><input type="checkbox" />是否指定派发时间</label>
+							 	<label class="cbx-radio-label deliver-btn"><input type="checkbox"/>是否指定派发时间</label>
 							</div>
-							<div class="deliver-btn-showBox">
+							<div class="deliver-btn-show" style="-display: none;">
 								<!--radio-->
 								<div class="raidos-box">
 									<label class="cbx-radio-label" value="0"><input type="radio" name="sel-radio" checked="checked"/>周</label>
@@ -245,8 +245,9 @@
 											<label class="cbx-radio-label" value="3"><input type="checkbox" />周日</label>
 										</div>
 										
-										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+										<div class="add-box clear-both">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input class="input-hidden" type="text">
 												<span class="add-btn add-time">添加时段</span>
 											</div>
 											<div class="con-right fleft">
@@ -264,23 +265,25 @@
 									<!--value1 月-->
 									<div style="display: none;">
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 input-hidden-box width-80 fleft">
+												<input type="text" class="input-hidden" id="dateDD" />
 												<span class="add-btn add-date">添加日期</span>
 											</div>
 											<div class="con-right fleft">
-												<span class="mright_10">每月</span>
-												<span class="policy">
+												<span class="mright_10 per-month">每月</span>
+												<!--<span class="policy">
 													<i class="close"> &times;</i>
 													<em>15日</em>
 												</span>
 												<span class="policy">
 													<i class="close"> &times;</i>
 													<em>25日</em>
-												</span>
+												</span>-->
 											</div>
 										</div>
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
 												<span class="add-btn add-time">添加时段</span>
 											</div>
 											<div class="con-right fleft">
@@ -298,22 +301,24 @@
 									<!--value2 时间点-->
 									<div style="display: none;">
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden"  id="dateMD" />
 												<span class="add-btn add-date">添加日期</span>
 											</div>
 											<div class="con-right fleft">
-												<span class="policy">
+												<!--<span class="policy">
 													<i class="close"> &times;</i>
 													<em>9月15日</em>
 												</span>
 												<span class="policy">
 													<i class="close"> &times;</i>
 													<em>9月25日</em>
-												</span>
+												</span>-->
 											</div>
 										</div>
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
 												<span class="add-btn add-time">添加时段</span>
 											</div>
 											<div class="con-right fleft">
@@ -331,22 +336,33 @@
 									<!--value3 时间范围-->
 									<div style="display: none;">
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 width-80 fleft input-hidden-box">
 												<span class="add-btn add-date">添加日期</span>
 											</div>
 											<div class="con-right fleft">
-												<span class="policy">
-													<i class="close"> &times;</i>
-													<em>7月15日-7月25日</em>
-												</span>
-												<span class="policy">
-													<i class="close"> &times;</i>
-													<em>7月15日-7月25日</em>
-												</span>
+												<div class="dateFromTo-box">
+													<label for="dateStart">从</label>
+													<input type="text" class="dateInput" id="dateStart"/>
+													<label for="dateEnd">到</label>
+													<input type="text" class="dateInput" id="dateEnd" />
+													<button class="btn btn-defalut btn-primary addConfirmBtn">确定添加</button>
+												</div>
+												<div class="dateBox">
+													<!--<span class="policy">
+														<i class="close"> &times;</i>
+														<em>7月15日-7月25日</em>
+													</span>
+													<span class="policy">
+														<i class="close"> &times;</i>
+														<em>7月15日-7月25日</em>-->
+													</span>
+												</div>
+												
 											</div>
 										</div>
 										<div class="add-box clear-both ">
-											<div class="mright_10 width-80 fleft">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
 												<span class="add-btn add-time">添加时段</span>
 											</div>
 											<div class="con-right fleft">
@@ -373,11 +389,11 @@
 						</div>
 					</div>
 					<!-- 营业厅 -->
-					<div role="tabpanel" id="trench-21" class="tab-pane">
+					<div role="tabpanel" id="trench-1" class="tab-pane">
 						营业厅营业厅营业厅营业厅
 					</div>
 					<!-- 短信夹带 -->
-					<div role="tabpanel" id="trench-31" class="tab-pane">
+					<div role="tabpanel" id="trench-2" class="tab-pane">
 						短信夹带短信夹带短信夹带
 					</div>
 				</div>
@@ -387,18 +403,6 @@
 		<!-- 右 -->
 		<div class="put-right fright bg-fff">
 			<div class="top-hd">工作站 </div>
-			<!--<div class="btn-box bg-ebf0f3">
-				<div class="dropdown caret-drop">
-				  <button class="caret-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-				    <span class="caret"></span>
-				  </button>
-				  <ul class="caret-box dropdown-menu" style="display: block;" role="menu" aria-labelledby="dropdownMenu1">
-				    <li role="presentation" class="caret-edit"><a role="menuitem" tabindex="-1" class="active" href="javascript:;"></a></li>
-				    <li role="presentation" class="caret-save"><a role="menuitem" tabindex="-1" href="javascript:;"></a></li>
-				  </ul>
-				</div>
-				<span class="del-icon delete"></span>
-			</div>-->
 			<div class="info-box">
 				<h5>适配产品</h5>
 				<ul>
@@ -441,9 +445,112 @@
 </html>
 <script type="text/javascript">
 	$(function(){
+		$('.content-type-outer-box  li').click(function(){
+			if($(this).hasClass('active')){
+				$(this).removeClass('active');
+			}else{
+				$(this).addClass('active');
+			}
+		});
+		$('.trench-header li i').click(function(){
+			var index=$(this).parent('li').index();
+			$(this).parent('li').hide();
+			$(this).parents('.trench-header').siblings('.tab-content').find('.tab-pane').eq(index).hide();
+		})
+		//选中指定派发时间
+		$('.deliver-btn').click(function(){
+			if($('.deliver-btn-show:hidden')){
+				$('.deliver-btn-show').show();
+			}
+		});
 		$('.raidos-box label').click(function(){
 			var index=$(this).index();
 			$('.raidos-box-show > div').eq(index).show().siblings().hide();
 		})
 	})
 </script>
+	
+<style type="text/css">
+		 /*.ui-datepicker-prev, .ui-datepicker-next,.ui-datepicker-month{display: none;}
+		 .ui-datepicker-calendar thead{display: none;}
+		 .ui-datepicker{z-index: 3 !important;}*/
+</style>
+	<script type="text/javascript">
+			//关闭带橘黄虚线框的span节点
+			function closeSpan(){
+				$('.policy i').click(function(){
+					$(this).parent('.policy ').hide();
+				});
+			};
+    		$(function(){
+    			//日
+    			$('#dateDD').datepicker({
+				    changeYear: false, 
+				    dateFormat: 'dd', 
+				    beforeShow:function(){
+				    	$('.ui-datepicker-calendar thead').hide();
+				    },
+				    onClose: function(dateText, inst) { 
+				    	$('.input-hidden').val('');
+				        var str='<span class="policy"><i class="close"> ×</i><em>'+dateText+'日</em></span>';
+				       	$(this).parent().siblings('.con-right').append(str);
+				       	closeSpan();
+				    } 
+				});
+				$('#dateDD').datepicker('option','hideIfNoPrevNext',true);
+				//几月几日
+				$('#dateMD').datepicker( {
+				    changeYear: false, 
+				    changeMonth: true,
+				    dateFormat: 'mm-dd',
+				    onClose: function(dateText, inst) { 
+				    	$('.input-hidden').val('');
+				    	var m=dateText.split('-')[0];
+				    	var d=dateText.split('-')[1];
+				        var txt=m+'月'+d+'日';
+				        var str='<span class="policy"><i class="close"> ×</i><em>'+txt+'</em></span>';
+				       	$(this).parent().siblings('.con-right').append(str);
+				       	closeSpan();
+				    } 
+				});
+				//几月几日-几月几日
+				$('#dateStart').datepicker({
+				    changeYear: false, 
+				    changeMonth: true,
+				    numberOfMonths: 2,
+				    dateFormat: 'mm-dd',
+				    isDataChecked:true,
+				    onClose: function(dateText, inst) { 
+				    	var m=dateText.split('-')[0];
+				    	var d=dateText.split('-')[1];
+				        var txt=m+'月'+d+'日';
+				        $('#dateStart').val(txt);
+				        $( "#dateEnd" ).datepicker( "option", "minDate", dateText );
+				    } 
+				});
+				$('#dateEnd').datepicker({
+				    changeYear: false, 
+				    changeMonth: true,
+				    numberOfMonths: 2,
+				    dateFormat: 'mm-dd',
+				    isDataChecked:true,
+				    onClose: function(dateText, inst) { 
+				    	var m=dateText.split('-')[0];
+				    	var d=dateText.split('-')[1];
+				        var txt=m+'月'+d+'日';
+				        $('#dateEnd').val(txt);
+				    }
+
+				});
+				//确定添加按钮
+				$('.addConfirmBtn').click(function(){
+					var valStart=$('#dateStart').val(),
+						valEnd=$('#dateEnd').val(),
+					    valSpan=valEnd+'-'+valStart;
+					 var str='<span class="policy"><i class="close"> ×</i><em>'+valSpan+'</em></span>';
+					 $('.dateBox').append(str);
+					 closeSpan();
+				})
+					
+    		});
+    </script>
