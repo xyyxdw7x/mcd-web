@@ -46,9 +46,9 @@
 						<th class="text-left" width="30%">产品编号及名称</th>                                                                  
 						<th class="text-center" width="10%">产品类别</th>
 						<th class="text-center" width="10%">产品类型</th>
-						<th class="text-center" width="10%">生效时间</th>
+						<th class="text-center" width="12%">生效时间</th>
 						<th class="text-center" width="12%">失效时间</th>
-						<th class="text-center" width="12%">是否匹配</th>
+						<th class="text-center" width="10%">是否匹配</th>
 						<th class="text-center" width="10%">操作</th>
 					</tr>
 				<thead>
