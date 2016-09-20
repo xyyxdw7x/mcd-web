@@ -492,6 +492,16 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 		}
 		return count;
 	}
-	
-	
+	@Override
+	public McdPlanDef getPlanById(String planId) throws MpmException {
+		McdPlanDef plan = null;
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("select * from mcd_plan_def where plan_id='").append(planId).append("'");
+			plan = (McdPlanDef) this.getJdbcTemplate().queryForObject(sbuffer.toString(),new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+		return plan;
+	}
 }
