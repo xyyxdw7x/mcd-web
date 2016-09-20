@@ -168,6 +168,20 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         }
         return obj;
 	}
+
+	@Override
+	public List<McdCampDef> getCampSegInfoByPid(String campSegPid) throws Exception {
+		 List<McdCampDef> list = null;
+        try {
+            final String sql = "select * from mcd_camp_def seginfo where seginfo.camp_pid = ? ";
+            Object[] args=new Object[]{campSegPid};
+            int[] argTypes=new int[]{Types.VARCHAR};
+            list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampDef>(McdCampDef.class));
+        } catch (Exception e) {
+            throw e;
+        }
+        return list;
+	}
     /**
      * 根据父策略ID获取子策略
      * @param campsegId

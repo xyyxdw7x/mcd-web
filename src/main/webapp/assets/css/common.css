@@ -3,11 +3,21 @@
  */
  @charset "utf-8";
 /* CSS Document */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td
-	{
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{
 	margin: 0;
 	padding: 0;
 }
+
+body {
+	font-size: 12px;
+	color: #333;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+}
+html {
+	*overflow-x: auto;
+	*overflow-y: scroll;
+} /* ie7 scrollbar show */
 input[type='text']::-ms-clear{display:none;}
 i,em {
 	font-style: normal;
@@ -27,20 +37,6 @@ a {
 dt,th {
 	font-weight: normal
 }
-
-.clear {
-	clear: both;
-	font-size: 0px;
-	overflow: hidden;
-	height: 0px;
-}
-
-.inline_block {
-	display: inline-block;
-	*display: inline;
-	zoom: 1;
-}
-
 input,img,button {
 	border: none;
 	outline: none;
@@ -60,20 +56,25 @@ blockquote:before,blockquote:after,q:before,q:after {
 	content: '';
 	content: none;
 }
-
-body {
-	font-size: 12px;
-	color: #333;
-	text-rendering: optimizeLegibility;
-	-moz-osx-font-smoothing: grayscale;
+.clear {
+	clear: both;
+	font-size: 0px;
+	overflow: hidden;
+	height: 0px;
 }
-
-html {
-	*overflow-x: auto;
-	*overflow-y: scroll;
-} /* ie7 scrollbar show */
-.text-left{
-	text-align: left !important;
+.inline-block {
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+}
+.block{
+	display: block;
+}
+.over-hidden{
+	overflow: hidden;
+}
+.clear-both{
+	clear: both;
 }
 .clearfix:after {
 	content: ".";
@@ -94,7 +95,9 @@ html {
 .clearfix {
 	display: block;
 }
-
+.text-left{
+	text-align: left !important;
+}
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -150,6 +153,9 @@ table {
 .mtop_47{
 	margin-top: 47px;
 }
+.mtop_20{
+	margin-top: 20px;
+}
 .pright_5{
 	padding-right: 5px;
 }
@@ -176,68 +182,6 @@ table {
 
 .hand {
 	cursor: pointer;
-}
-
-.fB {
-	font-weight: bold;
-}
-
-.yellow {
-	color: #fd9f3a;
-}
-
-
-#dataInfo {
-	left: 220px;
-	top: 5px;
-	position: absolute;
-	width: 190px;
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
-	font-size: 24px;
-	border-left: 1px solid #e4e4e4;
-	font-family: SimHei;
-}
-
-.navHeader {
-	width: 1250px;
-	margin: 15px auto;
-}
-
-.navHeader #dataInfo {
-	top: 15px;
-}
-
-.clearCustomerBtn {
-	width: 42px;
-	height: 24px;
-	background-color: #278bdd;
-	color: #fff;
-}
-
-.ui-page-num {
-	width: 30px;
-	height: 22px;
-	border: 1px solid #e2e2e2;
-	margin: 3px 15px 0px 5px;
-	position: relative;
-	z-index: 100;
-}
-
-.container .content .content-main .content-table .ui-page-button {
-	width: 66px;
-	height: 22px;
-	overflow: hidden;
-	margin: 3px 10px 0 0;
-	position: relative;
-	text-align: center;
-	font-size: 12px;
-	cursor: pointer;
-	color: #333;
-	line-height: 22px;
-	border: 1px solid #e8ebec;
-	background: #fff;
 }
 /*背景色*/
 .bg-fa{
@@ -274,19 +218,9 @@ table {
 .color-orange{
 	color: #ffa100;
 }
-.over-hidden{
-	overflow: hidden;
+.color-red{
+	color: #fe0000;
 }
-.clear-both{
-	clear: both;
-}
-.block{
-	display: block;
-}
-.inline-block{
-	display: inline-block;
-}
-
 .unline{
 	text-decoration: underline;
 }

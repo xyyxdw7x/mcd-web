@@ -16,4 +16,13 @@ public class MtlCampsegCustgroupServiceImpl implements MtlCampsegCustgroupServic
 	public List<McdCustgroupDef> getChoiceCustom(String campsegId) {
 		return mtlCampsegCustgroupDao.getChoiceCustom(campsegId);
 	}
+	@Override
+	public McdCustgroupDef getCustGroupByCamp(String campsegId) {
+		McdCustgroupDef rs=null;
+		List<McdCustgroupDef> list = mtlCampsegCustgroupDao.getChoiceCustom(campsegId);
+		if(list!=null && list.size()>0){
+			rs = list.get(0);
+		}
+		return rs;
+	}
 }

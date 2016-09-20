@@ -178,6 +178,36 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	public List<Map<String,Object>> searchCustomDetail(String customGrpId) {
 		return custGroupInfoDao.searchCustomDetail(customGrpId);
 	}
+	
+	@Override
+	public Map<String,Object> queryCustGroupDetail(String customGrpId) {
+		List<Map<String,Object>> list = custGroupInfoDao.searchCustomDetail(customGrpId);
+		Map<String,Object> map = null;
+		if(list!=null && list.size()>0){
+			map = list.get(0);
+			SimpleDateFormat spf = new SimpleDateFormat("yyyyMMdd");
+			//创建时间
+			String createTime = "";
+			if(map.get("CREATE_TIME") != null) {
+				createTime = spf.format(map.get("CREATE_TIME"));
+			}
+			map.put("CREATE_TIME_STR", createTime);
+			//生效日期
+			String effectiveTime = "";
+			if(map.get("EFFECTIVE_TIME") != null) {
+				effectiveTime = spf.format(map.get("EFFECTIVE_TIME"));
+			}
+			map.put("EFFECTIVE_TIME_STR", effectiveTime);
+			//失效日期
+			String failTime = "";
+			if(map.get("FAIL_TIME") != null) {
+				failTime = spf.format(map.get("FAIL_TIME"));
+			}
+			map.put("FAIL_TIME_STR", failTime);
+			map.put("DATA_TIME_STR", map.get("data_date"));
+		}
+		return map;
+	}
 	@Override
 	public int saveQueue(String group_into_id, String group_cycle, String queue_id,String data_date,String group_table_name) {
 		try{
