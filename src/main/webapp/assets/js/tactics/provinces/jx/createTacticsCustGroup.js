@@ -64,6 +64,13 @@ function initCustomerGroup(){
 	queryCustomerGroupList();
 	addCloseCustGroupEvent();
 	addCustomerGroupSearchEvent();
+	$("#custGroupPage").pagination({
+        items: 154,
+        itemsOnPage: 5,
+        prevText:'上一页',
+        nextText:'下一页',
+        cssStyle: 'light-theme'
+    });
 }
 /**
  *  删除已选客户群
