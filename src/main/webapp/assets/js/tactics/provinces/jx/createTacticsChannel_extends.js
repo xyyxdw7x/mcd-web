@@ -97,27 +97,20 @@ function clickChannelEventHandler(event, data, addChannelTab){
 	var channelId = event.currentTarget.attributes.channelId.value;
 	if(addChannelTab) {
 		//渠道被选中，增加显示渠道的页签
-		var li_tabs_html = null;
-		var div_tabpanel_html = null;
 		if(channelId == data.channelId){
+			debugger
 			//渠道页签
-			li_tabs_html =
-				'<li role="presentation" class="active" id="li_tabs_channelId_{0}">\n'+
-				'	<a href="#href-channelId_{0}" aria-controls="href-channelId_{0}" role="tab" data-toggle="tab">{1}</a>\n'+
-				'</li>\n';
-			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
-			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
-			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
-			li_tabs_html= li_tabs_html.replace("{1}",data.channelName);
+			var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
+			var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
 			$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
 			
 			//展示此渠道的营销内容
-			div_tabpanel_html = 
-				'<div role="tabpanel" id="href-channelId_{0}" class="tab-pane active "></div>';
-			div_tabpanel_html = div_tabpanel_html.replace("{0}", data.channelId);
+			var ejsDivTabpanelUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/divTabpanelChannelId.ejs';
+			var div_tabpanel_html = new EJS({url:ejsDivTabpanelUrl}).render({data:data});
 			$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
-			var ejsChannelContentUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
-			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({param:data.channelId});;//渠道内容
+			
+			var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
+			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({data:data});;//渠道内容
 			$("#href-channelId_"+data.channelId).html(channelContentHtml);
 			
 			//移除之前添加的渠道页签、对应的内容active
