@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <div id="planDiv" class="put-center w-818 fleft">
-	<div class="step-title color-333 ft18">选政策</div>
+	<div class="step-title color-333 ft18">选产品</div>
 	<div class="policy-selected-box bg-ebf0f3 over-hidden">
-		<span class="fleft row-name">已选政策：</span>
+		<span class="fleft row-name">已选产品：</span>
 		<div id="divChoosedPlan" class="fleft ft12 color-666 policy-selected-right" ></div>
 	</div>
 	<div class="bg-fff">
