@@ -69,6 +69,24 @@ function bindClickChannelEvent(){
 	$("#channelList li").bind("clickChannelEvent", clickChannelEventHandler);
 }
 
+
+/**
+ * 绑定选择产品事件
+ */
+function addPlanEevent(){
+	$("#channelList").bind("getPlanChange",selectChannelEvent);
+}
+
+/**
+ * 根据产品id获取渠道列表
+ * @param event
+ * @param data
+ */
+function selectChannelEvent(event,data){
+	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels";
+	$.post(url,{planId:data.PLAN_ID},selectChannelByPlan);
+}
+
 /**
  * 点击渠道事件处理器
  * @param event
@@ -116,6 +134,7 @@ function clickChannelEventHandler(event, data, addChannelTab){
 			$("#href-channelId_"+data.channelId).remove();
 		}
 	}
+}
 
 /**
  * 根据产品id获取渠道列表成功
