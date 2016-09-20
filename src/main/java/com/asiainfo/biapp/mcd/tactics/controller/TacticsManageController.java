@@ -1859,7 +1859,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建活动页面：初始化产品类型模块
 	 */
-	@RequestMapping("/queryPlanTypes")
 	@ResponseBody
 	public JSONObject queryPlanTypes(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		JSONObject dataJson = new JSONObject();
@@ -1873,7 +1872,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建活动页面：根据条件查询产品列表
 	 */
-	@RequestMapping("/queryPlansByCondition")
 	@ResponseBody
 	public Pager queryPlansByCondition(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Pager pager = new Pager();
@@ -1905,7 +1903,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
 	 */
-	@RequestMapping("/selectPlanBackChannels")
 	@ResponseBody
 	public Map<String,String> selectPlanBackChannels(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs= new HashMap<String,String>();
@@ -1918,7 +1915,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建策略界面：展示渠道列表（选渠道模块）
 	 */
-	@RequestMapping("/getChannels")
 	@ResponseBody
 	public List<McdDimChannel> getChannels(HttpServletRequest request, HttpServletResponse response){
 		return  mcdDimChannelService.getAllChannels();
@@ -1927,7 +1923,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建产品界面显示客户群列表。（选客户群模块）
 	 */
-	@RequestMapping("getMoreMyCustom")
 	@ResponseBody
 	public Pager getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
@@ -1952,7 +1947,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建活动页面，选择渠道时，返回运营位列表
 	 */
-	@RequestMapping("getAdivInfo")
 	@ResponseBody
 	public Map<String,Object> getAdivInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Map<String,Object> res = new HashMap<String,Object>();
@@ -1975,7 +1969,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 选择客户群时：初始化该客户群的变量
 	 */
-	@RequestMapping("/getCustGroupVars")
 	@ResponseBody
 	public List<McdCustgroupAttrList> getCustGroupVars(HttpServletRequest request, HttpServletResponse response) throws Exception {	
 		String custGroupId = request.getParameter("custGroupId");
@@ -1994,7 +1987,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 保存策略接口
 	 */
-	@RequestMapping("/saveOrUpdate")
 	@ResponseBody
 	public Map<String,String> saveOrUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs = new HashMap<String,String>();
@@ -2046,7 +2038,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 根据campsegId修改策略信息 回填修改参数
 	 */
-	@RequestMapping("/getCampInfo")
 	@ResponseBody
 	public Map<String, Object> getCampInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
@@ -2078,7 +2069,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 创建策略界面：查看客户群详情
 	 */
-	@RequestMapping("/viewCustGroupDetail")
 	@ResponseBody
 	public Map<String,Object> viewCustGroupDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String customGrpId = request.getParameter("custGroupId");
@@ -2103,7 +2093,6 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 根据产品id查询产品详情
 	 */
-	@RequestMapping("/getPlanById")
 	@ResponseBody
 	McdPlanDef getPlanById(HttpServletRequest request, HttpServletResponse response){
 		String id =  request.getParameter("planId");
