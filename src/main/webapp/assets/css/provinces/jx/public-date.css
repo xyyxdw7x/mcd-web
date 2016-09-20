@@ -36,6 +36,9 @@ date format CSS
 	border:2px solid #9fcafc;
 	border-radius:24px; 
 }
+.ui-datepicker-box  .ui-datepicker-calendar  td > a.ui-state-hover{
+	color:#f90;
+}
 .ui-datepicker-box  .ui-datepicker-calendar  td > a.ui-state-highlight{
 	border:2px solid #dad55e;
 	border-radius:24px; 
