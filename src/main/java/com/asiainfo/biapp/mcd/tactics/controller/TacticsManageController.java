@@ -76,7 +76,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService mtlCallWsUrlService;
 	@Resource(name = "mtlStcPlanManagementService")
-	private IMtlStcPlanManagementService mtlStcPlanManagementService;
+	private IMtlStcPlanManagementService mtlStcPlanManagementService;//--
 	@Resource(name = "custGroupAttrRelService")
 	private ICustGroupAttrRelService custGroupAttrRelService;// 客户群属性
 	@Resource(name = "channelBossSmsTemplateService")
@@ -2092,7 +2092,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@RequestMapping("/getBossSmsTemplate")
 	@ResponseBody
 	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-        //8888888888888888
+        //8888888887777778888888
 		List<ChannelBossSmsTemplate> list = null;
 		try {
 			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
