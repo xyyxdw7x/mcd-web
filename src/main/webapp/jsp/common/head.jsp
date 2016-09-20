@@ -15,7 +15,6 @@
 <link type="text/css" href="<%=contextPath%>/assets/css/easyui/themes/default/easyui.css" rel="stylesheet" />
 <link type="text/css" href="<%=contextPath%>/assets/css/easyui/themes/icon.css" rel="stylesheet" />
 <link type="text/css" href="<%=contextPath%>/assets/css/plugins/simplePagination.css" rel="stylesheet" />
-<link type="text/css" href="<%=contextPath%>/assets//jqueryeasyui/themes/icon.css" rel="stylesheet" />
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.min.js"></script>
