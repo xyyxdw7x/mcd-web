@@ -1895,13 +1895,8 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL); // 此处改为每页显示5条
 			pager.setPageNum(pageNum); // 当前页
-			if (pageNum != null) {
-				pager.setPageFlag("G");
-			}
 			List<Map<String,Object>> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
-			pager = pager.pagerFlip();
 			pager.setResult(list);
-
 		} catch (Exception e) {
 			log.error(e);
 		}
@@ -1943,13 +1938,8 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			pager.setPageSize(6);  //每页显示6条
 			pager.setPageNum(pageNum);  //当前页
-			if(StringUtils.isNotEmpty(pageNum)){
-				pager.setPageFlag("G");	
-			}
 			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
-			pager.getTotalPage();
 			resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
-			pager = pager.pagerFlip();
 			pager.setResult(resultList);
 			
 		} catch (Exception e) {
@@ -2102,7 +2092,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@RequestMapping("/getBossSmsTemplate")
 	@ResponseBody
 	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-        //88888888888888
+        //8888888888888888
 		List<ChannelBossSmsTemplate> list = null;
 		try {
 			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();

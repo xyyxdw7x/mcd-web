@@ -21,6 +21,10 @@ function queryChannelListSuc(obj){
 	var ejsUrlChannels=contextPath + '/assets/js/tactics/provinces/' + provinces + '/channelList.ejs';
 	var channelListHtml = new EJS({url:ejsUrlChannels}).render({data:obj});
 	$("#channelList").html(channelListHtml);
+	
+	//绑定点击渠道事件
+	bindClickChannelEvent();
+	
 	addChannelEvent(obj);
 }
 
@@ -30,38 +34,88 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
-		var target=$(this);
-		var item=obj[target];
-		var channelId=target.attr("channelId");
-		if(target.hasClass("active")){
-			target.removeClass("active");
-			target.children(".selected-img").hide();
-		}else{
-			target.addClass("active");
-			target.children(".selected-img").show();
+		var index = $("#channelList li").index(this);
+		var item=obj[index];
+		
+		/**
+		 * 控制渠道列表的渠道被点击的样式变化
+		 */ 
+		var taget = $(this);
+		var activedFlag = taget.hasClass("active");//原来是否已处于active状态
+		if(activedFlag){
+			//使active失效
+			taget.removeClass("active");
+			taget.children(".my-selected-icon").hide();
+		} else {
+			//激活active
+			taget.addClass("active");
+			taget.children(".my-selected-icon").show();
 		}
 		
-		//派发事件
-		$("#channelList").trigger("channelChange",item);
+		/**
+		 * 触发点击渠道事件:控制页签的增加或移除，原来已经active则移除；原来未active则增加
+		 */
+		var addChannelTab = !activedFlag;
+		$("#channelList li").trigger("clickChannelEvent", [item, addChannelTab]);
 	});
 }
 
 /**
- * 绑定选择产品事件
+ * 注册渠道被点击事件
+ * @param event 
+ * @param data
  */
-function addPlanEevent(){
-	$("#channelList").bind("getPlanChange",selectChannelEvent);
+function bindClickChannelEvent(){
+	$("#channelList li").bind("clickChannelEvent", clickChannelEventHandler);
 }
 
 /**
- * 根据产品id获取渠道列表
+ * 点击渠道事件处理器
  * @param event
  * @param data
+ * @param addChannelTab 要增加渠道页签?true:是|false:否 
  */
-function selectChannelEvent(event,data){
-	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels";
-	$.post(url,{planId:data.PLAN_ID},selectChannelByPlan);
-}
+function clickChannelEventHandler(event, data, addChannelTab){
+	var channelId = event.currentTarget.attributes.channelId.value;
+	if(addChannelTab) {
+		//渠道被选中，增加显示渠道的页签
+		var li_tabs_html = null;
+		var div_tabpanel_html = null;
+		if(channelId == data.channelId){
+			//渠道页签
+			li_tabs_html =
+				'<li role="presentation" class="active" id="li_tabs_channelId_{0}">\n'+
+				'	<a href="#href-channelId_{0}" aria-controls="href-channelId_{0}" role="tab" data-toggle="tab">{1}</a>\n'+
+				'</li>\n';
+			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
+			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
+			li_tabs_html= li_tabs_html.replace("{0}",data.channelId);
+			li_tabs_html= li_tabs_html.replace("{1}",data.channelName);
+			$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
+			
+			//展示此渠道的营销内容
+			div_tabpanel_html = 
+				'<div role="tabpanel" id="href-channelId_{0}" class="tab-pane active "></div>';
+			div_tabpanel_html = div_tabpanel_html.replace("{0}", data.channelId);
+			$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
+			var ejsChannelContentUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
+			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({param:data.channelId});;//渠道内容
+			$("#href-channelId_"+data.channelId).html(channelContentHtml);
+			
+			//移除之前添加的渠道页签、对应的内容active
+			$("#selectedChannelsDisplayUl").children("li").first().next().removeClass("active");
+			$("#selectedChannelsContentDisplayDiv").children("div").first().next().removeClass("active");
+		}
+	} else {
+		//渠道的选中被取消，移除显示渠道的页签
+		if(channelId == data.channelId){
+			//移除页签
+			$("#li_tabs_channelId_"+data.channelId).remove();
+			
+			//移除渠道的营销内容
+			$("#href-channelId_"+data.channelId).remove();
+		}
+	}
 
 /**
  * 根据产品id获取渠道列表成功

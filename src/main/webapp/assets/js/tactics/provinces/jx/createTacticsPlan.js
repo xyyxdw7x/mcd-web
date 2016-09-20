@@ -31,6 +31,12 @@ var TacticsPlan = {
 						$target.addClass("active").siblings().removeClass("active");
 						TacticsPlan.queryPolicy(1);
 					});
+					// 初始化产品类型
+					$("#divDimPlanSrvType > span").on('click', function(){
+						var $target = $(this);
+						$target.addClass("active").siblings().removeClass("active");
+						TacticsPlan.queryPolicy(1);
+					});
 					// 初始化渠道类型
 					$("#divDimChannels > span").on('click', function(){
 						var $target = $(this);

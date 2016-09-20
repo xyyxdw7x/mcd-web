@@ -7,7 +7,7 @@ label{font-weight: normal;}
 /*搜索输入框*/
 .search-box-wrp{padding:15px 0;}
 .search-box-wrp.fright{padding:0;}
-.search-box{width: 288px;height: 30px;overflow: hidden;margin: 0 0 0 15px; background: #fff;}
+.search-box{width: 287px;height: 30px;overflow: hidden;margin: 0 0 0 15px; background: #fff;}
 .search-box input{width: 225px;height: 30px; border: 1px solid #e3e3e3; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
 .search-box i{cursor: pointer; width: 62px;height: 30px;background: #278bdd url(../../../images/imcd-bg.png) no-repeat 6px -75px;}
 /*关于边线*/
