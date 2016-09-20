@@ -1877,6 +1877,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		Pager pager = new Pager();
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
+		int pageSize = request.getParameter("pageNum")==null?MpmCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageNum"));
 
 		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum"): "1";
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords"): null;
@@ -1887,11 +1888,8 @@ public class TacticsManageController extends BaseMultiActionController {
 		// 产品类别（单产品？政策？）
 		String planSrvType = request.getParameter("planSrvType") != null ? request.getParameter("planSrvType") : null;
 
-		if (StringUtils.isNotEmpty(pageNum)) {
-			pager.setPageFlag("G");
-		}
 		try {
-			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL); // 此处改为每页显示5条
+			pager.setPageSize(pageSize); 
 			pager.setPageNum(pageNum); // 当前页
 			List<Map<String,Object>> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 			pager.setResult(list);
