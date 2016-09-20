@@ -13,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.lang3.StringUtils;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
+
 
 public class MpmConfigure {
 
@@ -29,7 +31,8 @@ public class MpmConfigure {
 
 	@Deprecated
 	public void setConfFileName(String file) throws Exception {
-		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
+		//String province = MpmConfigure.getInstance().getProperty("PROVINCE");
+		String province = AppConfigService.PROFILE_ACTIVE;
 		log.info("province------------------" + province);
 		initProperties("MPM_PROPERTIES", file, province);
 	}
@@ -44,8 +47,8 @@ public class MpmConfigure {
 	}
 
 	public String getProperty(String configType, String strKey) throws Exception {
-		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
-		//String province = AppConfigService.PROFILE_ACTIVE;
+		//String province = MpmConfigure.getInstance().getProperty("PROVINCE");
+		String province = AppConfigService.PROFILE_ACTIVE;
 		if (StringUtils.isEmpty(configType)) {
 			throw new Exception("----Configure--err-------:configType is null");
 		}

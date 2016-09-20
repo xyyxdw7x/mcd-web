@@ -3,7 +3,7 @@
 	<div class="step-title color-333 ft18">选渠道</div>
 	<div class="bg-fff">
 		<!--渠道列表-->
-		<ul id="channelList" class="content-type-outer-box clearfix">
+		<ul id="channelList" class="content-type-outer-box public-border-ul clearfix">
 		</ul>
 		
 		<!-- 展示已选渠道的div -->
