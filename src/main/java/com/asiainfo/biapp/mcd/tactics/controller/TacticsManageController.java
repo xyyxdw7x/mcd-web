@@ -2091,7 +2091,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@RequestMapping("/viewCustGroupDetail")
 	@ResponseBody
 	public Map<String,Object> viewCustGroupDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		String customGrpId = request.getParameter("customGrpId");
+		String customGrpId = request.getParameter("custGroupId");
 		Map<String,Object> data = null;
 		data = custGroupInfoService.queryCustGroupDetail(customGrpId);
 		return data;
@@ -2102,7 +2102,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	@RequestMapping("/getBossSmsTemplate")
 	@ResponseBody
 	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-
+        //88888888888888
 		List<ChannelBossSmsTemplate> list = null;
 		try {
 			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
@@ -2110,6 +2110,15 @@ public class TacticsManageController extends BaseMultiActionController {
 			log.error("", e);
 		}
 		return list; 
+	}
+	/**
+	 * 根据产品id查询产品详情
+	 */
+	@RequestMapping("/getPlanById")
+	@ResponseBody
+	McdPlanDef getPlanById(HttpServletRequest request, HttpServletResponse response){
+		String id =  request.getParameter("planId");
+		return mtlStcPlanService.getMtlStcPlanByPlanID(id);
 	}
 	
 }

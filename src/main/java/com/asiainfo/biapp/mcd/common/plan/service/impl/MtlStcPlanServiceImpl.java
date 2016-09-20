@@ -57,7 +57,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 	}
 
 	public McdPlanDef getMtlStcPlanByPlanID(String planID) {
-		return mtlStcPlanDao.getMtlStcPlanByPlanID(planID);
+		return mtlStcPlanDao.getPlanById(planID);
 	}
 
 	@Override
@@ -212,6 +212,5 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		result.put("params", params);
 		return result;
 	}
-	
 	
 }
