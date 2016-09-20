@@ -8,13 +8,13 @@
 	var contextPath="<%=contextPath%>";
 	var provinces="<%=provinces%>";
 </script>
-<link  type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/main.css" rel="stylesheet"  />
-<link  type="text/css" href="<%=contextPath%>/assets/css/common.css" rel="stylesheet" rel="stylesheet" />
-<link  type="text/css" href="<%=contextPath%>/assets/css/bootstrap/css/bootstrap.css" rel="stylesheet" />
-<link  type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-header.css" rel="stylesheet"  />
-<link type="text/css" href="<%=contextPath%>/assets/css/easyui/themes/default/easyui.css" rel="stylesheet" />
-<link type="text/css" href="<%=contextPath%>/assets/css/easyui/themes/icon.css" rel="stylesheet" />
-<link type="text/css" href="<%=contextPath%>/assets/css/plugins/simplePagination.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/common.css" />
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/bootstrap/css/bootstrap.css"/>
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/main.css"/>
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-header.css"/>
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/easyui/themes/default/easyui.css"/>
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/easyui/themes/icon.css"/>
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/plugins/simplePagination.css"/>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.min.js"></script>
