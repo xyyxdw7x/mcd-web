@@ -1877,7 +1877,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		Pager pager = new Pager();
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
-		int pageSize = request.getParameter("pageNum")==null?MpmCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageNum"));
+		int pageSize = request.getParameter("pageSize")==null?MpmCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageSize"));
 
 		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum"): "1";
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords"): null;
@@ -1925,11 +1925,12 @@ public class TacticsManageController extends BaseMultiActionController {
 	public Pager getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		User user = this.getUser(request, response);
 		List<McdCustgroupDef> resultList =null;
+		int pageSize = request.getParameter("pageSize")==null?6:Integer.parseInt( request.getParameter("pageSize"));
 		Pager pager=new Pager();
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		try {
-			pager.setPageSize(6);  //每页显示6条
+			pager.setPageSize(pageSize);  //每页显示6条
 			pager.setPageNum(pageNum);  //当前页
 			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
 			resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
