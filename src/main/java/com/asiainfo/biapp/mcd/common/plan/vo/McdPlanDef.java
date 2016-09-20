@@ -3,12 +3,14 @@ package com.asiainfo.biapp.mcd.common.plan.vo;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 
 /**
  * 产品信息
  */
 
+@Table(name="mcd_plan_def")
 public class McdPlanDef implements java.io.Serializable {
 	/**
 	 *

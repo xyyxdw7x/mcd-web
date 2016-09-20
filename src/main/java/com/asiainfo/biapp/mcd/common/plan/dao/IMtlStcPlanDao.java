@@ -113,4 +113,11 @@ public interface IMtlStcPlanDao {
 	 * @throws MpmException
 	 */
 	List<DimPlanSrvType> getGradeList() throws MpmException;
+	/**
+	 * 根据产品id获得产品信息
+	 * @param planId
+	 * @return
+	 * @throws MpmException
+	 */
+	McdPlanDef getPlanById(String planId) throws MpmException;
 }
