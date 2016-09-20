@@ -81,6 +81,8 @@ function addNextBtnEventListenter(){
 function addChangePlanEvent(){
 	$("#planDiv").bind("changePlan",changePlanEvent);
 }
+
+
 /**
  * 产品发生变化事件
  * @param event
@@ -90,6 +92,7 @@ function changePlanEvent(event,data){
 	//data为产品的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangePlan",data);
+	$("#channelList").trigger("getPlanChange",data);
 }
 /**
  *  注册客户群发生变化事件
@@ -106,6 +109,8 @@ function changeCustomerGroupEvent(event,data){
 	//data为客户群的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
+	//派发客户群变化事件，短信渠道需要相应变化变量
+	$("#shopCar").trigger("channelSMSChangeCustomerGroup",data);
 }
 
 

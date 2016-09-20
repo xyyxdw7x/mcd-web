@@ -15,9 +15,9 @@
 		<div class="search-box-wrp">
 			<div class="search-box">
 				<p class="fleft">
-					<input id="cgSearchInput" placeholder="请输入关键字" type="text">
+					<input id="cgSearchInput" placeholder="请输入关键字" type="text" >
 				</p>
-				<i id="cgSearchBtn" class="searchBtn fright"></i>
+				<i id="cgSearchBtn" class="searchBtn fright"  id="searchBtn"></i>
 			</div>
 		</div>
 		<!--搜索结果表格-->
@@ -26,19 +26,8 @@
 			</ul>
 			<!--分页-->
 			<div class="content-table-page">
-				<div class="fright clearfix centent-page-box">
-					<a href="javascript:;" class="page-button fleft">上一页 </a> <a
-						href="javascript:;" class="page-num fleft active">1</a> <a
-						href="javascript:;" class="page-num fleft ">2</a> <a
-						href="javascript:;" class="page-num fleft ">3</a> <a
-						href="javascript:;" class="page-num fleft ">4</a> <a
-						href="javascript:;" class="page-num fleft" data-flag="last-dot"
-						style="pointer-events: none;">···</a> <a href="javascript:;"
-						class="page-num fleft ">14788</a> <a href="javascript:;"
-						class="page-num fleft ">14789</a> <a href="javascript:;"
-						class="page-button fleft" data-flag="next">下一页</a> <span
-						class="fleft"> <input class="ui-page-num" type="text">
-					</span> <a href="javascript:;" class="ui-page-button fleft">跳转</a>
+				<div id="custGroupPage" class="fright clearfix centent-page-box">
+					
 				</div>
 			</div>
 		</div>

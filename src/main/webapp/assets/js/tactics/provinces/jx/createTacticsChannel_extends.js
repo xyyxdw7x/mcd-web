@@ -3,6 +3,7 @@
  */
 function initChannel(){
 	queryChannelList();
+	addPlanEevent();
 }
 
 /**
@@ -29,12 +30,49 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
-		var index = $("#channelList li").index(this);
-		var item=obj[index];
-		debugger;
-		$("#channelList li").removeClass("active");
-		$(event.currentTarget).addClass("active");
+		var target=$(this);
+		var item=obj[target];
+		var channelId=target.attr("channelId");
+		if(target.hasClass("active")){
+			target.removeClass("active");
+			target.children(".selected-img").hide();
+		}else{
+			target.addClass("active");
+			target.children(".selected-img").show();
+		}
+		
 		//派发事件
-		$("#channelList").trigger("changeChannelEvent",item);
+		$("#channelList").trigger("channelChange",item);
+	});
+}
+
+/**
+ * 绑定选择产品事件
+ */
+function addPlanEevent(){
+	$("#channelList").bind("getPlanChange",selectChannelEvent);
+}
+
+/**
+ * 根据产品id获取渠道列表
+ * @param event
+ * @param data
+ */
+function selectChannelEvent(event,data){
+	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels";
+	$.post(url,{planId:data.PLAN_ID},selectChannelByPlan);
+}
+
+/**
+ * 根据产品id获取渠道列表成功
+ * @param data
+ */
+function selectChannelByPlan(data){
+	var channels = data.channels;
+	$("#channelList li").each(function(){
+		var currentChannelId = $(this).attr("channelId");
+		if(channels.indexOf(currentChannelId)<0){
+			$(this).hide();
+		}
 	});
 }
