@@ -44,8 +44,11 @@ function addShopCarChangePlanEvent(){
  * @param data
  */
 function shopCarChangePlanEvent(event,data){
-	var planId=data.PLAN_ID;
 	$("#selectedPlan").html("");
+	if(data==null){
+		return ;
+	}
+	var planId=data.PLAN_ID;
 	//设置产品名称
 	var liStr="<li id='selectedPlan_"+planId+"'><span>."+data.PLAN_NAME+"</span></li>";
 	$("#selectedPlan").append(liStr);

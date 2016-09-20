@@ -6,11 +6,6 @@ $(document).ready(function(){
 	//绑定事件
 	addEventListenter();
     initView();
-    // 初始化筛选条件
-	TacticsPlan.initTabInfo();
-	// 初始化查询结果
-	TacticsPlan.queryPolicy(1);
-	//tacticsCustGroup.queryCustGroup();
 });
 /**
  * 全局变量信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
@@ -32,8 +27,8 @@ function addEventListenter(){
  * 初始化各个子页面
  */
 function initView(){
-	$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');
-	$('.public-table tbody tr:nth-child(2n)').addClass('even');
+	// 初始化筛选条件
+    tacticsInfo.initPlan();
 	//调用子页面的函数
 	initCustomerGroup();
 	initShopCar();
