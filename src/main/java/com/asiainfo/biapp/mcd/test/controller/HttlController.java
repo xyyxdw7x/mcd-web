@@ -141,6 +141,21 @@ public class HttlController extends BaseMultiActionController {
 		return model;
 	} 
 	
+	@RequestMapping("/saveBook22")
+	@ResponseBody
+	public Book saveBook22(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String id=request.getParameter("id");
+		Book book=new Book();
+		book.setId(id);
+		book.setTitle("sanyi缩短");
+		book.setPrice(1.23);
+		book.setPublication(new Date());
+		book.setDiscount(8);
+		bookService.saveBook(book);
+		return book;
+	} 
+	
 
 	public IBookService getBookService() {
 		return bookService;
