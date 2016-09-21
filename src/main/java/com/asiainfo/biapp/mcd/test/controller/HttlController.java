@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +23,8 @@ import com.asiainfo.biapp.mcd.test.vo.Book;
 @RequestMapping("/action/test/httl")
 public class HttlController extends BaseMultiActionController {
 
+	protected final Log log = LogFactory.getLog(getClass());
+	
 	@Autowired
 	//@Resource(name="bookService")
 	private IBookService bookService;
@@ -28,8 +32,9 @@ public class HttlController extends BaseMultiActionController {
 	@RequestMapping
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String name=request.getParameter("name2");
-	
+		String name=request.getParameter("name");
+	    String dic1=this.getConfigService().getProperty("CENTER_CITYID");
+	    log.info("dic1="+dic1);
 		ModelAndView model = new ModelAndView("test/books");
 		HashMap<String,Object> modelMap=new HashMap<String,Object>();
 		modelMap.put("user", "张三");

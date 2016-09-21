@@ -16,6 +16,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
+
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -31,6 +33,10 @@ public class JdbcDaoBase extends JdbcDaoSupport implements InitializingBean,Disp
 	@Autowired
 	@Qualifier("dataSource")
 	private DataSource dataSource;
+	
+	@Autowired
+	private AppConfigService configService;
+	
 	
 	//@Autowired
 	//@Qualifier("namedParameterJdbcTemplate")
@@ -165,5 +171,13 @@ public class JdbcDaoBase extends JdbcDaoSupport implements InitializingBean,Disp
 
 	public void setJdbcTemplateTool(JdbcTemplateTool jdbcTemplateTool) {
 		this.jdbcTemplateTool = jdbcTemplateTool;
+	}
+
+	public AppConfigService getConfigService() {
+		return configService;
+	}
+
+	public void setConfigService(AppConfigService configService) {
+		this.configService = configService;
 	}
 }

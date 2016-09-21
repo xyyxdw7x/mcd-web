@@ -5,13 +5,14 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.aop.BeanSelfAware;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.test.dao.IBookDao;
 import com.asiainfo.biapp.mcd.test.vo.Book;
-import com.esotericsoftware.minlog.Log;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 
 /**
@@ -25,6 +26,8 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected final Log log =  LogFactory.getLog(getClass());
 	
 	/**
 	 * 自身的代理对象
@@ -42,6 +45,14 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 
 	@Override
 	public List<Book> queryBookByName(String name) {
+		try {
+			String dic1=this.getConfigService().getProperty("CENTER_CITYID");
+			log.info("dic1="+dic1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//log.info("dic1="+dic1);
+		    
 		String sql="select * from mcd_test_book where book_title like ?";
 		String sql2="select * from mcd_test_book ";
 		Object[] args=new Object[]{"%"+name+"%"};
@@ -55,7 +66,7 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 	@Override
 	public Book getBook(String bookId) throws Exception {
 		Book book=this.getJdbcTemplateTool().get(Book.class, bookId);
-		Log.info("getBook from database");
+		log.info("getBook from database");
 		//int size=selfProxy.queryDatInMem();
 		return book;
 	}
