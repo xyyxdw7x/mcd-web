@@ -1,5 +1,5 @@
 /**
- * 鎵�鏈夐〉闈㈢殑閲嶇疆鏍峰紡鍜岄儴鍒嗗叕鍏辨牱寮�
+ * reset
  */
  @charset "utf-8";
 /* CSS Document */
@@ -183,7 +183,6 @@ table {
 .hand {
 	cursor: pointer;
 }
-/*鑳屾櫙鑹�*/
 .bg-fa{
 	background: #fafafa;
 }
@@ -193,7 +192,6 @@ table {
 .bg-ebf0f3{
 	background: #ebf0f3;
 }
-/*瀛椾綋*/
 .ft12{
 	font-size: 12px;
 }
