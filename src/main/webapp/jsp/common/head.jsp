@@ -12,20 +12,18 @@
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/bootstrap/css/bootstrap.css"/>
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/main.css"/>
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-header.css"/>
-<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/easyui/themes/default/easyui.css"/>
-<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/easyui/themes/icon.css"/>
+
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/plugins/simplePagination.css"/>
-<link type="text/css" rel="stylesheet/less" href="<%=contextPath%>/assets/css/jqueryui/jquery-ui.min.css" />
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/jqueryui/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/provinces/jx/public-date.css" />
 
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/common/template-native.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/jquery.simplePagination.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/pagination.min.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery-ui.min.js"></script>
 
 
 
