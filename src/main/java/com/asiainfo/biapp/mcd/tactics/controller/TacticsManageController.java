@@ -2088,7 +2088,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	/**
 	 * 初始化Boss短信运营位模板
 	 */
-	@RequestMapping("/getBossSmsTemplate")
+	@RequestMapping
 	@ResponseBody
 	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
 		List<ChannelBossSmsTemplate> list = null;
