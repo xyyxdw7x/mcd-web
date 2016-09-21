@@ -6,6 +6,7 @@
 <%@ include file="../../jsp/common/head.jsp" %>
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" rel="stylesheet"  />
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-table.css" />
+<link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-dialog.css" />
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/createTactics.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsCustGroup.js"></script>

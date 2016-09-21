@@ -22,7 +22,7 @@ public class SysDicDaoImpl extends JdbcDaoBase implements ISysDicDao {
 		String sql="select dic_key,dic_display_value,dic_data_value,dic_data_pvalue from  MCD_SYS_DIC "
 				+ "where dic_profile=? and dic_is_show=1  order by DIC_KEY asc ,dic_display_order asc";
 		Object[] args=new Object[]{proFile};
-		int[] types=new int[]{Types.VARBINARY};
+		int[] types=new int[]{Types.VARCHAR};
 		log.info("sql="+sql);
 		List<Map<String, Object>> list=this.getJdbcTemplate().queryForList(sql,args,types);
 		log.info("list size="+list.size());

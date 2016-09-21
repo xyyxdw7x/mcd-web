@@ -19,10 +19,9 @@ public class WebContextLoaderListener extends ContextLoaderListener {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		super.contextInitialized(event);
 		String profiles = event.getServletContext().getInitParameter("spring.profiles.active");
 		AppConfigService.PROFILE_ACTIVE = profiles;
-
+		super.contextInitialized(event);
 		try {
 			ServletContext servletContext = event.getServletContext();
 			//String confFilePath1 = servletContext.getRealPath("/WEB-INF/classes/conf/aibi_mpm/mcd.properties");

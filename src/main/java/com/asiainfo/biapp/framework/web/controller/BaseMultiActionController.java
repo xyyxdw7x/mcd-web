@@ -36,7 +36,8 @@ public class BaseMultiActionController extends MultiActionController {
 	 * 系统配置项
 	 */
 	@Autowired
-    private AppConfigService appConfigService ;
+	private AppConfigService configService;
+	
 	
 	 /**
 	  * 获取用户ID
@@ -143,11 +144,11 @@ public class BaseMultiActionController extends MultiActionController {
 		this.userPrivilege = userPrivilege;
 	}
 
-	public AppConfigService getAppConfigService() {
-		return appConfigService;
+	public AppConfigService getConfigService() {
+		return configService;
 	}
 
-	public void setAppConfigService(AppConfigService appConfigService) {
-		this.appConfigService = appConfigService;
+	public void setConfigService(AppConfigService configService) {
+		this.configService = configService;
 	}
 }

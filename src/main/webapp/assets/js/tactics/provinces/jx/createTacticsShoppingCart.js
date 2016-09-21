@@ -50,7 +50,7 @@ function shopCarChangePlanEvent(event,data){
 	}
 	var planId=data.PLAN_ID;
 	//设置产品名称
-	var liStr="<li id='selectedPlan_"+planId+"'><span>."+data.PLAN_NAME+"</span></li>";
+	var liStr="<li id='selectedPlan_"+planId+"'><span>"+data.PLAN_NAME+"</span></li>";
 	$("#selectedPlan").append(liStr);
 	//将数据绑定到dom元素上
 	$("#selectedPlan_"+planId).data("data",data);
