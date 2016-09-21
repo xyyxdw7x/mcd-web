@@ -1,12 +1,32 @@
 <%if(data.length > 0){%>
-	<%for(var i=0;i<data.length;i++){
+	<%
+	for(var i=0;i<data.length;i++){
 		var plan=data[i];
 		var index=i+1;
 		
+		var moreInfo ={};
+		moreInfo.planId = plan.PLAN_ID;
+		moreInfo.planName=plan.PLAN_NAME;
+		moreInfo.planTypeName=plan.TYPE_NAME;
+		moreInfo.planSrvType=plan.PLAN_SRV_TYPE;
+		moreInfo.planStartdate=plan.PLAN_STARTDATE;
+		moreInfo.planEnddate=plan.PLAN_ENDDATE;
+		moreInfo.planIsUsed=plan.IS_USED
+		
+		var info = JSON.stringify(moreInfo)
+		info = info.replace(/"/g,"'");
 	%>
-		<tr>
+		<tr data-info="<%=info%>">
 			<td class="text-center"><%=index%></td>
-			<td class="text-left"><a href="#" class="hover-a color-666"><em><%=plan.PLAN_ID%></em>&nbsp;&nbsp;<%=plan.PLAN_NAME%></a></td>
+			<td class="text-left">
+				<a href="javascript:;" class="showPlanInfo">
+					<em>
+						<%=plan.PLAN_ID%>
+					</em>
+					&nbsp;&nbsp;
+					<%=plan.PLAN_NAME%>
+				</a>
+			</td>
 			<td class="text-center"><%=plan.TYPE_NAME%></td>
 			<%if(plan.PLAN_SRV_TYPE==1){%>
 			<td class="text-center">单产品</td>
