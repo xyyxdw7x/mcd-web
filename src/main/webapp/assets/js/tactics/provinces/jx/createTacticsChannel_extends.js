@@ -145,6 +145,20 @@ function clickChannelEventHandler(event, data, addChannelTab){
 }
 
 /**
+ * 选择渠道确定
+ */
+function clickCommitButtonEventHandler(data){
+	$("#conmmitButton_channelId_"+data.channelId).click(function(){
+		var newdata = null;
+		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
+		$.getScript("channelContentcollectJsUrl", function(){
+			newdata = collectData(event,data);
+		});
+		$("#channelList li").trigger("changeChannel", newdata);
+	});
+}
+
+/**
  * 是否选择客户群 tacticsInfo为全局变量
  * @returns {Boolean}
  */
@@ -248,4 +262,12 @@ function selectSmsAttribute(custgroupId){
 			// error happening, do nothing
 		}
 	});
+}
+
+/**
+ * 点击保存按钮事件处理
+ * @param data
+ */
+function clickPreviewButtonEventHandler(data){
+	//alert("暂未实现");
 }
