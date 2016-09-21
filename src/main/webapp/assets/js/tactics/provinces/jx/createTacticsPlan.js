@@ -97,6 +97,7 @@ tacticsInfo.queryPlan=function(pageNum){
 			// 分页渲染
 			tacticsInfo.renderPageView(data);
 			tacticsInfo.addPlanClickEvent(data);
+			tacticsInfo.addPlanNameClickEvent(data);
 		}
 	
 	});
@@ -129,6 +130,38 @@ tacticsInfo.addPlanClickEvent=function(data){
 }
 
 /**
+ * 注册产品点击事件
+ */
+tacticsInfo.addPlanNameClickEvent=function(data){
+	$("#tbodyPlansList .showPlanInfo").on("click", function(event){
+		var moreInfo = $(this).parents('tr').attr('data-info');
+		moreInfo = moreInfo.replace(/'/g,'"');
+		var info = JSON.parse(moreInfo);
+	
+		var startDate = tacticsInfo.formatDate( new Date(info.planStartdate));
+		var endDate = tacticsInfo.formatDate( new Date(info.planEnddate));
+		var planName = info.planName;
+		var planTypeName = info.planTypeName;
+		var planSrvType = info.planSrvType;
+		if(planName.length > 18){
+			planName = planName.substr(0,18) + '...';
+		}
+		var planIsUsed = info.planIsUsed;
+	
+		//$('.showPlanInfoDialog-id-name').html(info.planId);
+		//$('.showPlanInfoDialog-typeName').attr("title",info.planName).html(planName);
+		//$('.showPlanInfoDialog-typeName').html(info.planTypeName);
+		//$('.showPlanInfoDialog-srvType').html(info.planSrvType);
+		//$('.showPlanInfoDialog-beginTime').html(info.startDate);
+		//$('.showPlanInfoDialog-endTime').html(info.endDate);
+		//$('.showPlanInfoDialog-isUsed').html(info.planIsUsed);
+	
+		//TacticsPlan.openDialogForPreview('productDetail-dialog','产品详情',null,600,300);
+		$(".showGroupTypeDialog").dialog({title:"1"})
+	});
+}
+
+/**
  * 点击查询按钮事件
  */
 tacticsInfo.addPlanSearchEvent=function(){
@@ -152,3 +185,16 @@ tacticsInfo.renderPageView=function(data){
         }
     });
 }
+
+tacticsInfo.formatDate=function(now) {
+	var year=now.getUTCFullYear();
+	var month=now.getMonth()+1;
+	var date=now.getDate();
+	var hour=now.getHours();
+	var minute=now.getMinutes();
+	var second=now.getSeconds();
+	if(hour == 0){
+		return year+"-"+month+"-"+date;
+	}
+	return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+};
