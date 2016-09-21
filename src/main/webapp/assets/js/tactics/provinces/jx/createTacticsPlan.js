@@ -147,6 +147,11 @@ tacticsInfo.addPlanNameClickEvent=function(data){
 			planName = planName.substr(0,18) + '...';
 		}
 		var planIsUsed = info.planIsUsed;
+		alert('9999')
+		$(".productDetail-dialog").dialog({
+			title:"产品详情",
+	    
+		});
 	
 		//$('.showPlanInfoDialog-id-name').html(info.planId);
 		//$('.showPlanInfoDialog-typeName').attr("title",info.planName).html(planName);
@@ -157,7 +162,9 @@ tacticsInfo.addPlanNameClickEvent=function(data){
 		//$('.showPlanInfoDialog-isUsed').html(info.planIsUsed);
 	
 		//TacticsPlan.openDialogForPreview('productDetail-dialog','产品详情',null,600,300);
-		$(".showGroupTypeDialog").dialog({title:"1"})
+//		$("#cc .showPlanInfo").click(function(){
+//			
+//		})
 	});
 }
 
