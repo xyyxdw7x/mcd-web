@@ -1,8 +1,8 @@
 <div class="left-right-box">
 	<span class="color-333 left ft14">短信推荐用语：</span>
 	<div class="right text-area-box">
-		<textarea id="smsContent"></textarea>
-		<p class="ft12 color-999 text-mes">您还可以输入<span>240</span>个字</p>
+		<textarea name="channelId_<%=data.channelId%>_contentWords" id="channelId_<%=data.channelId%>_contentWords" value=""></textarea>
+		<p class="ft12 color-999 text-mes">您还可以输入<span><%=data.wordSize%></span>个字</p>
 	</div>
 </div>
 <div class="left-right-box">
@@ -13,14 +13,181 @@
 <div class="left-right-box">
 	<span class="color-333 left">发送周期：</span>
 	<div class="btn-group btn-group-ft12">
-	  <button type="button" class="btn  active">一次性</button>
-	 	<button type="button" class="btn">周期性</button>
+		<button type="button" name="channelId_<%=data.channelId%>_sendOnce" id="channelId_<%=data.channelId%>_sendOnce" class="btn">一次性</button>
+		<button type="button" name="channelId_<%=data.channelId%>_loopSend" id="channelId_<%=data.channelId%>_loopSend" class="btn active">周期性</button>
+		<label class="cbx-radio-label deliver-btn"><input type="checkbox" id="channelId_<%=data.channelId%>_isAssignSendDate" name="channelId_<%=data.channelId%>_isAssignSendDate" />是否指定派发时间</label>
+	</div>
+	<div class="deliver-btn-show" style="-display: none;">
+		<!--radio-->
+		<div class="raidos-box">
+			<label class="cbx-radio-label" value="0"><input type="radio" name="channelId_<%=data.channelId%>_sendCycle" checked="checked" value="0" />周</label>
+			<label class="cbx-radio-label" value="1"><input type="radio" name="channelId_<%=data.channelId%>_sendCycle" value="1" />月</label>
+			<label class="cbx-radio-label" value="2"><input type="radio" name="channelId_<%=data.channelId%>_sendCycle" value="2" />时间点</label>
+			<label class="cbx-radio-label" value="3"><input type="radio" name="channelId_<%=data.channelId%>_sendCycle" value="3" />时间范围</label>
+		</div>
+		<!--四种单选结果-->
+		<div class="raidos-box-show hasDate-date">
+			<!--value0 周-->
+			<div style="-display: none;">
+				<div class="cbxs-box">
+					<label class="cbx-radio-label" value="0"><input type="checkbox" name="" checked="checked" value="0" />周一</label>
+					<label class="cbx-radio-label" value="1"><input type="checkbox" value="1" />周二</label>
+					<label class="cbx-radio-label" value="2"><input type="checkbox" checked="checked" value="2" />周三</label>
+					<label class="cbx-radio-label" value="3"><input type="checkbox" value="3" />周四</label>
+					<label class="cbx-radio-label" value="4"><input type="checkbox" value="4" />周五</label>
+					<label class="cbx-radio-label" value="5"><input type="checkbox" value="5" />周六</label>
+					<label class="cbx-radio-label" value="6"><input type="checkbox" value="6" />周日</label>
+				</div>
+				
+				<div class="add-box clear-both">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<input class="input-hidden" type="text" id="datetime" name="datetime">
+						<span class="add-btn add-time">添加时段</span>
+					</div>
+					<div class="con-right fleft">
+						<div class="dateFromTo-box">
+							<label for="timeStart">从</label>
+							<input type="text" class="dateInput" id="timeStart" name="timeStart" />
+							<label for="timeEnd">到</label>
+							<input type="text" class="dateInput" id="timeEnd" name="timeEnd" />
+							<button class="btn btn-defalut btn-primary btn-add addTime">确定添加</button>
+						</div>
+						<div class="timeBox">
+							<!--<span class="policy">
+								<i class="close"> &times;</i>
+								<em>9:00-11:00</em>
+							</span>
+							<span class="policy">
+								<i class="close"> &times;</i>
+								<em>9:00-11:00</em>
+							</span>-->
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!--value1 月-->
+			<div style="display: none;">
+				<div class="add-box clear-both ">
+					<div class="mright_10 input-hidden-box width-80 fleft">
+						<input type="text" class="input-hidden" id="dateDD" />
+						<span class="add-btn add-date">添加日期</span>
+					</div>
+					<div class="con-right fleft">
+						<span class="mright_10 per-month">每月</span>
+						<!--<span class="policy">
+							<i class="close"> &times;</i>
+							<em>15日</em>
+						</span>
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>25日</em>
+						</span>-->
+					</div>
+				</div>
+				<div class="add-box clear-both ">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<input type="text" class="input-hidden" />
+						<span class="add-btn add-time">添加时段</span>
+					</div>
+					<div class="con-right fleft">
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+					</div>
+				</div>
+			</div>
+			<!--value2 时间点-->
+			<div style="display: none;">
+				<div class="add-box clear-both ">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<input type="text" class="input-hidden"  id="dateMD" />
+						<span class="add-btn add-date">添加日期</span>
+					</div>
+					<div class="con-right fleft">
+						<!--<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9月15日</em>
+						</span>
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9月25日</em>
+						</span>-->
+					</div>
+				</div>
+				<div class="add-box clear-both ">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<input type="text" class="input-hidden" />
+						<span class="add-btn add-time">添加时段</span>
+					</div>
+					<div class="con-right fleft">
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+					</div>
+				</div>
+			</div>
+			<!--value3 时间范围-->
+			<div style="display: none;">
+				<div class="add-box clear-both ">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<span class="add-btn add-date">添加日期</span>
+					</div>
+					<div class="con-right fleft">
+						<div class="dateFromTo-box">
+							<label for="dateStart">从</label>
+							<input type="text" class="dateInput" id="dateStart"/>
+							<label for="dateEnd">到</label>
+							<input type="text" class="dateInput" id="dateEnd" />
+							<button class="btn btn-defalut btn-primary btn-add addDate">确定添加</button>
+						</div>
+						<div class="dateBox">
+							<!--<span class="policy">
+								<i class="close"> &times;</i>
+								<em>7月15日-7月25日</em>
+							</span>
+							<span class="policy">
+								<i class="close"> &times;</i>
+								<em>7月15日-7月25日</em>-->
+							</span>
+						</div>
+						
+					</div>
+				</div>
+				<div class="add-box clear-both ">
+					<div class="mright_10 width-80 fleft input-hidden-box">
+						<input type="text" class="input-hidden" />
+						<span class="add-btn add-time">添加时段</span>
+					</div>
+					<div class="con-right fleft">
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+						<span class="policy">
+							<i class="close"> &times;</i>
+							<em>9:00-11:00</em>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="btns-wrp over-hidden">
 	<p class="fright">
-		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue">确定</a>
-		<a href="javascript:;" class="btn60-26 btn-a btn-a-white">预览</a>
+		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue" id="conmmitButton_channelId_<%=data.channelId%>">确定</a>
+		<a href="javascript:;" class="btn60-26 btn-a btn-a-white" id = "previewButton_channelId_<%=data.channelId">预览</a>
 	</p>
 	
 </div>

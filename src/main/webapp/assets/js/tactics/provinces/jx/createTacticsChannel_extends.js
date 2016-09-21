@@ -120,8 +120,10 @@ function clickChannelEventHandler(event, data, addChannelTab){
 			$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
 			
 			var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
-			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({data:data});;//渠道内容
+			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});//渠道内容
 			$("#href-channelId_"+data.channelId).html(channelContentHtml);
+			clickCommitButtonEventHandler(data);//确定
+			//$("#previewButton_channelId_"+data.channelId).on("click", clickPreviewButtonEventHandler(data));//预览
 			
 			//移除之前添加的渠道页签、对应的内容active
 			$("#selectedChannelsDisplayUl").children("li").first().next().removeClass("active");
