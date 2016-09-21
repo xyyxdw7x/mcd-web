@@ -1,5 +1,5 @@
 .ui-datepicker{z-index: 3 !important;}
-/*新建策略*/
+/*鏂板缓绛栫暐*/
 .search-tab-wrp .content-table-page{margin-bottom: 24px;}
 .w-818{width: 818px;}
 .put-container{overflow: hidden;}
@@ -22,7 +22,7 @@
 .put-right .info-box li{padding: 10px 0;}
 .put-right .info-box>ul,.put-right .info-box>div{padding-left:10px;}
 .info-box h5{border-bottom: 1px dashed #a4a4a4;padding-bottom: 5px; color: #333; font-size: 14px;margin: 0;}
-.info-box li span{font-size: 20px;color: #666; position: relative;top:-2px;}
+.info-box li span{font-size: 12px;color: #666; position: relative;top:-2px;}
 .info-box .custom{padding:15px 0;}
 .btn-box .del-icon{top:6px; cursor: pointer;margin-left: 10px;}
 .dropdown.caret-drop{display: inline-block;margin-left: 196px;}
@@ -35,7 +35,7 @@
 .caret-box li.caret-save a:hover,.caret-box li.caret-save a.active{background:#edf1f4 url(../../../../images/put-img.png) no-repeat -28px -35px;}
 .del-icon{display: inline-block; width: 16px; position:relative;height:16px; cursor: pointer; background:url(../../../../images/put-img.png) no-repeat -63px -3px;}
 .chooseNetFlowDialog {
-  font-family: "宋体";
+  font-family: "瀹嬩綋";
   width: 580px;
   margin: 0 auto;
   position: absolute;
@@ -44,11 +44,11 @@
   z-index: 100;
   display: none;
 }
-/*选客户的列表*/
+/*閫夊鎴风殑鍒楄〃*/
 .group-box{width: 100%;height: 105px;font-size: 12px;}
 .group-box-header{ padding: 0 0 0 15px;height: 30px;line-height: 30px;border-bottom: 1px dashed #e3e3e3;}
 .group-box-header-name{font-size: 15px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;float: left;width:200px;}
-/*有虚线 鼠标经过蓝线 选中对号的ul*/
+/*鏈夎櫄绾�榧犳爣缁忚繃钃濈嚎 閫変腑瀵瑰彿鐨剈l*/
 .public-border-ul .selected-img{width: 31px;height: 31px;display: none;position: absolute;right: -1px;top:0px;background:url(../../../../images/channelSelected.png) no-repeat;}
 .public-border-ul li.active .selected-img{display: inline-block;}
 .group-info-ul{margin-left: 10px;width: 100%;overflow: hidden;}
@@ -56,7 +56,7 @@
 .group-box-info{margin: 5px 15px 0;}
 .group-box-info-item{height: 20px; line-height: 20px;}
 .group-box-detail{float: right; margin-top: -14px; cursor: pointer;}
-/*选渠道*/
+/*閫夋笭閬�/
 .padding-15{padding:0 15px;}
 .trench-name{position: relative; top:-8px;padding-left: 15px;}
 ul.nav-tabs-public-34 {height:34px;}

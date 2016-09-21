@@ -21,7 +21,7 @@ public class AppConfigService {
 	 */
 	public  static String PROFILE_ACTIVE;
 	
-	public  static  ConcurrentMap<Object, Object> SYS_DIC;
+	public  static  ConcurrentMap<String, Object> SYS_DIC;
 	
 	/**
 	 * 从MCD_SYS_DIC中查找key-value数据 如果查找则返回value
