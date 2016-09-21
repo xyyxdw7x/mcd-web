@@ -4,6 +4,7 @@ label{font-weight: normal;}
 .w-1200{width: 1200px;margin:0 auto;}
 *{word-break: break-all;}
 .dropdown-menu{border-radius: 0;box-shadow: none;}
+.col-xs-2,.col-xs-4{text-align:right;}
 /*搜索输入框*/
 .search-box-wrp{padding:15px 0;}
 .search-box-wrp.fright{padding:0;}
