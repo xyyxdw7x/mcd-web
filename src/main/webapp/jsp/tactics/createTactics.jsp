@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>新策略</title>
+<title>新建策略</title>
 <%@ include file="../../jsp/common/head.jsp" %>
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" rel="stylesheet"  />
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-table.css" />
