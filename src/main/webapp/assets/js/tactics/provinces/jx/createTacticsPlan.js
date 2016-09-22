@@ -12,8 +12,6 @@ tacticsInfo.initPlan=function(){
 tacticsInfo.initPlanView=function(){
 	tacticsInfo.loadDimInfo();
 	tacticsInfo.queryPlan();
-	$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');
-	$('.public-table tbody tr:nth-child(2n)').addClass('even');
 }
 /*
  * 绑定事件
@@ -94,6 +92,8 @@ tacticsInfo.queryPlan=function(pageNum){
 			// 渲染表格部分
 			var planHtml = new EJS({url:ejsUrlPlans}).render({data:data.result});
 			$("#tbodyPlansList").html(planHtml);
+			$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');
+			$('.public-table tbody tr:nth-child(2n)').addClass('even');
 			// 分页渲染
 			tacticsInfo.renderPageView(data);
 			tacticsInfo.addPlanClickEvent(data);
