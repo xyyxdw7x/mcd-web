@@ -63,10 +63,3 @@
 		</div>
 	</div>
 </div>
-<!-- 产品详情保存弹窗 -->
-<div class="productDetail-dialog-box container">
-	<div class="own-dialog productDetail-dialog">
-		11111
-	</div><!--dialog end-->
-<!-- 	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div>半透明背景 -->
-</div>
