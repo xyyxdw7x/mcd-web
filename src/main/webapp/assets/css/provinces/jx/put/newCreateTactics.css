@@ -11,6 +11,7 @@
 .put-tab-wrp{padding:20px 0 0 15px;}
 .row-name{padding-top:5px;padding-left: 15px; width:110px; text-align:right;}
 .row-name-product{width:86px;}
+.row-name-custom{width:102px;}
 .policy-selected-box{padding:10px 0px;}
 .policy-selected-right{width: 700px;}
 .policy{display: inline-block; padding:3px 10px; margin:0 10px 10px 0; border:1px dashed #ffa01e;background: #fff;}
@@ -22,7 +23,7 @@
 .put-right .info-box{padding:8px 10px; font-size:12px; color: #666;}
 .put-right .info-box li{padding: 10px 0;}
 .put-right .info-box>ul,.put-right .info-box>div{padding-left:10px;}
-.info-box h5{border-bottom: 1px dashed #a4a4a4;padding-bottom: 5px; color: #333; font-size: 14px;margin: 0;}
+.info-box h5{background:#f1f9fb;padding:6px 0 6px 6px; color: #333; font-size: 14px;margin: 0;}
 .info-box li span{font-size: 12px;color: #666; position: relative;top:-2px;}
 .info-box .custom{padding:15px 0;}
 .btn-box .del-icon{top:6px; cursor: pointer;margin-left: 10px;}
@@ -52,8 +53,8 @@
 
 .public-border-ul .selected-img{width: 31px;height: 31px;display: none;position: absolute;right: -1px;top:0px;background:url(../../../../images/channelSelected.png) no-repeat;}
 .public-border-ul li.active .selected-img{display: inline-block;}
-.group-info-ul{margin-left: 10px;width: 100%;overflow: hidden;}
-.group-info-ul li{ width: 31.7%;margin:0px 0px 10px 5px;color: #666;}
+.group-info-ul{width: 100%;overflow: hidden;}
+.group-info-ul li{ width: 31.7%;margin:0px 7px 10px 6px;color: #666;}
 .group-box-info{margin: 5px 15px 0;}
 .group-box-info-item{height: 20px; line-height: 20px;}
 .group-box-detail{float: right; margin-top: -14px; cursor: pointer;}
@@ -68,8 +69,10 @@ ul.nav-tabs-public-34 {height:34px;}
 .row-p{overflow: hidden;}
 .row-p p{float: left; margin-right: 20px;}
 .nav-tabs-public.nav-tabs > li{margin-bottom:0; position: relative;}
+.trench-header .nav-tabs-public.nav-tabs > li{margin-bottom:-5px;}
+.trench-header .nav-tabs-public.nav-tabs > li:nth-child(1).active a{border-left:0;}
 .nav-tabs.nav-tabs-public > li > a{margin: 0;padding:10px 20px;}
-.nav.nav-tabs-public > li:hover > a, .nav.nav-tabs-public > li:focus > a{background: #f9fbfb;border-color:#e9ecee;border-radius: 0;}
+.nav.nav-tabs-public > li:hover > a, .nav.nav-tabs-public > li:focus > a{background: #f9fbfb;border-color:#e8ebec;border-radius: 0;}
 .nav-tabs-public.nav-tabs > li i{float: none;position: absolute;right:2px;top:2px;display: none; }
 .nav.nav-tabs-public > li:hover>i{display: inline-block;}
 .deliver-btn{padding-left:15px;}
@@ -117,7 +120,10 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 }
 
 .showGroupTypeDialog .title{
-   width:140px;
+   width:120px;
+}
+.showGroupTypeDialog .title-date{
+   width:145px;
 }
 
 .showGroupTypeDialog td{

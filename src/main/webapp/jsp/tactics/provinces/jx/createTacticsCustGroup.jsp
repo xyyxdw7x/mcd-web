@@ -61,7 +61,7 @@
 				<tr>
 					<td class="title">客户群周期：</td>
 					<td class="showGroupTypeDialog-updatecycle"></td>
-					<td class="title">客户群接收数据日期：</td>
+					<td class="title title-date">客户群接收数据日期：</td>
 					<td class="showGroupTypeDialog-datatime"></td>
 				</tr>
 				<tr>

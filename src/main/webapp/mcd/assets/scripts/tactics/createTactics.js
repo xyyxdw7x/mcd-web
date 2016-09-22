@@ -904,6 +904,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 
 						}
 					};
+					debugger;
 					if(targetID=="saveCreateTactics"){
 						if($(".J_Policy_Cart >div").length == 0 || $(".J_cartGroup >div").length == 0 ||  $(".J_addChannelToCart >div").length == 0 ){
 							alert("暂存架数据不完整，请添加！");
@@ -1432,6 +1433,7 @@ define(["backbone","jqueryUI","tacticsManage","jqueryExtend","navManage","onepag
 							ts.attr("ifclose","true");
 						}
 						var _data=ts.find("#shopcarSaveTable table").eq(0).attr("_ajaxdata");
+						debugger;
 
 						var _afterComputCustNums = ts.find("#shopcarSaveTable table td input");
 						var _afterComputCustNum = "";

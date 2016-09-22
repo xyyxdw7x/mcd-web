@@ -77,6 +77,44 @@
 	</div>
 	<!--保存按钮-->
 	<div class="btn-wrp  btn-wrp10 text-center bg-ebf0f3">
-		<a href="javascript:;" class="btn140-40">保存</a>
+		<a href="javascript:;" class="btn140-40" id="saveTacticsId">保存</a>
 	</div>
+	
+<!-- 新建策略-保存弹窗 -->
+<div class="save-dialog-box container"  >
+	<div class="own-dialog save-dialog">
+		<!-- 内容区 -->
+		<form class="form-horizontal">
+			<div class="form-group">
+			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>策略名称:</span></label>
+			    <div class="col-sm-6">
+			      	<input type="text" class="form-control" id="tacticsName">
+			    </div>
+		    </div> 
+			<div class="form-group form-group-new">
+			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>投放周期：</span></label>
+			    <div class="col-sm-3">
+			      	<input type="text" id="startDate" class="form-control">
+			    </div>
+			    <div class="col-sm-3">
+			    	<span class="color-999 fleft">-</span>
+			      	<input type="text" id="endDate" class="form-control">
+			    </div>
+		    </div> 
+		    <div class="form-group">
+			    <label class="col-sm-4 control-label">营销类型：</label>
+			    <div class="col-sm-6">
+				    <div class="input-group">
+				      <input type="text" class="form-control">
+				      <div class="input-group-btn">
+				        <button type="button" class="btn btn-default btn-default-new dropdown-toggle" data-toggle="dropdown">
+				        	<span class="caret"></span>
+				        </button>
+				      </div>
+				    </div>
+			    </div>
+		    </div> 
+		</form>
+	</div><!--dialog end-->
+	<!-- <div class="ui-widget-overlay ui-front" style="z-index: 100;"></div> --><!--半透明背景-->
 </div>

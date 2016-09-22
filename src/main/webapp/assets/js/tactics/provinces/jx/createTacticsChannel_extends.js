@@ -7,6 +7,21 @@ function initChannel(){
 }
 
 /**
+ * 关闭渠道页签
+ */
+function clickCloseChannel(){
+	//tab切换删除按钮
+	$('.trench-header li i').click(function() {
+			var index = $(this).parent('li').index();
+			$(this).parent('li').hide();
+			$(this).parents('.trench-header').siblings('.tab-content').find('.tab-pane').eq(index).hide();
+			var channelId = $(this).parent('li').attr("tabChannelId");
+			$('#channelList li[channelid='+channelId+']').removeClass("active");
+	
+	});
+}
+
+/**
  *  查询渠道列表
  */
 function queryChannelList(){
@@ -23,8 +38,7 @@ function queryChannelListSuc(obj){
 	$("#channelList").html(channelListHtml);
 	
 	//绑定点击渠道事件
-	//bindClickChannelEvent();
-	
+	bindClickChannelEvent();
 	addChannelEvent(obj);
 }
 
@@ -56,8 +70,8 @@ function addChannelEvent(obj){
 		 * 触发点击渠道事件:控制页签的增加或移除，原来已经active则移除；原来未active则增加
 		 */
 		var addChannelTab = !activedFlag;
-		clickChannelEventHandler(event,item, addChannelTab);
-		//$("#channelList li").trigger("clickChannelEvent", [item, addChannelTab]);
+		//clickChannelEventHandler(event,item, addChannelTab);
+		$("#channelList").trigger("clickChannelEvent", [item, addChannelTab]);
 	});
 }
 
@@ -67,7 +81,7 @@ function addChannelEvent(obj){
  * @param data
  */
 function bindClickChannelEvent(){
-	$("#channelList li").bind("clickChannelEvent", clickChannelEventHandler);
+	$("#channelList").bind("clickChannelEvent", clickChannelEventHandler);
 }
 
 
@@ -84,7 +98,7 @@ function addPlanEevent(){
  * @param data
  */
 function selectChannelEvent(event,data){
-	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels";
+	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels.do";
 	$.post(url,{planId:data.PLAN_ID},selectChannelByPlan);
 }
 
@@ -103,13 +117,7 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		alert("请选择客户群!");
 		return;
 	}
-	
-	
-	var channelId = event.currentTarget.attributes.channelId.value;
 	if(addChannelTab) {
-		//渠道被选中，增加显示渠道的页签
-		if(channelId == data.channelId){
-			//渠道页签
 			var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
 			var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
 			$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
@@ -128,20 +136,19 @@ function clickChannelEventHandler(event, data, addChannelTab){
 			//移除之前添加的渠道页签、对应的内容active
 			$("#selectedChannelsDisplayUl").children("li").first().next().removeClass("active");
 			$("#selectedChannelsContentDisplayDiv").children("div").first().next().removeClass("active");
-		}
 	} else {
-		//渠道的选中被取消，移除显示渠道的页签
-		if(channelId == data.channelId){
 			//移除页签
 			$("#li_tabs_channelId_"+data.channelId).remove();
 			
 			//移除渠道的营销内容
 			$("#href-channelId_"+data.channelId).remove();
-		}
 	}
 	
 	//根据客户群id获取短信变量
 	selectSmsAttribute(tacticsInfo.custGroup.customGroupId);
+	//渠道关闭事件
+	clickCloseChannel();
+
 }
 
 /**
@@ -154,7 +161,7 @@ function clickCommitButtonEventHandler(data){
 		$.getScript(channelContentcollectJsUrl, function(){
 			newdata = collectData(this, data);
 		});
-		$("#channelList").trigger("changeChannel", newdata);
+		$("#channelList li").trigger("changeChannel", newdata);
 	});
 }
 
@@ -210,7 +217,7 @@ function selectChannelByPlan(data){
  */
 function selectSmsAttribute(custgroupId){
 	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/getCustGroupVars",
+		url:contextPath+"/tactics/tacticsManage/getCustGroupVars.do",
 		data:{"custGroupId":custgroupId},
 		success:function(result, textStatus) {
 			if (result) {
@@ -225,7 +232,7 @@ function selectSmsAttribute(custgroupId){
 				 $("#_smsVar").html(temp);
 				 
 				//选择变量时，写入文本域
-					var _textarea = $('#smsContent');
+					var _textarea = $('#channelId_901_contentWords');
 						$('span.border-item').on("click",function(){
 							 _textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
 							 $(this).addClass("active");
