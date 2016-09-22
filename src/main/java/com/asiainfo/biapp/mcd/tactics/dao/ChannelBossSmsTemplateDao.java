@@ -16,6 +16,8 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 
 public interface ChannelBossSmsTemplateDao {
 	public List<ChannelBossSmsTemplate> initMtlChannelBossSmsTemplate();
+
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type);
 }
 
 

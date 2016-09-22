@@ -1,5 +1,8 @@
 package com.asiainfo.biapp.mcd.tactics.vo;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  * 
  * Title: 
@@ -9,13 +12,24 @@ package com.asiainfo.biapp.mcd.tactics.vo;
  * @author lixq10 2015-12-19 下午5:25:16
  * @version 1.0
  */
-
+@Table(name="MTL_CHANNEL_BOSS_SMS_TEMPLATE")
 public class ChannelBossSmsTemplate {
+	@Column(name="TEMPLATE_ID")
 	private String templateId;
+	@Column(name="TEMPLATE_NAME")
 	private String templateName;
+	@Column(name="TEMPLATE_CONTENT")
 	private String templateContent;
 	private String templateTypeId;
+	@Column(name="TYPE")
+	private int type;
 	
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
 	public String getTemplateTypeId() {
 		return templateTypeId;
 	}

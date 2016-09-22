@@ -23,16 +23,21 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 public class ChannelBossSmsTemplateServiceImpl implements ChannelBossSmsTemplateService {
 	@Resource(name="channelBossSmsTemplateDao")
 	private ChannelBossSmsTemplateDao channelBossSmsTemplateDao;
+	
+	public ChannelBossSmsTemplateDao getMtlChannelBossSmsTemplateDao() {
+		return channelBossSmsTemplateDao;
+	}
+	public void setMtlChannelBossSmsTemplateDao(ChannelBossSmsTemplateDao mtlChannelBossSmsTemplateDao) {
+		this.channelBossSmsTemplateDao = mtlChannelBossSmsTemplateDao;
+	}
+	
 	@Override
 	public List<ChannelBossSmsTemplate> initMtlChannelBossSmsTemplate() {
 		return channelBossSmsTemplateDao.initMtlChannelBossSmsTemplate();
 	}
-	public ChannelBossSmsTemplateDao getMtlChannelBossSmsTemplateDao() {
-		return channelBossSmsTemplateDao;
-	}
-	public void setMtlChannelBossSmsTemplateDao(
-			ChannelBossSmsTemplateDao mtlChannelBossSmsTemplateDao) {
-		this.channelBossSmsTemplateDao = mtlChannelBossSmsTemplateDao;
+	@Override
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type){
+		return channelBossSmsTemplateDao.getBossSmsTemplateByType(type);
 	}
 }
 

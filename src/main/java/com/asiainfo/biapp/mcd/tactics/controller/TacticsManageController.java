@@ -2131,14 +2131,19 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping
 	@ResponseBody
-	public List<ChannelBossSmsTemplate> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-		List<ChannelBossSmsTemplate> list = null;
+	public Map<String,List<ChannelBossSmsTemplate>> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		Map<String,List<ChannelBossSmsTemplate>> map = new HashMap<String,List<ChannelBossSmsTemplate>>();
+		List<ChannelBossSmsTemplate> txList = null;
+		List<ChannelBossSmsTemplate> dqList = null;
 		try {
-			list = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
+			txList = channelBossSmsTemplateService.getBossSmsTemplateByType(1);
+			dqList = channelBossSmsTemplateService.getBossSmsTemplateByType(2);
+			map.put("remindSms", txList);
+			map.put("expireSms", dqList);
 		} catch (Exception e) {
 			log.error("", e);
 		}
-		return list; 
+		return map; 
 	}
 	/**
 	 * 根根产品id 返回产品信息

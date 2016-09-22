@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.tactics.dao.ChannelBossSmsTemplateDao;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 
@@ -27,20 +28,24 @@ public class ChannelBossSmsTemplateDaoImpl  extends JdbcDaoBase implements Chann
 
 	@Override
 	public List<ChannelBossSmsTemplate> initMtlChannelBossSmsTemplate() {
-		List<Map<String, Object>> list = null;
 		List<ChannelBossSmsTemplate> result = new ArrayList<ChannelBossSmsTemplate>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE");
-			list = this.getJdbcTemplate().queryForList(sbuffer.toString());
-			for (Map<String,Object> map : list) {
-				ChannelBossSmsTemplate mtlChannelBossSmsTemplate = new ChannelBossSmsTemplate();
-				mtlChannelBossSmsTemplate.setTemplateContent(String.valueOf(map.get("TEMPLATE_CONTENT")));
-				mtlChannelBossSmsTemplate.setTemplateId(String.valueOf(map.get("TEMPLATE_ID")));
-				mtlChannelBossSmsTemplate.setTemplateName(String.valueOf(map.get("TEMPLATE_NAME")));
-				mtlChannelBossSmsTemplate.setTemplateTypeId(String.valueOf(map.get("template_type_id")));
-				result.add(mtlChannelBossSmsTemplate);
-			}
+			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<ChannelBossSmsTemplate>(ChannelBossSmsTemplate.class));
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return result;
+	}
+	
+	@Override
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type) {
+		List<ChannelBossSmsTemplate> result = new ArrayList<ChannelBossSmsTemplate>();
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE where type='"+type+"'");
+			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<ChannelBossSmsTemplate>(ChannelBossSmsTemplate.class));
 		} catch (Exception e) {
 			log.error(e);
 		}
