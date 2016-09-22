@@ -31,7 +31,7 @@ function initView(){
     tacticsInfo.initPlan();
 	//调用子页面的函数
 	initCustomerGroup();
-	initShopCar();
+	shopCarInfo.initShopCar();
 	//初始化渠道
 	initChannel();
 }
