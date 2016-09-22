@@ -57,6 +57,14 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
+		if(!isSelectPlan()){
+			alert("请选择产品!");
+			return;
+		}
+		if(!isSelectCustomGroup()){
+			alert("请选择客户群!");
+			return;
+		}
 		var index = $("#channelList li").index(this);
 		var item=obj[index];
 		
@@ -118,14 +126,7 @@ function selectChannelEvent(event,data){
  * @param addChannelTab 要增加渠道页签 true:是|false:否 
  */
 function clickChannelEventHandler(event, data, addChannelTab){
-	if(!isSelectPlan()){
-		alert("请选择产品!");
-		return;
-	}
-	if(!isSelectCustomGroup()){
-		alert("请选择客户群!");
-		return;
-	}
+
 	if(addChannelTab) {
 		//添加渠道
 		
@@ -137,6 +138,18 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		
 		//最新加入的channel是active
 		latestAddeddChannelActive();
+		//群发用语中还可以输入的字数限制-
+		$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
+				var maxWordSize = 240;
+				var value = $(this).val();
+				var count = $("#channelId_"+data.channelId+"_wordSize");
+				if (value.length > maxWordSize) {
+					$(this).val(value.substring(0, maxWordSize));
+					count.html(0);
+				} else {
+					count.html(maxWordSize - value.length);
+				}
+			});
 	} else {
 		//移除页签
 		$("#li_tabs_channelId_"+data.channelId).remove();
