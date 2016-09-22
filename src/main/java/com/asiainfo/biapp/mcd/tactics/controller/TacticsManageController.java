@@ -2030,9 +2030,9 @@ public class TacticsManageController extends BaseMultiActionController {
 		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略列表
 		try {
 			User user = this.getUser(request, response);
-			String test = request.getParameter("ruleList");
+			String test = request.getParameter("data");
 			JSONObject ruleList = JSONObject.fromObject(test);
-			String commonAttr = ruleList.get("commonAttr").toString();// 获取公共属性
+			String commonAttr = ruleList.get("campInfo").toString();// 获取公共属性
 			
 			// 先生成一个父节点，一个子节点
 			McdCampDef campSeginfoBasic = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
@@ -2049,12 +2049,11 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSegInfoList.add(campSeginfoBasic);
 			
 			// 设置子节点的渠道信息
-		    JSONObject rule =JSONObject.fromObject(ruleList.get("rule0").toString()); 
-			String execContentStr = rule.get("execContent").toString();
-			JSONArray execContentJsonArray = JSONArray.fromObject(execContentStr);				
+			String channelsInfo =  ruleList.get("channelsInfo").toString();// 获取公共属性
+			JSONArray channelsInfoArray = JSONArray.fromObject(channelsInfo);				
 			List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
-			for (int j = 0; j < execContentJsonArray.size(); j++) {
-					JSONObject obj = (JSONObject) execContentJsonArray.get(j);
+			for (int j = 0; j < channelsInfoArray.size(); j++) {
+					JSONObject obj = (JSONObject) channelsInfoArray.get(j);
 					McdCampChannelList mtlChannelDef = (McdCampChannelList) JSONObject.toBean(obj, McdCampChannelList.class);
 					mtlChannelDefList.add(mtlChannelDef);
 			}
