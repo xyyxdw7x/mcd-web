@@ -1,5 +1,5 @@
 //当前购物车中存放的渠道
-//var channelsInShoppingCar = new Array();
+var channelsInShoppingCar = new Array();
 
 /**
  * 初始化渠道
@@ -26,6 +26,9 @@ function clickCloseChannel(){
 
 		//渠道页签中的第一个渠道展示
 		firstChannelActive();
+		
+		//通知购物车移除此渠道
+		callBacllChannel(channelId);
 	});
 	
 }
@@ -63,22 +66,17 @@ function addChannelEvent(obj){
 		/**
 		 * 控制渠道列表的渠道被点击的样式变化
 		 */ 
-		var taget = $(this);
-		var activedFlag = taget.hasClass("active");//原来是否已处于active状态
-		if(activedFlag){
-			//使active失效
-			taget.removeClass("active");
-			taget.children(".my-selected-icon").hide();
-		} else {
+		var hasActive = $(this).hasClass("active");//原来是否已处于active状态
+		if(!hasActive){
 			//激活active
-			taget.addClass("active");
-			taget.children(".my-selected-icon").show();
+			$(this).addClass("active");
+			$(this).children(".my-selected-icon").show();
 		}
 		
 		/**
-		 * 触发点击渠道事件:控制页签的增加或移除，原来已经active则移除；原来未active则增加
+		 * 触发点击渠道事件:控制页签的增加，原来不是active状态则增加，否则无变化
 		 */
-		var addChannelTab = !activedFlag;
+		var addChannelTab = !hasActive;
 		//clickChannelEventHandler(event,item, addChannelTab);
 		$("#channelList").trigger("clickChannelEvent", [item, addChannelTab]);
 	});
@@ -137,22 +135,11 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		
 		//最新加入的channel是active
 		latestAddeddChannelActive();
-	} else {
-		//移除页签
-		$("#li_tabs_channelId_"+data.channelId).remove();
 		
-		//移除渠道的营销内容
-		$("#href-channelId_"+data.channelId).remove();
-		
-		//渠道页签中的第一个渠道展示
-		firstChannelActive();
-		
-//		//通知购物车移除此渠道
-//		callBacllChannel(channelId);
+		//根据客户群id获取短信变量
+		selectSmsAttribute(tacticsInfo.custGroup.customGroupId);
 	}
 	
-	//根据客户群id获取短信变量
-	selectSmsAttribute(tacticsInfo.custGroup.customGroupId);
 	//渠道关闭事件
 	clickCloseChannel();
 
@@ -191,7 +178,7 @@ function clickCommitButtonEventHandler(data){
 		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
 		$.getScript(channelContentcollectJsUrl, function(){
 			newdata = collectData(this, data);
-//			channelsInShoppingCar.push(data.channelId);
+			channelsInShoppingCar.push(data.channelId);
 			$("#channelDiv").trigger("changeChannel", newdata);
 		});
 		
@@ -229,26 +216,26 @@ function isSelectPlan(){
 	return true;
 }
 
-///**
-// * 如果这个渠道已放入购物车，则通知购物车移除此渠道
-// * @param channelId
-// */
-//function callBacllChannel(channelId){
-//	if(channelsInShoppingCar.length>0){
-//		var existsflag = false;
-//		for(var i = 0; i < channelsInShoppingCar.length; i++){
-//			if(channelsInShoppingCar[i] == channelId){
-//				existsflag = true;
-//				break;
-//			}
-//		}
-//	}
-//	channelsInShoppingCar = channelsInShoppingCar.splice();
-//	
-//	
-//	
-//	
-//}
+/**
+ * 如果这个渠道已放入购物车，则通知购物车移除此渠道
+ * @param channelId
+ */
+function callBacllChannel(channelId){
+	if(channelsInShoppingCar.length>0){
+		for(var i = 0; i < channelsInShoppingCar.length; i++){
+			if(channelsInShoppingCar[i] == channelId){
+				channelsInShoppingCar = channelsInShoppingCar.splice(i,1);//移除已经存放的渠道id
+				
+				//通知购物车移除渠道
+				var channelContentInfo = new Object();
+				channelContentInfo.channelId = channelId;
+				channelContentInfo.isCancell = "1";
+				$("#channelDiv").trigger("changeChannel", channelContentInfo);
+				break;
+			}
+		}
+	}
+}
 
 /**
  * 将排在页签里第一个渠道激活展示

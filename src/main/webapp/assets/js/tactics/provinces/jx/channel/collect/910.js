@@ -3,7 +3,7 @@ function collectData(event,data){
 	channelContentInfo.channelId = data.channelId;
 	channelContentInfo.channelName = data.channelName;
 	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
-	channelContentInfo.adivId="1335491647281";
+	channelContentInfo.bossTemplateId="1335491647281";
 	
 	return channelContentInfo;
 }
