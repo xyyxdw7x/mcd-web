@@ -2,8 +2,8 @@
 <div id="cgDiv" class="put-center w-818 fleft"  style="display: none">
 	<!--step2***************************st-->
 	<div class="step-title color-333 ft18">选客户</div>
-	<div class="policy-selected-box over-hidden">
-		<span class="fleft row-name">已选客户群：</span>
+	<div class="policy-selected-box bg-ebf0f3 over-hidden">
+		<span class="fleft row-name row-name-custom">已选客户群：</span>
 		<div id="selCgDiv" class="fleft ft12 color-666 policy-selected-right" style="display:none">
 			<span class="policy" id = "selcgListName"> <i class="close" id="closeGroup"> &times;</i> <em>
 			</em>
@@ -12,7 +12,7 @@
 	</div>
 	<div class="bg-fff">
 		<!--输入框-->
-		<div class="search-box-wrp">
+		<div class="search-box-wrp search-box-wrp-custom">
 			<div class="search-box">
 				<p class="fleft">
 					<input id="cgSearchInput" placeholder="请输入关键字" type="text" >

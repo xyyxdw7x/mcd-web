@@ -9,11 +9,13 @@
 .put-left li.active span{color:#ff9314;}
 .put-left li.active i{background: #ff9314;border-color:#ff9314; color: #fff;}
 .put-tab-wrp{padding:20px 0 0 15px;}
-.row-name{padding-top:5px;padding-left: 15px; width:110px;}
+.row-name{padding-top:5px;padding-left: 15px; width:110px; text-align:right;}
+.row-name-product{width:86px;}
 .policy-selected-box{padding:10px 0px;}
 .policy-selected-right{width: 700px;}
 .policy{display: inline-block; padding:3px 10px; margin:0 10px 10px 0; border:1px dashed #ffa01e;background: #fff;}
 .policy i{padding-left:10px;position: relative;top:-2px;cursor: pointer;}
+.policy em{position:relative;top:2px;}
 .put-center .bg-fff,.put-right{border:1px solid #e8ebec;}
 .put-right{width: 270px; margin-top: 45px;}
 .put-right .top-hd{font-size: 18px; padding-left:20px; font-weight:100; background: #278cde; height:40px;line-height:40px; color: #fff;}

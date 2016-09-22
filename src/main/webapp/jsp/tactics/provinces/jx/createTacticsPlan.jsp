@@ -2,12 +2,12 @@
 <div id="planDiv" class="put-center w-818 fleft">
 	<div class="step-title color-333 ft18">选产品</div>
 	<div class="policy-selected-box bg-ebf0f3 over-hidden">
-		<span class="fleft row-name">已选产品：</span>
+		<span class="fleft row-name row-name-product">已选产品：</span>
 		<div id="divChoosedPlan" class="fleft ft12 color-666 policy-selected-right" ></div>
 	</div>
 	<div class="bg-fff">
 		<!--输入框-->
-		<div class="search-box-wrp">
+		<div class="search-box-wrp search-box-wrp-product">
 			<div class="search-box">
 				<p class="fleft">
 					<input id="inputKeywordPlan" name="inputKeywordPlan" placeholder="请输入关键字" type="text">

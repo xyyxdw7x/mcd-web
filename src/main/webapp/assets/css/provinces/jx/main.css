@@ -6,7 +6,8 @@ label{font-weight: normal;}
 .dropdown-menu{border-radius: 0;box-shadow: none;}
 .col-xs-2,.col-xs-4{text-align:right;}
 /*搜索输入框*/
-.search-box-wrp{padding:15px 0;}
+.search-box-wrp{padding:15px 0 15px 10px;}
+.search-box-wrp-product{padding-left:1px;}
 .search-box-wrp.fright{padding:0;}
 .search-box{width: 287px;height: 30px;overflow: hidden;margin: 0 0 0 15px; background: #fff;}
 .search-box input{width: 225px;height: 30px; border: 1px solid #e3e3e3; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
