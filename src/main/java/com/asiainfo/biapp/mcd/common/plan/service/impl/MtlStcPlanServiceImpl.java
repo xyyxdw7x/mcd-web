@@ -107,7 +107,6 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		List<Object> param = (List) sqlClauseCount.get("params");
 		int count =  mtlStcPlanDao.execQuerySqlCount(sql, param);
 		pager.setTotalSize(count);
-		pager.getTotalPage();//设置总页数
 		
 		Map<String,Object> sqlClause = this.getPlansByConditionSql(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 		String sql2 = sqlClause.get("sql").toString();

@@ -1953,7 +1953,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		try {
-			pager.setPageSize(pageSize);  //每页显示6条
+			pager.setPageSize(pageSize);  
 			pager.setPageNum(pageNum);  //当前页
 			pager.setTotalSize(custGroupInfoService.getMoreMyCustomCount(user.getId(),keyWords));
 			resultList = custGroupInfoService.getMoreMyCustom(user.getId(),keyWords,pager);
