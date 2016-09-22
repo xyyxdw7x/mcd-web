@@ -1,5 +1,5 @@
 //当前购物车中存放的渠道
-//var channelsInShoppingCar = new Array();
+var channelsInShoppingCar = new Array();
 
 /**
  * 初始化渠道
@@ -26,6 +26,9 @@ function clickCloseChannel(){
 
 		//渠道页签中的第一个渠道展示
 		firstChannelActive();
+		
+		//通知购物车移除此渠道
+		callBacllChannel(channelId);
 	});
 	
 }
@@ -147,8 +150,8 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		//渠道页签中的第一个渠道展示
 		firstChannelActive();
 		
-//		//通知购物车移除此渠道
-//		callBacllChannel(channelId);
+		//通知购物车移除此渠道
+		callBacllChannel(channelId);
 	}
 	
 	//根据客户群id获取短信变量
@@ -191,7 +194,7 @@ function clickCommitButtonEventHandler(data){
 		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
 		$.getScript(channelContentcollectJsUrl, function(){
 			newdata = collectData(this, data);
-//			channelsInShoppingCar.push(data.channelId);
+			channelsInShoppingCar.push(data.channelId);
 			$("#channelDiv").trigger("changeChannel", newdata);
 		});
 		
@@ -229,26 +232,26 @@ function isSelectPlan(){
 	return true;
 }
 
-///**
-// * 如果这个渠道已放入购物车，则通知购物车移除此渠道
-// * @param channelId
-// */
-//function callBacllChannel(channelId){
-//	if(channelsInShoppingCar.length>0){
-//		var existsflag = false;
-//		for(var i = 0; i < channelsInShoppingCar.length; i++){
-//			if(channelsInShoppingCar[i] == channelId){
-//				existsflag = true;
-//				break;
-//			}
-//		}
-//	}
-//	channelsInShoppingCar = channelsInShoppingCar.splice();
-//	
-//	
-//	
-//	
-//}
+/**
+ * 如果这个渠道已放入购物车，则通知购物车移除此渠道
+ * @param channelId
+ */
+function callBacllChannel(channelId){
+	if(channelsInShoppingCar.length>0){
+		for(var i = 0; i < channelsInShoppingCar.length; i++){
+			if(channelsInShoppingCar[i] == channelId){
+				channelsInShoppingCar = channelsInShoppingCar.splice(i,1);//移除已经存放的渠道id
+				
+				//通知购物车移除渠道
+				var channelContentInfo = new Object();
+				channelContentInfo.channelId = channelId;
+				channelContentInfo.isCancell = "1";
+				$("#channelDiv").trigger("changeChannel", channelContentInfo);
+				break;
+			}
+		}
+	}
+}
 
 /**
  * 将排在页签里第一个渠道激活展示
