@@ -4,7 +4,7 @@
 <head>
 <title>新建策略</title>
 <%@ include file="../../jsp/common/head.jsp" %>
-<link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" rel="stylesheet"  />
+<link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" />
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-table.css" />
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-dialog.css" />
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/createTactics.js"></script>
@@ -13,6 +13,8 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel_extends.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/insertContent.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery.ui.datepicker-zh-TW.js"></script>
+
 </head>
 <body class="bg-fa">
 	<%

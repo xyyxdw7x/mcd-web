@@ -51,7 +51,7 @@
 		<a href="javascript:;" class="btn140-40" id="saveTacticsId">保存</a>
 	</div>
 	
-<!-- 新建策略-保存弹窗 -->
+<!-- 新建策略-保存弹窗  dialog start-->
 <div class="save-dialog-box container"  >
 	<div class="own-dialog save-dialog">
 		<!-- 内容区 -->
@@ -72,7 +72,7 @@
 			      	<input type="text" id="endDate" class="form-control">
 			    </div>
 		    </div> 
-		    <div class="form-group">
+		    <!-- <div class="form-group">
 			    <label class="col-sm-4 control-label">营销类型：</label>
 			    <div class="col-sm-6">
 				    <div class="input-group">
@@ -84,8 +84,8 @@
 				      </div>
 				    </div>
 			    </div>
-		    </div> 
+		    </div>  -->
 		</form>
-	</div><!--dialog end-->
-	<!-- <div class="ui-widget-overlay ui-front" style="z-index: 100;"></div> --><!--半透明背景-->
+	</div>
+	<!--dialog end-->
 </div>

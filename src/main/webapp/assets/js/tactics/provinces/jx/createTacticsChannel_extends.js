@@ -48,6 +48,14 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
+		if(!isSelectPlan()){
+			alert("请选择产品!");
+			return;
+		}
+		if(!isSelectCustomGroup()){
+			alert("请选择客户群!");
+			return;
+		}
 		var index = $("#channelList li").index(this);
 		var item=obj[index];
 		
@@ -109,15 +117,8 @@ function selectChannelEvent(event,data){
  * @param addChannelTab 要增加渠道页签 true:是|false:否 
  */
 function clickChannelEventHandler(event, data, addChannelTab){
-	if(!isSelectPlan()){
-		alert("请选择产品!");
-		return;
-	}
-	if(!isSelectCustomGroup()){
-		alert("请选择客户群!");
-		return;
-	}
 	if(addChannelTab) {
+			$("#selectedChannelsDisplayDiv").show();
 			var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
 			var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
 			$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
