@@ -33,7 +33,7 @@ function queryCustomerGroupList(pageNum){
 	//去掉空格
 	var keyWords=$("#cgSearchInput").val().replace(/(^\s*)|(\s*$)/g,"");
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
-	var data={pageNum:pageNum,keyWords:keyWords};
+	var data={pageNum:pageNum,pageSize:12,keyWords:keyWords};
 	$.post(url,data,queryCustomerGroupListSuc);
 }
 /**
