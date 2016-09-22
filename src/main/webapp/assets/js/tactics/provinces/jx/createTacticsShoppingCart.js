@@ -24,7 +24,7 @@ function saveTactics(){
 function initDialog(){
 	$(".save-dialog").dialog({
 		width:600,
-		height:260,
+		height:245,
 		resizable: false,
     modal: true,
     title:"保存",
