@@ -2,12 +2,12 @@
 <div id="planDiv" class="put-center w-818 fleft">
 	<div class="step-title color-333 ft18">选产品</div>
 	<div class="policy-selected-box bg-ebf0f3 over-hidden">
-		<span class="fleft row-name">已选产品：</span>
+		<span class="fleft row-name row-name-product">已选产品：</span>
 		<div id="divChoosedPlan" class="fleft ft12 color-666 policy-selected-right" ></div>
 	</div>
 	<div class="bg-fff">
 		<!--输入框-->
-		<div class="search-box-wrp">
+		<div class="search-box-wrp search-box-wrp-product">
 			<div class="search-box">
 				<p class="fleft">
 					<input id="inputKeywordPlan" name="inputKeywordPlan" placeholder="请输入关键字" type="text">
@@ -61,54 +61,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<!-- 产品详情保存弹窗 -->
-<div class="productDetail-dialog-box container">
-	<div class="own-dialog productDetail-dialog">
-		11111
-	</div><!--dialog end-->
-<!-- 	<div class="ui-widget-overlay ui-front" style="z-index: 100;"></div>半透明背景 -->
-</div>
-
-<!--客户群详情div -->
-<div class="showGroupTypeDialog">
-	<div class="showGroupTypeDialog-content">
-		<table class="showGroupTypeDialog-detail">
-			<tbody>
-			<tr>
-				<td class="title">客户群编码：</td>
-				<td class="showGroupTypeDialog-id"></td>
-				<td class="title">客户群名称：</td>
-				<td class="showGroupTypeDialog-name"></td>
-			</tr>
-			<tr>
-				<td class="title">客户群描述：</td>
-				<td class="showGroupTypeDialog-desc" colspan="3"></td>
-			</tr>
-			<tr>
-				<td class="title">客户群筛选条件：</td>
-				<td class="showGroupTypeDialog-filter" colspan="3"></td>
-			</tr>
-			<tr>
-				<td class="title">客户群创建人：</td>
-				<td class="showGroupTypeDialog-creater"></td>
-				<td class="title">客户群创建时间：</td>
-				<td class="showGroupTypeDialog-createtime"></td>
-			</tr>
-			<tr>
-				<td class="title">客户群周期：</td>
-				<td class="showGroupTypeDialog-updatecycle"></td>
-				<td class="title">客户群接收数据日期：</td>
-				<td class="showGroupTypeDialog-datatime"></td>
-			</tr>
-			<tr>
-				<td class="title">客户群状态：</td>
-				<td class="showGroupTypeDialog-effectivetime"></td>
-				<td class="title">客户群失效日期：</td>
-				<td class="showGroupTypeDialog-failtime"></td>
-			</tr>
-			</tbody>
-		</table>
 	</div>
 </div>
