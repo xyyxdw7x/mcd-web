@@ -6,8 +6,8 @@ label{font-weight: normal;}
 .dropdown-menu{border-radius: 0;box-shadow: none;}
 .col-xs-2,.col-xs-4{text-align:right;}
 /*搜索输入框*/
-.search-box-wrp{padding:15px 0 15px 10px;}
-.search-box-wrp-product{padding-left:1px;}
+.search-box-wrp{padding:15px 0 15px 1px;}
+/* .search-box-wrp-product{padding-left:1px;} */
 .search-box-wrp.fright{padding:0;}
 .search-box{width: 287px;height: 30px;overflow: hidden;margin: 0 0 0 15px; background: #fff;}
 .search-box input{width: 225px;height: 30px; border: 1px solid #e3e3e3; position: relative;font-size: 12px;  line-height: 30px;  padding: 0 0 0 5px;}
@@ -36,11 +36,11 @@ label{font-weight: normal;}
 .btn-wrp0 a{margin-top:10px;}
 .btn-a{text-align: center;display: inline-block;}
 .btn-a:hover{text-decoration: none;}
-.btn-a.btn-a-blue{background: #278cde; color: #fff;border:1px solid #278cde;}
+.btn-a.btn-a-blue{background: #ff9314; color: #fff;border:1px solid #ff9314;}
 .btn-a.btn-a-white{background: #fff;border:1px solid #278cde; color: #278cde;}
 .btn100-30{ width: 100px; height:30px;line-height: 30px;}
 .btn100-30:hover,.btn140-40:hover{color: #fff;}
-.btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #278cde;}
+.btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #ff9314;}
 .btn-wrp a.btn140-40{margin-top:10px;}
 .btn60-26{width: 60px; height:26px;line-height: 26px;font-size: 12px;}
 .btn-group-ft12{margin:0 24px 0 0;}
