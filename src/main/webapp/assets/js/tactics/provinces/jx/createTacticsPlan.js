@@ -132,7 +132,7 @@ tacticsInfo.addPlanClickEvent=function(data){
  */
 tacticsInfo.addPlanSearchEvent=function(){
 	$("#planSearchBtn").click(function(event){
-		tacticsInfo.queryPolicy(1);
+		tacticsInfo.queryPlan(1);
 	});
 }
 /**
@@ -147,7 +147,7 @@ tacticsInfo.renderPageView=function(data){
         nextText:'下一页',
         cssStyle: 'light-theme',
         onPageClick:function(pageNumber,event){
-        	tacticsInfo.queryPolicy(pageNumber);
+        	tacticsInfo.queryPlan(pageNumber);
         }
     });
 }
