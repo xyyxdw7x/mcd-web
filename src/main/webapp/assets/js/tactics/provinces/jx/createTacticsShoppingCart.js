@@ -131,6 +131,7 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 	var dataStr=JSON.stringify(dataObj);
 	$.ajax({
 		url:contextPath+"/tactics/tacticsManage/saveOrUpdate.do",
+		type:"POST",
 		data:{"data":dataStr},
 		success:function(result) {
 			if(result=="0"){
