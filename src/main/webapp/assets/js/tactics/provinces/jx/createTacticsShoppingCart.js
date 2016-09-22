@@ -94,7 +94,7 @@ shopCarInfo.addSaveDialogEvent=function(){
 			alert("请选择渠道");
 			return ;
 		}
-		showDatepicker();
+		shopCarInfo.showDatePicker();
 		$("#saveDialog").dialog({
 			width:600,
 			height:300,
@@ -150,34 +150,17 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 		}
 	});
 }
-
-
-function showDatepicker(){
-	 var  from = $( "#startDate" ).datepicker({
-         changeMonth: true,
-         numberOfMonths: 2,
-         dateFormat:"yyyy-mm-dd"
-       }).on( "change", function() {
-         to.datepicker( "option", "minDate", getDate( this ) );
-       }),
-     to = $( "#endDate" ).datepicker({
-       changeMonth: true,
-       numberOfMonths: 2,
-     dateFormat:"yy-mm-dd"
-     }).on( "change", function() {
-       from.datepicker( "option", "maxDate", getDate( this ) );
+/**
+ * 显示日期组件
+ */
+shopCarInfo.showDatePicker=function(){
+	 var fromDate = $("#startDate" ).datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yy-mm-dd"}).on( "change", function(){
+		 toDate.datepicker("option", "minDate", $.datepicker.parseDate("yy-mm-dd", this.value));
+       });
+     var toDate = $( "#endDate" ).datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yy-mm-dd"}).on( "change", function() {
+    	 fromDate.datepicker( "option", "maxDate", $.datepicker.parseDate("yy-mm-dd", this.value));
      });
 	 $.datepicker.dpDiv.addClass("ui-datepicker-box");
 }
-
-function getDate( element ) {
-    var date;
-    try {
-      date = $.datepicker.parseDate( "yy-mm-dd", element.value );
-    } catch( error ) {
-      date = null;
-    }
-    return date;
-  }
 
 
