@@ -89,11 +89,11 @@ function addChangePlanEvent(){
  * @param data
  */
 function changePlanEvent(event,data){
+	tacticsInfo.plan=data;
 	//data为产品的所有信息
 	//派发事件
 	$("#shopCar").trigger("shopCarChangePlan",data);
-	$("#channelList").trigger("getPlanChange",data);
-	tacticsInfo.plan=data;
+	$("#channelDiv").trigger("getPlanChange",data);
 }
 /**
  *  注册客户群发生变化事件
@@ -119,7 +119,7 @@ function changeCustomerGroupEvent(event,data){
  */
 function addChangeChannelEvent(){
 	//派发事件
-	$("#channelList").bind("changeChannel",changeChannelEvent);
+	$("#channelDiv").bind("changeChannel",changeChannelEvent);
 }
 
 function changeChannelEvent(event,data){

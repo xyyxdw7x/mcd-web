@@ -182,11 +182,10 @@ function addShopCarChangeChannelEvent(){
  * @param data
  */
 function shopCarChangeChannelEvent(event,data){
-	alert(data);
-	$("#selectedChangeChannelUl").html("");
+	$("#selectedChannels").html("");
 	if(data==null||data== undefined){
 		return ;
 	}
 	//将数据绑定到dom元素上
-	$("#selectedChangeChannelUl").data("data",data);
+	$("#selectedChannels").data("data",data);
 }
