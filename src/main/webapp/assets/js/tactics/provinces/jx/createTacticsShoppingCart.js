@@ -1,94 +1,152 @@
+var shopCarInfo={};
 
 /**
  * 暂存架页面初始化
  */
-function initShopCar(){
-	addShopCarChangePlanEvent();
-	addShopCarChangeCustomerGroupEvent();
-	saveTactics();
-	addShopCarChangeChannelEvent();
-}
-
+shopCarInfo.initShopCar=function(){
+	shopCarInfo.addChangePlanEvent();
+	shopCarInfo.addChangeCustomerGroupEvent();
+	shopCarInfo.addChangeChannelEvent();
+	shopCarInfo.addSaveDialogEvent();
+};
 /**
- * 保存策略
+ * 产品发生变化事件
  */
-function saveTactics(){
-	$("#saveTacticsId").click(function() {
-		$(".save-dialog-box").show();
-  	    $(".ui-widget-overlay").show();
-		initDialog();
+shopCarInfo.addChangePlanEvent=function(){
+	$("#shopCar").bind("shopCarChangePlan",function(event,data){
+		$("#selectedPlan").html("");
+		if(data==null){
+			return ;
+		}
+		var planId=data.PLAN_ID;
+		//设置产品名称
+		var liStr="<li id='selectedPlan_"+planId+"' shopCarPlanId='"+planId+"'><span>"+data.PLAN_NAME+"</span></li>";
+		$("#selectedPlan").append(liStr);
+		//将数据绑定到dom元素上
+		$("#selectedPlan_"+planId).data("data",data);
+	});
+};
+/**
+ * 客户群发生变化事件
+ */
+shopCarInfo.addChangeCustomerGroupEvent=function(){
+	$("#shopCar").bind("shopCarChangeCustomerGroup",function(event,data){
+		if(data==null){
+			$("#selectedCg").html("");
+			$("#selectedCg").data("data",null);
+		}
+		//设置客户群名称
+		$("#selectedCg").html(data.customGroupName);
+		//将数据绑定到dom元素上
+		$("#selectedCg").data("data",data);
+	});
+};
+/**
+ * 渠道发生变化
+ */
+shopCarInfo.addChangeChannelEvent=function(){
+	$("#shopCar").bind("shopCarChangeChannel",function(event,data){
+		alert(JSON.stringify(data));
+		if(data==null||data== undefined){
+			return ;
+		}
+		// 先判断是取消还是增加
+		var channelId=data.channelId;
+		var channelName=data.channelName;
+		var channelColumns="";
+		var channelHtmlStr="<li id='selectedChannel_"+channelId+"'><p class='ft14'>"+channelName+"</p><div>"+channelColumns+"</div><hr/></li>";
+		//<p><span class="color-666">短信触发时机：</span><em class="color-333">***********</em></p>
+		//如果渠道已经存在就更新
+		if($("#selectedChannel_"+channelId).length>0){
+			$("#selectedChannel_"+channelId).html(channelHtmlStr);
+		}else{
+			$("#selectedChannels").append(channelHtmlStr);
+		}
+		//将数据绑定到dom元素上
+		//$("#selectedChannels").data("data",data);
+	});
+};
+/**
+ * 点击保存弹出对话框事件
+ */
+shopCarInfo.addSaveDialogEvent=function(){
+	var saveBtnInfo={"class":"dialog-btn dialog-btn-blue","text":"保存","click":function(){
+		shopCarInfo.saveOrCommitTactics(this,false);
+	}};
+	var commitBtnInfo={"class":"dialog-btn dialog-btn-orange","text":"提交审批","click":function(){
+		shopCarInfo.saveOrCommitTactics(this,true);
+	}};
+	$("#saveDialogBtn").click(function(){
+		//判断产品 客户群 渠道是否已经选择 
+		if(tacticsInfo.plan==null){
+			alert("请选择产品");
+			return ;
+		}
+		if(tacticsInfo.custGroup==null){
+			alert("请选择客户群");
+			return ;
+		}
+		if(tacticsInfo.channels==null||tacticsInfo.channels.length==0){
+			alert("请选择渠道");
+			return ;
+		}
 		showDatepicker();
+		$("#saveDialog").dialog({
+			width:600,
+			height:300,
+			resizable: false,
+			modal: true,
+			title:"保存",
+			buttons: [saveBtnInfo,commitBtnInfo]
+		});
+	});
+}
+/**
+ * 保存或提交审批
+ * @param dialog
+ * @param isCommit 是否提交审批
+ */
+shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
+	var campName=$("#tacticsName").val();
+	var putDateStart=$("#startDate").val();
+	var putDateEnd=$("#endDate").val();
+	var planId = tacticsInfo.plan["PLAN_ID"];
+	var customGroupId = tacticsInfo.custGroup["customGroupId"];
+	if(putDateStart>putDateEnd){
+		alert("开始日期不能大于结束日期");
+		return;
+	}
+	var campInfo=new Object();
+	campInfo.planId=planId;
+	campInfo.campName=campName;
+	campInfo.startDate=putDateStart;
+	campInfo.endDate=putDateEnd;
+	campInfo.custgroupId=customGroupId;
+	campInfo.isApprove=isCommit;
+	campInfo.planId=planId;
+	campInfo.isFilterDisturb="0";//是否免打扰
+	var dataObj=new Object();
+	dataObj.channelsInfo=tacticsInfo.channels;
+	dataObj.campInfo=campInfo;
+	var dataStr=JSON.stringify(dataObj);
+	$.ajax({
+		url:contextPath+"/tactics/tacticsManage/saveOrUpdate.do",
+		type:"POST",
+		data:{"data":dataStr},
+		success:function(result) {
+			if(result=="0"){
+				alert("保存策略成功");
+				$(dialog).dialog("close");
+			}else{
+				alert("保存策略失败");
+			}
+		},
+		error:function (event) {
+			alert("保存策略失败");
+		}
 	});
 }
 
-function initDialog(){
-	$(".save-dialog").dialog({
-		width:600,
-		height:245,
-		resizable: false,
-    modal: true,
-    title:"保存",
-    buttons: [{
-        "class":"dialog-btn dialog-btn-blue",
-        "text":"保存",
-        "click": function() {
-        	var _campName=$("#tacticsName").val();
-			var _putDateStart=$("#startDate").val();
-			var _putDateEnd=$("#endDate").val();
-        	var _planid = tacticsInfo.plan.PLAN_ID;
-        	var _planname = tacticsInfo.plan.PLAN_Name;
-        	var customGroupId = tacticsInfo.custGroup.customGroupId;
-        	if(_putDateStart>_putDateEnd){
-				ts.attr("ifclose","false");
-				alert("开始日期不能大于结束日期");
-				return;
-			}
-        	
-        	var _ajaxData="{";
-        	//遍历规则1 规则2...提取所有属性
-        	_ajaxData+='"rule0": {';
-        	_ajaxData+='"channelIds": "901",';
-        	_ajaxData+='"execContent":[';
-        	_ajaxData+='{"channelId":"901","planName":"'+_planname+'","adivId":"1"'+',"execContent":"短信内容",'+'"isHasVar":"true"}';
-        	_ajaxData+='],';
-        	_ajaxData+='"isFilterDisturb": 1';
-        	_ajaxData+='},';
-        	_ajaxData+='"commonAttr": {';
-        	_ajaxData+='"planId": "'+_planid+'",';
-        	_ajaxData+='"campName": "'+_campName+'",';
-        	_ajaxData+='"startDate": "'+_putDateStart+'",';
-        	_ajaxData+= '"endDate": "'+_putDateEnd+'",';
-        	_ajaxData+='"isApprove": "false",';
-        	_ajaxData+='"isFilterDisturb": "0",';
-        	_ajaxData+='"custgroupId": "'+customGroupId+'"';
-        	_ajaxData+='}';
-        	_ajaxData+='}';
-        	
-        	$.ajax({
-        		url:contextPath+"/tactics/tacticsManage/saveOrUpdate.do",
-        		data:{"ruleList":_ajaxData},
-        		success:function(result) {
-        			if(result=="0"){
-        				alert("保存成功");
-        				$(".save-dialog").dialog( "close" );
-        			}
-        		},
-        		error:function (XMLHttpRequest, textStatus, errorThrown) {
-        			alert("保存失败");
-        		}
-        	});
-            $(".ui-widget-overlay").hide();
-        	}
-    	},{
-        "class":"dialog-btn dialog-btn-orange",
-        "text":"提交审批",
-        "click": function() {
-            	$( this ).dialog("close" );
-                $(".ui-widget-overlay").hide();
-        	}
-    	}]
-	});
-}
 
 function showDatepicker(){
 	 var  from = $( "#startDate" ).datepicker({
@@ -119,73 +177,3 @@ function getDate( element ) {
   }
 
 
-
-/**
- *  注册产品变化事件
- */
-function addShopCarChangePlanEvent(){
-	$("#shopCar").bind("shopCarChangePlan",shopCarChangePlanEvent);
-}
-
-/**
- * 产品变化事件
- * @param event
- * @param data
- */
-function shopCarChangePlanEvent(event,data){
-	$("#selectedPlan").html("");
-	if(data==null){
-		return ;
-	}
-	var planId=data.PLAN_ID;
-	//设置产品名称
-	var liStr="<li id='selectedPlan_"+planId+"' shopCarPlanId='"+planId+"'><span>"+data.PLAN_NAME+"</span></li>";
-	$("#selectedPlan").append(liStr);
-	//将数据绑定到dom元素上
-	$("#selectedPlan_"+planId).data("data",data);
-}
-
-/**
- *  注册客户群变化事件
- */
-function addShopCarChangeCustomerGroupEvent(){
-	$("#shopCar").bind("shopCarChangeCustomerGroup",shopCarChangeCustomerGroupEvent);
-}
-
-/**
- * 客户群变化事件
- * @param event
- * @param data
- */
-function shopCarChangeCustomerGroupEvent(event,data){
-	if(data==null){
-		$("#selectedCg").html("");
-		$("#selectedCg").data("data",null);
-	}
-	//设置客户群名称
-	$("#selectedCg").html(data.customGroupName);
-	//将数据绑定到dom元素上
-	$("#selectedCg").data("data",data);
-}
-
-
-/**
- *  注册渠道变化事件
- */
-function addShopCarChangeChannelEvent(){
-	$("#shopCar").bind("shopCarChangeChannel",shopCarChangeChannelEvent);
-}
-
-/**
- * 渠道变化事件
- * @param event
- * @param data
- */
-function shopCarChangeChannelEvent(event,data){
-	$("#selectedChannels").html("");
-	if(data==null||data== undefined){
-		return ;
-	}
-	//将数据绑定到dom元素上
-	$("#selectedChannels").data("data",data);
-}

@@ -1,3 +1,6 @@
+//当前购物车中存放的渠道
+//var channelsInShoppingCar = new Array();
+
 /**
  * 初始化渠道
  */
@@ -12,13 +15,19 @@ function initChannel(){
 function clickCloseChannel(){
 	//tab切换删除按钮
 	$('.trench-header li i').click(function() {
-			var index = $(this).parent('li').index();
-			$(this).parent('li').hide();
-			$(this).parents('.trench-header').siblings('.tab-content').find('.tab-pane').eq(index).hide();
-			var channelId = $(this).parent('li').attr("tabChannelId");
-			$('#channelList li[channelid='+channelId+']').removeClass("active");
-	
+		var channelId = $(this).parent('li').attr("tabChannelId");
+		$('#channelList li[channelid='+channelId+']').removeClass("active");
+		
+		//移除页签
+		$("#li_tabs_channelId_"+channelId).remove();
+		
+		//移除渠道的营销内容
+		$("#href-channelId_"+channelId).remove();
+
+		//渠道页签中的第一个渠道展示
+		firstChannelActive();
 	});
+	
 }
 
 /**
@@ -48,14 +57,6 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
-		if(!isSelectPlan()){
-			alert("请选择产品!");
-			return;
-		}
-		if(!isSelectCustomGroup()){
-			alert("请选择客户群!");
-			return;
-		}
 		var index = $("#channelList li").index(this);
 		var item=obj[index];
 		
@@ -117,32 +118,37 @@ function selectChannelEvent(event,data){
  * @param addChannelTab 要增加渠道页签 true:是|false:否 
  */
 function clickChannelEventHandler(event, data, addChannelTab){
+	if(!isSelectPlan()){
+		alert("请选择产品!");
+		return;
+	}
+	if(!isSelectCustomGroup()){
+		alert("请选择客户群!");
+		return;
+	}
 	if(addChannelTab) {
-			$("#selectedChannelsDisplayDiv").show();
-			var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
-			var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
-			$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
-			
-			//展示此渠道的营销内容
-			var ejsDivTabpanelUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/divTabpanelChannelId.ejs';
-			var div_tabpanel_html = new EJS({url:ejsDivTabpanelUrl}).render({data:data});
-			$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
-			
-			var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
-			var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});//渠道内容
-			$("#href-channelId_"+data.channelId).html(channelContentHtml);
-			clickCommitButtonEventHandler(data);//确定
-			//$("#previewButton_channelId_"+data.channelId).on("click", clickPreviewButtonEventHandler(data));//预览
-			
-			//移除之前添加的渠道页签、对应的内容active
-			$("#selectedChannelsDisplayUl").children("li").first().next().removeClass("active");
-			$("#selectedChannelsContentDisplayDiv").children("div").first().next().removeClass("active");
+		//添加渠道
+		
+		addNewChannelToTab(data);
+		
+		//确定按钮、预览按钮事件处理器添加
+		clickCommitButtonEventHandler(data);//确定
+		//$("#previewButton_channelId_"+data.channelId).on("click", clickPreviewButtonEventHandler(data));//预览
+		
+		//最新加入的channel是active
+		latestAddeddChannelActive();
 	} else {
-			//移除页签
-			$("#li_tabs_channelId_"+data.channelId).remove();
-			
-			//移除渠道的营销内容
-			$("#href-channelId_"+data.channelId).remove();
+		//移除页签
+		$("#li_tabs_channelId_"+data.channelId).remove();
+		
+		//移除渠道的营销内容
+		$("#href-channelId_"+data.channelId).remove();
+		
+		//渠道页签中的第一个渠道展示
+		firstChannelActive();
+		
+//		//通知购物车移除此渠道
+//		callBacllChannel(channelId);
 	}
 	
 	//根据客户群id获取短信变量
@@ -153,7 +159,31 @@ function clickChannelEventHandler(event, data, addChannelTab){
 }
 
 /**
- * 选择渠道确定
+ * 将选中的渠道加入渠道页签列表，同时加载渠道信息
+ * @param data
+ */
+function addNewChannelToTab(data){
+	//将渠道名称加入渠道页签页签
+	var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
+	var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
+	$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
+	
+	//展示此渠道的营销内容
+	var ejsDivTabpanelUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/divTabpanelChannelId.ejs';
+	var div_tabpanel_html = new EJS({url:ejsDivTabpanelUrl}).render({data:data});
+	$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
+	
+	var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
+	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
+	$("#href-channelId_"+data.channelId).html(channelContentHtml);//渠道内容
+}
+
+/**
+ * 在选择渠道录入渠道信息后，点击确定按钮操作的处理。</br>
+ * 当前使用<bold>动态加载javascript脚本</bold>的方式来处理各个渠道的表单内容，可能后边需要再修改。</br>
+ * 步骤：1. 调用动态加载的js中的collectData方法收集表单数据；</br>
+ * 2. 将要加入购物车的渠道id计入本地变量中（将推入购物车的渠道记录下来，渠道被取消时要据此判断是否通知购物车移除渠道）</br>
+ * 3.触发changeChannel事件，将表单数据推给购物车。
  */
 function clickCommitButtonEventHandler(data){
 	$("#conmmitButton_channelId_"+data.channelId).click(function(){
@@ -161,6 +191,7 @@ function clickCommitButtonEventHandler(data){
 		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
 		$.getScript(channelContentcollectJsUrl, function(){
 			newdata = collectData(this, data);
+//			channelsInShoppingCar.push(data.channelId);
 			$("#channelDiv").trigger("changeChannel", newdata);
 		});
 		
@@ -196,6 +227,67 @@ function isSelectPlan(){
 		return false;
 	}
 	return true;
+}
+
+///**
+// * 如果这个渠道已放入购物车，则通知购物车移除此渠道
+// * @param channelId
+// */
+//function callBacllChannel(channelId){
+//	if(channelsInShoppingCar.length>0){
+//		var existsflag = false;
+//		for(var i = 0; i < channelsInShoppingCar.length; i++){
+//			if(channelsInShoppingCar[i] == channelId){
+//				existsflag = true;
+//				break;
+//			}
+//		}
+//	}
+//	channelsInShoppingCar = channelsInShoppingCar.splice();
+//	
+//	
+//	
+//	
+//}
+
+/**
+ * 将排在页签里第一个渠道激活展示
+ * @param data
+ */
+function firstChannelActive(){
+	$("#selectedChannelsDisplayUl li").each(function(){
+		if($(this).index() ==0) {
+			$(this).addClass("active");
+		} else {
+			$(this).removeClass("active");
+		}
+	});
+	
+	$("#selectedChannelsContentDisplayDiv div").each(function(){
+		if($(this).index() ==0) {
+			$(this).addClass("active");
+		} else {
+			$(this).removeClass("active");
+		}
+	});
+}
+
+/**
+ * 之前添加的渠道页签、渠道内容的class属性的active移除，最新加入的channel是active
+ * @param data
+ */
+function latestAddeddChannelActive(){
+	$("#selectedChannelsDisplayUl li").each(function(){
+		if($(this).index() !=0) {
+			$(this).removeClass("active");
+		}
+	});
+	
+	$("#selectedChannelsContentDisplayDiv div").each(function(){
+		if($(this).index() !=0) {
+			$(this).removeClass("active");
+		}
+	});
 }
 
 /**

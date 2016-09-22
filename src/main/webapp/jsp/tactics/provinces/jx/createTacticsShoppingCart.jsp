@@ -31,29 +31,17 @@
 	<div class="info-box">
 		<h5>适配渠道</h5>
 		<div class="custom">
-		<ul id="selectedChannels">
-			<li>
-			<p class="ft14">短信</p>
-				<div>
-					<p>
-						<span class="color-666">短信触发时机：</span><em class="color-333">***********</em>
-					</p>
-				</div>
-				<hr/>
-			</li>
-			
-		</ul>
-
+			<ul id="selectedChannels">
+			</ul>
 		</div>
 	</div>
 	<!--保存按钮-->
 	<div class="btn-wrp  btn-wrp10 text-center bg-ebf0f3">
-		<a href="javascript:;" class="btn140-40" id="saveTacticsId">保存</a>
+		<a href="javascript:;" class="btn140-40" id="saveDialogBtn">保存</a>
 	</div>
-	
-<!-- 新建策略-保存弹窗  dialog start-->
+<!-- 新建策略-保存弹窗 -->
 <div class="save-dialog-box container"  >
-	<div class="own-dialog save-dialog">
+	<div id="saveDialog" class="own-dialog save-dialog">
 		<!-- 内容区 -->
 		<form class="form-horizontal">
 			<div class="form-group">
@@ -72,7 +60,7 @@
 			      	<input type="text" id="endDate" class="form-control">
 			    </div>
 		    </div> 
-		    <!-- <div class="form-group">
+		    <div class="form-group" style="display:none">
 			    <label class="col-sm-4 control-label">营销类型：</label>
 			    <div class="col-sm-6">
 				    <div class="input-group">
@@ -84,8 +72,8 @@
 				      </div>
 				    </div>
 			    </div>
-		    </div>  -->
+		    </div> 
 		</form>
-	</div>
-	<!--dialog end-->
+	</div><!--dialog end-->
+	<!-- <div class="ui-widget-overlay ui-front" style="z-index: 100;"></div> --><!--半透明背景-->
 </div>
