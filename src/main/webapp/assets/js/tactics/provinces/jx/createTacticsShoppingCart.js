@@ -50,8 +50,12 @@ shopCarInfo.addChangeChannelEvent=function(){
 		if(data==null||data== undefined){
 			return ;
 		}
-		// 先判断是取消还是增加
 		var channelId=data.channelId;
+		//先判断是取消还是增加
+		if(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1"){
+			$("#selectedChannel_"+channelId).remove();
+			return ;
+		}
 		var channelName=data.channelName;
 		var channelColumns="";
 		var channelHtmlStr="<li id='selectedChannel_"+channelId+"'><p class='ft14'>"+channelName+"</p><div>"+channelColumns+"</div><hr/></li>";
