@@ -40,7 +40,7 @@
 				<tbody>
 				<tr>
 					<td class="title">客户群编码：</td>
-					<td class="showGroupTypeDialog-id"></td>
+					<td class="showGroupTypeDialog-id title"></td>
 					<td class="title">客户群名称：</td>
 					<td class="showGroupTypeDialog-name"></td>
 				</tr>
