@@ -4,7 +4,7 @@ function collectData(event,data){
 	channelContentInfo.channelName = data.channelName;
 	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
 	channelContentInfo.isLoopSend = $("#channelId_"+data.channelId+"_sendOnce").hasClass("active")? 1:0;
-	channelContentInfo.isHasVar = "1";
+	channelContentInfo.isHasVar = true;
 	
 	
 	return channelContentInfo;
