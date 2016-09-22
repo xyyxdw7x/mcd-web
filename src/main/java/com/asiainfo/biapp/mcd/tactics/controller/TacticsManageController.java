@@ -1858,6 +1858,10 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建活动页面：初始化产品类型模块
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1872,6 +1876,10 @@ public class TacticsManageController extends BaseMultiActionController {
 
 	/**
 	 * 创建活动页面：根据条件查询产品列表
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1880,7 +1888,6 @@ public class TacticsManageController extends BaseMultiActionController {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
 		int pageSize = request.getParameter("pageSize")==null?MpmCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageSize"));
-
 		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum"): "1";
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords"): null;
 		// 产品类型
@@ -1901,7 +1908,11 @@ public class TacticsManageController extends BaseMultiActionController {
 		return pager;
 	}
 	/**
-	 * 创建活动页面：选择产品，返回该产品使用的所有渠道（逗号分隔）
+	 * 创建活动页面：根据所选产品id返回该产品的所有适用渠道（逗号分隔）
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1915,6 +1926,9 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建策略界面：展示渠道列表（选渠道模块）
+	 * @param request
+	 * @param response
+	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1923,7 +1937,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 	
 	/**
-	 * 创建产品界面显示客户群列表。（选客户群模块）
+	 * 创建产品界面：返回客户群列表。（选客户群模块）
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1949,7 +1967,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 	
 	/**
-	 * 创建活动页面，选择渠道时，返回运营位列表
+	 * 创建活动页面，选择渠道时，根据产品id和渠道id返回运营位列表
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1972,7 +1994,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 	
 	/**
-	 * 选择客户群时：初始化该客户群的变量
+	 * 选择客户群时：根据客户群id，返回客户群的所有变量
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -1991,7 +2017,11 @@ public class TacticsManageController extends BaseMultiActionController {
 	}
 	
 	/**
-	 * 保存策略接口
+	 * 保存或更新策略接口
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -2044,6 +2074,10 @@ public class TacticsManageController extends BaseMultiActionController {
 
 	/**
 	 * 根据campsegId修改策略信息 回填修改参数
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -2076,6 +2110,10 @@ public class TacticsManageController extends BaseMultiActionController {
 	
 	/**
 	 * 创建策略界面：查看客户群详情
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping
@@ -2086,7 +2124,11 @@ public class TacticsManageController extends BaseMultiActionController {
 		return data;
 	}
 	/**
-	 * 初始化Boss短信运营位模板
+	 * 返回BOSS运营位的所有短信模板
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping
 	@ResponseBody
@@ -2100,7 +2142,10 @@ public class TacticsManageController extends BaseMultiActionController {
 		return list; 
 	}
 	/**
-	 * 根据产品id查询产品详情
+	 * 根根产品id 返回产品信息
+	 * @param request
+	 * @param response
+	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping
