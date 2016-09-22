@@ -2031,8 +2031,8 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			User user = this.getUser(request, response);
 			String test = request.getParameter("data");
-			JSONObject ruleList = JSONObject.fromObject(test);
-			String commonAttr = ruleList.get("campInfo").toString();// 获取公共属性
+			JSONObject campJson = JSONObject.fromObject(test);
+			String commonAttr = campJson.get("campInfo").toString();// 获取公共属性
 			
 			// 先生成一个父节点，一个子节点
 			McdCampDef campSeginfoBasic = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
@@ -2049,7 +2049,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			campSegInfoList.add(campSeginfoBasic);
 			
 			// 设置子节点的渠道信息
-			String channelsInfo =  ruleList.get("channelsInfo").toString();// 获取公共属性
+			String channelsInfo =  campJson.get("channelsInfo").toString();// 获取公共属性
 			JSONArray channelsInfoArray = JSONArray.fromObject(channelsInfo);				
 			List<McdCampChannelList> mtlChannelDefList = new ArrayList<McdCampChannelList>();
 			for (int j = 0; j < channelsInfoArray.size(); j++) {
