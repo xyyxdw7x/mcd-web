@@ -43,17 +43,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 	@Override
 	public List<McdDimPlanType> initDimPlanType() throws Exception {
 		String sql = "select * from mcd_dim_plan_type d order by d.sort_Num";
-		return this.getJdbcTemplate().query(sql,new RowMapper<McdDimPlanType>() {
-			@Override
-			public McdDimPlanType mapRow(ResultSet rs, int index) throws SQLException {
-				McdDimPlanType tmp = new McdDimPlanType();
-				tmp.setSortNum(rs.getString("sort_num"));
-				tmp.setTypeId(rs.getString("type_id"));
-				tmp.setTypeName(rs.getString("type_name"));
-				tmp.setTypePid(rs.getString("type_pid"));
-				return tmp;
-			}
-		});
+		return this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<McdDimPlanType>(McdDimPlanType.class));
 	}
 	
 	
