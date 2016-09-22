@@ -44,6 +44,14 @@ function addStepNumEventListenter(){
 		if(isNaN(selectedIndex)){
 			return ;
 		}
+		if(selectedIndex==2&&tacticsInfo.plan==null){
+			alert("请选择政策");
+			return ;
+		}
+		if(selectedIndex==3&&tacticsInfo.custGroup==null){
+			alert("请选择客户群");
+			return ;
+		}
 		//动态切换数据的样式
 		$("#stepOl li").removeClass("active");
 		$(event.target).parent().addClass("active");
@@ -130,7 +138,17 @@ function changeChannelEvent(event,data){
 		var channelsArr = new Array(data); 
 		tacticsInfo.channels=channelsArr;
 	}else{
-		tacticsInfo.channels.push(data);
+		//取消渠道选择
+		if(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1"){
+			for(var i=0;i<tacticsInfo.channels.length;i++){
+				var channelItem=tacticsInfo.channels[i];
+				if(channelItem.channelId==data.channelId){
+					tacticsInfo.channels.remove(channelItem);
+				}
+			}
+		}else{
+			tacticsInfo.channels.push(data);
+		}
 	}
 }
 
