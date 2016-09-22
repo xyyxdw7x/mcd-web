@@ -24,6 +24,3 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/jquery.simplePagination.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/pagination.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery-ui.min.js"></script>
-
-
-

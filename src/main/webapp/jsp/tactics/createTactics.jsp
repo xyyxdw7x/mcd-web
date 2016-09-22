@@ -44,6 +44,5 @@
 		<!-- 右侧购物车 -->
 		<jsp:include page="<%=shopCarUrl%>"></jsp:include>
 	</div>
-</div>
 </body>
 </html>
