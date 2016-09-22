@@ -151,10 +151,10 @@ function clickCommitButtonEventHandler(data){
 	$("#conmmitButton_channelId_"+data.channelId).click(function(){
 		var newdata = null;
 		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
-		$.getScript("channelContentcollectJsUrl", function(){
-			newdata = collectData(event,data);
+		$.getScript(channelContentcollectJsUrl, function(){
+			newdata = collectData(this, data);
 		});
-		$("#channelList li").trigger("changeChannel", newdata);
+		$("#channelList").trigger("changeChannel", newdata);
 	});
 }
 

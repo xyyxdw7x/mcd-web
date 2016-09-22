@@ -110,5 +110,26 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .text-area-box .text-mes span{color: #ffa100;margin:0 3px;}
 .see-icon{cursor: pointer; color: #21a3e3; padding-left:14px; background: url(../../../../images/put-img.png) no-repeat -64px -39px; margin-left: 5px; }
 
+.showGroupTypeDialog{
+  display: none;
+}
 
+.showGroupTypeDialog .showGroupTypeDialog-content{
+  width: 100%;
+  height: 90%;
+}
 
+.showGroupTypeDialog .title{
+   width:140px;
+}
+
+.showGroupTypeDialog td{
+  border: 1px solid #DDD3F2;
+  padding-left: 3px;
+}
+
+.showGroupTypeDialog .showGroupTypeDialog-detail{
+  width: 90%;;
+  height: 70%;
+  margin:30px auto;
+}

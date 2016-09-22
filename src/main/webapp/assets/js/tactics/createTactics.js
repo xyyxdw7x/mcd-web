@@ -117,7 +117,12 @@ function changeCustomerGroupEvent(event,data){
  * @param event
  * @param data
  */
-function addChangeChannelEvent(event,data){
+function addChangeChannelEvent(){
+	//派发事件
+	$("#channelList").bind("changeChannel",changeChannelEvent);
+}
+
+function changeChannelEvent(event,data){
 	//派发客户群变化事件，短信渠道需要相应变化变量
 	$("#shopCar").trigger("shopCarChangeChannel",data);
 	//channels为数组
