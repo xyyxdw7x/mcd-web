@@ -28,6 +28,7 @@ var shoppingCart={
 function initShopCar(){
 	addShopCarChangePlanEvent();
 	addShopCarChangeCustomerGroupEvent();
+	addShopCarChangeChannelEvent();
 }
 
 
@@ -77,4 +78,26 @@ function shopCarChangeCustomerGroupEvent(event,data){
 	$("#selectedCg").html(data.customGroupName);
 	//将数据绑定到dom元素上
 	$("#selectedCg").data("data",data);
+}
+
+
+/**
+ *  注册渠道变化事件
+ */
+function addShopCarChangeChannelEvent(){
+	$("#shopCar").bind("shopCarChangeChannel",shopCarChangeChannelEvent);
+}
+
+/**
+ * 渠道变化事件
+ * @param event
+ * @param data
+ */
+function shopCarChangeChannelEvent(event,data){
+	$("#selectedChangeChannelUl").html("");
+	if(data==null||data== undefined){
+		return ;
+	}
+	//将数据绑定到dom元素上
+	$("#selectedChangeChannelUl").data("data",data);
 }
