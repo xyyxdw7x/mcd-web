@@ -97,7 +97,6 @@ tacticsInfo.queryPlan=function(pageNum){
 			// 分页渲染
 			tacticsInfo.renderPageView(data);
 			tacticsInfo.addPlanClickEvent(data);
-			tacticsInfo.addPlanNameClickEvent(data);
 		}
 	
 	});
