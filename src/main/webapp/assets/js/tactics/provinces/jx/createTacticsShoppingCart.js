@@ -138,7 +138,7 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 		type:"POST",
 		data:{"data":dataStr},
 		success:function(result) {
-			if(result=="0"){
+			if(result.flag=="0"){
 				alert("保存策略成功");
 				$(dialog).dialog("close");
 			}else{
