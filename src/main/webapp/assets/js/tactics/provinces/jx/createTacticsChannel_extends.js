@@ -77,7 +77,7 @@ function addChannelEvent(obj){
 		 */
 		var addChannelTab = !hasActive;
 		//clickChannelEventHandler(event,item, addChannelTab);
-		$("#channelList").trigger("clickChannelEvent", [item, addChannelTab]);
+		$("#channelDiv").trigger("clickChannelEvent", [item, addChannelTab]);
 	});
 }
 
@@ -87,7 +87,7 @@ function addChannelEvent(obj){
  * @param data
  */
 function bindClickChannelEvent(){
-	$("#channelList").bind("clickChannelEvent", clickChannelEventHandler);
+	$("#channelDiv").bind("clickChannelEvent", clickChannelEventHandler);
 }
 
 
@@ -95,7 +95,7 @@ function bindClickChannelEvent(){
  * 绑定选择产品事件
  */
 function addPlanEevent(){
-	$("#channelList").bind("getPlanChange",selectChannelEvent);
+	$("#channelDiv").bind("getPlanChange",selectChannelEvent);
 }
 
 /**
@@ -150,7 +150,7 @@ function clickChannelEventHandler(event, data, addChannelTab){
 
 function hintInputWordCount(data){
 	$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
-		var maxWordSize = 240;
+		var maxWordSize = $("#channelId_"+data.channelId+"_wordSize").text();
 		var value = $(this).val();
 		var count = $("#channelId_"+data.channelId+"_wordSize");
 		debugger;
