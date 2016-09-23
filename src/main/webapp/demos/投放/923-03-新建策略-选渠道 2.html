@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>选渠道</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/easyui/themes/default/tooltip.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+    <!--江西 公共导航头部 -->
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-header.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-date.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/put/newCreateTactics.css" />
+	
+	<script src="../../assets/js/jquery/jquery-1.12.4.js"></script>
+	<script src="../../assets/js/bootstrap/bootstrap.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery-ui.min.js"></script>
+	<script src="../../assets/js/easyui/jquery.easyui.min.js"></script>
+	<script src="../../assets/js/jquery/jqueryUI/jquery.ui.datepicker-zh-TW.js"></script>
+	<script src="../../assets/js/jquery/jQueryUI/jquery-ui-timepicker-addon.js"></script>
+</head>
+<body class="bg-fa">
+    <!-- 头部导航 用原来的 st -->
+	<div class="header" id="headerDiv">
+		<div class="inner">
+			<div class="logo">
+				<img style="display: inline;" src="../../assets/images/logos/logo.png">
+			</div>
+			<ul class="loginfo">
+				<li>
+					<a href="javascript(void:0)">导航地图<span class="icon_arrDown"></span></a>
+				</li>
+				<li>
+					<a href="#"><span class="J_userInfo"></span><span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<div class="userImg"><img src="../../assets/images/temp/administrator.png"></div>
+						<dl class="userinfo">
+							<dt class="J_userInfo"></dt>
+							<dd class="J_userDept"></dd>
+							<dd>
+								<span class="icon_activeuser"></span>
+								<div class="activeuser">活跃用户</div>
+							</dd>
+						</dl>
+						<ul class="logout">
+							<li><a href="#">修改密码</a></li>
+							<li><a href="#">个人中心</a></li>
+							<li><a href="#">退出</a></li>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">我的收藏<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>最新加入收藏的</dt>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量272元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+							<dd><a href="javascript:void(0)">取消</a>数据流量280元VIP客户升档营销</dd>
+						</dl>
+						<div class="gotoFav"><input class="btn_blue" type="button" value="去收藏夹"></div>
+					</div>
+				</li>
+				<li>
+					<a href="javascript(void:0)">消息<span class="icon_arrDown"></span></a>
+					<div class="slidedownCT">
+						<dl class="newfavList">
+							<dt>未读新消息</dt>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+							<dd><a href="javascript:void(0)">取消</a>消息名称消息名称</dd>
+						</dl>
+						<div class="gotoFav">
+							<a class="set" href="javascript:void(0)">设置</a>
+							<input class="btn_blue" type="button" value="查看历史消息">
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="nav">
+				<li>
+					首页<span class="icon_arrDown"></span>
+					<ul class="J_children hidden"></ul>
+				</li>
+				<li class="active">
+					投放<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>新建策略</li>
+						<li>策略管理</li>
+						<li>优先级管理</li>
+						<li>群发执行</li>
+						<li>配额管理</li>
+						<li>免打扰管理</li>
+					</ul>
+				</li>
+				<li>
+					人群<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>客户群管理</li>
+						<li>新建客户群</li>
+					</ul>
+				</li>
+				<li>
+					效果<span class="icon_arrDown"></span>
+					<ul class="J_children hidden">
+						<li>效果总览</li>
+						<li>政策效果</li>
+						<li>媒体</li>
+						<li>一线人员效果</li>
+						<li>报表</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="subnav">
+		<!-- 950px -->
+		<div class="width950">
+			<ul class="ul01"></ul>
+			<ul class="ul02"><li class="active" >新建策略</li>
+			<li>策略管理</li>
+			<li>优先级管理</li>
+			<li>群发执行</li>
+			<li>配额管理</li>
+			<li>免打扰管理</li></ul>
+			<ul class="ul03"></ul>
+			<ul class="ul04"></ul>
+			<ul class="ul05"></ul>
+		</div>
+	</div>
+	</div>
+		
+	<!-- 头部导航 用原来的 end -->
+
+	<!-- 新建策略 st -->
+	<div class="put-container w-1200">
+		<!-- 左 -->
+		<div class="put-left fleft ft14 mtop_47">
+			<ol>
+				<li>
+					<span>选政策</span><i>1</i>
+				</li>
+				<li class="line"></li>
+				<li>
+					<span>选客户</span><i>2</i>
+				</li>
+				<li class="line"></li>
+				<li class="active">
+					<span>选渠道</span><i>3</i>
+				</li>
+			</ol>
+		</div>
+		<!-- 中 -->
+		<div class="put-center w-818 fleft">
+			<!--step3***************************st-->
+			<div class="step-title color-333 ft18">选渠道</div>
+			<div class="bg-fff">
+				<!--勾选-->
+				<ul class="content-type-outer-box public-border-ul clearfix">
+					<li class="active">
+						<span><img class="pics" src="../../assets/images/906.png"></span>
+						<span class="type-title">营业厅</span>
+						<img class="selected-img" src="../../assets/images/channelSelected.png">
+					</li>
+					<li class="active">
+						<span><img class="pics" src="../../assets/images/901.png"></span>
+						<span  class="type-title">短信</span>
+						<img class="selected-img" src="../../assets/images/channelSelected.png">
+					</li>
+					<li class="active">
+						<span><img class="pics" src="../../assets/images/910.png"></span>
+						<span  class="type-title">短信夹带</span>
+						<img class="selected-img" src="../../assets/images/channelSelected.png">
+					</li>
+					<li>
+						<span><img class="pics" src="../../assets/images/913.png"></span>
+						<span  class="type-title">VOP</span>
+						<img  class="selected-img" src="../../assets/images/channelSelected.png">
+					</li>
+				</ul>
+				<!--tab2-->
+				<div class="trench-header bg-ebf0f3">
+					<ul class="nav nav-tabs nav-tabs-public ft14 inline-block" role="tablist">
+					   	<li role="presentation" class="active">
+					   		<a href="#trench-0" aria-controls="trench-0" role="tab" data-toggle="tab">短信</a>
+					   		<i class="close">&times;</i>
+					  	</li>
+					   	<li role="presentation">
+					   		<a href="#trench-1" aria-controls="trench-1" role="tab" data-toggle="tab">营业厅</a>
+					   		<i class="close">&times;</i>
+					   	</li>
+					   	<li role="presentation">
+					   		<a href="#trench-2" aria-controls="trench-2" role="tab" data-toggle="tab">短信夹带</a>
+					   		<i class="close">&times;</i>
+					   	</li>
+					   	<li role="presentation">
+					   		<a href="#trench-3" aria-controls="trench-3" role="tab" data-toggle="tab">VOP</a>
+					   		<i class="close">&times;</i>
+					   	</li>
+					</ul>
+				</div>
+				<!--tab2 tab-content -->
+				<div class="tab-content trench-tab-content padding-15">
+					<!-- 短信 -->
+					<div role="tabpanel" id="trench-0"  class="tab-pane active">
+						<div class="left-right-box">
+							<span class="color-333 left ft14">短信推荐用语：</span>
+							<div class="right text-area-box">
+								<textarea></textarea>
+								<p class="ft12 color-999 text-mes">您还可以输入<span>240</span>个字</p>
+							</div>
+						</div>
+						<div class="left-right-box">
+							<span class="color-333 left">营销用语替换变量：</span>
+							<div class="right ft12">
+								<span class="border-item">提醒目标用户号码</span>
+								<span class="border-item">对端号码长号</span>
+								<span class="border-item">对端号码短号</span>
+								<span class="border-item active">提醒目标用户号码</span>
+								<span class="see-icon">查看替换效果</span>
+							</div>
+						</div>
+						<div class="left-right-box">
+							<span class="color-333 left">发送周期：</span>
+							<div class="btn-group btn-group-ft12">
+							  	<button type="button" class="btn">一次性</button>
+							 	<button type="button" class="btn active">周期性</button>
+							 	<label class="cbx-radio-label deliver-btn"><input type="checkbox"/>是否指定派发时间</label>
+							</div>
+							<div class="deliver-btn-show" style="-display: none;">
+								<!--radio-->
+								<div class="raidos-box">
+									<label class="cbx-radio-label" value="0"><input type="radio" name="sel-radio" checked="checked"/>周</label>
+									<label class="cbx-radio-label" value="1"><input type="radio" name="sel-radio" />月</label>
+									<label class="cbx-radio-label" value="2"><input type="radio" name="sel-radio" />时间点</label>
+									<label class="cbx-radio-label" value="3"><input type="radio" name="sel-radio" />时间范围</label>
+								</div>
+								<!--四种单选结果-->
+								<div class="raidos-box-show hasDate-date">
+									<!--value0 周-->
+									<div style="-display: none;">
+										<div class="cbxs-box">
+											<label class="cbx-radio-label" value="0"><input type="checkbox" checked="checked" />周一</label>
+											<label class="cbx-radio-label" value="1"><input type="checkbox" />周二</label>
+											<label class="cbx-radio-label" value="2"><input type="checkbox" checked="checked" />周三</label>
+											<label class="cbx-radio-label" value="3"><input type="checkbox" />周四</label>
+											<label class="cbx-radio-label" value="1"><input type="checkbox" />周五</label>
+											<label class="cbx-radio-label" value="2"><input type="checkbox" />周六</label>
+											<label class="cbx-radio-label" value="3"><input type="checkbox" />周日</label>
+										</div>
+										
+										<div class="add-box clear-both">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input class="input-hidden" type="text" id="datetime" name="datetime">
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<div class="dateFromTo-box">
+													<label for="timeStart">从</label>
+													<input type="text" class="dateInput" id="timeStart"/>
+													<label for="timeEnd">到</label>
+													<input type="text" class="dateInput" id="timeEnd" />
+													<button class="btn btn-defalut btn-primary btn-add addTime">确定添加</button>
+												</div>
+												<div class="timeBox">
+													<!--<span class="policy">
+														<i class="close"> &times;</i>
+														<em>9:00-11:00</em>
+													</span>
+													<span class="policy">
+														<i class="close"> &times;</i>
+														<em>9:00-11:00</em>
+													</span>-->
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									<!--value1 月-->
+									<div style="display: none;">
+										<div class="add-box clear-both ">
+											<div class="mright_10 input-hidden-box width-80 fleft">
+												<input type="text" class="input-hidden" id="dateDD" />
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="mright_10 per-month">每月</span>
+												<!--<span class="policy">
+													<i class="close"> &times;</i>
+													<em>15日</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>25日</em>
+												</span>-->
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
+									</div>
+									<!--value2 时间点-->
+									<div style="display: none;">
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden"  id="dateMD" />
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<!--<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9月15日</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9月25日</em>
+												</span>-->
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
+									</div>
+									<!--value3 时间范围-->
+									<div style="display: none;">
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<span class="add-btn add-date">添加日期</span>
+											</div>
+											<div class="con-right fleft">
+												<div class="dateFromTo-box">
+													<label for="dateStart">从</label>
+													<input type="text" class="dateInput" id="dateStart"/>
+													<label for="dateEnd">到</label>
+													<input type="text" class="dateInput" id="dateEnd" />
+													<button class="btn btn-defalut btn-primary btn-add addDate">确定添加</button>
+												</div>
+												<div class="dateBox">
+													<!--<span class="policy">
+														<i class="close"> &times;</i>
+														<em>7月15日-7月25日</em>
+													</span>
+													<span class="policy">
+														<i class="close"> &times;</i>
+														<em>7月15日-7月25日</em>-->
+													</span>
+												</div>
+												
+											</div>
+										</div>
+										<div class="add-box clear-both ">
+											<div class="mright_10 width-80 fleft input-hidden-box">
+												<input type="text" class="input-hidden" />
+												<span class="add-btn add-time">添加时段</span>
+											</div>
+											<div class="con-right fleft">
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+												<span class="policy">
+													<i class="close"> &times;</i>
+													<em>9:00-11:00</em>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="btns-wrp over-hidden">
+							<p class="fright">
+								<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue">确定</a>
+								<a href="javascript:;" class="btn60-26 btn-a btn-a-white">预览</a>
+							</p>
+							
+						</div>
+					</div>
+					<!-- 营业厅 -->
+					<div role="tabpanel" id="trench-1" class="tab-pane">
+						<!-- 推荐用语 -->
+						<div class="left-right-box">
+							<span class="color-333 left ft14">推荐用语：</span>
+							<div class="right text-area-box">
+								<textarea></textarea>
+								<p class="ft12 color-999 text-mes">您还可以输入<span>240</span>个字</p>
+							</div>
+						</div>
+						<!--按钮  -->
+						<div class="btns-wrp over-hidden">
+							<p class="fright">
+								<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue">确定</a>
+								<a href="javascript:;" class="btn60-26 btn-a btn-a-white">预览</a>
+							</p>
+							
+						</div>
+					</div>
+					<!-- 短信夹带 -->
+					<div role="tabpanel" id="trench-2" class="tab-pane">
+						<!--短信模板  -->
+						<div class="left-right-box">
+							<span class="color-333 left ft14">短信模板：</span>
+							<div class="right width-auto">
+								<div class="left-mes">
+									<span class="color-333  ft12 ftB">到期短信</span>
+									<ul class="public-border-ul mesOld-ul">
+										<li class="active">
+											<span class="type-title">终端押金</span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip" 
+											 data-placement="bottom"
+											 title=" Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容Tooltip的内容">
+											<span class="type-title">资费押金</span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">积分押金</span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">话费押金 </span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">宽带押金  </span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">三网押金  </span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">集团押金  </span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+										<li  data-toggle="tooltip"   data-placement="bottom" title=" Tooltip的内容">
+											<span class="type-title">数据押金 </span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+
+										                                   
+
+									</ul>
+									<script>
+									    $(function () {
+									    	$("[data-toggle='tooltip']").tooltip({
+									    	});
+									    });
+									</script>
+							</div><!-- left-mes结束 -->
+							<div class="left-mes">
+									<span class="color-333  ft12 ftB">到期短信</span>
+									<ul class="public-border-ul mesOld-ul">
+										<li class="active">
+											<span class="type-title">流量提醒</span>
+											<img class="selected-img" src="../../assets/images/channelSelected-2.png">
+										</li>
+									</ul>
+							</div><!-- left-mes结束 -->
+							</div>
+						</div>
+						<!-- 推荐用语 -->
+						<div class="left-right-box">
+							<span class="color-333 left ft14">推荐用语：</span>
+							<div class="right text-area-box">
+								<textarea></textarea>
+								<p class="ft12 color-999 text-mes">您还可以输入<span>240</span>个字</p>
+							</div>
+						</div>
+						<!--按钮  -->
+						<div class="btns-wrp over-hidden">
+							<p class="fright">
+								<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue">确定</a>
+								<a href="javascript:;" class="btn60-26 btn-a btn-a-white">预览</a>
+							</p>
+							
+						</div>
+					</div>
+					<!-- VOP -->
+					<div role="tabpanel" id="trench-3" class="tab-pane">
+						<!-- 运营位 -->
+						<ol class="opera-ol">
+							<li>
+								<div class='opera-top'>
+									<img  src="../../assets/images/put/opera-1.png"/>
+									<div class="op-bg"></div>
+									<div class="op-add"></div>
+								</div>
+								<p class="opera-bot text-center ft-14">
+								  	底部运营位
+								  	<a href="javascript:;" class="opera-btn fright"></a>
+								</p>
+							</li>
+							<li class="active">
+								<div class='opera-top'>
+									<img  src="../../assets/images/put/opera-1.png"/>
+									<div class="op-bg"></div>
+									<div class="op-add"></div>
+								</div>
+								<p class="opera-bot text-center ft-14">
+								  	流量专区手机
+								  	<a href="javascript:;" class="opera-btn fright"></a>
+								</p>
+							</li>
+						</ol>
+						<!-- 推荐用语 -->
+						<div class="left-right-box">
+							<span class="color-333 left ft14">推荐用语：</span>
+							<div class="right text-area-box">
+								<textarea></textarea>
+								<p class="ft12 color-999 text-mes">您还可以输入<span>240</span>个字</p>
+							</div>
+						</div>
+						<!--按钮  -->
+						<div class="btns-wrp over-hidden">
+							<p class="fright">
+								<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue">确定</a>
+								<a href="javascript:;" class="btn60-26 btn-a btn-a-white">预览</a>
+							</p>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--step2***************************end-->
+		</div>
+		<!-- 右 -->
+		<div class="put-right fright bg-fff">
+			<div class="top-hd">工作站 </div>
+			<div class="info-box">
+				<h5>适配产品</h5>
+				<ul>
+					<li>600000379265 新生礼包-飞享10月底前保底58返58-7月受理</li>
+				</ul>
+			</div>
+			<div class="info-box">
+				<h5>适配客户群</h5>
+				<div class="custom">
+					<span class="color-333 mright_10">北京测试客户群3</span>
+				</div>
+			</div>
+			<div class="info-box">
+				<h5>适配渠道</h5>
+				<div class="custom">
+					<p class="ft14">短信</p>
+					<div>
+						<p><span class="color-666">短信触发时机：</span><em class="color-333">***********</em> </p>
+						<p><span class="color-666">营销用语替换变量：</span><em class="color-333">*********** *********** *********** *********** </em> </p>
+    					<p><span class="color-666">发送周期：</span><em class="color-333">周期性</em> </p>
+    					<p><span class="color-666">派发时间：</span><em class="color-333">从2016-08开始，每个月1号 </em> </p>
+    					<p><span class="color-666">频次控制：</span><em class="color-333">*********** </em> </p>
+    					<p><span class="color-666">免打扰用户：</span><em class="color-333">主动要求屏蔽客户；敏感投诉客户；黑名单******</em> </p>
+    					<p><span class="color-666 block">群发用语：</span><em class="color-333">***************************************************************</em> </p>
+					</div>
+					<hr />
+					<p class="ft14">短信夹带</p>
+					<p><span class="color-333 mright_10">***********</span><span class="color-333 mright_10">***********</span><span class="color-333 mright_10">***********</span></p>
+				</div>
+			</div>
+			<!--保存按钮-->
+			<div class="btn-wrp  btn-wrp10 text-center bg-ebf0f3">
+				<a href="javascript:;" class="btn140-40">保存</a>
+			</div>
+		</div>
+	</div>
+	<!-- 新建策略 end -->
+</div>
+</body>
+</html>
+
+
+<!--展示静态交互用js 可参考 可略过-->
+<script src="../js/put.channelSelection.js" type="text/javascript" charset="utf-8"></script>
+
