@@ -34,13 +34,20 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			StringBuffer buffer = new StringBuffer();
 			parameterList.add(currentUserId);
 			parameterList.add(currentUserId);
-			buffer.append("SELECT COUNT(*) FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time from mcd_custgroup_def left join (")
+			
+			buffer.append("SELECT  (1) FROM MCD_CUSTGROUP_DEF cgd ");
+			buffer.append(" WHERE (CREATE_USER_ID = ? or cgd.custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?)) ")
+			 .append(" and custom_status_id not in (2,9)")
+		 	 .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
+			
+		/*	buffer.append("SELECT COUNT(*) FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time from mcd_custgroup_def left join (")
 		 	   .append(" select A.Custom_Group_Id,B.data_time from (")
 		 	   .append(" select max(list_table_name) list_table_name, max(data_date ),Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
 		 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
 		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_def.create_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 			   .append(" and custom_status_id not in (2,9)")
-		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
+		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)");*/ //失效时间计算
+			
 			if(StringUtils.isNotEmpty(keyWords)){
 				if(keyWords.equals("%")){
 					buffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
@@ -68,24 +75,36 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			parameterList.add(currentUserId);
 			parameterList.add(currentUserId);
 			
-			sbuffer.append("SELECT * FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time,mcd_custgroup_tab_list.max_data_time from mcd_custgroup_def left join (")
+			sbuffer.append("SELECT * FROM MCD_CUSTGROUP_DEF cgd ");
+			
+			sbuffer.append("  LEFT OUTER JOIN").append("(")
+			     .append("select custom_group_id,data_time,list_table_name from (select (row_number()over(partition by custom_group_id order by data_date)) rn,t.* from mcd_custgroup_tab_list t) where rn=1")
+			.append(") cgl ");
+			sbuffer.append(" on cgd.Custom_Group_Id = cgl.custom_group_id ");
+			
+			sbuffer.append(" WHERE (CREATE_USER_ID = ? or cgd.custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?)) ")
+			 .append(" and custom_status_id not in (2,9)")
+		 	 .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
+			
+			/*sbuffer.append("SELECT * FROM (select mcd_custgroup_def.*,mcd_custgroup_tab_list.data_time,mcd_custgroup_tab_list.max_data_time from mcd_custgroup_def left join (")
 		 	   .append(" select A.Custom_Group_Id,A.max_data_time,B.data_time from (")
 		 	   .append(" select max(list_table_name) list_table_name, max(data_date ) max_data_time,Custom_Group_Id from mcd_custgroup_tab_list group by Custom_Group_Id")
 		 	   .append("  ) A left join mcd_custgroup_tab_list B on A.list_table_name = B.list_table_name)")
 		 	   .append(" mcd_custgroup_tab_list on mcd_custgroup_def.Custom_Group_Id = mcd_custgroup_tab_list.custom_group_id order by mcd_custgroup_tab_list.max_data_time desc) WHERE (CREATE_USER_ID = ? or custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))")
 		 	   .append(" and custom_status_id not in (2,9)")
 		 	   .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
+           */			
 			if(StringUtils.isNotEmpty(keyWords)){
 				if(keyWords.equals("%")){
 					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
 				}else{
-					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ?");
-					sbuffer.append(" OR CUSTOM_GROUP_ID LIKE ?)");
-					
+					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ? OR CUSTOM_GROUP_ID LIKE ?)");
 					parameterList.add("%" + keyWords + "%");
 					parameterList.add("%" + keyWords + "%");
 				}
 			}
+			sbuffer.append(" order by cgl.data_time desc");
+			
 			String sqlExt = DataBaseAdapter.getPagedSql(sbuffer.toString(), pager.getPageNum(),pager.getPageSize());
 			list = this.getJdbcTemplate().queryForList(sqlExt.toString(),parameterList.toArray());
 			for (Map<String, Object> map : list) {
