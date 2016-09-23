@@ -61,6 +61,7 @@
 }
 .ui-dialog .dialog-btn-orange{
     background: #ff9314;
+    margin-right:153px !important;
 }
 /*保存*/
 .own-dialog{
@@ -77,3 +78,4 @@
 .width-118{width: 118px;}
 .width-130{width: 130px;}
 .productDetail-dialog .text-left{color: #666;}
+.date-error{padding-left:188px;}

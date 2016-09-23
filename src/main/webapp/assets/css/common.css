@@ -232,3 +232,6 @@ table {
 .border-top-0{
 	border-top:0 !important;
 }
+.input-error{
+	border-color:#f04124 !important;
+}
