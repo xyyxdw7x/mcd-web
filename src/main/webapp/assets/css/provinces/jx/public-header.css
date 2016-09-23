@@ -23,6 +23,7 @@
 
 .header .inner .logo img {
 	height: 42px;
+	display: none;
 }
 
 .header .inner .loginfo {
@@ -45,6 +46,7 @@
 	cursor: pointer;
 	line-height: inherit;
 	display: inline-block;
+	display: none;
 	z-index: 3;
 }
 
@@ -72,6 +74,7 @@
 	right: 0;
 	border: 1px solid #e1e1e1;
 	background-color: #fff;
+	display: none;
 	z-index: 120;
 	cursor: auto;
 	line-height: 20px;
@@ -245,6 +248,7 @@
 	left: 43%;
 	right: inherit;
 	z-index: 99;
+	display: none;
 	bottom: 0px;
 	border: 5px solid transparent;
 	border-bottom: 5px solid #278bdd;
@@ -290,6 +294,7 @@
 	height: 32px;
 	overflow: hidden;
 	margin: 0 auto;
+	display: none;
 }
 .header .subnav ul.active{
 	display: inline-block;

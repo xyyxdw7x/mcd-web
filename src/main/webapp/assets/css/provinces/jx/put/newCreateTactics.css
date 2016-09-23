@@ -109,7 +109,25 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .text-area-box .text-mes{position: absolute; right:-50px;bottom:0; font-size: 10px;}
 .text-area-box .text-mes span{color: #ffa100;margin:0 3px;}
 .see-icon{cursor: pointer; color: #21a3e3; padding-left:14px; background: url(../../../../images/put-img.png) no-repeat -64px -39px; margin-left: 5px; }
-
+/* opera-ol */
+.opera-ol{overflow:hidden;margin:0 0 10px 141px;}
+.opera-ol li{float:left; margin:10px 22px 0 0; border:1px solid #dee8f2;width:262px;height:189px;cursor:pointer;}
+.opera-ol li .opera-top{position:relative;height:139px;}
+.opera-ol li .opera-top img{width:260px;height:139px; z-index:1;position:absolute;left:0;top:0;}
+.opera-ol li .opera-top .op-bg{z-index:2;position:absolute;left:0;top:0;width:100%;height:100%;background:#000;opacity:0.3;filter:alpha(opacity=30);}
+.opera-ol li .opera-top .op-add{z-index:3;position:absolute; width:34px; height:34px; background: url(../../../../images/put-img.png) no-repeat -4px -233px;position:absolute;right:110px; top:50px;}
+.opera-ol li.active .opera-top .op-add{background: url(../../../../images/put-img.png) no-repeat -60px -233px;position:absolute;right:110px; top:50px;}
+.opera-ol li .opera-bot{margin-bottom:0;background:#f1f9fb;height:48px;line-height:48px; position:relative;}
+.opera-ol li.active .opera-bot{background:#1d89e0;color:#fff;}
+.opera-ol li.active .opera-bot .opera-btn{display:inline-block;}
+.opera-btn{display:none; width:34px; height:34px; background: url(../../../../images/put-img.png) no-repeat -109px -235px;position:absolute;right:10px; top:8px;}
+/*mesOld-ul  */
+.mesOld-ul li{width:100px;height:30px; padding:0 15px; margin:0 8px 8px 0; text-align:center;line-height:28px; font-size:12px;}
+.left-mes{overflow:hidden;}
+.left-mes .ftB{width:68px;float:left;margin:5px 0 0 22px;}
+.left-mes ul{width:443px;-background:red; float:left;}
+/* .left-right-box .width-auto{width:90%;} */
+/* showGroupTypeDialog */
 .showGroupTypeDialog{
   display: none;
 }
@@ -136,3 +154,20 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
   height: 70%;
   margin:30px auto;
 }
+
+
+.ui-tooltip{
+	background:#f1f9fb;
+	border:2px solid #aec3d4 !important;
+	border-radius:0;
+	text-shadow:none;
+}
+.ui-tooltip > div{
+	background:#fff;
+	padding:2px;
+}
+.btns-wrp{padding-right:4px;}
+
+
+
+
