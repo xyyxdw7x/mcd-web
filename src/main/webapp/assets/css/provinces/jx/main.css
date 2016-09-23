@@ -35,11 +35,11 @@ label{font-weight: normal;}
 .btn-wrp a{margin-top:15px;}
 .btn-wrp0 a{margin-top:10px;}
 .btn-a{text-align: center;display: inline-block;}
-.btn-a:hover{text-decoration: none;}
+.btn-a:hover,.btn-a:link,.btn-a:active{text-decoration: none;}
 .btn-a.btn-a-blue{background: #ff9314; color: #fff;border:1px solid #ff9314;}
 .btn-a.btn-a-white{background: #fff;border:1px solid #278cde; color: #278cde;}
 .btn100-30{ width: 100px; height:30px;line-height: 30px;}
-.btn100-30:hover,.btn140-40:hover{color: #fff;text-decoration:none;}
+.btn100-30:hover,.btn100-30:active,.btn100-30:link,.btn140-40:hover,.btn140-40:link,.btn140-40:active{color: #fff;text-decoration:none;}
 .btn140-40{color: #fff;display: inline-block; width: 140px; height:40px;line-height: 40px;text-align: center;background: #ff9314;}
 .btn-wrp a.btn140-40{margin-top:10px;}
 .btn60-26{width: 60px; height:26px;line-height: 26px;font-size: 12px;}

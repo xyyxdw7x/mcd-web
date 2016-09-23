@@ -155,17 +155,6 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
   margin:30px auto;
 }
 
-
-.ui-tooltip{
-	background:#f1f9fb;
-	border:2px solid #aec3d4 !important;
-	border-radius:0;
-	text-shadow:none;
-}
-.ui-tooltip > div{
-	background:#fff;
-	padding:2px;
-}
 .btns-wrp{padding-right:4px;}
 
 
