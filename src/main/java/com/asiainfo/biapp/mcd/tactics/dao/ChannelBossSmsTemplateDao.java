@@ -3,6 +3,7 @@ package com.asiainfo.biapp.mcd.tactics.dao;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimSmsbossTemplateType;
 
 /**
  * 
@@ -17,7 +18,18 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 public interface ChannelBossSmsTemplateDao {
 	public List<ChannelBossSmsTemplate> initMtlChannelBossSmsTemplate();
 
-	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type);
+	/**
+	 * 根据模板类型获得所有的模板
+	 * @param type
+	 * @return
+	 */
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(String type);
+   /**
+    * 获得模板的所有类型
+    * @return
+    */
+	public List<McdDimSmsbossTemplateType> getBossSmsTemplateTypes();
+
 }
 
 

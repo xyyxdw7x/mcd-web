@@ -58,6 +58,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimAdivInfo;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimSmsbossTemplateType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
@@ -2131,19 +2132,14 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@RequestMapping
 	@ResponseBody
-	public Map<String,List<ChannelBossSmsTemplate>> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
-		Map<String,List<ChannelBossSmsTemplate>> map = new HashMap<String,List<ChannelBossSmsTemplate>>();
-		List<ChannelBossSmsTemplate> txList = null;
-		List<ChannelBossSmsTemplate> dqList = null;
+	public List<McdDimSmsbossTemplateType> getBossSmsTemplate(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		List<McdDimSmsbossTemplateType> rs = null;
 		try {
-			txList = channelBossSmsTemplateService.getBossSmsTemplateByType(1);
-			dqList = channelBossSmsTemplateService.getBossSmsTemplateByType(2);
-			map.put("remindSms", txList);
-			map.put("expireSms", dqList);
+			rs = channelBossSmsTemplateService.getBossSmsTemplateTypes();
 		} catch (Exception e) {
 			log.error("", e);
 		}
-		return map; 
+		return rs; 
 	}
 	/**
 	 * 根根产品id 返回产品信息

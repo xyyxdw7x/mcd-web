@@ -11,6 +11,7 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.tactics.dao.ChannelBossSmsTemplateDao;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimSmsbossTemplateType;
 
 /**
  * 
@@ -39,12 +40,25 @@ public class ChannelBossSmsTemplateDaoImpl  extends JdbcDaoBase implements Chann
 	}
 	
 	@Override
-	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type) {
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(String type) {
 		List<ChannelBossSmsTemplate> result = new ArrayList<ChannelBossSmsTemplate>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE where type='"+type+"'");
+			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE where TEMPLATE_TYPE_ID='"+type+"'");
 			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<ChannelBossSmsTemplate>(ChannelBossSmsTemplate.class));
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return result;
+	}
+	
+	@Override
+	public List<McdDimSmsbossTemplateType> getBossSmsTemplateTypes() {
+		List<McdDimSmsbossTemplateType> result = new ArrayList<McdDimSmsbossTemplateType>();
+		try {
+			StringBuffer sbuffer = new StringBuffer();
+			sbuffer.append("SELECT  * FROM mcd_dim_smsboss_template_type");
+			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<McdDimSmsbossTemplateType>(McdDimSmsbossTemplateType.class));
 		} catch (Exception e) {
 			log.error(e);
 		}

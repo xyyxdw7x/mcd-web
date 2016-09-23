@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.tactics.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.tactics.dao.ChannelBossSmsTemplateDao;
 import com.asiainfo.biapp.mcd.tactics.service.ChannelBossSmsTemplateService;
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimSmsbossTemplateType;
 
 /**
  * 
@@ -36,8 +38,26 @@ public class ChannelBossSmsTemplateServiceImpl implements ChannelBossSmsTemplate
 		return channelBossSmsTemplateDao.initMtlChannelBossSmsTemplate();
 	}
 	@Override
-	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type){
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(String type){
 		return channelBossSmsTemplateDao.getBossSmsTemplateByType(type);
+	}
+	@Override
+	public List<McdDimSmsbossTemplateType>  getBossSmsTemplateTypes(){
+		 List<ChannelBossSmsTemplate> templates = channelBossSmsTemplateDao.initMtlChannelBossSmsTemplate();
+		 List<McdDimSmsbossTemplateType>  types = channelBossSmsTemplateDao.getBossSmsTemplateTypes();
+		 for(int i=0;i<types.size();i++){
+			 McdDimSmsbossTemplateType type =  types.get(i);
+			 List<ChannelBossSmsTemplate> tmp = new ArrayList<ChannelBossSmsTemplate>();
+			 for(int j=0;j<templates.size();j++){
+				 ChannelBossSmsTemplate template =templates.get(j);
+				 if(type.getTypeId()==template.getTemplateTypeId()){
+					 tmp.add(template);
+				 }
+			 }
+			 type.setTemplates(tmp);
+		 }
+		return types;
+
 	}
 }
 

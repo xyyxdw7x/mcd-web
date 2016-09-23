@@ -3,6 +3,7 @@ package com.asiainfo.biapp.mcd.tactics.service;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimSmsbossTemplateType;
 
 /**
  * 
@@ -16,8 +17,8 @@ import com.asiainfo.biapp.mcd.tactics.vo.ChannelBossSmsTemplate;
 
 public interface ChannelBossSmsTemplateService {
 	public List<ChannelBossSmsTemplate> initMtlChannelBossSmsTemplate();
-
-	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(int type);
+	public List<ChannelBossSmsTemplate> getBossSmsTemplateByType(String type);
+	public List<McdDimSmsbossTemplateType> getBossSmsTemplateTypes();
 }
 
 

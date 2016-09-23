@@ -20,16 +20,10 @@ public class ChannelBossSmsTemplate {
 	private String templateName;
 	@Column(name="TEMPLATE_CONTENT")
 	private String templateContent;
+	@Column(name="TEMPLATE_TYPE_ID")
 	private String templateTypeId;
-	@Column(name="TYPE")
-	private int type;
 	
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
+
 	public String getTemplateTypeId() {
 		return templateTypeId;
 	}
