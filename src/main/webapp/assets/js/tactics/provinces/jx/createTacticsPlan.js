@@ -1,28 +1,28 @@
-var tacticsInfo={};
+var planInfo={};
 /**
  * 初始化产品页面
  */
-tacticsInfo.initPlan=function(){
-	tacticsInfo.initPlanView();
-	tacticsInfo.addEventListenter();
+planInfo.initPlan=function(){
+	planInfo.initPlanView();
+	planInfo.addEventListenter();
 };
 /**
  * 初始化页面元素
  */
-tacticsInfo.initPlanView=function(){
-	tacticsInfo.loadDimInfo();
-	tacticsInfo.queryPlan();
+planInfo.initPlanView=function(){
+	planInfo.loadDimInfo();
+	planInfo.queryPlan();
 }
 /*
  * 绑定事件
  */
-tacticsInfo.addEventListenter=function(){
-	tacticsInfo.addPlanSearchEvent();
+planInfo.addEventListenter=function(){
+	planInfo.addPlanSearchEvent();
 };
 /**
  * 加载产品类别和渠道类型数据
  */
-tacticsInfo.loadDimInfo=function(){
+planInfo.loadDimInfo=function(){
 	var ejsUrlPlanTypes=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimPlanTypes.ejs';
 	var ejsUrlChannels=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimChannels.ejs';
 	$.ajax({
@@ -38,37 +38,37 @@ tacticsInfo.loadDimInfo=function(){
 			//渠道类型
 			var channelTypesHtml = new EJS({url:ejsUrlChannels}).render({data:data.channels});
 			$("#divDimChannels").html(channelTypesHtml);
-			tacticsInfo.addDimChangeEvent();
+			planInfo.addDimChangeEvent();
 		}
 	});
 };
 /**
  * 产品类型  产品类别  渠道类型 切换过滤产品事件
  */
-tacticsInfo.addDimChangeEvent=function(){
+planInfo.addDimChangeEvent=function(){
 	// 初始化产品类别
 	$("#divDimPlanTypes > span").on('click', function(){
 		var $target = $(this);
 		$target.addClass("active").siblings().removeClass("active");
-		tacticsInfo.queryPlan(1);
+		planInfo.queryPlan(1);
 	});
 	// 初始化产品类型
 	$("#divDimPlanSrvType > span").on('click', function(){
 		var $target = $(this);
 		$target.addClass("active").siblings().removeClass("active");
-		tacticsInfo.queryPlan(1);
+		planInfo.queryPlan(1);
 	});
 	// 初始化渠道类型
 	$("#divDimChannels > span").on('click', function(){
 		var $target = $(this);
 		$target.addClass("active").siblings().removeClass("active");
-		tacticsInfo.queryPlan(1);
+		planInfo.queryPlan(1);
 	});
 };
 /**
  * 查询产品列表
  */
-tacticsInfo.queryPlan=function(pageNum){
+planInfo.queryPlan=function(pageNum){
 	var keyword=$("#inputKeywordPlan").val().replace(/(^\s*)|(\s*$)/g,"");;
 	var planTypeId = $("#divDimPlanTypes span.active").attr("planTypeId");
 	var planSrvType = $("#divDimPlanSrvType span.active").attr("planSrvType")
@@ -95,8 +95,8 @@ tacticsInfo.queryPlan=function(pageNum){
 			$('.public-table tbody tr:nth-child(2n+1)').addClass('odd');
 			$('.public-table tbody tr:nth-child(2n)').addClass('even');
 			// 分页渲染
-			tacticsInfo.renderPageView(data);
-			tacticsInfo.addPlanClickEvent(data);
+			planInfo.renderPageView(data);
+			planInfo.addPlanClickEvent(data);
 		}
 	
 	});
@@ -104,7 +104,7 @@ tacticsInfo.queryPlan=function(pageNum){
 /**
  * 注册产品点击事件
  */
-tacticsInfo.addPlanClickEvent=function(data){
+planInfo.addPlanClickEvent=function(data){
 	$("#tbodyPlansList .btn-a-blue").on("click", function(event){
 		var index = $("#tbodyPlansList .btn-a-blue").index(this);
 		var item=data.result[index];
@@ -130,15 +130,15 @@ tacticsInfo.addPlanClickEvent=function(data){
 /**
  * 点击查询按钮事件
  */
-tacticsInfo.addPlanSearchEvent=function(){
+planInfo.addPlanSearchEvent=function(){
 	$("#planSearchBtn").click(function(event){
-		tacticsInfo.queryPlan(1);
+		planInfo.queryPlan(1);
 	});
 }
 /**
  * 分页显示组件
  */
-tacticsInfo.renderPageView=function(data){
+planInfo.renderPageView=function(data){
 	$("#divPlansPage").pagination({
         items: data.totalSize,
         itemsOnPage: data.pageSize,
@@ -147,11 +147,11 @@ tacticsInfo.renderPageView=function(data){
         nextText:'下一页',
         cssStyle: 'light-theme',
         onPageClick:function(pageNumber,event){
-        	tacticsInfo.queryPlan(pageNumber);
+        	planInfo.queryPlan(pageNumber);
         }
     });
 }
-tacticsInfo.formatDate=function(now) {
+planInfo.formatDate=function(now) {
 	var year=now.getUTCFullYear();
 	var month=now.getMonth()+1;
 	var date=now.getDate();

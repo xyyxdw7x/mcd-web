@@ -46,7 +46,6 @@ shopCarInfo.addChangeCustomerGroupEvent=function(){
  */
 shopCarInfo.addChangeChannelEvent=function(){
 	$("#shopCar").bind("shopCarChangeChannel",function(event,data){
-		alert(JSON.stringify(data));
 		if(data==null||data== undefined){
 			return ;
 		}

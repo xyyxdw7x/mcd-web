@@ -28,7 +28,7 @@ function addEventListenter(){
  */
 function initView(){
 	// 初始化筛选条件
-    tacticsInfo.initPlan();
+	planInfo.initPlan();
 	//调用子页面的函数
 	initCustomerGroup();
 	shopCarInfo.initShopCar();
