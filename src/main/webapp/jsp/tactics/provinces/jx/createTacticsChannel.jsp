@@ -7,7 +7,7 @@
 		</ul>
 		
 		<!-- 展示已选渠道的div -->
-		<div class="trench-header bg-ebf0f3" id="selectedChannelsDisplayDiv" >
+		<div class="trench-header bg-ebf0f3" id="selectedChannelsDisplayDiv" style="display:none">
 			<ul class="nav nav-tabs nav-tabs-public ft14 inline-block" id="selectedChannelsDisplayUl" role="tablist">
 			</ul>
 		</div>

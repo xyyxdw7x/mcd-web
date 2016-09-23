@@ -26,11 +26,10 @@ function clickCloseChannel(){
 
 		//渠道页签中的第一个渠道展示
 		firstChannelActive();
-		
 		//通知购物车移除此渠道
 		callBacllChannel(channelId);
+		
 	});
-	
 }
 
 /**
@@ -125,8 +124,9 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		return;
 	}
 	if(addChannelTab) {
+		//展示渠道页签
+		$("#selectedChannelsDisplayDiv").show();
 		//添加渠道
-		
 		addNewChannelToTab(data);
 		
 		//确定按钮、预览按钮事件处理器添加
@@ -136,14 +136,33 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		//最新加入的channel是active
 		latestAddeddChannelActive();
 		
-		//根据客户群id获取短信变量
+		//根据客户群id获取客户群变量
 		selectSmsAttribute(tacticsInfo.custGroup.customGroupId);
+		
+		//提示文本域中还可以输入字体个数
+		hintInputWordCount(data);
 	}
 	
 	//渠道关闭事件
 	clickCloseChannel();
 
 }
+
+function hintInputWordCount(data){
+	$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
+		var maxWordSize = 240;
+		var value = $(this).val();
+		var count = $("#channelId_"+data.channelId+"_wordSize");
+		debugger;
+		if (value.length > maxWordSize) {
+			$(this).val(value.substring(0, maxWordSize));
+			count.html(0);
+		} else {
+			count.html(maxWordSize - value.length);
+		}
+	});
+}
+
 
 /**
  * 将选中的渠道加入渠道页签列表，同时加载渠道信息
@@ -311,37 +330,6 @@ function selectSmsAttribute(custgroupId){
 					}
 				}
 				 $("#_smsVar").html(temp);
-				 
-				//选择变量时，写入文本域
-					var _textarea = $('#channelId_901_contentWords');
-						$('span.border-item').on("click",function(){
-							 _textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
-							 $(this).addClass("active");
-					    });
-
-						//edit页面 回显
-						var _textareaValue=_textarea.val();
-						var temp$ary=_textareaValue.match(/\$.+?\$/g);
-						if(temp$ary && temp$ary.length>0){
-							for(var xi=0;xi<temp$ary.length;xi++){
-								var attrcol=temp$ary[xi].replace(/\$/g,"");
-								var tarli=appendParent.find('li[attrcol="'+attrcol+'"]');
-								if(tarli.length>0){
-									tarli.addClass("active");
-								}
-							}
-						}
-						var tempary=_textareaValue.match(/\#.+?\#/g);
-						if(tempary && tempary.length>0){
-							for(var xi=0;xi<tempary.length;xi++){
-								var attrcol=tempary[xi].replace(/\#/g,"");
-								var tarli=appendParent.find('span[attrcol="'+attrcol+'"]');
-								if(tarli.length>0){
-									tarli.addClass("active");
-								}
-							}
-						}
-					
 			} else {
 				// 查询失败
 			}
