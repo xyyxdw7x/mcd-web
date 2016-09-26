@@ -330,6 +330,12 @@ function selectSmsAttribute(custgroupId){
 					}
 				}
 				 $("#_smsVar").html(temp);
+				//选择变量时，写入文本域
+				var _textarea = $('#channelId_901_contentWords');
+					$('span.border-item').on("click",function(){
+					_textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
+					$(this).addClass("active");
+				 });
 			} else {
 				// 查询失败
 			}
