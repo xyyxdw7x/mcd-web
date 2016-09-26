@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +40,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 	@Resource(name="mpmCampSegInfoService")
 	private IMpmCampSegInfoService mpmCampSegInfoService;
 	@Resource(name="mtlCampsegCustgroupDao")
-	private MtlCampsegCustgroupDao mtlCampsegCustgroupDao;
+	private ICampsegCustgroupDao mtlCampsegCustgroupDao;
 	@Resource(name="mcdCampsegTaskDao")
 	private IMcdCampsegTaskDao mcdCampsegTaskDao;
 	@Resource(name="mtlChannelDefDao")

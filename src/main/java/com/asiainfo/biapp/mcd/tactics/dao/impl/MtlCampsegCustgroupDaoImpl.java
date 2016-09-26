@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 
 /**
@@ -26,7 +26,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
  */
                      
 @Repository("mtlCampsegCustgroupDao")
-public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCampsegCustgroupDao {
+public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements ICampsegCustgroupDao {
 	private static Logger log = LogManager.getLogger();
 	@Override
 	public void save(McdCampCustgroupList transientInstance) {
@@ -101,7 +101,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("select mcd_camp_custgroup_list.*,mcd_custgroup_def.Custom_Group_Name,mcd_custgroup_def.Custom_Num,mcd_custgroup_def.Create_User_Id,mcd_custgroup_def.Custom_Status_Id,mcd_custgroup_def.Update_Cycle from mcd_camp_custgroup_list ")
 				  .append(" left join mcd_custgroup_def on mcd_camp_custgroup_list.Custgroup_Id = mcd_custgroup_def.Custom_Group_Id")
-				  .append(" where CUSTGROUP_TYPE='CG' AND mcd_camp_custgroup_list.CAMPSEG_id = ?");
+				  .append(" where  mcd_camp_custgroup_list.CAMPSEG_id = ?");
 			list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[] { campsegId });
 			
 			for (Map<String,Object> map : list) {
@@ -122,7 +122,7 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements MtlCamps
 				result.add(mtlGroupInfo);
 			}
 		} catch (Exception e) {
-			log.error(e);
+			log.error("",e);
 		}
 		return result;
 	}

@@ -2103,7 +2103,7 @@ public class TacticsManageController extends BaseMultiActionController {
 			map.put("custGroupInfo",custGroup);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("根据策略id获取信息失败", e);
 		}
 		return map;
 	}

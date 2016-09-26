@@ -2,16 +2,18 @@ package com.asiainfo.biapp.mcd.tactics.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
-import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.MtlCampsegCustgroupService;
 @Service("mtlCampsegCustgroupService")
 public class MtlCampsegCustgroupServiceImpl implements MtlCampsegCustgroupService{
 
-	
-	private MtlCampsegCustgroupDao mtlCampsegCustgroupDao;
+	@Resource(name = "mtlCampsegCustgroupDao")
+	private ICampsegCustgroupDao mtlCampsegCustgroupDao;
 	@Override
 	public List<McdCustgroupDef> getChoiceCustom(String campsegId) {
 		return mtlCampsegCustgroupDao.getChoiceCustom(campsegId);

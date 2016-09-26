@@ -161,7 +161,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 			}
 		});
 	*/
-		String sql = "select * from mcd_camp_channel_list mcd where mcd.id.campseg_id='" + campsegId + "'";
+		String sql = "select * from mcd_camp_channel_list mcd where mcd.campseg_id='" + campsegId + "'";
 		List<McdCampChannelList> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
 		return mtlChannelDefs;
 	}

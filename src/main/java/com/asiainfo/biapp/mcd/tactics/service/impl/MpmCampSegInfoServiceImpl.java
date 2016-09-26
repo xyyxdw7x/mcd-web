@@ -44,7 +44,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.dao.MtlCampsegCustgroupDao;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
@@ -84,7 +84,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
     @Resource(name="mtlStcPlanDao")
     private IMtlStcPlanDao stcPlanDao;
     @Resource(name="mtlCampsegCustgroupDao")
-    private MtlCampsegCustgroupDao mtlCampsegCustgroupDao; 
+    private ICampsegCustgroupDao mtlCampsegCustgroupDao; 
 	@Resource(name = "mtlCallWsUrlService")
 	private IMtlCallWsUrlService callwsUrlService;
 	@Resource(name = "mcdCampsegTaskDao")

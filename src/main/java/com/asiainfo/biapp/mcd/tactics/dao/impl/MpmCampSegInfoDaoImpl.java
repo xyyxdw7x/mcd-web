@@ -173,7 +173,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	public List<McdCampDef> getCampSegInfoByPid(String campSegPid) throws Exception {
 		 List<McdCampDef> list = null;
         try {
-            final String sql = "select * from mcd_camp_def seginfo where seginfo.camp_pid = ? ";
+            final String sql = "select * from mcd_camp_def seginfo where seginfo.campseg_pid = ? ";
             Object[] args=new Object[]{campSegPid};
             int[] argTypes=new int[]{Types.VARCHAR};
             list = this.getJdbcTemplate().query(sql,args,argTypes,new VoPropertyRowMapper<McdCampDef>(McdCampDef.class));
