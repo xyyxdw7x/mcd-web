@@ -2149,7 +2149,7 @@ public class TacticsManageController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	McdPlanDef getPlanById(HttpServletRequest request, HttpServletResponse response){
+	public McdPlanDef getPlanById(HttpServletRequest request, HttpServletResponse response){
 		String id =  request.getParameter("planId");
 		return mtlStcPlanService.getMtlStcPlanByPlanID(id);
 	}

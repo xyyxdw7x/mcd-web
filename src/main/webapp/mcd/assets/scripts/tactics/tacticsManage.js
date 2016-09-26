@@ -602,7 +602,8 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 								return;
 							}
 							
-							var _url=_ctx + "/mcd/pages/tactics/createTactics.jsp?navId=7142&subNavId=714211&editSegId="+campsegId;
+							//var _url=_ctx + "/mcd/pages/tactics/createTactics.jsp?navId=7142&subNavId=714211&editSegId="+campsegId;
+							var _url=_ctx + "/jsp/tactics/createTactics.jsp?isEdit=1&campId="+campsegId;
 							var _windowName=$.trim(currentDom.parents("tr").find("td").eq(1).find("a").html()).split("&nbsp;");
 							var openNewWin=window.open(_url,"编辑策略:"+_windowName[1]+"_"+_windowName[0]);
 							return;
