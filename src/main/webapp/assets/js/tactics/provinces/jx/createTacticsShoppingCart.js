@@ -57,7 +57,17 @@ shopCarInfo.addChangeChannelEvent=function(){
 		}
 		var channelName=data.channelName;
 		var channelColumns="";
-		var channelHtmlStr="<li id='selectedChannel_"+channelId+"'><p class='ft14'>"+channelName+"</p><div>"+channelColumns+"</div><hr/></li>";
+		var channelInfoStr="<div>";
+		if(data.keys!=null&&data.keys!=undefined){
+			for(var i=0;i<data.keys["length"];i++){
+				var key=data.keys[i];
+				var value=data.values[i];
+				var itemStr="<p class='right-p'><span class='color-666'>"+key+"：</span><em class='color-333'>"+value+"</em></p>";
+				channelInfoStr=channelInfoStr+itemStr;
+			}
+		}
+		channelInfoStr=channelInfoStr+"</div>";
+		var channelHtmlStr="<li id='selectedChannel_"+channelId+"'><p class='ft14'>"+channelName+"</p>"+channelInfoStr+"<div>"+channelColumns+"</div><hr/></li>";
 		//<p><span class="color-666">短信触发时机：</span><em class="color-333">***********</em></p>
 		//如果渠道已经存在就更新
 		if($("#selectedChannel_"+channelId).length>0){
