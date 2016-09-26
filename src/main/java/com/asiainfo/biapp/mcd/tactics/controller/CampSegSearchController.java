@@ -60,7 +60,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	@Resource(name = "mtlSmsSendTestTask")
 	private IMtlSmsSendTestTask mtlSmsSendTestTask;
 
-	@RequestMapping("/searchIMcdCamp")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> searchIMcdCamp(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -121,7 +121,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchCampsegStat")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> searchCampsegStat(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -142,7 +142,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchDimCampDrvType")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> searchDimCampDrvType(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -165,7 +165,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchMcdMpmCampSegChild")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> searchMcdMpmCampSegChild(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -241,7 +241,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/submitApproval")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> submitApproval(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -271,7 +271,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/delCampseg")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> delCampseg(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -313,7 +313,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/updateCampsegEndDate")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> updateCampsegEndDate(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -366,7 +366,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cancelAssignment")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> cancelAssignment(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -449,7 +449,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("/campCancel")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> campCancel(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -505,7 +505,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("/campPause")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> campPause(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -560,7 +560,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("/campRestart")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> campRestart(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -604,7 +604,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchExecContent")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> searchExecContent(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -658,7 +658,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/saveExecContent")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> saveExecContent(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
