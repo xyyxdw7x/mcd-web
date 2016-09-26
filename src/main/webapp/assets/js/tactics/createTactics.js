@@ -27,13 +27,20 @@ function addEventListenter(){
  * 初始化各个子页面
  */
 function initView(){
-	// 初始化筛选条件
+	//初始化筛选条件
 	planInfo.initPlan();
-	//调用子页面的函数
+	//初始化客户群信息
 	initCustomerGroup();
-	shopCarInfo.initShopCar();
 	//初始化渠道
 	initChannel();
+	//初始化购物车
+	shopCarInfo.initShopCar();
+	//判断是否是编辑页面
+	var isEdit=$.url().param("isEdit");
+	if(isEdit=="1"){
+		var campId=$.url().param("campId");;
+		queryCampInfoById(campId);
+	}
 }
 /**
  * 左侧数字导航事件
@@ -129,13 +136,17 @@ function addChangeChannelEvent(){
 	//派发事件
 	$("#channelDiv").bind("changeChannel",changeChannelEvent);
 }
-
+/**
+ * 渠道发生变化
+ * @param event
+ * @param data
+ */
 function changeChannelEvent(event,data){
 	//派发客户群变化事件，短信渠道需要相应变化变量
 	$("#shopCar").trigger("shopCarChangeChannel",data);
 	//channels为数组
 	if(tacticsInfo.channels==null){
-		var channelsArr = new Array(data); 
+		var channelsArr = new Array(data);
 		tacticsInfo.channels=channelsArr;
 	}else{
 		//取消渠道选择
@@ -151,7 +162,28 @@ function changeChannelEvent(event,data){
 		}
 	}
 }
-
-
-
-
+/**
+ * 根据策略ID查询策略详情
+ * @param campId
+ */
+function queryCampInfoById(campId){
+	if(campId==null||campId==undefined){
+		alert("URL参数错误");
+		return ;
+	}
+	var url=contextPath+"/tactics/tacticsManage/getCampInfo.do";
+	var data={pid:campId};
+	$.post(url,data,queryCustomerGroupListSuc);
+}
+/**
+ * 根据策略ID查询策略详情成功
+ * @param result
+ */
+function queryCampInfoByIdSuc(result){
+	//派发产品事件
+	//派发产品变化给渠道事件
+	//派发客户群事件
+	//派发渠道事件
+	var resultStr=JSON.stringify(result);
+	alert(resultStr);
+}
