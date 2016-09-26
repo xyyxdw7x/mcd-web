@@ -156,7 +156,19 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 }
 
 .btns-wrp{padding-right:4px;}
-
-
-
+/*新建渠道 VOP预览*/
+.vop-dilog{width:652px; z-index: 101; height;550px; position: fixed;left:50%;top:50%;margin:-275px 0 0 -326px;}
+.vop-left{margin-right:33px;}
+.vop-1{width:309px; position: relative; height:550px;background:url(../../../../images/put/vop-1.png) no-repeat;}
+.vop-1 .vop-bot{color: #fff; bottom:0; font-size: 14px; width: 309px; height:30px; position: absolute;background:url(../../../../images/put/vop-bot.png) no-repeat;}
+.vop-left .vop-bot{z-index: 5;}
+.vop-1 .vop-name{display: inline-block; padding:5px 0 0 66px;}
+.vop-right{position: relative;width:309px;height:550px;}
+.vop-right .vop-1{z-index:1;}
+.vop-bg{position: absolute; top:55px; z-index: 2;width:309px;height:495px;background:url(../../../../images/put/vop-2.png) no-repeat;}
+.vop-2{width:288px;position: absolute; z-index:10;left:11px;top:80px;}
+.vop-2 h4{background:url(../../../../images/put/vop-2-head.png) no-repeat;height:54px; width:288px;margin:0;}
+.vop-2-con{background: #fff;height:288px;border-radius:0 0 5px 5px;padding:16px;}
+.vop-2-con .row{border-top:1px solid #eeeeee;padding-top:5px;height:90px;overflow: auto;}
+.vop-2-con p{margin:20px 0 0 0;}
 
