@@ -11,6 +11,18 @@
     line-height: 48px;
     border:none;
 }
+.ui-dialog.gradient-dialog .ui-widget-header{
+	background:url(../../../images/put/dialog-head.png) repeat-x ;
+    color: #fff;
+    font-weight: 400;
+    padding: 0em 1em;
+    font-size: 16px;
+    height:50px;
+    border:none;
+    line-height: 50px;
+    border-bottom:3px solid #99b8f3;
+    overflow: hidden;
+}
 .ui-dialog-titlebar em{
 	font-size: 12px;
 	cursor: pointer;
@@ -49,6 +61,17 @@
     background: url(../../../images/put-img.png) no-repeat no-repeat -99px -2px;
     margin-left: -12px;
 }
+.ui-dialog.gradient-dialog .ui-widget-header .ui-button .ui-button-icon.ui-icon.ui-icon-closethick{
+    background: url(../../../images/put-img.png) no-repeat no-repeat -3px -302px;
+    margin-left: -12px;
+    width: 27px;
+    height:27px;
+    margin-top:-13px;
+    margin-right:10px;
+}
+.ui-dialog.gradient-dialog .ui-dialog-titlebar-close{
+	right:13px;
+}
 .ui-dialog .dialog-btn{
     width: 100px;
     height: 30px;
@@ -79,3 +102,5 @@
 .width-130{width: 130px;}
 .productDetail-dialog .text-left{color: #666;}
 .date-error{padding-left:188px;}
+/*增加类名的gradient-dialog 的dialog*/
+.gradient-dialog {background: #d9e7fe;}

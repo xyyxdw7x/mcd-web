@@ -1,5 +1,5 @@
 /*江西公共样式../../../images*/
-body{font-family:"microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-serif,"宋体";}
+body,.ui-widget{font-family:"microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-serif,"宋体";}
 label{font-weight: normal;}
 .w-1200{width: 1200px;margin:0 auto;}
 *{word-break: break-all;}
@@ -50,6 +50,7 @@ label{font-weight: normal;}
 .input-group-box .form-control{padding:0 10px; height:28px;width:60px;font-size: 12px;}
 .input-group-box .dropdown-toggle{background: #fff;height:28px;border-color: #ccc;padding:6px;}
 .input-group-box .btn-default:focus, .input-group-box .btn-default.focus{background: #fff;}
+.btn-now{width: 107px;cursor: pointer; display: inline-block; height:35px;color: #fff;font-size: 14px; text-align: center; line-height: 35px;background:#fff url(../../../images/put-img.png) no-repeat -4px -357px;}
 /*上一页 下一页*/
 .new-pager-box{height:40px;margin-top:10px;}
 .new-pager-box > div{float: right;}
