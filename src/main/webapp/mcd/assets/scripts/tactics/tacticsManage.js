@@ -30,7 +30,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTable:function(options){
 			var defaults = {
 				urlRoot:_ctx+"/tactics/campSegSearch",
-				id:"searchIMcdCamp",
+				id:"searchIMcdCamp.do",
 //				cmd:"searchIMcdCamp",
 				currentDom:"#tacticsTable",
 				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
@@ -180,7 +180,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				var _campsegId=$(this).parent().find("td").eq(1).find("a").attr("href").split("=")[1];
 				module.exports.loadTable({
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchMcdMpmCampSegChild",
+					id:"searchMcdMpmCampSegChild.do",
 					//cmd:"searchMcdMpmCampSegChild",
 					currentDom:_table,
 					ajaxData:{"campsegId":_campsegId},
@@ -378,7 +378,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTacticsManageSearchDimCampDrvType:function(options){
 			var defaults = {
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchDimCampDrvType",
+					id:"searchDimCampDrvType.do",
 //					cmd:"searchDimCampDrvType",
 					currentDom:".tacticsManageSearchDimCampDrvType",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchDimCampDrvType.ejs',
@@ -460,7 +460,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		loadTacticsManageSearchCampsegStat:function(options){
 			var defaults = {
 					urlRoot:_ctx+"/tactics/campSegSearch",
-					id:"searchCampsegStat",
+					id:"searchCampsegStat.do",
 //					cmd:"searchCampsegStat",
 					currentDom:".tacticsManageSearchCampsegStat",
 					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchCampsegStat.ejs',
@@ -584,7 +584,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					$("#tacticsManageUL li").bind("click",function(){
 						var btnType = $(this).attr("btnType");
 						var campsegId = $(this).attr("campsegId");
-						var cmdObj = {"del":"delCampseg","submit":"submitApproval","modify":"editCampseg","copy":"copyCampseg","reset":"cancelAssignment","quickOrder":"reminder"};
+						var cmdObj = {"del.do":"delCampseg.do","submit.do":"submitApproval.do","modify.do":"editCampseg.do","copy.do":"copyCampseg.do","reset.do":"cancelAssignment.do","quickOrder.do":"reminder.do"};
 						if(btnType=="modify"){//---------------------修改
 							var endTime = $("td[campsegid="+campsegId+"]").attr("enddate");
 							var invalidFlag=$("td[campsegid="+campsegId+"]").attr("invalidFlag");
@@ -638,7 +638,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}else if(btnType=="quickOrder"){ //---------------------催单
 							var campsegId = $(this).attr("campsegId");
 	                        $.ajax({
-	                            url:_ctx + '/mpm/homePage.aido?cmd=reminder',
+	                            url:_ctx + '/mpm/homePage.aido?cmd=reminder.do',
 	                            type : "POST",
 	                            data : {'campsegId':campsegId},
 	                            success : function(result) {
@@ -654,7 +654,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}  
 						_that.setBtnAttr({
 							
-							modelId:cmdObj[btnType],
+							modelId:cmdObj[btnType+".do"],
 							campsegId:campsegId,
 							currentClass:currentClass
 						});
@@ -671,8 +671,9 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					});
 				},
 				setBtnAttr:function(option){
+					debugger;
 					// 排除掉催单事件
-					if(option.cmd=="reminder"){
+					if(option.cmd=="reminder.do"){
 						return ;
 					}
 					var defaults = {
@@ -778,12 +779,12 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					$("#tacticsManageUL li").bind("click",function(){
 						var btnType = $(this).attr("btnType");
 						var campsegId = $(this).attr("campsegId");
-						var cmdObj = {"delay":"updateCampsegEndDate","pause":"campPause","stop":"campCancel","continue":"campRestart"};
+						var cmdObj = {"delay.do":"updateCampsegEndDate.do","pause.do":"campPause.do","stop.do":"campCancel.do","continue.do":"campRestart.do"};
 						/*if(btnType == "stop")
 							if(!confirm("是否要取消此策略?")) return ;*/
 						if(btnType != "delay" && btnType != "edit" && btnType != 'stop' && btnType != 'pause') {
 							_that.setBtnAttr({
-								modelId:cmdObj[btnType],
+								modelId:cmdObj[btnType+".do"],
 								campsegId: campsegId,
 								currentClass: currentClass
 							});
@@ -804,7 +805,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 										"class":"ok-small-button",
 										click: function() {
 											_that.setBtnAttr({
-												modelId:cmdObj[btnType],
+												modelId:cmdObj[btnType+".do"],
 												campsegId:campsegId,
 												currentClass:currentClass,
 												pauseComment:$('.reasonDialog-div-textarea').val()
@@ -1074,7 +1075,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				                	    	  		return;
 				                	    	  	}
 			  							_that.setBtnAttr({
-			  								modelId:cmdObj[btnType],
+			  								modelId:cmdObj[btnType+".do"],
 											campsegId:campsegId,
 											currentClass:currentClass,
 											endDate:$("#delayDialog input").val()
