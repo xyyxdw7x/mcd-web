@@ -1901,10 +1901,10 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			pager.setPageSize(pageSize); 
 			pager.setPageNum(pageNum); // 当前页
-			List<Map<String,Object>> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
+			List<McdPlanDef> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 			pager.setResult(list);
 		} catch (Exception e) {
-			log.error(e);
+			log.error("查询产品列表失败",e);
 		}
 		return pager;
 	}

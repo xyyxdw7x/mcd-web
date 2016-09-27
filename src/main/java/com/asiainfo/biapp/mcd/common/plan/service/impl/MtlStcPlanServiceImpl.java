@@ -99,7 +99,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 	}
 
 	@Override
-	public List<Map<String,Object>> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
+	public List<McdPlanDef> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
 		
 		Map<String,Object> sqlClauseCount = getPlansByConditionSqlCount(cityId, planTypeId, planSrvType, channelId, keyWords);
 		String sql = sqlClauseCount.get("sql").toString();
@@ -120,8 +120,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 		StringBuffer buffer = new StringBuffer("");
 		Map<String,Object> result = new HashMap<String,Object>();
 		List<Object> params = new ArrayList<Object>();
-		buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,to_char(A.PLAN_STARTDATE,'yyyy-MM-dd') PLAN_STARTDATE,to_char(A.PLAN_ENDDATE,'yyyy-MM-dd') PLAN_ENDDATE,A.STATUS,A.CREATE_USERID,")
-				.append("A.CREATE_DATE,A.PLAN_TYPE,A.PLAN_SRV_TYPE,B.TYPE_NAME,NVL2(CAMP.PLAN_ID,'是','否') IS_USED ")
+		buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.STATUS,A.CREATE_USERID,")
+				.append(" A.CREATE_DATE,A.PLAN_TYPE,A.PLAN_SRV_TYPE,B.TYPE_NAME,NVL2(CAMP.PLAN_ID,'是','否') IS_USED ")
 				.append("  FROM MCD_PLAN_DEF A ")
 				.append(" LEFT OUTER JOIN MCD_DIM_PLAN_TYPE B ").append(" ON A.PLAN_TYPE=B.TYPE_ID ");
 		buffer.append("LEFT OUTER JOIN (SELECT distinct PLAN_ID FROM MCD_CAMP_DEF)  CAMP ")

@@ -363,9 +363,6 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
         e.printStackTrace();
         returnMap.put("status","201");
         returnMap.put("result", "fail");
-
-        System.out.println("customDataJSONresult===="+returnMap.toString());
-        
     }
         return returnMap;
     }
@@ -436,7 +433,7 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
                 } 
          List<Map<String,Object>> jsonList = new ArrayList<Map<String,Object>>();
          //boss运营位短信模板
-         List<ChannelBossSmsTemplate> bossSmsTemplatelist = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();;
+         List<ChannelBossSmsTemplate> bossSmsTemplatelist = channelBossSmsTemplateService.initMtlChannelBossSmsTemplate();
          for(int i=0;i<list.size();i++){
              Map<String,Object> tmap = list.get(i);
             channel_id = (String) tmap.get("CHANNEL_ID");
@@ -590,17 +587,13 @@ public class ViewPolicyDetailController extends BaseMultiActionController  {
 
          returnMap.put("status","200");
          returnMap.put("data", jsonList);
-         //String result = "{status : 200,data:["+dChannelDataJSON.toString()+"]}";
-         System.out.println("dChannelDataJSONresult===="+returnMap.toString());
         }catch(Exception e){
             e.printStackTrace();
             returnMap.put("status", "201");
             returnMap.put("result", "fail");
-            //String result = "{status : 201, result:fail}";
-            System.out.println("dChannelDataJSONresult===="+returnMap.toString());
         }
-
-            return returnMap;                        
+        
+        return returnMap;                        
     }
 
     

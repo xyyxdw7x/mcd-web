@@ -458,13 +458,13 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 
 
 	@Override
-	public List<Map<String,Object>> execQuerySql(String sql, List<Object> params) {
+	public List<McdPlanDef> execQuerySql(String sql, List<Object> params) {
 		log.info("执行sql="+sql);
-		List<Map<String,Object>> res = null;
+		List<McdPlanDef> res = null;
 		if(params==null ||params.size()==0){
-			res = this.getJdbcTemplate().queryForList(sql);	
+			res = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));	
 		}else{	
-			res = this.getJdbcTemplate().queryForList(sql, params.toArray());		
+			res = this.getJdbcTemplate().query(sql, params.toArray(),new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));		
 		}
 		return res;
 	}

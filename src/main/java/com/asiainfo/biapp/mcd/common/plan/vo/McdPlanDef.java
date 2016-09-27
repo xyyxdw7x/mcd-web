@@ -20,16 +20,12 @@ public class McdPlanDef implements java.io.Serializable {
 
 	@Column(name="PLAN_ID")
 	protected String planId; //主键
-
 	@Column(name="PLAN_NAME")
 	protected String planName;
-
 	@Column(name="PLAN_STARTDATE")
 	protected Date planStartdate;
-
 	@Column(name="PLAN_ENDDATE")
 	protected Date planEnddate;
-
 	@Column(name="PLAN_DESC")
 	protected String planDesc;
 
@@ -50,37 +46,17 @@ public class McdPlanDef implements java.io.Serializable {
 
 	@Column(name="PLAN_TYPE")
 	private String planType;
-
-	protected String id;
-	
 	@Column(name="TYPE_ID")
 	private String typeId;
 
 	@Column(name="DEFAULT_CHANNEL_ID")
 	private String defaultChannelId;
 	
-	private String levelId;
-
-	// Constructors
-	
-	//陕西新添加的2个字段
-	private Integer CHNL_SCORE;		
-
-	private Integer SMS_SCORE;
-	
-	private String pictureName;//产品图片名称
-	private String linkedPicAdr;//产品图片链接地址
-	
 	@Column(name="PLAN_SRV_TYPE")
 	private String planSrvType;
 	
 	@Column(name="PLAN_PID")
 	private String planPid;
-	private String planDealRule;
-	private String brandDesc;
-	private String brandIds;
-	private String cityDesc;
-	private String cityIds;
 	
 	public String getPlanSrvType() {
 		return planSrvType;
@@ -98,45 +74,8 @@ public class McdPlanDef implements java.io.Serializable {
 		this.planPid = planPid;
 	}
 
-	public String getPlanDealRule() {
-		return planDealRule;
-	}
 
-	public void setPlanDealRule(String planDealRule) {
-		this.planDealRule = planDealRule;
-	}
 
-	public String getBrandDesc() {
-		return brandDesc;
-	}
-
-	public void setBrandDesc(String brandDesc) {
-		this.brandDesc = brandDesc;
-	}
-
-	public String getBrandIds() {
-		return brandIds;
-	}
-
-	public void setBrandIds(String brandIds) {
-		this.brandIds = brandIds;
-	}
-
-	public String getCityDesc() {
-		return cityDesc;
-	}
-
-	public void setCityDesc(String cityDesc) {
-		this.cityDesc = cityDesc;
-	}
-
-	public String getCityIds() {
-		return cityIds;
-	}
-
-	public void setCityIds(String cityIds) {
-		this.cityIds = cityIds;
-	}
 
 	public String getPlanStatus() {
 		return planStatus;
@@ -218,17 +157,15 @@ public class McdPlanDef implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public McdPlanDef(String planId, String id, Date createDate) {
+	public McdPlanDef(String planId, Date createDate) {
 		this.planId = planId;
-		this.id = id;
 		this.createDate = createDate;
 	}
 
 	/** full constructor */
-	public McdPlanDef(String planId, String id, String planName, Date planStartdate, Date planEnddate, String planDesc,
+	public McdPlanDef(String planId, String planName, Date planStartdate, Date planEnddate, String planDesc,
 			String status, String createUserid, Date createDate, String planType) {
 		this.planId = planId;
-		this.id = id;
 		this.planName = planName;
 		this.planStartdate = planStartdate;
 		this.planEnddate = planEnddate;
@@ -248,13 +185,6 @@ public class McdPlanDef implements java.io.Serializable {
 		this.planId = planId;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getPlanName() {
 		return planName;
@@ -343,24 +273,6 @@ public class McdPlanDef implements java.io.Serializable {
 	public void setDefaultChannelId(String defaultChannelId) {
 		this.defaultChannelId = defaultChannelId;
 	}
-	
-	
-	public Integer getCHNL_SCORE() {
-		return CHNL_SCORE;
-	}
-
-	public void setCHNL_SCORE(Integer cHNL_SCORE) {
-		CHNL_SCORE = cHNL_SCORE;
-	}
-
-	public Integer getSMS_SCORE() {
-		return SMS_SCORE;
-	}
-
-	public void setSMS_SCORE(Integer sMS_SCORE) {
-		SMS_SCORE = sMS_SCORE;
-	}
-
 	public String getTypeId() {
 		return typeId;
 	}
@@ -368,29 +280,4 @@ public class McdPlanDef implements java.io.Serializable {
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}
-
-	public String getPictureName() {
-		return pictureName;
-	}
-
-	public void setPictureName(String pictureName) {
-		this.pictureName = pictureName;
-	}
-
-	public String getLinkedPicAdr() {
-		return linkedPicAdr;
-	}
-
-	public void setLinkedPicAdr(String linkedPicAdr) {
-		this.linkedPicAdr = linkedPicAdr;
-	}
-
-	public String getLevelId() {
-		return levelId;
-	}
-
-	public void setLevelId(String levelId) {
-		this.levelId = levelId;
-	}
-
 }

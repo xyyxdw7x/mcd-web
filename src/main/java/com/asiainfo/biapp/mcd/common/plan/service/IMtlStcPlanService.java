@@ -46,7 +46,7 @@ public interface IMtlStcPlanService {
 	 * @param pager
 	 * @return
 	 */
-	List<Map<String,Object>> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
+	List<McdPlanDef> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
 	/**
 	 * 查询政策粒度 ---浙江
 	 * @return

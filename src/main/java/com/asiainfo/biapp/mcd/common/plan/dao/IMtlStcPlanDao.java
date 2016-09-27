@@ -99,7 +99,7 @@ public interface IMtlStcPlanDao {
 	 * @param params 对应的参数
 	 * @return
 	 */
-	List<Map<String,Object>> execQuerySql(String sql, List<Object> params);
+	List<McdPlanDef> execQuerySql(String sql, List<Object> params);
 	/**
 	 * 执行查询条件，返回记录总条数
 	 * @param sql
