@@ -27,3 +27,4 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/jquery.simplePagination.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/pagination.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/purl.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/xdate.min.js"></script>

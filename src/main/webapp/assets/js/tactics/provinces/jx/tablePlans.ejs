@@ -11,6 +11,16 @@
 		moreInfo.planSrvType=plan.planSrvType;
 		moreInfo.planStartdate=plan.planStartdate;
 		moreInfo.planEnddate=plan.planEnddate;
+		
+		var planStartdate=new XDate(plan.planStartdate);
+		planStartdate=planStartdate.toString("yyyy-MM-dd");
+		plan.planStartdate=planStartdate;
+		
+		var planEnddate=new XDate(plan.planEnddate);
+		planEnddate=planEnddate.toString("yyyy-MM-dd");
+		plan.planEnddate=planEnddate;
+		
+		
 		moreInfo.planIsUsed=plan.isUsed
 		
 		var info = JSON.stringify(moreInfo)
