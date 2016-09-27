@@ -66,6 +66,7 @@
 			    <version>2.4</version>
 			    <configuration>
                 	<warName>${project.artifactId}</warName>
+                	<packagingExcludes>demos/**</packagingExcludes>
                 	<webResources>
                     	<resource>
                         	<directory>${project.basedir}/lib</directory>
@@ -75,6 +76,7 @@
                         	</includes>
                     	</resource>
                 	</webResources>
+                	
             	</configuration>
   			</plugin>
 		</plugins>
