@@ -109,18 +109,18 @@ planInfo.addPlanClickEvent=function(data){
 		var index = $("#tbodyPlansList .btn-a-blue").index(this);
 		var item=data.result[index];
 		//已存在的不需要再处理
-		if ($("#divChoosedPlan span[planId=" + item.PLAN_ID +"]").length > 0) {
+		if ($("#divChoosedPlan span[planId=" + item.planId +"]").length > 0) {
 			return ;
 		}
 		$("#divChoosedPlan span").remove();
 		var li=$("<i class=\"close\"\"> &times;</i>");
 		li.on("click", function(){
 			// 删除已选政策列表中的展示内容
-			$("#divChoosedPlan [planId=" + item.PLAN_ID +"]").remove();
+			$("#divChoosedPlan [planId=" + item.planId +"]").remove();
 			// 发布策略取消事件
 			$("#planDiv").trigger("changePlan",null);
 		})
-		var span=$("<span class=\"policy\" planId=" + item.PLAN_ID + "><em>" + item.PLAN_NAME + "</em></span>");
+		var span=$("<span class=\"policy\" planId=" + item.planId + "><em>" + item.planName + "</em></span>");
 		span.append(li);
 		$("#divChoosedPlan").append(span);
 		// 发布策略变更事件
