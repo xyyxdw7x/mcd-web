@@ -104,7 +104,7 @@ function addPlanEevent(){
  */
 function selectChannelEvent(event,data){
 	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels.do";
-	$.post(url,{planId:data.PLAN_ID},selectChannelByPlan);
+	$.post(url,{planId:data.planId},selectChannelByPlan);
 }
 
 /**
@@ -210,7 +210,7 @@ function isSelectCustomGroup(){
  */
 function isSelectPlan(){
 	if(tacticsInfo.plan){
-		if(!tacticsInfo.plan.PLAN_ID){
+		if(!tacticsInfo.plan.planId){
 			return false;
 		}
 	}else{
