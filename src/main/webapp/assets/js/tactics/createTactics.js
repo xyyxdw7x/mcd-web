@@ -8,9 +8,9 @@ $(document).ready(function(){
     initView();
 });
 /**
- * 全局变量信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
+ * 全局变量信息  camp策略信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
  */
-var tacticsInfo={plan:null,custGroup:null,channels:null};
+var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null};
 
 
 /**
@@ -173,17 +173,25 @@ function queryCampInfoById(campId){
 	}
 	var url=contextPath+"/tactics/tacticsManage/getCampInfo.do";
 	var data={pid:campId};
-	$.post(url,data,queryCustomerGroupListSuc);
+	$.post(url,data,queryCampInfoByIdSuc);
 }
 /**
  * 根据策略ID查询策略详情成功
  * @param result
  */
 function queryCampInfoByIdSuc(result){
+	if(result==null){
+		alert("查询策略信息失败");
+		return ;
+	}
+	tacticsInfo.camp=result.campInfo;
+	tacticsInfo.plan=result.planInfo;
+	tacticsInfo.custGroup=result.custGroup;
+	tacticsInfo.channels=result.channelsInfo;
 	//派发产品事件
-	//派发产品变化给渠道事件
+	$("#planDiv").trigger("changePlan",tacticsInfo.plan);
 	//派发客户群事件
+	$("#cgDiv").trigger("changeCustomerGroup",tacticsInfo.custGroup);
 	//派发渠道事件
-	var resultStr=JSON.stringify(result);
-	alert(resultStr);
+	$("#channelDiv").trigger("changeChannel",tacticsInfo.channels);
 }
