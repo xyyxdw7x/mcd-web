@@ -76,7 +76,6 @@ function addChannelEvent(obj){
 		 * 触发点击渠道事件:控制页签的增加，原来不是active状态则增加，否则无变化
 		 */
 		var addChannelTab = !hasActive;
-		//clickChannelEventHandler(event,item, addChannelTab);
 		$("#channelDiv").trigger("clickChannelEvent", [item, addChannelTab]);
 	});
 }
@@ -129,10 +128,6 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		//添加渠道
 		addNewChannelToTab(data);
 		
-		//确定按钮、预览按钮事件处理器添加
-		clickCommitButtonEventHandler(data);//确定
-		//$("#previewButton_channelId_"+data.channelId).on("click", clickPreviewButtonEventHandler(data));//预览
-		
 		//最新加入的channel是active
 		latestAddeddChannelActive();
 		
@@ -182,25 +177,14 @@ function addNewChannelToTab(data){
 	var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
 	$("#href-channelId_"+data.channelId).html(channelContentHtml);//渠道内容
-}
-
-/**
- * 在选择渠道录入渠道信息后，点击确定按钮操作的处理。</br>
- * 当前使用<bold>动态加载javascript脚本</bold>的方式来处理各个渠道的表单内容，可能后边需要再修改。</br>
- * 步骤：1. 调用动态加载的js中的collectData方法收集表单数据；</br>
- * 2. 将要加入购物车的渠道id计入本地变量中（将推入购物车的渠道记录下来，渠道被取消时要据此判断是否通知购物车移除渠道）</br>
- * 3.触发changeChannel事件，将表单数据推给购物车。
- */
-function clickCommitButtonEventHandler(data){
-	$("#conmmitButton_channelId_"+data.channelId).click(function(){
-		var newdata = null;
-		var channelContentcollectJsUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
-		$.getScript(channelContentcollectJsUrl, function(){
-			newdata = collectData(this, data);
-			channelsInShoppingCar.push(data.channelId);
-			$("#channelDiv").trigger("changeChannel", newdata);
-		});
-		
+	
+	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
+	$.getScript(channelProcessJSUrl, function(){
+		//增加渠道内容点击事件绑定
+		var fn = window["clickChannelContentEventHandler"+data.channelId];
+		if (typeof fn == "function") { 
+			fn.apply(window, [data]);
+		}
 	});
 }
 
@@ -344,12 +328,4 @@ function selectSmsAttribute(custgroupId){
 			// error happening, do nothing
 		}
 	});
-}
-
-/**
- * 点击保存按钮事件处理
- * @param data
- */
-function clickPreviewButtonEventHandler(data){
-	//alert("暂未实现");
 }
