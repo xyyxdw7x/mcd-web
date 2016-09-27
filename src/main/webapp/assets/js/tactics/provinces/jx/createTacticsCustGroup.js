@@ -82,9 +82,12 @@ function renderCustGroupPageView(data){
  * @param obj
  */
 function addCustomerGroupEvent(obj){
-	$("#cgList li").click(function(event){
-		var index = $("#cgList li").index(this);
-		var item=obj[index];
+	$("#cgList li").bind("click",function(event,data){
+		var item=data;
+		if(data==null||data==undefined){
+			var index = $("#cgList li").index(this);
+			item=obj[index];
+		}
 		$("#cgList li").removeClass("active");
 		$(event.currentTarget).addClass("active");
 		//派发事件
