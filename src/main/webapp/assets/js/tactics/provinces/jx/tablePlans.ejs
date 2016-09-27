@@ -7,11 +7,11 @@
 		var moreInfo ={};
 		moreInfo.planId = plan.planId;
 		moreInfo.planName=plan.planName;
-		moreInfo.planTypeName=plan.planType;
+		moreInfo.planTypeName=plan.planTypeName;
 		moreInfo.planSrvType=plan.planSrvType;
 		moreInfo.planStartdate=plan.planStartdate;
 		moreInfo.planEnddate=plan.planEnddate;
-		moreInfo.planIsUsed=plan.IS_USED
+		moreInfo.planIsUsed=plan.isUsed
 		
 		var info = JSON.stringify(moreInfo)
 		info = info.replace(/"/g,"'");
@@ -27,7 +27,7 @@
 					<%=plan.planName%>
 				</a>
 			</td>
-			<td class="text-center"><%=plan.typeName%></td>
+			<td class="text-center"><%=plan.planTypeName%></td>
 			<%if(plan.planSrvType==1){%>
 			<td class="text-center">单产品</td>
 			<%} else if(plan.planSrvType==2){%>
