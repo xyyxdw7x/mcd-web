@@ -186,12 +186,22 @@ function queryCampInfoByIdSuc(result){
 	}
 	tacticsInfo.camp=result.campInfo;
 	tacticsInfo.plan=result.planInfo;
-	tacticsInfo.custGroup=result.custGroup;
+	tacticsInfo.custGroup=result.custGroupInfo;
 	tacticsInfo.channels=result.channelsInfo;
 	//派发产品事件
-	$("#planDiv").trigger("changePlan",tacticsInfo.plan);
+	if(tacticsInfo.plan!=undefined){
+		$("#planDiv").trigger("changePlan",tacticsInfo.plan);
+		$("#planDiv").trigger("addPlan",tacticsInfo.plan);
+	}
 	//派发客户群事件
-	$("#cgDiv").trigger("changeCustomerGroup",tacticsInfo.custGroup);
+	if(tacticsInfo.custGroup!=undefined){
+		$("#cgDiv").trigger("changeCustomerGroup",tacticsInfo.custGroup);
+		$("#cgDiv").trigger("addCustomerGroup",tacticsInfo.custGroup);
+	}
 	//派发渠道事件
-	$("#channelDiv").trigger("changeChannel",tacticsInfo.channels);
+	if(tacticsInfo.channels!=undefined){
+		if(tacticsInfo.channels.length>0){
+			$("#channelDiv").trigger("changeChannel",tacticsInfo.channels);
+		}
+	}
 }

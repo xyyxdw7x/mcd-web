@@ -18,9 +18,9 @@ shopCarInfo.addChangePlanEvent=function(){
 		if(data==null){
 			return ;
 		}
-		var planId=data.PLAN_ID;
+		var planId=data.planId;
 		//设置产品名称
-		var liStr="<li id='selectedPlan_"+planId+"' shopCarPlanId='"+planId+"'><span>"+data.PLAN_NAME+"</span></li>";
+		var liStr="<li id='selectedPlan_"+planId+"' shopCarPlanId='"+planId+"'><span>"+data.planName+"</span></li>";
 		$("#selectedPlan").append(liStr);
 		//将数据绑定到dom元素上
 		$("#selectedPlan_"+planId).data("data",data);

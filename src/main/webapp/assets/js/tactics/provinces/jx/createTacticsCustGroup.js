@@ -5,6 +5,7 @@ function initCustomerGroup(){
 	queryCustomerGroupList(1);
 	addCloseCustGroupEvent();
 	addCustomerGroupSearchEvent();
+	addCustomerGroupAddEvent();
 }
 /**
  *  删除已选客户群
@@ -16,6 +17,11 @@ function addCloseCustGroupEvent(){
 		$("#selcgListName em").html("");
 		//派发事件
 		$("#cgDiv").trigger("changeCustomerGroup",null);
+	});
+}
+function addCustomerGroupAddEvent(){
+	$("#cgDiv").bind("addCustomerGroup",function(event,data){
+		$($("#cgList li")[0]).trigger("click", data);
 	});
 }
 /**

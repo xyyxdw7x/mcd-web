@@ -18,6 +18,7 @@ planInfo.initPlanView=function(){
  */
 planInfo.addEventListenter=function(){
 	planInfo.addPlanSearchEvent();
+	planInfo.addAddPlanEvent();
 };
 /**
  * 加载产品类别和渠道类型数据
@@ -104,10 +105,13 @@ planInfo.queryPlan=function(pageNum){
 /**
  * 注册产品点击事件
  */
-planInfo.addPlanClickEvent=function(data){
-	$("#tbodyPlansList .btn-a-blue").on("click", function(event){
-		var index = $("#tbodyPlansList .btn-a-blue").index(this);
-		var item=data.result[index];
+planInfo.addPlanClickEvent=function(dataList){
+	$("#tbodyPlansList .btn-a-blue").bind("click",function(event,data){
+		var item=data;
+		if(data==null||data==undefined){
+			var index = $("#tbodyPlansList .btn-a-blue").index(this);
+			item=dataList.result[index];
+		}
 		//已存在的不需要再处理
 		if ($("#divChoosedPlan span[planId=" + item.planId +"]").length > 0) {
 			return ;
@@ -133,6 +137,16 @@ planInfo.addPlanClickEvent=function(data){
 planInfo.addPlanSearchEvent=function(){
 	$("#planSearchBtn").click(function(event){
 		planInfo.queryPlan(1);
+	});
+}
+
+/**
+ * 产品添加事件
+ * 
+ */
+planInfo.addAddPlanEvent=function(){
+	$("#planDiv").bind("addPlan",function(event,data){
+		$($("#tbodyPlansList .btn-a-blue")[0]).trigger("click", data);
 	});
 }
 /**
