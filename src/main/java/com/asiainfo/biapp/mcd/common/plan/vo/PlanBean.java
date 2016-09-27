@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  */
 
-public class MtlStcPlanBean {
+public class PlanBean {
 	protected String planId; //主键
 
 	protected String planName;
@@ -83,7 +83,7 @@ public class MtlStcPlanBean {
 	
 	private String planTypeName;  //政策粒度
 	private String cityName;   //地市名称
-	private String isUserd;   //是否已匹配
+	private String isUsed;   //是否已匹配
 	
 	
 	public String getPlanTypeName() {
@@ -102,13 +102,6 @@ public class MtlStcPlanBean {
 		this.cityName = cityName;
 	}
 
-	public String getIsUserd() {
-		return isUserd;
-	}
-
-	public void setIsUserd(String isUserd) {
-		this.isUserd = isUserd;
-	}
 
 	public String getChannelTypeId() {
 		return channelTypeId;
@@ -437,6 +430,14 @@ public class MtlStcPlanBean {
 
 	public void setExecContent(String execContent) {
 		this.execContent = execContent;
+	}
+
+	public String getIsUsed() {
+		return isUsed;
+	}
+
+	public void setIsUsed(String isUsed) {
+		this.isUsed = isUsed;
 	}
 
 

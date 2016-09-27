@@ -35,7 +35,7 @@ import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -1108,13 +1108,13 @@ public class TacticsManageController extends BaseMultiActionController {
 			pager.setTotalSize(mtlStcPlanManagementService.searchPlanCount(keyWords, typeId, cityId)); // 总记录数
 			pager.getTotalPage();
 			if ("true".equals(clickQueryFlag)) {
-				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId, cityId,
+				List<PlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId, cityId,
 						pager);
 				pager = pager.pagerFlip();
 				pager.setResult(resultList);
 			} else {
 				pager = pager.pagerFlip();
-				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId, cityId,
+				List<PlanBean> resultList = mtlStcPlanManagementService.searchPlan(keyWords, typeId, cityId,
 						pager);
 				pager.setResult(resultList);
 			}
@@ -1183,13 +1183,13 @@ public class TacticsManageController extends BaseMultiActionController {
 					channelTypeId, planTypeId, cityId, isDoubleSelect)); // 总记录数
 			pager.getTotalPage();
 			if ("true".equals(clickQueryFlag)) {
-				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId,
+				List<PlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId,
 						channelTypeId, planTypeId, cityId, isDoubleSelect, pager);
 				pager = pager.pagerFlip();
 				pager.setResult(resultList);
 			} else {
 				pager = pager.pagerFlip();
-				List<MtlStcPlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId,
+				List<PlanBean> resultList = mtlStcPlanManagementService.getMtlStcPlanByCondation(keyWords, typeId,
 						channelTypeId, planTypeId, cityId, isDoubleSelect, pager);
 				pager.setResult(resultList);
 			}
@@ -1901,7 +1901,7 @@ public class TacticsManageController extends BaseMultiActionController {
 		try {
 			pager.setPageSize(pageSize); 
 			pager.setPageNum(pageNum); // 当前页
-			List<McdPlanDef> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
+			List<PlanBean> list = mtlStcPlanService.getPlanByCondition(cityId, planTypeId, planSrvType, channelId, keyWords,pager);
 			pager.setResult(list);
 		} catch (Exception e) {
 			log.error("查询产品列表失败",e);

@@ -1,11 +1,11 @@
 package com.asiainfo.biapp.mcd.common.plan.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 
@@ -46,7 +46,7 @@ public interface IMtlStcPlanService {
 	 * @param pager
 	 * @return
 	 */
-	List<McdPlanDef> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
+	List<PlanBean> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId, String keyWords,Pager pager);
 	/**
 	 * 查询政策粒度 ---浙江
 	 * @return

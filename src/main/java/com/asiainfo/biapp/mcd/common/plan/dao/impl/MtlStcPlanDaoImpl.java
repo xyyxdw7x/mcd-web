@@ -17,7 +17,7 @@ import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -166,10 +166,10 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 	}
 	
 	@Override
-	public List<MtlStcPlanBean> searchPlan(String keyWords,String typeId,String cityId,Pager pager) {
+	public List<PlanBean> searchPlan(String keyWords,String typeId,String cityId,Pager pager) {
 		List<Map<String, Object>> list = null;
 		List<String> parameterList = new ArrayList<String>();
-		List<MtlStcPlanBean> resultList = new ArrayList<MtlStcPlanBean>();
+		List<PlanBean> resultList = new ArrayList<PlanBean>();
 		try {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("SELECT A.PLAN_ID,A.PLAN_NAME,A.PLAN_STARTDATE,A.PLAN_ENDDATE,A.PLAN_DESC,A.ID,A.STATUS,A.CREATE_USERID,A.CREATE_DATE,A.PLAN_PNAME CAMP_NAME,A.PLAN_PID CAMP_ID,A.FEE_DESC,A.MATERIAL_DESC," +
@@ -205,7 +205,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 			list = this.getJdbcTemplate().queryForList(sqlExt.toString(),parameterList.toArray());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for (Map<String,Object> map : list) {
-				MtlStcPlanBean bean = new MtlStcPlanBean();
+				PlanBean bean = new PlanBean();
 				bean.setPlanId((String) map.get("PLAN_ID"));
 				bean.setPlanName((String) map.get("PLAN_NAME"));
 				if(map.get("PLAN_STARTDATE") != null){
@@ -242,7 +242,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 				bean.setMaterialDesc((String) map.get("MATERIAL_DESC"));
 				
 				bean.setPlanPid((String) map.get("PLAN_PID"));//营销案编号
-				bean.setIsUserd(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
+				bean.setIsUsed(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
 				if(StringUtils.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
 					bean.setPlanTypeName((String) map.get("PLAN_TYPE_NAME"));//政策粒度
 				}else{
@@ -292,9 +292,9 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 	}
 	
 	@Override
-	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
+	public List<PlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
 		List<Map<String, Object>> list = null;
-		List<MtlStcPlanBean> resultList = new ArrayList<MtlStcPlanBean>();
+		List<PlanBean> resultList = new ArrayList<PlanBean>();
 		List<String> parameterList = new ArrayList<String>();
 		try {
 			StringBuffer buffer = new StringBuffer();
@@ -342,7 +342,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 			list = this.getJdbcTemplate().queryForList(sqlExt, parameterList.toArray());
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			for (Map<String,Object> map : list) {
-				MtlStcPlanBean bean = new MtlStcPlanBean();
+				PlanBean bean = new PlanBean();
 				bean.setPlanId((String) map.get("PLAN_ID"));
 				bean.setPlanName((String) map.get("PLAN_NAME"));
 				if(map.get("PLAN_STARTDATE") != null){
@@ -374,7 +374,7 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 				bean.setFeeDesc((String) map.get("FEE_DESC"));
 				bean.setMaterialDesc((String) map.get("MATERIAL_DESC"));
 				bean.setPlanPid((String) map.get("PLAN_PID"));//营销案编号
-				bean.setIsUserd(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
+				bean.setIsUsed(String.valueOf(map.get("IS_USERD")));//是否已匹配  1：是；  0：否
 				if(StringUtils.isNotEmpty((String) map.get("PLAN_TYPE_NAME"))){
 					bean.setPlanTypeName((String) map.get("PLAN_TYPE_NAME"));//政策粒度
 				}else{
@@ -458,15 +458,15 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 
 
 	@Override
-	public List<McdPlanDef> execQuerySql(String sql, List<Object> params) {
+	public List<PlanBean> execQuerySql(String sql, List<Object> params) {
 		log.info("执行sql="+sql);
-		List<McdPlanDef> res = null;
+		List<PlanBean> resultList = new ArrayList<PlanBean>();
 		if(params==null ||params.size()==0){
-			res = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));	
+			resultList = this.getJdbcTemplate().query(sql,new VoPropertyRowMapper<PlanBean>(PlanBean.class));	
 		}else{	
-			res = this.getJdbcTemplate().query(sql, params.toArray(),new VoPropertyRowMapper<McdPlanDef>(McdPlanDef.class));		
+			resultList = this.getJdbcTemplate().query(sql, params.toArray(),new VoPropertyRowMapper<PlanBean>(PlanBean.class));		
 		}
-		return res;
+		return resultList;
 	}
 	@Override
 	public int execQuerySqlCount(String sql, List<Object> params) {

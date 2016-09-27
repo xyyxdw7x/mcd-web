@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
-import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlStcPlanManagementService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
@@ -29,8 +29,8 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 		return mtlStcPlanDao.searchPlanCount(keyWords, typeId,cityId);
 	}
 	@Override
-	public List<MtlStcPlanBean> searchPlan(String keyWords,String typeId,String cityId,Pager pager) {
-		List<MtlStcPlanBean> resultList = mtlStcPlanDao.searchPlan(keyWords,typeId,cityId,pager);
+	public List<PlanBean> searchPlan(String keyWords,String typeId,String cityId,Pager pager) {
+		List<PlanBean> resultList = mtlStcPlanDao.searchPlan(keyWords,typeId,cityId,pager);
 		String planIds = "";
 		for(int i = 0;i<resultList.size();i++){
 			planIds += "'"+ resultList.get(i).getPlanId()+"',";
@@ -40,7 +40,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 			List<McdPlanChannelList> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
 			
 			for(int i = 0;i<resultList.size();i++){
-				MtlStcPlanBean bean = resultList.get(i);
+				PlanBean bean = resultList.get(i);
 				String planId = bean.getPlanId();
 				String channelIds = "";
 				String planChannelId = "";
@@ -74,8 +74,8 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 
 	
 	@Override
-	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
-		List<MtlStcPlanBean> resultList = mtlStcPlanDao.getMtlStcPlanByCondation(keyWords, typeId, channelTypeId,planTypeId,cityId,isDoubleSelect,pager);
+	public List<PlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager) {
+		List<PlanBean> resultList = mtlStcPlanDao.getMtlStcPlanByCondation(keyWords, typeId, channelTypeId,planTypeId,cityId,isDoubleSelect,pager);
 		String planIds = "";
 		for(int i = 0;i<resultList.size();i++){
 			planIds += "'"+ resultList.get(i).getPlanId()+"',";
@@ -84,7 +84,7 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 		if(StringUtils.isNotEmpty(planIds)){
 			List<McdPlanChannelList> mtlStcPlanChannels = mtlStcPlanDao.getChannelIds(planIds.substring(0, planIds.length()-1));
 			for(int i = 0;i<resultList.size();i++){
-				MtlStcPlanBean bean = resultList.get(i);
+				PlanBean bean = resultList.get(i);
 				String planId = bean.getPlanId();
 				String channelIds = "";
 				String planChannelId = "";
@@ -136,19 +136,19 @@ public class MtlStcPlanManagementServiceImpl implements IMtlStcPlanManagementSer
 			List<Map<String,Object>> isUseredList = mtlStcPlanDao.checkIsUserd(planIds.substring(0, planIds.length()-1), cityId);
 			if(CollectionUtils.isEmpty(isUseredList)){
 				for(int i = 0;i<resultList.size();i++){
-					MtlStcPlanBean bean = resultList.get(i);
-					bean.setIsUserd("0");
+					PlanBean bean = resultList.get(i);
+					bean.setIsUsed("0");
 				}
 			}else{
 				for(int i = 0;i<resultList.size();i++){
-					MtlStcPlanBean bean = resultList.get(i);
+					PlanBean bean = resultList.get(i);
 					for(int k = 0;k<isUseredList.size();k++){
 						String planId = bean.getPlanId();
 						String tempPlanId = String.valueOf(isUseredList.get(k).get("PLAN_ID"));
 						if(planId.equals(tempPlanId)){
-							bean.setIsUserd("1");
+							bean.setIsUsed("1");
 						}else{
-							bean.setIsUserd("0");
+							bean.setIsUsed("0");
 						}
 					}
 				}

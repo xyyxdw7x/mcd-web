@@ -6,7 +6,7 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
@@ -42,7 +42,7 @@ public interface IMtlStcPlanDao {
 	 * @param typeId
 	 * @return
 	 */
-	public List<MtlStcPlanBean> searchPlan(String keyWords, String typeId,String cityId,Pager pager);
+	public List<PlanBean> searchPlan(String keyWords, String typeId,String cityId,Pager pager);
 	/**
 	 * 获取条数
 	 * @param keyWords
@@ -60,7 +60,7 @@ public interface IMtlStcPlanDao {
 	 * @param channelTypeId
 	 * @return
 	 */
-	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager);
+	public List<PlanBean> getMtlStcPlanByCondation(String keyWords,String typeId, String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager);
     /**
      * 根据渠道ID获取渠道信息
      * @param planId
@@ -99,7 +99,7 @@ public interface IMtlStcPlanDao {
 	 * @param params 对应的参数
 	 * @return
 	 */
-	List<McdPlanDef> execQuerySql(String sql, List<Object> params);
+	List<PlanBean> execQuerySql(String sql, List<Object> params);
 	/**
 	 * 执行查询条件，返回记录总条数
 	 * @param sql

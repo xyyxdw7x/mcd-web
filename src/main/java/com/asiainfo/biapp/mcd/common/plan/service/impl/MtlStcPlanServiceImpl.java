@@ -17,6 +17,7 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 
 /**
@@ -99,7 +100,7 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 	}
 
 	@Override
-	public List<McdPlanDef> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
+	public List<PlanBean> getPlanByCondition(String cityId, String planTypeId, String planSrvType, String channelId,String keyWords,Pager pager) {
 		
 		Map<String,Object> sqlClauseCount = getPlansByConditionSqlCount(cityId, planTypeId, planSrvType, channelId, keyWords);
 		String sql = sqlClauseCount.get("sql").toString();

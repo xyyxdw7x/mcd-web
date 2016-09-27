@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.tactics.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.common.plan.vo.MtlStcPlanBean;
+import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 
 public interface IMtlStcPlanManagementService {
@@ -19,7 +19,7 @@ public interface IMtlStcPlanManagementService {
 	 * @param typeId
 	 * @return
 	 */
-	public List<MtlStcPlanBean> searchPlan(String keyWords, String typeId,String cityId,Pager pager);
+	public List<PlanBean> searchPlan(String keyWords, String typeId,String cityId,Pager pager);
 	/**
 	 * 获取条数
 	 * @param keyWords
@@ -36,6 +36,6 @@ public interface IMtlStcPlanManagementService {
 	 * @param channelTypeId   渠道类型id
 	 * @return
 	 */
-	public List<MtlStcPlanBean> getMtlStcPlanByCondation(String keyWords,String typeId,String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager);
+	public List<PlanBean> getMtlStcPlanByCondation(String keyWords,String typeId,String channelTypeId,String planTypeId,String cityId,String isDoubleSelect,Pager pager);
 	
 }

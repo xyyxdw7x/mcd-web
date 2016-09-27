@@ -58,6 +58,9 @@ public class McdPlanDef implements java.io.Serializable {
 	@Column(name="PLAN_PID")
 	private String planPid;
 	
+	private String typeName;
+	private String isUsed;
+	
 	public String getPlanSrvType() {
 		return planSrvType;
 	}
@@ -279,5 +282,21 @@ public class McdPlanDef implements java.io.Serializable {
 	
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getIsUsed() {
+		return isUsed;
+	}
+
+	public void setIsUsed(String isUsed) {
+		this.isUsed = isUsed;
 	}
 }
