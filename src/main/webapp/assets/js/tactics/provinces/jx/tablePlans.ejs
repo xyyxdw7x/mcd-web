@@ -5,12 +5,12 @@
 		var index=i+1;
 		
 		var moreInfo ={};
-		moreInfo.planId = plan.PLAN_ID;
-		moreInfo.planName=plan.PLAN_NAME;
-		moreInfo.planTypeName=plan.TYPE_NAME;
-		moreInfo.planSrvType=plan.PLAN_SRV_TYPE;
-		moreInfo.planStartdate=plan.PLAN_STARTDATE;
-		moreInfo.planEnddate=plan.PLAN_ENDDATE;
+		moreInfo.planId = plan.planId;
+		moreInfo.planName=plan.planName;
+		moreInfo.planTypeName=plan.planType;
+		moreInfo.planSrvType=plan.planSrvType;
+		moreInfo.planStartdate=plan.planStartdate;
+		moreInfo.planEnddate=plan.planEnddate;
 		moreInfo.planIsUsed=plan.IS_USED
 		
 		var info = JSON.stringify(moreInfo)
@@ -21,23 +21,23 @@
 			<td class="text-left">
 				<a href="javascript:;" class="showPlanInfo">
 					<em>
-						<%=plan.PLAN_ID%>
+						<%=plan.planId%>
 					</em>
 					&nbsp;&nbsp;
-					<%=plan.PLAN_NAME%>
+					<%=plan.planName%>
 				</a>
 			</td>
-			<td class="text-center"><%=plan.TYPE_NAME%></td>
-			<%if(plan.PLAN_SRV_TYPE==1){%>
+			<td class="text-center"><%=plan.typeName%></td>
+			<%if(plan.planSrvType==1){%>
 			<td class="text-center">单产品</td>
-			<%} else if(plan.PLAN_SRV_TYPE==2){%>
+			<%} else if(plan.planSrvType==2){%>
 			<td class="text-center">政策</td>
 			<%} else{%>
-			<td class="text-center"><%=plan.PLAN_SRV_TYPE%></td>
+			<td class="text-center"><%=plan.planSrvType%></td>
 			<%}%>
-			<td class="text-center"><%=plan.PLAN_STARTDATE%></td>
-			<td class="text-center"><%=plan.PLAN_ENDDATE%></td>
-			<td class="text-center"><%=plan.IS_USED%></td>
+			<td class="text-center"><%=plan.planStartdate%></td>
+			<td class="text-center"><%=plan.planEnddate%></td>
+			<td class="text-center"><%=plan.isUsed%></td>
 			<td class="text-center" >
 				<button type="button" class="btn-a btn-a-blue" style="width:54px;height:24px;">确定</button>
 			</td>
