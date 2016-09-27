@@ -98,6 +98,11 @@ planInfo.queryPlan=function(pageNum){
 			// 分页渲染
 			planInfo.renderPageView(data);
 			planInfo.addPlanClickEvent(data);
+			//编辑情况下 有可能产品列表查询慢
+			var editPlanInfo=$("#tbodyPlansList").data("data");
+			if(editPlanInfo!=undefined&&editPlanInfo!=null){
+				$($("#tbodyPlansList .btn-a-blue")[0]).trigger("click", editPlanInfo);
+			}
 		}
 	
 	});
@@ -146,7 +151,11 @@ planInfo.addPlanSearchEvent=function(){
  */
 planInfo.addAddPlanEvent=function(){
 	$("#planDiv").bind("addPlan",function(event,data){
-		$($("#tbodyPlansList .btn-a-blue")[0]).trigger("click", data);
+		if($("#tbodyPlansList .btn-a-blue").length>0){
+			$($("#tbodyPlansList .btn-a-blue")[0]).trigger("click", data);
+		}else{
+			$("#tbodyPlansList").data("data",data);
+		}
 	});
 }
 /**

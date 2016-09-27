@@ -1,36 +1,35 @@
+/**
+ * 全局变量信息  camp策略信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
+ */
+var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null};
 
 /**
  * 测试页面框架js
  */
 $(document).ready(function(){
 	//绑定事件
-	addEventListenter();
-    initView();
+	tacticsInfo.addEventListenter();
+	tacticsInfo.initView();
 });
-/**
- * 全局变量信息  camp策略信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
- */
-var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null};
-
 
 /**
  * 页面元素进行统一的绑定事件入口
  */
-function addEventListenter(){
-	addStepNumEventListenter();
-	addNextBtnEventListenter();
-	addChangePlanEvent();
-	addChangeCustomerGroupEvent();
-	addChangeChannelEvent();
+tacticsInfo.addEventListenter=function(){
+	tacticsInfo.addStepNumEventListenter();
+	tacticsInfo.addNextBtnEventListenter();
+	tacticsInfo.addChangePlanEvent();
+	tacticsInfo.addChangeCustomerGroupEvent();
+	tacticsInfo.addChangeChannelEvent();
 }
 /**
  * 初始化各个子页面
  */
-function initView(){
+tacticsInfo.initView=function(){
 	//初始化筛选条件
 	planInfo.initPlan();
 	//初始化客户群信息
-	initCustomerGroup();
+	customerGroupInfo.initCustomerGroup();
 	//初始化渠道
 	initChannel();
 	//初始化购物车
@@ -39,13 +38,13 @@ function initView(){
 	var isEdit=$.url().param("isEdit");
 	if(isEdit=="1"){
 		var campId=$.url().param("campId");;
-		queryCampInfoById(campId);
+		tacticsInfo.queryCampInfoById(campId);
 	}
 }
 /**
  * 左侧数字导航事件
  */
-function addStepNumEventListenter(){
+tacticsInfo.addStepNumEventListenter=function(){
 	$("#stepOl li").click(function(event){
 		var selectedIndex=parseInt($(event.target).html(),10);
 		if(isNaN(selectedIndex)){
@@ -77,7 +76,7 @@ function addStepNumEventListenter(){
 /**
  * 下一步按钮数字导航
  */
-function addNextBtnEventListenter(){
+tacticsInfo.addNextBtnEventListenter=function(){
 	$("#nextBtn").click(function(event){
 		//找到当前的位置  如果是3则切换到1 
 		var selectedIndex=parseInt($("#stepOl .active").find("i").html(),10);
@@ -93,93 +92,75 @@ function addNextBtnEventListenter(){
 /**
  * 注册产品发生变化事件
  */
-function addChangePlanEvent(){
-	$("#planDiv").bind("changePlan",changePlanEvent);
+tacticsInfo.addChangePlanEvent=function(){
+	$("#planDiv").bind("changePlan",function(event,data){
+		tacticsInfo.plan=data;
+		//data为产品的所有信息
+		//派发事件
+		$("#shopCar").trigger("shopCarChangePlan",data);
+		$("#channelDiv").trigger("getPlanChange",data);
+	});
 }
 
-
-/**
- * 产品发生变化事件
- * @param event
- * @param data
- */
-function changePlanEvent(event,data){
-	tacticsInfo.plan=data;
-	//data为产品的所有信息
-	//派发事件
-	$("#shopCar").trigger("shopCarChangePlan",data);
-	$("#channelDiv").trigger("getPlanChange",data);
-}
 /**
  *  注册客户群发生变化事件
  */
-function addChangeCustomerGroupEvent(){
-	$("#cgDiv").bind("changeCustomerGroup",changeCustomerGroupEvent);
-}
-/**
- * 客户群发生变化事件
- * @param event
- * @param data
- */
-function changeCustomerGroupEvent(event,data){
-	//data为客户群的所有信息
-	//派发事件
-	$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
-	tacticsInfo.custGroup=data;
+tacticsInfo.addChangeCustomerGroupEvent=function(){
+	$("#cgDiv").bind("changeCustomerGroup",function(event,data){
+		//data为客户群的所有信息
+		//派发事件
+		$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
+		tacticsInfo.custGroup=data;
+	});
 }
 /**
  * 渠道发生变化
  * @param event
  * @param data
  */
-function addChangeChannelEvent(){
+tacticsInfo.addChangeChannelEvent=function(){
 	//派发事件
-	$("#channelDiv").bind("changeChannel",changeChannelEvent);
-}
-/**
- * 渠道发生变化
- * @param event
- * @param data
- */
-function changeChannelEvent(event,data){
-	//派发客户群变化事件，短信渠道需要相应变化变量
-	$("#shopCar").trigger("shopCarChangeChannel",data);
-	//channels为数组
-	if(tacticsInfo.channels==null){
-		var channelsArr = new Array(data);
-		tacticsInfo.channels=channelsArr;
-	}else{
-		//取消渠道选择
-		if(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1"){
-			for(var i=0;i<tacticsInfo.channels.length;i++){
-				var channelItem=tacticsInfo.channels[i];
-				if(channelItem.channelId==data.channelId){
-					tacticsInfo.channels.remove(channelItem);
-				}
-			}
+	$("#channelDiv").bind("changeChannel",function(event,data){
+		//派发客户群变化事件，短信渠道需要相应变化变量
+		$("#shopCar").trigger("shopCarChangeChannel",data);
+		//channels为数组
+		if(tacticsInfo.channels==null){
+			var channelsArr = new Array(data);
+			tacticsInfo.channels=channelsArr;
 		}else{
-			tacticsInfo.channels.push(data);
+			//取消渠道选择
+			if(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1"){
+				for(var i=0;i<tacticsInfo.channels.length;i++){
+					var channelItem=tacticsInfo.channels[i];
+					if(channelItem.channelId==data.channelId){
+						tacticsInfo.channels.remove(channelItem);
+					}
+				}
+			}else{
+				tacticsInfo.channels.push(data);
+			}
 		}
-	}
+	});
 }
+
 /**
  * 根据策略ID查询策略详情
  * @param campId
  */
-function queryCampInfoById(campId){
+tacticsInfo.queryCampInfoById=function(campId){
 	if(campId==null||campId==undefined){
 		alert("URL参数错误");
 		return ;
 	}
 	var url=contextPath+"/tactics/tacticsManage/getCampInfo.do";
 	var data={pid:campId};
-	$.post(url,data,queryCampInfoByIdSuc);
+	$.post(url,data,tacticsInfo.queryCampInfoByIdSuc);
 }
 /**
  * 根据策略ID查询策略详情成功
  * @param result
  */
-function queryCampInfoByIdSuc(result){
+tacticsInfo.queryCampInfoByIdSuc=function(result){
 	if(result==null){
 		alert("查询策略信息失败");
 		return ;
@@ -190,12 +171,10 @@ function queryCampInfoByIdSuc(result){
 	tacticsInfo.channels=result.channelsInfo;
 	//派发产品事件
 	if(tacticsInfo.plan!=undefined){
-		$("#planDiv").trigger("changePlan",tacticsInfo.plan);
 		$("#planDiv").trigger("addPlan",tacticsInfo.plan);
 	}
 	//派发客户群事件
 	if(tacticsInfo.custGroup!=undefined){
-		$("#cgDiv").trigger("changeCustomerGroup",tacticsInfo.custGroup);
 		$("#cgDiv").trigger("addCustomerGroup",tacticsInfo.custGroup);
 	}
 	//派发渠道事件

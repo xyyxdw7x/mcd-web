@@ -65,6 +65,8 @@ shopCarInfo.addChangeChannelEvent=function(){
 				var itemStr="<p class='right-p'><span class='color-666'>"+key+"：</span><em class='color-333'>"+value+"</em></p>";
 				channelInfoStr=channelInfoStr+itemStr;
 			}
+			delete data.keys;
+			delete data.values;
 		}
 		channelInfoStr=channelInfoStr+"</div>";
 		var channelHtmlStr="<li id='selectedChannel_"+channelId+"'><p class='ft14'>"+channelName+"</p>"+channelInfoStr+"<div>"+channelColumns+"</div><hr/></li>";
@@ -148,8 +150,9 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 		data:{"data":dataStr},
 		success:function(result) {
 			if(result.flag=="0"){
-				alert("保存策略成功");
 				$(dialog).dialog("close");
+				var tacticsManagerUrl=contextPath+"/mcd/pages/tactics/tacticsManage.jsp?navId=7142&subNavId=714212";
+				window.location.href=tacticsManagerUrl;
 			}else{
 				alert("保存策略失败");
 			}

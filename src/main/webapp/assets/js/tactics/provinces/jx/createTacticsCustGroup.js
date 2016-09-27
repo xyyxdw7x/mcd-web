@@ -1,16 +1,19 @@
+var customerGroupInfo={};
+
 /**
  * 客户群选择页面初始化
  */
-function initCustomerGroup(){
-	queryCustomerGroupList(1);
-	addCloseCustGroupEvent();
-	addCustomerGroupSearchEvent();
-	addCustomerGroupAddEvent();
+customerGroupInfo.initCustomerGroup=function(){
+	customerGroupInfo.queryGroupList(1);
+	customerGroupInfo.addDelSelectedEvent();
+	customerGroupInfo.addAddCustomerGroupEvent();
+	customerGroupInfo.addSearchEvent();
 }
+
 /**
  *  删除已选客户群
  */
-function addCloseCustGroupEvent(){
+customerGroupInfo.addDelSelectedEvent=function(){
 	$("#closeGroup").click(function(event){
 		$("#cgList li").removeClass("active");
 		$("#selCgDiv").hide();
@@ -19,7 +22,10 @@ function addCloseCustGroupEvent(){
 		$("#cgDiv").trigger("changeCustomerGroup",null);
 	});
 }
-function addCustomerGroupAddEvent(){
+/**
+ * 编辑添加客户群信息
+ */
+customerGroupInfo.addAddCustomerGroupEvent=function(){
 	$("#cgDiv").bind("addCustomerGroup",function(event,data){
 		$($("#cgList li")[0]).trigger("click", data);
 	});
@@ -27,43 +33,42 @@ function addCustomerGroupAddEvent(){
 /**
  * 客户群搜索事件
  */
-function addCustomerGroupSearchEvent(){
+customerGroupInfo.addSearchEvent=function(){
 	$("#cgSearchBtn").click(function(event){
-		queryCustomerGroupList(1);
+		customerGroupInfo.queryGroupList(1);
 	});
 }
 /**
  *  查询客户群列表
  */
-function queryCustomerGroupList(pageNum){
+customerGroupInfo.queryGroupList=function(pageNum){
 	//去掉空格
 	var keyWords=$("#cgSearchInput").val().replace(/(^\s*)|(\s*$)/g,"");
 	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
 	var data={pageNum:pageNum,pageSize:12,keyWords:keyWords};
-	$.post(url,data,queryCustomerGroupListSuc);
+	$.post(url,data,customerGroupInfo.queryGroupListSuc);
 }
 /**
  * 查询客户群列表成功
  */
-function queryCustomerGroupListSuc(obj){
+customerGroupInfo.queryGroupListSuc=function(obj){
 	var cgItemEjsUrl=contextPath+"/assets/js/tactics/provinces/"+provinces+"/createTacticsCustGroup.ejs";
 	var selectCg = $("#selectedCg").data("data");
-	var cgListHtml ;
-	if(selectCg != null){
+	var cgListHtml;
+	if(selectCg!= null){
 		cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj.result,customGroupId:selectCg.customGroupId});
 	}else{
 		cgListHtml = new EJS({url:cgItemEjsUrl}).render({data:obj.result,customGroupId:null});
 	}
 	$("#cgList").html(cgListHtml);
-	addCustomerGroupEvent(obj.result);
-	addCustomerGroupDetailsEvent(obj.result);
-	renderCustGroupPageView(obj);
+	customerGroupInfo.addItemClickEvent(obj.result);
+	customerGroupInfo.addItemDetailsEvent(obj.result);
+	customerGroupInfo.renderCustGroupPageView(obj);
 }
 /**
- * 测试用的 因此总页数添加了120
  * @param data
  */
-function renderCustGroupPageView(data){
+customerGroupInfo.renderCustGroupPageView=function(data){
 	$("#custGroupPage").pagination({
         items: data.totalSize,
         itemsOnPage: data.pageSize,
@@ -72,7 +77,7 @@ function renderCustGroupPageView(data){
         nextText:'下一页',
         cssStyle: 'light-theme',
         onPageClick:function(pageNumber,event){
-        	queryCustomerGroupList(pageNumber);
+        	customerGroupInfo.queryGroupList(pageNumber);
         }
     });
 }
@@ -81,15 +86,15 @@ function renderCustGroupPageView(data){
  * 注册客户群选择事件
  * @param obj
  */
-function addCustomerGroupEvent(obj){
+customerGroupInfo.addItemClickEvent=function(obj){
 	$("#cgList li").bind("click",function(event,data){
 		var item=data;
 		if(data==null||data==undefined){
 			var index = $("#cgList li").index(this);
 			item=obj[index];
+			$("#cgList li").removeClass("active");
+			$(event.currentTarget).addClass("active");
 		}
-		$("#cgList li").removeClass("active");
-		$(event.currentTarget).addClass("active");
 		//派发事件
 		$("#cgDiv").trigger("changeCustomerGroup",item);
 		$("#selCgDiv").show();
@@ -100,7 +105,7 @@ function addCustomerGroupEvent(obj){
  * 注册客户群详情事件
  * @param obj
  */
-function addCustomerGroupDetailsEvent(obj){
+customerGroupInfo.addItemDetailsEvent=function(obj){
 	$("#cgList li .group-box-detail > a").click(function(event){
 		var detailButton = $(this);
 		var event =event || window.event || arguments.callee.caller.arguments[0];
@@ -109,35 +114,35 @@ function addCustomerGroupDetailsEvent(obj){
 	    
 	    var customGroupId = detailButton.parent().parent().parent().parent().attr('customGroupId');
 	    
-	    queryCustomerGroupDetails(customGroupId);
+	    customerGroupInfo.queryCustomerGroupDetails(customGroupId);
 	});
 }
 /**
  * 查询客户群详情
  * @param customGroupId
  */
-function queryCustomerGroupDetails(customGroupId){
+customerGroupInfo.queryCustomerGroupDetails=function(customGroupId){
 	var url=contextPath+"/tactics/tacticsManage/viewCustGroupDetail.do";
 	var data={custGroupId:customGroupId};
-	$.post(url,data,queryCustomerGroupDetailsSuc);
+	$.post(url,data,customerGroupInfo.queryCustomerGroupDetailsSuc);
 }
 /**
  * 查询客户群详情成功
  * @param GrpDetail
  */
-function queryCustomerGroupDetailsSuc(GrpDetail){
-	$('.showGroupTypeDialog-id').html(GrpDetail.CUSTOM_GROUP_ID);
-	$('.showGroupTypeDialog-name').html(GrpDetail.CUSTOM_GROUP_NAME);
-	$('.showGroupTypeDialog-desc').html(GrpDetail.CUSTOM_GROUP_DESC);
-	$('.showGroupTypeDialog-filter').html(GrpDetail.RULE_DESC);
-	$('.showGroupTypeDialog-creater').html(GrpDetail.CREATE_USER_NAME);
-	$('.showGroupTypeDialog-createtime').html(GrpDetail.CREATE_TIME_STR);
-	$('.showGroupTypeDialog-updatecycle').html(GrpDetail.UPDATE_CYCLE_NAME);
-	$('.showGroupTypeDialog-datatime').html(GrpDetail.DATA_TIME_STR);
-	$('.showGroupTypeDialog-effectivetime').html(GrpDetail.CUSTOM_STATUS);
-	$('.showGroupTypeDialog-failtime').html(GrpDetail.FAIL_TIME_STR);
+customerGroupInfo.queryCustomerGroupDetailsSuc=function(grpDetail){
+	$('.showGroupTypeDialog-id').html(grpDetail.CUSTOM_GROUP_ID);
+	$('.showGroupTypeDialog-name').html(grpDetail.CUSTOM_GROUP_NAME);
+	$('.showGroupTypeDialog-desc').html(grpDetail.CUSTOM_GROUP_DESC);
+	$('.showGroupTypeDialog-filter').html(grpDetail.RULE_DESC);
+	$('.showGroupTypeDialog-creater').html(grpDetail.CREATE_USER_NAME);
+	$('.showGroupTypeDialog-createtime').html(grpDetail.CREATE_TIME_STR);
+	$('.showGroupTypeDialog-updatecycle').html(grpDetail.UPDATE_CYCLE_NAME);
+	$('.showGroupTypeDialog-datatime').html(grpDetail.DATA_TIME_STR);
+	$('.showGroupTypeDialog-effectivetime').html(grpDetail.CUSTOM_STATUS);
+	$('.showGroupTypeDialog-failtime').html(grpDetail.FAIL_TIME_STR);
 	
-	openDialogForPreview('showGroupTypeDialog','客户群详情',null,680,390);
+	customerGroupInfo.openDialogForPreview('showGroupTypeDialog','客户群详情',null,680,390);
 }
 /**
  * 打开客户群详情dialog
@@ -149,7 +154,7 @@ function queryCustomerGroupDetailsSuc(GrpDetail){
  * @param _open
  * @param _close
  */
-function openDialogForPreview(className,titleTxt,buttons,_w,_h,_open,_close){
+customerGroupInfo.openDialogForPreview=function(className,titleTxt,buttons,_w,_h,_open,_close){
 	$('body').css('overflow', 'hidden');
 	var ctObj=$("."+className);
 	if(ctObj.length>0){
