@@ -7,9 +7,33 @@ function collectData901(event,data){
 	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
 	channelContentInfo.isLoopSend = $("#channelId_"+data.channelId+"_loopSend").hasClass("active")? 1:0;
 	channelContentInfo.isHasVar = true;
+	
+	channelContentInfo.keys[0] = "channelId";
+	channelContentInfo.keys[1] = "channelName";
+	channelContentInfo.keys[2] = "execContent";
+	channelContentInfo.keys[3] = "isLoopSend";
+	channelContentInfo.keys[4] = "isHasVar";
+	channelContentInfo.values[0] = data.channelId;
+	channelContentInfo.values[1] = data.channelName;
+	channelContentInfo.values[2] = $("#channelId_"+data.channelId+"_contentWords").val();
+	channelContentInfo.values[3] = $("#channelId_"+data.channelId+"_loopSend").hasClass("active")? 1:0;
+	channelContentInfo.values[4] = true;
+	
 	return channelContentInfo;
 }
 
+/**
+ * 加载界面上渠道下的基础数据
+ * @param data
+ */
+function loadChannelBaseData901(data){
+
+}
+
+/**
+ * 界面上各个元素的事件处理
+ * @param data
+ */
 function clickChannelContentEventHandler901(data){
 	
 	//发送周期[一次性|周期性]按钮

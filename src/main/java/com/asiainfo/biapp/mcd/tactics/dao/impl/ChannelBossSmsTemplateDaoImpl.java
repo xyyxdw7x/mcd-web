@@ -31,7 +31,7 @@ public class ChannelBossSmsTemplateDaoImpl  extends JdbcDaoBase implements Chann
 		List<ChannelBossSmsTemplate> result = new ArrayList<ChannelBossSmsTemplate>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE");
+			sbuffer.append("SELECT  * FROM MTL_CHANNEL_BOSS_SMS_TEMPLATE T ORDER BY T.TEMPLATE_TYPE_ID, T.Template_Id");
 			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<ChannelBossSmsTemplate>(ChannelBossSmsTemplate.class));
 		} catch (Exception e) {
 			log.error(e);
@@ -57,7 +57,7 @@ public class ChannelBossSmsTemplateDaoImpl  extends JdbcDaoBase implements Chann
 		List<McdDimSmsbossTemplateType> result = new ArrayList<McdDimSmsbossTemplateType>();
 		try {
 			StringBuffer sbuffer = new StringBuffer();
-			sbuffer.append("SELECT  * FROM mcd_dim_smsboss_template_type");
+			sbuffer.append("SELECT  * FROM mcd_dim_smsboss_template_type t order by t.sort_num ");
 			result = this.getJdbcTemplate().query(sbuffer.toString(),new VoPropertyRowMapper<McdDimSmsbossTemplateType>(McdDimSmsbossTemplateType.class));
 		} catch (Exception e) {
 			log.error(e);

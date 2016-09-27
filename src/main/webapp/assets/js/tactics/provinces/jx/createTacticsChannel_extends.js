@@ -178,8 +178,15 @@ function addNewChannelToTab(data){
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
 	$("#href-channelId_"+data.channelId).html(channelContentHtml);//渠道内容
 	
+	//加载各个渠道操作对应的js
 	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
 	$.getScript(channelProcessJSUrl, function(){
+		//加载渠道内容展示基础数据
+		var fx = window["loadChannelBaseData"+data.channelId];
+		if (typeof fx == "function") { 
+			fx.apply(window, [data]);
+		}
+		
 		//增加渠道内容点击事件绑定
 		var fn = window["clickChannelContentEventHandler"+data.channelId];
 		if (typeof fn == "function") { 

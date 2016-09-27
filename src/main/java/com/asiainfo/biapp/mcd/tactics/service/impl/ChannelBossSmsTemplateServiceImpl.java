@@ -50,7 +50,7 @@ public class ChannelBossSmsTemplateServiceImpl implements ChannelBossSmsTemplate
 			 List<ChannelBossSmsTemplate> tmp = new ArrayList<ChannelBossSmsTemplate>();
 			 for(int j=0;j<templates.size();j++){
 				 ChannelBossSmsTemplate template =templates.get(j);
-				 if(type.getTypeId()==template.getTemplateTypeId()){
+				 if(type.getTypeId().equals(template.getTemplateTypeId())){
 					 tmp.add(template);
 				 }
 			 }

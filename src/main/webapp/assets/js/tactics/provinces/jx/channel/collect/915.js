@@ -6,9 +6,28 @@ function collectData915(event,data){
 	channelContentInfo.channelName = data.channelName;
 	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
 	
+	channelContentInfo.keys[0] = "channelId";
+	channelContentInfo.keys[1] = "channelName";
+	channelContentInfo.keys[2] = "execContent";
+	channelContentInfo.values[0] = data.channelId;
+	channelContentInfo.values[1] = data.channelName;
+	channelContentInfo.values[2] = $("#channelId_"+data.channelId+"_contentWords").val();
+	
 	return channelContentInfo;
 }
 
+/**
+ * 加载界面上渠道下的基础数据
+ * @param data
+ */
+function loadChannelBaseData915(data){
+	
+}
+
+/**
+ * 界面上各个元素的事件处理
+ * @param data
+ */
 function clickChannelContentEventHandler915(data){
 	
 	//确定按钮
