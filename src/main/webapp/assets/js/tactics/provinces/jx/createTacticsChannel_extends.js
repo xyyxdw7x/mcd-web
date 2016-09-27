@@ -144,8 +144,8 @@ function clickChannelEventHandler(event, data, addChannelTab){
 }
 
 function hintInputWordCount(data){
+	var maxWordSize = $("#channelId_"+data.channelId+"_wordSize").text();
 	$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
-		var maxWordSize = $("#channelId_"+data.channelId+"_wordSize").text();
 		var value = $(this).val();
 		var count = $("#channelId_"+data.channelId+"_wordSize");
 		debugger;
