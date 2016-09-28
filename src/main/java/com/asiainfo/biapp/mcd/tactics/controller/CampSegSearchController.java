@@ -20,6 +20,7 @@ import org.dom4j.Element;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
@@ -70,9 +71,10 @@ public class CampSegSearchController extends BaseMultiActionController {
 		String isSelectMy = request.getParameter("isSelectMy") != null ? request.getParameter("isSelectMy") : "0";
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		String channelId = request.getParameter("channelId");
-
+		User user= getUser(request,response);
+		
 		McdCampDef segInfo = new McdCampDef();
-		segInfo.setIsZJ(true);
+		//segInfo.setIsZJ(true);
 		segInfo.setKeywords(keywords);
 
 		if (campsegStatId != null && !"".equals(campsegStatId)) {
@@ -82,7 +84,7 @@ public class CampSegSearchController extends BaseMultiActionController {
 			segInfo.setIsSelectMy(Integer.parseInt(isSelectMy));
 		}
 		segInfo.setChannelId(channelId);
-		segInfo.setCreateUserId("chenyg");//(userId);
+		segInfo.setCreateUserId(user.getId());//(userId);
 		String clickQueryFlag = "true";
 		Pager pager = new Pager();
 		pager.setPageSize(MpmCONST.PAGE_SIZE);

@@ -99,8 +99,6 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             parameterList.add(segInfo.getStatId());
         }
         buffer.append(" order by msi.create_time desc");
-        
-        System.out.println(buffer.toString());
         String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
         List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sqlExt.toString(), parameterList.toArray());
         List<Map<String,Object>> listSize = this.getJdbcTemplate().queryForList(buffer.toString(), parameterList.toArray());
