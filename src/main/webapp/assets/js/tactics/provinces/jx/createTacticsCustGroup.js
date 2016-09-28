@@ -44,7 +44,7 @@ customerGroupInfo.addSearchEvent=function(){
 customerGroupInfo.queryGroupList=function(pageNum){
 	//去掉空格
 	var keyWords=$("#cgSearchInput").val().replace(/(^\s*)|(\s*$)/g,"");
-	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
+	var url=contextPath+"/action/tactics/createTactics/getMoreMyCustom.do";
 	var data={pageNum:pageNum,pageSize:12,keyWords:keyWords};
 	$.post(url,data,customerGroupInfo.queryGroupListSuc);
 }
@@ -122,7 +122,7 @@ customerGroupInfo.addItemDetailsEvent=function(obj){
  * @param customGroupId
  */
 customerGroupInfo.queryCustomerGroupDetails=function(customGroupId){
-	var url=contextPath+"/tactics/tacticsManage/viewCustGroupDetail.do";
+	var url=contextPath+"/action/tactics/createTactics/viewCustGroupDetail.do";
 	var data={custGroupId:customGroupId};
 	$.post(url,data,customerGroupInfo.queryCustomerGroupDetailsSuc);
 }

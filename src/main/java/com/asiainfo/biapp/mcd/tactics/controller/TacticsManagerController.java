@@ -46,8 +46,8 @@ import net.sf.json.JSONObject;
  * @author AsiaInfo-jie
  *
  */
-@RequestMapping("/tactics/campSegSearch")
-public class CampSegSearchController extends BaseMultiActionController {
+@RequestMapping("/action/tactics/tacticsManager")
+public class TacticsManagerController extends BaseMultiActionController {
 	private static Logger log = LogManager.getLogger();
 
 	//    @Resource(name="mpmUserPrivilegeService")

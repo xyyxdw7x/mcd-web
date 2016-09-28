@@ -21,7 +21,7 @@ function selCustGroup(){
 function queryCustomerGroupList(){
 	//去掉空格
 	var keyWords=$("#cgSearchInput").val().replace(/(^\s*)|(\s*$)/g,"");
-	var url=contextPath+"/tactics/tacticsManage/getMoreMyCustom.do";
+	var url=contextPath+"/action/tactics/createTactics/getMoreMyCustom.do";
 	var data={pageNum:"1",keyWords:keyWords};
 	$.post(url,data,queryCustomerGroupListSuc);
 }

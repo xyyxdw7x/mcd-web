@@ -123,9 +123,9 @@ function load_channel(_cmd, _lct) {
 				_htm += '<td onclick="clickChannel(this);" class="fleft content-type-box J_campType" cnid="'
 					+ data[d].channelId
 					+ '" cntid="'
-					+ data[d].channeltypeId
+					+ data[d].channelId
 					+ '" adiv-count="0">'
-					+ data[d].channeltypeName
+					+ data[d].channelName
 					+ '('
 					+ data[d].num
 					+ ')<span class="icon-down hidden"></span></td>';
@@ -508,7 +508,7 @@ function click_search_order(obj){
 //	alert(pageNum);
 }
 
-function clickOpen(obj){;
+function clickOpen(obj){
 	  var text = $(obj).html();
 	  var trLength = $(obj).prev().find("tr.channel_tr").length;
 	  if(trLength*1>1){
