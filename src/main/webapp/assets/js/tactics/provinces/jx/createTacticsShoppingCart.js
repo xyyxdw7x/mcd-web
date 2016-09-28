@@ -125,7 +125,7 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 	var campName=$("#tacticsName").val();
 	var putDateStart=$("#startDate").val();
 	var putDateEnd=$("#endDate").val();
-	var planId = tacticsInfo.plan["PLAN_ID"];
+	var planId = tacticsInfo.plan["planId"];
 	var customGroupId = tacticsInfo.custGroup["customGroupId"];
 	if(putDateStart>putDateEnd){
 		alert("开始日期不能大于结束日期");
