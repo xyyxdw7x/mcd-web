@@ -200,4 +200,6 @@ function checkValidation(data){
 		result[0]=false;
 		result[1]="必须选择短信模板!";
 	}
+	
+	var test="ssssss";
 }
