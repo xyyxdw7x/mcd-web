@@ -1,10 +1,11 @@
-//当前购物车中存放的渠道
-var channelsInShoppingCar = new Array();
-
+/**
+ * 渠道信息
+ */
+var channelInfo={};
 /**
  * 初始化渠道
  */
-function initChannel(){
+channelInfo.initChannel=function(){
 	queryChannelList();
 	addPlanEevent();
 }
@@ -59,6 +60,7 @@ function queryChannelListSuc(obj){
  */
 function addChannelEvent(obj){
 	$("#channelList li").click(function(event){
+		alert(123213213213);
 		var index = $("#channelList li").index(this);
 		var item=obj[index];
 		
@@ -114,14 +116,7 @@ function selectChannelEvent(event,data){
  * @param addChannelTab 要增加渠道页签 true:是|false:否 
  */
 function clickChannelEventHandler(event, data, addChannelTab){
-	if(!isSelectPlan()){
-		alert("请选择产品!");
-		return;
-	}
-	if(!isSelectCustomGroup()){
-		alert("请选择客户群!");
-		return;
-	}
+	alert("adasdasd");
 	if(addChannelTab) {
 		//展示渠道页签
 		$("#selectedChannelsDisplayDiv").show();
@@ -131,11 +126,6 @@ function clickChannelEventHandler(event, data, addChannelTab){
 		//最新加入的channel是active
 		latestAddeddChannelActive();
 		
-		//根据客户群id获取客户群变量
-		selectSmsAttribute(tacticsInfo.custGroup.customGroupId);
-		
-		//提示文本域中还可以输入字体个数
-		hintInputWordCount(data);
 	}
 	
 	//渠道关闭事件
@@ -143,20 +133,7 @@ function clickChannelEventHandler(event, data, addChannelTab){
 
 }
 
-function hintInputWordCount(data){
-	var maxWordSize = $("#channelId_"+data.channelId+"_wordSize").text();
-	$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
-		var value = $(this).val();
-		var count = $("#channelId_"+data.channelId+"_wordSize");
-		debugger;
-		if (value.length > maxWordSize) {
-			$(this).val(value.substring(0, maxWordSize));
-			count.html(0);
-		} else {
-			count.html(maxWordSize - value.length);
-		}
-	});
-}
+
 
 
 /**
@@ -181,50 +158,16 @@ function addNewChannelToTab(data){
 	//加载各个渠道操作对应的js
 	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
 	$.getScript(channelProcessJSUrl, function(){
-		//加载渠道内容展示基础数据
-		var fx = window["loadChannelBaseData"+data.channelId];
-		if (typeof fx == "function") { 
-			fx.apply(window, [data]);
-		}
-		
-		//增加渠道内容点击事件绑定
-		var fn = window["clickChannelContentEventHandler"+data.channelId];
-		if (typeof fn == "function") { 
-			fn.apply(window, [data]);
+		var initViewFun=window["initView"+data.channelId];
+		if(typeof initViewFun == "function"){
+			initViewFun.apply(window,[data]);
 		}
 	});
 }
 
-/**
- * 是否选择客户群 tacticsInfo为全局变量
- * @returns {Boolean}
- */
-function isSelectCustomGroup(){
-	if(tacticsInfo.custGroup){
-		if(!tacticsInfo.custGroup.customGroupId){
-			return false;
-		}
-	}else{
-		return false;
-	}
-	return true;
-	
-}
 
-/**
- * 是否选择产品 tacticsInfo为全局变量
- * @returns {Boolean}
- */
-function isSelectPlan(){
-	if(tacticsInfo.plan){
-		if(!tacticsInfo.plan.planId){
-			return false;
-		}
-	}else{
-		return false;
-	}
-	return true;
-}
+
+
 
 /**
  * 如果这个渠道已放入购物车，则通知购物车移除此渠道
@@ -301,38 +244,3 @@ function selectChannelByPlan(data){
 	});
 }
 
-/**
- * 根据客户群id获取附件属性列表
- * @param event
- * @param data
- */
-function selectSmsAttribute(custgroupId){
-	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/getCustGroupVars.do",
-		data:{"custGroupId":custgroupId},
-		success:function(result, textStatus) {
-			if (result) {
-				var temp ="";
-				//客户群的所有变量列表
-				for(var x in result){
-					if($("#_smsVar").find('span[attrCol="'+result[x].attrCol+'"]').length==0){
-						var _li='<span class="border-item" attrCol="'+result[x].attrCol+'">'+result[x].attrColName+'</span>';
-						temp += _li;
-					}
-				}
-				 $("#_smsVar").html(temp);
-				//选择变量时，写入文本域
-				var _textarea = $('#channelId_901_contentWords');
-					$('span.border-item').on("click",function(){
-					_textarea.insertContent(("$"+$(this).attr('attrCol')+"$"));
-					$(this).addClass("active");
-				 });
-			} else {
-				// 查询失败
-			}
-		},
-		error:function (XMLHttpRequest, textStatus, errorThrown) {
-			// error happening, do nothing
-		}
-	});
-}
