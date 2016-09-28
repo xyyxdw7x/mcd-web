@@ -1,4 +1,6 @@
-//当前购物车中存放的渠道
+/**
+ * 当前购物车中存放的渠道
+ */
 var channelsInShoppingCar = new Array();
 
 /**
@@ -148,7 +150,6 @@ function hintInputWordCount(data){
 	$("#channelId_"+data.channelId+"_contentWords").keyup(function () {
 		var value = $(this).val();
 		var count = $("#channelId_"+data.channelId+"_wordSize");
-		debugger;
 		if (value.length > maxWordSize) {
 			$(this).val(value.substring(0, maxWordSize));
 			count.html(0);
@@ -185,12 +186,6 @@ function addNewChannelToTab(data){
 		var fx = window["loadChannelBaseData"+data.channelId];
 		if (typeof fx == "function") { 
 			fx.apply(window, [data]);
-		}
-		
-		//增加渠道内容点击事件绑定
-		var fn = window["clickChannelContentEventHandler"+data.channelId];
-		if (typeof fn == "function") { 
-			fn.apply(window, [data]);
 		}
 	});
 }

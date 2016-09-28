@@ -671,7 +671,6 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					});
 				},
 				setBtnAttr:function(option){
-					debugger;
 					// 排除掉催单事件
 					if(option.cmd=="reminder.do"){
 						return ;
