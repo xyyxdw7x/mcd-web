@@ -1903,22 +1903,22 @@ body {
   cursor: pointer;
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .toolbar-adiv-1 {
-  background: url('../mcd/assets/images/toolbar/toolbar-adiv-1.png');
+  background: url('../../../../images/toolbar/toolbar-adiv-1.png');
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .toolbar-adiv-2 {
-  background: url('../mcd/assets/images/toolbar/toolbar-adiv-2.png');
+  background: url('../../../../images/toolbar/toolbar-adiv-2.png');
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .toolbar-adiv-1.select {
-  background: url('../mcd/assets/images/toolbar/toolbar-adiv-1-selected.png');
+  background: url('../../../../images/toolbar/toolbar-adiv-1-selected.png');
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .toolbar-adiv-2.select {
-  background: url('../mcd/assets/images/toolbar/toolbar-adiv-2-selected.png');
+  background: url('../../../../images/toolbar/toolbar-adiv-2-selected.png');
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .wechat-adiv-1 {
-  background: url('../mcd/assets/images/wechat-prev/wechat-adiv-1.png');
+  background: url('../../../../images/wechat-prev/wechat-adiv-1.png');
 }
 .container .content .content-main .channel-operation-box .channel-selected-img-ul .wechat-adiv-1.select {
-  background: url('../mcd/assets/images/wechat-prev/wechat-adiv-1-selected.png');
+  background: url('../../../../images/wechat-prev/wechat-adiv-1-selected.png');
 }
 .container .content .content-main .channel-executive-select {
   width: 100%;
@@ -2106,7 +2106,7 @@ body {
 }
 .container .content .content-main .channel-img-select .channel-left-list .channel-selected-box .channel-selected-img.select .select-img-select {
   position: absolute;
-  background: url(../mcd/assets/images/channel-op-img-selected.png) no-repeat;
+  background: url(../../../../images/channel-op-img-selected.png) no-repeat;
   float: left;
   margin-left: 120px;
   margin-top: -85px;
@@ -2137,7 +2137,7 @@ body {
 }
 .container .content .content-main .channel-img-select .channel-left-list .channel-selected-box .channel-selected-img .select-img-select {
   position: absolute;
-  background: url(../mcd/assets/images/channel-op-img-select.png) no-repeat;
+  background: url(../../../../images/channel-op-img-select.png) no-repeat;
   float: left;
   margin-left: 120px;
   margin-top: -85px;
@@ -2191,7 +2191,7 @@ body {
   margin: 0;
   position: relative;
   border: none;
-  background: #fbfbfb url(../mcd/assets/images/phone-bg.png) no-repeat center center;
+  background: #fbfbfb url(../../../../images/phone-bg.png) no-repeat center center;
   border-left: 1px solid #efefef;
 }
 .container .content .content-main .channel-img-select .channel-right-show .channel-right-show-inner .channel-phone-box .channel-arrow {
@@ -2775,7 +2775,7 @@ body {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
-  background: url(../mcd/assets/images/saveType-bg.png) no-repeat scroll right center transparent;
+  background: url(../../../../images/saveType-bg.png) no-repeat scroll right center transparent;
 }
 #saveCreateTacticsDialog .clchoose td #saveCampsegType::-ms-expand {
   display: none;
@@ -3359,7 +3359,7 @@ body {
   display: inline-block;
   width: 292px;
   height: 143px;
-  background: url(../mcd/assets/images/temp/channelPreview.png) no-repeat;
+  background: url(../../../../images/temp/channelPreview.png) no-repeat;
 }
 .previewExecontentDialog_906 {
   width: 730px;
@@ -3399,7 +3399,7 @@ body {
   display: inline-block;
   width: 292px;
   height: 143px;
-  background: url(../mcd/assets/images/temp/channelPreview.png) no-repeat;
+  background: url(../../../../images/temp/channelPreview.png) no-repeat;
 }
 .chooseCityDialog .ct {
   padding-top: 4px;

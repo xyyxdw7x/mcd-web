@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
-<link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">
-<link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/tacticsManage.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/resetDialog-jqueryUI.css">
+<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/tacticsManage.css">
 
 </head>
 <script type="text/javascript">
