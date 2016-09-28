@@ -165,6 +165,8 @@ function clickCommitButtonEventHandler910(data){
  */
 function clickPreviewButtonEventHandler910(data){
 	$("#previewButton_channelId_"+data.channelId).click(function(){
+		checkValidation(data);
+		
 		//收集并展示要预览的内容：短信模板+营销短信导语+推荐营销用语
 		var templates = getSelectedSMtemplates(data);
 		var channelContentWords = $("#channelId_"+data.channelId+"_contentWords").val();
@@ -187,4 +189,15 @@ function clickPreviewButtonEventHandler910(data){
 			}]
 		});
 	});
+}
+
+/**
+ * 确定、预览前的合法性检查
+ */
+function checkValidation(data){
+	var result = new Array();
+	if($("#channelId_"+data.channelId+"_SMtemplateDiv div ul li.active").length < 1){
+		result[0]=false;
+		result[1]="必须选择短信模板!";
+	}
 }
