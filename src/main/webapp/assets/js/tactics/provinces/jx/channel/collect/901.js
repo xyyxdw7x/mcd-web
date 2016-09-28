@@ -101,7 +101,7 @@ channelInfo901.hasSmsVar=function(contentStr){
  */
 channelInfo901.querySmsVarList=function(){
 	var custgroupId=tacticsInfo.custGroup.customGroupId;
-	var url=contextPath+"/tactics/tacticsManage/getCustGroupVars.do";
+	var url=contextPath+"/action/tactics/createTactics/getCustGroupVars.do";
 	$.ajax({
 		url:url,
 		data:{"custGroupId":custgroupId},

@@ -31,7 +31,7 @@ tacticsInfo.initView=function(){
 	//初始化客户群信息
 	customerGroupInfo.initCustomerGroup();
 	//初始化渠道
-	initChannel();
+	channelInfo.initChannel();
 	//初始化购物车
 	shopCarInfo.initShopCar();
 	//判断是否是编辑页面
