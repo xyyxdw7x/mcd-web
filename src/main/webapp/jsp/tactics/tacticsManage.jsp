@@ -3,23 +3,19 @@
 <html>
 <head>
 <title>策略管理</title>
-
+<%@ include file="../../jsp/common/head.jsp" %>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
-<link rel="stylesheet/less" type="text/css" href="../../assets/styles/common.css" />
-<link rel="stylesheet/less" type="text/css" href="../../assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" />
-<!--<link rel="stylesheet/less" type="text/x-less" href="../../assets/styles/tacticsManage.less" />-->
-<!--<link rel="stylesheet/less" type="text/x-less" href="../../assets/styles/common/resetDialog-jqueryUI.less" />-->
-<link href="../../../wro/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">
-<link href="../../../wro/tacticsManage.css" rel="stylesheet" type="text/css">
+<link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">
+<link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/tacticsManage.css" rel="stylesheet" type="text/css">
 
 </head>
 <script type="text/javascript">
 	_ctx = "<%=request.getContextPath()%>";
 </script>
 <body>
-<jsp:include page="../header/header.jsp"></jsp:include>
+<jsp:include page="../../jsp/common/header.jsp"></jsp:include>
 <div class="myTacticsQuery">
 	<ul id="tacticsManageQueryTab" class="tacticsManageQueryTab" dataCT="tacticsManageTabCT" >
 		<li class="active">我的策略<span class="icon_arrUp"></li>
@@ -99,11 +95,11 @@
 
 </body>
 </html>
-<script type="text/javascript" src="../../assets/scripts/seajs/sea.js"></script>
-<script type="text/javascript" src="../../assets/scripts/seajs/seajs-preload.js"></script>
-<script type="text/javascript" src="../../assets/scripts/seajs/sea-config.js"></script>
+<script type="text/javascript" src="../../assets/js/seajs/sea.js"></script>
+<script type="text/javascript" src="../../assets/js/seajs/seajs-preload.js"></script>
+<script type="text/javascript" src="../../assets/js/seajs/sea-config.js"></script>
 <script type="text/javascript">
-	seajs.use("../../assets/scripts/tactics/tacticsManage",function(main){
+	seajs.use("../../assets/js/tactics/tacticsManage",function(main){
 		main.init();
 		
 		/*

@@ -11,7 +11,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			this.loadAllChannelType();
 			window.tableViewManage  = this.loadTable({
 				currentDom:"#tacticsTable",
-				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
+				ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
 				ajaxData:{"isSelectMy":"0"},
 				domCallback:function(htmlobj){
 			//		module.exports.tacticsListManage();
@@ -29,11 +29,11 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTable:function(options){
 			var defaults = {
-				urlRoot:_ctx+"/tactics/campSegSearch",
+				urlRoot:_ctx+"/action/tactics/tacticsManager",
 				id:"searchIMcdCamp.do",
 //				cmd:"searchIMcdCamp",
 				currentDom:"#tacticsTable",
-				ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
+				ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
 				ajaxData:{},
 				addData:"",
 				complete:function(){
@@ -179,12 +179,12 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				_table.is(":visible")?_table.hide():_table.show();
 				var _campsegId=$(this).parent().find("td").eq(1).find("a").attr("href").split("=")[1];
 				module.exports.loadTable({
-					urlRoot:_ctx+"/tactics/campSegSearch",
+					urlRoot:_ctx+"/action/tactics/tacticsManager",
 					id:"searchMcdMpmCampSegChild.do",
 					//cmd:"searchMcdMpmCampSegChild",
 					currentDom:_table,
 					ajaxData:{"campsegId":_campsegId},
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/campSegChildTable.ejs'
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/campSegChildTable.ejs'
 				});
 				$("#tacticsManageBtnList").remove();
 				module.exports.stopBubble(e);
@@ -223,7 +223,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}
 						window.tableViewManage_all  = module.exports.loadTable({
 							currentDom:"#tacticsTable_all",
-							ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable_all.ejs',
+							ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
 							ajaxData:{"isSelectMy":"1"},
 							domCallback:function(htmlobj){
 								//module.exports.tacticsListManage();
@@ -242,7 +242,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}
 						window.tableViewManage  = module.exports.loadTable({
 							currentDom:"#tacticsTable",
-							ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
+							ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
 							ajaxData:{"isSelectMy":"0"},
 							domCallback:module.exports.getCampSegChildTable
 						});
@@ -293,7 +293,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					}
 					window.tableViewManage = _that.loadTable({
 						currentDom:"#tacticsTable",
-						ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
+						ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
 						ajaxData:ajaxData,
 						domCallback:function(htmlobj){
 						//	module.exports.tacticsListManage();
@@ -345,7 +345,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					}
 					window.tableViewManage_all = _that.loadTable({
 						currentDom:"#tacticsTable_all",
-						ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable_all.ejs',
+						ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
 						ajaxData:ajaxData,//{"isSelectMy":searchIndex,"keywords":_keywords,"campDrvId":campdrvid,"campsegStatId":campsegStatId}
 						domCallback:function(htmlobj){
 						//	module.exports.tacticsListManage();
@@ -377,11 +377,11 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTacticsManageSearchDimCampDrvType:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/campSegSearch",
+					urlRoot:_ctx+"/action/tactics/tacticsManager",
 					id:"searchDimCampDrvType.do",
 //					cmd:"searchDimCampDrvType",
 					currentDom:".tacticsManageSearchDimCampDrvType",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchDimCampDrvType.ejs',
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsManageSearchDimCampDrvType.ejs',
 					ajaxData:{},
 					domClick:module.exports.clickTacticsManageSearchDimCampDrvType
 			};
@@ -433,7 +433,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 			new searchDimCampDrvTypeView({el:options.currentDom});
 		},
 		loadAllChannelType:function(){
-			var url=_ctx+"/tactics/tacticsManage/initChannel?isDoubleSelect=0";
+			var url=_ctx+"/action/tactics/createTactics/initChannel?isDoubleSelect=0";
 			$.ajax({
 				type:"POST",
 			    url: url ,
@@ -459,11 +459,11 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		loadTacticsManageSearchCampsegStat:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/campSegSearch",
+					urlRoot:_ctx+"/action/tactics/tacticsManager",
 					id:"searchCampsegStat.do",
 //					cmd:"searchCampsegStat",
 					currentDom:".tacticsManageSearchCampsegStat",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsManageSearchCampsegStat.ejs',
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsManageSearchCampsegStat.ejs',
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -510,7 +510,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 		},
 		tacticsListManage:function(){
 			var tacticsBtnModel = Backbone.Model.extend({
-				urlRoot : _ctx+"/tactics/campSegSearch",
+				urlRoot : _ctx+"/action/tactics/tacticsManager",
 				defaults : {
 					_ctx : _ctx
 				}
@@ -703,7 +703,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 								}
 								window.tableViewManage = module.exports.loadTable({
 									currentDom:"#tacticsTable",
-									ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable.ejs',
+									ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
 									ajaxData:{"isSelectMy":"0",campsegStatId:$(".J_campType.active").attr("campsegstatid")},
 									domCallback:function(htmlobj){
 									//	module.exports.tacticsListManage();
@@ -717,7 +717,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 								}
 								window.tableViewManage_all  = module.exports.loadTable({
 									currentDom:"#tacticsTable_all",
-									ejsUrl:_ctx + '/mcd/pages/EJS/tacticsManage/tacticsTable_all.ejs',
+									ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
 									ajaxData:{"isSelectMy":"1",campsegStatId:$(".J_campType.active").attr("campsegstatid")},
 									domCallback:function(htmlobj){
 									//	module.exports.tacticsListManage();
@@ -842,7 +842,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 							var campsegId = $(this).attr('campsegid');
 							$.ajax({
 								type : "post",
-								url:_ctx+"/tactics/campSegSearch/searchExecContent",
+								url:_ctx+"/action/tactics/tacticsManager/searchExecContent",
 								contentType: "application/x-www-form-urlencoded; charset=utf-8",
 								dataType:'json',
 								data:{"campsegId":campsegId},
@@ -1014,7 +1014,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					                	    	  ajaxJson.childCampseg = childCampsegList;
 					                	    	  $.ajax({
 													type : "post",
-													url:_ctx+"/tactics/campSegSearch/saveExecContent",
+													url:_ctx+"/action/tactics/tacticsManager/saveExecContent",
 													contentType: "application/x-www-form-urlencoded; charset=utf-8",
 													dataType:'json',
 													data:{'json':JSON.stringify(ajaxJson)},

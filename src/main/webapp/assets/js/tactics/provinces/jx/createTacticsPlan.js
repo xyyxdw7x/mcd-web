@@ -27,7 +27,7 @@ planInfo.loadDimInfo=function(){
 	var ejsUrlPlanTypes=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimPlanTypes.ejs';
 	var ejsUrlChannels=contextPath + '/assets/js/tactics/provinces/' + provinces + '/dimChannels.ejs';
 	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/queryPlanTypes.do",
+		url:contextPath+"/action/tactics/createTactics/queryPlanTypes.do",
 		data:{},
 		success:function(data) {
 			if(!data){
@@ -76,7 +76,7 @@ planInfo.queryPlan=function(pageNum){
 	var channelId = $("#divDimChannels span.active").attr("channelId");
 	var ejsUrlPlans=contextPath + '/assets/js/tactics/provinces/' + provinces + '/tablePlans.ejs';
 	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/queryPlansByCondition.do",
+		url:contextPath+"/action/tactics/createTactics/queryPlansByCondition.do",
 		data:{
 			"keyWords":keyword,
 			"planTypeId":planTypeId,

@@ -152,7 +152,7 @@ tacticsInfo.queryCampInfoById=function(campId){
 		alert("URL参数错误");
 		return ;
 	}
-	var url=contextPath+"/tactics/tacticsManage/getCampInfo.do";
+	var url=contextPath+"/action/tactics/createTactics/getCampInfo.do";
 	var data={pid:campId};
 	$.post(url,data,tacticsInfo.queryCampInfoByIdSuc);
 }

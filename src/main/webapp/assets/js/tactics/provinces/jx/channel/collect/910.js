@@ -39,7 +39,7 @@ function loadChannelBaseData910(data){
 	
 	//ajax请求后台获取短信模板
 	$.post(
-		contextPath+"/tactics/tacticsManage/getBossSmsTemplate.do",
+		contextPath+"/action/tactics/createTactics/getBossSmsTemplate.do",
 		null,
 		function(retData, textStatus, jqXHR){
 			if (retData) {

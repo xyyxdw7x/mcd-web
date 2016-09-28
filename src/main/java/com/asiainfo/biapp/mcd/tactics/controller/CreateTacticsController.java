@@ -68,8 +68,8 @@ import com.asiainfo.biapp.mcd.tactics.vo.RuleTimeTermLable;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@RequestMapping("/tactics/tacticsManage")
-public class TacticsManageController extends BaseMultiActionController {
+@RequestMapping("/action/tactics/createTactics")
+public class CreateTacticsController extends BaseMultiActionController {
 	@Resource(name = "mpmCampSegInfoService")
 	private IMpmCampSegInfoService mpmCampSegInfoService; // 策略信息
 	@Resource(name = "mpmCommonService")

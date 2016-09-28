@@ -36,7 +36,7 @@ function clickCloseChannel(){
  *  查询渠道列表
  */
 function queryChannelList(){
-	var url=contextPath+"/tactics/tacticsManage/getChannels.do";
+	var url=contextPath+"/action/tactics/createTactics/getChannels.do";
 	$.post(url,null,queryChannelListSuc);
 }
 
@@ -103,7 +103,7 @@ function addPlanEevent(){
  * @param data
  */
 function selectChannelEvent(event,data){
-	var url=contextPath+"/tactics/tacticsManage/selectPlanBackChannels.do";
+	var url=contextPath+"/action/tactics/createTactics/selectPlanBackChannels.do";
 	$.post(url,{planId:data.planId},selectChannelByPlan);
 }
 
@@ -308,7 +308,7 @@ function selectChannelByPlan(data){
  */
 function selectSmsAttribute(custgroupId){
 	$.ajax({
-		url:contextPath+"/tactics/tacticsManage/getCustGroupVars.do",
+		url:contextPath+"/action/tactics/createTactics/getCustGroupVars.do",
 		data:{"custGroupId":custgroupId},
 		success:function(result, textStatus) {
 			if (result) {
