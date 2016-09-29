@@ -30,7 +30,8 @@ channelInfo901.initView=function(data){
 	}
 	if(data.hasOwnProperty("contactType")){
 		var contactType=data.contactType;
-		alert(contactType);
+		$("#901SendCycle button").removeClass("active");
+		$("#901SendCycle [data-data='"+contactType+"']").addClass("active");
 	}
 }
 /**

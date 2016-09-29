@@ -105,6 +105,7 @@ shopCarInfo.addSaveDialogEvent=function(){
 			alert("请选择渠道");
 			return ;
 		}
+		shopCarInfo.intiCampInfo();
 		shopCarInfo.showDatePicker();
 		$("#saveDialog").dialog({
 			width:600,
@@ -117,21 +118,62 @@ shopCarInfo.addSaveDialogEvent=function(){
 	});
 }
 /**
+ * 策略保存页面默认数据
+ */
+shopCarInfo.intiCampInfo=function(){
+	if(tacticsInfo.camp!=null){
+		var camp=tacticsInfo.camp;
+		if(camp.campName!=undefined){
+			$("#tacticsName").val(camp.campName);
+		}
+		if(camp.startDate!=undefined){
+			$("#startDate").val(camp.startDate);
+		}
+		if(camp.endDate!=undefined){
+			$("#endDate").val(camp.endDate);
+		}
+		return ;
+	}
+	//策略名称自动生成 产品名称+2016092911011111
+	var campNewName=tacticsInfo.plan.planName+"-"+(new XDate().toString("yyyyMMddHHmmss"));
+	$("#tacticsName").val(campNewName);
+}
+
+/**
  * 保存或提交审批
  * @param dialog
  * @param isCommit 是否提交审批
  */
 shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 	var campName=$("#tacticsName").val();
+	campName=campName.replace(/\n/gi,"");
+	if(campName==""){
+		alert("策略名称不能为空");
+		return ;
+	}
 	var putDateStart=$("#startDate").val();
 	var putDateEnd=$("#endDate").val();
 	var planId = tacticsInfo.plan["planId"];
 	var customGroupId = tacticsInfo.custGroup["customGroupId"];
+	if(putDateStart==""){
+		alert("开始日期不能为空");
+		return ;
+	}
+	if(putDateEnd==""){
+		alert("结束日期不能为空");
+		return ;
+	}
 	if(putDateStart>putDateEnd){
 		alert("开始日期不能大于结束日期");
 		return;
 	}
 	var campInfo=new Object();
+	if(tacticsInfo.camp!=null){
+		//编辑需要传入策略ID
+		if(tacticsInfo.camp.hasOwnProperty("campId")){
+			campInfo.campId=tacticsInfo.camp.campId;
+		}
+	}
 	campInfo.planId=planId;
 	campInfo.campName=campName;
 	campInfo.startDate=putDateStart;
