@@ -40,7 +40,7 @@ function collectData910(event,data){
  * 加载界面上渠道下的基础数据
  * @param data 渠道信息
  */
-function loadChannelBaseData910(data){
+function initView910(data){
 	//要拼接的用于显示短信模板的html片段
 	var typeDiv = 
 		'<div class="left-mes" id="{typeDiv}">\n'+
@@ -161,7 +161,6 @@ function clickCommitButtonEventHandler910(data){
 		}
 		
 		var newdata = collectData910(this, data);
-		channelsInShoppingCar.push(data.channelId);
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
 }
