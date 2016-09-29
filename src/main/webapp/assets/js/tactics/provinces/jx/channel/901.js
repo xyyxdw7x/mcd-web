@@ -23,6 +23,10 @@ channelInfo901.initView=function(data){
 	var $textArea=$("#content901");
 	var $maxNum=$("#wordSize901");
 	textAreaInputNumTip($textArea,$maxNum);
+	//编辑情况下有策略ID
+	if(!data.hasOwnProperty("campId")){
+		return ;
+	}
 	//回显
 	if(data.hasOwnProperty("execContent")){
 		$("#content901").val(data.execContent);
@@ -34,6 +38,7 @@ channelInfo901.initView=function(data){
 		$("#901SendCycle button").removeClass("active");
 		$("#901SendCycle [data-data='"+contactType+"']").addClass("active");
 	}
+	$("#channelSaveBtn901").trigger("click");
 }
 /**
  * 获取渠道输入信息
