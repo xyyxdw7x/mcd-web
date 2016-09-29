@@ -153,6 +153,13 @@ function clickSMtemplateEventHandler910(data){
  */
 function clickCommitButtonEventHandler910(data){
 	$("#commitButton_channelId_"+data.channelId).click(function(){
+		//输入项校验
+		var checkResult = checkValidation(data);
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
 		var newdata = collectData910(this, data);
 		channelsInShoppingCar.push(data.channelId);
 		$("#channelDiv").trigger("changeChannel", newdata);
@@ -165,7 +172,12 @@ function clickCommitButtonEventHandler910(data){
  */
 function clickPreviewButtonEventHandler910(data){
 	$("#previewButton_channelId_"+data.channelId).click(function(){
-		checkValidation(data);
+		//输入项校验
+		var checkResult = checkValidation(data);
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
 		
 		//收集并展示要预览的内容：短信模板+营销短信导语+推荐营销用语
 		var templates = getSelectedSMtemplates(data);
@@ -196,10 +208,22 @@ function clickPreviewButtonEventHandler910(data){
  */
 function checkValidation(data){
 	var result = new Array();
+	result[0]=true;
+	
 	if($("#channelId_"+data.channelId+"_SMtemplateDiv div ul li.active").length < 1){
 		result[0]=false;
 		result[1]="必须选择短信模板!";
+		return result;
 	}
-	
-	var test="ssssss";
+	var contentWords = $("#channelId_"+data.channelId+"_contentWords").val();
+	if(contentWords.length<1){
+		result[0]=false;
+		result[1]="必须录入短信推荐用语!";
+		return result;
+	} else if(contentWords.trim().length<1) {
+		result[0]=false;
+		result[1]="短信推荐用语不能为空字符!";
+		return result;
+	}
+	return result;
 }
