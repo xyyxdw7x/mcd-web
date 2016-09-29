@@ -15,7 +15,7 @@ var SM_QUOTE = "【推广】";
 var channelInfo910={baseInfo:null};
 
 /**
- * 短信渠道初始化函数  在主体架构中会动态调用该函数
+ * 渠道初始化函数  在主体架构中会动态调用该函数
  */
 function initView910(data){
 	channelInfo910.baseInfo=data;
