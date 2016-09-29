@@ -15,7 +15,7 @@ var SM_QUOTE = "【推广】";
 var channelInfo910={baseInfo:null};
 
 /**
- * 短信渠道初始化函数  在主体架构中会动态调用该函数
+ * 渠道初始化函数  在主体架构中会动态调用该函数
  */
 function initView910(data){
 	channelInfo910.baseInfo=data;
@@ -49,9 +49,19 @@ channelInfo910.collectData910=function(){
 }
 
 /**
- * 加载界面上渠道下的基础数据
+ * 界面上初始化、事件监听
  */
 channelInfo910.initView=function(){
+	//加载短信模板数据
+	channelInfo910.loadSMtempaltes910();
+	//添加事件监听
+	channelInfo910.clickChannelContentEventHandler910();
+}
+
+/**
+ * 加载短信模板
+ */
+channelInfo910.loadSMtempaltes910=function(){
 	//要拼接的用于显示短信模板的html片段
 	var typeDiv = 
 		'<div class="left-mes" id="{typeDiv}">\n'+
@@ -67,7 +77,7 @@ channelInfo910.initView=function(){
 		'</li>\n';
 	
 	//ajax请求后台获取短信模板、注册界面元素事件
-	var jqxhr =$.post(
+	$.post(
 		contextPath+"/action/tactics/createTactics/getBossSmsTemplate.do",
 		null,
 		function(retData, textStatus, jqXHR){
@@ -95,8 +105,8 @@ channelInfo910.initView=function(){
 				// 查询失败
 			}
 			
-			//在此做界面元素事件注册
-			channelInfo910.clickChannelContentEventHandler910();
+			//点击短信模板事件
+			channelInfo910.clickSMtemplateEventHandler910();
 		},"json");
 }
 
@@ -104,8 +114,6 @@ channelInfo910.initView=function(){
  * 界面上各个元素的事件处理
  */
 channelInfo910.clickChannelContentEventHandler910=function(){
-	//点击短信模板事件
-	channelInfo910.clickSMtemplateEventHandler910();
 	
 	//确定按钮
 	channelInfo910.clickCommitButtonEventHandler910();
