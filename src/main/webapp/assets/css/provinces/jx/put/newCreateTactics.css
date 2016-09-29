@@ -38,7 +38,7 @@
 .caret-box li.caret-save a:hover,.caret-box li.caret-save a.active{background:#edf1f4 url(../../../../images/put-img.png) no-repeat -28px -35px;}
 .del-icon{display: inline-block; width: 16px; position:relative;height:16px; cursor: pointer; background:url(../../../../images/put-img.png) no-repeat -63px -3px;}
 .chooseNetFlowDialog {
-  font-family: "寰蒋闆呴粦";
+  font-family: "微软雅黑";
   width: 580px;
   margin: 0 auto;
   position: absolute;
@@ -157,7 +157,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 }
 
 .btns-wrp{padding-right:4px;}
-/*閫夋笭閬�VOP棰勮*/
+/*选渠道 VOP预览*/
 .vop-dilog{width:652px; z-index: 101; height;550px; position: fixed;left:50%;top:50%;margin:-275px 0 0 -326px;}
 .vop-left{margin-right:33px;}
 .vop-1{width:309px; position: relative; height:550px;background:url(../../../../images/put/vop-1.png) no-repeat;}
@@ -172,12 +172,12 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .vop-2-con{background: #fff;height:288px;border-radius:0 0 5px 5px;padding:16px;}
 .vop-2-con .row{border-top:1px solid #eeeeee;padding-top:5px;height:90px;overflow: auto;}
 .vop-2-con p{margin:20px 0 0 0;}
-/*閫夋笭閬�鐭俊澶瑰甫棰勮*/
+/*选渠道-短信夹带预览*/
 .messageWith-dilog{width:259px;height:533px; z-index: 101; margin:-265px 0 0 -130px; position: fixed; left:50%;top:50%; background:url(../../../../images/put/messageWith-bg.png) no-repeat;}
 .messageWith-con{font-size: 12px;color: #010101;padding:90px 35px 0 35px;}
 .messageWith-con div{line-height: 24px;margin-bottom:10px;}
 .messageWith-con p{margin-left:-5px;}
-/*钀ヤ笟鍘�涓�鍖栧姛鑳芥帹鑽�寮圭獥*/
+/*营业厅-个性化功能推荐-弹窗*/
 .dialog-ul{overflow: hidden;width: 782px;margin:0 auto;}
 .dialog-ul li{float: left;height:310px; width: 376px; padding:0 2px; background: #fff;margin:0 0 0 10px;}
 .perCommend-dilog{width:100%;height:100%;}

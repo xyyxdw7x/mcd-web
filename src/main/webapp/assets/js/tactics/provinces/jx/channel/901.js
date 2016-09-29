@@ -26,7 +26,8 @@ channelInfo901.initView=function(data){
 	//回显
 	if(data.hasOwnProperty("execContent")){
 		$("#content901").val(data.execContent);
-		$("#content901").trigger("input propertychange",null);
+		var wordLen = data.execContent.length;
+		$maxNum.text($maxNum.text()-wordLen);
 	}
 	if(data.hasOwnProperty("contactType")){
 		var contactType=data.contactType;
