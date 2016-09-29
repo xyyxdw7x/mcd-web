@@ -112,6 +112,9 @@ channelInfo910.clickChannelContentEventHandler910=function(){
 	
 	//预览按钮
 	channelInfo910.clickPreviewButtonEventHandler910();
+	
+	//输入字数时对字数限制
+	channelInfo910.textAreaInputNumTip910();
 }
 
 /**
@@ -136,6 +139,16 @@ channelInfo910.getSelectedSMtemplates=function (){
 		templates[1] = templates[1] + typeName+$(this).attr("title");
 	});
 	return templates;
+}
+
+/**
+ * 营销用语输入字数限制
+ */
+channelInfo910.textAreaInputNumTip910=function(){
+	//输入字数时对字数限制
+	var $textArea=$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords");
+	var $maxNum=$("#channelId_"+channelInfo910.baseInfo.channelId+"_wordSize");
+	textAreaInputNumTip($textArea,$maxNum);
 }
 
 /**
