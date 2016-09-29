@@ -1,5 +1,8 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -33,12 +38,16 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 		this.getJdbcTemplateTool().save(def);
 	}
 	
-	public void deleteMtlChannelDef(String campsegId) throws Exception {/*
-		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
-		this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql));
-		this.getHibernateTemplate().flush();*/
-		String sql = "delete from mcd_camp_custgroup_list mcd where mcd.id.camp_id='" + campsegId + "'";
-		this.getJdbcTemplate().execute(sql);
+	public void deleteMtlChannelDef(final String campsegId) throws Exception {
+		final String sql = "delete from mcd_camp_custgroup_list mcd where mcd.camp_id=?";
+		this.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+			public Object doInConnection(Connection conn) throws SQLException, DataAccessException {
+				PreparedStatement delPre = conn.prepareStatement(sql);
+				delPre.setString(1, campsegId);
+				delPre.execute();
+				return null;
+			}
+		});
 	}
 	
     /**

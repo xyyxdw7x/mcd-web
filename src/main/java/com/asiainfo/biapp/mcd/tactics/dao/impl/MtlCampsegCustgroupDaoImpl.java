@@ -1,11 +1,16 @@
 package com.asiainfo.biapp.mcd.tactics.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -77,19 +82,16 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements ICampseg
 		}
 	}
 	
-	public void deleteByCampsegId(String campsegId) {/*
-		log.debug("deleteByCampsegId MtlCampsegCiCustgroup instance");
-		try {
-			String sql = "delete from MtlCampsegCiCustgroup group where group.campsegId= ? ";
-			this.getHibernateTemplate().deleteAll(this.getHibernateTemplate().find(sql, campsegId));
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
-	*/
-		String sql = "delete from mcd_camp_custgroup_list group where group.campId= ? ";
-		this.getJdbcTemplate().execute(sql);	
+	public void deleteByCampsegId(final String campsegId) {
+		final String sql = "delete from mcd_camp_custgroup_list group where group.campId= ? ";
+		this.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+			public Object doInConnection(Connection conn) throws SQLException, DataAccessException {
+				PreparedStatement delPre = conn.prepareStatement(sql);
+				delPre.setString(1, campsegId);
+				delPre.execute();
+				return null;
+			}
+		});
 	}
 	
 	

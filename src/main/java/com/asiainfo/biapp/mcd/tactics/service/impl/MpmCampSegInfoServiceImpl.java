@@ -1275,7 +1275,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			String currentCampId;
 			String custGroupId;
 			
-			List<McdCampChannelList> channelList =null;			
+			List<McdCampChannelList> channelList =null;		
+			isModify = true;
             if (!isModify) {//-------------创建--------
 				if (tmp.getPid() != "0") {//子策略
 					currentCampId = MpmUtil.generateCampsegAndTaskNo();
@@ -1295,7 +1296,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				
 			}else{//-----------------修改-----------------
 				
-				if (tmp.getPid() != "0") {//子策略			
+				if (tmp.getPid()!=null && !tmp.getPid().equals("0")) {//子策略			
 					currentCampId = tmp.getCampId();
 					custGroupId = tmp.getCustgroupId();
 					mtlCampsegCustgroupDao.deleteByCampsegId(currentCampId);//先删除关系表中数据

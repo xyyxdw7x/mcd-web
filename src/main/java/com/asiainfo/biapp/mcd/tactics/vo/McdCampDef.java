@@ -59,7 +59,7 @@ public class McdCampDef {
 	private String campNo; // 多规则时，规则序号
 	@Column(name = "CEP_EVENT_ID")
 	private String cepEventId; // 复杂事件ID
-	@Column(name = "event_rule_desc")
+	@Transient
 	private String eventRuleDesc; // 实时事件名称
 	@Column(name = "CAMP_CLASS")
 	private Integer campClass; // 活动实际含义1：活动基本信息,2：规则,3：波次
