@@ -2039,8 +2039,8 @@ public class CreateTacticsController extends BaseMultiActionController {
 			McdCampDef campSeginfoBasic = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
 			McdCampDef campSeginfoSub = (McdCampDef) JSONObject.toBean(JSONObject.fromObject(commonAttr), McdCampDef.class);
 			
-			String pid = campSeginfoBasic.getPid(); // 父策略id
-			boolean isModify = pid==null?false:true;
+			String campId = campSeginfoSub.getCampId(); // 父策略id
+			boolean isModify = campId==null?false:true;
 			if(!isModify){//创建
 				campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());//设置父节点的Id
 				campSeginfoBasic.setPid("0");// 设置父节点的Pid
