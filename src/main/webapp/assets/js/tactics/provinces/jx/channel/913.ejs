@@ -1,15 +1,66 @@
-
+<ol class="opera-ol" id="vopAdivInfoId">
+							<li  id="channelVopId">
+								<div class='opera-top'>
+									<img  src="<%=contextPath%>/assets/images/put/opera-1.png"/>
+									<div class="op-bg"></div>
+									<div class="op-add"></div>
+								</div>
+								<p class="opera-bot text-center ft-14" id="channelVopPrevId">
+								  	流量专区手机
+								  	<a href="javascript:;" class="opera-btn fright"></a>
+								</p>
+							</li>
+</ol>
 <div class="left-right-box">
-	<span class="color-333 left ft14">短信推荐用语：</span>
+	<span class="color-333 left ft14">推荐用语：</span>
 	<div class="right text-area-box">
-		<textarea name="channelId_<%=data.channelId%>_contentWords" id="channelId_<%=data.channelId%>_contentWords" value=""></textarea>
-		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_wordSize"><%=data.wordSize%></span>个字</p>
+		<textarea name="content913" id="content913" value=""></textarea>
+		<p class="ft12 color-999 text-mes">您还可以输入<span id="wordSize913"><%=data.wordSize%></span>个字</p>
 	</div>
 </div>
 <div class="btns-wrp over-hidden">
 	<p class="fright">
-		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue" id="commitButton_channelId_<%=data.channelId%>">确定</a>
-		<a href="javascript:;" class="btn60-26 btn-a btn-a-white" id = "previewButton_channelId_<%=data.channelId">预览</a>
+		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue" id="channelSaveBtn913">确定</a>
+		<a href="javascript:;" class="btn60-26 btn-a btn-a-white" id = "previewBtn913">预览</a>
 	</p>
 	
 </div>
+
+
+<!-- VOP-预览弹窗 -->
+<div class="vop-dilog over-hidden" id="channelVopPrevDialog" style="display:none;">
+	<!--左侧-->
+	<div class="vop-left vop-1 fleft">
+			<div class="vop-bg"></div>
+			<div class="vop-bot">
+				<span class="vop-name">30元流量套餐</span>
+			</div>
+		</div>
+	<!--右侧-->
+	<div class="vop-right fleft">
+		<div class="vop-1">
+			<div class="vop-bg"></div>
+			<div class="vop-bot">
+				<span class="vop-name">30元流量套餐</span>
+			</div>
+		</div>
+		<div class="vop-2">
+			<h4></h4>
+			<div class="vop-2-con">
+				<div class="row">
+					<div class="col-xs-1">推荐业务</div>
+					<div class="col-xs-10 color-999">sssfsfsfsdsfdsfsfsf</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-1">推荐原因</div>
+					<div class="col-xs-10 color-999">推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因推荐原因</div>
+				</div>
+				<p>
+					<img src="../../assets/images/put/vop-2-btn.png" alt="" />
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="ui-widget-overlay ui-front" style="display:none;"></div>
