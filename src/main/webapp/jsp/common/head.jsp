@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.min.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/ejs/ejs.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/common/template-native.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/jquery.simplePagination.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/plugins/pagination.min.js"></script>

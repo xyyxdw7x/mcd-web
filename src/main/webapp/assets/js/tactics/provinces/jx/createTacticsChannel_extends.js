@@ -52,7 +52,8 @@ channelInfo.addChannelTab=function(data){
 	//添加渠道
 	//将渠道名称加入渠道页签页签
 	var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
-	var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
+	//var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
+	var li_tabs_html = new EJS({element:"channelTabTemp"}).render({data:data});
 	$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
 	
 	//展示此渠道的营销内容
