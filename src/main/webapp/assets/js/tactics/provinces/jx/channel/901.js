@@ -19,12 +19,13 @@ channelInfo901.initView=function(data){
 	//发送周期切换
 	channelInfo901.addSendCycleChangeEvent();
 	channelInfo901.addSaveBtnClickEvent();
+	//changeCustomerGroup
 	channelInfo901.querySmsVarList();
 	var $textArea=$("#content901");
 	var $maxNum=$("#wordSize901");
 	textAreaInputNumTip($textArea,$maxNum);
 	//编辑情况下有策略ID
-	if(!data.hasOwnProperty("campId")){
+	if(data.campId==null||data.camp==undefined){
 		return ;
 	}
 	//回显

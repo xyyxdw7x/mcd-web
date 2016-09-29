@@ -65,8 +65,8 @@ channelInfo.addChannelTab=function(data){
 	//添加渠道标签
 	var li_tabs_html = new EJS({element:"channelTabTemp"}).render({data:data});
 	$("#selectedChannelsDisplayUl").append($(li_tabs_html));
-	var channelContentDiv="<div role='tabpanel' id='channelContentDiv_"+channelId+"' class='tab-pane active '></div>";
-	$("#selectedChannelsContentDisplayDiv").append(channelContentDiv);
+	//var channelContentDiv="<div role='tabpanel' id='channelContentDiv_"+channelId+"' class='tab-pane active '></div>";
+	//$("#selectedChannelsContentDisplayDiv").append(channelContentDiv);
 	
 	//页签点击事件和关闭事件
 	channelInfo.addTabClickEvent(data);
@@ -75,7 +75,7 @@ channelInfo.addChannelTab=function(data){
 	//TODO word size可以从后端配置而获得
 	var ejsChannelContentUrl = contextPath+"/assets/js/tactics/provinces/"+provinces+"/channel/"+channelId+".ejs";
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
-	$("#channelContentDiv_"+channelId).html(channelContentHtml);//渠道内容
+	$("#selectedChannelsContentDisplayDiv").append(channelContentHtml);//渠道内容
 	
 	$("#selectedChannelsContentDisplayDiv > div").hide();
 	$("#channelContentDiv_"+channelId).show();

@@ -110,6 +110,7 @@ tacticsInfo.addChangeCustomerGroupEvent=function(){
 		//data为客户群的所有信息
 		//派发事件
 		$("#shopCar").trigger("shopCarChangeCustomerGroup",data);
+		$("#channelDiv").trigger("changeCustomerGroup",data);
 		tacticsInfo.custGroup=data;
 	});
 }
