@@ -54,6 +54,12 @@ channelInfo.addChannelClickEvent=function(obj){
  */
 channelInfo.addChannelTab=function(data){
 	var channelId=data.channelId;
+	if($("#channelContentDiv_"+channelId).length>0){
+		return ;
+	}
+	if($("#channelContentDiv_"+channelId).length>0){
+		return ;
+	}
 	//展示渠道页签
 	$("#selectedChannelsDisplayDiv").show();
 	$("#selectedChannelsDisplayUl li").filter(".active").removeClass("active");
