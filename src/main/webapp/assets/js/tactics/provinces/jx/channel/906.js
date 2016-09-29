@@ -1,61 +1,109 @@
-function collectData906(event,data){
-	var channelContentInfo = new Object();
-	channelContentInfo.keys = new Array();
-	channelContentInfo.values = new Array();
-	channelContentInfo.channelId = data.channelId;
-	channelContentInfo.channelName = data.channelName;
-	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
-	
-	channelContentInfo.keys[0] = "channelId";
-	channelContentInfo.keys[1] = "channelName";
-	channelContentInfo.keys[2] = "execContent";
-	channelContentInfo.values[0] = data.channelId;
-	channelContentInfo.values[1] = data.channelName;
-	channelContentInfo.values[2] = $("#channelId_"+data.channelId+"_contentWords").val();
-	
-	return channelContentInfo;
+/*
+ * 短信渠道选择封装类
+ * baseInfo渠道基本信息，包含渠道ID 渠道名称
+ */
+var channelInfo906={baseInfo:null};
+
+/**
+ * 短信渠道初始化函数  在主体架构中会动态调用该函数
+ */
+function initView906(data){
+	channelInfo906.baseInfo=data;
+	channelInfo906.initView();
+}
+/**
+ * 界面上初始化、事件监听
+ */
+channelInfo906.initView=function(){
+	//加载一些界面数据
+	channelInfo906.loadSomeBaseData906();
+	//添加事件监听
+	channelInfo906.clickChannelContentEventHandler906();
 }
 
 /**
  * 加载界面上渠道下的基础数据
- * @param data
  */
-function loadChannelBaseData906(data){
+channelInfo906.loadSomeBaseData906=function(){
 	
 }
 
 /**
  * 界面上各个元素的事件处理
- * @param data
  */
-function clickChannelContentEventHandler906(data){
-	
+channelInfo906.clickChannelContentEventHandler906=function(){
 	//确定按钮
-	clickCommitButtonEventHandler906(data);
+	channelInfo906.clickCommitButtonEventHandler906();
 	
-	//预览按钮
-//	clickPreviewButtonEventHandler906(data);
+	//输入字数时对字数限制
+	channelInfo906.textAreaInputNumTip906();
+	
 }
 
 /**
- * 在选择渠道录入渠道信息后，点击确定按钮操作的处理。</br>
- * 2. 将要加入购物车的渠道id计入本地变量中（将推入购物车的渠道记录下来，渠道被取消时要据此判断是否通知购物车移除渠道）</br>
- * 3.触发changeChannel事件，将表单数据推给购物车。
+ * 收集此渠道的渠道表单内容
+ * @returns 渠道表单内容
  */
-function clickCommitButtonEventHandler906(data){
-	$("#commitButton_channelId_"+data.channelId).click(function(){
-		var newdata = collectData906(this, data);
-		channelsInShoppingCar.push(data.channelId);
+channelInfo906.collectData906=function(){
+	var channelContentInfo = new Object();
+	channelContentInfo.keys = new Array();
+	channelContentInfo.values = new Array();
+	channelContentInfo.channelId = channelInfo906.baseInfo.channelId;
+	channelContentInfo.channelName = channelInfo906.baseInfo.channelName;
+	channelContentInfo.execContent = $("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val();
+	
+	channelContentInfo.keys[0] = "渠道名称";
+	channelContentInfo.keys[1] = "推荐营销用语";
+	channelContentInfo.values[0] = channelInfo906.baseInfo.channelName;
+	channelContentInfo.values[1] = channelContentInfo.execContent;
+	
+	return channelContentInfo;
+}
+
+/**
+ * 录入渠道的相关信息后，点击确定按钮操作的处理。</br>
+ */
+channelInfo906.clickCommitButtonEventHandler906=function(){
+	$("#commitButton_channelId_"+channelInfo906.baseInfo.channelId).click(function(){
+		//输入项校验
+		var checkResult = channelInfo906.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
+		var newdata = channelInfo906.collectData906();
+		
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
 }
 
 /**
- * 点击预览按钮事件处理
- * @param data
+ * 营销用语输入字数限制
  */
-//function clickPreviewButtonEventHandler906(data){
-//	$("#previewButton_channelId_"+data.channelId).click(function(){
-//		alert("暂未实现");
-//	});
-//}
+channelInfo906.textAreaInputNumTip906=function(){
+	//输入字数时对字数限制
+	var $textArea=$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords");
+	var $maxNum=$("#channelId_"+channelInfo906.baseInfo.channelId+"_wordSize");
+	textAreaInputNumTip($textArea,$maxNum);
+}
+
+/**
+ * 确定、预览前的合法性检查
+ */
+channelInfo906.checkValidation=function(){
+	var result = new Array();
+	result[0]=true;
+	
+	var contentWords = $("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val();
+	if(contentWords.length<1){
+		result[0]=false;
+		result[1]="必须录入短信推荐用语!";
+		return result;
+	} else if(contentWords.trim().length<1) {
+		result[0]=false;
+		result[1]="短信推荐用语不能为空字符!";
+		return result;
+	}
+	return result;
+}
