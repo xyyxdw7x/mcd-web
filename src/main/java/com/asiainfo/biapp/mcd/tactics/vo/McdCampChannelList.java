@@ -19,7 +19,7 @@ public class McdCampChannelList implements java.io.Serializable {
 	@Column(name="CONTACT_TYPE")
 	private Integer contactType;
 	@Column(name="IF_HAVE_VAR")
-	private Short isHaveVar; //是否具有替换符,0:无;1:有
+	private Short isHasVar; //是否具有替换符,0:无;1:有
 	@Column(name="EXEC_CONTENT")
 	private String execContent;
 	@Column(name="TARGER_USER_NUMS")
@@ -52,8 +52,6 @@ public class McdCampChannelList implements java.io.Serializable {
 	private String eventParamJson;
 	@Column(name="FUNCTION_ID")
 	private String functionId;
-	
-	
 	@Transient
 	private String messageType;   //boss运营位  引用语类型
 	@Transient
@@ -85,12 +83,7 @@ public class McdCampChannelList implements java.io.Serializable {
 	public void setContactType(Integer contactType) {
 		this.contactType = contactType;
 	}
-	public Short getIsHaveVar() {
-		return isHaveVar;
-	}
-	public void setIsHaveVar(Short isHaveVar) {
-		this.isHaveVar = isHaveVar;
-	}
+	
 	public String getExecContent() {
 		return execContent;
 	}
@@ -198,6 +191,12 @@ public class McdCampChannelList implements java.io.Serializable {
 	}
 	public void setFunctionName(String functionName) {
 		this.functionName = functionName;
+	}
+	public Short getIsHasVar() {
+		return isHasVar;
+	}
+	public void setIsHasVar(Short isHasVar) {
+		this.isHasVar = isHasVar;
 	}	
 
 }

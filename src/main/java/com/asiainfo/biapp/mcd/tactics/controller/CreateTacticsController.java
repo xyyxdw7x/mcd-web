@@ -363,7 +363,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 						mtlChannelDef.setWcFileName(fileName);
 					}
 
-					mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
+					mtlChannelDef.setIsHasVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
 					if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
 						mtlChannelDef.setAdivId("1");
@@ -795,7 +795,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 							if (StringUtils.isEmpty(adivId)) { // 当adivId为空的时候，默认为1
 								mtlChannelDef.setAdivId("1");
 							}
-							mtlChannelDef.setIsHaveVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
+							mtlChannelDef.setIsHasVar(!ifHasVariate ? Short.parseShort("0") : Short.parseShort("1"));
 
 							// 保存将筛选后的客户群数量
 							String afterComputeCustNum[] = afterComputCustNum.split(",");
@@ -1986,7 +1986,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 			list = planChannelAdivResourceService.getAdivByPlanChannel(planId, channelId);
 			if(!CollectionUtils.isEmpty(list)){
 				res.put("adivdPictureURL", adivdPictureURL);
-				res.put("data", JmsJsonUtil.obj2Json(list));
+				res.put("data", list);
 			}
 		} catch (Exception e) {
 			log.error("",e);

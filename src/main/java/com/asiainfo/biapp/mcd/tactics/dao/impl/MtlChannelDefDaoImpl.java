@@ -151,18 +151,12 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         return list;
     }
     
-	public List<McdCampChannelList> findMtlChannelDef(String campsegId) throws Exception {/*
-		String sql = "from MtlChannelDef mcd where mcd.id.campsegId='" + campsegId + "'";
-		final String tmpSql = sql;
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session s) throws HibernateException, SQLException {
-				Query query = s.createQuery(tmpSql);
-				return query.list();
-			}
-		});
-	*/
-		String sql = "select * from mcd_camp_channel_list mcd where mcd.campseg_id='" + campsegId + "'";
-		List<McdCampChannelList> mtlChannelDefs=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
+	public List<McdCampChannelList> findMtlChannelDef(String campsegId) throws Exception {
+		StringBuffer sql = new StringBuffer("select mcl.*, channel.channel_name from mcd_camp_channel_list mcl ");
+		sql.append(" left join  mcd_dim_channel channel ").append(" on mcl.channel_id = channel.channel_id")
+				.append(" where mcl.campseg_id = ? ");
+		List<McdCampChannelList> mtlChannelDefs = this.getJdbcTemplate().query(sql.toString(),
+				new Object[] { campsegId }, new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
 		return mtlChannelDefs;
 	}
 	
