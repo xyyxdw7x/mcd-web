@@ -66,12 +66,34 @@ channelInfo.addChannelTab=function(data){
 	
 	//加载各个渠道操作对应的js
 	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
-	$.getScript(channelProcessJSUrl, function(){
-		var initViewFun=window["initView"+data.channelId];
-		if(typeof initViewFun == "function"){
-			initViewFun.apply(window,[data]);
-		}
-	});
+	var channelJs=document.createElement("script");
+	channelJs.type="text/javascript";
+    // IE
+    if (channelJs.readyState){
+    	channelJs.onreadystatechange = function () {
+            if (channelJs.readyState == "loaded" || channelJs.readyState == "complete") {
+            	channelJs.onreadystatechange = null;
+                channelInfo.loadChannelJsComplete(data);
+            }
+        };
+    } else { // others
+    	channelJs.onload = function () {
+        	channelInfo.loadChannelJsComplete(data);
+        };
+    }
+	channelJs.src=channelProcessJSUrl;
+	document.body.appendChild(channelJs);
+}
+/**
+ * 加载渠道js信息成功
+ */
+channelInfo.loadChannelJsComplete=function(data){
+	var initViewFun=window["initView"+data.channelId];
+	if(typeof initViewFun == "function"){
+		initViewFun.apply(window,[data]);
+	}
+	//$.getScript异步加载 但是并不需要异步 而且在浏览器中不能直接调试
+	//$.getScript(channelProcessJSUrl, function(){});
 	//最新加入的channel是active
 	latestAddeddChannelActive();
 }
