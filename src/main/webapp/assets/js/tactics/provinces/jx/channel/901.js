@@ -88,7 +88,7 @@ channelInfo901.hasSmsVar=function(contentStr){
 	}
 	varList.each(function(index,obj){
 		var varValue=$(obj).attr("attrcol");
-		if(contentStr.indexOf("varValue")>=0){
+		if(contentStr.indexOf(varValue)>=0){
 			suc=true;
 			//return false跳出each循环
 			return false;

@@ -36,6 +36,7 @@ channelInfo.addChannelClickEvent=function(obj){
 		var hasActive = $(this).hasClass("active");//原来是否已处于active状态
 		//已经选中直接返回
 		if(hasActive){
+			
 			return ;
 		}
 		if(!hasActive){
@@ -43,6 +44,7 @@ channelInfo.addChannelClickEvent=function(obj){
 			$(this).addClass("active");
 			$(this).children(".my-selected-icon").show();
 		}
+		//TODO 应该加入loading  数据有时没加载进来
 		//添加tab页签
 		channelInfo.addChannelTab(item);
 	});
