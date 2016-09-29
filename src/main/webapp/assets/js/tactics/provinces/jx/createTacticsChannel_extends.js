@@ -158,20 +158,11 @@ channelInfo.getPlanChannelsSuc=function(data){
  * @param channelId
  */
 function callBacllChannel(channelId){
-	if(channelsInShoppingCar.length>0){
-		for(var i = 0; i < channelsInShoppingCar.length; i++){
-			if(channelsInShoppingCar[i] == channelId){
-				channelsInShoppingCar = channelsInShoppingCar.splice(i,1);//移除已经存放的渠道id
-				
-				//通知购物车移除渠道
-				var channelContentInfo = new Object();
-				channelContentInfo.channelId = channelId;
-				channelContentInfo.isCancell = "1";
-				$("#channelDiv").trigger("changeChannel", channelContentInfo);
-				break;
-			}
-		}
-	}
+	//通知购物车移除渠道
+	var channelContentInfo = new Object();
+	channelContentInfo.channelId = channelId;
+	channelContentInfo.isCancell = "1";
+	$("#channelDiv").trigger("changeChannel", channelContentInfo);
 }
 
 /**
