@@ -1276,7 +1276,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			String custGroupId;
 			
 			List<McdCampChannelList> channelList =null;		
-			isModify = true;
             if (!isModify) {//-------------创建--------
 				if (tmp.getPid() != "0") {//子策略
 					currentCampId = MpmUtil.generateCampsegAndTaskNo();
