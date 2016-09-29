@@ -57,9 +57,6 @@ channelInfo.addChannelTab=function(data){
 	if($("#channelContentDiv_"+channelId).length>0){
 		return ;
 	}
-	if($("#channelContentDiv_"+channelId).length>0){
-		return ;
-	}
 	//展示渠道页签
 	$("#selectedChannelsDisplayDiv").show();
 	$("#selectedChannelsDisplayUl li").filter(".active").removeClass("active");
@@ -79,6 +76,9 @@ channelInfo.addChannelTab=function(data){
 	var ejsChannelContentUrl = contextPath+"/assets/js/tactics/provinces/"+provinces+"/channel/"+channelId+".ejs";
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
 	$("#channelContentDiv_"+channelId).html(channelContentHtml);//渠道内容
+	
+	$("#selectedChannelsContentDisplayDiv > div").hide();
+	$("#channelContentDiv_"+channelId).show();
 	
 	//加载各个渠道操作对应的js
 	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.js'
