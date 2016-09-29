@@ -180,7 +180,7 @@ tacticsInfo.queryCampInfoByIdSuc=function(result){
 	//派发渠道事件
 	if(tacticsInfo.channels!=undefined){
 		if(tacticsInfo.channels.length>0){
-			$("#channelDiv").trigger("changeChannel",tacticsInfo.channels);
+			$("#channelDiv").trigger("addChannles",tacticsInfo.channels);
 		}
 	}
 }

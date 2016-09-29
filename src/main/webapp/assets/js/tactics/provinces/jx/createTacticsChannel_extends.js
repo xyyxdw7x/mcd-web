@@ -66,7 +66,7 @@ channelInfo.addChannelTab=function(data){
 	$("#href-channelId_"+data.channelId).html(channelContentHtml);//渠道内容
 	
 	//加载各个渠道操作对应的js
-	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/collect/'+data.channelId+'.js'
+	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.js'
 	var channelJs=document.createElement("script");
 	channelJs.type="text/javascript";
     // IE
