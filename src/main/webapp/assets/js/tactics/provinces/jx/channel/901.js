@@ -9,13 +9,13 @@ var channelInfo901={baseInfo:null};
  */
 function initView901(data){
 	channelInfo901.baseInfo=data;
-	channelInfo901.initView();
+	channelInfo901.initView(data);
 }
 
 /**
  * 短信渠道初始化
  */
-channelInfo901.initView=function(){
+channelInfo901.initView=function(data){
 	//发送周期切换
 	channelInfo901.addSendCycleChangeEvent();
 	channelInfo901.addSaveBtnClickEvent();
@@ -23,6 +23,15 @@ channelInfo901.initView=function(){
 	var $textArea=$("#content901");
 	var $maxNum=$("#wordSize901");
 	textAreaInputNumTip($textArea,$maxNum);
+	//回显
+	if(data.hasOwnProperty("execContent")){
+		$("#content901").val(data.execContent);
+		$("#content901").trigger("input propertychange",null);
+	}
+	if(data.hasOwnProperty("contactType")){
+		var contactType=data.contactType;
+		alert(contactType);
+	}
 }
 /**
  * 获取渠道输入信息
@@ -34,7 +43,7 @@ channelInfo901.getChannelInfoData=function(){
 	channelInfo.channelName=channelInfo901.baseInfo.channelName;
 	channelInfo.execContent=$("#content901").val();
 	var isLoopSend=$("#901SendCycle button").filter(".active").data("data");
-	channelInfo.isLoopSend=isLoopSend;
+	channelInfo.contactType =isLoopSend;
 	channelInfo.isHasVar=channelInfo901.hasSmsVar(channelInfo.execContent);
 	
 	var keys=["推荐语","触发时机","执行周期","派发时间"];
