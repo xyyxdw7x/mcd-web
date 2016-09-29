@@ -48,10 +48,11 @@ function initView910(data){
 		'	<ul class="public-border-ul mesOld-ul" id="{typeUlId}">\n'+
 		'	</ul>\n'+
 		'</div>\n';
+	var url = contextPath;
 	var templateLi = 
 		'<li  data-toggle="tooltip" data-placement="bottom" title="{Tooltip}" smtemp="{smtemp}" id="{liId}">\n'+
 			'<span class="type-title" id="{templateTextId}">{smsTemplateText}</span>\n'+
-			'<img class="selected-img" src="../../assets/images/channelSelected-2.png">\n'+
+			'<img class="selected-img" src='+contextPath+'/assets/images/channelSelected-2.png">\n'+
 		'</li>\n';
 	
 	//ajax请求后台获取短信模板、注册界面元素事件
