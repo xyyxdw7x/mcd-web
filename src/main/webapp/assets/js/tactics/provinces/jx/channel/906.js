@@ -1,11 +1,11 @@
 /*
- * 短信渠道选择封装类
+ * 渠道选择封装类
  * baseInfo渠道基本信息，包含渠道ID 渠道名称
  */
 var channelInfo906={baseInfo:null};
 
 /**
- * 短信渠道初始化函数  在主体架构中会动态调用该函数
+ * 渠道初始化函数  在主体架构中会动态调用该函数
  */
 function initView906(data){
 	channelInfo906.baseInfo=data;
@@ -98,11 +98,11 @@ channelInfo906.checkValidation=function(){
 	var contentWords = $("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val();
 	if(contentWords.length<1){
 		result[0]=false;
-		result[1]="必须录入短信推荐用语!";
+		result[1]="必须录入推荐营销用语!";
 		return result;
 	} else if(contentWords.trim().length<1) {
 		result[0]=false;
-		result[1]="短信推荐用语不能为空字符!";
+		result[1]="推荐营销用语不能为空字符!";
 		return result;
 	}
 	return result;
