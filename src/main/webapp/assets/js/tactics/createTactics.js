@@ -129,14 +129,13 @@ tacticsInfo.addChangeChannelEvent=function(){
 			tacticsInfo.channels=channelsArr;
 		}else{
 			//取消渠道选择
-			if(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1"){
-				for(var i=0;i<tacticsInfo.channels.length;i++){
-					var channelItem=tacticsInfo.channels[i];
-					if(channelItem.channelId==data.channelId){
-						tacticsInfo.channels.remove(channelItem);
-					}
+			for(var i=0;i<tacticsInfo.channels.length;i++){
+				var channelItem=tacticsInfo.channels[i];
+				if(channelItem.channelId==data.channelId){
+					tacticsInfo.channels.splice(i,1);
 				}
-			}else{
+			}
+			if(!(data.hasOwnProperty('isCancell')&&data["isCancell"]=="1")){
 				tacticsInfo.channels.push(data);
 			}
 		}
