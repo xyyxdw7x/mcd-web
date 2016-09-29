@@ -8,6 +8,7 @@ var channelInfo={};
 channelInfo.initChannel=function(){
 	channelInfo.queryAllChannelList();
 	channelInfo.addPlanChangeEvent();
+	channelInfo.addAddChannelsEvent();
 }
 /**
  *  查询所有渠道列表
@@ -47,43 +48,30 @@ channelInfo.addChannelClickEvent=function(obj){
  * 添加渠道到TAB标签中
  */
 channelInfo.addChannelTab=function(data){
+	var channelId=data.channelId;
 	//展示渠道页签
 	$("#selectedChannelsDisplayDiv").show();
-	//添加渠道
-	//将渠道名称加入渠道页签页签
-	var ejsLiTabsUrl=contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/liTabsChannelId.ejs';
-	//var li_tabs_html = new EJS({url:ejsLiTabsUrl}).render({data:data});
+	$("#selectedChannelsDisplayUl li").filter(".active").removeClass("active");
+	$("#selectedChannelsContentDisplayDiv div").filter(".active").removeClass("active");
+	
+	//添加渠道标签
 	var li_tabs_html = new EJS({element:"channelTabTemp"}).render({data:data});
-	$("#selectedChannelsDisplayUl").prepend($(li_tabs_html));
+	$("#selectedChannelsDisplayUl").append($(li_tabs_html));
+	var channelContentDiv="<div role='tabpanel' id='channelContentDiv_"+channelId+"' class='tab-pane active '></div>";
+	$("#selectedChannelsContentDisplayDiv").append(channelContentDiv);
 	
-	//展示此渠道的营销内容
-	var ejsDivTabpanelUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/divTabpanelChannelId.ejs';
-	var div_tabpanel_html = new EJS({url:ejsDivTabpanelUrl}).render({data:data});
-	$("#selectedChannelsContentDisplayDiv").prepend($(div_tabpanel_html));//展示渠道内容的div
+	//页签点击事件和关闭事件
+	channelInfo.addTabClickEvent(data);
+	channelInfo.addCloseTabeClickEvent(data);
 	
-	var ejsChannelContentUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.ejs';
+	//TODO word size可以从后端配置而获得
+	var ejsChannelContentUrl = contextPath+"/assets/js/tactics/provinces/"+provinces+"/channel/"+channelId+".ejs";
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
-	$("#href-channelId_"+data.channelId).html(channelContentHtml);//渠道内容
+	$("#channelContentDiv_"+channelId).html(channelContentHtml);//渠道内容
 	
 	//加载各个渠道操作对应的js
 	var channelProcessJSUrl = contextPath + '/assets/js/tactics/provinces/'+provinces+'/channel/'+data.channelId+'.js'
-	var channelJs=document.createElement("script");
-	channelJs.type="text/javascript";
-    // IE
-    if (channelJs.readyState){
-    	channelJs.onreadystatechange = function () {
-            if (channelJs.readyState == "loaded" || channelJs.readyState == "complete") {
-            	channelJs.onreadystatechange = null;
-                channelInfo.loadChannelJsComplete(data);
-            }
-        };
-    } else { // others
-    	channelJs.onload = function () {
-        	channelInfo.loadChannelJsComplete(data);
-        };
-    }
-	channelJs.src=channelProcessJSUrl;
-	document.body.appendChild(channelJs);
+	loadJsFile(channelProcessJSUrl,channelInfo.loadChannelJsComplete,data)
 }
 /**
  * 加载渠道js信息成功
@@ -95,36 +83,38 @@ channelInfo.loadChannelJsComplete=function(data){
 	}
 	//$.getScript异步加载 但是并不需要异步 而且在浏览器中不能直接调试
 	//$.getScript(channelProcessJSUrl, function(){});
-	//最新加入的channel是active
-	latestAddeddChannelActive();
 }
-
-
 /**
- * 关闭渠道页签
+ * 渠道TAB页签点击事件
  */
-function clickCloseChannel(){
-	//tab切换删除按钮
-	$('.trench-header li i').click(function() {
-		var channelId = $(this).parent('li').attr("tabChannelId");
-		$('#channelList li[channelid='+channelId+']').removeClass("active");
-		
-		//移除页签
-		$("#li_tabs_channelId_"+channelId).remove();
-		
-		//移除渠道的营销内容
-		$("#href-channelId_"+channelId).remove();
-
-		//渠道页签中的第一个渠道展示
-		firstChannelActive();
-		//通知购物车移除此渠道
-		callBacllChannel(channelId);
-		
+channelInfo.addTabClickEvent=function(data){
+	var channelId=data.channelId;
+	$("#channelTab_"+channelId).bind("click",function(event){
+		$("#selectedChannelsDisplayUl li").filter(".active").removeClass("active");
+		$(event.target).parent().addClass("active");
+		//$("#901SendCycle button").not(".active").addClass("active");
+		$("#selectedChannelsContentDisplayDiv > div").hide();
+		$("#channelContentDiv_"+channelId).show();
 	});
 }
-
-
-
+/**
+ * 渠道页签关闭事件
+ */
+channelInfo.addCloseTabeClickEvent=function(data){
+	var channelId=data.channelId;
+	$("#channelClose_"+data.channelId).bind("click",function(event){
+		$("#li_channelId_"+channelId).removeClass("active");
+		$("#channelTabDiv_"+channelId).remove();
+		$("#channelContentDiv_"+channelId).remove();
+		$("#selectedChannelsDisplayUl li").last().addClass("active");
+		$("#selectedChannelsContentDisplayDiv > div").last().show();
+		//通知购物车移除渠道
+		var channelInfo = new Object();
+		channelInfo.channelId = channelId;
+		channelInfo.isCancell = "1";
+		$("#channelDiv").trigger("changeChannel", channelInfo);
+	});
+}
 
 /**
  * 绑定选择产品事件
@@ -147,63 +137,15 @@ channelInfo.getPlanChannelsSuc=function(data){
 		}
 	});
 }
-
-
-
-
-
-
 /**
- * 如果这个渠道已放入购物车，则通知购物车移除此渠道
- * @param channelId
+ * 渠道编辑传入渠道信息事件
  */
-function callBacllChannel(channelId){
-	//通知购物车移除渠道
-	var channelContentInfo = new Object();
-	channelContentInfo.channelId = channelId;
-	channelContentInfo.isCancell = "1";
-	$("#channelDiv").trigger("changeChannel", channelContentInfo);
-}
-
-/**
- * 将排在页签里第一个渠道激活展示
- * @param data
- */
-function firstChannelActive(){
-	$("#selectedChannelsDisplayUl li").each(function(){
-		if($(this).index() ==0) {
-			$(this).addClass("active");
-		} else {
-			$(this).removeClass("active");
-		}
-	});
-	
-	$("#selectedChannelsContentDisplayDiv div").each(function(){
-		if($(this).index() ==0) {
-			$(this).addClass("active");
-		} else {
-			$(this).removeClass("active");
-		}
+channelInfo.addAddChannelsEvent=function(){
+	$("#channelDiv").bind("addChannles",function(event,data){
+		alert("size="+data.length);
 	});
 }
 
-/**
- * 之前添加的渠道页签、渠道内容的class属性的active移除，最新加入的channel是active
- * @param data
- */
-function latestAddeddChannelActive(){
-	$("#selectedChannelsDisplayUl li").each(function(){
-		if($(this).index() !=0) {
-			$(this).removeClass("active");
-		}
-	});
-	
-	$("#selectedChannelsContentDisplayDiv div").each(function(){
-		if($(this).index() !=0) {
-			$(this).removeClass("active");
-		}
-	});
-}
 
 
 

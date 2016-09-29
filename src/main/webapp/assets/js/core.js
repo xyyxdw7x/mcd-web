@@ -20,4 +20,29 @@ function textAreaInputNumTip(textArea,numItem) {
         numItem.text(max - _value.length);
     });
 }
+/**
+ * 加载js文件
+ * @param url
+ * @param callBack
+ * @param data
+ */
+function loadJsFile(url,callBack,data){
+	var jsFile=document.createElement("script");
+	jsFile.type="text/javascript";
+    // IE
+    if (jsFile.readyState){
+    	jsFile.onreadystatechange = function () {
+            if (jsFile.readyState == "loaded" || jsFile.readyState == "complete") {
+            	jsFile.onreadystatechange = null;
+            	callBack(data);
+            }
+        };
+    } else { // others
+    	jsFile.onload = function () {
+    		callBack(data);
+        };
+    }
+    jsFile.src=url;
+	document.body.appendChild(jsFile);
+}
 
