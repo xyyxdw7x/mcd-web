@@ -8,27 +8,39 @@ var TEMPLATEID_SEPARATOR = ",";
  */
 var SM_QUOTE = "【推广】";
 
+/*
+ * 短信渠道选择封装类
+ * baseInfo渠道基本信息，包含渠道ID 渠道名称
+ */
+var channelInfo910={baseInfo:null};
+
+/**
+ * 短信渠道初始化函数  在主体架构中会动态调用该函数
+ */
+function initView910(data){
+	channelInfo910.baseInfo=data;
+	channelInfo910.initView();
+}
+
 /**
  * 收集此渠道的渠道表单内容
- * @param event 事件
- * @param data 渠道信息
  * @returns 渠道表单内容
  */
-function collectData910(event,data){
+channelInfo910.collectData910=function(){
 	var channelContentInfo = new Object();
 	channelContentInfo.keys = new Array();
 	channelContentInfo.values = new Array();
-	channelContentInfo.channelId = data.channelId;
-	channelContentInfo.channelName = data.channelName;
-	channelContentInfo.execContent = $("#channelId_"+data.channelId+"_contentWords").val();
+	channelContentInfo.channelId = channelInfo910.baseInfo.channelId;
+	channelContentInfo.channelName = channelInfo910.baseInfo.channelName;
+	channelContentInfo.execContent = $("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val();
 	
-	var templates = getSelectedSMtemplates(data);
+	var templates = channelInfo910.getSelectedSMtemplates();
 	channelContentInfo.bossTemplateId=templates[0];
 	
 	channelContentInfo.keys[0] = "渠道名称";
 	channelContentInfo.keys[1] = "短信推荐用语";
 	channelContentInfo.keys[2] = "短信模板";
-	channelContentInfo.values[0] = data.channelName;
+	channelContentInfo.values[0] = channelInfo910.baseInfo.channelName;
 	channelContentInfo.values[1] = channelContentInfo.execContent;
 	channelContentInfo.values[2] = templates[1];
 
@@ -38,9 +50,8 @@ function collectData910(event,data){
 
 /**
  * 加载界面上渠道下的基础数据
- * @param data 渠道信息
  */
-function initView910(data){
+channelInfo910.initView=function(){
 	//要拼接的用于显示短信模板的html片段
 	var typeDiv = 
 		'<div class="left-mes" id="{typeDiv}">\n'+
@@ -52,7 +63,7 @@ function initView910(data){
 	var templateLi = 
 		'<li  data-toggle="tooltip" data-placement="bottom" title="{Tooltip}" smtemp="{smtemp}" id="{liId}">\n'+
 			'<span class="type-title" id="{templateTextId}">{smsTemplateText}</span>\n'+
-			'<img class="selected-img" src='+contextPath+'/assets/images/channelSelected-2.png">\n'+
+			'<img class="selected-img" src="'+contextPath+'/assets/images/channelSelected-2.png">\n'+
 		'</li>\n';
 	
 	//ajax请求后台获取短信模板、注册界面元素事件
@@ -65,19 +76,19 @@ function initView910(data){
 				for(var index in retData){
 					var templates = retData[index].templates;
 					
-					var divhtml = typeDiv.replace("{typeDiv}", "channel"+data.channelId+"SMTypeDiv_"+retData[index].typeId);
-					divhtml = divhtml.replace("{spanTpyeTextId}", "channel"+data.channelId+"SMTypeTextId_"+retData[index].typeId);
+					var divhtml = typeDiv.replace("{typeDiv}", "channel"+channelInfo910.baseInfo.channelId+"SMTypeDiv_"+retData[index].typeId);
+					divhtml = divhtml.replace("{spanTpyeTextId}", "channel"+channelInfo910.baseInfo.channelId+"SMTypeTextId_"+retData[index].typeId);
 					divhtml = divhtml.replace("{spanTpyeText}", retData[index].typeName);
-					divhtml = divhtml.replace("{typeUlId}", "channel"+data.channelId+"SMTypeUl_"+retData[index].typeId);
-					$("#channelId_"+data.channelId+"_SMtemplateDiv").append(divhtml);
+					divhtml = divhtml.replace("{typeUlId}", "channel"+channelInfo910.baseInfo.channelId+"SMTypeUl_"+retData[index].typeId);
+					$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv").append(divhtml);
 					
 					for(var index2 in templates){
 						var templateHtml = templateLi.replace("{Tooltip}", templates[index2].templateContent);
 						templateHtml = templateHtml.replace("{smtemp}", templates[index2].templateId);
-						templateHtml = templateHtml.replace("{liId}", "channel"+data.channelId+"SMUl"+retData[index].typeId+"li"+templates[index2].templateId);
-						templateHtml = templateHtml.replace("{templateTextId}", "channel"+data.channelId+"SMUl"+retData[index].typeId+"liTextId"+templates[index2].templateId);
+						templateHtml = templateHtml.replace("{liId}", "channel"+channelInfo910.baseInfo.channelId+"SMUl"+retData[index].typeId+"li"+templates[index2].templateId);
+						templateHtml = templateHtml.replace("{templateTextId}", "channel"+channelInfo910.baseInfo.channelId+"SMUl"+retData[index].typeId+"liTextId"+templates[index2].templateId);
 						templateHtml = templateHtml.replace("{smsTemplateText}", templates[index2].templateName);
-						$("#channel"+data.channelId+"SMTypeUl_"+retData[index].typeId).append(templateHtml);
+						$("#channel"+channelInfo910.baseInfo.channelId+"SMTypeUl_"+retData[index].typeId).append(templateHtml);
 					}
 				}
 			} else {
@@ -85,37 +96,35 @@ function initView910(data){
 			}
 			
 			//在此做界面元素事件注册
-			clickChannelContentEventHandler910(data);
+			channelInfo910.clickChannelContentEventHandler910();
 		},"json");
 }
 
 /**
  * 界面上各个元素的事件处理
- * @param data 渠道信息
  */
-function clickChannelContentEventHandler910(data){
+channelInfo910.clickChannelContentEventHandler910=function(){
 	//点击短信模板事件
-	clickSMtemplateEventHandler910(data);
+	channelInfo910.clickSMtemplateEventHandler910();
 	
 	//确定按钮
-	clickCommitButtonEventHandler910(data);
+	channelInfo910.clickCommitButtonEventHandler910();
 	
 	//预览按钮
-	clickPreviewButtonEventHandler910(data);
+	channelInfo910.clickPreviewButtonEventHandler910();
 }
 
 /**
  * 获得已选择的短信模板
- * data 渠道信息
  */
-function getSelectedSMtemplates(data){
+channelInfo910.getSelectedSMtemplates=function (){
 	var templates = new Array();
 	templates[0] = "";//拼接的短信模板id
 	templates[1] = "";//拼接的短信模板内容
 	//支持多模板选择，模板id间用分隔符分隔
 	
 	var firstFlag = true;
-	$("#channelId_"+data.channelId+"_SMtemplateDiv ul li.active").each(function(){
+	$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv ul li.active").each(function(){
 		if(firstFlag){
 			templates[0] = $(this).attr("smtemp");
 			firstFlag = false;
@@ -131,10 +140,9 @@ function getSelectedSMtemplates(data){
 
 /**
  * 点击短信模板事件
- * @param data 渠道信息
  */
-function clickSMtemplateEventHandler910(data){
-	$("#channelId_"+data.channelId+"_SMtemplateDiv div ul li").click(function(){
+channelInfo910.clickSMtemplateEventHandler910=function(){
+	$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv div ul li").click(function(){
 		var hasActive = $(this).hasClass("active");
 		if(!hasActive){
 			//激活active
@@ -150,48 +158,46 @@ function clickSMtemplateEventHandler910(data){
  * 在选择渠道录入渠道信息后，点击确定按钮操作的处理。</br>
  * 1. 将要加入购物车的渠道id计入本地变量中（将推入购物车的渠道记录下来，渠道被取消时要据此判断是否通知购物车移除渠道）</br>
  * 2. 触发changeChannel事件，将表单数据推给购物车。
- * data 渠道信息
  */
-function clickCommitButtonEventHandler910(data){
-	$("#commitButton_channelId_"+data.channelId).click(function(){
+channelInfo910.clickCommitButtonEventHandler910=function(){
+	$("#commitButton_channelId_"+channelInfo910.baseInfo.channelId).click(function(){
 		//输入项校验
-		var checkResult = checkValidation(data);
+		var checkResult = channelInfo910.checkValidation();
 		if(!checkResult[0]){
 			alert(checkResult[1]);
 			return ;
 		}
 		
-		var newdata = collectData910(this, data);
+		var newdata = channelInfo910.collectData910();
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
 }
 
 /**
  * 点击预览按钮事件处理
- * @param data 渠道信息
  */
-function clickPreviewButtonEventHandler910(data){
-	$("#previewButton_channelId_"+data.channelId).click(function(){
+channelInfo910.clickPreviewButtonEventHandler910=function(){
+	$("#previewButton_channelId_"+channelInfo910.baseInfo.channelId).click(function(){
 		//输入项校验
-		var checkResult = checkValidation(data);
+		var checkResult = channelInfo910.checkValidation();
 		if(!checkResult[0]){
 			alert(checkResult[1]);
 			return ;
 		}
 		
 		//收集并展示要预览的内容：短信模板+营销短信导语+推荐营销用语
-		var templates = getSelectedSMtemplates(data);
-		var channelContentWords = $("#channelId_"+data.channelId+"_contentWords").val();
+		var templates = channelInfo910.getSelectedSMtemplates();
+		var channelContentWords = $("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val();
 		var privewContent = templates[1]+SM_QUOTE+channelContentWords;
-		$("#SMPreviewText_channelId_"+data.channelId).html(privewContent);
+		$("#SMPreviewText_channelId_"+channelInfo910.baseInfo.channelId).html(privewContent);
 		
 		//将预览展示作为dialog弹出
-		$("#SMPreviewDiv_channelId_"+data.channelId).dialog({
+		$("#SMPreviewDiv_channelId_"+channelInfo910.baseInfo.channelId).dialog({
 			width:260,
 			height:630,
 			resizable: false,
 			modal: true,
-			title: data.channelName+"夹带短信预览",
+			title: channelInfo910.baseInfo.channelName+"夹带短信预览",
 			buttons: [{
 				"class":"dialog-btn dialog-btn-blue",
 				"text":"关闭",
@@ -206,16 +212,16 @@ function clickPreviewButtonEventHandler910(data){
 /**
  * 确定、预览前的合法性检查
  */
-function checkValidation(data){
+channelInfo910.checkValidation=function(){
 	var result = new Array();
 	result[0]=true;
 	
-	if($("#channelId_"+data.channelId+"_SMtemplateDiv div ul li.active").length < 1){
+	if($("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv div ul li.active").length < 1){
 		result[0]=false;
 		result[1]="必须选择短信模板!";
 		return result;
 	}
-	var contentWords = $("#channelId_"+data.channelId+"_contentWords").val();
+	var contentWords = $("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val();
 	if(contentWords.length<1){
 		result[0]=false;
 		result[1]="必须录入短信推荐用语!";
