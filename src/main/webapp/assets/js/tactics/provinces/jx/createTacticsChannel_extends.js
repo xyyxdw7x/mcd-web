@@ -27,9 +27,12 @@ channelInfo.queryAllChannelList=function(){
  * 渠道点击添加事件
  */
 channelInfo.addChannelClickEvent=function(obj){
-	$("#channelList li").click(function(event){
-		var index = $("#channelList li").index(this);
-		var item=obj[index];
+	$("#channelList li").click(function(event,data){
+		var item=data;
+		if(item==null){
+			var index = $("#channelList li").index(this);
+			item=obj[index];
+		}
 		var hasActive = $(this).hasClass("active");//原来是否已处于active状态
 		//已经选中直接返回
 		if(hasActive){
@@ -142,7 +145,11 @@ channelInfo.getPlanChannelsSuc=function(data){
  */
 channelInfo.addAddChannelsEvent=function(){
 	$("#channelDiv").bind("addChannles",function(event,data){
-		alert("size="+data.length);
+		for(var i=0;i<data.length;i++){
+			var item=data[i];
+			var channelId=item.channelId;
+			$("#li_channelId_"+channelId).trigger("click",item);
+		}
 	});
 }
 
