@@ -89,6 +89,11 @@ channelInfo901.addSendCycleChangeEvent=function(){
  */
 channelInfo901.addSaveBtnClickEvent=function(){
 	$("#channelSaveBtn901").click(function(event){
+		var content=$("#content901").val().replace(/\n/gi,"");
+		if(content==""){
+			alert("短信推荐用语不能为空");
+			return ;
+		}
 		var newdata=channelInfo901.getChannelInfoData();
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
