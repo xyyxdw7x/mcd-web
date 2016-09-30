@@ -119,10 +119,9 @@ channelInfo910.loadSMtempaltes910=function(){
 			}
 			
 			//初始化值（编辑时）
-			if(tacticsInfo.camp!=null){
+			if(tacticsInfo.camp!=null && channelInfo910.baseInfo.bossTemplateId!=null){
 				var templates = channelInfo910.baseInfo.bossTemplateId.split(",");
 				$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv li").each(function(){
-					debugger
 					for(var i in templates){
 						if($(this).attr("smtemp")==templates[i]){
 							$(this).addClass("active");
