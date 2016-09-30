@@ -17,6 +17,10 @@ function initView906(data){
 channelInfo906.initView=function(){
 	//加载一些界面数据
 	channelInfo906.loadSomeBaseData906();
+	
+	//初始化值(编辑时)
+	channelInfo904.initValue906();
+	
 	//添加事件监听
 	channelInfo906.clickChannelContentEventHandler906();
 }
@@ -26,6 +30,15 @@ channelInfo906.initView=function(){
  */
 channelInfo906.loadSomeBaseData906=function(){
 	
+}
+
+/**
+ * 初始化值(编辑时)
+ */
+channelInfo906.initValue906 = function(){
+	if(tacticsInfo.camp!=null){
+		$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val(channelInfo906.baseInfo.execContent);
+	}
 }
 
 /**

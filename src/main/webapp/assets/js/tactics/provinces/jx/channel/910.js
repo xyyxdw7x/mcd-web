@@ -54,8 +54,21 @@ channelInfo910.collectData910=function(){
 channelInfo910.initView=function(){
 	//加载短信模板数据
 	channelInfo910.loadSMtempaltes910();
+	
+	//初始化值(编辑时)
+	channelInfo910.initValue910();
+	
 	//添加事件监听
 	channelInfo910.clickChannelContentEventHandler910();
+}
+
+/**
+ * 初始化值(编辑时)
+ */
+channelInfo910.initValue910 = function(){
+	if(tacticsInfo.camp!=null){
+		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
+	}
 }
 
 /**
@@ -103,6 +116,21 @@ channelInfo910.loadSMtempaltes910=function(){
 				}
 			} else {
 				// 查询失败
+			}
+			
+			//初始化值（编辑时）
+			if(tacticsInfo.camp!=null){
+				var templates = channelInfo910.baseInfo.bossTemplateId.split(",");
+				$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv li").each(function(){
+					debugger
+					for(var i in templates){
+						if($(this).attr("smtemp")==templates[i]){
+							$(this).addClass("active");
+							break;
+						}
+					}
+				});
+				
 			}
 			
 			//点击短信模板事件
@@ -237,7 +265,7 @@ channelInfo910.checkValidation=function(){
 	var result = new Array();
 	result[0]=true;
 	
-	if($("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv div ul li.active").length < 1){
+	if($("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv ul li.active").length < 1){
 		result[0]=false;
 		result[1]="必须选择短信模板!";
 		return result;

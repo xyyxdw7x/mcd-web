@@ -11,12 +11,17 @@ function initView904(data){
 	channelInfo904.baseInfo=data;
 	channelInfo904.initView();
 }
+
 /**
  * 界面上初始化、事件监听
  */
 channelInfo904.initView=function(){
 	//加载一些界面数据
 	channelInfo904.loadSomeBaseData904();
+	
+	//初始化值(编辑时)
+	channelInfo904.initValue904();
+	
 	//添加事件监听
 	channelInfo904.clickChannelContentEventHandler904();
 }
@@ -26,6 +31,15 @@ channelInfo904.initView=function(){
  */
 channelInfo904.loadSomeBaseData904=function(){
 	
+}
+
+/**
+ * 初始化值(编辑时)
+ */
+channelInfo904.initValue904 = function(){
+	if(tacticsInfo.camp!=null){
+		$("#channelId_"+channelInfo904.baseInfo.channelId+"_contentWords").val(channelInfo904.baseInfo.execContent);
+	}
 }
 
 /**
