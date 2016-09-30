@@ -10,23 +10,35 @@ var channelInfo913={baseInfo:null};
  */
 function initView913(data){
 	channelInfo913.baseInfo=data;
-	channelInfo913.initView();
+	channelInfo913.initView(data);
 }
 
 /**
  * VOP渠道初始化
  */
-channelInfo913.initView=function(){
+channelInfo913.initView=function(data){
 	$("#channelVopId").click(function(){
 		$(this).addClass("active");
 	});
-	
 	channelInfo913.queryAdivInfo();
 	channelInfo913.addSaveBtnClickEvent();
 	channelInfo913.clickPreview();//预览
 	var $textArea=$("#content913");
 	var $maxNum=$("#wordSize913");
 	textAreaInputNumTip($textArea,$maxNum);
+	//编辑情况下有策略ID
+	if(data.campId==null||data.campId==undefined){
+		return ;
+	}
+	//回显
+	if(data.hasOwnProperty("execContent")){
+		$("#content913").val(data.execContent);
+		var wordLen = data.execContent.length;
+		$maxNum.text($maxNum.text()-wordLen);
+	}
+	if(data.hasOwnProperty("execContent")){
+		$("#channelSaveBtn913").trigger("click");
+	}
 }
 
 /**
@@ -50,8 +62,16 @@ channelInfo913.queryAdivInfo = function(){
  * 获取运营位信息成功
  */
 channelInfo913.queryAdivInfoSuc = function(result){
-	//todo
-	//$("#vopAdivInfoId")
+	var adivIds="";
+	for(var i=0;i<result.data.length;i++){
+		var item=result.data[i];
+		if(i==(result.data.length-1)){
+			adivIds=item.adivId+adivIds;
+		}else{
+			adivIds=item.adivId+adivIds+",";
+		}
+	}
+	channelInfo913.baseInfo.adivIds=adivIds;
 }
 
 
@@ -79,9 +99,10 @@ channelInfo913.getChannelInfoData=function(){
 	channelInfo.execContent=$("#content913").val();
 	var keys=["推荐语","运营位ID"];
 	var content=channelInfo.execContent;
-	var values=[content,"4"];
+	var values=[content,channelInfo913.baseInfo.adivIds];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
+	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
 	return channelInfo;
 }
 
@@ -91,18 +112,23 @@ channelInfo913.getChannelInfoData=function(){
  * @param data
  */
 channelInfo913.clickPreview = function(){
-		$("#channelVopPrevId").click(function(){
-			$("#channelVopPrevDialog").show();
-			$(".ui-widget-overlay").show();
-			$(".ui-widget-overlay").css("opacity",".9");
-		});
-		$("#previewBtn913").click(function(){
-			$("#channelVopPrevDialog").show();
-			$(".ui-widget-overlay").show();
-			$(".ui-widget-overlay").css("opacity",".9");
-		});
-		$(".ui-widget-overlay").click(function(){
-			$(this).hide();
-			$("#channelVopPrevDialog").hide();
-		});
+	$("#channelVopPrevId").click(function(){
+		$("#channelVopPrevDialog").show();
+		$(".ui-widget-overlay").show();
+		$(".ui-widget-overlay").css("opacity",".9");
+	});
+	$("#previewBtn913").click(function(){
+		$("#channelVopPrevDialog").show();
+		$(".ui-widget-overlay").show();
+		$(".ui-widget-overlay").css("opacity",".9");
+	});
+	$(".ui-widget-overlay").click(function(){
+		$(this).hide();
+		$("#channelVopPrevDialog").hide();
+	});
+	$("#leftPlanName913").html(tacticsInfo.plan.planName);
+	$("#rightPlanName913").html(tacticsInfo.plan.planName);
+	$("#topPlanName913").html(tacticsInfo.plan.planName);
+	var content=$("#content913").val();
+	$("#previewContent901").html(content);
 }

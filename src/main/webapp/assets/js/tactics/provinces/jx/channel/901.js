@@ -39,7 +39,9 @@ channelInfo901.initView=function(data){
 		$("#901SendCycle button").removeClass("active");
 		$("#901SendCycle [data-data='"+contactType+"']").addClass("active");
 	}
-	$("#channelSaveBtn901").trigger("click");
+	if(data.hasOwnProperty("execContent")){
+		$("#channelSaveBtn901").trigger("click");
+	}
 }
 /**
  * 获取渠道输入信息
