@@ -39,15 +39,8 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
 	}
 	
 	public void deleteMtlChannelDef(final String campsegId) throws Exception {
-		final String sql = "delete from mcd_camp_custgroup_list mcd where mcd.camp_id=?";
-		this.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
-			public Object doInConnection(Connection conn) throws SQLException, DataAccessException {
-				PreparedStatement delPre = conn.prepareStatement(sql);
-				delPre.setString(1, campsegId);
-				delPre.execute();
-				return null;
-			}
-		});
+		final String sql = "delete from Mcd_Camp_Channel_List mcd where mcd.campseg_id = ?";
+		this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 	}
 	
     /**

@@ -1274,10 +1274,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			McdCampDef tmp = this.saveBefore(user,campInfo);
 			String currentCampId;
 			String custGroupId;
-			
 			List<McdCampChannelList> channelList =null;		
             if (!isModify) {//-------------创建--------
-				if (tmp.getPid() != "0") {//子策略
+				if (!tmp.getPid().equals("0")) {//子策略
 					currentCampId = MpmUtil.generateCampsegAndTaskNo();
 					tmp.setCampId(currentCampId);
 					custGroupId = tmp.getCustgroupId();
@@ -1294,17 +1293,16 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				campSegInfoDao.saveCampSegInfo(tmp);//Duang Duang Duang 保存策略！！！
 				
 			}else{//-----------------修改-----------------
-				
-				if (tmp.getPid()!=null && !tmp.getPid().equals("0")) {//子策略			
+				if (!tmp.getPid().equals("0")) {//子策略			
 					currentCampId = tmp.getCampId();
 					custGroupId = tmp.getCustgroupId();
 					mtlCampsegCustgroupDao.deleteByCampsegId(currentCampId);//先删除关系表中数据
-					this.saveCampCustRel(currentCampId, custGroupId);//Duang Duang Duang 修改策略和客户群关系表！！！
+					this.saveCampCustRel(currentCampId, custGroupId);//修改策略和客户群关系表！！！
 					channelList = tmp.getMtlChannelDefList();
 					mtlChannelDefDao.deleteMtlChannelDef(currentCampId);//删除策略渠道关系表中的数据
 					for (McdCampChannelList campChannel : channelList) {
 						campChannel.setCampId(currentCampId);
-						mtlChannelDefDao.save(campChannel); //Duang Duang Duang 保存策略和渠道关系表！！！
+						mtlChannelDefDao.save(campChannel); //保存策略和渠道关系表！！！
 					}
 				} else {//父策略
 					campPid = tmp.getPid();
