@@ -25,7 +25,7 @@ channelInfo901.initView=function(data){
 	var $maxNum=$("#wordSize901");
 	textAreaInputNumTip($textArea,$maxNum);
 	//编辑情况下有策略ID
-	if(data.campId==null||data.camp==undefined){
+	if(data.campId==null||data.campId==undefined){
 		return ;
 	}
 	//回显
