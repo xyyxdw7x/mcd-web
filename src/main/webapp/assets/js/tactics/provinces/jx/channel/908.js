@@ -36,8 +36,21 @@ channelInfo908.loadSomeBaseData908=function(){
  * 初始化值(编辑时)
  */
 channelInfo906.initValue908 = function(){
-	if(tacticsInfo.camp!=null){
-		$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val(channelInfo906.baseInfo.execContent);
+	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
+	if(channelInfo908.baseInfo.hasOwnProperty("execContent")){
+		//更新营销用语
+		$("#channelId_"+channelInfo908.baseInfo.channelId+"_contentWords").val(channelInfo908.baseInfo.execContent);
+		//营销用语的可输入长度
+		var $textArea=$("#channelId_"+channelInfo908.baseInfo.channelId+"_contentWords");
+		var $maxNum=$("#channelId_"+channelInfo908.baseInfo.channelId+"_wordSize");
+		textAreaInputNumTip($textArea,$maxNum);
+		var wordLen = channelInfo908.baseInfo.execContent.length;
+		$maxNum.text($maxNum.text()-wordLen);
+		
+		
+		//触发事件，将编辑回显得数据放入购物车
+		var newdata = channelInfo908.collectData908();
+		$("#channelDiv").trigger("changeChannel", newdata);
 	}
 }
 

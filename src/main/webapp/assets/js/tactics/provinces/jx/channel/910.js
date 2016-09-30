@@ -55,9 +55,6 @@ channelInfo910.initView=function(){
 	//加载短信模板数据
 	channelInfo910.loadSMtempaltes910();
 	
-	//初始化值(编辑时)
-	channelInfo910.initValue910();
-	
 	//添加事件监听
 	channelInfo910.clickChannelContentEventHandler910();
 }
@@ -66,8 +63,36 @@ channelInfo910.initView=function(){
  * 初始化值(编辑时)
  */
 channelInfo910.initValue910 = function(){
+	//初始化值（编辑时）
 	if(tacticsInfo.camp!=null){
-		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
+		if(channelInfo910.baseInfo.bossTemplateId!=null){
+			var templates = channelInfo910.baseInfo.bossTemplateId.split(",");
+			$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv li").each(function(){
+				for(var i in templates){
+					if($(this).attr("smtemp")==templates[i]){
+						$(this).addClass("active");
+						break;
+					}
+				}
+			});
+		}
+		
+		//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
+		if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
+			//更新营销用语
+			$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
+			//营销用语的可输入长度
+			var $textArea=$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords");
+			var $maxNum=$("#channelId_"+channelInfo910.baseInfo.channelId+"_wordSize");
+			textAreaInputNumTip($textArea,$maxNum);
+			var wordLen = channelInfo910.baseInfo.execContent.length;
+			$maxNum.text($maxNum.text()-wordLen);
+			
+			
+			//触发事件，将编辑回显得数据放入购物车
+			var newdata = channelInfo910.collectData910();
+			$("#channelDiv").trigger("changeChannel", newdata);
+		}
 	}
 }
 
@@ -118,19 +143,7 @@ channelInfo910.loadSMtempaltes910=function(){
 				// 查询失败
 			}
 			
-			//初始化值（编辑时）
-			if(tacticsInfo.camp!=null && channelInfo910.baseInfo.bossTemplateId!=null){
-				var templates = channelInfo910.baseInfo.bossTemplateId.split(",");
-				$("#channelId_"+channelInfo910.baseInfo.channelId+"_SMtemplateDiv li").each(function(){
-					for(var i in templates){
-						if($(this).attr("smtemp")==templates[i]){
-							$(this).addClass("active");
-							break;
-						}
-					}
-				});
-				
-			}
+			channelInfo910.initValue910();
 			
 			//点击短信模板事件
 			channelInfo910.clickSMtemplateEventHandler910();
