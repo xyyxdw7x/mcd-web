@@ -75,23 +75,16 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements ICampseg
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("delete from MCD_TEMPLET_ACTIVE_FIELD where select_templet_id in ( ")
 				  .append(" select select_templet_id from MCD_TEMPLET_SELECT where active_templet_id in (")
-				  .append("select custgroup_id from mcd_camp_custgroup_list where campseg_id = '"+campsegId+"' and custgroup_type='CGT'))");
-			this.getJdbcTemplate().equals(buffer.toString());
+				  .append("select custgroup_id from mcd_camp_custgroup_list where campseg_id = ? ))");
+			this.getJdbcTemplate().update(buffer.toString(), new Object[] { campsegId });
 		} catch (Exception e) {
 			log.error("删除标签存在异常:"+e);
 		}
 	}
 	
 	public void deleteByCampsegId(final String campsegId) {
-		final String sql = "delete from mcd_camp_custgroup_list group where group.campId= ? ";
-		this.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
-			public Object doInConnection(Connection conn) throws SQLException, DataAccessException {
-				PreparedStatement delPre = conn.prepareStatement(sql);
-				delPre.setString(1, campsegId);
-				delPre.execute();
-				return null;
-			}
-		});
+		final String sql = "delete from mcd_camp_custgroup_list where campseg_id = ? ";
+		this.getJdbcTemplate().update(sql, new Object[] { campsegId });
 	}
 	
 	

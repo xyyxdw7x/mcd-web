@@ -2045,6 +2045,11 @@ public class CreateTacticsController extends BaseMultiActionController {
 				campSeginfoBasic.setCampId(MpmUtil.generateCampsegAndTaskNo());//设置父节点的Id
 				campSeginfoBasic.setPid("0");// 设置父节点的Pid
 				campSeginfoSub.setPid(campSeginfoBasic.getCampId());//设置子节点的Pid
+			}else{
+				McdCampDef camp = mpmCampSegInfoService.getCampSegInfo(campId);//获取待修改的策略
+				campSeginfoBasic.setCampId(camp.getPid());//设置父节点的Id
+				campSeginfoBasic.setPid("0");// 设置父节点的Pid
+				campSeginfoSub.setPid(camp.getPid());//设置子节点的Pid
 			}
 			
 			campSegInfoList.add(campSeginfoBasic);
@@ -2059,13 +2064,11 @@ public class CreateTacticsController extends BaseMultiActionController {
 					mtlChannelDefList.add(mtlChannelDef);
 			}
 			campSeginfoSub.setMtlChannelDefList(mtlChannelDefList);
-			
 			campSegInfoList.add(campSeginfoSub);
 
 			// 统一进行保存
 			String flag = mpmCampSegInfoService.saveOrUpdateCampInfo(user,campSegInfoList,isModify);
 			rs.put("flag", flag);
-			
 		} catch (Exception e) {
 			log.error("保存异常", e);
 		}

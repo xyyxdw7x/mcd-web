@@ -19,7 +19,7 @@ channelInfo906.initView=function(){
 	channelInfo906.loadSomeBaseData906();
 	
 	//初始化值(编辑时)
-	channelInfo904.initValue906();
+	channelInfo906.initValue906();
 	
 	//添加事件监听
 	channelInfo906.clickChannelContentEventHandler906();

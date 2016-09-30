@@ -275,7 +275,7 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 * @throws MpmException
 	 */
-	McdCampDef getCampByPid(String pid) throws MpmException;
+	public McdCampDef getCampByPid(String pid) throws MpmException;
 	
 	
 	
