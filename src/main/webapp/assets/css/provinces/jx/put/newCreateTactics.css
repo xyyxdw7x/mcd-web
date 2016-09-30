@@ -124,6 +124,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .opera-btn{display:none; width:34px; height:34px; background: url(../../../../images/put-img.png) no-repeat -109px -235px;position:absolute;right:10px; top:8px;}
 /*mesOld-ul  */
 .mesOld-ul li{width:100px;height:30px; padding:0 15px; margin:0 8px 8px 0; text-align:center;line-height:28px; font-size:12px;}
+.mesOld-ul li span{display: block;height: 28px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .left-mes{overflow:hidden;}
 .left-mes .ftB{width:68px;float:left;margin:5px 0 0 22px;}
 .left-mes ul{width:443px;-background:red; float:left;}
