@@ -116,19 +116,24 @@ channelInfo913.clickPreview = function(){
 		$("#channelVopPrevDialog").show();
 		$(".ui-widget-overlay").show();
 		$(".ui-widget-overlay").css("opacity",".9");
+		$("#leftPlanName913").html(tacticsInfo.plan.planName);
+		$("#rightPlanName913").html(tacticsInfo.plan.planName);
+		$("#topPlanName913").html(tacticsInfo.plan.planName);
+		var content1=$("#content913").val();
+		$("#previewContent901").text(content1);
 	});
 	$("#previewBtn913").click(function(){
 		$("#channelVopPrevDialog").show();
 		$(".ui-widget-overlay").show();
 		$(".ui-widget-overlay").css("opacity",".9");
+		$("#leftPlanName913").html(tacticsInfo.plan.planName);
+		$("#rightPlanName913").html(tacticsInfo.plan.planName);
+		$("#topPlanName913").html(tacticsInfo.plan.planName);
+		var content=$("#content913").val();
+		$("#previewContent901").text(content);
 	});
 	$(".ui-widget-overlay").click(function(){
 		$(this).hide();
 		$("#channelVopPrevDialog").hide();
 	});
-	$("#leftPlanName913").html(tacticsInfo.plan.planName);
-	$("#rightPlanName913").html(tacticsInfo.plan.planName);
-	$("#topPlanName913").html(tacticsInfo.plan.planName);
-	var content=$("#content913").val();
-	$("#previewContent901").html(content);
 }
