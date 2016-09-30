@@ -98,7 +98,7 @@ tacticsInfo.addChangePlanEvent=function(){
 		//data为产品的所有信息
 		//派发事件
 		$("#shopCar").trigger("shopCarChangePlan",data);
-		$("#channelDiv").trigger("getPlanChange",data);
+		$("#channelDiv").trigger("addPlanChange",data);
 	});
 }
 

@@ -131,7 +131,7 @@ channelInfo.addCloseTabeClickEvent=function(data){
  * 绑定选择产品事件
  */
 channelInfo.addPlanChangeEvent=function(){
-	$("#channelDiv").bind("getPlanChange",function(event,data){
+	$("#channelDiv").bind("addPlanChange",function(event,data){
 		var url=contextPath+"/action/tactics/createTactics/selectPlanBackChannels.do";
 		$.post(url,{planId:data.planId},channelInfo.getPlanChannelsSuc);
 	});
@@ -145,6 +145,8 @@ channelInfo.getPlanChannelsSuc=function(data){
 		var currentChannelId = $(this).attr("channelId");
 		if(channels.indexOf(currentChannelId)<0){
 			$(this).hide();
+		}else{
+			$(this).show();
 		}
 	});
 }
