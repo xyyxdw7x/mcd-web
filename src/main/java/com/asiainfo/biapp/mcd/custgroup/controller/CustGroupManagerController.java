@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
@@ -329,7 +329,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		String keywords = request.getParameter("keywords");
 		
 		Pager pager = new Pager();
-		pager.setPageSize(MpmCONST.PAGE_SIZE);
+		pager.setPageSize(McdCONST.PAGE_SIZE);
 		pager.setPageNum(Integer.parseInt(pageNum));
 		if (pageNum != null) {
 			pager.setPageFlag("G");

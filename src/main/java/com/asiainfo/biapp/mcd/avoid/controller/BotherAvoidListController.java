@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
@@ -105,7 +105,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		}
 				
 		Pager pager = new Pager();
-		pager.setPageSize(MpmCONST.PAGE_SIZE);
+		pager.setPageSize(McdCONST.PAGE_SIZE);
 		pager.setPageNum(Integer.parseInt(pageNum));
 		if (pageNum != null) {
 			pager.setPageFlag("G");

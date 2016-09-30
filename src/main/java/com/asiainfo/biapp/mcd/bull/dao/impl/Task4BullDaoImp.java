@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.bull.dao.ITask4BullDao;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 
@@ -72,7 +72,7 @@ public class Task4BullDaoImp extends JdbcDaoBase implements ITask4BullDao{
 				public void setValues(PreparedStatement ps, int index) throws SQLException {
 					ps.setShort(1, list.get(index).getExecStatus());
 					ps.setString(2, list.get(index).getTaskId());
-					ps.setShort(3, MpmCONST.TASK_STATUS_SUCCESS);
+					ps.setShort(3, McdCONST.TASK_STATUS_SUCCESS);
 				}
 				
 				@Override
@@ -113,10 +113,10 @@ public class Task4BullDaoImp extends JdbcDaoBase implements ITask4BullDao{
 				public void setValues(PreparedStatement ps, int index) throws SQLException {
 					ps.setShort(1, list.get(index).getExecStatus());
 					ps.setString(2, list.get(index).getTaskId());
-					if(list.get(index).getExecStatus() == MpmCONST.TASK_STATUS_PAUSE){
-					    ps.setShort(3, MpmCONST.TASK_STATUS_RUNNING);
-					}else if (list.get(index).getExecStatus() == MpmCONST.TASK_STATUS_RUNNING){
-					    ps.setShort(3, MpmCONST.TASK_STATUS_PAUSE);
+					if(list.get(index).getExecStatus() == McdCONST.TASK_STATUS_PAUSE){
+					    ps.setShort(3, McdCONST.TASK_STATUS_RUNNING);
+					}else if (list.get(index).getExecStatus() == McdCONST.TASK_STATUS_RUNNING){
+					    ps.setShort(3, McdCONST.TASK_STATUS_PAUSE);
 					}
 					
 				}

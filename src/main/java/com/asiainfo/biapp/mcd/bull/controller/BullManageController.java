@@ -23,7 +23,7 @@ import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.constants.TasKStatus;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
@@ -158,7 +158,7 @@ public class BullManageController extends BaseMultiActionController {
 		String[] ids = taskIds.split(",");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			this.bullMonitorService.btachSetTaskStatus(ids, MpmCONST.TASK_STATUS_PAUSE);
+			this.bullMonitorService.btachSetTaskStatus(ids, McdCONST.TASK_STATUS_PAUSE);
 			resultMap.put("data", "停止任务成功");
 			resultMap.put("status", "200");
 		} catch (Exception e) {
@@ -178,7 +178,7 @@ public class BullManageController extends BaseMultiActionController {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			this.bullMonitorService.btachSetTaskStatus(ids, (short) MpmCONST.TASK_STATUS_RUNNING);
+			this.bullMonitorService.btachSetTaskStatus(ids, (short) McdCONST.TASK_STATUS_RUNNING);
 			resultMap.put("data", "开始任务成功");
 			resultMap.put("status", "200");
 		} catch (Exception e) {

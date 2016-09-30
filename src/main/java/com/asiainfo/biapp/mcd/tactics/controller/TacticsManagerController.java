@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
@@ -87,7 +87,7 @@ public class TacticsManagerController extends BaseMultiActionController {
 		segInfo.setCreateUserId(user.getId());//(userId);
 		String clickQueryFlag = "true";
 		Pager pager = new Pager();
-		pager.setPageSize(MpmCONST.PAGE_SIZE);
+		pager.setPageSize(McdCONST.PAGE_SIZE);
 		pager.setPageNum(Integer.parseInt(pageNum)); // 当前页
 		if (pageNum != null) {
 			pager.setPageFlag("G");
@@ -413,7 +413,7 @@ public class TacticsManagerController extends BaseMultiActionController {
 
 			// 存撤销工单状态及撤销原因）
 			if ("1".equals(approve_flag)) {
-				short ampsegStatId = Short.valueOf(MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+				short ampsegStatId = Short.valueOf(McdCONST.MPM_CAMPSEG_STAT_HDZZ);
 				mpmCampSegInfoService.cancelAssignment(campsegId, ampsegStatId, approve_desc);
 				List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
 				for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
@@ -468,9 +468,9 @@ public class TacticsManagerController extends BaseMultiActionController {
 				// 获取service
 
 				List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
-				mpmCampSegInfoService.updateCampStat(campsegId, MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+				mpmCampSegInfoService.updateCampStat(campsegId, McdCONST.MPM_CAMPSEG_STAT_HDZZ);
 				for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), MpmCONST.MPM_CAMPSEG_STAT_HDZZ);
+					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), McdCONST.MPM_CAMPSEG_STAT_HDZZ);
 				}
 				//保存停止原因
 				mpmCampSegInfoService.updatMtlCampSeginfoPauseComment(campsegId, pauseComment);
@@ -523,10 +523,10 @@ public class TacticsManagerController extends BaseMultiActionController {
 
 			if (campsegId != null) {
 				List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
-				mpmCampSegInfoService.updateCampStat(campsegId, MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
+				mpmCampSegInfoService.updateCampStat(campsegId, McdCONST.MPM_CAMPSEG_STAT_PAUSE);
 
 				for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), MpmCONST.MPM_CAMPSEG_STAT_PAUSE);
+					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), McdCONST.MPM_CAMPSEG_STAT_PAUSE);
 				}
 				//保存暂停原因
 				mpmCampSegInfoService.updatMtlCampSeginfoPauseComment(campsegId, pauseComment);
@@ -574,9 +574,9 @@ public class TacticsManagerController extends BaseMultiActionController {
 
 			if (campsegId != null) {
 				List<McdCampDef> mtlCampSeginfoList = mpmCampSegInfoService.getChildCampSeginfo(campsegId);
-				mpmCampSegInfoService.updateCampStat(campsegId, MpmCONST.MPM_CAMPSEG_STAT_DDCG);
+				mpmCampSegInfoService.updateCampStat(campsegId, McdCONST.MPM_CAMPSEG_STAT_DDCG);
 				for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
-					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), MpmCONST.MPM_CAMPSEG_STAT_DDCG);
+					mpmCampSegInfoService.updateCampStat(mtlCampSeginfo.getCampId(), McdCONST.MPM_CAMPSEG_STAT_DDCG);
 				}
 			}
 		} catch (Exception e) {
@@ -669,7 +669,7 @@ public class TacticsManagerController extends BaseMultiActionController {
 		String msg = "";
 		// 是否有短信渠道
 		boolean isSMS = false;
-		int sms = MpmCONST.CHANNEL_TYPE_SMS_INT;
+		int sms = McdCONST.CHANNEL_TYPE_SMS_INT;
 		try {
 			String json = request.getParameter("json") != null ? request.getParameter("json") : null;
 			JSONObject jsonObjectP = (JSONObject) JSONObject.fromObject(json);
@@ -695,11 +695,11 @@ public class TacticsManagerController extends BaseMultiActionController {
 					}
 				}
 				if (isSMS) {
-					mtlSmsSendTestTask.updateCampsegInfoState(campsegId, MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+					mtlSmsSendTestTask.updateCampsegInfoState(campsegId, McdCONST.MPM_CAMPSEG_STAT_HDCS);
 				}
 			}
 			if (isSMS) {
-				mtlSmsSendTestTask.updateCampsegInfoState(campsegPId, MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+				mtlSmsSendTestTask.updateCampsegInfoState(campsegPId, McdCONST.MPM_CAMPSEG_STAT_HDCS);
 			}
 
 			msg = "保存营销用语成功！";

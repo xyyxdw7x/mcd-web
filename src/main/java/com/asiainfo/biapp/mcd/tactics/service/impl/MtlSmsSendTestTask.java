@@ -28,7 +28,7 @@ import org.dom4j.Element;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.vo.McdSysDic;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
@@ -562,8 +562,8 @@ public String getSmsTestReplayContent(String replyXml) {
                     McdCampDef mtlCampSeginfo = mpmCampSegInfoDao.getCampSegInfo(campsegid);
                     //看状态是否为49  不是设置为49测试不通过
                     String status = mtlCampSeginfo.getStatId()+"";
-                    if(!status.equals(MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG)){
-                        updateCampsegInfoState(campsegid, MpmCONST.MPM_CAMPSEG_STAT_HDCSBTG);
+                    if(!status.equals(McdCONST.MPM_CAMPSEG_STAT_HDCSBTG)){
+                        updateCampsegInfoState(campsegid, McdCONST.MPM_CAMPSEG_STAT_HDCSBTG);
                     }
                     } catch (Exception e) {
                         e.printStackTrace();

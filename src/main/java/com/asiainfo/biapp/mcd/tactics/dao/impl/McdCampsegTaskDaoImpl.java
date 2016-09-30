@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import org.apache.commons.lang3.StringUtils;
@@ -48,37 +48,37 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
      */
     @Override
     public void updateCampTaskStat(String campsegId, short type) {
-        if(type == MpmCONST.TASK_STATUS_RUNNING){//重启
+        if(type == McdCONST.TASK_STATUS_RUNNING){//重启
             //当任务没拆分的时候，短信渠道策略状态需要更改为待执行，不能是执行中
             String mtlSmsChannelScheduleSql="select * from mcd_sms_schedule t  where t.task_id in (select task_id from mcd_camp_task where campseg_id=?)";
             List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(mtlSmsChannelScheduleSql,new Object[]{campsegId});
             if(list != null && list.size() > 0){
                 String taskSql="select task_id from mcd_camp_task where campseg_id=? and channel_id = ?";
-                List<Map<String,Object>> taskList = this.getJdbcTemplate().queryForList(taskSql,new Object[]{campsegId,MpmCONST.CHANNEL_TYPE_SMS});
+                List<Map<String,Object>> taskList = this.getJdbcTemplate().queryForList(taskSql,new Object[]{campsegId,McdCONST.CHANNEL_TYPE_SMS});
                 if(taskList != null && taskList.size() > 0){
                     //重启任务主表
                     String sql="update mcd_camp_task t set t.exec_status=? where t.campseg_id=? and t.channel_id = ?";
-                    this.getJdbcTemplate().update(sql,new Object[]{MpmCONST.TASK_STATUS_UNDO,campsegId,MpmCONST.CHANNEL_TYPE_SMS});
+                    this.getJdbcTemplate().update(sql,new Object[]{McdCONST.TASK_STATUS_UNDO,campsegId,McdCONST.CHANNEL_TYPE_SMS});
                     //不是短信渠道更改为执行中
                     String sqlNotSMS="update mcd_camp_task t set t.exec_status=? where t.campseg_id=? and t.channel_id != ?";
-                    this.getJdbcTemplate().update(sqlNotSMS,new Object[]{type,campsegId,MpmCONST.CHANNEL_TYPE_SMS});
+                    this.getJdbcTemplate().update(sqlNotSMS,new Object[]{type,campsegId,McdCONST.CHANNEL_TYPE_SMS});
                     //重启任务对应时间表
                     String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? and channel_id = ? ) and t.exec_status= ?";
-                    this.getJdbcTemplate().update(sql2,new Object[]{MpmCONST.TASK_STATUS_UNDO,campsegId,MpmCONST.CHANNEL_TYPE_SMS,MpmCONST.TASK_STATUS_PAUSE});
+                    this.getJdbcTemplate().update(sql2,new Object[]{McdCONST.TASK_STATUS_UNDO,campsegId,McdCONST.CHANNEL_TYPE_SMS,McdCONST.TASK_STATUS_PAUSE});
                     //不是短信渠道更改为执行中
                     String sqlNotSMS2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? and channel_id != ? ) and t.exec_status= ?";
-                    this.getJdbcTemplate().update(sqlNotSMS2,new Object[]{type,campsegId,MpmCONST.CHANNEL_TYPE_SMS,MpmCONST.TASK_STATUS_PAUSE});
+                    this.getJdbcTemplate().update(sqlNotSMS2,new Object[]{type,campsegId,McdCONST.CHANNEL_TYPE_SMS,McdCONST.TASK_STATUS_PAUSE});
                     
                     //重启短信渠道任务调度表
                     String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? and channel_id = ? )";
-                    this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId,MpmCONST.CHANNEL_TYPE_SMS});
+                    this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId,McdCONST.CHANNEL_TYPE_SMS});
                 }else{
                     //重启任务主表
                     String sql="update mcd_camp_task t set t.exec_status=? where t.campseg_id=?";
                     this.getJdbcTemplate().update(sql,new Object[]{type,campsegId});
                     //重启任务对应时间表
                     String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? ) and t.exec_status= ?";
-                    this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_PAUSE});     
+                    this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,McdCONST.TASK_STATUS_PAUSE});     
                 }
                 
     
@@ -88,29 +88,29 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
                 this.getJdbcTemplate().update(sql,new Object[]{type,campsegId});
                 //重启任务对应时间表
                 String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? ) and t.exec_status= ?";
-                this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_PAUSE});
+                this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,McdCONST.TASK_STATUS_PAUSE});
                 //重启短信渠道任务调度表
                 String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=?)";
                 this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId});    
             }           
-        }else if(type == MpmCONST.TASK_STATUS_PAUSE){//暂停
+        }else if(type == McdCONST.TASK_STATUS_PAUSE){//暂停
             //暂停任务主表
             String sql="update mcd_camp_task t set t.exec_status=? where t.campseg_id=?";
             this.getJdbcTemplate().update(sql,new Object[]{type,campsegId});
             //暂停任务对应时间表
             String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? ) and t.exec_status= ?";
-            this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_RUNNING});
+            this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,McdCONST.TASK_STATUS_RUNNING});
             //暂停短信渠道任务调度表
             String sql3="update mcd_sms_schedule t set t.task_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=?)";
             this.getJdbcTemplate().update(sql3,new Object[]{type,campsegId});
-        }else if(type == MpmCONST.TASK_STATUS_STOP){//停止
+        }else if(type == McdCONST.TASK_STATUS_STOP){//停止
             //停止任务主表
             String sql="update mcd_camp_task t set t.exec_status=? where t.campseg_id=?";
             this.getJdbcTemplate().update(sql,new Object[]{type,campsegId});
             
             //停止任务对应时间表
             String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id in (select task_id from mcd_camp_task where campseg_id=? ) and t.exec_status in (?,?)";
-            this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,MpmCONST.TASK_STATUS_RUNNING,MpmCONST.TASK_STATUS_PAUSE});
+            this.getJdbcTemplate().update(sql2,new Object[]{type,campsegId,McdCONST.TASK_STATUS_RUNNING,McdCONST.TASK_STATUS_PAUSE});
             
             //停止短信渠道任务调度表
             String sql3="delete from  mcd_sms_schedule t  where t.task_id in (select task_id from mcd_camp_task where campseg_id=?)";

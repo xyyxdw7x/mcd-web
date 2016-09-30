@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
@@ -709,7 +709,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		try {
 			//先拼接 查询客户群与时机组合的客户群清单列表语句
 			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
-			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
+			if(channelId.equals(McdCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
 					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")
@@ -762,7 +762,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		try {
 			//先拼接 查询客户群与时机组合的客户群清单列表语句
 			sql = this.createSqlStr(bussinessLableSql, basicEventSql, customgroupid,orderProductNo,excludeProductNo);
-			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
+			if(channelId.equals(McdCONST.CHANNEL_TYPE_SMS)){   //针对短信渠道
 				if(contactControlFlag == 1){  		 //频次
 					StringBuffer temp = new StringBuffer();
 					temp.append("select basicD.PRODUCT_NO from ("+sql +") basicD where 1=1 and basicD.PRODUCT_NO in (")

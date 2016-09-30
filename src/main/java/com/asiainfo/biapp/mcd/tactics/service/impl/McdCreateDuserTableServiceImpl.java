@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.jfree.util.Log;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCreateDuserTableService;
@@ -36,7 +36,7 @@ public class McdCreateDuserTableServiceImpl implements IMcdCreateDuserTableServi
 	public List<Map<String, Object>> getAll() {
 		List<Map<String, Object>> list = null;
 		try {
-			list = mcdCampsegTaskDao.getCampsegByStatus(MpmCONST.TASK_STATUS_INIT);
+			list = mcdCampsegTaskDao.getCampsegByStatus(McdCONST.TASK_STATUS_INIT);
 		} catch (Exception e) {
 			Log.error("根据状态查询任务异常："+e);
 		}

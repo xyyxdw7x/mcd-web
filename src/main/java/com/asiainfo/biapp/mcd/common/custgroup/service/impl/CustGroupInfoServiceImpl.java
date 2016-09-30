@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
@@ -482,7 +482,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			if(null != mtlGroupInfo){
 				updateCycle = mtlGroupInfo.getUpdateCycle();  //客户群生成周期:1,一次性;2,月周期;3,日周期
 			}
-			if(channelId.equals(MpmCONST.CHANNEL_TYPE_SMS)){//短信渠道
+			if(channelId.equals(McdCONST.CHANNEL_TYPE_SMS)){//短信渠道
 				listResult = custGroupInfoDao.getAfterBotherAvoid1InMem(bussinessLableSql, basicEventSql, channelId, campsegTypeId, customgroupid, orderProductNo, excludeProductNo,avoidBotherFlag,contactControlFlag,cityId,String.valueOf(paramDays),String.valueOf(paramNum),updateCycle,campsegId);
 			}else{
 				listResult = custGroupInfoDao.getAfterBotherAvoid1(bussinessLableSql, basicEventSql, channelId, campsegTypeId, customgroupid, orderProductNo, excludeProductNo,avoidBotherFlag,contactControlFlag,cityId,String.valueOf(paramDays),String.valueOf(paramNum),updateCycle,campsegId);

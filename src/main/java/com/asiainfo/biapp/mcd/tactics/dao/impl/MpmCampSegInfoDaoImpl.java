@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -24,6 +24,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
+
 import org.apache.commons.lang3.StringUtils;
 /**
  * 策略管理相关dao
@@ -98,7 +99,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             buffer.append(" and msi.campseg_stat_id = ? ");
             parameterList.add(segInfo.getStatId());
         }
-        buffer.append(" order by msi.create_time desc");
+        buffer.append(" order by msi.campseg_id desc");
         String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
         List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sqlExt.toString(), parameterList.toArray());
         List<Map<String,Object>> listSize = this.getJdbcTemplate().queryForList(buffer.toString(), parameterList.toArray());
@@ -257,7 +258,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             String sql = "select t2.proform_result from mtl_campseg_progress t2 where t2.campseg_id=? and t2.step_id=?";
             log.debug(sql);
             List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql, 
-            		new Object[] { campsegId, MpmCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET });
+            		new Object[] { campsegId, McdCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET });
             String templetIds = "";
             for(int i = 0 ;i < list.size() ; i ++){
                 Map<String,Object> map = (Map<String,Object>)list.get(i);
@@ -371,7 +372,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
             sql.append(templetIds)
                     .append(") and seltemplet_type=3")
                     .append(" and select_templet_id in (select proform_result from mtl_campseg_progress where campseg_id='")
-                    .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_CAMP_SELECT + ")");
+                    .append(campsegId).append("' and step_id=").append(McdCONST.MPM_SYS_ACTSTEP_DEF_CAMP_SELECT + ")");
             log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
 
@@ -380,7 +381,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(templetIds)
                     .append(") and ftemplet_type=3")
                     .append(" and filter_templet_id in (select proform_result from mtl_campseg_progress where campseg_id='")
-                    .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_CAMP_FILTER)
+                    .append(campsegId).append("' and step_id=").append(McdCONST.MPM_SYS_ACTSTEP_DEF_CAMP_FILTER)
                     .append(")");
             log.debug(sql);
             this.getJdbcTemplate().update(sql.toString());
@@ -413,7 +414,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
                     .append(templetIds)
                     .append(")")
                     .append(" and active_templet_id not in (select proform_result from mtl_campseg_progress where campseg_id <> '")
-                    .append(campsegId).append("' and step_id=").append(MpmCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET)
+                    .append(campsegId).append("' and step_id=").append(McdCONST.MPM_SYS_ACTSTEP_DEF_ACTIVE_TEMPLET)
                     .append(")");
             log.debug(sql);
             List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql.toString());

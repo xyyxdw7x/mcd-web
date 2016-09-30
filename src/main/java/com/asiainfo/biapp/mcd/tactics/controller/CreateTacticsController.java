@@ -27,7 +27,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
 import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupAttrRelService;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
@@ -394,7 +394,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 				campSeginfo.setCampName(campsegName);
 				campSeginfo.setStartDate(putDateStart);
 				campSeginfo.setEndDate(putDateEnd);
-				campSeginfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_HDSP));
+				campSeginfo.setStatId(Short.parseShort(McdCONST.MPM_CAMPSEG_STAT_HDSP));
 				campSeginfo.setTypeId(Short.parseShort(campsegTypeId));// 策略类型
 				campSeginfo.setCreateUserId(user.getId()); // 活动策划人
 				campSeginfo.setCityId(user.getCityId()); // 策划人所属城市
@@ -826,7 +826,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 						campSeginfo.setCampName(campsegName);
 						campSeginfo.setStartDate(putDateStart);
 						campSeginfo.setEndDate(putDateEnd);
-						campSeginfo.setStatId(Short.parseShort(MpmCONST.MPM_CAMPSEG_STAT_CHZT));
+						campSeginfo.setStatId(Short.parseShort(McdCONST.MPM_CAMPSEG_STAT_CHZT));
 						campSeginfo.setTypeId(Short.parseShort(campsegTypeId));// 策略类型
 						campSeginfo.setCreateUserId(user.getId()); // 活动策划人
 						campSeginfo.setCityId(user.getCityId()); // 策划人所属城市
@@ -945,9 +945,9 @@ public class CreateTacticsController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		try {
 			// 获取复杂事件规则地址
-			McdSysInterfaceDef createCode = mtlCallWsUrlService.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE);
+			McdSysInterfaceDef createCode = mtlCallWsUrlService.getCallwsURL(McdCONST.AIBI_MCD_CEP_CREATE_CODE);
 			McdSysInterfaceDef createCodeCallBack = mtlCallWsUrlService
-					.getCallwsURL(MpmCONST.AIBI_MCD_CEP_CREATE_CODE_CALLBACK);
+					.getCallwsURL(McdCONST.AIBI_MCD_CEP_CREATE_CODE_CALLBACK);
 
 			List<McdDimPlanType> typeList = mtlStcPlanService.initDimPlanType();
 			if (!CollectionUtils.isEmpty(typeList)) {
@@ -1100,7 +1100,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 		String cityId = user.getCityId();
 		try {
 			String clickQueryFlag = "true";
-			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL);
+			pager.setPageSize(McdCONST.SMALL_PAGE_SIZE_LABEL);
 			pager.setPageNum(pageNum); // 当前页
 			if (pageNum != null) {
 				pager.setPageFlag("G");
@@ -1174,7 +1174,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 		}
 		try {
 			String clickQueryFlag = "true";
-			pager.setPageSize(MpmCONST.SMALL_PAGE_SIZE_LABEL); // 此处改为每页显示5条
+			pager.setPageSize(McdCONST.SMALL_PAGE_SIZE_LABEL); // 此处改为每页显示5条
 			pager.setPageNum(pageNum); // 当前页
 			if (pageNum != null) {
 				pager.setPageFlag("G");
@@ -1643,7 +1643,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 
 						// 查询外呼渠道相关信息
 						Map<String,Object> mtlChannelDefCallMap = mtlChannelDefService.getMtlChannelDefCall(campsegId,
-								MpmCONST.CHANNEL_TYPE_OUT_CALL);
+								McdCONST.CHANNEL_TYPE_OUT_CALL);
 						paramMap.put("mtlChannelDefCall", mtlChannelDefCallMap);
 
 						/*
@@ -1888,7 +1888,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 		Pager pager = new Pager();
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
-		int pageSize = request.getParameter("pageSize")==null?MpmCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageSize"));
+		int pageSize = request.getParameter("pageSize")==null?McdCONST.SMALL_PAGE_SIZE_LABEL:Integer.parseInt( request.getParameter("pageSize"));
 		String pageNum = StringUtils.isNotEmpty(request.getParameter("pageNum")) ? request.getParameter("pageNum"): "1";
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords"): null;
 		// 产品类型
@@ -2029,10 +2029,11 @@ public class CreateTacticsController extends BaseMultiActionController {
 	public Map<String,String> saveOrUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String,String> rs = new HashMap<String,String>();
 		List<McdCampDef> campSegInfoList = new ArrayList<McdCampDef>();//需要保存的策略列表
+		String flag = "";//返回前台标记位 0:保存成功,1:提交审批成功,2:提交审批失败,3:异常
 		try {
 			User user = this.getUser(request, response);
-			String test = request.getParameter("data");
-			JSONObject campJson = JSONObject.fromObject(test);
+			String data = request.getParameter("data");
+			JSONObject campJson = JSONObject.fromObject(data);
 			String commonAttr = campJson.get("campInfo").toString();// 获取公共属性
 			
 			// 先生成一个父节点，一个子节点
@@ -2067,10 +2068,11 @@ public class CreateTacticsController extends BaseMultiActionController {
 			campSegInfoList.add(campSeginfoSub);
 
 			// 统一进行保存
-			String flag = mpmCampSegInfoService.saveOrUpdateCampInfo(user,campSegInfoList,isModify);
+			flag = mpmCampSegInfoService.saveOrUpdateCampInfo(user,campSegInfoList,isModify);
 			rs.put("flag", flag);
 		} catch (Exception e) {
 			log.error("保存异常", e);
+			flag = McdCONST.TACTICS_SAVE_FAIL;
 		}
 		return rs; 
 	}

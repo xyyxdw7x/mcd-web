@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.core.context.IApplicationContextRefreshed;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
@@ -76,7 +76,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 				continue;
 			}
 			
-			if(mcdCampsegTaskDao.checkTaskStatus(campsegId, MpmCONST.TASK_STATUS_UNDO)!=0){
+			if(mcdCampsegTaskDao.checkTaskStatus(campsegId, McdCONST.TASK_STATUS_UNDO)!=0){
 				log.info("*********************任务状态已经变更！！！！");
 				continue;
 			}
@@ -94,7 +94,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 			log.info("*************custGroupId："+custGroupId);
 			if(StringUtils.isNotEmpty(custGroupId)){
 				//创建D表
-				String tableName = mpmCampSegInfoService.createCustGroupTabAsCustTable(MpmCONST.MCD_ZD_USER_PREFIX, custGroupId);
+				String tableName = mpmCampSegInfoService.createCustGroupTabAsCustTable(McdCONST.MCD_ZD_USER_PREFIX, custGroupId);
 				//给Duser表创建索引-----------创建索引的方式有待确认
 				mpmCampSegInfoService.createDuserIndex(tableName,custGroupId);
 				log.info("***********************tableName="+tableName);
@@ -134,9 +134,9 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 							mpmCampSegInfoDao.updateCampsegById(campsegId, tableName,custCount);
 						}
 						//更新任务的状态之前，先判断此任务的状态是否已经变成50
-						if(mcdCampsegTaskDao.checkTaskStatus(campsegId, MpmCONST.TASK_STATUS_UNDO)==0){
-							mcdCampsegTaskDao.updateCampsegTaskStatusById(campsegId,tableName,custCount, MpmCONST.TASK_STATUS_UNDO);
-							mcdCampsegTaskDao.updateCampsegTaskDataStatusById(campsegId,custCount, MpmCONST.TASK_STATUS_UNDO);
+						if(mcdCampsegTaskDao.checkTaskStatus(campsegId, McdCONST.TASK_STATUS_UNDO)==0){
+							mcdCampsegTaskDao.updateCampsegTaskStatusById(campsegId,tableName,custCount, McdCONST.TASK_STATUS_UNDO);
+							mcdCampsegTaskDao.updateCampsegTaskDataStatusById(campsegId,custCount, McdCONST.TASK_STATUS_UNDO);
 						}
 						flag = false;
 					}else{

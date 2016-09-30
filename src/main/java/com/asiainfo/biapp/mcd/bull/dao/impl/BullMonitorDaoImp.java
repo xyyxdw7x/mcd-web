@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.bull.dao.IBullMonitorDao;
-import com.asiainfo.biapp.mcd.common.constants.MpmCONST;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="bullMonitorDao")
@@ -23,12 +23,12 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements IBullMonitorDao {
 	 */
 	private String getBullShowStaus() {
 		StringBuffer sb = new StringBuffer("");
-		sb.append(MpmCONST.TASK_STATUS_UNDO).append(",");// 待执行
-		sb.append(MpmCONST.TASK_STATUS_RUNNING).append(",");// 执行中
-		sb.append(MpmCONST.TASK_STATUS_PAUSE).append(",");// 暂停
-		sb.append(MpmCONST.TASK_STATUS_LOADED).append(",");// 已加载
-		sb.append(MpmCONST.TASK_STATUS_AUTOMATIC_PAUSE).append(",");// 自动暂停
-		sb.append(MpmCONST.TASK_STATUS_DAY_END);
+		sb.append(McdCONST.TASK_STATUS_UNDO).append(",");// 待执行
+		sb.append(McdCONST.TASK_STATUS_RUNNING).append(",");// 执行中
+		sb.append(McdCONST.TASK_STATUS_PAUSE).append(",");// 暂停
+		sb.append(McdCONST.TASK_STATUS_LOADED).append(",");// 已加载
+		sb.append(McdCONST.TASK_STATUS_AUTOMATIC_PAUSE).append(",");// 自动暂停
+		sb.append(McdCONST.TASK_STATUS_DAY_END);
 		return sb.toString();
 	}
 
