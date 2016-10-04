@@ -1,16 +1,24 @@
-/**
-*头部模板
-*/
 .header {
 	width: 100%;
 	background-color: #fff;
 }
-
+.inner{
+	text-align: center;
+}
 .header .inner {
 	width: 1200px;
 	height: 60px;
 	margin: 0 auto;
 	position: relative;
+	
+}
+.inner:after{
+    content:'';
+    visibility:hidden;
+    font-size:0;
+    height:0;
+    display:block;
+    clear:both;
 }
 
 .header .inner .logo {
@@ -23,7 +31,20 @@
 
 .header .inner .logo img {
 	height: 42px;
-	display: none;
+}
+
+.clearfix:after{
+    content:'';
+    visibility:hidden;
+    font-size:0;
+    height:0;
+    display:block;
+    clear:both;
+}
+
+.container{
+    width:100%;
+    text-align:center;          
 }
 
 .header .inner .loginfo {
@@ -222,7 +243,12 @@
 }
 
 .header .inner .nav {
-	float:right;
+	 display:inline-block;
+	 padding-right:245px;
+}
+.nav {
+	 display:inline-block;
+	 text-align:center; 
 }
 
 .header .inner .nav li {
@@ -236,6 +262,9 @@
 	color: #8c8c8c;
 	display: inline-block;
 	padding: 0 15px;
+	float:left;
+    margin:0 5px;
+    cursor:pointer;
 }
 
 .header .inner .nav li .icon_arrDown {
@@ -286,7 +315,7 @@
 	height: auto;
 	margin: 0 auto;
 	position: relative;
-	text-align: right;
+	text-align: center;
 }
 
 .header .subnav ul {
@@ -294,7 +323,6 @@
 	height: 32px;
 	overflow: hidden;
 	margin: 0 auto;
-	display: none;
 }
 .header .subnav ul.active{
 	display: inline-block;

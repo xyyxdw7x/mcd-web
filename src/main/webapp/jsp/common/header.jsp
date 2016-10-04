@@ -1,11 +1,12 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
 <div class="header" id="headerDiv" >
 	<div class="inner">
 		<div class="logo">
 			<img src="<%=request.getContextPath()%>/assets/images/logos/logo.png" />
 		</div>
 		<ul class="nav">
-		</ul>
+		
+		
+		
 	</div>
 	<div class="subnav" >
 		<div class="width950">

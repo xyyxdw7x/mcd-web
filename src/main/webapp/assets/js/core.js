@@ -3,6 +3,72 @@
  * 
  */
 
+$(document).ready(function(){
+	initMenu();
+});
+function initMenu(){
+	//判断当前的url是那个菜单
+	var $url=$.url();
+	var url=$url.attr("relative");
+	var isMenu=false;
+	$("#menuUl li").each(function(index,obj){
+		var varValue=$(obj).attr("data-url");
+		if(url.indexOf(varValue)>=0&&varValue!=""){
+			$(obj).addClass("active");
+			//var skipUrl=$(obj).attr("data-url");
+			//window.location.href=contextPath+skipUrl;
+			isMenu=true;
+			//return false跳出each循环
+			var skipUrl=$obj.attr("data-url");
+			window.location.href=contextPath+skipUrl;
+			return false;
+		}
+	});
+	if(!isMenu){
+		$("#subMenuUl li").each(function(index,obj){
+			var varValue=$(obj).attr("data-url");
+			var pid=$(obj).attr("data-pid");
+			if(url.indexOf(varValue)>=0){
+				$("#subMenuUl li").filter("[data-pid!="+pid+"]").hide();
+				$("#subMenuUl li").filter(".active").removeClass("active");
+				$("#subMenuUl li").filter("[data-pid="+pid+"]").show();
+				$(obj).addClass("active");
+				//return false跳出each循环
+				return false;
+			}
+		});
+	}
+	//一级菜单点击事件
+	$("#menuUl li").click(function(evnet){
+		var $obj=$(event.currentTarget);
+		var pid=$obj.data("id");
+		var $submenuLi=$("#subMenuUl li");
+		$submenuLi.filter("[data-pid!="+pid+"]").hide();
+		$submenuLi.filter(".active").removeClass("active");
+		if($submenuLi.filter("[data-pid="+pid+"]").length==0){
+			var skipUrl2=$obj.attr("data-url");
+			window.location.href=contextPath+skipUrl2;
+			return ;
+		}
+		$submenuLi.filter("[data-pid="+pid+"]").show();
+		$submenuLi.filter("[data-pid="+pid+"]").first().addClass("active");
+		var skipUrl=$submenuLi.filter("[data-pid="+pid+"]").first().attr("data-url");
+		window.location.href=contextPath+skipUrl;
+	});
+	//二级菜单点击事件
+	$("#subMenuUl li").click(function(evnet){
+		var $obj=$(event.currentTarget);
+		var pid=$obj.data("pid");
+		var $submenuLi=$("#subMenuUl li");
+		$submenuLi.filter("[data-pid!="+pid+"]").hide();
+		$submenuLi.filter(".active").removeClass("active");
+		$submenuLi.filter("[data-pid="+pid+"]").show();
+		$submenuLi.filter("[data-pid="+pid+"]").first().addClass("active");
+		var skipUrl=$obj.attr("data-url");
+		window.location.href=contextPath+skipUrl;
+	});
+}
+
 
 
 /**

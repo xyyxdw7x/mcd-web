@@ -55,21 +55,25 @@
     <mvc:resources mapping="/mcd/assets/**"    location="/mcd/assets/"     cache-period="86400" order="-13"/>
     <mvc:resources mapping="/mcd/pages/**"    location="/mcd/pages/"     cache-period="86400" order="-14"/>
     
-    <!-- sdp中mvc的control默认统一实用xxxController 自动扫描包含@Controller注解的-->
+    <!-- sdp中mvc的control默认统一实用xxxController 自动扫描包含@Controller注解的
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
 		<property name="order" value="-4"/>
 		<property name="basePackage" value="com.asiainfo.biapp.framework.web.controller"/>
 	</bean>
+	-->
 	<!-- 自动查找在所有@Controller中使用了@requestMapping 注解的bean 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="order" value="30"/>
 	</bean>
 	-->
-	<!-- 扫描bean，查找@RequestMapping -->
+	<!-- 扫描bean，查找@RequestMapping 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	-->
 	
-	<!-- 匹配所有file开头的url 不需要控制器直接打开 -->
+	<!-- 匹配所有file开头的url 不需要控制器直接打开
 	<bean name="/file/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
+	 -->
+	 
 	<!-- 
 	<bean class="org.springframework.web.servlet.mvc.ParameterizableViewController"/>
 	 -->

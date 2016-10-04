@@ -23,7 +23,7 @@
 		String channelUrl="provinces/"+provinces+"/createTacticsChannel.jsp";
 		String shopCarUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
 	%>
-	<%@ include file="../../jsp/common/header.jsp" %>
+	<jsp:include page="../../action/privilege/login/getUserMenuAll.do"></jsp:include>
 	<div class="put-container w-1200">
 		<!-- 左侧数字导航区 -->
 		<div class="put-left fleft ft14 mtop_47">

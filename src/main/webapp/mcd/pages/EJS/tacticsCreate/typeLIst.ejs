@@ -1,5 +1,0 @@
-<span class="fleft content-type-box J_type" typeId="">全部</span>
-<%for(var i=0,len = data.length;i<len;i++){%>
-	<%if(data[i].typeName==="短信"){continue;}%>
-	<span class="fleft content-type-box J_type" typeId="<%=data[i].typeId%>" channelType ="<%=data[i].typeId%>"><%=data[i].typeName%></span>
-<%}%>

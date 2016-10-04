@@ -15,10 +15,10 @@
 	_ctx = "<%=request.getContextPath()%>";
 </script>
 <body>
-<jsp:include page="../../jsp/common/header.jsp"></jsp:include>
+<jsp:include page="../../action/privilege/login/getUserMenuAll.do"></jsp:include>
 <div class="myTacticsQuery">
 	<ul id="tacticsManageQueryTab" class="tacticsManageQueryTab" dataCT="tacticsManageTabCT" >
-		<li class="active">我的策略<span class="icon_arrUp"></li>
+		<li class="active">我的策略2<span class="icon_arrUp"></li>
 		<li data-tab="ALL">全部策略<span class="icon_arrUp"></li>
 	</ul>
 </div>

@@ -31,10 +31,11 @@ public interface IUserPrivilege {
 	/**
 	 * 获得用户的所有菜单信息
 	 * @param userId
+	 * @param isMerge 是否按级别合并菜单
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Menu> getUserMenuInfos(String userId) throws Exception;
+	public List<Menu> getUserMenuInfos(String userId,boolean isMerge) throws Exception;
 	
 	/**
 	 * 用户是否是超级管理员

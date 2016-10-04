@@ -1,8 +1,8 @@
-define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],function(require, exports, module) {      
+define(["backbone","jqueryUI","My97DatePicker","jqueryExtend"],function(require, exports, module) {      
 	module.exports={
 		init:function(){
-			 var navManage = require("navManage");
-			 navManage.init();
+			 //var navManage = require("navManage");
+			 //navManage.init();
 			//tacticsTable_all
 			
 			//业务列表暂时屏蔽

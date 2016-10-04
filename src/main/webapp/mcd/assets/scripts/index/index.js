@@ -1,4 +1,4 @@
-define(["backbone","unslider","navManage"],function(require, exports, module) {
+define(["backbone","unslider"],function(require, exports, module) {
     var generalModel = Backbone.Model.extend({
         urlRoot : _ctx+"/mpm",
         defaults : {
@@ -7,9 +7,6 @@ define(["backbone","unslider","navManage"],function(require, exports, module) {
     });
     module.exports = {
         init: function () {
-            var navManage = require("navManage");
-            navManage.init();
-
             module.exports.getSaleSituationInfo();
             module.exports.getMySales();
             module.exports.getRecommendCamps();

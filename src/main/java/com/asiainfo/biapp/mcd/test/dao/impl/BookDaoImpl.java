@@ -45,12 +45,12 @@ public class BookDaoImpl extends JdbcDaoBase implements IBookDao,Serializable,Be
 
 	@Override
 	public List<Book> queryBookByName(String name) {
-		try {
-			String dic1=this.getConfigService().getProperty("CENTER_CITYID");
-			log.info("dic1="+dic1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			String dic1=this.getConfigService().getProperty("CENTER_CITYID");
+//			log.info("dic1="+dic1);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		//log.info("dic1="+dic1);
 		    
 		String sql="select * from mcd_test_book where book_title like ?";

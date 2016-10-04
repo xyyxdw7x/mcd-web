@@ -1,0 +1,29 @@
+<!--#set(List<Menu> menus)-->
+<!--#if(menus)-->
+<div class="header" id="headerDiv" >
+	<div class="inner">
+		<div class="logo">
+			<img src="${request.getContextPath()}/assets/images/logos/logo.png" />
+		</div>
+		<ul id="menuUl" class="nav">
+		<!--#for(Menu menu : menus)-->
+			#if(menu.pid.equals("91"))
+				<li data-id="${menu.id}" data-url="${menu.url}" >${menu.name}</li>
+			#end
+		<!--#end-->
+		</ul>
+	</div>
+	<div class="subnav" >
+		<div class="width950">
+			<ul id="subMenuUl">
+			<!--#for(Menu menu2 : menus)-->
+			#if(menu2.pid.equals("91"))
+			#else
+			    <li data-id="${menu2.id}" data-pid="${menu2.pid}" data-url="${menu2.url}" style="display:none">${menu2.name}</li>
+			#end
+			<!--#end-->
+			</ul>
+		</div>
+	</div>
+</div>
+<!--#end-->

@@ -3,7 +3,6 @@
 <html>
 <head>
     <title>首页</title>
-
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
@@ -11,13 +10,14 @@
     <link rel="stylesheet" type="text/css" href="../../assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" />
     <link rel="stylesheet" type="text/css" href="../../assets/styles/index.css" />
     <link rel="stylesheet" type="text/css" href="../../../wro/resetDialog-jqueryUI.css" >
+   
 
 </head>
 <script type="text/javascript">
     _ctx = "<%=request.getContextPath()%>";
 </script>
 <body style="overflow-y: scroll;">
-<jsp:include page="../header/header.jsp"></jsp:include>
+<jsp:include page="../../../action/privilege/login/getUserMenuAll.do"></jsp:include>
     <div class="content">
         <div class="sale-situation">
             <ul class="sale-situation-ul">
@@ -522,3 +522,4 @@
         main.init();
     });
 </script>
+<script type="text/javascript" src="../../../assets/js/core.js"></script>

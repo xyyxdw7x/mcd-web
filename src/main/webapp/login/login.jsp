@@ -33,7 +33,7 @@
 	function login() {
 		var userId = $("#userName").val();
 		var pwd = $("#userPwd").val();
-		var url = _ctx + "/privilege/login/login";
+		var url = _ctx + "/action/privilege/login/login";
 		$.ajax({
 			type : 'POST',
 			url : url,

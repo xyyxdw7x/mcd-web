@@ -40,17 +40,18 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 	}
 
 	@Override
-	public List<Menu> getUserMenuInfos(String userId) throws Exception {
+	public List<Menu> getUserMenuInfos(String userId,boolean isMerge) throws Exception {
 		logger.info("userId="+userId);
 		List<Menu> menuList=userPrivilegeDao.getUserMenuInfos(userId);
 		//找到一级菜单信息
 		List<Menu> topMenu=new ArrayList<>();
 		for (int i = 0,size=menuList.size(); i < size; i++) {
 			Menu menu=menuList.get(i);
-			if("91".equals(menu.getPid())){
+			if("91".equals(menu.getPid())&&isMerge){
 				topMenu.add(menu);
 				menu.setSubMenuList(getSubMenuList(menuList,menu.getId()));
 			}
+			topMenu.add(menu);
 		}
 		return topMenu;
 	}

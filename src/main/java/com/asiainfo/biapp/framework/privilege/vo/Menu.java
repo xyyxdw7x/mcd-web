@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.framework.privilege.vo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,12 @@ import javax.persistence.Column;
  * @author hjn
  *
  */
-public class Menu {
+public class Menu implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8764517353164363363L;
 
 	/**
 	 *  菜单ID
