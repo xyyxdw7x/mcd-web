@@ -10,7 +10,7 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/createTactics.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsCustGroup.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel_extends.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/insertContent.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery.ui.datepicker-zh-TW.js"></script>
