@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/mcd/assets/styles/common.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/mcd/assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" /> 
 <link href="<%=request.getContextPath()%>/mcd/assets/styles/bulkManage.css" rel="stylesheet" type="text/css">
-<link href="<%=request.getContextPath()%>/wro/createSaleOrder.css" rel="stylesheet" type="text/css">
+<link href="<%=request.getContextPath()%>/assets/css/tacticsorder/createSaleOrder.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 	_ctx = "<%=request.getContextPath()%>";
