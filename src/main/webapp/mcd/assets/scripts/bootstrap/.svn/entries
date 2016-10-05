@@ -1,37 +1,0 @@
-10
-
-dir
-82526
-http://10.1.235.233/svn/AIOMNI-APP/AIBI_MCD/branches/V04R00_zhejiang/trunk/appfront/src/main/webapp/mcd/assets/scripts/bootstrap
-http://10.1.235.233/svn/AIOMNI-APP
-
-
-
-2016-08-01T02:27:58.167084Z
-82068
-gaowj3
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-1074ba5c-8d6e-0410-b3c8-f2e5f87c5704
-
-css
-dir
-
-fonts
-dir
-
-js
-dir
-
