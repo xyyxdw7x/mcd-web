@@ -40,7 +40,7 @@
 		<a href="javascript:;" class="btn140-40" id="saveDialogBtn">保存</a>
 	</div>
 <!-- 新建策略-保存弹窗 -->
-<div class="save-dialog-box container"  >
+<div class="save-dialog-box container" style="display:none"  >
 	<div id="saveDialog" class="own-dialog save-dialog">
 		<!-- 内容区 -->
 		<form class="form-horizontal">
@@ -75,5 +75,4 @@
 		    </div> 
 		</form>
 	</div><!--dialog end-->
-	<!-- <div class="ui-widget-overlay ui-front" style="z-index: 100;"></div> --><!--半透明背景-->
 </div>

@@ -1,4 +1,4 @@
-define(["backbone","jqueryUI","My97DatePicker","jqueryExtend"],function(require, exports, module) {      
+define(["backbone","my97"],function(require, exports, module) {      
 	module.exports={
 		init:function(){
 			 //var navManage = require("navManage");

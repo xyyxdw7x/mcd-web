@@ -10,7 +10,7 @@
 	response.setDateHeader("Expires", 0);
 %>
 <script type="text/javascript"
-	src="../mcd/assets/scripts/jquery/jquery-3.1.0.min.js"></script>
+	src="../assets/js/lib/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 	var _ctx = "<%=request.getContextPath()%>";
 
@@ -20,6 +20,7 @@
 		});
         
 	});
+	
 	$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
 		alert("thrownError=" + thrownError);
 	});
@@ -44,7 +45,7 @@
 			},
 			success : function(result) {
 				if (result == true) {
-					window.location = _ctx + "/mcd/pages/index/index.jsp"
+					window.location = _ctx + "/jsp/home/home.jsp"
 				} else {
 					alert("用户名或密码错误！");
 				}

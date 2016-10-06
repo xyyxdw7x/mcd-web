@@ -15,7 +15,7 @@
 	_ctx = "<%=request.getContextPath()%>";
 </script>
 <body>
-<jsp:include page="../../action/privilege/login/getUserMenuAll.do"></jsp:include>
+<%@ include file="../../jsp/common/header.jsp" %>
 <div class="myTacticsQuery">
 	<ul id="tacticsManageQueryTab" class="tacticsManageQueryTab" dataCT="tacticsManageTabCT" >
 		<li class="active">我的策略2<span class="icon_arrUp"></li>
@@ -95,13 +95,9 @@
 
 </body>
 </html>
-<script type="text/javascript" src="../../assets/js/seajs/sea.js"></script>
-<script type="text/javascript" src="../../assets/js/seajs/seajs-preload.js"></script>
-<script type="text/javascript" src="../../assets/js/seajs/sea-config.js"></script>
 <script type="text/javascript">
-	seajs.use("../../assets/js/tactics/tacticsManage",function(main){
-		main.init();
-		
+	seajs.use("tactics/tacticsManage",function(tacticsManage){
+		tacticsManage.init();
 		/*
 		各种下拉control列表未完成。。
 		var str_manageList=""
@@ -110,3 +106,4 @@
 		*/
 	});
 </script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/insertContent.js"></script>

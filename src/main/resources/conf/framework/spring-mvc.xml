@@ -51,9 +51,7 @@
     <!-- resource本质是一个SimpleUrlHandlerMapping 静态的资源文件   
     cache-period缓存时间 秒  86400为一天   annotation-driven默认的order为0 设置会-11和-12就不会经过其他的HandlerMapping-->
     <mvc:resources mapping="/file/**" location="/html/"  cache-period="86400" order="-11" />
-    <mvc:resources mapping="/asset/**"    location="/asset/"     cache-period="86400" order="-12"/>
-    <mvc:resources mapping="/mcd/assets/**"    location="/mcd/assets/"     cache-period="86400" order="-13"/>
-    <mvc:resources mapping="/mcd/pages/**"    location="/mcd/pages/"     cache-period="86400" order="-14"/>
+    <mvc:resources mapping="/assets/**"    location="/assets/"     cache-period="86400" order="-12"/>
     
     <!-- sdp中mvc的control默认统一实用xxxController 自动扫描包含@Controller注解的
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
@@ -74,45 +72,7 @@
 	<bean name="/file/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
 	 -->
 	 
-	<!-- 
-	<bean class="org.springframework.web.servlet.mvc.ParameterizableViewController"/>
-	 -->
-    
-    <!-- 视图解析器 -->
-    <!-- 优先使用httl渲染 -->
-    <bean id="httlViewResolver" class="httl.web.springmvc.HttlViewResolver">
-		<property name="contentType" value="text/html; charset=UTF-8" />
-		<property name="order" value="1"/>
-	</bean>
-	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="cache" value="true" />
-		<property name="prefix" value="" />
-		<property name="suffix" value=".ftl" />
-		<property name="exposeSpringMacroHelpers" value="true" />
-		<property name="exposeRequestAttributes" value="true" />
-		<property name="exposeSessionAttributes" value="true" />
-		<property name="contentType" value="text/html;charset=UTF-8" />
-		<property name="order" value="2"/>
-	</bean>
-	<!-- 配置freeMarker的模板路径 -->
-    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath">
-        <value>/jsp/</value>
-        </property>
-        <property name="freemarkerVariables">
-        <map>
-           
-        </map>
-        </property>
-        <property name="defaultEncoding">
-            <value>utf-8</value>
-        </property>
-        <property name="freemarkerSettings">
-            <props>
-                <prop key="template_update_delay">3600</prop>
-            </props>
-        </property>
-    </bean>
+	
    
     <!-- 根据bean的名称来解析  BeanNameViewResolver new ModelAndView("courseList","courses",courses); -->
 	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">

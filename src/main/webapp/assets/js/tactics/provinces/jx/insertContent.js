@@ -1,8 +1,6 @@
-
 /**
  *选择变量向文本框中插入变量 
  */
-(function(){
 	$.fn.extend({ 
 		insertContent : function(myValue, t) {  
 			var $t = $(this)[0];  
@@ -45,4 +43,3 @@
 			}  
 		}  
 	  });
-})($);

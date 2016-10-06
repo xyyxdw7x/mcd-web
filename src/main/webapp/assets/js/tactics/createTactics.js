@@ -1,16 +1,22 @@
+define(function(require, exports, module){
+	require("xdate");
+	require("purl");
+	require("page");
+	require("toast");
+	require("modal");
+	
+	exports.init=function(){
+		$(document).ready(function(){
+			//绑定事件
+			tacticsInfo.addEventListenter();
+			tacticsInfo.initView();
+		});
+	}
+});
 /**
  * 全局变量信息  camp策略信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
  */
 var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null};
-
-/**
- * 测试页面框架js
- */
-$(document).ready(function(){
-	//绑定事件
-	tacticsInfo.addEventListenter();
-	tacticsInfo.initView();
-});
 
 /**
  * 页面元素进行统一的绑定事件入口

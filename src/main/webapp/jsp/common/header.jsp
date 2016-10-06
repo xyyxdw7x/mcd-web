@@ -1,20 +1,7 @@
-<div class="header" id="headerDiv" >
-	<div class="inner">
-		<div class="logo">
-			<img src="<%=request.getContextPath()%>/assets/images/logos/logo.png" />
-		</div>
-		<ul class="nav">
-		
-		
-		
-	</div>
-	<div class="subnav" >
-		<div class="width950">
-			<ul class="ul01"></ul>
-			<ul class="ul02"></ul>
-			<ul class="ul03"></ul>
-			<ul class="ul04"></ul>
-			<ul class="ul05"></ul>
-		</div>
-	</div>
-</div>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<jsp:include page="../../action/privilege/login/getUserMenuAll2.do"></jsp:include>
+<script type="text/javascript">
+	seajs.use("common/header.js",function(header){
+		header.init();
+	});
+</script>

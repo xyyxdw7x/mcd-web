@@ -3,21 +3,15 @@
 <html>
 <head>
     <title>首页</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
-
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/common.css" />
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../assets/styles/index.css" />
-    <link rel="stylesheet" type="text/css" href="../../../wro/resetDialog-jqueryUI.css" >
-   
-
+    <%@ include file="../../jsp/common/head.jsp" %>
+    <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/home/home.css" />
+    <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/resetDialog-jqueryUI.css" />
 </head>
 <script type="text/javascript">
     _ctx = "<%=request.getContextPath()%>";
 </script>
 <body style="overflow-y: scroll;">
-<jsp:include page="../../../action/privilege/login/getUserMenuAll.do"></jsp:include>
+<%@ include file="../../jsp/common/header.jsp" %>
     <div class="content">
         <div class="sale-situation">
             <ul class="sale-situation-ul">
@@ -59,26 +53,26 @@
         <div class="jump">
             <ul class="jump-ul">
                 <li class="jump-li borderRight">
-                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/mcd/pages/tactics/createTactics.jsp?navId=M001005004001002&subNavId=M001005004001002001" data-subNavId="M001005004001002001" target="_blank">
-                        <img class="icon" src="../../assets/images/index/url-icon/index-url-icon-1.png" ></img>
+                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/jsp/tactics/createTactics.jsp" data-subNavId="M001005004001002001" target="_blank">
+                        <img class="icon" src="../../assets/images/home/index-url-icon-1.png" ></img>
                         <p class="text">新建营销策略</p>
                     </a>
                 </li>
                 <li class="jump-li borderRight">
-                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/mcd/pages/tactics/tacticsManage.jsp?navId=M001005004001002&subNavId=M001005004001002002" data-subNavId="M001005004001002002" target="_blank">
-                        <img class="icon" src="../../assets/images/index/url-icon/index-url-icon-2.png" ></img>
+                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/jsp/tactics/tacticsManage.jsp" data-subNavId="M001005004001002002" target="_blank">
+                        <img class="icon" src="../../assets/images/home/index-url-icon-2.png" ></img>
                         <p class="text">管理已有策略</p>
                     </a>
                 </li>
                 <li class="jump-li borderRight">
                     <a href="javascript:;" data-href="<%=request.getContextPath() %>/mcd/pages/custom/addCustom.jsp?navId=M001005004001001&subNavId=M001005004001001002" data-subNavId="M001005004001001002" target="_blank">
-                        <img class="icon" src="../../assets/images/index/url-icon/index-url-icon-3.png" ></img>
+                        <img class="icon" src="../../assets/images/home/index-url-icon-3.png" ></img>
                         <p class="text">新建客户群</p>
                     </a>
                 </li>
                 <li class="jump-li">
                     <a href="javascript:;" data-href="<%=request.getContextPath() %>/mcd/pages/effectAppraisal/saleOrderPage.jsp?navId=M001005004001002&subNavId=M001005004001002003" data-subNavId="M001005004001002003" target="_blank">
-                        <img class="icon" src="../../assets/images/index/url-icon/index-url-icon-4.png" ></img>
+                        <img class="icon" src="../../assets/images/home/index-url-icon-4.png" ></img>
                         <p class="text">优先级管理</p>
                     </a>
                 </li>
@@ -513,13 +507,8 @@
 
 </body>
 </html>
-<script type="text/javascript" src="../../assets/scripts/seajs/sea.js"></script>
-<script type="text/javascript" src="../../assets/scripts/seajs/seajs-preload.js"></script>
-<script type="text/javascript" src="../../assets/scripts/seajs/sea-config.js"></script>
 <script type="text/javascript">
-
-    seajs.use("../../assets/scripts/index/index",function(main){
-        main.init();
+    seajs.use("home/home.js",function(home){
+    	home.init();
     });
 </script>
-<script type="text/javascript" src="../../../assets/js/core.js"></script>

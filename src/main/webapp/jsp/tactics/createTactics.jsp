@@ -5,16 +5,10 @@
 <title>新建策略</title>
 <%@ include file="../../jsp/common/head.jsp" %>
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" />
-<link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-table.css" />
-<link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/public-dialog.css" />
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/createTactics.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsCustGroup.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsShoppingCart.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/insertContent.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/jquery/jQueryUI/jquery.ui.datepicker-zh-TW.js"></script>
-
 </head>
 <body class="bg-fa">
 	<%
@@ -23,7 +17,7 @@
 		String channelUrl="provinces/"+provinces+"/createTacticsChannel.jsp";
 		String shopCarUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
 	%>
-	<jsp:include page="../../action/privilege/login/getUserMenuAll.do"></jsp:include>
+	<%@ include file="../../jsp/common/header.jsp" %>
 	<div class="put-container w-1200">
 		<!-- 左侧数字导航区 -->
 		<div class="put-left fleft ft14 mtop_47">
@@ -47,5 +41,11 @@
 		<!-- 右侧购物车 -->
 		<jsp:include page="<%=shopCarUrl%>"></jsp:include>
 	</div>
+	<script type="text/javascript">
+	    seajs.use("tactics/createTactics.js",function(createTactics){
+	    	createTactics.init();
+	    });
+	</script>
+	<script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/insertContent.js"></script>
 </body>
 </html>

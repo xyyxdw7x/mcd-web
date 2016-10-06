@@ -60,11 +60,12 @@ public class LoginController extends BaseMultiActionController {
 		}
 		return list;
 	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping()
 	public ModelAndView getUserMenuAll(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ModelAndView model = new ModelAndView("test/header");
+		ModelAndView model = new ModelAndView("common/menu");
 		String userId=getUserId(request, response);
 		List<Menu> list=(List<Menu>) request.getSession().getAttribute("USER_MENU");
 		if(list==null){
