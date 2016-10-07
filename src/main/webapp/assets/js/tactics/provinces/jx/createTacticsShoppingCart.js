@@ -193,7 +193,7 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 		success:function(result) {
 			if(result.flag=="0"){
 				$(dialog).dialog("close");
-				var tacticsManagerUrl=contextPath+"/jsp/tactics/tacticsManage.jsp?navId=7142&subNavId=714212";
+				var tacticsManagerUrl=contextPath+"/jsp/tactics/tacticsManage.jsp";
 				window.location.href=tacticsManagerUrl;
 			}else{
 				alert("保存策略失败");

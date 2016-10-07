@@ -59,7 +59,8 @@ public class LoginController extends BaseMultiActionController {
 			request.getSession().setAttribute("USER_MENU",list);
 		}
 		return list;
-	}
+	}	
+	
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping()
