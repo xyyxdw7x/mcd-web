@@ -17,7 +17,7 @@
 <div class="navigate navHeader">
 	<div class="logAndInfo">
 		<div class="floatLeft">
-			<img class="log1Imag" height="42" style="margin:4px 0 0 15px;" src="<%=request.getContextPath()%>/mcd/assets/images/logos/logo.png" alt="log">
+			<img class="log1Imag" height="42" style="margin:4px 0 0 15px;" src="<%=request.getContextPath()%>/assets/images/logos/logo.png" alt="log">
 		</div>
 	</div>
 	<div id="dataInfo">策略详情查看</div>
@@ -74,12 +74,8 @@
 </body>
 </html>
 
-<script type="text/javascript" src="../../assets/js/seajs/sea.js"></script>
-<script type="text/javascript" src="../../assets/js/seajs/seajs-preload.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="../../assets/js/seajs/sea-config.js"></script>
 <script type="text/javascript">
-	seajs.use("../../assets/js/tactics/tacticsInfo",function(main){
-		main.init();
+	seajs.use("tactics/tacticsInfo",function(tacticsInfo){
+		tacticsInfo.init();
 	});
 </script>

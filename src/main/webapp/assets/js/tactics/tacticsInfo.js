@@ -1,4 +1,4 @@
-define(["backbone"],function(require, exports, module) {      
+define(["backbone","my97"],function(require, exports, module) {      
 	module.exports={
 		init:function(){
 			//详情
@@ -299,7 +299,7 @@ define(["backbone"],function(require, exports, module) {
 					id:"viewPolicyDetail",
 //					cmd:"viewPolicyDetail",
 					currentDom:"#tacticsDetail",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/tacticsInfoDetail.ejs',
+					ejsUrl:_ctx + '/assets/js//provinces/"+provinces+"tacticsInfo/tacticsInfoDetail.ejs',
 					ajaxData:{},
 					domCallback:function(){}
 			};

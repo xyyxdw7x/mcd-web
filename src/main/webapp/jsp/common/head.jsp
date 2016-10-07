@@ -25,7 +25,7 @@
 
 <script type="text/javascript" src="<%=contextPath%>/assets/js/lib/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/lib/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/assets/js/lib/ejs.min.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/lib/ejs.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/lib/seajs.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/lib/seajs-preload.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/core.js"></script>
