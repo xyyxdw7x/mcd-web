@@ -25,6 +25,7 @@ seajs.config({
 		"popup":"lib/jquery.magnific-popup.min.js",
 		"toast":"lib/jquery.toast.min.js",
 		"modal":"lib/jquery-modal.min.js",
+		"upload":"lib/ajaxfileupload.min.js",
 		"my97":"lib-ext/my97/WdatePicker.js",
 		"unslider":"lib-ext/unslider.min.js"
 	},
