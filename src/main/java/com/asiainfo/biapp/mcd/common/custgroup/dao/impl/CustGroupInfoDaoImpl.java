@@ -249,9 +249,13 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		buffer.append(" on mcs.campseg_id = mcc.campseg_id");
 		buffer.append(" where mcc.CUSTGROUP_ID = ?");
 		buffer.append(" and mcs.CAMPSEG_STAT_ID NOT IN (91)");
-		buffer.append(" union select custom_group_id from mcd_custgroup_def where create_user_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
-		buffer.append(" union select custom_group_id from mcd_custgroup_push where create_push_target_id<>'"+userId+"' and custom_group_id ='"+customGrpId+"' ");
+		buffer.append(" union select custom_group_id from mcd_custgroup_def where create_user_id<> ? and custom_group_id = ? ");
+		buffer.append(" union select custom_group_id from mcd_custgroup_push where create_push_target_id<> ? and custom_group_id = ? ");
 		List<Object> params = new ArrayList<Object>();
+		params.add(customGrpId);
+		params.add(userId);
+		params.add(customGrpId);
+		params.add(userId);
 		params.add(customGrpId);
 		List<Map<String,Object>> data = this.getJdbcTemplate().queryForList(buffer.toString(), params.toArray());
 		
