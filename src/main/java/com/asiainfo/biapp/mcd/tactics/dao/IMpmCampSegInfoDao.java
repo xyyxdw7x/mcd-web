@@ -239,7 +239,7 @@ public interface IMpmCampSegInfoDao {
      * 
      * @param sqlStr   在mcd_ad库执行
      */
-    public void excSqlInMcdAdInMem(String sqlStr);
+    public void addInMemExcSqlInMcdAd(String sqlStr);
     
     /**
      * 

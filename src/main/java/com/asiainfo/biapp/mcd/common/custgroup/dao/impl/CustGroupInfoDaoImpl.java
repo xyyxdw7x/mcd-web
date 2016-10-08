@@ -918,7 +918,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
      * @param mtlCuserTableName
      */
     @Override
-    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+    public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) {
         String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
         String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
         this.getJdbcTemplate().execute(sql);

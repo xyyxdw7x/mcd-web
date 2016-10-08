@@ -152,7 +152,7 @@ public interface ICustGroupInfoDao {
      * 根据代替SQLFIRE内的表在MCD里创建表的同义词
      * @param mtlCuserTableName
      */
-    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName);
+    public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName);
     
     /**
 	 * 插入清单表新方式
