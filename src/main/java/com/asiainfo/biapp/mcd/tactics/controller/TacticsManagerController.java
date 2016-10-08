@@ -718,4 +718,41 @@ public class TacticsManagerController extends BaseMultiActionController {
 		return returnMap;
 	}
 
+	   /**
+     * 审批
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping
+    @ResponseBody
+    public Map<String, Object> processApproveInfo(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        Map<String, Object> returnMap = new HashMap<String, Object>();
+        int status = 200;
+        String msg = "";
+        try {
+            String a = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MARKET_ASSIGNMENT_INFO><ASSIGNMENT_INFO><ASSIGN_ID>2016100811344076</ASSIGN_ID><CHANNEL_ID>901</CHANNEL_ID><IS_SYSTEM_APPROVE>0</IS_SYSTEM_APPROVE><APPROVE_FLAG>1</APPROVE_FLAG><APPROVE_DESC>请重新拟定</APPROVE_DESC></ASSIGNMENT_INFO></MARKET_ASSIGNMENT_INFO>";
+            mpmCampSegInfoService.processApproveInfo(a);
+
+            msg = "审批成功！";
+        } catch (Exception e) {
+            status = 201;
+            log.error("", e);
+            msg = e.getMessage();
+        } finally {
+            returnMap.put("status", "200");
+            if (!"200".equals(status)) {
+                returnMap.put("result", msg);
+            }
+            returnMap.put("data", "");
+        }
+
+        return returnMap;
+    }
+	
 }
