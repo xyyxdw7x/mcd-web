@@ -30,7 +30,7 @@ import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 
 @Controller
-@RequestMapping("/action/mpm/bullManage1111")
+@RequestMapping("/action/mpm/bullManage")
 public class BullManageController extends BaseMultiActionController {
 	private static final Logger log = LogManager.getLogger();
 

@@ -6,24 +6,10 @@
 <html>
 <head>
 <title>群发管理</title>
-<link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
+<%@ include file="../../jsp/common/head.jsp" %>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<link href="${ctx}/assets/css/provinces/jx/bull/bulkManage.css" rel="stylesheet" type="text/css" />
 
-<link rel="stylesheet" type="text/css" href="${ctx}/mcd/assets/styles/common.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/mcd/assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" />
-<link href="${ctx}/mcd/assets/styles/bulkManage.css" rel="stylesheet" type="text/css" />
-<%-- <link rel="stylesheet/less" type="text/x-less" href="${ctx}/mcd/assets/styles/createTactics.less" /> --%>
-<link href="<%=request.getContextPath()%>/wro/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css"> 
-<link href="<%=request.getContextPath()%>/wro/createTactics.css" rel="stylesheet" type="text/css">
-
-<%-- <link rel="stylesheet" type="text/css" href="${ctx}/mcd/assets/styles/common.css" /> --%>
-<%-- <link rel="stylesheet" type="text/css" href="${ctx}/mcd/assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" /> --%>
-<%-- <link rel="stylesheet" type="text/css" href="${ctx}/mcd/assets/styles/quotaManage.css" /> --%>
-<%-- <link href="<%=request.getContextPath()%>/wro/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">  --%>
-<%-- <link href="<%=request.getContextPath()%>/wro/createTactics.css" rel="stylesheet" type="text/css"> --%>
-
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/jquery/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/bulk/percent.js"></script>
 <style type="text/css">
 
 .bulk-city-day-month-quota {
@@ -34,10 +20,13 @@
 </style>
 
 </head>
-<jsp:include page="/mcd/pages/header/header.jsp"></jsp:include>
+<script type="text/javascript">
+    _ctx = "<%=request.getContextPath()%>";
+</script>
+<jsp:include page="/jsp/common/header.jsp"></jsp:include>
+<script type="text/javascript" src="${ctx}/mcd/assets/scripts/bulk/percent.js"></script>
 <body class="bulk-body">
 	<div class="bulk-container"  <c:if test="${cityId == '999'}">style="display:none"</c:if>>
-	 		
 		<div class="bulk-total-quota" >
 			<div class="bulk-quota-title fleft">
 				<i class="fleft bulk-quota-icon"></i>
@@ -129,14 +118,9 @@
 			</div>
 		</div>
 	</div>
+
 	<script type="text/javascript">
-		_ctx = "${ctx}";
-	</script>
-	<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/sea.js"></script>
-	<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/seajs-preload.js"></script>
-	<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/sea-config.js"></script>
-	<script type="text/javascript">
-		seajs.use("${ctx}/mcd/assets/scripts/bulk/bulkManage",function(main){
+		seajs.use("bulk/bulkManage",function(main){
 			main.init();
 		});
 	</script>
