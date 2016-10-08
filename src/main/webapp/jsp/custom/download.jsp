@@ -1,8 +1,8 @@
 <%@page language="java" contentType="application/x-msdownload" pageEncoding="UTF-8"%>
-<%@ page import="java.io.*,java.net.URLEncoder,java.util.*,com.asiainfo.biframe.utils.config.Configure,com.asiainfo.biapp.mcd.common.util.Encoding" %>
+<%@ page import="java.io.*,java.net.URLEncoder,java.util.*,com.asiainfo.biapp.mcd.common.util.Encoding" %>
 <%
  
-	String filename =request.getSession().getServletContext().getRealPath("/mcd/pages/custom") + "/20160329.txt";
+	String filename =request.getSession().getServletContext().getRealPath("/jsp/custom") + "/20160329.txt";
 	String displayname = "客户群导入模板.txt";
 	filename=Encoding.decodeURL(filename,"UTF-8");
 	filename=filename.replace("\\","/");

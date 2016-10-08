@@ -55,7 +55,7 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 				//var oMyForm = new FormData();
 				//oMyForm.append("file", $("#upload_file")[0].files[0]);
 				$.ajaxFileUpload({  
-			        url : _ctx+"/custgroup/custGroupManager/saveCustGroup",
+			        url : _ctx+"/action/custgroup/custGroupManager/saveCustGroup.do",
 			        data: data,
 			        secureuri : false,  
 			        fileElementId : 'upload_file',
@@ -74,7 +74,7 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 							alert("新增客户群成功！");
 							//直接跳转到我的客户群页面
 							var baseUrl=window.location.protocol+"//"+window.location.host+_ctx;
-							var url=baseUrl+"/mcd/pages/custom/customManage.jsp?navId=7143&subNavId=714311";
+							var url=baseUrl+"/jsp/custom/customManage.jsp?";
 							window.location.href=url;
 						} else {
 							alert("新增客户群失败！");
