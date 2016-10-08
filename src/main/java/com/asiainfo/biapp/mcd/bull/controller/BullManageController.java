@@ -30,7 +30,7 @@ import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
 
 
 @Controller
-@RequestMapping("/mpm/bullManage")
+@RequestMapping("/action/mpm/bullManage1111")
 public class BullManageController extends BaseMultiActionController {
 	private static final Logger log = LogManager.getLogger();
 
@@ -42,7 +42,7 @@ public class BullManageController extends BaseMultiActionController {
 	private IQuotaConfigCityDayService quotaConfigCityDayService;
 
 	//群发管理页面入口url
-	@RequestMapping(params = "cmd=viewBull")
+	@RequestMapping
 	public ModelAndView viewBull(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
@@ -58,7 +58,7 @@ public class BullManageController extends BaseMultiActionController {
 			this.bullMonitorService.addCitySendType(cityId,currentSendType);
 		}
 
-		ModelAndView view = new ModelAndView("bull/bullManage"); 
+		ModelAndView view = new ModelAndView("/bull/bullManage"); 
 		view.addObject("currentStatis", list);
 		view.addObject("cityStatis", cityStatis);
 		view.addObject("cityQuotaStatisDay", cityQuotaStatisDay);
@@ -68,7 +68,7 @@ public class BullManageController extends BaseMultiActionController {
 	}
 
 	//群发管理页面打开后ajax请求列表数据
-	@RequestMapping(params = "cmd=viewBullAjax")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> viewBullAjax(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
@@ -92,7 +92,7 @@ public class BullManageController extends BaseMultiActionController {
 	}
 
 	//群发管理页面下拉选择科室
-	@RequestMapping(params = "cmd=allDeptes")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> allDeptes(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
@@ -111,7 +111,7 @@ public class BullManageController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=setCampPri")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> setCampPri(HttpServletRequest request, HttpServletResponse response) {
 
@@ -131,7 +131,7 @@ public class BullManageController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=setSendType")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> setSendType(HttpServletRequest request, HttpServletResponse response) {// mcd_sms_send_city_config 各地市群发类型
 		User user = this.getUser(request, response);
@@ -150,7 +150,7 @@ public class BullManageController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=stopTask")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> stopTask(HttpServletRequest request, HttpServletResponse response) {
 
@@ -169,7 +169,7 @@ public class BullManageController extends BaseMultiActionController {
 
 	}
 
-	@RequestMapping(params = "cmd=startTask")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> startTask(HttpServletRequest request, HttpServletResponse response) {
 
@@ -188,7 +188,7 @@ public class BullManageController extends BaseMultiActionController {
 		return resultMap;
 	}
 	
-	@RequestMapping(params = "cmd=batchUpdatePauseComment")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> batchUpdatePauseComment(HttpServletRequest request, HttpServletResponse response) {
 		String campIds = request.getParameter("campIds");
@@ -198,7 +198,6 @@ public class BullManageController extends BaseMultiActionController {
 		resultMap.put("data", "修改策略暂停理由成功");
 		resultMap.put("status", "200");
 		return resultMap;
-		
 	}
 
 	private void escape(List<BullMonitor> list) {
