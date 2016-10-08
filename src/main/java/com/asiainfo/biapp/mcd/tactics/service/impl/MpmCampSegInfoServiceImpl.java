@@ -1137,7 +1137,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
 //			try {
 				campSegInfoDao.addInMemExcSqlInMcdAd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
-				//MCD表创建同义词
+				//MCD表创建同义词 
 				custGroupInfoService.createSynonymTableMcdBySqlFire(tabName);
 
 //			} catch (Exception e) {
