@@ -1,13 +1,10 @@
-define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],function(require, exports, module) {    
+define(["backbone"],function(require, exports, module) {    
 	
 	module.exports={
 		init:function(){
-			var navManage = require("navManage");
-			navManage.init();
-			
 			window.tableViewManage_all  = this.loadTable({
 				currentDom:"#customTable_all",
-				ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+				ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 				ajaxData:{"contentType":"ALL-CUSTOM"},
 				domCallback:function(htmlobj){
 //					module.exports.getCampSegChildTable(htmlobj);
@@ -26,7 +23,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				urlRoot:_ctx+"/custgroup/custGroupManager",
 				id:"searchCustom",
 				currentDom:"#customTable_all",
-				ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+				ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 				ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -205,7 +202,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}
 						window.tableViewManage_all  = module.exports.loadTable({
 							currentDom:"#customTable_all",
-							ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+							ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 							ajaxData:{"contentType":"ALL-CUSTOM"}
 						});
 						$("#search_all input").val("");
@@ -216,7 +213,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}
 						window.tableViewManage_mine  = module.exports.loadTable({
 							currentDom:"#customTable_mine",
-							ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+							ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 							ajaxData:{"contentType":"MY-CUSTOM"}
 						});
 						$("#search_mine input").val("");
@@ -227,7 +224,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 						}
 						window.tableViewManage_abnormal  = module.exports.loadTable({
 							currentDom:"#customTable_abnormal",
-							ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable_abnormal.ejs',
+							ejsUrl:_ctx + '/assets/js/custom/customTable_abnormal.ejs',
 							ajaxData:{"contentType":"ABNORMAL-CUSTOM"}
 						});
 						$("#search_abnormal input").val("");
@@ -257,7 +254,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					}
 					window.tableViewManage_all = _that.loadTable({
 						currentDom:"#customTable_all",
-						ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+						ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 						ajaxData:ajaxData
 					});
 				},
@@ -285,7 +282,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					}
 					window.tableViewManage = _that.loadTable({
 						currentDom:"#customTable_mine",
-						ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+						ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 						ajaxData:ajaxData
 					});
 				},
@@ -313,7 +310,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 					}
 					window.tableViewManage = _that.loadTable({
 						currentDom:"#customTable_abnormal",
-						ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable_abnormal.ejs',
+						ejsUrl:_ctx + '/assets/js/custom/customTable_abnormal.ejs',
 						ajaxData:ajaxData
 					});
 				},
@@ -398,7 +395,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				}
 				window.tableViewManage_all = module.exports.loadTable({
 					currentDom:"#customTable_all",
-					ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+					ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 					ajaxData:ajaxData
 				});
 			} else if (tab == "MY-CUSTOM") {
@@ -414,7 +411,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				}
 				window.tableViewManage = module.exports.loadTable({
 					currentDom:"#customTable_mine",
-					ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable.ejs',
+					ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 					ajaxData:ajaxData
 				});
 			} else if (tab == "ABNORMAL-CUSTOM") {
@@ -430,7 +427,7 @@ define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage"],funct
 				}
 				window.tableViewManage = module.exports.loadTable({
 					currentDom:"#customTable_abnormal",
-					ejsUrl:_ctx + '/mcd/pages/EJS/custom/customTable_abnormal.ejs',
+					ejsUrl:_ctx + '/assets/js/custom/customTable_abnormal.ejs',
 					ajaxData:ajaxData
 				});
 			}
