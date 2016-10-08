@@ -57,15 +57,14 @@
 
 		<bean id="mcdCreateDuserTableTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		    <property name="jobDetail" ref="mcdCreateDuserTableJob" />
-		    <property name="startDelay" value="1000" />
 		    <property name="cronExpression" value="0 0/2 * * * ?" />
 		</bean>
 	
 	   
-    <!--
+    
 		<bean id="jobTriggerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		-->
-		<!-- <property value="classpath:config/aibi_mpm/quartz.properties" name="configLocation" /> 
+		
+		<!-- <property value="classpath:config/aibi_mpm/quartz.properties" name="configLocation" /> -->
 	    <property name="startupDelay" value="120" />
 		<property name="triggers">
 			<list>
@@ -73,6 +72,6 @@
 			</list>
 		</property>
 	</bean>
-	-->
+	
 
 </beans>

@@ -5,12 +5,10 @@
 <html>
 <head>
 <title>优先级管理</title>
-<%@ include file="../../../jsp/common/head.jsp" %>
+<%@ include file="../../jsp/common/head.jsp" %>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/mcd/assets/styles/common.css" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/mcd/assets/styles/jqueryUI/jquery-ui-1.11.0.min.css" /> 
 <link href="<%=request.getContextPath()%>/mcd/assets/styles/bulkManage.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/assets/css/tacticsorder/createSaleOrder.css" rel="stylesheet" type="text/css">
 
@@ -19,7 +17,7 @@
 </script>
 </head>
 <body>
-	<%@ include file="../../../jsp/common/header.jsp" %>
+	<%@ include file="../../jsp/common/header.jsp" %>
 	<div class="container effectContainer">
 		<div class="content">
 			<div id="" class="content-main">
@@ -66,14 +64,8 @@
 	<!--container end -->
 
 </body>
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/sea.js"></script>
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/seajs-preload.js"></script>
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/seajs/sea-config.js"></script> 
 <script type="text/javascript">
-	seajs.use("${ctx}/mcd/assets/scripts/home/here_it_is_4_order_sale", function(main) {
-		main.init();
-	});
-	seajs.use("${ctx}/mcd/assets/scripts/nav/navManage",function(main) {
+	seajs.use("${ctx}/assets/js/home/here_it_is_4_order_sale", function(main) {
 		main.init();
 	});
 
