@@ -425,6 +425,9 @@ body {
   margin: 0 auto;
   position: relative;
 }
+.container-nopadd{
+	padding:0 !important;
+}
 .container .left-nav {
   width: 110px;
   height: auto;
