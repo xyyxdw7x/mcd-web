@@ -3,8 +3,10 @@ package com.asiainfo.biapp.mcd.tactics.vo;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-
+@Table(name = "mcd_camp_task")
 public class McdCampTask implements java.io.Serializable{
 
     /**
@@ -41,11 +43,12 @@ public class McdCampTask implements java.io.Serializable{
     
     @Column(name="CI_CUSTGROUP_TAB_NAME")
     private String ciCustgroupTabName;
+    @Transient
     private int retry = 0;
     
-    @Column(name="CAMPSEG_STAT_ID")
+    @Transient
     private int sendCount = 0;//实际派发到渠道的客户数
-    
+    @Transient
     private int planCount = 0;//客户群运算后客户数
     
     @Column(name="channel_id")

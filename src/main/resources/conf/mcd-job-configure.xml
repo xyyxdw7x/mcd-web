@@ -12,7 +12,7 @@
 		context)方法，注入这个类和其依赖关系。但是耦合API -->
 	<!-- 方式二：Spring使用MethodInvokingJobDetailFactoryBean，任何一个普通类都可，注入这个类， 还有那个方法要定时将job放到触发器中，并定义什么时候触发 
 		将触发器加入触发列表，触发列表可以自动启动触发器 -->
-	<bean id="dayQuotaTaskService" class="com.asiainfo.biapp.mcd.quota.service.DayQuotaTaskServiceImp">
+	 <bean id="dayQuotaTaskService" class="com.asiainfo.biapp.mcd.quota.service.DayQuotaTaskServiceImp">
 		<property name="deptsQuotaStatisticsDao">
 			<ref bean="deptsQuotaStatisticsDao" />
 		</property>
@@ -28,7 +28,7 @@
 		<property name="quotaConfigCityDayDao">
 			<ref bean="quotaConfigCityDayDao" />
 		</property>
-	</bean>
+	</bean> 
 	
 		<!--创建Duser表的过程  add by lixq10  -->
 	<bean id="mcdCreateDuserTableTask" class="com.asiainfo.biapp.mcd.tactics.task.McdCreateDuserTableTask">

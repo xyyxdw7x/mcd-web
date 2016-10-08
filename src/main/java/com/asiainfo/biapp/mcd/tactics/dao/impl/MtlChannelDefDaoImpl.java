@@ -224,9 +224,9 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
     @Override
     public List<Map<String,Object>> getMtlChannelDefApproveFlowList(String childCampseg_id) {
         StringBuffer sql = new StringBuffer(" select distinct approve_result,approve_result_desc from mcd_camp_channel_list where campseg_id = ?  ");
-        sql.append(" union ");
-        sql.append("  select distinct approve_result,approve_result_desc from mcd_camp_channel_list_call where campseg_id = ?   ");
-        List<Map<String,Object>> list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { childCampseg_id,childCampseg_id});
+//        sql.append(" union ");
+//        sql.append("  select distinct approve_result,approve_result_desc from mcd_camp_channel_list_call where campseg_id = ?   ");
+        List<Map<String,Object>> list= this.getJdbcTemplate().queryForList(sql.toString(), new Object[] { childCampseg_id});
         return list;
     }
     /**
@@ -236,9 +236,9 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
      */
     @Override
     public List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
-        StringBuffer sql = new StringBuffer(" select * from mcd_camp_channel_list mcd where mcd.id.campseg_id in (select campseg_id from mcd_camp_def where campseg_pid = ?) ");
-        Object[] args=new Object[]{campsegId};
-        int[] argTypes=new int[]{Types.VARCHAR};
+        StringBuffer sql = new StringBuffer(" select * from mcd_camp_channel_list mcd where mcd.campseg_id in (select campseg_id from mcd_camp_def where campseg_pid = ? or campseg_id = ?) ");
+        Object[] args=new Object[]{campsegId,campsegId};
+        int[] argTypes=new int[]{Types.VARCHAR,Types.VARCHAR};
         List<McdCampChannelList> mtlChannelDefs=this.getJdbcTemplate().query(sql.toString(),args, argTypes,new VoPropertyRowMapper<McdCampChannelList>(McdCampChannelList.class));
         return mtlChannelDefs;
     }

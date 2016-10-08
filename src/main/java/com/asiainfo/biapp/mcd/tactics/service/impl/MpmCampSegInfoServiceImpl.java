@@ -872,7 +872,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }  
 		return result;
 	}
-    
+ 
+
     
     /**
      * 浙江处理策略审批结束（通过或退回）后的信息
@@ -919,7 +920,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 mtlChannelDefDao.updateMtlChannelDefApproveResult(assing_id,approve_desc,channel_id,approveResult);
                 
                 //因外呼渠道换表存了，故更改外呼渠道的审批状态                
-                mtlChannelDefDao.updateMtlChannelDefCallApproveResult(assing_id,approve_desc,channel_id,approveResult);
+              //  mtlChannelDefDao.updateMtlChannelDefCallApproveResult(assing_id,approve_desc,channel_id,approveResult);
                 if("0".equals(approve_flag)){
                     isapprove = false;
                  }
@@ -1006,12 +1007,13 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     
                         for(McdCampChannelList mtlChannelDef : mtlChannelDefList){
                             //是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
-                            if(Integer.parseInt(mtlChannelDef.getChannelId()) ==McdCONST.CHANNEL_TYPE_SMS_INT){
-                                //短信测试流程，暂时不写
-                                
-                            }else{
+//                            if(Integer.parseInt(mtlChannelDef.getChannelId()) ==McdCONST.CHANNEL_TYPE_SMS_INT){
+//                                //短信测试流程，暂时不写
+//                                
+//                            }else{
                                 McdCampTask task = new McdCampTask();
                                 McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(pidSampsegId);
+                                task.setTaskId(MpmUtil.generateCampsegAndTaskNo());
                                 task.setCampsegId(childMtl.getCampId());
                                 //生成清单表（任务的基础清客户单表和派单客户清单表
                                 Date startTime = DateTool.getDate(mtlCampSeginfo.getStartDate());
@@ -1047,7 +1049,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                     e.printStackTrace();
                                 }
                                     
-                            }   
+//                            }   
                         }
                     }
                     //有短信渠道且为测试中，更改所有策略状态
