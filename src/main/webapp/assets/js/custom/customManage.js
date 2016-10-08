@@ -20,8 +20,8 @@ define(["backbone"],function(require, exports, module) {
 		},
 		loadTable:function(options){
 			var defaults = {
-				urlRoot:_ctx+"/custgroup/custGroupManager",
-				id:"searchCustom",
+				urlRoot:_ctx+"/action/custgroup/custGroupManager",
+				id:"searchCustom.do",
 				currentDom:"#customTable_all",
 				ejsUrl:_ctx + '/assets/js/custom/customTable.ejs',
 				ajaxData:{}
@@ -88,7 +88,7 @@ define(["backbone"],function(require, exports, module) {
 											$(this).dialog( "close" );
 											return;
 										}
-										$.post( _ctx+"/custgroup/custGroupManager/insertQueue",
+										$.post( _ctx+"/action/custgroup/custGroupManager/insertQueue.do",
 											{"group_into_id":group_into_id,"group_cycle":group_cycle,"queue_id":queue_id,"data_date":data_date,"group_table_name":group_table_name},
 											function (result) {
 												if(result.data==1){
@@ -336,7 +336,7 @@ define(["backbone"],function(require, exports, module) {
 			});
 			
 			$.ajax({
-				url: _ctx+"/custgroup/custGroupManager/searchCustomDetail",
+				url: _ctx+"/action/custgroup/custGroupManager/searchCustomDetail.do",
 				dataType: "json",
 				async: true,
 				data: { "customGrpId": customGrpId },
@@ -361,7 +361,7 @@ define(["backbone"],function(require, exports, module) {
 		},
 		deleteCustom:function(customGrpId) {
 			$.ajax({
-				url: _ctx+"/custgroup/custGroupManager/deleteCustom",
+				url: _ctx+"/action/custgroup/custGroupManager/deleteCustom.do",
 				dataType: "json",
 				async: true,
 				data: { "customGrpId": customGrpId },

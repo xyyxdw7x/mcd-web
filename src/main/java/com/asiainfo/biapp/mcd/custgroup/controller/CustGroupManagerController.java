@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -41,15 +42,14 @@ import net.sf.json.JSONObject;
 
 /**
  * 
- * Title: 新建策略页面：选择营销人群 action
+ * Title: 选择营销人群 action
  * Description: 
  * Copyright: (C) Copyright 1993-2014 AsiaInfo Holdings, Inc
  * Company: 亚信科技（中国）有限公司
- * @author lixq10 2015-7-17 下午04:15:26
  * @version 1.0
  */
 @Controller
-@RequestMapping("/custgroup/custGroupManager")
+@RequestMapping("/action/custgroup/custGroupManager")
 public class CustGroupManagerController extends BaseMultiActionController{
 	static Logger log = LogManager.getLogger(); 
 	
@@ -75,17 +75,17 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("getMoreMyCustom")
-	public void getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Pager pager=new Pager();
 		response.setContentType("application/json; charset=UTF-8");
 		response.setHeader("progma", "no-cache");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		JSONObject dataJson = new JSONObject();
 		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			String clickQueryFlag = "true";
 			pager.setPageSize(6);  //每页显示6条
@@ -104,16 +104,13 @@ public class CustGroupManagerController extends BaseMultiActionController{
 				List<McdCustgroupDef> resultList = custGroupInfoService.getMoreMyCustom(this.getUser(request, response).getId(),keyWords,pager);
 				pager.setResult(resultList);
 			}
-			dataJson.put("status", "200");
-			dataJson.put("data", JmsJsonUtil.obj2Json(pager));
-			out.print(dataJson);
+			
+			map.put("status", "200");
+			map.put("data", pager);
 		} catch (Exception e) {
-			dataJson.put("status", "201");
-			out.print(dataJson);
-		}finally{
-			out.flush();
-			out.close();
+			map.put("status", "201");
 		}
+		return map;
 		
 	}
 	
@@ -127,27 +124,18 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("initMyCustom")
-	public void initMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		JSONObject dataJson = new JSONObject();
+	public Map<String,Object> initMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		try {
 			List<McdCustgroupDef> custGroupList = custGroupInfoService.getMyCustGroup(this.getUser(request, response).getId());
 			if(!CollectionUtils.isEmpty(custGroupList)){
-				dataJson.put("status", "200");
-				dataJson.put("data", JmsJsonUtil.obj2Json(custGroupList));
-				out.print(dataJson);
+				returnMap.put("status", "200");
+				returnMap.put("data", custGroupList);
 			}
 		} catch (Exception e) {
-			dataJson.put("status", "201");
-			out.print(dataJson);
-		}finally{
-			out.flush();
-			out.close();
+			returnMap.put("status", "201");
 		}
+		return returnMap;
 	}
 	
 	/**
@@ -160,29 +148,21 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @throws Exception
 	 */
 	@RequestMapping("initBussinessLable")
-	public void initBussinessLable(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		JSONObject dataJson = new JSONObject();
+	public Map<String,Object> initBussinessLable(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+
 		try {
 			String attrClassIdBussiness = MpmConfigure.getInstance().getProperty("ATTR_CLASS_ID_BUSSINESS");
 			List<McdCvColDefine> bussinessList = mpmCommonService.initCvColDefine(attrClassIdBussiness,"");
 			if(!CollectionUtils.isEmpty(bussinessList)){
-				dataJson.put("status", "200");
-				dataJson.put("data", JmsJsonUtil.obj2Json(bussinessList));
-				out.print(dataJson);
+				returnMap.put("status", "200");
+				returnMap.put("data", bussinessList);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			dataJson.put("status", "201");
-			out.print(dataJson);
-		}finally{
-			out.flush();
-			out.close();
+			log.error("", e);
+			returnMap.put("status", "201");
 		}
+		return returnMap;
 	}
 	/**
 	 * 上传客户群
@@ -191,11 +171,11 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/saveCustGroup")
-	public void saveCustGroup(
-			@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
-			HttpServletRequest  request,
-			HttpServletResponse response) throws Exception{ 
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object> saveCustGroup(@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+			HttpServletRequest  request,HttpServletResponse response) throws Exception{ 
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		// 创建客户群清单表 
 		try { 
 			Map<String, String> result = new HashMap<String, String>();
@@ -277,40 +257,17 @@ public class CustGroupManagerController extends BaseMultiActionController{
 					}
 				} 
 			}).start(); 
-		   this.outJson4Ws2(response, result, "200", "OK");  
+			returnMap.put("result", "OK");
+			returnMap.put("data", result);
 		} catch (Exception e) { 
-			e.printStackTrace();
-			this.outJson4Ws2(response, null, "201", "上传客户群文件异常");
+			log.error("上传客户群文件异常", e);
+			returnMap.put("result", "上传客户群文件异常");
+			returnMap.put("data", "");
 		} 
+		
+		return returnMap;
 	}
-	/**
-	 * 
-	 * @param response
-	 * @param obj 发送给客户端的对象，最终将转化成json对象的data属性
-	 * @param status 
-	 * @param errorMsg  后台处理异常时传递给前端的信息
-	 * @throws IOException
-	 */
-	protected void  outJson4Ws2(HttpServletResponse response,Object obj,String status,String errorMsg) throws IOException{
-		JSONObject dataJson = new JSONObject();
-		if("200".equals(status)){
-			String str = JmsJsonUtil.obj2Json(obj);
-			log.info("返回data=" + str);
-			dataJson.put("data", str);
-		}else{
-			dataJson.put("result", errorMsg);
-			dataJson.put("data", "");
-		}
-		dataJson.put("status", status);
-		response.setContentType("text/plain; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-	}
+	
 	/**
 	 * 查询客户群
 	 * 
@@ -321,13 +278,14 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchCustom")
-	public void searchCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object> searchCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		
 		String contentType = request.getParameter("contentType");
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		String keywords = request.getParameter("keywords");
-		
+		Map<String, Object> map = new HashMap<String, Object>();
 		Pager pager = new Pager();
 		pager.setPageSize(McdCONST.PAGE_SIZE);
 		pager.setPageNum(Integer.parseInt(pageNum));
@@ -340,19 +298,9 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		pager = pager.pagerFlip();
 		pager.setResult(data);
 		
-		JSONObject dataJson = new JSONObject();
-		dataJson.put("status", "200");
-		dataJson.put("data", JmsJsonUtil.obj2Json(pager));
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-		
-		
+		map.put("status", "200");
+		map.put("data", pager);
+		return map;
 	}
 	
 	/**
@@ -365,18 +313,16 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchCustomDetail")
-	public void searchCustomDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object>  searchCustomDetail(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		String customGrpId = request.getParameter("customGrpId");
-		
 		List<Map<String,Object>> data = custGroupInfoService.searchCustomDetail(customGrpId);
-		
-		JSONObject dataJson = new JSONObject();
 		if(data.size() == 0) {
-			dataJson.put("status", "199");
+			returnMap.put("status", "199");
 		} else {
-			dataJson.put("status", "200");
+			returnMap.put("status", "200");
 			Map<String, Object> map = (Map<String,Object>)data.get(0);
 			String userName = "";
 			if(map.get("CREATE_USER_ID") != null) {
@@ -407,21 +353,9 @@ public class CustGroupManagerController extends BaseMultiActionController{
 //				dataTimeStr = spf.format(map.get("data_date"));
 			}
 			map.put("DATA_TIME_STR", map.get("data_date"));
-			
-			
-			dataJson.put("data", JmsJsonUtil.obj2Json(map));
+			returnMap.put("data", map);
 		}
-		
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-		
-		
+		return returnMap;
 	}
 
 	/**
@@ -434,49 +368,35 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/deleteCustom")
-	public void deleteCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object>  deleteCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		String customGrpId = request.getParameter("customGrpId");
-		
-		custGroupInfoService.deleteCustom(customGrpId);
-		
-		JSONObject dataJson = new JSONObject();
-		dataJson.put("status", "200");
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-		
+		try {
+			custGroupInfoService.deleteCustom(customGrpId);
+			returnMap.put("status", "200");
+		} catch (Exception e) {
+			returnMap.put("status", "201");
+			log.error("", e);
+		}
+		return returnMap;
 	}
 
-	@RequestMapping("/insertQueue")
-	public void insertQueue(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object> insertQueue(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String group_into_id = request.getParameter("group_into_id");
 		String group_cycle = request.getParameter("group_cycle");
 		String queue_id = request.getParameter("queue_id");
 		String data_date = request.getParameter("data_date");
 		String group_table_name = request.getParameter("group_table_name");
-
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		int i = custGroupInfoService.saveQueue(group_into_id,group_cycle,queue_id,data_date,group_table_name);
-
-		JSONObject dataJson = new JSONObject();
-		dataJson.put("status", "200");
-		dataJson.put("data", i+"");
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter out = response.getWriter();
-		out.print(dataJson);
-		out.flush();
-		out.close();
-
+		returnMap.put("status", "200");
+		returnMap.put("data", i+"");
+		return returnMap;
 	}
 
 }
