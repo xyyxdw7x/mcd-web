@@ -10,7 +10,107 @@
 <div class="btns-wrp over-hidden">
 	<p class="fright">
 		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue" id="commitButton_channelId_<%=data.channelId%>">确定</a>
+		<a href="javascript:;" class="btn60-26 btn-a btn-a-white" id = "previewButton_channelId_<%=data.channelId%>">预览</a>
 	</p>
 	
 </div>
+
+<!-- 营业厅-个性化功能推荐-弹窗 -->
+<div class="perCommend-dialog-box container" style="display:none;" id="channelId_<%=data.channelId%>_PreviewDiv">
+	<div class="perCommend-dilog gradient-dialog over-hidden" id="channelId_<%=data.channelId%>_PreviewDialog">
+		<div class="perCommend-con">
+			<div class="bannerBox">
+				<div class="btn-prev btn-pn"></div>
+				<div class="btn-next btn-pn"></div>
+				<ul class="dialog-ul">
+					<li>
+						<div class="row-li-top">
+							<div class="row">
+								<div class="col-xs-2">产品:</div>
+								<div class="col-xs-10 color-666" id="ChannelId_<%=data.channelId%>_PreviewPlanName">[省]-购4G手机直降-飞享138-送费480</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">画像 :</div>
+								<div class="col-xs-10">
+									<span class="color-blue-dialog">果粉</span>
+									<span class="color-blue-dialog">月流量1000M</span>
+									<span class="color-blue-dialog">月消费 150元</span>
+									<span class="color-blue-dialog">机领18个月</span>
+									
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">推荐:</div>
+								<div class="col-xs-10 color-666">苹果6 直降90元，还送480元话费</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-xs-4-new">酬金 :<span class="blue-4">00000</span></div>
+								<div class="col-xs-3">成功率 :<span class="blue-4">高</span></div>
+								<div class="col-xs-4">月办理 :<span class="blue-4">10000</span></div>
+							</div>
+						</div>
+						
+						<div class="row-li-bot">
+							<span class="color-orange">需要考虑</span>
+							<span class="color-orange">暂时拒绝</span>
+							<span class="btn-now">立即办理</span>
+						</div>
+					</li>
+					<li>
+						<div class="row-li-top">
+							<div class="row">
+								<div class="col-xs-2">产品:</div>
+								<div class="col-xs-10 color-666">[省]-购4G手机直降-飞享138-送费480</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">画像 :</div>
+								<div class="col-xs-10">
+									<span class="color-blue-dialog">果粉</span>
+									<span class="color-blue-dialog">月流量1000M</span>
+									<span class="color-blue-dialog">月消费 150元</span>
+									<span class="color-blue-dialog">机领18个月</span>
+									
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">推荐:</div>
+								<div class="col-xs-10 color-666">苹果6 直降90元，还送480元话费</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-xs-4-new">酬金 :<span class="blue-4">00000</span></div>
+								<div class="col-xs-3">成功率 :<span class="blue-4">高</span></div>
+								<div class="col-xs-4">月办理 :<span class="blue-4">10000</span></div>
+							</div>
+						</div>
+						
+						<div class="row-li-bot">
+							<span class="color-orange">需要考虑</span>
+							<span class="color-orange">暂时拒绝</span>
+							<span class="btn-now">立即办理</span>
+						</div>
+					</li>
+				</ul>
+			</div><!--bannerBox-->
+			<!--用户属性-->
+			<div class="userPrio-box">
+				<div class="userPrio-show" style="display: none;">
+					<span class="bg-blue"><i>星级 :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>网龄  :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>机型 :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>机型分类 :</i><label>XXXXX</label>	</span>
+					<span class="bg-blue"><i>APRU值 :</i><label>XXXX</label>	</span>
+					<span class="bg-blue"><i>DOU :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>主叫语音 :</i><label>2分钟</label>	</span>
+					<span class="bg-blue"><i>是否办理宽带 :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>是否办三网  :</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>是否注册和我信:</i><label>五星</label>	</span>
+					<span class="bg-blue"><i>常用APP :</i><label>XXXXX</label>	</span>
+					<span class="bg-blue"><i>最近30天是否有投诉 :</i><label>XXXX</label>	</span>
+				</div>
+				<div class="userPrio-toggle text-center color-orange"><span>用户属性<i class="tog-hide tog-icon"></i></span></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 </div>

@@ -61,6 +61,9 @@ channelInfo906.clickChannelContentEventHandler906=function(){
 	//确定按钮
 	channelInfo906.clickCommitButtonEventHandler906();
 	
+	//预览按钮
+	channelInfo906.clickPreviewButtonEventHandler906();
+	
 	//输入字数时对字数限制
 	channelInfo906.textAreaInputNumTip906();
 	
@@ -101,6 +104,45 @@ channelInfo906.clickCommitButtonEventHandler906=function(){
 		var newdata = channelInfo906.collectData906();
 		
 		$("#channelDiv").trigger("changeChannel", newdata);
+	});
+}
+
+/**
+ * 点击预览按钮事件处理
+ */
+channelInfo906.clickPreviewButtonEventHandler906=function(){
+	$("#previewButton_channelId_"+channelInfo906.baseInfo.channelId).click(function(){
+		//输入项校验
+		var checkResult = channelInfo906.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
+		//预览数据填充
+		
+		
+		//展示预览窗口
+		$("#channelId_"+channelInfo906.baseInfo.channelId+"_PreviewDiv").show();
+		$(".perCommend-dilog").dialog({
+			width:900,
+			height:560,
+			resizable: false,
+			modal: true,
+			title:"个性化推荐功能",
+		});
+		//增加类名控制公共样式
+		$(".gradient-dialog").dialog('widget').addClass('gradient-dialog');
+		//用户属性展开与收藏
+		$('.userPrio-toggle span').click(function(){
+			if($('.userPrio-show').is(':hidden')){
+				$('.userPrio-show').stop().slideDown();
+				$('.userPrio-toggle span').find('i').removeClass('tog-hide').addClass('tog-show');
+			}else{
+				$('.userPrio-show').stop().slideUp();
+				$('.userPrio-toggle span').find('i').removeClass('tog-show').addClass('tog-hide');
+			}
+		});
 	});
 }
 
