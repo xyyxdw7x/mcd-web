@@ -277,8 +277,8 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 	
 	@Override
 	public int checkDuserIsExists(String DuserName) {
-		StringBuilder sql = new StringBuilder("select count(*) from all_tables where table_name='")
-										.append(DuserName).append("'");
+		StringBuilder sql = new StringBuilder("select count(*) from all_tables where table_name=UPPER('")
+										.append(DuserName).append("')");
 		int i = getJdbcTemplate().queryForObject(sql.toString(),Integer.class);
 		return i;
 	}
