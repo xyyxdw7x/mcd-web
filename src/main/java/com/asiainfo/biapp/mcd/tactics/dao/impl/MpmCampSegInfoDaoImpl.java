@@ -895,7 +895,7 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	}
 	
 	@Override
-	public void excSqlInMcdAdInMem(String sqlStr) {
+	public void addInMemExcSqlInMcdAd(String sqlStr) {
 		if(StringUtils.isNotEmpty(sqlStr)){
 			this.getJdbcTemplate().execute(sqlStr);
 		}

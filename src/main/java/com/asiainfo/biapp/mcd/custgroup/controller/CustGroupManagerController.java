@@ -2,8 +2,6 @@ package com.asiainfo.biapp.mcd.custgroup.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,22 +29,21 @@ import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
-import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 
-import net.sf.json.JSONObject;
 
 /**
  * 
- * Title: 选择营销人群 action
- * Description: 
- * Copyright: (C) Copyright 1993-2014 AsiaInfo Holdings, Inc
- * Company: 亚信科技（中国）有限公司
- * @version 1.0
+* @ClassName: CustGroupManagerController 
+* @Description: 客户群管理
+* @CopyRight :  CopyRight (c) 2016
+* @Company : 北京亚信智慧数据科技有限公司 
+* @author: zhengyq3
+* @date: 2016年10月8日 下午7:19:54
  */
 @Controller
 @RequestMapping("/action/custgroup/custGroupManager")
@@ -79,11 +76,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	@ResponseBody
 	public Map<String, Object> getMoreMyCustom(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Pager pager=new Pager();
-		response.setContentType("application/json; charset=UTF-8");
-		response.setHeader("progma", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Cache-Control", "no-cache");
-		String keyWords = StringUtils.isNotEmpty(request.getParameter("keyWords")) ? request.getParameter("keyWords") : null;
+		String keyWords = request.getParameter("keyWords");
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -147,7 +140,8 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("initBussinessLable")
+	@RequestMapping
+	@ResponseBody
 	public Map<String,Object> initBussinessLable(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
@@ -360,7 +354,6 @@ public class CustGroupManagerController extends BaseMultiActionController{
 
 	/**
 	 * 删除客户群
-	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request

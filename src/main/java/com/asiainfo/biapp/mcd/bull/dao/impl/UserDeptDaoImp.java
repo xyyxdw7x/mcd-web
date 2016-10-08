@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
@@ -18,18 +17,13 @@ public class UserDeptDaoImp  extends JdbcDaoBase implements IUserDeptDao{
 	
 	private static final String TABLE= "MTL_USER_DEPT";
 	
-	private  JdbcTemplate sqlFireJdbcTemplate;
-
-	public void setSqlFireJdbcTemplate(JdbcTemplate sqlFireJdbcTemplate) {
-		this.sqlFireJdbcTemplate = sqlFireJdbcTemplate;
-	}
 	
 	@Override
 	public List<Map<String,Object>> getCityDeptes(String cityId)throws DataAccessException{
 		String sql="select * from "+TABLE+" where CITY_ID='"+cityId+"'";
 		List<Map<String,Object>> list=null;
 		try {
-			list=this.sqlFireJdbcTemplate.queryForList(sql);
+			list=this.getJdbcTemplate().queryForList(sql);
 		} catch (DataAccessException e) {
 			log.error("查询部门出错！！！");
 			return null;
@@ -46,7 +40,7 @@ public class UserDeptDaoImp  extends JdbcDaoBase implements IUserDeptDao{
 				"where user_id=?";
 
 		try {
-			list=this.sqlFireJdbcTemplate.queryForList(sql,useId);
+			list=this.getJdbcTemplate().queryForList(sql,useId);
 		} catch (DataAccessException e) {
 			log.error("根据用户id查询用户科室名称出错！！！");
 			return null;

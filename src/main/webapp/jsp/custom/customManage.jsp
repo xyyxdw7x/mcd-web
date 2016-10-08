@@ -40,7 +40,7 @@
     </ul>
 </div>
 
-<div class="container customManageContainer">
+<div class="container container-nopadd customManageContainer">
     <div class="content">
         <div id="customManageTabCT" class="content-main">
             <div class="box active">

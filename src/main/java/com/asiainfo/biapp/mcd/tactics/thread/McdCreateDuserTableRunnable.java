@@ -85,11 +85,7 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 			log.info("*************客户群个数："+campsegCustGroupList.size());
 			String custGroupId = "";
 			for(int j=0;j<campsegCustGroupList.size();j++){
-				String custGroupType = (String)((Map<String, Object>)campsegCustGroupList.get(0)).get("CUSTGROUP_TYPE");
-				log.info("***********************custGroupType="+custGroupType);
-				if("CG".equals(custGroupType)){
 					custGroupId = (String)((Map<String, Object>)campsegCustGroupList.get(0)).get("CUSTGROUP_ID");
-				}
 			}
 			log.info("*************custGroupId："+custGroupId);
 			if(StringUtils.isNotEmpty(custGroupId)){

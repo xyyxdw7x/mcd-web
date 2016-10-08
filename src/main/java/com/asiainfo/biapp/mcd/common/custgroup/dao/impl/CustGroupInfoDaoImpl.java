@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.asiainfo.biapp.framework.aop.BeanSelfAware;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
@@ -24,8 +25,9 @@ import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import org.apache.commons.lang3.StringUtils;
 
 @Repository("custGroupInfoDao")
-public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfoDao{
+public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfoDao,BeanSelfAware{
 	private static Logger log = LogManager.getLogger(CustGroupInfoDaoImpl.class);
+	private ICustGroupInfoDao custGroupInfoDao;
 	@Override
 	public int getMoreMyCustomCount(String currentUserId,String keyWords) {
 		int count = 0;
@@ -551,7 +553,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date desc");
-			log.info("查询客户群清单信息："+sbuffer.toString());
+			log.info("查询客户群清单信息："+sbuffer.toString() + "customgroupid :" + customgroupid);
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { customgroupid });
 		} catch (Exception e) {
 			log.error("",e);
@@ -918,7 +920,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
      * @param mtlCuserTableName
      */
     @Override
-    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+    public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) {
         String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
         String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
         this.getJdbcTemplate().execute(sql);
@@ -950,8 +952,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			}
 			
 			//判断当前分区是否存在
-			List<Map<String,Object>> partitionList = this.checkPartitionIsExistInMem(tableName, partitionName);
-			List<Map<String,Object>> isPartitionTable = this.checkTableIsPartitionInMem(tableName);
+			List<Map<String,Object>> partitionList = custGroupInfoDao.getInMemcheckPartitionIsExist(tableName, partitionName);
+			List<Map<String,Object>> isPartitionTable = custGroupInfoDao.getInMemcheckTableIsPartition(tableName);
 			String tableSpaceName = "";
 			if(CollectionUtils.isNotEmpty(isPartitionTable)){
 				tableSpaceName = String.valueOf(((Map<String,Object>)isPartitionTable.get(0)).get("TABLESPACE_NAME"));
@@ -973,7 +975,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 					}
 				}
 			}
-			List<Map<String,Object>> listTemp = this.getMtlCustomListInfo(customgroupid);
+			List<Map<String,Object>> listTemp = custGroupInfoDao.getMtlCustomListInfo(customgroupid);
 			String tableListName = (String) listTemp.get(0).get("LIST_TABLE_NAME");
 			
 			if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
@@ -1032,32 +1034,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			log.error("",e);
 		}
 	}
-	/**
-	 * 判断是否是分区表
-	 * @param tableName
-	 * @return
-	 */
-	private List<Map<String,Object>> checkTableIsPartitionInMem(String tableName){
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("select * from user_tables where table_name =UPPER(?)");
-		log.info("查询分区是否存在："+buffer.toString());
-		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName});
-		return list;
-	}
-    /**
-	 * 判断表对应的分区是否存在,前提必须是分区表
-	 * @param tableName
-	 * @param partitionName
-	 * @return
-	 */
-	private List<Map<String,Object>> checkPartitionIsExistInMem(String tableName,String partitionName){
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("select table_name,partition_name,high_value,tablespace_name from user_tab_partitions ")
-			  .append(" where table_name=UPPER(?) and partition_name=UPPER(?)");
-		log.info("查询分区是否存在："+buffer.toString());
-		List<Map<String,Object>> list =  this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName,partitionName});
-		return list;
-	}
+
 	@Override
 	public McdCustgroupDef getCustGroupInfoById(String custGroupId){
 		List<McdCustgroupDef> result = new ArrayList<McdCustgroupDef>();
@@ -1309,4 +1286,39 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	            e.printStackTrace(); 
 	        }   
 	    }
+
+        @Override
+        public void setSelfProxy(Object proxyObj) {
+            this.custGroupInfoDao = (ICustGroupInfoDao)proxyObj;
+            
+        }
+
+        /**
+         * 判断表对应的分区是否存在,前提必须是分区表
+         * @param tableName
+         * @param partitionName
+         * @return
+         */
+        @Override
+        public List<Map<String, Object>> getInMemcheckPartitionIsExist(String tableName, String partitionName) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("select table_name,partition_name,high_value,tablespace_name from user_tab_partitions ")
+                  .append(" where table_name=UPPER(?) and partition_name=UPPER(?)");
+            log.info("查询分区是否存在："+buffer.toString());
+            List<Map<String,Object>> list =  this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName,partitionName});
+            return list;
+        }
+        /**
+         * 判断是否是分区表
+         * @param tableName
+         * @return
+         */
+        @Override
+        public List<Map<String, Object>> getInMemcheckTableIsPartition(String tableName) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("select * from user_tables where table_name =UPPER(?)");
+            log.info("查询分区是否存在："+buffer.toString());
+            List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName});
+            return list;
+        }
 }
