@@ -240,4 +240,17 @@ public interface ICustGroupInfoDao {
 	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId);
 	    
 	    public void addCreateCustGroupTabInMem(String sql)throws MpmException;
+	    /**
+	     * 判断当前分区是否存在
+	     * @param tableName 表名
+	     * @param partitionName 分区名
+	     * @return
+	     */
+        public List<Map<String, Object>> getInMemcheckPartitionIsExist(String tableName, String partitionName);
+        /**
+         * 判断是否是分区表
+         * @param tableName
+         * @return
+         */
+        public List<Map<String, Object>> getInMemcheckTableIsPartition(String tableName);
 }

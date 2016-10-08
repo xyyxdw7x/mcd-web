@@ -3,8 +3,8 @@ package com.asiainfo.biapp.mcd.bull.dao.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +15,8 @@ import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Repository(value="bullMonitorDao")
 public class BullMonitorDaoImp extends JdbcDaoBase implements IBullMonitorDao {
-	private static final Logger log = LogManager.getLogger();
+//	private static final Logger log = LogManager.getLogger();
+	protected final Log log = LogFactory.getLog(getClass());
 
 	/**
 	 * 50--待执行，51--正在执行,59--暂停,70--任务已加载,71--自动暂停，79---周期性任务当天完成

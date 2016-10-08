@@ -36,12 +36,14 @@ public class MpmUtil {
 	 */
 	public static String getSqlCreateAsTableInSqlFire(String newTab, String tmpTable) {
 		StringBuilder strRet = new StringBuilder();
-		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		//String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+		String tabSpace = "TBS_IMCD";
+		String isUseSqlfire = "false";
 		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
-			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" NOLOGGING as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2");
+			strRet.append("create table ").append(newTab).append(" NOLOGGING as select * from ").append(tmpTable).append(" where 1=2");
 		}else{
-			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2").append(" WITH NO DATA");
+			strRet.append("create table ").append(newTab).append(" as select * from ").append(tmpTable).append(" where 1=2").append(" WITH NO DATA");
 		}
 		log.warn("在sqlfire库中创建清单表sql语句："+strRet.toString());
 		return strRet.toString();
