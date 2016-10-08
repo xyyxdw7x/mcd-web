@@ -1133,7 +1133,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		//查询客户群的周期性
 		McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
-		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
+//		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
 			try {
 				campSegInfoDao.excSqlInMcdAdInMem(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
@@ -1143,9 +1143,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			} catch (Exception e) {
 				log.error(e);
 			}
-		}else{
-			campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
-		}
+//		}else{
+//			campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+//		}
 		return tabName;
 	}
     

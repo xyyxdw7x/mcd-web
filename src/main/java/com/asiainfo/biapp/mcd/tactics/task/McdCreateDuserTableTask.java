@@ -33,6 +33,7 @@ public class McdCreateDuserTableTask implements Serializable{
 	
 	public void runTask() throws Exception {
 		try {
+		    System.out.println("*************************************");
 			log.info("begin exec*************************************");
 			List<Map<String,Object>> list = mcdCreateDuserTableService.getAll();
 			log.info("******************list.size="+list.size());

@@ -551,7 +551,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		try {
 			StringBuffer sbuffer = new StringBuffer();
 			sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? order by data_date desc");
-			log.info("查询客户群清单信息："+sbuffer.toString());
+			log.info("查询客户群清单信息："+sbuffer.toString() + "customgroupid :" + customgroupid);
 			list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { customgroupid });
 		} catch (Exception e) {
 			log.error("",e);
