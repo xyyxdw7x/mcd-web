@@ -85,11 +85,11 @@
     </bean>
 	<aop:config>
         <aop:aspect id="changeMasterDataSource" ref="resetDataSourceAdvice">
-            <aop:pointcut id="update" expression="execution(* com.asiainfo.biapp.mcd.*.dao..update*(..)) ||execution(* com.asiainfo.biapp.mcd.*.dao..save*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..add*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..insert*(..))" />
+            <aop:pointcut id="update" expression="execution(* com.asiainfo.biapp.mcd..dao..update*(..)) ||execution(* com.asiainfo.biapp.mcd..dao..save*(..))||execution(* com.asiainfo.biapp.mcd..dao..add*(..))||execution(* com.asiainfo.biapp.mcd..dao..insert*(..))" />
             <aop:before pointcut-ref="update"  method="resetMasterDataSource" />
         </aop:aspect>
         <aop:aspect id="changeSlaveDataSource" ref="resetDataSourceAdvice">
-            <aop:pointcut id="query" expression="execution(* com.asiainfo.biapp.mcd.*.dao..get*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..query*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..find*(..))||execution(* com.asiainfo.biapp.mcd.*.dao..search*(..))" />
+            <aop:pointcut id="query" expression="execution(* com.asiainfo.biapp.mcd..dao..get*(..))||execution(* com.asiainfo.biapp.mcd..dao..query*(..))||execution(* com.asiainfo.biapp.mcd..dao..find*(..))||execution(* com.asiainfo.biapp.mcd..dao..search*(..))" />
             <aop:before pointcut-ref="query" method="resetSlaveDataSource" />
         </aop:aspect>
     </aop:config>
