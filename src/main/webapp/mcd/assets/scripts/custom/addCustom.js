@@ -1,7 +1,10 @@
-define(["backbone"],function(require, exports, module) {    
+define(["backbone","jqueryUI","My97DatePicker","jqueryExtend","navManage","ajaxFileUpload"],function(require, exports, module) {    
 	
 	module.exports={
 		init:function(){
+			var navManage = require("navManage");
+			navManage.init();
+			
 			//失效日期加入默认值
 			$("#invalid_date").val(this.formatDate(new Date(new Date().getTime()+14*24*60*60*1000)));
 			
