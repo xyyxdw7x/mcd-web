@@ -210,7 +210,8 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 shopCarInfo.showDatePicker=function(){
 	 var fromDate = $("#startDate" ).datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yy-mm-dd"}).on( "change", function(){
 		 toDate.datepicker("option", "minDate", $.datepicker.parseDate("yy-mm-dd", this.value));
-       });
+     });
+	 fromDate.datepicker("option", "minDate", new Date());
      var toDate = $( "#endDate" ).datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yy-mm-dd"}).on( "change", function() {
     	 fromDate.datepicker( "option", "maxDate", $.datepicker.parseDate("yy-mm-dd", this.value));
      });

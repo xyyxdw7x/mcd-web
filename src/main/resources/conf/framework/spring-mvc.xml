@@ -124,7 +124,6 @@
                         </bean>
                     </constructor-arg>
                 </bean>
-                <bean class="org.springframework.flex.http.AmfView" />
         	</list>
         </property>
        
