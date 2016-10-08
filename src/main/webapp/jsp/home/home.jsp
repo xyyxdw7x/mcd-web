@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="jump-li borderRight">
-                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/mcd/pages/custom/addCustom.jsp?navId=M001005004001001&subNavId=M001005004001001002" data-subNavId="M001005004001001002" target="_blank">
+                    <a href="javascript:;" data-href="<%=request.getContextPath() %>/jsp/custom/addCustom.jsp?navId=M001005004001001&subNavId=M001005004001001002" data-subNavId="M001005004001001002" target="_blank">
                         <img class="icon" src="../../assets/images/home/index-url-icon-3.png" ></img>
                         <p class="text">新建客户群</p>
                     </a>
