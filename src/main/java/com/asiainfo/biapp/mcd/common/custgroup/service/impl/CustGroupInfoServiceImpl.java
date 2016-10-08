@@ -503,7 +503,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
      */
     @Override
     public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-    	custGroupInfoDao.createSynonymTableMcdBySqlFire(mtlCuserTableName); 
+    	custGroupInfoDao.addCreateSynonymTableMcdBySqlFire(mtlCuserTableName); 
     } 
     
 	@Override

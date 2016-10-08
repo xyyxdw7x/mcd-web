@@ -1135,14 +1135,14 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		int updateCycle = groupInfo.getUpdateCycle();
 //		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
 //			创建分区   edit by lixq10 2016年6月2日21:13:06
-			try {
-				campSegInfoDao.excSqlInMcdAdInMem(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
-				//MCD表创建同义词
+//			try {
+				campSegInfoDao.addInMemExcSqlInMcdAd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+				//MCD表创建同义词   
 				custGroupInfoService.createSynonymTableMcdBySqlFire(tabName);
 
-			} catch (Exception e) {
-				log.error(e);
-			}
+//			} catch (Exception e) {
+//				log.error(e);
+//			}
 //		}else{
 //			campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
 //		}
@@ -1164,7 +1164,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 				}else{
 					sql = "create index INDEX_"+(ss[ss.length-1])+"_0 ON "+tableName+"(PRODUCT_NO) ";
 				}
-				campSegInfoDao.excSqlInMcdAdInMem(sql);
+				campSegInfoDao.addInMemExcSqlInMcdAd(sql);
 				
 			}
 		} catch (Exception e) {
