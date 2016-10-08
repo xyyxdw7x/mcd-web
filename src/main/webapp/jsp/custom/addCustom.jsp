@@ -89,7 +89,7 @@
 </body>
 </html>
 <script type="text/javascript">
-    seajs.use("../../assets/js/custom/addCustom",function(main){
+    seajs.use("custom/addCustom.js",function(main){
         main.init();
     });
 </script>
