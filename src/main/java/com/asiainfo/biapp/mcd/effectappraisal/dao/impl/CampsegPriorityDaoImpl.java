@@ -4,7 +4,10 @@ package com.asiainfo.biapp.mcd.effectappraisal.dao.impl;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -319,13 +322,19 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		//调用存储过程，重排序
 //		this.getJdbcTemplate().execute("CALL UPDATE_CAMPSEG_PRIORITY()");
 		
-		String sql1 = "call UPDATE_CAMPSEG_PRIORITY()";
-		this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
-	        public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
-	        	cs.execute(); 
-	            return null; 
-	        }
-	    });
+        String sql1 = "call UPDATE_CAMPSEG_PRIORITY(?,?,?)";
+        this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
+            public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
+                Calendar dataCalendar1 = Calendar.getInstance();
+                dataCalendar1.setTime(new Date());
+                dataCalendar1.add(Calendar.DAY_OF_MONTH, -1);
+                cs.setString(1, new SimpleDateFormat("yyyyMMdd").format(dataCalendar1.getTime()));
+                cs.registerOutParameter(2, Types.INTEGER);
+                cs.registerOutParameter(3, Types.VARCHAR);
+                cs.execute(); 
+                return null; 
+            }
+        });
 	}
 	
 	/**
@@ -432,14 +441,19 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		}
 		
 //		this.getJdbcTemplate().execute("CALL UPDATE_CAMPSEG_PRIORITY()");
-		String sql1 = "call UPDATE_CAMPSEG_PRIORITY()";
-		this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
-	        public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
-	        	
-	        	cs.execute(); 
-	            return null; 
-	        }
-	    });
+		String sql1 = "call UPDATE_CAMPSEG_PRIORITY(?,?,?)";
+        this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
+            public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
+                Calendar dataCalendar1 = Calendar.getInstance();
+                dataCalendar1.setTime(new Date());
+                dataCalendar1.add(Calendar.DAY_OF_MONTH, -1);
+                cs.setString(1, new SimpleDateFormat("yyyyMMdd").format(dataCalendar1.getTime()));
+                cs.registerOutParameter(2, Types.INTEGER);
+                cs.registerOutParameter(3, Types.VARCHAR);
+                cs.execute(); 
+                return null; 
+            }
+        });
 	}
 	
 }

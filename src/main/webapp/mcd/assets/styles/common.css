@@ -565,6 +565,16 @@ table {
 	position: relative;
 	z-index: 100;
 }
+.text-left{
+	  text-align: left;
+}
+.text-center{
+	  text-align: center;
+}
+
+.text-right{
+	  text-align: right;
+}
 
 .container .content .content-main .content-table .ui-page-button {
 	width: 66px;
