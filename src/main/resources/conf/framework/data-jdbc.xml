@@ -115,7 +115,7 @@
 		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:pointcut id="jdbcPointCut" expression="execution(* com.asiainfo.biapp.mcd.*.service..*DaoImpl.*(..))"/>
+		<aop:pointcut id="jdbcPointCut" expression="execution(* com.asiainfo.biapp.mcd..service..*Impl.*(..))"/>
 		<aop:advisor pointcut-ref="jdbcPointCut" advice-ref="jdbcAdvice"/>
 	</aop:config>
 </beans>

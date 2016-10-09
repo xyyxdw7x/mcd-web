@@ -38,7 +38,6 @@ public class MpmUtil {
 		StringBuilder strRet = new StringBuilder();
 		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 		//String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
-		String tabSpace = "TBS_IMCD";
 		String isUseSqlfire = "false";
 		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 			strRet.append("create table ").append(newTab).append(" NOLOGGING as select * from ").append(tmpTable).append(" where 1=2");

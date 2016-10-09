@@ -35,21 +35,14 @@ public class OauthLoginFilter implements Filter {
 		HttpServletRequest hsr=(HttpServletRequest)request;
 		HttpServletResponse hsrs=(HttpServletResponse)response;
 		String url=hsr.getRequestURI().toLowerCase();
-		if(url.indexOf(".jpg")>0||url.indexOf(".png")>0||url.indexOf(".ico")>0||url.indexOf(".gif")>0||url.indexOf(".js")>0||url.indexOf(".css")>0||url.indexOf("/login.jsp")>0){
-			if(url.indexOf(".jsp")<0){
-				chain.doFilter(request, response);
-				return ;
-			}else if(url.indexOf("/login.jsp")>0){
-				chain.doFilter(request, response);
-				return ;
-			}
-		}
-		
-		if(url.indexOf("privilege/login")>0){
+		if(url.endsWith(".jpg")||url.endsWith(".png")||url.endsWith(".ico")||url.endsWith(".gif")||url.endsWith(".js")||url.endsWith(".css")){
 			chain.doFilter(request, response);
 			return ;
 		}
-         
+		if(url.endsWith("/action/privilege/login/login.do")||url.endsWith("/login/login.jsp")){
+			chain.doFilter(request, response);
+			return ;
+		}
 		String contextPath=hsr.getContextPath();
 		if(hsr.getSession().getAttribute("USER_ID")==null){
 			boolean isAjaxRequest = isAjaxRequest(hsr);  

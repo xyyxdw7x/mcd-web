@@ -24,7 +24,7 @@ public class LoginController extends BaseMultiActionController {
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	
-	@RequestMapping("/login")
+	@RequestMapping()
 	@ResponseBody
 	public boolean login(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

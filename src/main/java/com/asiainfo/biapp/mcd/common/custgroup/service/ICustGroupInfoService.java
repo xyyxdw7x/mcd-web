@@ -183,6 +183,13 @@ public interface ICustGroupInfoService {
     public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage);
 
     public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName);
+	/**
+	 * 执行导入sqlldr命令
+	 * @param filepath
+	 * @param fileNamePrefix
+	 * @return
+	 */
+	public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception ;
    /**
      * 查看SQLLoader文件导入是否成功了
      * @param mtlCuserTableName

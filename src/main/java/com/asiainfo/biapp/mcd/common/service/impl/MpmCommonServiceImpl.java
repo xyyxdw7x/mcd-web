@@ -81,7 +81,8 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 		try {
 			
 			// 取前端存放数据的路径
-			    String filepath =  MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
+			    //String filepath =  MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH");   
+			    String filepath = "D:\\temp\\mpm\\upload";
 				String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
 				//  lingshi  xiugai yixia d a  String filenameTemp = File.separator+"data1"+File.separator ; 
 				String filenameTemp =filepath+tableName + ".ctl"; 
@@ -101,7 +102,22 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 				creatTxtFile(chkFile,tableName+".txt");   
 				
 				//新增逻辑SQLLODER导入
-				log.info("sqlLoder导入开始.............." );   
+				log.info("sqlLoder导入开始.............." );
+				final String path = filepath;
+				final String fileNamePrefix = tableName;
+				Thread thread = new Thread(){
+					public void run() {
+						try {
+							custGroupInfoService.executeSqlldr(path, fileNamePrefix);
+						} catch (Exception e) {
+							log.info("客户群导入出错：", e);
+							e.printStackTrace();
+						}
+					}
+				};
+				thread.setName(customGroupName+"客户群导入"+tableName);
+				thread.start();
+				
 				custGroupInfoService.insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
 					Boolean isTrue = custGroupInfoService.getSqlLoderISyncDataCfgEnd(tableName);
 					while(!isTrue){

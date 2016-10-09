@@ -408,15 +408,15 @@ body {
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .forpublic-search-box .searchBtn:hover {
   border: none;
-  background: #009bf5 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #009bf5 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .forpublic-search-box .searchBtn:active {
   border: none;
-  background: #1987e6 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #1987e6 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .container {
   width: 1250px;
@@ -540,7 +540,7 @@ body {
   margin: 0 3px auto auto;
   position: relative;
   vertical-align: middle;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -547px -2px;
+  background: url(../../images/imcd-bg.png) no-repeat -547px -2px;
 }
 .container .shop-cart .addStrategy {
   text-align: left;
@@ -573,7 +573,7 @@ body {
   position: relative;
   border: 1px solid #2391e3;
   background: none;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -133px -79px;
+  background: url(../../images/imcd-bg.png) no-repeat -133px -79px;
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
@@ -652,7 +652,7 @@ body {
   margin: 6px 10px 0 0;
   position: relative;
   float: right;
-  background: #fff url(../mcd/assets/images/imcd-bg.png) no-repeat -355px -10px;
+  background: #fff url(../../images/imcd-bg.png) no-repeat -355px -10px;
   cursor: pointer;
 }
 .container .shop-cart .conditionList {
@@ -1064,15 +1064,15 @@ body {
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .container .content .content-main .content-type-search .content-type-search-box .searchBtn:hover {
   border: none;
-  background: #009bf5 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #009bf5 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .container .content .content-main .content-type-search .content-type-search-box .searchBtn:active {
   border: none;
-  background: #1987e6 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #1987e6 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .container .content .content-main .content-type-search.channel-search {
   width: 334px;
@@ -2042,7 +2042,7 @@ body {
   right: '';
   z-index: 99;
   border: none;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -512px -10px;
+  background: url(../../images/imcd-bg.png) no-repeat -512px -10px;
 }
 .container .content .content-main .channel-executive-box .channel-executive-item:hover .channel-time-month,
 .container .content .content-main .channel-executive-box .channel-executive-item.active .channel-time-month {
@@ -2057,7 +2057,7 @@ body {
   right: 20px;
   z-index: 99;
   border: none;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -620px -83px;
+  background: url(../../images/imcd-bg.png) no-repeat -620px -83px;
   text-align: center;
   font-size: 14px;
   cursor: auto;
@@ -2118,7 +2118,7 @@ body {
   right: '';
   z-index: 99;
   border: none;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -228px -194px;
+  background: url(../../images/imcd-bg.png) no-repeat -228px -194px;
 }
 .container .content .content-main .channel-img-select .channel-left-list .channel-list-box .channel-search-box {
   width: 100%;
@@ -2242,7 +2242,7 @@ body {
   right: '';
   z-index: 99;
   border: none;
-  background: url(../mcd/assets/images/imcd-bg.png) no-repeat -228px -194px;
+  background: url(../../images/imcd-bg.png) no-repeat -228px -194px;
   transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
@@ -2326,7 +2326,7 @@ body {
   right: 0px;
   z-index: 99;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat -438px -5px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat -438px -5px;
 }
 .moreQueryCondition {
   width: 880px;
@@ -2377,15 +2377,15 @@ body {
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .moreQueryCondition .searchCT .content-type-search-box .searchBtn:hover {
   border: none;
-  background: #009bf5 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #009bf5 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .moreQueryCondition .searchCT .content-type-search-box .searchBtn:active {
   border: none;
-  background: #1987e6 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #1987e6 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .moreQueryCondition .conditionChoose {
   width: auto;
@@ -3035,15 +3035,15 @@ body {
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .addQueryTactics .searchCT .content-type-search-box .searchBtn:hover {
   border: none;
-  background: #009bf5 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #009bf5 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .addQueryTactics .searchCT .content-type-search-box .searchBtn:active {
   border: none;
-  background: #1987e6 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #1987e6 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .addQueryTactics .content-table {
   width: 100%;
@@ -4629,15 +4629,15 @@ html {
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 #selectMonthPLanDialog .searchCT .content-type-search-box .searchBtn:hover {
   border: none;
-  background: #009bf5 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #009bf5 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 #selectMonthPLanDialog .searchCT .content-type-search-box .searchBtn:active {
   border: none;
-  background: #1987e6 url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #1987e6 url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .outBound-list {
   width: auto;
@@ -5430,7 +5430,7 @@ background:#fff;
   color: #fff;
   line-height: 30px;
   border: none;
-  background: #278bdd url(../mcd/assets/images/imcd-bg.png) no-repeat 6px -75px;
+  background: #278bdd url(../../images/imcd-bg.png) no-repeat 6px -75px;
 }
 .adiv_tr{
   background-color: #f6f6f6;
