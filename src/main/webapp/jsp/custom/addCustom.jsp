@@ -20,13 +20,13 @@
 <jsp:include page="../../jsp/common/header.jsp"></jsp:include>
 
 <div class="addCustomNav">
-    <ul id="addCustomTab" class="addCustomTab">
+    <ul id="addCustomTab" class="addCustomTab mb_0">
         <li data-tab="ALL-CUSTOM" class="active"><div class="tab-select"></div>导入本地客户群</li>
-        <li data-tab="MY-CUSTOM"><div class="tab-select"></div><div class="tab-select"></div><a href="http://bqk.yw.zj.chinamobile.com/coc/ciIndex/labelIndex?refreshType=9">根据标签筛选客户群</a></li>
+        <!-- <li data-tab="MY-CUSTOM"><div class="tab-select"></div><div class="tab-select"></div><a href="http://bqk.yw.zj.chinamobile.com/coc/ciIndex/labelIndex?refreshType=9">根据标签筛选客户群</a></li> -->
     </ul>
 </div>
 
-<div class="container addCustomContainer">
+<div class="container container-nopadd addCustomContainer">
     <div class="content">
         <div class="content-main">
             <div class="box active">

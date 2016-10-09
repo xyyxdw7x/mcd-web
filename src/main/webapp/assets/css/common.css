@@ -130,7 +130,9 @@ table {
 .mleft_15 {
 	margin-left: 15px;
 }
-
+.mb_0{
+	margin-bottom:0 !important;
+}
 .mleft_10 {
 	margin-left: 10px;
 }
@@ -238,4 +240,5 @@ table {
 .input-error{
 	border-color:#f04124 !important;
 }
+.container-nopadd{padding:0 !important;}
 
