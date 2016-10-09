@@ -12,22 +12,23 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
 
 @Repository(value="quotaConfigCityMothDao")
-public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements
-		IQuotaConfigCityMothDao {
+public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements IQuotaConfigCityMothDao {
 	private static final Logger log = LogManager.getLogger();
 	private static final String TABLE = "mcd_quota_config_city";
 
 	@Override
-	public int queryCityMonthQuotaInMem(String city)
-			throws DataAccessException {
+	public int queryCityMonthQuotaInMem(String city)throws DataAccessException {
 		int ren = 0;
+		@SuppressWarnings("rawtypes")
+		List list=null;;
 		String sql = "select MONTH_QUOTA_NUM" + " from " + TABLE + " where CITY_ID=?";
 		try {
-			ren = this.getJdbcTemplate().queryForObject(  
-                    sql, new Object[] { city }, Integer.class);  
+			list = this.getJdbcTemplate().queryForList(sql, new Object[] { city });  
+			if(list!=null && list.size()>0){
+				ren = Integer.parseInt(list.get(0).toString());
+			}
 		} catch (DataAccessException e) {
-			log.error("查询地市月配额出错！！！将返回0");
-			return 0;
+			log.error("查询地市月配额出错！！！将返回0",e);
 		}
 		return ren;
 	}

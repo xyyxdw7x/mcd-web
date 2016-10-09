@@ -3,16 +3,6 @@ var MonthDataBuffer ;//缓存月返回数据
 $(function(){
 	     changeMonthDate();
 	     
-	   /*  $(".month-table-box").mCustomScrollbar({
-				theme:"minimal-dark", //滚动条样式
-				scrollbarPosition:"inside", //滚动条位置
-				scrollInertia:500,
-				axis:"yx",
-				mouseWheel:{
-					preventDefault:false, //阻止冒泡事件
-					axis:"yx"
-				}
-			});	*/
 		//月配额编辑
 		$("#monthEdit").on("click",function(){
 			//当前正是编辑状态
