@@ -4,7 +4,6 @@
 <head>
 <title>策略详情-查看</title>
 <%@ include file="../../jsp/common/head.jsp" %>
-<link rel="shortcut icon" href="<%=request.getContextPath()%>/assets/images/logos/favicon.ico" />
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" />
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/tacticsInfo.css">
@@ -22,12 +21,6 @@
 	</div>
 	<div id="dataInfo">策略详情查看</div>
 </div>
-<!-- <div class="header tacticsInfo-header"> -->
-<!-- 	<h1>策略详情查看</h1> -->
-<!-- 	<!--  -->
-<!-- 	<div class="logo"></div> -->
-	
-<!-- </div>header end -->
 <div class="tactics-state">
 	<div id="tacticsDetail">
 	</div>
@@ -48,20 +41,6 @@
 
 <div class="container tabbox">
 	<div class="left-nav" id="channelExeStateList">
-<!-- 		<div class="left-nav-box left-nav-active"> -->
-<!-- 			<span>规则1</span> -->
-<!-- 			<i class="fright left-nav-bg" data-num="1"></i> -->
-<!-- 		</div> -->
-<!-- 		<div class="left-nav-line"></div> -->
-<!-- 		<div class="left-nav-box"> -->
-<!-- 			<span>规则2</span> -->
-<!-- 			<i class="fright left-nav-bg" data-num="2"></i> -->
-<!-- 		</div> -->
-<!-- 		<div class="left-nav-line"></div> -->
-<!-- 		<div class="left-nav-box"> -->
-<!-- 			<span>规则3</span> -->
-<!-- 			<i class="fright left-nav-bg" data-num="3"></i> -->
-<!-- 		</div> -->
 	</div> 
 	<div id="channelExeStateDiv" class="content">
 	</div>

@@ -299,7 +299,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"viewPolicyDetail",
 //					cmd:"viewPolicyDetail",
 					currentDom:"#tacticsDetail",
-					ejsUrl:_ctx + '/assets/js//provinces/"+provinces+"tacticsInfo/tacticsInfoDetail.ejs',
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/tacticsInfoDetail.ejs",
 					ajaxData:{},
 					domCallback:function(){}
 			};
@@ -422,7 +422,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"getMtlStcPlan",
 //					cmd:"getMtlStcPlan",
 					currentDom:"#mtlStcPlan",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/getMtlStcPlan.ejs',
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/getMtlStcPlan.ejs",
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -478,7 +478,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"getTargetCustomerbase",
 //					cmd:"getTargetCustomerbase",
 					currentDom:"#targetCustomerbase",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/gettargetCustomerbase.ejs',
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/gettargetCustomerbase.ejs",
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -522,7 +522,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"getDeliveryChannel",
 //					cmd:"getDeliveryChannel",
 					currentDom:"#deliveryChannelView",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/getDeliveryChannel.ejs',
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/getDeliveryChannel.ejs",
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -566,7 +566,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"getLogRecord",
 //					cmd:"getLogRecord",
 					currentDom:"#logRecordCT",
-					ejsUrl:_ctx + '/mcd/pages/EJS/tacticsInfo/logRecord.ejs',
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/logRecord.ejs",
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);

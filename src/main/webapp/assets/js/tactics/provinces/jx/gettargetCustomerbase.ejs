@@ -1,0 +1,52 @@
+<div class="content-table-message J_click">
+	<i class="border-active hidden"></i>
+	<span title="<%=data.custom_group_name%>">
+		客户群名称：<%=data.custom_group_name.length>30?data.custom_group_name.substring(0,30)+'...':data.custom_group_name%>
+	</span>
+	
+	<!--<span>
+		<%=data.custom_source_id%>
+	</span>-->
+	
+	<span stylr="float:right">
+		<span>
+			客户群周期：<%=data.update_cycle%>
+		</span>
+		<i class="fright customer-num-box">
+			<em>客户群编码：<%=data.custom_group_id%></em>
+			<!-- <em class="customer-num-more"></em> -->
+		</i>
+	</span>
+</div>
+<div class="content-customer-detail J_detail hidden">
+	<div class="content-customer-detail-inner">
+		<div class="customer-attribute">
+			<span>创建日期：<%=data.create_time%></span>
+			<span><%=data.create_user_id%></span>
+			<span>文件导入</span>
+			<!--<span>试用场景</span>-->
+		</div>
+		<div class="customer-description">
+			<p>规则:<%=data.rule_desc%></p>
+			<p>数据日期：<%=data.max_data_time%></p>
+		</div>
+	</div>
+</div>
+<table class="content-table-box content-table-list">
+	<tr>
+		<!--<th class="content-table-th" style="width:30%">细分规则</th>-->
+		<!--<th class="content-table-th" style="width:15%">细分后规模</th>-->
+		<th class="content-table-th" style="width:33.3%">渠道名称</th>
+		<th class="content-table-th" style="width:33.3%">客户群规模</th>
+		<th class="content-table-th" style="width:33.3%">客户群数据日期</th>
+		<!--<th class="content-table-th" style="width:20%">操作</th>-->
+	</tr>
+	
+	<%for(var i in data.mtlChannelDefs){%>
+		<tr>
+			<td class="content-table-td"><%=data.mtlChannelDefs[i].CHANNEL_NAME%></td>
+			<td class="content-table-td"><%=data.mtlChannelDefs[i].custgroup_number%></td>
+			<td class="content-table-td"><%=data.max_data_time%></td>
+		</tr>
+	<%}%>
+</table>
