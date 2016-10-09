@@ -284,7 +284,7 @@ function on_top_manual(channel_id, adiv_id) {
 					var html = new EJS(
 							{
 								url : _ctx
-										+ '/mcd/pages/EJS/effectAppraisal/sale_order_on_top.ejs'
+								+ '/assets/js/effectAppraisal/sale_order_on_top.ejs'
 							}).render({
 						data : rst
 					});
