@@ -50,8 +50,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
      * @throws Exception
      */
     @RequestMapping("/queryDeptsConfigMonth")
-    public void queryDeptsConfigMonth(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public void queryDeptsConfigMonth(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
         String cityid = this.getUser(request, response).getCityId();
         

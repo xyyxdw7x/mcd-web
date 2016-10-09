@@ -1129,7 +1129,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		List<Map<String,Object>> list = custGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
-		String province = MpmConfigure.getInstance().getProperty("PROVINCE");
 		//查询客户群的周期性
 		McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();

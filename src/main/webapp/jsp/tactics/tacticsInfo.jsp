@@ -4,10 +4,7 @@
 <head>
 <title>策略详情-查看</title>
 <%@ include file="../../jsp/common/head.jsp" %>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" />
 <link type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/tacticsInfo.css">
-
 </head>
 <script type="text/javascript">
 	_ctx = "<%=request.getContextPath()%>";
@@ -32,7 +29,7 @@
 </div>
 
 <div class="container tabbox active">
-	<div id="subCamsegTab" class="left-nav">
+	<div id="subCamsegTab" class="left-nav" style="display:none">
 	</div> 
 	<div id="subCamsegBoxesCT">
 	</div><!--subCamsegBoxesCT end -->

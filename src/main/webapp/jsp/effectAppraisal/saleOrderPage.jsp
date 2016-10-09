@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
-<link href="<%=request.getContextPath()%>/mcd/assets/styles/bulkManage.css" rel="stylesheet" type="text/css">
+<link href="<%=request.getContextPath()%>/assets/css/provinces/jx/bull/bulkManage.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/assets/css/tacticsorder/createSaleOrder.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
@@ -65,7 +65,7 @@
 
 </body>
 <script type="text/javascript">
-	seajs.use("${ctx}/assets/js/home/here_it_is_4_order_sale", function(main) {
+	seajs.use("home/here_it_is_4_order_sale", function(main) {
 		main.init();
 	});
 

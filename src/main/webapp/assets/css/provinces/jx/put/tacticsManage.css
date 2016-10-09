@@ -430,6 +430,8 @@ body {
   overflow: hidden;
   margin: 0 auto;
   position: relative;
+  padding-left:0 !important;
+  padding-right:0 !important;
 }
 .container .left-nav {
   width: 110px;

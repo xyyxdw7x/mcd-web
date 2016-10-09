@@ -13,18 +13,6 @@ define(["backbone","my97"],function(require, exports, module) {
 			//选项卡功能
 			this.tacticsInfoTab();
 			
-			//查询一个策略下的所有渠道信息
-			//this.loadCampsegChannels(getcampsegId);
-			
-			//日志
-			//没数据暂时注释掉=====不要删除
-			/*
-			this.getLogRecord({
-				ajaxData:{
-					campsegId:getcampsegId
-				}
-			});
-			*/
 			$(document).on("click","#channelExeStateDiv .content-table-tr",function(){//TODO
 				var statDate = $(this).find(">td:first").html();
 				var channelId = $(this).attr("channelId");
@@ -35,10 +23,9 @@ define(["backbone","my97"],function(require, exports, module) {
 					$(".J_policy_box").remove();
 					return ;
 				}
-				//$("#subCampsegIdCT>span").html()
 				$.ajax({
 				    type: 'post',
-				    url: _ctx+"/tactics/viewPolicyDetail/getCampsChannelSituation",
+				    url: _ctx+"/tactics/tacticsInfo/getCampsChannelSituation.do",
 				    data: {subCampsegIds:subCampsegIds,channelId:channelId,statDate:statDate} ,
 				    success: function(result){
 				    	console.log(result);
@@ -55,13 +42,6 @@ define(["backbone","my97"],function(require, exports, module) {
 						       ];
 				    	$(".J_policy_box").remove();
 				    	// 表格列头
-//						var thStr="<tr channelId='"+channelId+"' class='J_policy_box  ui-sub-table'>";
-//						for(var i = 0;i <headerTexts.length;i++){
-//							var th=headerTexts[i];
-//							thStr+="<th class=\"content-table-th2\">"+th+"</th>";
-//						}
-//						thStr+="</tr>";
-						//表格行
 				    	if($.isArray(datas)){
 					    	var  $tr = $('<tr class=" J_policy_box " channelid="902"><td colspan= "7" class="content-table-td2 J_tableBox"></td></tr>');
 					    	currentObj.after($tr);
@@ -104,7 +84,7 @@ define(["backbone","my97"],function(require, exports, module) {
 			return subIds;
 		},
 		loadCampsegChannels:function(campsegId,subCampsegIds){
-			var url=_ctx+"/tactics/viewPolicyDetail/getCampChannels";
+			var url=_ctx+"/action/tactics/tacticsInfo/getCampChannels.do";
 			var data={campsegId:campsegId,subCampsegIds:subCampsegIds};
 			$.ajax({
 			    type: 'GET',
@@ -202,7 +182,7 @@ define(["backbone","my97"],function(require, exports, module) {
 			for(var i = 0;i <channels.length;i++){
 	    		var item=channels[i];
 	    		var channelId=item.CHANNEL_ID;
-	    		var url=_ctx+"/tactics/viewPolicyDetail/getCampChannelDetail";
+	    		var url=_ctx+"/action/tactics/tacticsInfo/getCampChannelDetail.do";
 	    		//默认查询一个月的数据
 	    		var myDate = new Date();
 	    		var startDate =   new Date(Date.parse(myDate) + ((86400000 * 7) * -1) + 86400000).Format("yyyyMMdd");
@@ -295,8 +275,8 @@ define(["backbone","my97"],function(require, exports, module) {
 		},
 		loadTacticDetail:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/viewPolicyDetail",
-					id:"viewPolicyDetail",
+					urlRoot:_ctx+"/action/tactics/tacticsInfo/",
+					id:"viewPolicyDetail.do",
 //					cmd:"viewPolicyDetail",
 					currentDom:"#tacticsDetail",
 					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/tacticsInfoDetail.ejs",
@@ -418,8 +398,8 @@ define(["backbone","my97"],function(require, exports, module) {
 		},
 		getMtlStcPlan:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/viewPolicyDetail",
-					id:"getMtlStcPlan",
+					urlRoot:_ctx+"/action/tactics/tacticsInfo",
+					id:"getMtlStcPlan.do",
 //					cmd:"getMtlStcPlan",
 					currentDom:"#mtlStcPlan",
 					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/getMtlStcPlan.ejs",
@@ -474,8 +454,8 @@ define(["backbone","my97"],function(require, exports, module) {
 		},
 		getTargetCustomerbase:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/viewPolicyDetail",
-					id:"getTargetCustomerbase",
+					urlRoot:_ctx+"/action/tactics/tacticsInfo/",
+					id:"getTargetCustomerbase.do",
 //					cmd:"getTargetCustomerbase",
 					currentDom:"#targetCustomerbase",
 					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/gettargetCustomerbase.ejs",
@@ -518,8 +498,8 @@ define(["backbone","my97"],function(require, exports, module) {
 		},
 		getDeliveryChannel:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/viewPolicyDetail",
-					id:"getDeliveryChannel",
+					urlRoot:_ctx+"/action/tactics/tacticsInfo/",
+					id:"getDeliveryChannel.do",
 //					cmd:"getDeliveryChannel",
 					currentDom:"#deliveryChannelView",
 					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/getDeliveryChannel.ejs",
