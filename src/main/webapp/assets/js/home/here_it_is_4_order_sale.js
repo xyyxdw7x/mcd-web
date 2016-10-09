@@ -103,8 +103,7 @@ function delay_offline() {
 // }
 
 function load_channel(_cmd, _lct) {
-	$
-			.ajax({
+	$.ajax({
 				url : _ctx + '/mpm/imcdChannelExecuteAction.aido?cmd=' + _cmd,
 				type : "POST",
 				data : {},
