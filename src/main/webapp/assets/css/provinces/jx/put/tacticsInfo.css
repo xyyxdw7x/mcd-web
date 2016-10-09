@@ -462,3 +462,112 @@
     border: none;
     background: #fff;
 }
+
+.container .content .content-main .content-table .content-table-box .content-table-th {
+  width: auto;
+  height: 46px;
+  overflow: hidden;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  cursor: auto;
+  color: #000;
+  line-height: 46px;
+  border: 1px solid #dde7f1;
+  background: #fafcff;
+  border-left: none;
+  border-right: none;
+  font-family: "Microsoft Yahei";
+}
+.container .content .content-main .content-table .content-table-box .content-table-td {
+  width: auto;
+  height: 46px;
+  overflow: hidden;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: auto;
+  color: #666;
+  line-height: 20px;
+  border: 1px solid #efefef;
+  background: #fff;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  text-indent: 5px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.container .content .content-main .content-table .content-table-box .content-table-td .table-button {
+  width: 54px;
+  height: 26px;
+  overflow: hidden;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: #fff;
+  line-height: 22px;
+  border: none;
+  background: #ffa01e;
+}
+.container .content .content-main .content-table .content-table-box .content-table-td .table-button:hover {
+  border: none;
+  background: #ffb200;
+}
+.container .content .content-main .content-table .content-table-box .content-table-td .table-button:active {
+  border: none;
+  background: #ffa01e;
+}
+.container .content .content-main .content-table .content-table-box .content-table-td .table-button-blue {
+  width: 50px;
+  height: 24px;
+  overflow: hidden;
+  margin: 0 5px;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: #fff;
+  line-height: 20px;
+  border: none;
+  background: #2391e3;
+}
+.container .content .content-main .content-table .content-table-box .content-table-tr td.content-table-td:first-child {
+  text-align: center;
+}
+.container .content .content-main .content-table .content-table-box .content-table-tr .content-table-td:nth-child(4),
+.container .content .content-main .content-table .content-table-box .content-table-tr .content-table-td:last-child {
+  text-align: center;
+}
+.container .content .content-main .content-table .content-table-box .content-table-tr .content-table-td:nth-child(2) {
+  text-align: left;
+}
+.container .content .content-main .content-table .content-table-box .odd .content-table-td {
+  border-bottom: 1px solid #efefef;
+  background: #fafafa;
+}
+.container .content .content-main .content-table .content-table-box .odd .content-table-tr td.content-table-td:first-child {
+  text-align: center;
+  border-left: 5px solid #fafafa;
+}
+.container .content .content-main .content-table .choosedDimPlan {
+  padding-left: 20px;
+  background-color: #f2f5f6;
+  border-top: 1px solid #e8ebec;
+  text-align: left;
+  font-size: 12px;
+  cursor: auto;
+  color: #666;
+  line-height: 52px;
+}
+.container .content .content-main .content-table .choosedDimPlan font {
+  text-align: left;
+  font-size: 12px;
+  cursor: auto;
+  color: #666;
+  line-height: 52px;
+}
