@@ -977,6 +977,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                     campSegInfoDao.updateCampSegInfo(segInfo);                   
                 }else if(mtlChannelDefApproveFlowList != null && mtlChannelDefApproveFlowList.size() > 1){
                 //当策略下有的所有渠道有两种审批状态时，该策略状态一定为不通过，因为状态只有通过与不通过两种
+                	campsegStatId = McdCONST.MPM_CAMPSEG_STAT_SPYG;
                     short approveResult = McdCONST.MPM_SEG_APPROVE_RESULT_NOTPASSED;
                     McdCampDef segInfo = this.getCampSegInfo(childCampseg_id);
                     segInfo.setApproveResult(approveResult);
@@ -1024,7 +1025,10 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                                 task.setRetry(0);
                                 task.setBotherAvoidNum(0);
                                 task.setContactControlNum(0);
-                                task.setCycleType((short)mtlChannelDef.getContactType().intValue());
+                                if (null != mtlChannelDef.getContactType()) {
+                                	task.setCycleType((short)mtlChannelDef.getContactType().intValue());
+                                }
+                                
                                 mcdCampsegTaskDao.saveTask(task);
                                 
                                 String taskId = task.getTaskId();
