@@ -235,7 +235,6 @@ function load_channel(_cmd, _lct) {
 							});
 
 					if (_lct == 'content_offline') {
-						debugger;
 						var ele = $('#content_offline').find('tr:first-child .J_campType:first-child').addClass("active");
 						// ele.addClass('active');
 						add_event_listener();
