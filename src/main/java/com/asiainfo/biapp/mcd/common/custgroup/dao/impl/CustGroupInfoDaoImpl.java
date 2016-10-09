@@ -1306,11 +1306,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    @Override
 	    public void addCreateCustGroupTabInMem(String sql) {
 	        try {   
-	            log.info("sql: {}", sql);   
-	            System.out.println(sql);
-	            this.getJdbcTemplate().execute(sql);  
-		        /*List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql2,new Object[]{});
-		        System.out.println(list.size());*/
+	            log.info("sql: {}", sql);
+	            this.getJdbcTemplate().update(sql);
 	        } catch (Exception e) {
 	        	log.error("", e);
 	        }   
