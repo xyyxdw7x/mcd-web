@@ -1308,11 +1308,9 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	        try {   
 	            log.info("sql: {}", sql);   
 	            System.out.println(sql);
-	            this.getJdbcTemplate().execute("create table test2 as select * from mtl_cuser_XXXXXXXX ");  
-	            //int num = this.getJdbcTemplate().update(sql);
-	            String sql2 = "select * From mtl_cuser_j99916100071";
-		        List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql2,new Object[]{});
-		        System.out.println(list.size());
+	            this.getJdbcTemplate().execute(sql);  
+		        /*List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql2,new Object[]{});
+		        System.out.println(list.size());*/
 	        } catch (Exception e) {
 	        	log.error("", e);
 	        }   
