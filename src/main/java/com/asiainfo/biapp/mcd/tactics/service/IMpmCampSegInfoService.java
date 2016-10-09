@@ -97,7 +97,7 @@ public interface IMpmCampSegInfoService {
      */
     public void deleteCampSegInfo(String campSegId) throws MpmException;
 
-    public String createCustGroupTabAsCustTable1(String tabPrefix,String custGroupId)throws MpmException;
+    public String addCustGroupTabAsCustTable1(String tabPrefix,String custGroupId)throws MpmException;
 
     /**
      * 活动延期

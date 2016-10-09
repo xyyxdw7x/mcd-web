@@ -103,21 +103,6 @@ public class MpmCommonServiceImpl implements IMpmCommonService {
 				
 				//新增逻辑SQLLODER导入
 				log.info("sqlLoder导入开始.............." );
-				final String path = filepath;
-				final String fileNamePrefix = tableName;
-				Thread thread = new Thread(){
-					public void run() {
-						try {
-							custGroupInfoService.executeSqlldr(path, fileNamePrefix);
-						} catch (Exception e) {
-							log.info("客户群导入出错：", e);
-							e.printStackTrace();
-						}
-					}
-				};
-				thread.setName(customGroupName+"客户群导入"+tableName);
-				thread.start();
-				
 				custGroupInfoService.insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
 					Boolean isTrue = custGroupInfoService.getSqlLoderISyncDataCfgEnd(tableName);
 					while(!isTrue){

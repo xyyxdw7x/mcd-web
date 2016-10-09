@@ -228,7 +228,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	  		custGroupInfoService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
   			result.put("count", ""+i);
 			
-			campSegInfoService.createCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
+			campSegInfoService.addCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
 		
             //String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
             String config_Path = "D:\\temp\\mpm\\upload";
@@ -246,6 +246,21 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			fos.flush();//释放  
 			fos.close(); //关闭  
 			System.out.println(custGroupId +tableName); 
+			
+			final String path = filepath;
+			final String fileNamePrefix = tableName;
+			Thread thread = new Thread(){
+				public void run() {
+					try {
+						custGroupInfoService.executeSqlldr(path, fileNamePrefix);
+					} catch (Exception e) {
+						log.info("客户群导入出错：", e);
+						e.printStackTrace();
+					}
+				}
+			};
+			thread.setName(customGroupName+"客户群导入"+tableName);
+			thread.start();
 			
 			new Thread(new Runnable() {
 				public void run() {
