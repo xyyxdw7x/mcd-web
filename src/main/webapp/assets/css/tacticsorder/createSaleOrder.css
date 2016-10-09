@@ -4845,7 +4845,7 @@ html {
 }
 
 .effectContainer-addIcon{
-  background: url('../static/img/new.png') no-repeat;
+  background: url('../../images/new.png') no-repeat;
   color: white;
   margin: 0 5px -4px;
   display: inline-block;
@@ -4853,7 +4853,7 @@ html {
   height: 16px;
 }
 .effectContainer-addIcon-tr{
-  background: url('../static/img/new.png') no-repeat;
+  background: url('../../images/new.png') no-repeat;
   color: white;
   margin:0px 5px -4px;
   display: inline-block;
