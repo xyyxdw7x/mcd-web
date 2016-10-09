@@ -210,7 +210,15 @@ public interface ICustGroupInfoDao {
 	     */
 	    public void updateMtlGroupAttrRel(String customGroupId, String columnName,
 	            String columnCnName, String columnDataType, String columnLength, String mtlCuserTableName);
-
+		
+		/**
+		 * 执行导入sqlldr命令
+		 * @param filepath
+		 * @param fineNamePrefix
+		 * @return
+		 */
+		public void executeSqlldr(String filepath, String fineNamePrefix) throws Exception ;
+		
 	    /**
 	     * 查看该任务执行信息
 	     * @param mtlCuserTableName

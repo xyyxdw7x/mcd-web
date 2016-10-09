@@ -1,5 +1,7 @@
 package com.asiainfo.biapp.mcd.common.custgroup.dao.impl;
 
+import java.io.IOException;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -21,8 +24,6 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
-
-import org.apache.commons.lang3.StringUtils;
 
 @Repository("custGroupInfoDao")
 public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfoDao,BeanSelfAware{
@@ -402,7 +403,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	@Override
 	public void insertSqlLoderISyncDataCfg(String fileName, String fileNameVerf, String customGroupName, String mtlCuserTableName,String ftpStorePath,String filenameTemp,String customGroupId) {
 		String inertSql = "insert into i_sync_data_cfg (CFG_ID, NAME, EXEC_STATUS, TIME_TYPE, EXEC_TYPE, IS_OVERRIDE, IS_BACKUP, DB_TYPE, EXEC_SQL, COLUMN_TYPES, DATA_FILE_FORMAT, CHK_FILE_FORMAT, COLUMN_NUM, COLUMN_SPLIT, RUN_BEGIN_TIME, RUN_END_TIME, REMARK, ATTACH_PATH, CTL_FILE_PATH, FTP_ID, CONTINUOUS_CFG_ID,POLICY_ID)" +
-        "values ((select max(CFG_ID)+1 from i_sync_data_cfg), ?, 0, 0, 4, 0, 0, 2, ?, '', ?, ?, '1', ',', sysdate, '', ?, ?, ?, null, null,?)";
+        "values ((select decode(max(CFG_ID) ,null,1, max(CFG_ID)+1) as maxID from i_sync_data_cfg), ?, 0, 0, 4, 0, 0, 2, ?, '', ?, ?, '1', ',', sysdate, '', ?, ?, ?, null, null,?)";
 		log.info("sqlloder insertSQL :" + inertSql );
 		log.info("customGroupName :" + customGroupName +", mtlCuserTableName:" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+",mtlCuserTableName :" + mtlCuserTableName+", fileName:" + fileName+", fileNameVerf:" + fileNameVerf+", mtlCuserTableName:" + mtlCuserTableName+", ftpStorePath:" + ftpStorePath +",filenameTemp:" +filenameTemp + ",customGroupId:" + customGroupId);
 		this.getJdbcTemplate().update(inertSql,new Object[]{customGroupName,mtlCuserTableName,fileName,fileNameVerf,mtlCuserTableName,ftpStorePath,filenameTemp,customGroupId});
@@ -1235,7 +1236,28 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	        this.getJdbcTemplate().update(sqldb, argdbs);
 
 	    }
-
+		
+		/**
+		 * 执行导入sqlldr命令
+		 * @param filepath
+		 * @param fileNamePrefix
+		 * @return
+		 */
+		public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{
+			Connection conn = this.getJdbcTemplate().getDataSource().getConnection();
+			String dbuserId = conn.getMetaData().getUserName();
+			String ctlFile = filepath+"/"+fileNamePrefix+".txt";
+			String logFile = filepath+"/"+fileNamePrefix+".log";
+			
+			try {
+				String command = "sqlldr "+dbuserId+"/mcd_core@10.1.253.75/ora11g control='"+ctlFile+"' log='"+logFile+"'  readsize=10485760 direct=true";
+				Runtime.getRuntime().exec(command);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+		
 	    /**
 	     * 查看该任务执行信息
 	     * @param mtlCuserTableName
@@ -1284,10 +1306,15 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    @Override
 	    public void addCreateCustGroupTabInMem(String sql) {
 	        try {   
-	            log.debug("sql: {}", sql);   
-	            this.getJdbcTemplate().execute(sql);  
+	            log.info("sql: {}", sql);   
+	            System.out.println(sql);
+	            this.getJdbcTemplate().execute("create table test2 as select * from mtl_cuser_XXXXXXXX ");  
+	            //int num = this.getJdbcTemplate().update(sql);
+	            String sql2 = "select * From mtl_cuser_j99916100071";
+		        List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql2,new Object[]{});
+		        System.out.println(list.size());
 	        } catch (Exception e) {
-	            e.printStackTrace(); 
+	        	log.error("", e);
 	        }   
 	    }
 

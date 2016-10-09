@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,6 @@ import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
-import org.apache.commons.lang3.StringUtils;
 
 @Service("custGroupInfoService")
 public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
@@ -536,6 +537,16 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	        
 	        custGroupInfoDao.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
 	    }
+	    
+		/**
+		 * 执行导入sqlldr命令
+		 * @param filepath
+		 * @param fileNamePrefix
+		 * @return
+		 */
+		public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception {
+			custGroupInfoDao.executeSqlldr(filepath, fileNamePrefix);
+		}
 	    /**
 	     * 查看SQLLoader文件导入是否成功了
 	     * @param mtlCuserTableName
