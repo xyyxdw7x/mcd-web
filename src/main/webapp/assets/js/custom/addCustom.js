@@ -164,9 +164,12 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 	        }
 	        return false;
 	    },
-		downloadrdyw:function(){ 
-	      	 var url = "download.jsp";
-	      	 window.open(url);
+		downloadrdyw:function(){
+	      	 var url = _ctx+"/action/custgroup/custGroupManager/downloadTemplate.do";
+	      	              
+//	      	 window.open(url);
+	      	 debugger
+	      	window.location.href = url;
 		}
 	};
 });

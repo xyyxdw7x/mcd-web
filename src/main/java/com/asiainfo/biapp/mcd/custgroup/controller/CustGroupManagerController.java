@@ -1,7 +1,11 @@
 package com.asiainfo.biapp.mcd.custgroup.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -260,6 +264,36 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		} 
 		
 		return returnMap;
+	}
+	
+	/**
+	 * 下载客户群导入模板
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping
+	public void downloadTemplate(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//下载文件的路径
+		String realPath = this.getServletContext().getRealPath("/jsp/custom/20160329.txt");
+		//获取要下载的文件名
+		String fileName = "客户群导入模板.txt";
+		
+		//设置content-disposition响应头控制浏览器以下载的形式打开文件，中文文件名要使用URLEncoder.encode方法进行编码，否则会出现文件名乱码
+		response.setHeader("content-disposition", "attachment;filename="+URLEncoder.encode(fileName, "UTF-8"));
+		//获取文件输入流
+		InputStream in = new FileInputStream(realPath);
+		int len = 0;
+		byte[] buffer = new byte[1024];
+		OutputStream out = response.getOutputStream();
+		while ((len = in.read(buffer)) > 0) {
+			//将缓冲区的数据输出到客户端浏览器
+			out.write(buffer,0,len);
+		}
+		out.flush();
+		out.close();
+		in.close();
 	}
 	
 	/**
