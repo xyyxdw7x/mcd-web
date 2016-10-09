@@ -399,3 +399,38 @@
   background-color: #fff;
   border-top: 4px solid #278cde;
 }
+.container .content {
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  margin: 10px 286px 0 115px;
+  position: relative;
+}
+.container .content .content-title-little {
+  width: 100%;
+  height: 44px;
+  overflow: hidden;
+  margin: 15px 0 0;
+  position: relative;
+  text-align: left;
+  cursor: auto;
+  color: #000;
+  line-height: 24px;
+  font-family: Microsoft YaHei;
+  padding-left: 10px;
+  font-size: 20px;
+}
+.container .content .content-title {
+  width: 100%;
+  height: 44px;
+  overflow: hidden;
+  margin: 15px 0 0;
+  position: relative;
+  text-align: left;
+  font-size: 20px;
+  cursor: auto;
+  color: #000;
+  line-height: 24px;
+  font-family: Microsoft YaHei;
+  padding-left: 10px;
+}
