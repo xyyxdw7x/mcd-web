@@ -8,10 +8,9 @@
 <title>群发管理</title>
 <%@ include file="../../jsp/common/head.jsp" %>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<link href="${ctx}/assets/css/provinces/jx/bull/bulkManage.css" rel="stylesheet" type="text/css" />
+<link href="${ctx}/assets/css/provinces/<%=provinces%>/bull/bulkManage.css" rel="stylesheet" type="text/css" />
 
 <style type="text/css">
-
 .bulk-city-day-month-quota {
     width: 520px;
     height: 36px;

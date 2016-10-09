@@ -49,9 +49,9 @@ public class MtlSysCampConfigDaoImpl extends JdbcDaoBase implements IMtlSysCampC
 	}
 	
 	public Object getProperety(String key) {
-		String sql = "select t.* from mcd_sys_dic t where t.CONFIG_KEY = ?";
+		String sql = "select t.* from mcd_sys_dic t where t.DIC_KEY = ?";
 		Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql, new Object[] { key });
-		return (String)map.get("CONFIG_VALUE");
+		return (String)map.get("DIC_DATA_VALUE");
 	}
 	
 }
