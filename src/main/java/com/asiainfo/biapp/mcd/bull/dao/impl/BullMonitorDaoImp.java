@@ -69,7 +69,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements IBullMonitorDao {
 			log.info("getBullMonitorList执行sql=" + sql);
 			list = this.getJdbcTemplate().queryForList(sql.toString(), day, cityId);
 		} catch (DataAccessException e) {
-			return null;
+			log.error("",e);
 		}
 		return list;
 
@@ -109,7 +109,7 @@ public class BullMonitorDaoImp extends JdbcDaoBase implements IBullMonitorDao {
 			log.info("getBullMonitorListByDept执行sql=" + sql);
 			list = this.getJdbcTemplate().queryForList(sql.toString(), day, cityId, deptId);
 		} catch (DataAccessException e) {
-			return null;
+			log.error("",e);
 		}
 		return list;
 
