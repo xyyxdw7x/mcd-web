@@ -248,7 +248,7 @@ define(["backbone"],function(require, exports, module) {
 				click : function(obj) {
 					var target=$(obj.target);
 					if(!target.attr("id") == "searchButton_all") return;
-					var ajaxData ={ "contentType":"ALL-CUSTOM", "keywords":$("#search_all input").val().toUpperCase() };
+					var ajaxData ={ "contentType":"ALL-CUSTOM", "keywords":$("#search_all input").val()};
 					if(window.tableViewManage_all){
 						window.tableViewManage_all .undelegateEvents();  
 					}
@@ -276,7 +276,7 @@ define(["backbone"],function(require, exports, module) {
 				click : function(obj) {
 					var target=$(obj.target);
 					if(!target.attr("id") == "searchButton_mine") return;
-					var ajaxData = { "contentType":"MY-CUSTOM","keywords":$("#search_mine input").val().toUpperCase()};
+					var ajaxData = { "contentType":"MY-CUSTOM","keywords":$("#search_mine input").val()};
 					if(window.tableViewManage_mine ){
 						window.tableViewManage_mine.undelegateEvents();  
 					}
@@ -304,7 +304,7 @@ define(["backbone"],function(require, exports, module) {
 				click : function(obj) {
 					var target=$(obj.target);
 					if(!target.attr("id") == "searchButton_abnormal") return;
-					var ajaxData = { "contentType":"ABNORMAL-CUSTOM","keywords":$("#search_abnormal input").val().toUpperCase()};
+					var ajaxData = { "contentType":"ABNORMAL-CUSTOM","keywords":$("#search_abnormal input").val()};
 					if(window.tableViewManage_abnormal ){
 						window.tableViewManage_abnormal.undelegateEvents();
 					}

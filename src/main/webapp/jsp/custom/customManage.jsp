@@ -130,23 +130,6 @@
     </div>
 </div>
 
-<style>
-	.handOutList{
-		margin: 20px 100px;
-	}
-	.handOutList .item{
-		margin-top: 10px;
-	}
-	.handOutList input{
-		margin-right: 20px;
-	}
-	.ui-dialog .ui-widget-content .ui-state-default.ok-button{
-		width: 100px;
-	}
-	.ui-dialog .ui-dialog-buttonpane .bigButton{
-		width: 100px;
-	}
-</style>
 <div id="handOutDialog" class="handOutDialog" style="display:none;">
 	<ul class="handOutList">
 	</ul>
