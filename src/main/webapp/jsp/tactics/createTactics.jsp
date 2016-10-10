@@ -5,6 +5,8 @@
 <title>新建策略</title>
 <%@ include file="../../jsp/common/head.jsp" %>
 <link  type="text/css" rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/put/newCreateTactics.css" />
+<link  rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/lib/tooltip.css" />
+
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsPlan.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsCustGroup.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/tactics/provinces/<%=provinces%>/createTacticsChannel.js"></script>
@@ -38,6 +40,7 @@
 				<a id="nextBtn" href="javascript:;" class="btn-a btn-a-blue btn100-30">下一步</a>
 			</div>
 		</div>
+
 		<!-- 右侧购物车 -->
 		<jsp:include page="<%=shopCarUrl%>"></jsp:include>
 	</div>
