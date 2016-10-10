@@ -287,7 +287,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 				        nextText:'下一页',
 				        cssStyle: 'light-theme',
 				        onPageClick:function(pageNumber,event){
-				        	obj.setDomList(pageNumber,this.model);
+				        	obj.setDomList(pageNumber,new avoidBothorCustomerTableModel({id : options.id}));
 				        }
 				    });
 				},
