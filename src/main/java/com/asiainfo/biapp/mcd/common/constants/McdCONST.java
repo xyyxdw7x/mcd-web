@@ -112,4 +112,12 @@ public class McdCONST {
     public static final String TACTICS_COMMIT_FAIL = "2";
     //策略保存成功
     public static final String TACTICS_SAVE_FAIL = "3";
+    
+    
+    //1代表一次性
+    public static final int CUST_INFO_GRPUPDATEFREQ_ONE = 1;
+    //2代表月周期
+    public static final int CUST_INFO_GRPUPDATEFREQ_MONTH = 2;
+    //3代表日周期
+    public static final int CUST_INFO_GRPUPDATEFREQ_DAY = 3;
 }

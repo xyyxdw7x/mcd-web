@@ -8,6 +8,7 @@ import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 
 /**
  * 
@@ -210,6 +211,13 @@ public interface ICustGroupInfoService {
      * @return
      */
 	Map<String, Object> queryCustGroupDetail(String customGrpId);
+	   /**
+     * COC调用接口保存客户群对应清单内容方法
+     * @param custInfoXml
+     * @return
+     * @throws MpmException
+     */
+    public String doSendCustInfo(String custInfoXml);
 	
 }
 

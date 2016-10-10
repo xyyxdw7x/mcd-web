@@ -1347,4 +1347,52 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
             List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(buffer.toString(),new Object[]{tableName});
             return list;
         }
+
+        @Override
+        public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate) {
+            List<Map<String, Object>> list = null;
+            try {
+                StringBuffer sbuffer = new StringBuffer();
+                sbuffer.append("SELECT * FROM mcd_custgroup_tab_list WHERE custom_group_id = ? and data_date = ? ");
+                log.info("查询客户群清单信息："+sbuffer.toString() + "customgroupid :" + customGroupId + "customGroupDataDate:" + customGroupDataDate);
+                list = this.getJdbcTemplate().queryForList(sbuffer.toString(),new Object[] { customGroupId ,customGroupDataDate});
+            } catch (Exception e) {
+                log.error("",e);
+            }
+            return list;
+        }
+        /**
+         * 重复传递客户群，删除之前的客户群推送信息表
+         * @param customGroupId  客户群ID
+         * @return
+         * @throws Exception
+         */
+        @Override
+        public void deleteMtlGroupPushInfos(String customGroupId) {
+            //客户群如果重复推送，删除之前的目标推送人，维护最新的目标推送人
+            String deletesql = "delete from mtl_group_push_info where custom_group_id = ?";
+            Object[] deleteArgdbs = new Object[]{customGroupId};
+            this.getJdbcTemplate().update(deletesql, deleteArgdbs);
+            
+        }
+        /**
+         * AD库里执行语句
+         * @param creatMtlCuserSql
+         */
+        @Override
+        public void execInMemSql(String creatMtlCuserSql) {
+            this.getJdbcTemplate().execute(creatMtlCuserSql);
+            
+        }
+        /**
+         * 根据代替MCD_AD内的表在MCD里创建表的同义词
+         * @param mtlCuserTableName
+         */
+        @Override
+        public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+            String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+
+            String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
+            this.getJdbcTemplate().execute(sql);
+        }
 }

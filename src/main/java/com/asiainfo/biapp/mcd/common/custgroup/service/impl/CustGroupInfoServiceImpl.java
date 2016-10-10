@@ -1,8 +1,11 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,19 +15,31 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.xfire.client.Client;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
+import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
+import com.asiainfo.biapp.mcd.common.custgroup.vo.CustInfoBean;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
+import com.asiainfo.biapp.mcd.common.util.DateTool;
+import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
+import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
+import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
+import com.asiainfo.biapp.mcd.thread.MpmCustGroupWsFtpRunnable;
 
 @Service("custGroupInfoService")
 public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
@@ -33,7 +48,8 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	
 	@Resource(name="custGroupInfoDao")
 	ICustGroupInfoDao custGroupInfoDao;
-
+	@Resource(name="mtlCallWsUrlService")
+	private IMtlCallWsUrlService callwsUrlService;
 
 	@Autowired
 	private IUserPrivilege userPrivilege;
@@ -581,4 +597,275 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	    public void addMtlGroupPushInfos(String customGroupId,String userId,String pushToUserId) {  
 	        custGroupInfoDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
 	    }
+        @Override
+        public String doSendCustInfo(String custInfoXml) {
+            String exceptionMessage = "";
+            int dataStatus=0;//默认成功 
+            String customGroupDataDate = "";//统计周期
+            String rowNumber = "";//客户数量
+            Object[] args = new Object[]{};
+            String mtlCuserTableName = "";
+            String fileName = "";
+            String fileNameChk = "";
+            String chkFileName = "";
+            String customGroupId= "";
+            String customGroupName = "";
+            String customGroupDesc ="";
+            String customRules="";
+            String userId="";
+            String crtPersnName = "";
+            String crtTime = "";
+            String dataCycle= "";
+            String grpStatus = "";
+            String effectiveTime = "";
+            String failTime = "";
+            int flag = 1;
+            Map<String,String> tableCnameMap = new HashMap<String,String>();
+            List<String> columnNameList = new ArrayList<String>();
+            List<String> columnTypeList = new ArrayList<String>();
+            StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xml.append("<result><flag>");
+            Document dom = null;
+            Element root = null;
+            Element data = null;
+            CustInfo custInfoBean =null;
+            try {
+                dom = DocumentHelper.parseText(custInfoXml);
+                root=dom.getRootElement(); 
+                data=root.element("data"); 
+                customGroupId = data.element("customGroupId") == null ? null : data.element("customGroupId").getText(); //客户群ID    mtl_group_info.custom_group_id
+//              if("KHQ000010384".equals(customGroupId)){
+//                  xml.append(1 + "</flag><groupId>");
+//                  xml.append(customGroupId + "</groupId><msg>");
+//                  xml.append("保存客户群信息成功（不包含导入FTP文件）</msg></result>");
+//                  return xml.toString();
+//              }
+                customGroupName = data.element("customGroupName") == null ? null : data.element("customGroupName").getText(); //客户群名称     mtl_group_info.custom_group_name
+                customGroupDesc = data.element("customGroupDesc") == null ? null : data.element("customGroupDesc").getText(); //客户群描述     mtl_group_info.custom_group_desc
+                customRules = data.element("customRules") == null ? null : data.element("customRules").getText(); //客户群口规则   mtl_group_info.rule_desc 
+                userId = data.element("userId") == null ? null : data.element("userId").getText(); //创建人ID     mtl_group_info.create_user_id
+                crtPersnName = data.element("crtPersnName") == null ? null : data.element("crtPersnName").getText(); //创建人名称     没字段对应不用存
+                crtTime = data.element("crtTime") == null ? null : data.element("crtTime").getText(); //创建时间   mtl_group_info. create_time
+                rowNumber = data.element("rowNumber") == null ? null : data.element("rowNumber").getText(); //客户群数量   mtl_group_info.custom_num
+                dataCycle = data.element("dataCycle") == null ? null : data.element("dataCycle").getText(); //客户群生成周期:1,一次性;2,月周期;3,日周期  mtl_group_info.update_cycle
+//              grpStatus = root.element("grpStatus").getText(); //客户群状态      mtl_group_info.custom_status_id
+                effectiveTime = data.element("effectiveTime") == null ? null : data.element("effectiveTime").getText(); //生效时间  mtl_group_info.effective_time
+                failTime = data.element("failTime") == null ? null : data.element("failTime").getText(); //失效时间  mtl_group_info.fail_time
+                customGroupDataDate = data.element("dataDate") == null ? null : data.element("dataDate").getText();//清单数据最新日期
+
+            }catch (Exception e) {
+                exceptionMessage = "xml格式错误，与预订接口字段不符，具体错误如下：" + e.getMessage();
+                flag = 2;
+                xml.append(flag + "</flag><groupId>");
+                xml.append(customGroupId + "</groupId><msg>");
+                xml.append(exceptionMessage + "</msg></result>");
+                log.error(e.getMessage());
+                this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
+                return xml.toString();
+            } 
+            List mtlCustomListInfoList = custGroupInfoDao.getMtlCustomListInfo(customGroupId,customGroupDataDate);
+            log.info("客户群ID："+customGroupId+",日期:"+customGroupDataDate+"的客户群，历史提送过：" + mtlCustomListInfoList != null ? mtlCustomListInfoList.size() : 0);
+            if(mtlCustomListInfoList == null || mtlCustomListInfoList.size() == 0){
+                List<Element> elementList = null;
+                try {
+                    custInfoBean = new CustInfo();
+                    custInfoBean.setCustomGroupId(customGroupId);
+                    custInfoBean.setCustomGroupName(customGroupName);
+                    custInfoBean.setCustomGroupDesc(customGroupDesc);
+                    custInfoBean.setRuleDesc(customRules);
+                    custInfoBean.setCreateUserId(userId);
+                    custInfoBean.setCreatetime(StringUtils.isNotBlank(crtTime) ? null : DateTool.getDate(crtTime));
+                    custInfoBean.setCustomNum(StringUtils.isNotBlank(rowNumber) ? null : Integer.parseInt(rowNumber));
+                    custInfoBean.setUpdateCycle(StringUtils.isNotBlank(dataCycle) ? null : Integer.parseInt(dataCycle));
+//                  custInfoBean.setCustomStatusId(Integer.parseInt(grpStatus));
+                    custInfoBean.setEffectiveTime(StringUtils.isNotBlank(effectiveTime) ? null :DateTool.getDate(effectiveTime));
+                    custInfoBean.setFailTime(StringUtils.isNotBlank(failTime) ? null : DateTool.getDate(failTime));
+                    if(!StringUtils.isNotBlank(crtPersnName) && StringUtils.isNotBlank(userId)) {
+                        User user = userPrivilege.queryUserById(userId);
+
+                        String userName = "";
+                        if(user != null) {
+                            userName = user.getName();
+                        }
+                        custInfoBean.setCreateUserName(userName);
+                    }else{
+                        custInfoBean.setCreateUserName(crtPersnName);
+                    }
+                    
+                     this.updateMtlGroupinfo(custInfoBean);
+                     Element columnsElement=data.element("columns"); 
+                     elementList=columnsElement.elements("column"); 
+//                   List<Map> mapList = new ArrayList<Map>();
+                     //客户群清单表名
+                    fileName = "MCD_GROUP_" + customGroupId + "_";
+                     Integer dataCycleInt = Integer.parseInt(dataCycle);
+                     if(McdCONST.CUST_INFO_GRPUPDATEFREQ_ONE == dataCycleInt.intValue() || McdCONST.CUST_INFO_GRPUPDATEFREQ_DAY == dataCycleInt.intValue()){
+                        fileName = fileName + customGroupDataDate;
+                     }else{
+                        fileName = fileName + customGroupDataDate;
+                     }
+
+                    mtlCuserTableName = "mtl_cuser_" + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
+                    String creatMtlCuserSql = "create table " + mtlCuserTableName + "(";
+                     for(int i=0;i<elementList.size();i++){
+                        Element element= (org.dom4j.Element) elementList.get(i);
+                        String columnName = element.element("columnName").getText(); //属性字段名称，逗句分隔   MTL_GROUP_ATTR_REL。attr_col
+                        String columnCnName = element.element("columnCnName").getText(); //属性字段中文，逗句分隔    MTL_GROUP_ATTR_REL。attr_col_name
+                        String columnDataType = element.element("columnDataType").getText(); //属性字段类型   MTL_GROUP_ATTR_REL。attr_col_type
+                        String columnLength = element.element("columnLength").getText(); //  属性字段长度   MTL_GROUP_ATTR_REL。attr_col_length
+                        columnNameList.add(columnName);
+                        columnTypeList.add(columnDataType.toLowerCase());
+                        this.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
+                        tableCnameMap.put(columnCnName, columnName);
+                        if("PRODUCT_NO".equals(columnName.toUpperCase())){
+                            creatMtlCuserSql = creatMtlCuserSql + columnName + "  " + columnDataType + "(20),";
+                        }else{
+                            if("char".equals(columnDataType.toLowerCase()) || "nvchar2".equals(columnDataType.toLowerCase()) || "vchar2".equals(columnDataType.toLowerCase()) || "varchar".equals(columnDataType.toLowerCase())  || "varchar2".equals(columnDataType.toLowerCase()) || "decimal".equals(columnDataType.toLowerCase())){
+                                creatMtlCuserSql = creatMtlCuserSql + columnName + "  " + columnDataType + "(" + columnLength + "),";
+                            }else{
+                                creatMtlCuserSql = creatMtlCuserSql + columnName + "  " + columnDataType + ",";
+                            }
+                        }
+                     }
+                     creatMtlCuserSql = creatMtlCuserSql.substring(0,creatMtlCuserSql.length()-1) + " , data_date VARCHAR(32))";
+                     
+                     String pushToUserIds = data.element("pushToUserIds") == null ? "" : data.element("pushToUserIds").getText(); //推送给其他人ID，逗句分隔         
+                     //根据,分割，然后存入表  mtl_group_push_info 
+                     if(!"".equals(pushToUserIds)){
+                         String[] mtlGroupPushInfos = pushToUserIds.split(",");
+                         if(mtlGroupPushInfos.length > 0){
+                             custGroupInfoDao.deleteMtlGroupPushInfos(customGroupId); 
+                         }
+                         for(String pushToUserId : mtlGroupPushInfos){
+                             custGroupInfoDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
+                         } 
+                     }
+
+//                  mtlCustGroupJdbcDao.execute(creatMtlCuserSql);//因为此库需要建同义词，故注释
+                    
+
+                    custGroupInfoDao.execInMemSql(creatMtlCuserSql);
+                    //MCD表创建同义词
+                    custGroupInfoDao.createSynonymTableMcdBySqlFire(mtlCuserTableName);
+
+
+                }catch (Exception e) {
+                    exceptionMessage = "创建“客户群清单表”出错，请查看是否给出的类型不需要长度属性或者需要长度属性的类型没有给出长度属性，具体如下：：" + e.getMessage();
+                    flag = 2;
+                    xml.append(flag + "</flag><groupId>");
+                    xml.append(customGroupId + "</groupId><msg>");
+                    xml.append(exceptionMessage + "</msg></result>");
+                    log.info(exceptionMessage);
+                    this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
+                    custInfoBean.setCustomStatusId(9);
+                    log.error(e.getMessage());
+                    custGroupInfoDao.updateMtlGroupinfo(custInfoBean);
+                    return xml.toString();
+                } 
+//              InputStream ins = null; 
+//              InputStream insChk = null; 
+//              StringBuilder builder = null;
+//              ApacheFtpUtil ftp = null;
+//              FTPClient ftpClient = null;
+                
+                
+//              try {
+//                  //获取FTP地址：
+//                  //从mcd.properties内取数据
+//                  String ftpServer = Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_SERVER_IP");//FTP链接
+//                  int ftpServerPort = Integer.parseInt(Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_SERVER_PORT"));//ftp端口
+//                  
+//                  String ftpStorePath = Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_SERVER_STORE_PATH");//ftp地址
+//                  String ftpUserName = Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_USERNAME");//账号
+//                  String ftpUserPwd = Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_USERPWD");//密码
+//                  String ftpUserPwdEncrypt = Configure.getInstance().getProperty("MPM_CUSTINFO_FTP_USERPWD_ENCRYPT");
+////                    if (ftpUserPwdEncrypt != null && ftpUserPwdEncrypt.equals("1")) {
+////                        ftpUserPwd = DES.decrypt(ftpUserPwd);
+////                    }
+//                  
+//              
+//                  ftp = ApacheFtpUtil.getInstance(ftpServer, ftpServerPort, ftpUserName, ftpUserPwd, null);
+//                  if (ftpStorePath != null && ftpStorePath.length() != 0) {
+//                      ftp.changeDir(ftpStorePath);
+//                  }
+//                  ftpClient = ftp.getFtpClient();
+//                  ftpClient.setConnectTimeout(500000);
+//                  ftpClient.setControlEncoding("GBK");
+//                  // 从服务器上读取指定的文件 
+//                  ins = ftpClient.retrieveFileStream(fileName + ".txt"); 
+//                  if(ins == null){
+//                      exceptionMessage = "出现错误，ftp无法获取或者文件不存，或FTP出现错误无法读取";
+//                      flag = 2;
+//                      xml.append(flag + "</flag><groupId>");
+//                      xml.append(customGroupId + "</groupId><msg>");
+//                      xml.append(exceptionMessage + "</msg></result>");
+//                      this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
+//                      custInfoBean.setCustomStatusId(9);
+//                      mtlCustGroupJdbcDao.updateMtlGroupinfo(custInfoBean);
+//                      return xml.toString();
+//                  }
+//                  
+//                  ftpClient.getReply(); 
+//                  insChk = ftpClient.retrieveFileStream(fileName + ".CHK"); 
+//                  ftp.forceCloseConnection(); 
+//                  if (ins != null) { 
+//                    ins.close(); 
+//                  } 
+//                  if (insChk != null) { 
+//                      insChk.close(); 
+//                  } 
+//              }catch (Exception e) {
+//                  log.error(e.getMessage());
+//                  exceptionMessage = "出现错误，ftp无法获取或者文件不存，具体如下：" + e.getMessage();
+//                  flag = 2;
+//                  xml.append(flag + "</flag><groupId>");
+//                  xml.append(customGroupId + "</groupId><msg>");
+//                  xml.append(exceptionMessage + "</msg></result>");
+//                  this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
+//                  custInfoBean.setCustomStatusId(9);
+//                  mtlCustGroupJdbcDao.updateMtlGroupinfo(custInfoBean);
+//                  return xml.toString();
+//              } 
+               //线程异步读取FTP文件
+                MpmCustGroupWsFtpRunnable mpmCustGroupWsFtpRunnable = new MpmCustGroupWsFtpRunnable(fileName,exceptionMessage,customGroupId,mtlCuserTableName,
+                        elementList,columnNameList,columnTypeList,custInfoBean,
+                        customGroupDataDate,rowNumber);
+
+                new Thread(mpmCustGroupWsFtpRunnable).start();
+
+                if("".equals(exceptionMessage)){
+                    xml.append(flag + "</flag><groupId>");
+                    xml.append(customGroupId + "</groupId><msg>");
+                    xml.append("保存客户群信息成功（不包含导入FTP文件）</msg></result>");
+                }
+                log.info(xml);
+            }else{
+                if("".equals(exceptionMessage)){
+                    xml.append(2 + "</flag><groupId>");
+                    xml.append(customGroupId + "</groupId><msg>");
+                    xml.append("**********************该客户群重复推送******************</msg></result>");
+                }
+                log.info(xml);
+            }
+
+            return xml.toString();
+        }
+        
+        private String loadCustListError(String customGroupId, String sysId,String excepMsg) {
+                try {
+                    McdSysInterfaceDef url = callwsUrlService
+                            .getCallwsURL("WSMCDINTERFACESERVER");
+
+                    Client client = new Client(new URL(url.getCallwsUrl()));
+
+                    Object[] resultObject = client.invoke("loadCustListError",
+                            new String[] { customGroupId, sysId, excepMsg });// mtlCampSeginfo.getApproveFlowid()});
+                    log.info("调用COC错误接口返回信息："+resultObject[0]);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+          }
 }

@@ -261,4 +261,28 @@ public interface ICustGroupInfoDao {
          * @return
          */
         public List<Map<String, Object>> getInMemcheckTableIsPartition(String tableName);
+        /**
+         * 根绝客户群ID，日期查询是否有数据
+         * @param customGroupId
+         * @param customGroupDataDate
+         * @return
+         */
+        public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate);
+        /**
+         * 重复传递客户群，删除之前的客户群推送信息表
+         * @param customGroupId  客户群ID
+         * @return
+         * @throws Exception
+         */
+        public void deleteMtlGroupPushInfos(String customGroupId);
+        /**
+         * AD库里执行语句
+         * @param creatMtlCuserSql
+         */
+        public void execInMemSql(String creatMtlCuserSql);
+        /**
+         * 根据代替MCD_AD内的表在MCD里创建表的同义词
+         * @param mtlCuserTableName
+         */
+        public void createSynonymTableMcdBySqlFire(String mtlCuserTableName);
 }
