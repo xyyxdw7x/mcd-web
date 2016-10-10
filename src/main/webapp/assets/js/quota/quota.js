@@ -175,7 +175,7 @@ function changeMonthDate(){
 //查询月份日配额
 function getDateData(){
 	
-	 var  opts = {url:_ctx+"/dayQuota/viewDayQuota?ttDate="+(new Date()).getTime() , async :false};
+	 var  opts = {url:_ctx+"/quotaManage/viewDayQuota?ttDate="+(new Date()).getTime() , async :false};
 	 var  ajaxData = {};
 	           if($.trim($("#month").val()) !== ""){
 	        	      ajaxData["dataDate"] = formateDateFn($.trim($("#month").val()));
@@ -256,7 +256,7 @@ function  renderDateData(jsonText){
 
 	//查询月配额
 	function getMonthData(){
-	   var  opts = {url:_ctx+"/monthQuota/queryDeptsConfigMonth?ttDate="+(new Date()).getTime() , async :false};
+	   var  opts = {url:_ctx+"/quotaManage/queryDeptsConfigMonth?ttDate="+(new Date()).getTime() , async :false};
 	   var  ajaxData = {};
 	           if($.trim($("#month").val()) !== ""){
 	        	      ajaxData["dataDate"] = formateDateFn($.trim($("#month").val()));
@@ -352,7 +352,7 @@ function  renderDateData(jsonText){
           if($("#resetBtn")[0].checked == true){
         	     renderMonthData(MonthDataBuffer);
           }else{
-	           var  opts = {url:_ctx+"/monthQuota/batchModifyMonConf?ttDate="+(new Date()).getTime() , async :false};
+	           var  opts = {url:_ctx+"/quotaManage/batchModifyMonConf?ttDate="+(new Date()).getTime() , async :false};
 	      	   var  ajaxData = {};
 	      	   var   inputLen = $("#monthTbody").find(".limitInput").length;
 	      	    var beanArr = "[";
@@ -391,7 +391,7 @@ function  renderDateData(jsonText){
           $(promptLayer).hide();
           $(shadeLayer).hide();
           $("#dateSave").removeClass("active").attr("disabled","disabled");
-       var  opts = {url:_ctx+"/dayQuota/saveQuota4Day" , async :true};
+       var  opts = {url:_ctx+"/quotaManage/saveCityDaysQuot" , async :true};
    	   var  ajaxData = {};
    	   var  temp = [];
    	           ajaxData["month"] = formateDateFn($.trim($("#month").val()));

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
@@ -32,8 +31,6 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	private IQuotaConfigCityMothDao quotaConfigCityMothDao;
 	@Resource(name = "quotaDayDeptUsedDao")
 	private IQuotaDayDeptUsedDao quotaDayDeptUsedDao;
-	@Resource(name = "quotaConfigDeptDayDao")
-	private IQuotaConfigDeptDayDao quotaConfigDeptDayDao;
 	@Resource(name = "quotaConfigDeptMonthDefaultDao")
 	private IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao;
 	@Resource(name = "deptsQuotaStatisticsDao")

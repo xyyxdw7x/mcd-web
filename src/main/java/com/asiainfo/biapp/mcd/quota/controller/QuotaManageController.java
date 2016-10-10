@@ -2,7 +2,6 @@ package com.asiainfo.biapp.mcd.quota.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,72 +15,147 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
-import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptDayService;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
-@RequestMapping("/dayQuota")
-public class DeptDayQuotaController  extends BaseMultiActionController {
+@Controller
+@RequestMapping("/quotaManage")
+public class QuotaManageController  extends BaseMultiActionController {
+    private static final Logger log = LogManager.getLogger();
 
-    private static final Logger log = LogManager.getLogger(DeptDayQuotaController.class);
-
-    @Resource(name = "quotaConfigCityDayService")
-    private IQuotaConfigCityDayService quotaConfigCityDayService;
-    
-    @Resource(name = "quotaConfigDeptDayService")
-    private IQuotaConfigDeptDayService quotaConfigDeptDayService;
-    
     @Resource(name = "quotaConfigDeptMothService")
     private IQuotaConfigDeptMothService quotaConfigDeptMothService;
+    @Resource(name = "quotaConfigCityDayService")
+    private IQuotaConfigCityDayService quotaConfigCityDayService;
+    @Resource(name = "sysCampConfigDao")
+    private IMtlSysCampConfigDao sysCampConfigDao;
     
     /**
-     * 调整单日配额
+     * 查询当前人员所在地市的所有科室的月配额
      * @param request
      * @param response
      * @return
      * @throws Exception
      */
-    public ModelAndView editDayQuota(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        
-        String deptId=request.getParameter("deptId");
-        String dataDate = null;
+    @RequestMapping("/queryDeptsConfigMonth")
+    public void queryDeptsConfigMonth(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String cityid = this.getUser(request, response).getCityId();
+        String dataDate;
         String showDate = request.getParameter("dataDate");
-        String cityId = getUser(request,response).getCityId();
-        
-        CityQuotaStatisDay cityDayQuota = quotaConfigCityDayService.getCityQuotaStatisDay(cityId);
-        
+        boolean couldAdjust = true;
         if (StringUtils.isEmpty(showDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
+            showDate = dataDate;
+        } else {
+            dataDate = showDate;
+            try {
+                couldAdjust = Integer.parseInt(QuotaUtils.getDayMonth("yyyyMM")) <= Integer.parseInt(showDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+                couldAdjust = false;
+            }
         }
-        showDate = QuotaUtils.getFullDate();
+
+        List<DeptsMonthQuotaStatistics> deptMonConfStati = null;
+        int cityMonthConfig = 0;//地市月配额
+
+        try {
+            deptMonConfStati = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityid, dataDate);
+            cityMonthConfig = quotaConfigDeptMothService.getCityMonthQuota(cityid);
+        } catch (Exception e) {
+            log.error("查询月配额或者月使用额出错",e);
+            e.printStackTrace();
+        }
+        Map<String, Object> map= new HashMap<String, Object>();
+        //地市整体月配额
+        if("999".equals(cityid)){
+            map.put("allowances", "无限制");
+        }else{
+            map.put("allowances", cityMonthConfig);
+        }
+        map.put("deptMonConfStati", deptMonConfStati);
+        map.put("showDate", showDate);
+        map.put("couldAdjust", couldAdjust);
+        map.put("newDate",DateTool.getStringDate(new Date(), "yyyyMM"));
+        //add by zhuyq3 2015-10-29 15:14:57
+        Object obj = sysCampConfigDao.getProperety("SMS_CITY_NUM");
+        try {
+            map.put("smsCityNum", Integer.parseInt(String.valueOf(obj)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("smsCityNum", 0);
+        }
+        //end of zhuyq3
         
-        request.setAttribute("monthDate", dataDate);
-        request.setAttribute("showDate", showDate);
-        request.setAttribute("deptId", deptId);
-        request.setAttribute("cityDayNum",cityDayQuota.getDayQuotaNum());
-        ModelAndView model = new ModelAndView("/mcd/pages/execute/editdaysquota");
-        model.addObject("monthDate", dataDate);
-        model.addObject("showDate", showDate);
-        model.addObject("deptId", deptId);
-        model.addObject("cityDayNum",cityDayQuota.getDayQuotaNum());
-        return model;
+        
+        JSONObject dataJson = new JSONObject();
+        dataJson.put("status", "200");
+        dataJson.put("data", JmsJsonUtil.obj2Json(map));
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.print(dataJson);
+        out.flush();
+        out.close();
+
     }
     /**
-     * 查看整月每日配额
+     * 批量保存科室月配额
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/batchModifyMonConf")
+    public void batchModifyMonConf(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String renFlag="";
+        JSONObject dataJson = new JSONObject();
+        String cityid = this.getUser(request, response).getCityId();
+        String dataDate = request.getParameter("dataDate");
+        if (StringUtils.isEmpty(dataDate)) {
+            dataDate = QuotaUtils.getDayMonth("yyyyMM");
+        }
+        String jsonStr = request.getParameter("beans");
+        
+        @SuppressWarnings("unchecked")
+        List<DeptsMonthQuotaStatistics> list = QuotaUtils.JsonStr2List(jsonStr,DeptsMonthQuotaStatistics.class);
+        
+        renFlag=quotaConfigDeptMothService.saveOrUpdate(list, cityid,dataDate);
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("result", renFlag);
+
+        dataJson.put("status", "200");
+        dataJson.put("data", JmsJsonUtil.obj2Json(map));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.setHeader("progma", "no-cache");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Cache-Control", "no-cache");
+        PrintWriter out = response.getWriter();
+        out.print(dataJson);
+        out.flush();
+        out.close();
+    }
+    
+    /**
+     * 查看地市当前月的所有日配额（某个月的地市日配额列表）-----配额管理界面的右边部分
      * @param request
      * @param response
      * @return
@@ -101,9 +175,7 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
         }
         Map<String, Object> maps= new HashMap<String, Object>();
         //add by zhuyq3 2015-10-30 17:15:01
-//      dataDate = "201510";
         List<Map<String, Object>> list = quotaConfigCityDayService.queryCityDayQuotas(cityId, dataDate);
-//      List<Object> daysConfig = new ArrayList<Object>();
         Map<Integer, Map<String, String>> result = new LinkedHashMap<Integer, Map<String, String>>();
         int days = QuotaUtils.getMonDays(dataDate);
         List<String> daysList = CommonUtil.serializeToList(days);
@@ -130,7 +202,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
                 int date = 0;
                 while (ite.hasNext()) {
                     String _key = ite.next();
-
                     if ("DATA_DATE".equals(_key)) {
                         tmp = map.get(_key).toString().substring(dataDate.length());
                         if(!"".equals(tmp) && tmp != null){
@@ -159,7 +230,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
 
                 }
                 String surplus =  String.valueOf(map.get(_surplus_key));
-                
                 //总剩余= 本月今日之前每日剩余之和
                 if(!"".equals(surplus) && surplus != null && date < newday){
                     sumSurplus = sumSurplus + Integer.parseInt(surplus);
@@ -193,17 +263,13 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     }
     
     /**
-     * 保存单日配额
-     * @param actionMapping
-     * @param form
+     * 批量保存地市日配额
      * @param request
      * @param response
      * @throws Exception
      */
-    @RequestMapping("/saveQuota4Day")
-    public void saveQuota4Day(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        //date="20160627";
-
+    @RequestMapping("/saveCityDaysQuot")
+    public void saveCityDaysQuot(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String cityId=this.getUser(request, response).getCityId();
         String day = request.getParameter("day");
         String month = request.getParameter("month");
@@ -219,9 +285,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
                 String key = (String)iter.next(); 
                 String value = jsonObject.getString(key);
                 org.json.JSONObject jsonObjectValue = new org.json.JSONObject(value);  
-                
-                
-                
                 String quotaD = jsonObjectValue.getString("dayQuota");
                 String quota = Double.parseDouble(quotaD)+"";
                 String date = "";
@@ -231,7 +294,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
                 }else{
                     date = month + key;
                 }
-    
     
                 //不做配额限制
                 int row = quotaConfigCityDayService.saveDayQuotas(cityId, date, quota,quotaM);
@@ -249,54 +311,32 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
 
     }
     
-    @Deprecated
-    public void saveDays(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
-        Boolean isSuccess=false;
+    public void saveDefault(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        boolean flag=false;
         JSONObject result = new JSONObject();
-
         String cityid = this.getUser(request, response).getCityId();
-        String dataDate;
-        String showDate = request.getParameter("dataDate");
-        if (StringUtils.isEmpty(showDate)) {
-            dataDate = QuotaUtils.getDayMonth("yyyyMM");
-        }else{//将“yyyy年MM月 ”格式转化成“yyyyMM”格式
-        	
-            dataDate=this.getActualDate(showDate);
-        }
-
-        String deptId=request.getParameter("deptId");
-        //String deptId =this.getQuotaConfigDeptDayService().getDeptId(this.userId);
         
-        String daysQuotaStr = request.getParameter("daysQuota");
-        String[] daysQuota = daysQuotaStr.split("#");
-        List<QuotaConfigDeptDay> list = this.createMonthQuota(daysQuota, cityid, deptId, dataDate);
-        isSuccess=this.quotaConfigDeptDayService.batchUpdateDaysQuota(cityid, deptId, dataDate, list);
-        result.put("result", isSuccess);
+        String jsonStr = request.getParameter("beans");
+        @SuppressWarnings("unchecked")
+        List<DeptMonQuotaDefault> list = QuotaUtils.JsonStr2List(jsonStr,DeptMonQuotaDefault.class);
+        this.ecape(list, cityid);
+        flag=quotaConfigDeptMothService.saveDefault(list, cityid);
+        
+        if(flag){
+            result.put("result", "1");
+        }else{
+            result.put("result", "0");
+        }
         this.outJson(response, result);
+        
     }
     
-    private List<QuotaConfigDeptDay> createMonthQuota(String[] daysQuota,String cityId,String deptId,String month){
-        List<QuotaConfigDeptDay> days=new ArrayList<QuotaConfigDeptDay>();
-        for(int i=0;i<daysQuota.length;i++){
-            QuotaConfigDeptDay temp = new QuotaConfigDeptDay();
-            temp.setCityId(cityId);
-            temp.setDataDateM(month);
-            temp.setDeptId(deptId);
-            int tempday=i+1;
-            if(tempday<10){
-                temp.setDataDate(month+"0"+tempday);
-            }else{
-                temp.setDataDate(month+tempday);
-            }
-            temp.setDayQuotaNum(Integer.parseInt(daysQuota[i]));
-
-            days.add(temp);
+    private void ecape(List<DeptMonQuotaDefault> list,String cityID){
+        for(int i=0;i<list.size();i++){
+            list.get(i).setCityId(cityID);
         }
-        return days;
-        
     }
+    
 	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
 			log.debug("output json to response:{}", json);
 			response.setContentType("text/json; charset=UTF-8");
@@ -316,12 +356,4 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
 				throw new MpmException("--out put json error", e);
 			}
 	 }
-	 
-	//将“yyyy年MM月 ”格式转化成“yyyyMM”格式。
-	private String getActualDate(String monthDate) {
-		String year = monthDate.substring(0, 4);
-		String month = monthDate.substring(5, monthDate.length() - 1);
-		String str = year + month;
-		return str;
-	}
 }

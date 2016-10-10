@@ -61,7 +61,7 @@ public class QuotaConfigCityDayServiceImp implements IQuotaConfigCityDayService 
 
 	@Override
 	public int saveDayQuotas(String cityid, String date, String quota,String quotaM) throws Exception {
-		return this.quotaConfigCityDayDao.saveDayQuotasInMem(cityid, date, quota,quotaM);
+		return this.quotaConfigCityDayDao.saveOrUpdateCityDayQyotaInMem(cityid, date, quota,quotaM);
 	}
 	
 	/**

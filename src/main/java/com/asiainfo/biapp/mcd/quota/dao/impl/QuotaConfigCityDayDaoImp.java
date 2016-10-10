@@ -125,13 +125,15 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements IQuotaConfi
 		});
 	}
 
+	/**
+	 * 保存或更新单日地市配额
+	 */
 	@Override
-	public int saveDayQuotasInMem(String cityId, String date, String quota,String quotaM) throws Exception {
+	public int saveOrUpdateCityDayQyotaInMem(String cityId, String date, String quota,String quotaM) throws Exception {
 		String selSql = "select count(*) from mcd_quota_config_city_D where CITY_ID = ? and DATA_DATE = ?";
 		//修改日配额后 后面的日配额=月配额-已经过去的天数的配额-当日配额
-		long count = this.getJdbcTemplate().queryForObject(  
-				selSql, new Object[] { cityId, date }, Long.class);
-		if (!!!(count > 0)) {
+		long count = this.getJdbcTemplate().queryForObject(selSql, new Object[] { cityId, date }, Long.class);
+		if (count == 0) {//db中没有配置时插入
 			String insSql = "insert into mcd_quota_config_city_D (DATA_DATE_M, DATA_DATE, CITY_ID, DAY_QUOTA_NUM) values (?, ?, ?, ?)";
 			return this.getJdbcTemplate().update(insSql, new Object[] { QuotaUtils.getDayMonth("yyyyMM"), date, cityId, quota});
 		} else {

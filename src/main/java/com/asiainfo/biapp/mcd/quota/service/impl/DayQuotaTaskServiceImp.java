@@ -1,26 +1,16 @@
 package com.asiainfo.biapp.mcd.quota.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptDay;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaDayDeptUsed;
 
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
-	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
-	private IQuotaDayDeptUsedDao quotaDayDeptUsedDao;
-	private IQuotaConfigDeptDayDao quotaConfigDeptDayDao;
-	private IQuotaConfigDeptMothDao quotaConfigDeptMothDao;
+	
 	
 	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
 
@@ -28,24 +18,6 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 		this.quotaConfigCityDayDao = quotaConfigCityDayDao;
 	}
 
-	public void setQuotaConfigDeptMothDao(
-			IQuotaConfigDeptMothDao quotaConfigDeptMothDao) {
-		this.quotaConfigDeptMothDao = quotaConfigDeptMothDao;
-	}
-
-	public void setQuotaDayDeptUsedDao(IQuotaDayDeptUsedDao quotaDayDeptUsedDao) {
-		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
-	}
-
-	public void setQuotaConfigDeptDayDao(
-			IQuotaConfigDeptDayDao quotaConfigDeptDayDao) {
-		this.quotaConfigDeptDayDao = quotaConfigDeptDayDao;
-	}
-
-	public void setDeptsQuotaStatisticsDao(
-			IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao) {
-		this.deptsQuotaStatisticsDao = deptsQuotaStatisticsDao;
-	}
 	@Override
 	public void execTaskDayQuota(){
 		//没有日使用额的地市时为该地市插入日使用额
@@ -68,13 +40,14 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 				
 			}
 		}
-		
 		quotaConfigCityDayDao.addBatchAddUsedNumInMem(noConfUsedList);
 	}
 
-	@Override
+	
 	//科室日配额去掉了，该方法不用了
-	public void setYesterdayConfNum() {
+/*	
+ @Override
+ public void setYesterdayConfNum() {
 		List<Map<String, Object>> list, listToday;
 		String yesterday = QuotaUtils.getYesterday("yyyyMMdd");
 		list = this.deptsQuotaStatisticsDao.getConfigedDayInMem(yesterday);
@@ -200,11 +173,10 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 			quotaConfigDeptDayDao.saveBatchSaveInMem(dayConf4add);
 		}
 
-	}
+	}*/
 
 	// 合并DB中查询的日配置（如果DB中没有配置，则主动添加）
-	private List<Map<String, Object>> escape(List<Map<String, Object>> list,
-			String cityId, String deptid, String from, String to) {
+	/*private List<Map<String, Object>> escape(List<Map<String, Object>> list,String cityId, String deptid, String from, String to) {
 		List<Map<String, Object>> renList = new ArrayList<Map<String, Object>>();
 		int fromDate = Integer.parseInt(from);
 		int toDate = Integer.parseInt(to);
@@ -235,5 +207,5 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 
 		}
 		return renList;
-	}
+	}*/
 }

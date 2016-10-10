@@ -20,7 +20,7 @@ public interface IQuotaConfigCityDayDao {
 
 	List<Map<String, Object>> queryCityDayQuotasInMem(String cityId, String monthDate);
 
-	int saveDayQuotasInMem(String cityId, String date, String quota,String quotaM) throws Exception;
+	int saveOrUpdateCityDayQyotaInMem(String cityId, String date, String quota,String quotaM) throws Exception;
 	
 	/**
 	 * 获得今天之前的所有日配额之和
