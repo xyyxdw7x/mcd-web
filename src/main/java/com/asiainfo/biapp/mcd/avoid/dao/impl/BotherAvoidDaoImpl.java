@@ -46,7 +46,7 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 		 .append(" FROM MCD_CORE_AD.mcd_bother_avoid A")
 		 .append(" INNER JOIN DIM_BOTHER_AVOID_USER_TYPE B ON A.USER_TYPE_ID  = B.ID")
 		 .append(" INNER JOIN mcd_dim_camp_type C ON A.AVOID_CUST_TYPE = C.CAMPSEG_TYPE_ID")
-		 .append(" INNER JOIN mcd_dim_channel D ON A.AVOID_BOTHER_TYPE = D.CHANNELTYPE_ID");
+		 .append(" INNER JOIN mcd_dim_channel D ON A.AVOID_BOTHER_TYPE = D.CHANNEL_ID");
 		 
 		if(mtlBotherAvoid.getKeywords() != null && !"".equals(mtlBotherAvoid.getKeywords())) {
 			buffer.append(" and (A.PRODUCT_NO like '%" + mtlBotherAvoid.getKeywords() + "%')");

@@ -13,8 +13,10 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
@@ -48,7 +50,8 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
  * @author zhaokai
  * @version 2.0
  */
-@RequestMapping("/BotherAvoidList")
+@Controller
+@RequestMapping("/action/BotherAvoidList")
 public class BotherAvoidListController extends BaseMultiActionController {
 	private static Logger log = LogManager.getLogger();
 
@@ -70,11 +73,10 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchBotherAvoidUser")
-	public void searchBotherAvoidUser(HttpServletRequest request,
+	@ResponseBody
+	@RequestMapping
+	public Pager searchBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		JSONObject dataJson = new JSONObject();
 		
 		String pageNum = request.getParameter("pageNum") != null ? request.getParameter("pageNum") : "1";
 		if(!MpmUtil.isNumeric(pageNum)){
@@ -116,10 +118,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		pager = pager.pagerFlip();
 		pager.setResult(data);
 		
-		dataJson.put("status", "200");
-		dataJson.put("data", JmsJsonUtil.obj2Json(pager));
-		this.outJson(response, dataJson);
-		
+		return pager;		
 	}
 
 	/**
@@ -132,7 +131,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/searchBotherAvoidUserType")
+	@ResponseBody
+	@RequestMapping
 	public void searchBotherAvoidUserType(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -155,7 +155,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/addBotherAvoidUser")
+	@ResponseBody
+	@RequestMapping
 	public void addBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
@@ -213,7 +214,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/delBotherAvoidUser")
+	@ResponseBody
+	@RequestMapping
 	public void delBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -248,7 +250,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/batchDelBotherAvoidUser")
+	@ResponseBody
+	@RequestMapping
 	public void batchDelBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -291,7 +294,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("batchAddBotherAvoidUser")
+	@ResponseBody
+	@RequestMapping
 	public void batchAddBotherAvoidUser(
 			@RequestParam(value = "filterFile", required = false)MultipartFile multiFile,
 			HttpServletRequest  request,
@@ -367,7 +371,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("mdfBotherAvoidUser")
+	@ResponseBody
+	@RequestMapping
 	public void mdfBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
@@ -437,7 +442,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("searchCampsegType")
+	@ResponseBody
+	@RequestMapping
 	public void searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	
 		List<McdDimCampType> campsegTypeList = dimCampsegTypeIdNameMapper.queryDimAllData();
