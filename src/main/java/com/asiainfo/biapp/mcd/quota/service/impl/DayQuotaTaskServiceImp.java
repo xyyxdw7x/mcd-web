@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
@@ -11,7 +13,7 @@ import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
 
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	
-	
+	@Resource(name="quotaConfigCityDayDao")
 	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
 
 	public void setQuotaConfigCityDayDao(IQuotaConfigCityDayDao quotaConfigCityDayDao) {
@@ -41,6 +43,8 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 			}
 		}
 		quotaConfigCityDayDao.addBatchAddUsedNumInMem(noConfUsedList);
+		
+		
 	}
 
 	

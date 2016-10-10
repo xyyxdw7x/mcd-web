@@ -52,9 +52,9 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 	}
 	@Override
 	public void execTaskMonthQuota(){
-		this.setCityUsed4CurrentMonth();
-		this.averageCityMonthQuota();
-		this.setDeptUsedAndConf4CurrentMonth();
+		this.setCityUsed4CurrentMonth();// 地市月配额：没有月使用额的地市添加月使用额
+		this.averageCityMonthQuota();//地市月配额：平均分配到地市日配额中
+		this.setDeptUsedAndConf4CurrentMonth();// 科室月限额：没有配月配额的科室，设置为模板值； 科室使用额：为所有科室都添加一条记录（usedNum为0）
 	}
 
 	// 没有月使用额的地市添加月使用额（0）
@@ -158,13 +158,9 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 		List<QuotaMonthDeptUsed> useds = new ArrayList<QuotaMonthDeptUsed>();
 		List<QuotaConfigDeptMoth> confs = new ArrayList<QuotaConfigDeptMoth>();
 		
-		//List<QuotaConfigDeptMoth> noConfDay = new ArrayList<QuotaConfigDeptMoth>();
-
 		//查询当月所有科室的月配额（月配额、月使用额、默认配额）
 		List<Map<String, Object>> list = deptsQuotaStatisticsDao.getDeptQuotaStaticInMem(month);
 		//查询当月配置了日配额的所有科室
-		/*List<Map<String, String>> confDaysDept = (List<Map<String, String>>)quotaConfigDeptDayDao.queryConfigDept(month);
-		List<String> confDaysDeptList = this.maplist2Strlist(confDaysDept);*/
 		
 		if (list != null && list.size() > 0) {
 
@@ -196,17 +192,12 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 						useds.add(tempUsed);
 					}
 					
-					
 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				
-				/*String tempDept= tempConf.getDeptId();*/
 				
-				/*if(!confDaysDeptList.contains(tempDept)){
-					noConfDay.add(tempConf);
-				}*/
 			}
 
 			quotaConfigDeptMothDao.saveBatchSaveInMem(confs);
