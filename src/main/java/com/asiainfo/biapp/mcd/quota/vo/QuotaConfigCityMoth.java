@@ -5,16 +5,10 @@ package com.asiainfo.biapp.mcd.quota.vo;
  * 
  */
 public class QuotaConfigCityMoth {
-	// private String dataDate;
 	private String cityId;
 	private int monthQuotaNum;
 
-	/*
-	 * public String getDataDate() { return dataDate; }
-	 */
-	/*
-	 * public void setDataDate(String dataDate) { this.dataDate = dataDate; }
-	 */
+
 	public int getMonthQuotaNum() {
 		return monthQuotaNum;
 	}

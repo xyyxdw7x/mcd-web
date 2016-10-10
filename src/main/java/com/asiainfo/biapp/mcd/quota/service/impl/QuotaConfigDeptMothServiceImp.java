@@ -14,7 +14,6 @@ import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
@@ -29,8 +28,7 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	private IQuotaConfigDeptMothDao quotaConfigDeptMothDao;
 	@Resource(name = "quotaConfigCityMothDao")	
 	private IQuotaConfigCityMothDao quotaConfigCityMothDao;
-	@Resource(name = "quotaDayDeptUsedDao")
-	private IQuotaDayDeptUsedDao quotaDayDeptUsedDao;
+	
 	@Resource(name = "quotaConfigDeptMonthDefaultDao")
 	private IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao;
 	@Resource(name = "deptsQuotaStatisticsDao")
