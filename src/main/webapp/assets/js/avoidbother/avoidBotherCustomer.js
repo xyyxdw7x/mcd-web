@@ -10,7 +10,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 			this.loadCampsegType({currentDom:".avoidBotherCampsegType"});
 			window.tableViewManage  = this.loadTable({
 				currentDom:"#avoidBotherCustomerTable",
-				ejsUrl:_ctx + '/assets/js/avoidBother/avoidBotherCustomer.ejs',
+				ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherCustomer.ejs',
 				ajaxData:{
 					"isSelectMy":"0",
 					"sortColumn":$("#sortColumn").val(),
@@ -158,7 +158,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 				urlRoot:_ctx+"/action/BotherAvoidList",
 				id:"searchBotherAvoidUser.do",
 				currentDom:"#avoidBotherCustomerTable",
-				ejsUrl:_ctx + '/assets/js/avoidBother/avoidBotherCustomer.ejs',
+				ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherCustomer.ejs',
 				ajaxData:{
 					"sortColumn":$("#sortColumn").val(),
 					"sortOrderBy":$("#sortOrderBy").val()},
@@ -266,7 +266,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						$(options.currentDom).empty().append(htmlobj);
 						/*
 						var _Html1 = new EJS({
-							url : _ctx + '/assets/js/avoidBother/avoidBotherCustomerPage.ejs'
+							url : _ctx + '/assets/js/avoidbother/avoidBotherCustomerPage.ejs'
 						}).render(model.attributes);
 						$("#centent-page-box-div").html(_Html1);
 						*/
@@ -329,7 +329,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					}
 					window.tableViewManage = _that.loadTable({
 						currentDom:"#avoidBotherCustomerTable",
-						ejsUrl:_ctx + '/assets/js/avoidBother/avoidBotherCustomer.ejs',
+						ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherCustomer.ejs',
 						ajaxData:ajaxData,
 						domCallback:function(htmlobj){
 						}
@@ -349,7 +349,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					urlRoot:_ctx+"/action/BotherAvoidList",
 					id:"searchBotherAvoidUserType.do",
 					currentDom:".avoidBotherUserType",
-					ejsUrl:_ctx + '/assets/js/avoidBother/avoidBotherUserType.ejs',
+					ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherUserType.ejs',
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -391,7 +391,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 							}).render(model.attributes);
 							$(options.currentDom).html(_Html);
 							var _Html1 = new EJS({
-								url : _ctx + '/assets/js/avoidBother/avoidBotherUserTypeSelect.ejs'
+								url : _ctx + '/assets/js/avoidbother/avoidBotherUserTypeSelect.ejs'
 							}).render(model.attributes);
 							$(".avoidBotherUserTypeSelect").html(_Html1);
 						}
@@ -430,7 +430,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					urlRoot:_ctx+"/action/BotherAvoidList",
 					id:"searchCampsegType.do",
 					currentDom:".avoidBotherCampsegType",
-					ejsUrl:_ctx + '/assets/js/avoidBother/avoidBotherCampsegType.ejs',
+					ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherCampsegType.ejs',
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -471,7 +471,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 							}).render(model.attributes);
 							$(options.currentDom).html(_Html);
 							var _Html1 = new EJS({
-								url : _ctx + '/assets/js/avoidBother/avoidBotherCampsegTypeSelect.ejs'
+								url : _ctx + '/assets/js/avoidbother/avoidBotherCampsegTypeSelect.ejs'
 							}).render(model.attributes);
 							$(".avoidBotherCampsegTypeSelect").html(_Html1);
 						}
