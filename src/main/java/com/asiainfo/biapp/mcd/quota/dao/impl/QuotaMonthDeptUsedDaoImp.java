@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaMonthDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 		IQuotaMonthDeptUsedDao {
@@ -21,13 +21,12 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 	private static String TABLE = "mcd_quota_used_dept_m";
 	
 	@Override
-	public QuotaMonthDeptUsed updateDayQuotaUsed(
-			QuotaMonthDeptUsed depDayQuota, int newQuota) {
+	public DeptMonthQuota updateDayQuotaUsed(DeptMonthQuota depDayQuota, int newQuota) {
 		return null;
 	}
 
 	@Override
-	public void saveBatchSaveInMem(final List<QuotaMonthDeptUsed> list) {
+	public void saveBatchSaveInMem(final List<DeptMonthQuota> list) {
 		String sql ="insert into mcd_quota_used_dept_m(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
 		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
@@ -36,7 +35,7 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 				ps.setString(1, list.get(index).getCityId());
 				ps.setString(2, list.get(index).getDeptId());
 				ps.setString(3, list.get(index).getDataDate());
-				ps.setInt(4, list.get(index).getUsedNum());
+				ps.setLong(4, list.get(index).getUsedNum());
 			}
 			
 			@Override
@@ -47,13 +46,12 @@ public class QuotaMonthDeptUsedDaoImp extends JdbcDaoSupport implements
 	}
 
 	@Override
-	public int getByKeys(QuotaMonthDeptUsed depDayQuota) {
+	public int getByKeys(DeptMonthQuota depDayQuota) {
 		return 0;
 	}
 
 	@Override
-	public List<Map<String, Object>> getDeptMonthUsedInMem(String cityId, String month, String ordyBy)
-			throws DataAccessException {
+	public List<Map<String, Object>> getDeptMonthUsedInMem(String cityId, String month, String ordyBy)throws DataAccessException {
 
 		List<Map<String, Object>> list = null;
 		String sql = "select * from " + TABLE + " where CITY_ID=? and DATA_DATE=? order by " + ordyBy;

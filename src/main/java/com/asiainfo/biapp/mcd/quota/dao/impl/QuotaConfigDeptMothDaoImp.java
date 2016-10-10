@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 @Repository(value="quotaConfigDeptMothDao")
 public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConfigDeptMothDao {
@@ -30,24 +29,24 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 	private static final String COL_DEPT_MONTH_QUOTA = "MONTH_QUOTA_NUM";
 
 	@Override
-	public void updateDepMonthQuotaInMem(QuotaConfigDeptMoth depMonthQuota,int newQuota) throws DataAccessException {
+	public void updateDepMonthQuotaInMem(DeptMonthQuota depMonthQuota,int newQuota) throws DataAccessException {
 		String sql = "update " + TABLE + "  set day_num=" + newQuota+ " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { depMonthQuota.getCityId(), depMonthQuota.getDeptId(),depMonthQuota.getDataDate() };
 		this.getJdbcTemplate().update(sql, para);
 	}
 
 	@Override
-	public QuotaConfigDeptMoth getByKeysInMem(QuotaConfigDeptMoth depDayQuota)throws DataAccessException {
-		QuotaConfigDeptMoth renObj = null;
+	public DeptMonthQuota getByKeysInMem(DeptMonthQuota depDayQuota)throws DataAccessException {
+		DeptMonthQuota renObj = null;
 		String sql = "select * from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { depDayQuota.getCityId(), depDayQuota.getDeptId(),depDayQuota.getDataDate() };
 
 		try {
-			renObj = (QuotaConfigDeptMoth) this.getJdbcTemplate()
-					.queryForObject(sql, para, new RowMapper<QuotaConfigDeptMoth>() {
+			renObj = (DeptMonthQuota) this.getJdbcTemplate()
+					.queryForObject(sql, para, new RowMapper<DeptMonthQuota>() {
 						@Override
-						public QuotaConfigDeptMoth mapRow(ResultSet rs,int rowNum) throws SQLException {
-							QuotaConfigDeptMoth quotaDeptMonth = new QuotaConfigDeptMoth();
+						public DeptMonthQuota mapRow(ResultSet rs,int rowNum) throws SQLException {
+							DeptMonthQuota quotaDeptMonth = new DeptMonthQuota();
 							quotaDeptMonth.setCityId(rs.getString(COL_CITY_ID));
 							quotaDeptMonth.setDataDate(rs.getString(COL_DATA_DATE));
 							quotaDeptMonth.setDeptId(rs.getString(COL_DEPT_ID));
@@ -65,16 +64,16 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 	}
 
 	@Override
-	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,String dataDate) throws DataAccessException {
-		QuotaConfigDeptMoth renObj = null;
+	public DeptMonthQuota getByKeysInMem(String cityID, String deptId,String dataDate) throws DataAccessException {
+		DeptMonthQuota renObj = null;
 		String sql = "select * from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { cityID, deptId, dataDate };
 		try {
-			renObj = (QuotaConfigDeptMoth)this.getJdbcTemplate()
-					.queryForObject(sql, para, new RowMapper<QuotaConfigDeptMoth>() {
+			renObj = (DeptMonthQuota)this.getJdbcTemplate()
+					.queryForObject(sql, para, new RowMapper<DeptMonthQuota>() {
 						@Override
-						public QuotaConfigDeptMoth mapRow(ResultSet rs,int rowNum) throws SQLException {
-							QuotaConfigDeptMoth quotaDeptMonth = new QuotaConfigDeptMoth();
+						public DeptMonthQuota mapRow(ResultSet rs,int rowNum) throws SQLException {
+							DeptMonthQuota quotaDeptMonth = new DeptMonthQuota();
 							quotaDeptMonth.setCityId(rs.getString(COL_CITY_ID));
 							quotaDeptMonth.setDataDate(rs.getString(COL_DATA_DATE));
 							quotaDeptMonth.setDeptId(rs.getString(COL_DEPT_ID));
@@ -109,7 +108,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 	}
 
 	@Override
-	public void updateBatchUpdateInMem(final List<QuotaConfigDeptMoth> list)throws DataAccessException {
+	public void updateBatchUpdateInMem(final List<DeptMonthQuota> list)throws DataAccessException {
 		String sql = "update " + TABLE + " set MONTH_QUOTA_NUM=? where CITY_ID=? and DATA_DATE=? and DEPT_ID=?";
 
 		try {
@@ -117,7 +116,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							ps.setInt(1, list.get(index).getMonthQuotaNum());
+							ps.setLong(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
 							ps.setString(4, list.get(index).getDeptId());
@@ -196,14 +195,14 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 		return num;
 	}
 	@Override
-	public void saveBatchSaveInMem(final List<QuotaConfigDeptMoth> list){
+	public void saveBatchSaveInMem(final List<DeptMonthQuota> list){
 		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
 
 		try {
 			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
-							ps.setInt(1, list.get(index).getMonthQuotaNum());
+							ps.setLong(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
 							ps.setString(4, list.get(index).getDeptId());

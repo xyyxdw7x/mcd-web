@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	
@@ -23,14 +23,14 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	@Override
 	public void execTaskDayQuota(){
 		//没有日使用额的地市时为该地市插入日使用额
-		List<QuotaConfigCityDay> noConfUsedList=new ArrayList<QuotaConfigCityDay>();
+		List<CityDayQuota> noConfUsedList=new ArrayList<CityDayQuota>();
 		String dataDate=QuotaUtils.getDayDate("yyyyMMdd");
 		List<Map<String,Object>> list = quotaConfigCityDayDao.getCityUsedListInMem(dataDate);
 		if(list!=null && list.size()>0){
 			for(int i=0;i<list.size();i++){
 				Map<String,Object> map = list.get(i);
 				if(map.get("USED_NUM")==null){
-					QuotaConfigCityDay temp = new QuotaConfigCityDay();
+					CityDayQuota temp = new CityDayQuota();
 					try {
 						QuotaUtils.map2Bean(map, temp);
 						temp.setUsedNum(0);

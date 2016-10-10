@@ -2,10 +2,10 @@ package com.asiainfo.biapp.mcd.quota.dao;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 
 public interface IQuotaMothCityUsedDao {
 
-	public void saveBatchSave(List<QuotaMonthCityUsed> list);
+	public void saveBatchSave(List<CityMonthQuota> list);
 
 }

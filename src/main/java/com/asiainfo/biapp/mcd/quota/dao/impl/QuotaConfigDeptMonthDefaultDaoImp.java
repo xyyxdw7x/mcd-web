@@ -13,19 +13,17 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
-import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 @Repository(value="quotaConfigDeptMonthDefaultDao")
-public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
-		IQuotaConfigDeptMonthDefaultDao {
+public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements IQuotaConfigDeptMonthDefaultDao {
 
 	private static final Logger log = LogManager.getLogger();
 
 	private static final String TABLE = "MTL_QUOTA_DEPT_M_DEFAULT";
 
 	@Override
-	public void saveBatchSaveInMem(final List<DeptMonQuotaDefault> list, String cityId)
-			throws DataAccessException {
+	public void saveBatchSaveInMem(final List<DeptMonthQuota> list, String cityId)throws DataAccessException {
 		String delSql = "DELETE FROM " + TABLE + " WHERE CITY_ID=?";
 		Object[] delPparm = { cityId };
 		String saveSql = "insert into " + TABLE + "(CITY_ID,DEPT_ID,MONTH_QUOTA_NUM) values (?,?,?)";
@@ -33,8 +31,7 @@ public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
 		try {
 			this.getJdbcTemplate().update(delSql, delPparm);
 
-			this.getJdbcTemplate().batchUpdate(saveSql,
-					new BatchPreparedStatementSetter() {
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
 						@Override
 						public int getBatchSize() {
 							return list.size();
@@ -45,7 +42,7 @@ public class QuotaConfigDeptMonthDefaultDaoImp extends JdbcDaoBase implements
 								throws SQLException {
 							ps.setString(1, list.get(index).getCityId());
 							ps.setString(2, list.get(index).getDeptId());
-							ps.setInt(3, list.get(index).getMonthQuotaNum());
+							ps.setLong(3, list.get(index).getMonthQuotaNum());
 
 						}
 

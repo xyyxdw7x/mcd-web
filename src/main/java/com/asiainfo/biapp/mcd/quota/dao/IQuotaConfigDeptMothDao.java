@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.dao.DataAccessException;
 
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 public interface IQuotaConfigDeptMothDao {
 
@@ -16,8 +15,7 @@ public interface IQuotaConfigDeptMothDao {
 	 * @param depDayQuota
 	 * @return
 	 */
-	public void updateDepMonthQuotaInMem(QuotaConfigDeptMoth depMonthQuota,
-			int newQuota) throws DataAccessException;
+	public void updateDepMonthQuotaInMem(DeptMonthQuota depMonthQuota,int newQuota) throws DataAccessException;
 
 	/**
 	 * 根据主键查询科室月配置额（主键为DATA_DATE、 CITY_ID、DEPT_ID）
@@ -25,8 +23,7 @@ public interface IQuotaConfigDeptMothDao {
 	 * @param depDayQuota
 	 * @return
 	 */
-	public QuotaConfigDeptMoth getByKeysInMem(QuotaConfigDeptMoth depDayQuota)
-			throws DataAccessException;
+	public DeptMonthQuota getByKeysInMem(DeptMonthQuota depDayQuota)throws DataAccessException;
 
 	/**
 	 * 根据主键获得科室月配置额
@@ -36,7 +33,7 @@ public interface IQuotaConfigDeptMothDao {
 	 * @param DataDate
 	 * @return
 	 */
-	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
+	public DeptMonthQuota getByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
 
 
 	/**
@@ -44,7 +41,7 @@ public interface IQuotaConfigDeptMothDao {
 	 * 
 	 * @param list
 	 */
-	void updateBatchUpdateInMem(List<QuotaConfigDeptMoth> list) throws DataAccessException;
+	void updateBatchUpdateInMem(List<DeptMonthQuota> list) throws DataAccessException;
 
 	int getTotal4CityDeptMonthInMem(String cityId, String dataDate)throws DataAccessException;
 
@@ -53,7 +50,7 @@ public interface IQuotaConfigDeptMothDao {
 	
 	public int getQuotaByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
 
-	public void saveBatchSaveInMem(List<QuotaConfigDeptMoth> list);
+	public void saveBatchSaveInMem(List<DeptMonthQuota> list);
 
 	public List<Map<String, Object>> getQuotas4DeptsInMem(String cityId, String date) throws Exception;
 	

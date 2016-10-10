@@ -3,7 +3,7 @@ package com.asiainfo.biapp.mcd.quota.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 public interface IQuotaMonthDeptUsedDao {
 	/**
@@ -12,7 +12,7 @@ public interface IQuotaMonthDeptUsedDao {
 	 * @param newQuota
 	 * @return
 	 */
-	public QuotaMonthDeptUsed updateDayQuotaUsed(QuotaMonthDeptUsed depDayQuota,int newQuota);
+	public DeptMonthQuota updateDayQuotaUsed(DeptMonthQuota depDayQuota,int newQuota);
 	
 
 
@@ -22,7 +22,7 @@ public interface IQuotaMonthDeptUsedDao {
 	 * @param depDayQuota
 	 * @return
 	 */
-	public int getByKeys(QuotaMonthDeptUsed depDayQuota);
+	public int getByKeys(DeptMonthQuota depDayQuota);
 	
 	/**
 	 * 查询指定月份各科室的使用额
@@ -43,7 +43,7 @@ public interface IQuotaMonthDeptUsedDao {
 
 
 
-	public void saveBatchSaveInMem(List<QuotaMonthDeptUsed> list);
+	public void saveBatchSaveInMem(List<DeptMonthQuota> list);
 	
 	
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 @Repository(value="quotaConfigCityDayDao")
 public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements IQuotaConfigCityDayDao {
@@ -71,7 +71,7 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements IQuotaConfi
 		
 	}
 	@Override
-	public void addBatchAddUsedNumInMem(final List<QuotaConfigCityDay> list){
+	public void addBatchAddUsedNumInMem(final List<CityDayQuota> list){
 		 String sql="insert into mcd_quota_used_city_d(CITY_ID,DATA_DATE,USED_NUM)values(?,?,?)";
 		 this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
@@ -102,7 +102,7 @@ public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements IQuotaConfi
 		return list;
 	}
 	@Override
-	public void addBatchAddCitysDayQuotaInMem(final List<QuotaConfigCityDay> list){
+	public void addBatchAddCitysDayQuotaInMem(final List<CityDayQuota> list){
 		String currentMonth = QuotaUtils.getDayMonth("yyyyMM");
 		String delSql ="delete from mcd_quota_config_city_D where DATA_DATE_M='"+currentMonth+"'";
 		this.getJdbcTemplate().update(delSql);//插入地市日配额之前首先删本月的所有地市的日配额

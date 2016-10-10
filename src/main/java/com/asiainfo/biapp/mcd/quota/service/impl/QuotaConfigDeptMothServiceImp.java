@@ -17,7 +17,6 @@ import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 @Service("quotaConfigDeptMothService")
@@ -129,11 +128,11 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	}
 
 	@Override
-	public boolean saveDefault(List<DeptMonQuotaDefault> list, String cityId) {
+	public boolean saveDefault(List<DeptMonthQuota> list, String cityId) {
 		int cityMonthQuota = quotaConfigCityMothDao.queryCityMonthQuotaInMem(cityId);// 地市月配额
 		int deptsMonthTotal=0;  //各科室的月配额之和
-		for(DeptMonQuotaDefault temp:list){
-			int tempQuota = temp.getMonthQuotaNum();
+		for(DeptMonthQuota temp:list){
+			long tempQuota = temp.getMonthQuotaNum();
 			deptsMonthTotal+=tempQuota;
 		}
 		if(cityMonthQuota>=deptsMonthTotal){

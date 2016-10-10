@@ -21,14 +21,14 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.bull.service.IBullMonitorService;
 import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
-import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.constants.TasKStatus;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 
@@ -54,8 +54,8 @@ public class BullManageController extends BaseMultiActionController {
 		String dataDate = QuotaUtils.getDayMonth("yyyyMM");
 		
 		List<DeptMonthQuota> list = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityId, dataDate);//科室月配额
-		CityQuotaStatic cityStatis = this.currentDateQuotaService.getCityStatis(cityId);//地市月配额
-		CityQuotaStatisDay cityQuotaStatisDay = this.quotaConfigCityDayService.getCityQuotaStatisDay(cityId);//地市日配额
+		CityMonthQuota cityStatis = this.currentDateQuotaService.getCityStatis(cityId);//地市月配额
+		CityDayQuota cityQuotaStatisDay = this.quotaConfigCityDayService.getCityQuotaStatisDay(cityId);//地市日配额
 		
 		int currentSendType = this.bullMonitorService.getSendType(cityId);//发送方式
 		

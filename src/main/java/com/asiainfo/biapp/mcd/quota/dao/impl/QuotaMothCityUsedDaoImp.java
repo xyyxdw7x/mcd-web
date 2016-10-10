@@ -11,24 +11,21 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaMothCityUsedDao;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 
-public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements
-		IQuotaMothCityUsedDao {
+public class QuotaMothCityUsedDaoImp extends JdbcDaoBase implements IQuotaMothCityUsedDao {
 	private static final Logger log = LogManager.getLogger();
 	
 	@Override
-	public void saveBatchSave(final List<QuotaMonthCityUsed> list) {
+	public void saveBatchSave(final List<CityMonthQuota> list) {
 
 		String sql = "insert into mcd_quota_used_city(city_id,data_date,used_num)values(?,?,?)";
 
 		try {
-			this.getJdbcTemplate().batchUpdate(sql,
-					new BatchPreparedStatementSetter() {
+			this.getJdbcTemplate().batchUpdate(sql,new BatchPreparedStatementSetter() {
 
 						@Override
-						public void setValues(PreparedStatement ps, int index)
-								throws SQLException {
+						public void setValues(PreparedStatement ps, int index)throws SQLException {
 							ps.setString(1, list.get(index).getCityId());
 							ps.setString(2, list.get(index).getDataDate());
 							ps.setInt(3, list.get(index).getUsedNum());

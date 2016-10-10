@@ -2,7 +2,6 @@ package com.asiainfo.biapp.mcd.quota.service;
 
 import java.util.List;
 
-import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 public interface IQuotaConfigDeptMothService {
@@ -20,7 +19,7 @@ public interface IQuotaConfigDeptMothService {
 
 	public int getTotal4CityDeptMonth(String cityid, String Month);
 
-	public boolean saveDefault(List<DeptMonQuotaDefault> list, String cityId);
+	public boolean saveDefault(List<DeptMonthQuota> list, String cityId);
 	
 	//public void saveOrUpdate(List<QuotaConfigDeptMoth> addList,List<QuotaConfigDeptMoth> updateList);
 

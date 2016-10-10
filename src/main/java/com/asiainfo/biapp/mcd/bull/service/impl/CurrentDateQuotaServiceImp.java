@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
-import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
 import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 
 @Service("currentDateQuotaService")
 public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
@@ -15,8 +15,8 @@ public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
 	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
 	
 	@Override
-	public CityQuotaStatic getCityStatis(String cityId){
-		CityQuotaStatic cityStatic = new CityQuotaStatic();
+	public CityMonthQuota getCityStatis(String cityId){
+		CityMonthQuota cityStatic = new CityMonthQuota();
 		Map<String, Object>  map = deptsQuotaStatisticsDao.getCityStatisInMem(cityId);
 		if(map!=null && map.size()>0){
 			cityStatic.setCityId(map.get("CITY_ID").toString());
@@ -26,16 +26,16 @@ public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
 				cityStatic.setMonthQuotaNum(0);
 			}
 			if(map.get("USED_NUM")!=null){
-				cityStatic.setMonthUsedNum(Integer.parseInt(map.get("USED_NUM").toString()));
+				cityStatic.setUsedNum(Integer.parseInt(map.get("USED_NUM").toString()));
 			}else{
-				cityStatic.setMonthUsedNum(0);
+				cityStatic.setUsedNum(0);
 			}
 			
 			
 		}else{
 			cityStatic.setCityId(cityId);
 			cityStatic.setMonthQuotaNum(0);
-			cityStatic.setMonthUsedNum(0);
+			cityStatic.setUsedNum(0);
 		}
 		cityStatic.setCityUsedPercent();
 		

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 @Service("quotaConfigCityDayService")
 public class QuotaConfigCityDayServiceImp implements IQuotaConfigCityDayService {
@@ -20,9 +20,9 @@ public class QuotaConfigCityDayServiceImp implements IQuotaConfigCityDayService 
 	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
 
 	@Override
-	public CityQuotaStatisDay getCityQuotaStatisDay(String cityId) {
+	public CityDayQuota getCityQuotaStatisDay(String cityId) {
 		 
-		CityQuotaStatisDay cityQuotaStatisDay = new CityQuotaStatisDay();
+		CityDayQuota cityQuotaStatisDay = new CityDayQuota();
 		String dataDate = QuotaUtils.getDayDate("yyyyMMdd");
 		Map<String, Object> map = this.quotaConfigCityDayDao.getCityStatisDayInMem(cityId, dataDate);
 		if (map != null) {

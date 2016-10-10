@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -22,14 +23,12 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
-import com.asiainfo.biapp.mcd.exception.MpmException;
-import org.apache.commons.lang3.StringUtils;
 
 import net.sf.json.JSONObject;
 
@@ -318,7 +317,7 @@ public class QuotaManageController  extends BaseMultiActionController {
         
         String jsonStr = request.getParameter("beans");
         @SuppressWarnings("unchecked")
-        List<DeptMonQuotaDefault> list = QuotaUtils.JsonStr2List(jsonStr,DeptMonQuotaDefault.class);
+        List<DeptMonthQuota> list = QuotaUtils.JsonStr2List(jsonStr,DeptMonthQuota.class);
         this.ecape(list, cityid);
         flag=quotaConfigDeptMothService.saveDefault(list, cityid);
         
@@ -331,7 +330,7 @@ public class QuotaManageController  extends BaseMultiActionController {
         
     }
     
-    private void ecape(List<DeptMonQuotaDefault> list,String cityID){
+    private void ecape(List<DeptMonthQuota> list,String cityID){
         for(int i=0;i<list.size();i++){
             list.get(i).setCityId(cityID);
         }

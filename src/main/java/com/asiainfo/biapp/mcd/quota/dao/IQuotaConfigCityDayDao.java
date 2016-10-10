@@ -3,20 +3,20 @@ package com.asiainfo.biapp.mcd.quota.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 
 public interface IQuotaConfigCityDayDao {
 
 	Map<String, Object> getCityStatisDayInMem(String cityIds, String dataDate);
    //批量保存地市日使用额
-	void addBatchAddUsedNumInMem(List<QuotaConfigCityDay> list);
+	void addBatchAddUsedNumInMem(List<CityDayQuota> list);
 
 	List<Map<String, Object>> getCityUsedListInMem(String dataDate);
 
 	int queryCityDayQuotaInMem(String cityId, String dataDate);
 	
-	void addBatchAddCitysDayQuotaInMem(List<QuotaConfigCityDay> list);
+	void addBatchAddCitysDayQuotaInMem(List<CityDayQuota> list);
 
 	List<Map<String, Object>> queryCityDayQuotasInMem(String cityId, String monthDate);
 

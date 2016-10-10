@@ -1,11 +1,28 @@
 package com.asiainfo.biapp.mcd.quota.vo;
 
-public class QuotaConfigCityDay {
+import java.text.DecimalFormat;
+
+public class CityDayQuota {
 	private String cityId;
 	private String dataDate;
 	private String dataDateM;
 	private int dayQuotaNum;
 	private int usedNum;
+	private String cityUsedPercentDay;
+	
+	public String getCityUsedPercentDay() {
+		return cityUsedPercentDay;
+	}
+
+	public void setCityUsedPercentDay() {
+		if (dayQuotaNum == 0) {
+			this.cityUsedPercentDay = "0.00%";
+		} else {
+			DecimalFormat df = new DecimalFormat("0.00");
+			double temp= ((double)usedNum/dayQuotaNum)*100;
+			this.cityUsedPercentDay = df.format(temp)+"%";
+		}
+	}
 	
 	public String getCityId() {
 		return cityId;

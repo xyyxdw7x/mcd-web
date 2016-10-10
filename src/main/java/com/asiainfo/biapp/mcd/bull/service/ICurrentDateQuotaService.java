@@ -1,7 +1,7 @@
 package com.asiainfo.biapp.mcd.bull.service;
 
-import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 
 public interface ICurrentDateQuotaService {
-	public CityQuotaStatic getCityStatis(String cityId);
+	public CityMonthQuota getCityStatis(String cityId);
 }

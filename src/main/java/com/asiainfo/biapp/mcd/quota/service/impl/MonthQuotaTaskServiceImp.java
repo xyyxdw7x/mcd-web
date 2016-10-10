@@ -12,11 +12,9 @@ import com.asiainfo.biapp.mcd.quota.dao.IQuotaMonthDeptUsedDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaMothCityUsedDao;
 import com.asiainfo.biapp.mcd.quota.service.IMonthQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityDay;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigCityMoth;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthCityUsed;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 
@@ -61,14 +59,14 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 	@Override
 	public void setCityUsed4CurrentMonth() {
 
-		List<QuotaMonthCityUsed> useds = new ArrayList<QuotaMonthCityUsed>();
+		List<CityMonthQuota> useds = new ArrayList<CityMonthQuota>();
 		String month = QuotaUtils.getDayMonth("yyyyMM");
 		List<Map<String, Object>> list = deptsQuotaStatisticsDao.getConfigedCityUsedInMem(month);
 		if (list != null && list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = list.get(i);
 				if(map.get("USED_NUM")==null){
-					QuotaMonthCityUsed temp = new QuotaMonthCityUsed();
+					CityMonthQuota temp = new CityMonthQuota();
 					try {
 						QuotaUtils.map2Bean(map, temp);
 						temp.setUsedNum(0);
@@ -94,11 +92,11 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 		List<Map<String,Object>>  cityMonthQuotaList = this.quotaConfigCityMothDao.queryAllInMem();
 		
 		if(cityMonthQuotaList!=null && cityMonthQuotaList.size()>0){
-			List<QuotaConfigCityMoth>  cityMonth = new ArrayList<QuotaConfigCityMoth>();
+			List<CityMonthQuota>  cityMonth = new ArrayList<CityMonthQuota>();
 			
 			for(int i=0;i<cityMonthQuotaList.size();i++){
 				Map<String,Object> map = cityMonthQuotaList.get(i);
-				QuotaConfigCityMoth temp = new QuotaConfigCityMoth();
+				CityMonthQuota temp = new CityMonthQuota();
 				try {
 					QuotaUtils.map2Bean(map, temp);
 					cityMonth.add(temp);
@@ -106,7 +104,7 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 					e.printStackTrace();
 				}
 			}
-			List<QuotaConfigCityDay> cityDays = null;
+			List<CityDayQuota> cityDays = null;
 			cityDays = this.cityMonth2DayForToday(cityMonth);
 			//插入前先删除本月的所有地市日配额，以防之前已有地市日配额时报错
 			quotaConfigCityDayDao.delCityDayQuota4Month(QuotaUtils.getDayMonth("yyyyMM"));
@@ -114,13 +112,13 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 		}
 	}
 	
-	private List<QuotaConfigCityDay> cityMonth2DayForToday(List<QuotaConfigCityMoth> citysMonthQuota){
+	private List<CityDayQuota> cityMonth2DayForToday(List<CityMonthQuota> citysMonthQuota){
 		
 		String currentMonth = QuotaUtils.getDayMonth("yyyyMM");
 		int monthDayNum = QuotaUtils.getMonDays(currentMonth) ;
-		List<QuotaConfigCityDay> days = new ArrayList<QuotaConfigCityDay>();
+		List<CityDayQuota> days = new ArrayList<CityDayQuota>();
 		for(int i=0;i<citysMonthQuota.size();i++){
-			QuotaConfigCityMoth tempMonth = citysMonthQuota.get(i);
+			CityMonthQuota tempMonth = citysMonthQuota.get(i);
 			int tempCityMonthQuota = tempMonth.getMonthQuotaNum();
 			int arverageNum = tempCityMonthQuota/monthDayNum;
 			int lastDayNum = arverageNum;
@@ -129,7 +127,7 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 			}
 			for(int j=0;j<monthDayNum;j++){
 				int tempDay = j+1;
-				QuotaConfigCityDay temp = new QuotaConfigCityDay();
+				CityDayQuota temp = new CityDayQuota();
 				temp.setCityId(tempMonth.getCityId());
 				temp.setDataDateM(currentMonth);
 				
@@ -155,8 +153,8 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 	@Override
 	public void setDeptUsedAndConf4CurrentMonth() {
 		String month = QuotaUtils.getDayMonth("yyyyMM");
-		List<QuotaMonthDeptUsed> useds = new ArrayList<QuotaMonthDeptUsed>();
-		List<QuotaConfigDeptMoth> confs = new ArrayList<QuotaConfigDeptMoth>();
+		List<DeptMonthQuota> useds = new ArrayList<DeptMonthQuota>();
+		List<DeptMonthQuota> confs = new ArrayList<DeptMonthQuota>();
 		
 		//查询当月所有科室的月配额（月配额、月使用额、默认配额）
 		List<Map<String, Object>> list = deptsQuotaStatisticsDao.getDeptQuotaStaticInMem(month);
@@ -167,8 +165,8 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = list.get(i);
 				
-				QuotaConfigDeptMoth tempConf = new QuotaConfigDeptMoth();
-				QuotaMonthDeptUsed tempUsed = new QuotaMonthDeptUsed();
+				DeptMonthQuota tempConf = new DeptMonthQuota();
+				DeptMonthQuota tempUsed = new DeptMonthQuota();
 
 				try {
 					QuotaUtils.map2Bean(map, tempConf);

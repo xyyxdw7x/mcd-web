@@ -3,17 +3,17 @@ package com.asiainfo.biapp.mcd.quota.service;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 public interface IQuotaConfigCityDayService {
 
-	CityQuotaStatisDay getCityQuotaStatisDay(String cityId);
+	public CityDayQuota getCityQuotaStatisDay(String cityId);
 	
-	int queryCityDayQuota(String cityId, String dataDate);
+	public int queryCityDayQuota(String cityId, String dataDate);
 	
-	List<Map<String, Object>> queryCityDayQuotas(String cityId, String dataDate);
+	public List<Map<String, Object>> queryCityDayQuotas(String cityId, String dataDate);
 
-	int saveDayQuotas(String cityid, String date, String quota,String quotaM) throws Exception;
+	public int saveDayQuotas(String cityid, String date, String quota,String quotaM) throws Exception;
 	
 	/**
 	 * 获得今天之前的所有日配额之和
@@ -24,7 +24,7 @@ public interface IQuotaConfigCityDayService {
 	 * @return
 	 * @throws Exception
 	 */
-	int getNowBeforeSum(String cityid, String date, String quota,String quotaM) throws Exception;
+	public int getNowBeforeSum(String cityid, String date, String quota,String quotaM) throws Exception;
 	
 	/**
 	 * 查询当前日期后的所有日期
@@ -34,7 +34,7 @@ public interface IQuotaConfigCityDayService {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Map<String,Object>> getNowAfterDataList(String cityid, String date, String quota) throws Exception;
+	public List<Map<String,Object>> getNowAfterDataList(String cityid, String date, String quota) throws Exception;
 	
 	/**
 	 * 当前日期后面的数据平分
@@ -44,14 +44,14 @@ public interface IQuotaConfigCityDayService {
 	 * @return
 	 * @throws Exception
 	 */
-	int updateNowAfterData(String cityid, String date, String quota,String endQuota,List<Map<String,Object>> list) throws Exception;
+	public int updateNowAfterData(String cityid, String date, String quota,String endQuota,List<Map<String,Object>> list) throws Exception;
     /**
      * 获取本月地址配置的配额之和
      * @param cityId
      * @param month
      * @return
      */
-    int getCityMonthQuotaSum(String cityId, String month);
+	public int getCityMonthQuotaSum(String cityId, String month);
     /**
      * 查询本日之前每天剩余配额之和
      * @param cityId
@@ -59,6 +59,6 @@ public interface IQuotaConfigCityDayService {
      * @param nowDate
      * @return
      */
-    int getSurplusQuotaSum(String cityId, String month, String nowDate);
+	public int getSurplusQuotaSum(String cityId, String month, String nowDate);
 
 }
