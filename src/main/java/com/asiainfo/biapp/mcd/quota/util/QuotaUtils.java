@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -207,9 +207,9 @@ public class QuotaUtils {
 		return list;
 	}
 
-	public static void updateProp(List<DeptsMonthQuotaStatistics> list,String cityId, String month) {
+	public static void updateProp(List<DeptMonthQuota> list,String cityId, String month) {
 		for (int i = 0; i < list.size(); i++) {
-			DeptsMonthQuotaStatistics temp = list.get(i);
+			DeptMonthQuota temp = list.get(i);
 			temp.setCityId(cityId);
 			temp.setDataDate(month);
 		}

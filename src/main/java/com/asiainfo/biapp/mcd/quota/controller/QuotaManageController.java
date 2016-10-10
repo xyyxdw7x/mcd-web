@@ -27,7 +27,7 @@ import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,7 +71,7 @@ public class QuotaManageController  extends BaseMultiActionController {
             }
         }
 
-        List<DeptsMonthQuotaStatistics> deptMonConfStati = null;
+        List<DeptMonthQuota> deptMonConfStati = null;
         int cityMonthConfig = 0;//地市月配额
 
         try {
@@ -134,7 +134,7 @@ public class QuotaManageController  extends BaseMultiActionController {
         String jsonStr = request.getParameter("beans");
         
         @SuppressWarnings("unchecked")
-        List<DeptsMonthQuotaStatistics> list = QuotaUtils.JsonStr2List(jsonStr,DeptsMonthQuotaStatistics.class);
+        List<DeptMonthQuota> list = QuotaUtils.JsonStr2List(jsonStr,DeptMonthQuota.class);
         
         renFlag=quotaConfigDeptMothService.saveOrUpdate(list, cityid,dataDate);
 

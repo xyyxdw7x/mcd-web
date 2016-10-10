@@ -3,13 +3,13 @@ package com.asiainfo.biapp.mcd.quota.service;
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 public interface IQuotaConfigDeptMothService {
 
 //	public List<QuotaConfigDeptMoth> queryDeptsConf(String cityId,String dataDate) throws Exception;
 
-	public List<DeptsMonthQuotaStatistics> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception;
+	public List<DeptMonthQuota> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception;
 
 //	public List<DeptsQuotaStatistics> getQuotas4Depts(String cityId, String date) throws Exception;
 	
@@ -25,6 +25,6 @@ public interface IQuotaConfigDeptMothService {
 	//public void saveOrUpdate(List<QuotaConfigDeptMoth> addList,List<QuotaConfigDeptMoth> updateList);
 
 
-	public String saveOrUpdate(List<DeptsMonthQuotaStatistics> list, String city, String month);
+	public String saveOrUpdate(List<DeptMonthQuota> list, String city, String month);
 
 }

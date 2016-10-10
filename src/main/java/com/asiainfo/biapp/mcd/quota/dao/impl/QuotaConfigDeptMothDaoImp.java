@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 @Repository(value="quotaConfigDeptMothDao")
@@ -137,7 +137,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConf
 	}
 
 	@Override
-	public void saveBatchSaveOrUpdateInMem(final List<DeptsMonthQuotaStatistics> list) {
+	public void saveBatchSaveOrUpdateInMem(final List<DeptMonthQuota> list) {
 		String delSql = "delete from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
 		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
 		try {

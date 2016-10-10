@@ -2,7 +2,7 @@ package com.asiainfo.biapp.mcd.quota.vo;
 
 import java.text.DecimalFormat;
 
-public class DeptsMonthQuotaStatistics {
+public class DeptMonthQuota {
 	private String dataDate;
 	private String cityId;
 	private String deptId;
@@ -10,6 +10,16 @@ public class DeptsMonthQuotaStatistics {
 	private long usedNum;
 	private long remainNum;
 	private long monthQuotaNum;
+	private long defaultMonthQuotaNum;
+
+
+	public long getDefaultMonthQuotaNum() {
+		return defaultMonthQuotaNum;
+	}
+
+	public void setDefaultMonthQuotaNum(long defaultMonthQuotaNum) {
+		this.defaultMonthQuotaNum = defaultMonthQuotaNum;
+	}
 
 	private String monthUsedPercent="0.00%";
 	

@@ -29,7 +29,7 @@ import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 
 @Controller
@@ -53,7 +53,7 @@ public class BullManageController extends BaseMultiActionController {
 		String cityId = user.getCityId();
 		String dataDate = QuotaUtils.getDayMonth("yyyyMM");
 		
-		List<DeptsMonthQuotaStatistics> list = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityId, dataDate);//科室月配额
+		List<DeptMonthQuota> list = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityId, dataDate);//科室月配额
 		CityQuotaStatic cityStatis = this.currentDateQuotaService.getCityStatis(cityId);//地市月配额
 		CityQuotaStatisDay cityQuotaStatisDay = this.quotaConfigCityDayService.getCityQuotaStatisDay(cityId);//地市日配额
 		

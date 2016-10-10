@@ -18,7 +18,7 @@ import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 @Service("quotaConfigDeptMothService")
 public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothService {
@@ -37,9 +37,9 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	private IUserDeptLinkDao userDeptLinkDao;
 
 	@Override
-	public List<DeptsMonthQuotaStatistics> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception {
+	public List<DeptMonthQuota> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception {
 
-		List<DeptsMonthQuotaStatistics> statisList = null;
+		List<DeptMonthQuota> statisList = null;
 
 		List<Map<String, Object>> cityDepts = userDeptLinkDao.getCityDepts(cityId);//获得地市的所有科室
 		List<Map<String, Object>> cityDeptMonQuota = deptsQuotaStatisticsDao.getStatisticsInMem(cityId, dataDate);
@@ -109,9 +109,9 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 		return src;
 	}
 
-	private void setRemain4StatisList(List<DeptsMonthQuotaStatistics> list) {
+	private void setRemain4StatisList(List<DeptMonthQuota> list) {
 		for (int i = 0; i < list.size(); i++) {
-			DeptsMonthQuotaStatistics temp = list.get(i);
+			DeptMonthQuota temp = list.get(i);
 			long configNum = temp.getMonthQuotaNum();
 			long usedNum = temp.getUsedNum();
 			temp.setRemainNum(configNum - usedNum);
@@ -144,7 +144,7 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	}
 
 	@Override
-	public String saveOrUpdate(List<DeptsMonthQuotaStatistics> list, String cityid,String month) {
+	public String saveOrUpdate(List<DeptMonthQuota> list, String cityid,String month) {
 		QuotaUtils.updateProp(list, cityid, month);
 		if (!isTotalDeptLeCity(list, cityid, month)) {// 各科室月限额之和大于地市月限额
 			return "0";
@@ -162,7 +162,7 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	 * @param month
 	 * @return
 	 */
-	private Boolean isTotalDeptLeCity(List<DeptsMonthQuotaStatistics> list,String city, String month) {
+	private Boolean isTotalDeptLeCity(List<DeptMonthQuota> list,String city, String month) {
 		Boolean renFlag = false;
 		int cityMonthQuota = quotaConfigCityMothDao.queryCityMonthQuotaInMem(city);// 地市月配额
 		long deptsMonthQuotaTotal = 0; // 地市各科室月配总额
@@ -184,11 +184,11 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	 * @param list
 	 * @return
 	 */
-	private List<DeptsMonthQuotaStatistics> getStatistics(List<Map<String, Object>> list) {
-		List<DeptsMonthQuotaStatistics> renObj = new ArrayList<DeptsMonthQuotaStatistics>();
+	private List<DeptMonthQuota> getStatistics(List<Map<String, Object>> list) {
+		List<DeptMonthQuota> renObj = new ArrayList<DeptMonthQuota>();
 
 		for (Map<String, Object> map : list) {
-			DeptsMonthQuotaStatistics tempObj = new DeptsMonthQuotaStatistics();
+			DeptMonthQuota tempObj = new DeptMonthQuota();
 			try {
 				QuotaUtils.map2Bean(map, tempObj);
 			} catch (Exception e) {
