@@ -23,7 +23,7 @@
     _ctx = "<%=request.getContextPath()%>";
 </script>
 <jsp:include page="/jsp/common/header.jsp"></jsp:include>
-<script type="text/javascript" src="${ctx}/mcd/assets/scripts/bulk/percent.js"></script>
+
 <body class="bulk-body">
 	<div class="bulk-container"  <c:if test="${cityId == '999'}">style="display:none"</c:if>>
 		<div class="bulk-total-quota" >
@@ -117,7 +117,7 @@
 			</div>
 		</div>
 	</div>
-
+<script type="text/javascript" src="${ctx}/assets/js/bulk/percent.js"></script>
 	<script type="text/javascript">
 		seajs.use("bulk/bulkManage",function(main){
 			main.init();
