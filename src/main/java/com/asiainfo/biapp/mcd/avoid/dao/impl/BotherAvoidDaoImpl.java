@@ -35,56 +35,9 @@ public class BotherAvoidDaoImpl extends JdbcDaoBase implements IMcdMtlBotherAvoi
 	 * @param mtlBotherAvoid 免打扰客户的查询条件
 	 */
 	@Override
-	public List<Map<String,Object>> searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid) {
-		
-		StringBuffer buffer = new StringBuffer();
-
-		List<Object> plist = new ArrayList<Object>();
-
-		buffer.append("SELECT A.AVOID_BOTHER_TYPE, A.AVOID_CUST_TYPE, A.PRODUCT_NO, to_char(A.ENTER_TIME, 'yyyy.mm.dd') as ENTER_TIME, A.USER_TYPE_ID, A.CREATE_USER_ID,")
-		 .append(" A.CREATE_USER_NAME, B.NAME AS USER_TYPE_NAME,C.CAMPSEG_TYPE_NAME,D.CHANNEL_NAME")
-		 .append(" FROM MCD_CORE_AD.mcd_bother_avoid A")
-		 .append(" INNER JOIN DIM_BOTHER_AVOID_USER_TYPE B ON A.USER_TYPE_ID  = B.ID")
-		 .append(" INNER JOIN mcd_dim_camp_type C ON A.AVOID_CUST_TYPE = C.CAMPSEG_TYPE_ID")
-		 .append(" INNER JOIN mcd_dim_channel D ON A.AVOID_BOTHER_TYPE = D.CHANNEL_ID");
-		 
-		if(mtlBotherAvoid.getKeywords() != null && !"".equals(mtlBotherAvoid.getKeywords())) {
-			buffer.append(" and (A.PRODUCT_NO like '%" + mtlBotherAvoid.getKeywords() + "%')");
-		}
-		//客户类型
-		if (mtlBotherAvoid.getUserTypeId() != null && !"".equals(mtlBotherAvoid.getUserTypeId())) {
-			buffer.append(" and A.USER_TYPE_ID = ? ");
-			plist.add(mtlBotherAvoid.getUserTypeId());
-		}
-		//通用渠道
-		if (mtlBotherAvoid.getAvoidBotherType() != null && !"".equals(mtlBotherAvoid.getAvoidBotherType())) {
-			buffer.append(" and A.AVOID_BOTHER_TYPE = ? ");
-			plist.add(mtlBotherAvoid.getAvoidBotherType());
-		}
-		//营销类型
-		if (mtlBotherAvoid.getAvoidCustType() != null && !"".equals(mtlBotherAvoid.getAvoidCustType())) {
-			buffer.append(" and A.AVOID_CUST_TYPE = ? ");
-			plist.add(mtlBotherAvoid.getAvoidCustType());
-		}
-		//排序字段
-		if (mtlBotherAvoid.getSortColumn() != null && !"".equals(mtlBotherAvoid.getSortColumn())) {
-			if ("ENTER_TIME".equals(mtlBotherAvoid.getSortColumn())) {
-				buffer.append(" ORDER BY A.ENTER_TIME ");
-				if ("asc".equalsIgnoreCase(mtlBotherAvoid.getSortOrderBy())) {
-					buffer.append(" ASC ");
-				} else if ("desc".equalsIgnoreCase(mtlBotherAvoid.getSortOrderBy())) {
-					buffer.append(" DESC ");
-				}
-				buffer.append(" , A.PRODUCT_NO");
-			}
-		}
-		
-		log.info("执行sql="+buffer);
-		
-		String sqlExt = DataBaseAdapter.getPagedSql(buffer.toString(), pager.getPageNum(),pager.getPageSize());
-		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sqlExt.toString(), plist.toArray());
-		List<Map<String,Object>> listSize = this.getJdbcTemplate().queryForList(buffer.toString(), plist.toArray());
-		pager.setTotalSize(listSize.size());  // 总记录数
+	public List<Map<String,Object>> searchBotherAvoidUser(String sql ,List<Object> param) {
+	
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql , param.toArray());
 		
 		return list;
 	}
