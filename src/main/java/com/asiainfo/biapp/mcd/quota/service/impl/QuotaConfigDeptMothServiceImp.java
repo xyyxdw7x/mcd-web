@@ -16,14 +16,11 @@ import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptDayDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMonthDefaultDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaDayDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.dao.impl.QuotaDayDeptUsedDaoImp;
+import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
-import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
-import com.asiainfo.biapp.mcd.quota.vo.QuotaMonthDeptUsed;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 
 @Service("quotaConfigDeptMothService")
 public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothService {
@@ -41,47 +38,21 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	private IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao;
 	@Resource(name = "deptsQuotaStatisticsDao")
 	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
-	
-	public void setDeptsQuotaStatisticsDao(IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao) {
-		this.deptsQuotaStatisticsDao = deptsQuotaStatisticsDao;
-	}
-	public void setQuotaConfigDeptMonthDefaultDao(IQuotaConfigDeptMonthDefaultDao quotaConfigDeptMonthDefaultDao) {
-		this.quotaConfigDeptMonthDefaultDao = quotaConfigDeptMonthDefaultDao;
-	}
-	public void setQuotaDayDeptUsedDao(IQuotaDayDeptUsedDao quotaDayDeptUsedDao) {
-		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
-	}
-	public void setQuotaConfigDeptDayDao(IQuotaConfigDeptDayDao quotaConfigDeptDayDao) {
-		this.quotaConfigDeptDayDao = quotaConfigDeptDayDao;
-	}
-	public void setQuotaDayDeptUsedDao(QuotaDayDeptUsedDaoImp quotaDayDeptUsedDao) {
-		this.quotaDayDeptUsedDao = quotaDayDeptUsedDao;
-	}
-	public void setQuotaConfigCityMothDao(IQuotaConfigCityMothDao quotaConfigCityMothDao) {
-		this.quotaConfigCityMothDao = quotaConfigCityMothDao;
-	}
-	public void setQuotaConfigDeptMothDao(IQuotaConfigDeptMothDao quotaConfigDeptMothDao) {
-		this.quotaConfigDeptMothDao = quotaConfigDeptMothDao;
-	}
-	
-	
+	@Resource(name = "userDeptLinkDao")
+	private IUserDeptLinkDao userDeptLinkDao;
 
 	@Override
-	public List<QuotaConfigDeptMoth> queryDeptsConf(String cityId,String dataDate) throws Exception {
-		List<Map<String, Object>> mapData = quotaConfigDeptMothDao.getDeptsByDateInMem(cityId, dataDate);
-		List<QuotaConfigDeptMoth> list = this.getDeptsMonQuotaList(mapData);
-		return list;
-	}
+	public List<DeptsMonthQuotaStatistics> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception {
 
-	
-	@Override
-	public List<DeptsQuotaStatistics> getDeptsQuotaStatistics(String cityId,String dataDate) throws Exception {
+		List<DeptsMonthQuotaStatistics> statisList = null;
 
-		List<DeptsQuotaStatistics> statisList = null;
+		List<Map<String, Object>> cityDepts = userDeptLinkDao.getCityDepts(cityId);//获得地市的所有科室
+		List<Map<String, Object>> cityDeptMonQuota = deptsQuotaStatisticsDao.getStatisticsInMem(cityId, dataDate);
+		this.combineList(cityDepts, cityDeptMonQuota);
+		statisList = this.getStatistics(cityDepts);
+		this.setRemain4StatisList(statisList);// 设置剩余值
 
-		List<Map<String, Object>> deptMonthList = quotaConfigDeptMothDao.getDeptsByDateInMem(cityId, dataDate);
-
-		if (deptMonthList != null && deptMonthList.size() > 0) {// 有科室的月配额已经配置
+/*		if (cityDepts != null && cityDepts.size() > 0) {// 有科室的月配额已经配置
 			List<Map<String, Object>> statisMap = deptsQuotaStatisticsDao.getStatisticsInMem(cityId, dataDate);
 			statisList = this.getStatistics(statisMap);
 			this.setRemain4StatisList(statisList);// 设置剩余值
@@ -113,13 +84,39 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 					newStatis.setUsedNum(0);
 					statisList.add(newStatis);
 				}
-		}
+		}*/
 		return statisList;
 	}
+	/**
+	 * 和并对象
+	 * @param src
+	 * @param target
+	 * @return
+	 */
+	private List<Map<String, Object>> combineList(List<Map<String, Object>> src,List<Map<String, Object>> target){
+		if(target==null || target.size()<0){
+			return src;
+		}
+		for(int i =0; i<src.size();i++){
+			Map<String, Object> tmp =  src.get(i);
+			String srcDeptId = tmp.get("DEPT_ID").toString();
+			for(int j =0; j<target.size();j++){
+				Map<String, Object> tmp2 = target.get(j);
+				String targetDeptId =  tmp2.get("DEPT_ID").toString();
+				if(srcDeptId .equals(targetDeptId) ){
+					tmp.put("MONTH_QUOTA_NUM",  tmp2.get("MONTH_QUOTA_NUM"));
+					tmp.put("USED_NUM", tmp2.get("USED_NUM"));
+					tmp.put("DATA_DATE", tmp2.get("DATA_DATE"));
+				}
+			}
+		}
+		
+		return src;
+	}
 
-	private void setRemain4StatisList(List<DeptsQuotaStatistics> list) {
+	private void setRemain4StatisList(List<DeptsMonthQuotaStatistics> list) {
 		for (int i = 0; i < list.size(); i++) {
-			DeptsQuotaStatistics temp = list.get(i);
+			DeptsMonthQuotaStatistics temp = list.get(i);
 			long configNum = temp.getMonthQuotaNum();
 			long usedNum = temp.getUsedNum();
 			temp.setRemainNum(configNum - usedNum);
@@ -152,14 +149,11 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	}
 
 	@Override
-	public String saveOrUpdate(List<DeptsQuotaStatistics> list, String cityid,
-			String month) {
+	public String saveOrUpdate(List<DeptsMonthQuotaStatistics> list, String cityid,String month) {
 		QuotaUtils.updateProp(list, cityid, month);
-
 		if (!isTotalDeptLeCity(list, cityid, month)) {// 各科室月限额之和大于地市月限额
 			return "0";
 		}
-
 		quotaConfigDeptMothDao.saveBatchSaveOrUpdateInMem(list);
 		return "1";
 
@@ -173,7 +167,7 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 	 * @param month
 	 * @return
 	 */
-	private Boolean isTotalDeptLeCity(List<DeptsQuotaStatistics> list,String city, String month) {
+	private Boolean isTotalDeptLeCity(List<DeptsMonthQuotaStatistics> list,String city, String month) {
 		Boolean renFlag = false;
 		int cityMonthQuota = quotaConfigCityMothDao.queryCityMonthQuotaInMem(city);// 地市月配额
 		long deptsMonthQuotaTotal = 0; // 地市各科室月配总额
@@ -189,52 +183,23 @@ public class QuotaConfigDeptMothServiceImp implements IQuotaConfigDeptMothServic
 		return renFlag;
 	}
 
-	private List<QuotaConfigDeptMoth> getDeptsMonQuotaList(
-			List<Map<String, Object>> list) {
-		List<QuotaConfigDeptMoth> renObj = new ArrayList<QuotaConfigDeptMoth>();
+
+	/**
+	 * 将List<Map<String, Object>>转换成List<DeptsQuotaStatistics>
+	 * @param list
+	 * @return
+	 */
+	private List<DeptsMonthQuotaStatistics> getStatistics(List<Map<String, Object>> list) {
+		List<DeptsMonthQuotaStatistics> renObj = new ArrayList<DeptsMonthQuotaStatistics>();
 
 		for (Map<String, Object> map : list) {
-			QuotaConfigDeptMoth tempObj = new QuotaConfigDeptMoth();
+			DeptsMonthQuotaStatistics tempObj = new DeptsMonthQuotaStatistics();
 			try {
 				QuotaUtils.map2Bean(map, tempObj);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			renObj.add(tempObj);
-		}
-		return renObj;
-
-	}
-
-	@SuppressWarnings("unused")
-	private List<QuotaMonthDeptUsed> getDeptsMonQuotaListUsed(
-			List<Map<String, Object>> list) {
-		List<QuotaMonthDeptUsed> renObj = new ArrayList<QuotaMonthDeptUsed>();
-
-		for (Map<String, Object> map : list) {
-			QuotaMonthDeptUsed tempObj = new QuotaMonthDeptUsed();
-			try {
-				QuotaUtils.map2Bean(map, tempObj);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			renObj.add(tempObj);
-		}
-		return renObj;
-
-	}
-
-	private List<DeptsQuotaStatistics> getStatistics(
-			List<Map<String, Object>> list) {
-		List<DeptsQuotaStatistics> renObj = new ArrayList<DeptsQuotaStatistics>();
-
-		for (Map<String, Object> map : list) {
-			DeptsQuotaStatistics tempObj = new DeptsQuotaStatistics();
-			try {
-				QuotaUtils.map2Bean(map, tempObj);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			tempObj.setMonthUsedPercent();
 			renObj.add(tempObj);
 		}
 		return renObj;

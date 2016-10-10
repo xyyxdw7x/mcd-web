@@ -15,12 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 @Repository(value="quotaConfigDeptMothDao")
-public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
-		IQuotaConfigDeptMothDao {
+public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements IQuotaConfigDeptMothDao {
 
 	private static Logger log = LogManager.getLogger();
 
@@ -31,22 +30,16 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	private static final String COL_DEPT_MONTH_QUOTA = "MONTH_QUOTA_NUM";
 
 	@Override
-	public void updateDepMonthQuotaInMem(QuotaConfigDeptMoth depMonthQuota,
-			int newQuota) throws DataAccessException {
-		String sql = "update " + TABLE + "  set day_num=" + newQuota
-				+ " where city_id=? and dept_id=? and data_date=?";
-		Object[] para = { depMonthQuota.getCityId(), depMonthQuota.getDeptId(),
-				depMonthQuota.getDataDate() };
+	public void updateDepMonthQuotaInMem(QuotaConfigDeptMoth depMonthQuota,int newQuota) throws DataAccessException {
+		String sql = "update " + TABLE + "  set day_num=" + newQuota+ " where city_id=? and dept_id=? and data_date=?";
+		Object[] para = { depMonthQuota.getCityId(), depMonthQuota.getDeptId(),depMonthQuota.getDataDate() };
 		this.getJdbcTemplate().update(sql, para);
-
 	}
 
 	@Override
-	public QuotaConfigDeptMoth getByKeysInMem(QuotaConfigDeptMoth depDayQuota)
-			throws DataAccessException {
+	public QuotaConfigDeptMoth getByKeysInMem(QuotaConfigDeptMoth depDayQuota)throws DataAccessException {
 		QuotaConfigDeptMoth renObj = null;
-		String sql = "select * from " + TABLE
-				+ " where city_id=? and dept_id=? and data_date=?";
+		String sql = "select * from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { depDayQuota.getCityId(), depDayQuota.getDeptId(),depDayQuota.getDataDate() };
 
 		try {
@@ -72,8 +65,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,
-			String dataDate) throws DataAccessException {
+	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,String dataDate) throws DataAccessException {
 		QuotaConfigDeptMoth renObj = null;
 		String sql = "select * from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { cityID, deptId, dataDate };
@@ -98,21 +90,11 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 		return renObj;
 	}
 
-	@Override
-	public List<Map<String, Object>> getDeptsByDateInMem(String cityId,
-			String dataDate) throws DataAccessException {
 
-		List<Map<String, Object>> list = null;
-		String sql = "select * from " + TABLE + " where CITY_ID=? and DATA_DATE=? order by DEPT_ID";
-		Object[] parms = { cityId, dataDate };
-		list = this.getJdbcTemplate().queryForList(sql, parms);
-		return list;
-	}
 
 	// 获得地市所有科室的月限额之和
 	@Override
-	public int getTotal4CityDeptMonthInMem(String cityId, String month)
-			throws DataAccessException {
+	public int getTotal4CityDeptMonthInMem(String cityId, String month)throws DataAccessException {
 		int total = 0;
 		String sql = "select MONTH_QUOTA_NUM from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
 		Object[] parms = { cityId, month };
@@ -127,8 +109,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void updateBatchUpdateInMem(final List<QuotaConfigDeptMoth> list)
-			throws DataAccessException {
+	public void updateBatchUpdateInMem(final List<QuotaConfigDeptMoth> list)throws DataAccessException {
 		String sql = "update " + TABLE + " set MONTH_QUOTA_NUM=? where CITY_ID=? and DATA_DATE=? and DEPT_ID=?";
 
 		try {
@@ -156,15 +137,11 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 	}
 
 	@Override
-	public void saveBatchSaveOrUpdateInMem(final List<DeptsQuotaStatistics> list) {
-
+	public void saveBatchSaveOrUpdateInMem(final List<DeptsMonthQuotaStatistics> list) {
 		String delSql = "delete from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
-
 		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
-
 		try {
 			this.getJdbcTemplate().batchUpdate(delSql,new BatchPreparedStatementSetter() {
-
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
 							ps.setString(1, list.get(index).getCityId());
@@ -182,9 +159,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 		}
 
 		try {
-			this.getJdbcTemplate().batchUpdate(saveSql,
-					new BatchPreparedStatementSetter() {
-
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
 							ps.setLong(1, list.get(index).getMonthQuotaNum());
@@ -212,8 +187,7 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 		String sql = "select MONTH_QUOTA_NUM from " + TABLE + " where city_id=? and dept_id=? and data_date=?";
 		Object[] para = { cityID, deptId, dataDate };
 		try {
-			num = this.getJdbcTemplate().queryForObject(  
-                    sql, new Object[] { para }, Integer.class);  
+			num = this.getJdbcTemplate().queryForObject(sql, new Object[] { para }, Integer.class);  
 		} catch (DataAccessException e) {
 			log.error("未查询到指定的科室，将返回0");
 			return 0;
@@ -226,25 +200,21 @@ public class QuotaConfigDeptMothDaoImp extends JdbcDaoBase implements
 		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
 
 		try {
-			this.getJdbcTemplate().batchUpdate(saveSql,
-					new BatchPreparedStatementSetter() {
-
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
 						@Override
 						public void setValues(PreparedStatement ps, int index)throws SQLException {
 							ps.setInt(1, list.get(index).getMonthQuotaNum());
 							ps.setString(2, list.get(index).getCityId());
 							ps.setString(3, list.get(index).getDataDate());
 							ps.setString(4, list.get(index).getDeptId());
-
 						}
-
 						@Override
 						public int getBatchSize() {
 							return list.size();
 						}
 					});
 		} catch (DataAccessException e) {
-			log.error("批量保存时报错....");
+			log.error("批量保存时报错....",e);
 			throw e;
 		}
 		

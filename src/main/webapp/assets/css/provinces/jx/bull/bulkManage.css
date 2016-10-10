@@ -36,6 +36,7 @@
 	width: 500px;
 	height: 36px;
 	background: #eadeac;
+	word-break:normal;
 }
 .bulk-total-quota-column .bulk-total-quota-column-inner{
 	width: 70%;
@@ -44,8 +45,9 @@
 	color: #fff;
 	font-size: 18px;
 	background: #f0b928;
-	text-align: right;
+	text-align: center;
 	font-family: "arial narrow";
+	word-break:normal;
 }
 .bulk-legend-box{
 	width:230px;
@@ -98,6 +100,7 @@
 	height: 22px;
 	background: #eadeac;
 	margin: 0 0 10px;
+	word-break:normal;
 }
 .bulk-quota-column-box-inner{
 	width: 70%;
@@ -106,8 +109,10 @@
 	color: #fff;
 	font-size: 14px;
 	background: #f0b928;
-	text-align: right;
+	text-align: center;
 	font-family: "arial narrow";
+	word-break:normal;
+	
 }
 .bulk-quota-tabs{
 	width: 100%;

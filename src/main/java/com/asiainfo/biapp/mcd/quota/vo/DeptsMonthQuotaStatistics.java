@@ -1,6 +1,8 @@
 package com.asiainfo.biapp.mcd.quota.vo;
 
-public class DeptsQuotaStatistics {
+import java.text.DecimalFormat;
+
+public class DeptsMonthQuotaStatistics {
 	private String dataDate;
 	private String cityId;
 	private String deptId;
@@ -9,12 +11,21 @@ public class DeptsQuotaStatistics {
 	private long remainNum;
 	private long monthQuotaNum;
 
-	// private String recordFlag;
+	private String monthUsedPercent="0.00%";
+	
+	public void setMonthUsedPercent() {
+		if (monthQuotaNum != 0) {
+			DecimalFormat df = new DecimalFormat("0.00");
+			double temp= ((double)usedNum/monthQuotaNum)*100;
+			this.monthUsedPercent = df.format(temp)+"%";
+		}
+	}
+	
+	public String getMonthUsedPercent() {
+		return this.monthUsedPercent;
+	}
 
-	/*
-	 * public String getRecordFlag() { return recordFlag; } public void
-	 * setRecordFlag(String recordFlag) { this.recordFlag = recordFlag; }
-	 */
+	
 	public void setRemainNum(long remainNum) {
 		this.remainNum = remainNum;
 	}

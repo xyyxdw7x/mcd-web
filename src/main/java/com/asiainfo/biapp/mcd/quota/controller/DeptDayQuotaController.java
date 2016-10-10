@@ -50,15 +50,12 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     
     /**
      * 调整单日配额
-     * @param actionMapping
-     * @param form
      * @param request
      * @param response
      * @return
      * @throws Exception
      */
-    public ModelAndView editDayQuota(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public ModelAndView editDayQuota(HttpServletRequest request,HttpServletResponse response) throws Exception {
         
         String deptId=request.getParameter("deptId");
         String dataDate = null;
@@ -85,8 +82,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
     }
     /**
      * 查看整月每日配额
-     * @param actionMapping
-     * @param form
      * @param request
      * @param response
      * @return
@@ -135,8 +130,6 @@ public class DeptDayQuotaController  extends BaseMultiActionController {
                 int date = 0;
                 while (ite.hasNext()) {
                     String _key = ite.next();
-                    
-
 
                     if ("DATA_DATE".equals(_key)) {
                         tmp = map.get(_key).toString().substring(dataDate.length());

@@ -19,13 +19,12 @@ public class QuotaConfigCityMothDaoImp extends JdbcDaoBase implements IQuotaConf
 	@Override
 	public int queryCityMonthQuotaInMem(String city)throws DataAccessException {
 		int ren = 0;
-		@SuppressWarnings("rawtypes")
-		List list=null;;
-		String sql = "select MONTH_QUOTA_NUM" + " from " + TABLE + " where CITY_ID=?";
+		List<Map<String,Object>> list=null;;
+		String sql = "select nvl(MONTH_QUOTA_NUM,0) MONTH_QUOTA_NUM " + " from " + TABLE + " where CITY_ID=?";
 		try {
 			list = this.getJdbcTemplate().queryForList(sql, new Object[] { city });  
 			if(list!=null && list.size()>0){
-				ren = Integer.parseInt(list.get(0).toString());
+				ren = Integer.parseInt(list.get(0).get("MONTH_QUOTA_NUM").toString());
 			}
 		} catch (DataAccessException e) {
 			log.error("查询地市月配额出错！！！将返回0",e);

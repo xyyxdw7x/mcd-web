@@ -23,7 +23,7 @@ import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonQuotaDefault;
-import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,9 +41,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
     private IMtlSysCampConfigDao sysCampConfigDao;
     
     /**
-     * 查询月配额
-     * @param actionMapping
-     * @param form
+     * 查询当前人员所在地市的所有科室的月配额
      * @param request
      * @param response
      * @return
@@ -51,9 +49,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
      */
     @RequestMapping("/queryDeptsConfigMonth")
     public void queryDeptsConfigMonth(HttpServletRequest request,HttpServletResponse response) throws Exception {
-
         String cityid = this.getUser(request, response).getCityId();
-        
         String dataDate;
         String showDate = request.getParameter("dataDate");
         boolean couldAdjust = true;
@@ -70,23 +66,21 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
             }
         }
 
-        List<DeptsQuotaStatistics> deptMonConfStati = null;
+        List<DeptsMonthQuotaStatistics> deptMonConfStati = null;
         int cityMonthConfig = 0;//地市月配额
 
         try {
-            deptMonConfStati = quotaConfigDeptMothService.getDeptsQuotaStatistics(cityid, dataDate);
+            deptMonConfStati = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityid, dataDate);
             cityMonthConfig = quotaConfigDeptMothService.getCityMonthQuota(cityid);
         } catch (Exception e) {
-            log.error("查询月配额或者月使用额出错");
+            log.error("查询月配额或者月使用额出错",e);
             e.printStackTrace();
         }
         Map<String, Object> map= new HashMap<String, Object>();
         //地市整体月配额
         if("999".equals(cityid)){
-            //request.setAttribute("allowances", "无限制");
             map.put("allowances", "无限制");
         }else{
-            //request.setAttribute("allowances", cityMonthConfig);
             map.put("allowances", cityMonthConfig);
         }
         map.put("deptMonConfStati", deptMonConfStati);
@@ -94,15 +88,11 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         map.put("couldAdjust", couldAdjust);
         map.put("newDate",DateTool.getStringDate(new Date(), "yyyyMM"));
         //add by zhuyq3 2015-10-29 15:14:57
-        String key = "SMS_CITY_NUM";
-
-        Object obj = sysCampConfigDao.getProperety(key);
+        Object obj = sysCampConfigDao.getProperety("SMS_CITY_NUM");
         try {
-            //request.setAttribute("smsCityNum", Integer.parseInt(String.valueOf(obj)));
             map.put("smsCityNum", Integer.parseInt(String.valueOf(obj)));
         } catch (Exception e) {
             e.printStackTrace();
-            //request.setAttribute("smsCityNum", 0);
             map.put("smsCityNum", 0);
         }
         //end of zhuyq3
@@ -122,20 +112,15 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
 
     }
     /**
-     * 保存月配额
-     * @param actionMapping
-     * @param form
+     * 批量保存月配额
      * @param request
      * @param response
      * @throws Exception
      */
     @RequestMapping("/batchModifyMonConf")
-    public void batchModifyMonConf(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        
+    public void batchModifyMonConf(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String renFlag="";
         JSONObject dataJson = new JSONObject();
-
         String cityid = this.getUser(request, response).getCityId();
         String dataDate = request.getParameter("dataDate");
         if (StringUtils.isEmpty(dataDate)) {
@@ -143,9 +128,8 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         }
         String jsonStr = request.getParameter("beans");
         
-        
         @SuppressWarnings("unchecked")
-        List<DeptsQuotaStatistics> list = QuotaUtils.JsonStr2List(jsonStr,DeptsQuotaStatistics.class);
+        List<DeptsMonthQuotaStatistics> list = QuotaUtils.JsonStr2List(jsonStr,DeptsMonthQuotaStatistics.class);
         
         renFlag=quotaConfigDeptMothService.saveOrUpdate(list, cityid,dataDate);
 
@@ -165,8 +149,7 @@ public class DeptMonthQuotaController  extends BaseMultiActionController {
         out.close();
     }
     
-    public void saveDefault(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+    public void saveDefault(HttpServletRequest request,HttpServletResponse response) throws Exception {
         boolean flag=false;
         JSONObject result = new JSONObject();
         String cityid = this.getUser(request, response).getCityId();

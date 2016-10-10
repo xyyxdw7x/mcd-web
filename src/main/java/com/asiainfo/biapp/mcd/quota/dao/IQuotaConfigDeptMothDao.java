@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-import com.asiainfo.biapp.mcd.quota.vo.DeptsQuotaStatistics;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 import com.asiainfo.biapp.mcd.quota.vo.QuotaConfigDeptMoth;
 
 public interface IQuotaConfigDeptMothDao {
@@ -36,8 +36,7 @@ public interface IQuotaConfigDeptMothDao {
 	 * @param DataDate
 	 * @return
 	 */
-	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,
-			String DataDate) throws DataAccessException;
+	public QuotaConfigDeptMoth getByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
 
 
 	/**
@@ -49,9 +48,8 @@ public interface IQuotaConfigDeptMothDao {
 
 	int getTotal4CityDeptMonthInMem(String cityId, String dataDate)throws DataAccessException;
 
-	public List<Map<String, Object>> getDeptsByDateInMem(String cityId, String dataDate)throws DataAccessException;
 	
-	public void saveBatchSaveOrUpdateInMem(List<DeptsQuotaStatistics> list);
+	public void saveBatchSaveOrUpdateInMem(List<DeptsMonthQuotaStatistics> list);
 	
 	public int getQuotaByKeysInMem(String cityID, String deptId,String DataDate) throws DataAccessException;
 

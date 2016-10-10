@@ -6,7 +6,6 @@ public class CityQuotaStatic {
 	private String cityId;
 	private int monthQuotaNum;
 	private int monthUsedNum;
-	
 	private String cityUsedPercent;
 
 	public int getMonthUsedNum() {

@@ -1,7 +1,5 @@
 package com.asiainfo.biapp.mcd.bull.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
-import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
-import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 
 @Service("currentDateQuotaService")
 public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
@@ -19,32 +15,11 @@ public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
 	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
 	
 	@Override
-	public List<CurrentDateQuota> getCurrentStatis(String cityId) {
-		List<CurrentDateQuota> list = new ArrayList<CurrentDateQuota>();
-		List<Map<String, Object>> month = deptsQuotaStatisticsDao.getCurrentMonthInMem(cityId);
-
-		if (month != null && month.size() > 0 ) {
-			for (int i = 0; i < month.size(); i++) {
-				CurrentDateQuota temp = new CurrentDateQuota();
-				try {
-					QuotaUtils.map2Bean(month.get(i), temp);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				temp.setMonthUsedPercent();
-				list.add(temp);
-			}
-		}
-
-		return list;
-	}
-	@Override
 	public CityQuotaStatic getCityStatis(String cityId){
 		CityQuotaStatic cityStatic = new CityQuotaStatic();
 		Map<String, Object>  map = deptsQuotaStatisticsDao.getCityStatisInMem(cityId);
 		if(map!=null && map.size()>0){
 			cityStatic.setCityId(map.get("CITY_ID").toString());
-			
 			if(map.get("MONTH_QUOTA_NUM")!=null){
 				cityStatic.setMonthQuotaNum(Integer.parseInt(map.get("MONTH_QUOTA_NUM").toString()));
 			}else{

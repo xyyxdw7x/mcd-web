@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,12 +22,14 @@ import com.asiainfo.biapp.mcd.bull.service.IBullMonitorService;
 import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
 import com.asiainfo.biapp.mcd.bull.vo.BullMonitor;
 import com.asiainfo.biapp.mcd.bull.vo.CityQuotaStatic;
-import com.asiainfo.biapp.mcd.bull.vo.CurrentDateQuota;
 import com.asiainfo.biapp.mcd.bull.vo.UserDept;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.constants.TasKStatus;
 import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
+import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
+import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityQuotaStatisDay;
+import com.asiainfo.biapp.mcd.quota.vo.DeptsMonthQuotaStatistics;
 
 
 @Controller
@@ -40,28 +43,31 @@ public class BullManageController extends BaseMultiActionController {
 	private ICurrentDateQuotaService currentDateQuotaService;
 	@Autowired
 	private IQuotaConfigCityDayService quotaConfigCityDayService;
+    @Resource(name = "quotaConfigDeptMothService")
+    private IQuotaConfigDeptMothService quotaConfigDeptMothService;
 
 	//群发管理页面入口url
 	@RequestMapping
-	public ModelAndView viewBull(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView viewBull(HttpServletRequest request, HttpServletResponse response)throws Exception {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
-		List<CurrentDateQuota> list = this.currentDateQuotaService.getCurrentStatis(cityId);//科室月配额
-		CityQuotaStatic cityStatis = this.currentDateQuotaService.getCityStatis(cityId);//地市月配额
+		String dataDate = QuotaUtils.getDayMonth("yyyyMM");
 		
+		List<DeptsMonthQuotaStatistics> list = quotaConfigDeptMothService.getCityDeptsMonthQuota(cityId, dataDate);//科室月配额
+		CityQuotaStatic cityStatis = this.currentDateQuotaService.getCityStatis(cityId);//地市月配额
 		CityQuotaStatisDay cityQuotaStatisDay = this.quotaConfigCityDayService.getCityQuotaStatisDay(cityId);//地市日配额
-
-		int currentSendType = this.bullMonitorService.getSendType(cityId);
-
+		
+		int currentSendType = this.bullMonitorService.getSendType(cityId);//发送方式
+		
 		if (currentSendType == 0) {
 			currentSendType = 1;// 顺序发送
 			this.bullMonitorService.addCitySendType(cityId,currentSendType);
 		}
 
 		ModelAndView view = new ModelAndView("/bull/bullManage"); 
-		view.addObject("currentStatis", list);
-		view.addObject("cityStatis", cityStatis);
-		view.addObject("cityQuotaStatisDay", cityQuotaStatisDay);
+		view.addObject("currentStatis", list);//当前地市的所有科室的月配额
+		view.addObject("cityStatis", cityStatis);//地市月配额
+		view.addObject("cityQuotaStatisDay", cityQuotaStatisDay);//地市日配额
 		view.addObject("currentSendType", currentSendType);
 		view.addObject("cityId", cityId);
 		return view;
@@ -74,20 +80,16 @@ public class BullManageController extends BaseMultiActionController {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
 		String deptId = request.getParameter("deptId");
-		
 		List<BullMonitor> list = null;
-
 		try {
 			list = this.bullMonitorService.getBullMonitorListByDeptId(cityId, deptId);
 			this.escape(list);
 		} catch (Exception e) {
 			log.error("",e);
 		}
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("data", list);
 		resultMap.put("status", "200");
-		
 		return resultMap;
 	}
 
@@ -97,11 +99,9 @@ public class BullManageController extends BaseMultiActionController {
 	public Map<String, Object> allDeptes(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
 		String cityId = user.getCityId();
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			List<UserDept> list = this.bullMonitorService.getDeptsAll(cityId);
-			
 			resultMap.put("data", list);
 			resultMap.put("status", "200");
 		} catch (Exception e) {
