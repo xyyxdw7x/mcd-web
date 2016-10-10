@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.service.impl;
+package com.asiainfo.biapp.mcd.priorityorder.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -8,11 +8,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.effectappraisal.dao.IMtlGroupAttrRelDao;
-import com.asiainfo.biapp.mcd.effectappraisal.service.IMtlGroupAttrRelService;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
+import com.asiainfo.biapp.mcd.priorityorder.dao.IMtlGroupAttrRelDao;
+import com.asiainfo.biapp.mcd.priorityorder.service.IMtlGroupAttrRelService;
+import com.asiainfo.biapp.mcd.priorityorder.vo.DimMtlAdivInfo;
+import com.asiainfo.biapp.mcd.priorityorder.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.priorityorder.vo.RuleTimeTermLable;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.vo;
+package com.asiainfo.biapp.mcd.priorityorder.vo;
 
 /**
  * 

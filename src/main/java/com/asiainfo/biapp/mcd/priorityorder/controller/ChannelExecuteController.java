@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.controller;
+package com.asiainfo.biapp.mcd.priorityorder.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,20 +17,20 @@ import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.channel.service.IMcdDimChannelService;
 import com.asiainfo.biapp.mcd.common.channel.vo.McdDimChannel;
-import com.asiainfo.biapp.mcd.effectappraisal.service.IMtlGroupAttrRelService;
+import com.asiainfo.biapp.mcd.priorityorder.service.IMtlGroupAttrRelService;
 
 @Controller
-@RequestMapping("/mpm/imcdChannelExecuteAction")
-public class IMcdChannelExecuteController extends BaseMultiActionController {
+@RequestMapping("/action/priorityorder/channelExecute")
+public class ChannelExecuteController extends BaseMultiActionController {
 	
-	private Logger log = Logger.getLogger(IMcdChannelExecuteController.class);
+	private Logger log = Logger.getLogger(ChannelExecuteController.class);
 	
 	@Autowired
 	private IMcdDimChannelService mcdDimChannelService;
 	@Autowired
 	private IMtlGroupAttrRelService mtlGroupAttrRelService;
 	
-	@RequestMapping(params = "cmd=initOfflineChannel")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> initOfflineChannel(HttpServletRequest request, HttpServletResponse response) {
 		List<McdDimChannel> list = null;
@@ -60,7 +60,7 @@ public class IMcdChannelExecuteController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=initOnlineChannel")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> initOnlineChannel(HttpServletRequest request, HttpServletResponse response) {
 		List<McdDimChannel> list = null;
@@ -89,7 +89,7 @@ public class IMcdChannelExecuteController extends BaseMultiActionController {
 		return resultMap;
 	}
 	
-	@RequestMapping(params = "cmd=initAdivInfo")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> initAdivInfo(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);

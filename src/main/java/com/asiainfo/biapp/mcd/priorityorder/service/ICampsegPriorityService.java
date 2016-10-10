@@ -1,9 +1,9 @@
-package com.asiainfo.biapp.mcd.effectappraisal.service;
+package com.asiainfo.biapp.mcd.priorityorder.service;
 
 import java.util.List;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.priorityorder.vo.CampsegPriorityBean;
 
 /**
  * 

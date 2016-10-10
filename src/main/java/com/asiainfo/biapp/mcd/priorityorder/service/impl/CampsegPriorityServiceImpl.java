@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.service.impl;
+package com.asiainfo.biapp.mcd.priorityorder.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +11,10 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.priorityorder.vo.CampsegPriorityBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.effectappraisal.dao.ICampsegPriorityDao;
-import com.asiainfo.biapp.mcd.effectappraisal.service.ICampsegPriorityService;
+import com.asiainfo.biapp.mcd.priorityorder.dao.ICampsegPriorityDao;
+import com.asiainfo.biapp.mcd.priorityorder.service.ICampsegPriorityService;
 
 import org.apache.commons.lang3.StringUtils;
 

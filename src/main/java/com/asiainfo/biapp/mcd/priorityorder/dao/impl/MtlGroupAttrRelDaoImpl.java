@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.dao.impl;
+package com.asiainfo.biapp.mcd.priorityorder.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.effectappraisal.dao.IMtlGroupAttrRelDao;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.DimMtlAdivInfo;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.MtlGroupAttrRel;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.RuleTimeTermLable;
+import com.asiainfo.biapp.mcd.priorityorder.dao.IMtlGroupAttrRelDao;
+import com.asiainfo.biapp.mcd.priorityorder.vo.DimMtlAdivInfo;
+import com.asiainfo.biapp.mcd.priorityorder.vo.MtlGroupAttrRel;
+import com.asiainfo.biapp.mcd.priorityorder.vo.RuleTimeTermLable;
 
 /**
  * 

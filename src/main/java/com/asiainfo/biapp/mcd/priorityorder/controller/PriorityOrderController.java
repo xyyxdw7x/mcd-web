@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.effectappraisal.controller;
+package com.asiainfo.biapp.mcd.priorityorder.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.effectappraisal.service.ICampsegPriorityService;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.priorityorder.service.ICampsegPriorityService;
+import com.asiainfo.biapp.mcd.priorityorder.vo.CampsegPriorityBean;
 
 @Controller
-@RequestMapping("/mpm/priorityAction")
-public class ImcdCampsegPriorityController extends BaseMultiActionController { 
+@RequestMapping("/action/priorityOrder")
+public class PriorityOrderController extends BaseMultiActionController { 
 
-	private Logger log = Logger.getLogger(ImcdCampsegPriorityController.class);
+	private Logger log = Logger.getLogger(PriorityOrderController.class);
 	@Autowired
 	private ICampsegPriorityService campsegPriorityService;
 
@@ -36,7 +36,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initManualPriorityCampseg")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> initManualPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
@@ -65,7 +65,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=initAutoPriorityCampseg")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> initAutoPriorityCampseg(HttpServletRequest request, HttpServletResponse response) {
 		String channelId = request.getParameter("channelId");
@@ -116,7 +116,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=editPriorityCampseg")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> editPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -146,7 +146,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=editManualPriorityCampseg")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> editManualPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -172,7 +172,7 @@ public class ImcdCampsegPriorityController extends BaseMultiActionController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(params = "cmd=cancleTopManualPriorityCampseg")
+	@RequestMapping()
 	@ResponseBody
 	public Map<String, Object> cancleTopManualPriorityCampseg(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

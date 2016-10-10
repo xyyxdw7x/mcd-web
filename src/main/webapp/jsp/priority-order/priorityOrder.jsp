@@ -6,8 +6,6 @@
 <head>
 <title>优先级管理</title>
 <%@ include file="../../jsp/common/head.jsp" %>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<link rel="shortcut icon" href="<%=request.getContextPath()%>/mcd/assets/images/logos/favicon.ico" />
 
 <link href="<%=request.getContextPath()%>/assets/css/provinces/jx/bull/bulkManage.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/assets/css/tacticsorder/createSaleOrder.css" rel="stylesheet" type="text/css">
@@ -29,10 +27,6 @@
 							<div class="content-type-item-inner">
 								<div class="content-type-inner">
 								<table  id="content_offline" border=0></table>
-									<!-- 									<span class="fleft content-type-box J_campType">手机营业厅(6)</span> -->
-									<!-- 									<span class="fleft content-type-box J_campType">门户网站(4)</span> -->
-									<!-- 									<span class="fleft content-type-box J_campType">BOSS运营位(6)</span> -->
-									<!-- 									<span class="fleft content-type-box J_campType">微信(4)</span> -->
 								</div>
 							</div>
 						</div>
@@ -45,9 +39,6 @@
 							<div class=" content-type-item-inner">
 								<div class="content-type-inner" >
 								<table  id="content_online" border=0></table>
-									<!-- 									<span class="fleft content-type-box J_campType">手机营业厅(6)</span> -->
-									<!-- 									<span class="fleft content-type-box J_campType">门户网站(4)</span> -->
-									<!-- 									<span class="fleft content-type-box J_campType">微信(4)</span> -->
 								</div>
 							</div>
 						</div>
@@ -65,9 +56,8 @@
 
 </body>
 <script type="text/javascript">
-	seajs.use("home/here_it_is_4_order_sale", function(main) {
-		main.init();
+	seajs.use("priority-order/priorityOrder.js", function(priorityOrder) {
+		priorityOrder.init();
 	});
-
 </script>
 </html>

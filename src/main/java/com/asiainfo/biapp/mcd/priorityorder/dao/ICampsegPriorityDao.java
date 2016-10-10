@@ -1,10 +1,10 @@
-package com.asiainfo.biapp.mcd.effectappraisal.dao;
+package com.asiainfo.biapp.mcd.priorityorder.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.effectappraisal.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.priorityorder.vo.CampsegPriorityBean;
 
 /**
  * 
