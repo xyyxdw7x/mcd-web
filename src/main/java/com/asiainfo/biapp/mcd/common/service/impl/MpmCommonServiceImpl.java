@@ -19,7 +19,6 @@ import com.asiainfo.biapp.mcd.common.channel.dao.IMcdDimChannelDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 
 import com.asiainfo.biapp.mcd.custgroup.dao.McdCvColDefineDao;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;

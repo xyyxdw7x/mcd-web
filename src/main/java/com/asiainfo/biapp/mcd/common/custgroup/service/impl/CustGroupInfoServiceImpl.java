@@ -1,6 +1,5 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
