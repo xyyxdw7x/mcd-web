@@ -202,6 +202,9 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			String customGroupDesc=request.getParameter("custom_description");
 			String failTime=request.getParameter("invalid_date");
 			String filename = multiFile.getOriginalFilename();
+			if (!filename.endsWith(".txt")) {
+				throw new Exception("请上传txt文件!!!");
+			}
 			
 			int i=0;  
 			//TABLE mcd_custgroup_def   
@@ -234,10 +237,16 @@ public class CustGroupManagerController extends BaseMultiActionController{
             String config_Path = "D:\\temp\\mpm\\upload";
 			
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
-			String filepath = config_Path + File.separator; 
+			String filepath = null;
+			if (!config_Path.endsWith(File.separator)) {
+				filepath = config_Path + File.separator; 
+			} else {
+				filepath = config_Path;
+			}
 			File f1 = new File(filepath + filename);
-			if (f1.exists()) {    
+			if (f1.exists()) {
 				File newFile = new File(filepath + tableName+".txt");
+				log.info("存在同名文件，{}改名为{}",filename, tableName);
 				f1.renameTo(newFile); 
 			}
 			
@@ -248,24 +257,10 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			System.out.println(custGroupId +tableName); 
 			
 			final String path = filepath;
-			final String fileNamePrefix = tableName;
-			Thread thread = new Thread(){
-				public void run() {
-					try {
-						custGroupInfoService.executeSqlldr(path, fileNamePrefix);
-					} catch (Exception e) {
-						log.info("客户群导入出错：", e);
-						e.printStackTrace();
-					}
-				}
-			};
-			thread.setName(customGroupName+"客户群导入"+tableName);
-			thread.start();
-			
 			new Thread(new Runnable() {
 				public void run() {
-					try { 	 
-						mpmCommonService.insertCustGroupDataBySqlldr(custGroupId, tableName,customGroupName,date); 
+					try {
+						custGroupInfoService.insertCustGroupDataByImportFile(path, custGroupId, tableName, customGroupName, date); 
 					}  catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -1,13 +1,17 @@
 package com.asiainfo.biapp.mcd.common.custgroup.dao;
 
+import java.util.BitSet;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.exception.MpmException;
-import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
+
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 public interface ICustGroupInfoDao {
 	/**
 	 * 点击更多按钮  关键字查询，分页方式展示我的客户群 
@@ -210,6 +214,29 @@ public interface ICustGroupInfoDao {
 	     */
 	    public void updateMtlGroupAttrRel(String customGroupId, String columnName,
 	            String columnCnName, String columnDataType, String columnLength, String mtlCuserTableName);
+		/**
+		 * 将客户群数据插入到清单表中
+		 * @param clearTable 插入前是否清空数据
+		 * @param data 客户群数据
+		 * @param tabName 清单表名
+		 * @param date
+		 * @return 插入数据条数
+		 */
+		public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception;
+		
+		/**
+		 * 更新i_sync_data_cfg表的RUN_BEGIN_TIME字段
+		 * @param mtlCuserTableName
+		 * @param begindate
+		 */
+		public void updateSqlLoderISyncDataCfgBegin(String mtlCuserTableName, String begindate) throws Exception;
+		
+		/**
+		 * 更新i_sync_data_cfg表的RUN_END_TIME字段
+		 * @param mtlCuserTableName
+		 * @return
+		 */
+		public void updateSqlLoderISyncDataCfgEnd(String mtlCuserTableName, String enddate) throws Exception;
 		
 		/**
 		 * 执行导入sqlldr命令
