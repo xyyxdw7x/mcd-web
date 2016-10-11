@@ -16,6 +16,9 @@
     background: #fff;
     border-top: 2px solid #b4cfed;
 }
+.container .content-main-avoid{
+	margin-top:20px;
+}
 #tacticsManageTabCT > .box {
   display: none;
 }
@@ -182,8 +185,12 @@ h2{
     text-align: left;
     font-weight: normal;
 }
+.labFmt80-big{
+	width:120px;
+}
 .sel115{
-	width: 115px;
+	/* width: 115px; */
+	width: 150px;
 	height: 26px;
 	border:1px solid #a9a9a9;
 }

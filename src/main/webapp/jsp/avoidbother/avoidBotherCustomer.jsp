@@ -15,7 +15,7 @@
 <body >
 <jsp:include page="../../jsp/common/header.jsp"></jsp:include>
 <div class="container">
-		<div id="tacticsManageTabCT" class="content-main">
+		<div id="tacticsManageTabCT" class="content-main content-main-avoid">
 			<div class="box active">
 				<ul class="content-type-outer-box">
 					<li class="content-type-search">
@@ -136,8 +136,8 @@
                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default close-add-btn" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="addBtn">确认</button>
+                <button type="button" class="button button-default close-add-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="button button-info" id="addBtn">确认</button>
             </div>
         </div>
     </div>
@@ -157,7 +157,7 @@
 					<ol>
 	               	  	<li>
 	               	  		<label class="fleft labFmt80">手机号码：</label>
-	               	  		<label class="fleft labFmt80 avoidBotherproductNo"></label>
+	               	  		<label class="fleft labFmt80  labFmt80-big avoidBotherproductNo"></label>
 	               	  		
 	               	  	</li>	
 	               	  	<li>
