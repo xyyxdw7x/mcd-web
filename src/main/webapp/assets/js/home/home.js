@@ -1,6 +1,6 @@
 define(["backbone","unslider"],function(require, exports, module) {
     var generalModel = Backbone.Model.extend({
-        urlRoot : _ctx+"/mpm",
+        urlRoot : _ctx+"/homePage",
         defaults : {
             _ctx : _ctx
         }
@@ -15,12 +15,12 @@ define(["backbone","unslider"],function(require, exports, module) {
 
         },
         getSaleSituationInfo : function(){
-            var saleSituationModel = new generalModel({id:"homePage"});
+            var saleSituationModel = new generalModel({id:"getSaleSituation.do"});
             saleSituationModel.fetch({
                 type: "post",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 dataType: 'json',
-                data: {"cmd": "getSaleSituation"},
+                //data: {"cmd": "getSaleSituation"},
                 success: function (model) {
                     var data = model.attributes.data;
                     var status = model.attributes.status;
@@ -42,7 +42,7 @@ define(["backbone","unslider"],function(require, exports, module) {
                     $('.sale-situation-ul li').on('click',function(){
                         var range = $(this).attr('data-range');
                         var tab = $(this).attr('data-tab');
-                        var url = _ctx+'/mcd/pages/home/dataDrilling.jsp?range='+range+'&tab='+tab;
+                        var url = _ctx+'/jsp/home/dataDrilling.jsp?range='+range+'&tab='+tab;
                         window.open(url);
                     });
 
@@ -52,12 +52,12 @@ define(["backbone","unslider"],function(require, exports, module) {
         },
 
         getMySales : function(){
-            var saleSituationModel = new generalModel({id:"homePage"});
+            var saleSituationModel = new generalModel({id:"getMySales.do"});
             saleSituationModel.fetch({
                 type: "post",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 dataType: 'json',
-                data: {"cmd": "getMySales","pageSize":"5"},
+                data: {"pageSize":"5"},
                 success: function (model) {
                     var typeHtml = new EJS({
                         url : _ctx + '/assets/js/home/mySale.ejs'
@@ -92,12 +92,12 @@ define(["backbone","unslider"],function(require, exports, module) {
         },
 
         getRecommendCamps : function(){
-            var recommendModel = new generalModel({id:"homePage"});
+            var recommendModel = new generalModel({id:"getRecommendCamps.do"});
             recommendModel.fetch({
                 type: "post",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 dataType: 'json',
-                data: {"cmd": "getRecommendCamps"},
+                //data: {"cmd": "getRecommendCamps"},
                 success: function (model) {
                     var typeHtml = new EJS({
                         url : _ctx + '/assets/js/home/recommendCamps.ejs'

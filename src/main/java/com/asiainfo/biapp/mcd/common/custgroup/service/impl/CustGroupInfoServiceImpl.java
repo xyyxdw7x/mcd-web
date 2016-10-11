@@ -1,8 +1,16 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
 import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,12 +32,10 @@ import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
-import com.asiainfo.biapp.mcd.common.custgroup.vo.CustInfoBean;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
@@ -40,6 +46,9 @@ import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.thread.MpmCustGroupWsFtpRunnable;
+
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 @Service("custGroupInfoService")
 public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
@@ -552,7 +561,19 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	        
 	        custGroupInfoDao.updateMtlGroupAttrRel(customGroupId,columnName,columnCnName,columnDataType,columnLength,mtlCuserTableName);
 	    }
-	    
+		
+		/**
+		 * 将客户群数据插入到清单表中
+		 * @param clearTable 插入前是否清空数据
+		 * @param data 客户群数据
+		 * @param tabName 清单表名
+		 * @param date
+		 * @return 插入数据条数
+		 */
+		public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
+			return custGroupInfoDao.insertInMemCustPhoneNoToTab(clearTable, data, tabName, date);
+		}
+		
 		/**
 		 * 执行导入sqlldr命令
 		 * @param filepath
@@ -597,6 +618,336 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	    public void addMtlGroupPushInfos(String customGroupId,String userId,String pushToUserId) {  
 	        custGroupInfoDao.addMtlGroupPushInfos(customGroupId,userId,pushToUserId);
 	    }
+		
+		/**
+		 * 通过导入文件方式插入客户群清单数据
+		 * @param filepath
+		 * @param custGroupId
+		 * @param tableName
+		 * @param customGroupName
+		 * @param date
+		 * @throws Exception
+		 */
+		@Override
+		public void insertCustGroupDataByImportFile(String filepath, String custGroupId, String tableName,String customGroupName,String date) throws Exception {
+			log.info("insertCustGroupDataByImportFile filepath={}, custGroupId={}, customGroupName={}, tableName={}", filepath, custGroupId, customGroupName, tableName);
+			try {
+				String filenameTemp =filepath+tableName + ".ctl";
+				
+				//新增逻辑SQLLODER导入
+				log.info("sqlLoder导入开始.............." );
+				insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
+				
+				//导入客户群到数据库的方式：0、在当前系统使用执行sql脚本导入文件 	1、在当前系统使用sqlldr方式导入文件	2、在其他系统使用sqlldr方式导入文件
+				String importToDbType = MpmConfigure.getInstance().getProperty("IMPORT_CUST_TO_DB_TYPE");
+				if(StringUtils.isEmpty(importToDbType) || importToDbType.equals("0")){
+					
+					//在当前系统使用执行sql脚本导入文件
+					insertCustBySQLinsert(filepath, tableName,customGroupName, date);
+				} else if(importToDbType.equals("1")) {
+					
+					//在当前系统使用sqlldr方式导入文件（未完成，未验证）
+					insertCustByLocalAppSQLLDR(filepath, tableName, customGroupName, date);
+				} else if(importToDbType.equals("2")){
+					
+					//在其他系统使用sqlldr方式导入文件,比如浙江的做法：单独起动一个应用，用语将上传的文件导入到数据库
+					insertCustByOtherAppSQLLDR(filepath, tableName, customGroupName, date);
+				} else {
+					//留作其他方式拓展使用
+				}
+				
+				Boolean isTrue = this.getSqlLoderISyncDataCfgEnd(tableName);
+				while(!isTrue){
+					Thread.sleep(60000);
+					isTrue = this.getSqlLoderISyncDataCfgEnd(tableName);
+				}
+				log.info("sqlLoder 插入客户群数据完毕,客户群ID：" + custGroupId);
+				log.info("本次执行完成，更新任务状态,客户群ID：" + custGroupId);
+				this.updateSqlLoderISyncDataCfgStatus(custGroupId);
+				//在本笃数据库中也创建这个表
+				this.createSynonymTableMcdBySqlFire(tableName);
+				this.updateMtlGroupStatus(tableName,custGroupId);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("通过导入文件方式插入客户群清单数据执行时异常",e);
+			}
+			
+		}
+
+		/**
+		 * 创建文件
+		 * 
+		 * @throws IOException
+		 */
+		public boolean creatTxtFile(String filenameTemp, String buf) throws IOException {
+			boolean flag = false;
+
+			File filename = new File(filenameTemp);
+			if (!filename.exists()) {
+				filename.createNewFile();
+			}
+			FileInputStream fis = null;
+			InputStreamReader isr = null;
+			BufferedReader br = null;
+
+			FileOutputStream fos = null;
+			PrintWriter pw = null;
+			try {
+				// 文件路径
+				File file = new File(filenameTemp);
+				file.setExecutable(true);
+				file.setReadable(true);
+				file.setWritable(true);
+				// 将文件读入输入流
+				fis = new FileInputStream(file);
+				isr = new InputStreamReader(fis);
+				br = new BufferedReader(isr);
+
+				fos = new FileOutputStream(file);
+				pw = new PrintWriter(fos);
+				pw.write(buf.toCharArray());
+				pw.flush();
+				flag = true;
+			} catch (IOException e1) {
+				throw e1;
+			} finally {
+				if (pw != null) {
+					pw.close();
+				}
+				if (fos != null) {
+					fos.close();
+				}
+				if (br != null) {
+					br.close();
+				}
+				if (isr != null) {
+					isr.close();
+				}
+				if (fis != null) {
+					fis.close();
+				}
+			}
+
+			return flag;
+		}
+			
+		/***
+		 * check mobile phone:(1)must be digit;(2)must be 11
+		 * @param mobilePhoneNoPattern 手机号校验的正则表达式
+		 * @param phoneNo 手机号码
+		 * @returns {boolean}
+		 */
+		private boolean telRuleCheck(String mobilePhoneNoPattern, String phoneNo) {
+			if (phoneNo.matches(mobilePhoneNoPattern)) {
+				return true;
+			}
+			return false;
+		}
+			
+
+		/**
+		 * 将客户群号码加入内存，并统计文件中的数据行数、有问题的数据行数、合法的号码数(不准，因为可能有重复号码)
+		 * @param path 文件所在路径
+		 * @param fileNamePrefix 文件名（不含拓展名）
+		 * @return [[文件中的数据行数、有问题的数据行数、合法的号码数、最终入库的手机号码数]、客户群号码]
+		 * @throws Exception
+		 */
+		private List<Object> loadCustFile(String path, String fileNamePrefix) throws Exception {
+			//返回结果
+			List<Object> result = new ArrayList<Object>();
+			
+			//号码校验的表达式
+			String mobilePhoneNoPattern =  MpmConfigure.getInstance().getProperty("MOBILE_PHONENO_PATTERN");
+			String pattern = "^1[34578]\\d{9}$";
+			if(StringUtils.isNotEmpty(mobilePhoneNoPattern)) {
+				pattern = mobilePhoneNoPattern;
+			}
+
+			Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> h1 = new Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>>(1);
+			int[] processNum = new int[4];
+			int rowNum = 0;//文件中的数据行数
+			int errorRowNum = 0;//有问题的数据行数
+			int phoneNoNum = 0;//合法的号码数(不准，因为可能有重复号码)
+			int finalphoneNoNum = 0;//最终入库的手机号码数
+			BufferedReader reader = null;
+
+			try {
+				//文件url
+				String fileUrl = "";
+				if (!path.endsWith(File.separator)) {
+					fileUrl = path+File.separator+fileNamePrefix+".txt";
+				} else {
+					fileUrl = path+fileNamePrefix+".txt";
+				}
+				
+				//读取上传的免打扰号码文件数据
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileUrl)), 1024*1024*5);
+				String tmpLine = null;
+
+				Short2ObjectOpenHashMap<BitSet> h2 = null;
+				BitSet h3 = null;
+				byte v1 = 0;
+				short v2 = 0;
+				short v3 = 0;
+				
+				//遍历文件中的数据行，统计[文件中的数据行数、有问题的数据行数、合法的号码数、最终入库的手机号码数]和读取最终入库的手机号码
+				while ((tmpLine = reader.readLine()) != null) {
+					++rowNum;
+					
+					if (!telRuleCheck(pattern, tmpLine.trim())) {
+						//号码不合法
+						++errorRowNum;
+					} else{
+						++phoneNoNum;
+						
+						v1 = Byte.valueOf(tmpLine.trim().substring(1, 3));
+						v2 = Short.valueOf(tmpLine.trim().substring(3, 7));
+						v3 = Short.valueOf(tmpLine.trim().substring(7, 11));
+						h2 = h1.get(v1);
+						if (h2 == null) {
+							h2 = new Short2ObjectOpenHashMap<BitSet>(1);
+							h1.put(v1, h2);
+						}
+						h3 = h2.get(v2);
+						if (h3 == null) {
+							h3 = new BitSet(10000);
+						}
+						h3.set(v3);
+						h2.put(v2, h3);
+					}
+				}
+				processNum[0] = rowNum;
+				processNum[1] = errorRowNum;
+				processNum[2] = phoneNoNum;
+				processNum[3] = finalphoneNoNum;
+				result.add(processNum);
+				result.add(h1);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("导入客户群数据异常：",e);
+				throw e;
+			} finally {
+				try {
+					reader.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.error("关闭文件读写连接异常:",e);
+				}
+			}
+			return result;
+		}
+		
+		/**
+		 * 使用sql插入的方式将客户群号码清单文件插入到清单表中
+		 * @param filepath 清单文件存放路径
+		 * @param tableName 清单表名
+		 * @param customGroupName 客户群名称
+		 * @param date 
+		 */
+		private void insertCustBySQLinsert(String filepath, String tableName, String customGroupName, String date) throws Exception{
+			
+			log.info(customGroupName+"客户群使用sql插入导入"+tableName+"开始");
+			try {
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String beginDate = formatter.format(new Date());
+				log.info("更改i_sync_data_cfg表的RUN_BEGIN_TIME字段值{}", beginDate);
+				custGroupInfoDao.updateSqlLoderISyncDataCfgBegin(tableName, beginDate);
+				
+				//将客户群号码加入内存，并统计文件中的数据行数、有问题的数据行数、合法的号码数(不准，因为可能有重复号码)
+				List<Object> result = loadCustFile(filepath, tableName);
+				int[] processNum = (int[])result.get(0);
+				
+				//客户群号码集合
+				@SuppressWarnings("unchecked")
+				Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> custMap = (Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>>)result.get(1);
+				
+				//将客户群号码入库，统计插入行数
+				processNum[3] = insertCustPhoneNoToTab(true, custMap, tableName, date);
+				log.info("客户群{}上传到服务端的文件{}.txt共有{}行数据，有{}行数据校验不合法，有{}行数据校验合法，合法的数据有{}行重复，共{}行数据插入到数据库{}表。",
+						customGroupName, tableName, processNum[0], processNum[1], processNum[2], processNum[2]-processNum[3], processNum[3]);
+								
+				String endDate = formatter.format(new Date());
+				log.info("更改i_sync_data_cfg表的RUN_END_TIME字段值{}",endDate);
+				custGroupInfoDao.updateSqlLoderISyncDataCfgEnd(tableName, endDate);
+			} catch (Exception e) {
+				log.info("客户群导入出错：", e);
+				e.printStackTrace();
+				throw e;
+			}
+		}
+		
+		/**
+		 * 通过执行本系统执行sqlldr脚本方式将客户群号码清单文件导入到清单表中
+		 * @param filepath
+		 * @param tableName
+		 * @param customGroupName
+		 * @param date
+		 * @throws Exception
+		 */
+		private void insertCustByLocalAppSQLLDR(String filepath, String tableName, String customGroupName, String date) throws Exception {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String beginDate = formatter.format(new Date());
+			log.info("更改i_sync_data_cfg表的RUN_BEGIN_TIME字段值{}", beginDate);
+			custGroupInfoDao.updateSqlLoderISyncDataCfgBegin(tableName, beginDate);
+			
+			//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+			String tabSpace = "mcd_core_ad";
+			
+			String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
+			String filenameTemp =filepath+tableName + ".ctl"; 
+			StringBuffer buf = new StringBuffer(); 
+			String filein ="\r\n"; 
+			// 保存该文件原有的内容 
+			buf.append("OPTIONS(direct=TRUE,errors=100000,columnarrayrows=1000)").append(filein);
+			buf.append("load data").append(filein);
+			buf.append("infile 'IMPORT_CTL_FILE_PATH'").append(filein);
+			buf.append("append into table ").append(tabSpace+".").append(tableName).append(filein);
+			buf.append("fields terminated by \",\"").append(filein);
+			buf.append("TRAILING NULLCOLS").append(filein);
+			buf.append(lastLine);
+			//创建SQLLoarder导入必备CTL文件
+			creatTxtFile(filenameTemp,buf.toString());
+			String chkFile = filepath + tableName + ".verf";
+			creatTxtFile(chkFile,tableName+".txt"); 
+			
+			log.info(customGroupName+"客户群使用sqlldr命令导入"+tableName);
+			try {
+				executeSqlldr(filepath, tableName);
+				
+				String endDate = formatter.format(new Date());
+				log.info("更改i_sync_data_cfg表的RUN_END_TIME字段值{}",endDate);
+				custGroupInfoDao.updateSqlLoderISyncDataCfgEnd(tableName, endDate);
+			} catch (Exception e) {
+				log.info("客户群导入出错：", e);
+				e.printStackTrace();
+			}
+
+		}
+		
+		/**
+		 * 通过执行本系统执行sqlldr脚本方式将客户群号码清单文件导入到清单表中
+		 * 
+		 */
+		private void insertCustByOtherAppSQLLDR(String filepath, String tableName, String customGroupName, String date) throws Exception {
+			String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
+			String filenameTemp =filepath+tableName + ".ctl"; 
+			StringBuffer buf = new StringBuffer(); 
+			String filein ="\r\n"; 
+			// 保存该文件原有的内容 
+			buf.append("OPTIONS(direct=TRUE,errors=100000,columnarrayrows=1000)").append(filein);
+			buf.append("load data").append(filein);
+			buf.append("infile 'IMPORT_CTL_FILE_PATH'").append(filein);
+			buf.append("append into table ").append(tableName).append(filein);
+			buf.append("fields terminated by \",\"").append(filein);
+			buf.append("TRAILING NULLCOLS").append(filein);
+			buf.append(lastLine);
+			//创建SQLLoarder导入必备CTL文件
+			creatTxtFile(filenameTemp,buf.toString());
+			String chkFile = filepath + tableName + ".verf";
+			creatTxtFile(chkFile,tableName+".txt"); 
+		}
+		
         @Override
         public String doSendCustInfo(String custInfoXml) {
             String exceptionMessage = "";

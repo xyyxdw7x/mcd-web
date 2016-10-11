@@ -27,7 +27,8 @@ seajs.config({
 		"modal":"lib/jquery-modal.min.js",
 		"upload":"lib/ajaxfileupload.min.js",
 		"my97":"lib-ext/my97/WdatePicker.js",
-		"unslider":"lib-ext/unslider.min.js"
+		"unslider":"lib-ext/unslider.min.js",
+		"echart":"lib/echarts.js"
 	},
 	base:contextPath+"/assets/js/",
 	vars:{

@@ -1,9 +1,10 @@
 package com.asiainfo.biapp.mcd.common.custgroup.dao.impl;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,9 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
+
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 @Repository("custGroupInfoDao")
 public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfoDao,BeanSelfAware{
@@ -926,7 +930,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
      */
     @Override
     public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-        String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+        //String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String tabSpace = "mcd_core_ad";
         String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
         this.getJdbcTemplate().execute(sql);
     } 
@@ -1237,26 +1242,135 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 
 	    }
 		
-		/**
-		 * 执行导入sqlldr命令
-		 * @param filepath
-		 * @param fileNamePrefix
-		 * @return
-		 */
-		public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{
-			Connection conn = this.getJdbcTemplate().getDataSource().getConnection();
-			String dbuserId = conn.getMetaData().getUserName();
-			String ctlFile = filepath+"/"+fileNamePrefix+".txt";
-			String logFile = filepath+"/"+fileNamePrefix+".log";
-			
-			try {
-				String command = "sqlldr "+dbuserId+"/mcd_core@10.1.253.75/ora11g control='"+ctlFile+"' log='"+logFile+"'  readsize=10485760 direct=true";
-				Runtime.getRuntime().exec(command);
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw e;
-			}
+	/**
+	 * 将客户群数据插入到清单表中
+	 * @param clearTable 插入前是否清空数据
+	 * @param data 客户群数据
+	 * @param tabName 清单表名
+	 * @param date
+	 * @return 插入数据条数
+	 */
+	public int insertInMemCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
+		log.info("insertCustPhoneNoToTab tabName="+tabName+" clearTable="+clearTable);
+		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String tabSpace = "mcd_core_ad";
+		//插入行数
+		int total = 0;
+
+		//是否清空表
+		if (clearTable) {
+			log.info("清空{}表", tabName);
+			String truncateSQL = "truncate table "+tabSpace+"."+tabName;
+			this.getJdbcTemplate().execute(truncateSQL);
 		}
+		
+		try {
+			long t1 = System.currentTimeMillis();
+			String insertSql = "INSERT ALL \n {0} SELECT * FROM dual";
+			
+			if (null != data) {
+				StringBuffer innerSQL = new StringBuffer();
+				
+				String phoneSeg1 = null;
+				String phoneSeg2 = null;
+				BitSet e3 = null;
+				String phoneSeg3 = null;
+				String phoneNumber = null;
+				String finalSql = "";
+				
+				//遍历数据集MAP
+				for (Map.Entry<Byte, Short2ObjectOpenHashMap<BitSet>> e1 : data.entrySet()) {
+					phoneSeg1 = "1" + e1.getKey();
+					
+					for (Map.Entry<Short, BitSet> e2 : e1.getValue().entrySet()) {
+						
+						phoneSeg2 = formatPhoneNo(e2.getKey());
+						e3 = e2.getValue();
+						for (int i = e3.nextSetBit(0); i != -1; i = e3.nextSetBit(i + 1)) {
+							phoneSeg3 = formatPhoneNo((short) i);
+							
+							phoneNumber = phoneSeg1 + phoneSeg2 + phoneSeg3;
+							innerSQL.append("INTO ");
+							innerSQL.append(tabSpace+".");
+							innerSQL.append(tabName);
+							innerSQL.append(" (PRODUCT_NO,DATA_DATE) VALUES ('");
+							innerSQL.append(phoneNumber);
+							innerSQL.append("','").append(date).append("') \n");
+							++total;
+							
+							if (total % 20000 == 0) {//每20000条插入一次
+								finalSql = insertSql.replace("{0}", innerSQL);
+								this.getJdbcTemplate().execute(finalSql);
+								innerSQL = new StringBuffer();
+							}
+						}
+						if(innerSQL.length() != 0){//剩余的插入
+							finalSql = insertSql.replace("{0}", innerSQL);
+							this.getJdbcTemplate().execute(finalSql);
+						}
+					}
+				}
+			}
+			log.info("插入{}条数据到{}表共耗时:{}ms", total, tabName, (System.currentTimeMillis() - t1));
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("插入数据到" + tabName + "时发生异常:", e);
+		}
+		return total;
+	}
+	
+	/**
+	 * 执行导入sqlldr命令
+	 * @param filepath
+	 * @param fileNamePrefix
+	 * @return
+	 */
+	public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{
+		String dbuserId = "mcd_core_ad";
+		String dbuserPwd = "mcd_core_ad";
+		String dbIP = "10.1.253.75";
+		String dbSid = "ora11g";
+		
+		String ctlFile = "";
+		String logFile = "";
+		if (!filepath.endsWith(File.separator)) {
+			logFile = filepath+File.separator+fileNamePrefix+".log";
+			ctlFile = filepath+File.separator+fileNamePrefix+".txt";
+		} else {
+			logFile = filepath+fileNamePrefix+".log";
+			ctlFile = filepath+fileNamePrefix+".txt";
+		}
+		
+		try {
+			String command = "sqlldr "+dbuserId+"/"+dbuserPwd+"@"+dbIP+"/"+dbSid+" control='"+ctlFile+"' log='"+logFile+"'  readsize=10485760 direct=true";
+			Runtime.getRuntime().exec(command);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	/**
+	 * 更新i_sync_data_cfg表的RUN_BEGIN_TIME字段
+	 * @param mtlCuserTableName
+	 * @return
+	 */
+	@Override
+	public void updateSqlLoderISyncDataCfgBegin(String mtlCuserTableName, String begindate) throws Exception {
+		String sql = "update i_sync_data_cfg set RUN_BEGIN_TIME=to_date('"+begindate+"', 'yyyy-mm-dd hh24:mi:ss')  where EXEC_SQL ='"+mtlCuserTableName+"'";
+		this.getJdbcTemplate().execute(sql);
+	}
+	
+	/**
+	 * 更新i_sync_data_cfg表的RUN_END_TIME字段
+	 * @param mtlCuserTableName
+	 * @return
+	 */
+	@Override
+	public void updateSqlLoderISyncDataCfgEnd(String mtlCuserTableName, String enddate) throws Exception {
+		String sql = "update i_sync_data_cfg set RUN_END_TIME=to_date('"+enddate+"', 'yyyy-mm-dd hh24:mi:ss')  where EXEC_SQL ='"+mtlCuserTableName+"'";
+		this.getJdbcTemplate().execute(sql);
+	}
 		
 	    /**
 	     * 查看该任务执行信息
@@ -1304,7 +1418,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    }
 	    
 	    @Override
-	    public void addCreateCustGroupTabInMem(String sql) {
+	    public void addInMemCreateCustGroupTab(String sql) {
 	        try {   
 	            log.info("sql: {}", sql);
 	            this.getJdbcTemplate().update(sql);
@@ -1348,6 +1462,36 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
             return list;
         }
 
+		/**
+		 * 格式化手机号
+		 * @param num
+		 * @return
+		 */
+		private static String formatPhoneNo(short num) {
+			String str = String.valueOf(num);
+			int n = str.length();
+			StringBuilder sb = new StringBuilder();
+			switch (n) {
+			case 1:
+				sb.append("000").append(str);
+				break;
+			case 2:
+				sb.append("00").append(str);
+				break;
+			case 3:
+				sb.append("0").append(str);
+				break;
+			case 4:
+				sb.append(str);
+				break;
+			default:
+				sb.append(str);
+				break;
+			}
+			return sb.toString();
+	
+		}
+		
         @Override
         public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate) {
             List<Map<String, Object>> list = null;

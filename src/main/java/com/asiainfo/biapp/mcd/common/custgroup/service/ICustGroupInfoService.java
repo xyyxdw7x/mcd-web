@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service;
 
+import java.util.BitSet;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,9 @@ import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 import com.asiainfo.biapp.mcd.exception.MpmException;
+
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 /**
  * 
@@ -184,6 +188,17 @@ public interface ICustGroupInfoService {
     public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage);
 
     public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName);
+    
+	/**
+	 * 将客户群数据插入到清单表中
+	 * @param clearTable 插入前是否清空数据
+	 * @param data 客户群数据
+	 * @param tabName 清单表名
+	 * @param date
+	 * @return 插入数据条数
+	 */
+	public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception;
+	
 	/**
 	 * 执行导入sqlldr命令
 	 * @param filepath
@@ -219,5 +234,15 @@ public interface ICustGroupInfoService {
      */
     public String doSendCustInfo(String custInfoXml);
 	
+	/**
+	 * 通过导入文件方式插入客户群清单数据
+	 * @param filepath
+	 * @param custGroupId
+	 * @param tableName
+	 * @param customGroupName
+	 * @param date
+	 * @throws Exception
+	 */
+	public void insertCustGroupDataByImportFile(String filepath, String custGroupId, String tableName, String customGroupName, String date)throws Exception;
 }
 

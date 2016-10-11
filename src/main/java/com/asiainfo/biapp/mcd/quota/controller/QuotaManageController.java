@@ -25,8 +25,8 @@ import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
-import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigDeptMothService;
+import com.asiainfo.biapp.mcd.quota.service.ICityDayQuotaServiceImp;
+import com.asiainfo.biapp.mcd.quota.service.IDeptMothQuotaService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
@@ -38,9 +38,9 @@ public class QuotaManageController  extends BaseMultiActionController {
     private static final Logger log = LogManager.getLogger();
 
     @Resource(name = "quotaConfigDeptMothService")
-    private IQuotaConfigDeptMothService quotaConfigDeptMothService;
+    private IDeptMothQuotaService quotaConfigDeptMothService;
     @Resource(name = "quotaConfigCityDayService")
-    private IQuotaConfigCityDayService quotaConfigCityDayService;
+    private ICityDayQuotaServiceImp quotaConfigCityDayService;
     @Resource(name = "sysCampConfigDao")
     private IMtlSysCampConfigDao sysCampConfigDao;
     
