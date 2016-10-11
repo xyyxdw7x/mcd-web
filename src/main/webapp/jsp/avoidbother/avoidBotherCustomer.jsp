@@ -15,7 +15,7 @@
 <body >
 <jsp:include page="../../jsp/common/header.jsp"></jsp:include>
 <div class="container">
-        <h2 class="avoidTitle text-left">消息免打扰</h2>
+        <h2>消息免打扰</h2>
 		<div id="tacticsManageTabCT" class="content-main">
 			<div class="box active">
 				<ul class="content-type-outer-box">
@@ -225,7 +225,7 @@
     </div>
 </div>
 <script type="text/javascript">
-	seajs.use("<%=contextPath%>/assets/js/avoidbother/avoidBotherCustomer",function(main){
+	seajs.use("<%=contextPath%>/assets/js/avoidBother/avoidBotherCustomer",function(main){
 		main.init();
 	});
 </script>
