@@ -86,7 +86,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		
 		//渠道类型		
 		mtlBotherAvoid.setAvoidBotherType(request.getParameter("channelId"));
-		//营销类型		
+		//营销类型
 		String custTypeIdStr = request.getParameter("custTypeId");
 		if (StringUtils.isNotEmpty(custTypeIdStr) && StringUtils.isNumeric(custTypeIdStr)) {
 			mtlBotherAvoid.setAvoidCustType(Short.parseShort(custTypeIdStr));

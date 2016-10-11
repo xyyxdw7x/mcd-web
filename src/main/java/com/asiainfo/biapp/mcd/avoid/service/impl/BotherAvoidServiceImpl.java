@@ -91,6 +91,7 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 			buffer.append(" and A.AVOID_CUST_TYPE = ? ");
 			params.add(mtlBotherAvoid.getAvoidCustType());
 		}
+		
 		//排序字段
 		if (mtlBotherAvoid.getSortColumn() != null && !"".equals(mtlBotherAvoid.getSortColumn())) {
 			if ("ENTER_TIME".equals(mtlBotherAvoid.getSortColumn())) {

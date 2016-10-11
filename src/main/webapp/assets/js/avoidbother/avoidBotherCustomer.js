@@ -4,7 +4,8 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 		init:function(){
 			this.loadAvoidBotherUserType({currentDom:".avoidBotherUserType"});
 			this.loadAllChannelType();
-			this.loadCampsegType({currentDom:".avoidBotherCampsegType"});
+			//2016/10/11时点，不需要营销类型。但以后可能需要所以暂时先注释掉。
+			//this.loadCampsegType({currentDom:".avoidBotherCampsegType"});
 			window.tableViewManage  = this.loadTable({
 				currentDom:"#avoidBotherCustomerTable",
 				ejsUrl:_ctx + '/assets/js/avoidbother/avoidBotherCustomer.ejs',
@@ -32,7 +33,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 			$("#avoidBotherType").on("change", function() {
 				var typeVal=$("#avoidBotherType").val();
 				if("901"==typeVal) {
-					if($("#avoidCustType option[value='0']").size() > 0) {
+					if($("#avoidCustType option[value='0']").length > 0) {
 						module.exports.value_campseg_type=$("#avoidCustType option[value='0']").get(0);
 						$("#avoidCustType option[value='0']").remove();
 						if($("#avoidCustType").val()=='0'){
@@ -41,7 +42,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 					}
 				} else {
 					if(module.exports.value_campseg_type) {
-						if($("#avoidCustType option[value='0']").size() > 0) {
+						if($("#avoidCustType option[value='0']").length > 0) {
 						}else {
 							$("#avoidCustType").prepend(module.exports.value_campseg_type);
 							module.exports.value_campseg_type={};
@@ -129,9 +130,9 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 	        
 	        $("#selectAll").on("click",function(event) {
             	if ($("#selectAll").prop("checked")) {
-        			$(".checkbox_row1").prop("checked", "true")
+        			$(".checkbox_row1").prop("checked", "true");
         		} else {
-        			$(".checkbox_row1").removeProp("checked")
+        			$(".checkbox_row1").removeProp("checked");
         		}
             });
 	        $(".sel-txt").on("click",function(event) {
@@ -477,7 +478,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 		        data: data,
 		        dataType : 'json',
 		        success : function(data) {
-					if(data.status==200) {
+					if(data.status=="200") {
 		        		module.exports.hideNewCustomer();
 						alert("添加免打扰用户成功");
 						$("#show_upload_file").val("");

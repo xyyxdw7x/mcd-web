@@ -38,7 +38,9 @@
 							</div>
 						</div>
 					</li>
+					<!-- 2016/10/11时点，不需要营销类型。但以后可能需要所以暂时先注释掉。
 					<li class="avoidBotherCampsegType clearfix content-type-item"></li>
+					 -->
 				</ul>
 			</div><!--box end -->
 	
@@ -112,11 +114,13 @@
                	  		<select id="avoidBotherType" name="avoidBotherType" class="fleft sel115 avoidBotherChannelTypeSelect">
                	  		</select>
                	  	</li>	
+               	  	<!-- 2016/10/11时点，不需要营销类型。但以后可能需要所以暂时先注释掉。
                	  	<li>
                	  		<label class="fleft labFmt80">营销类型：</label>
                	  		<select id="avoidCustType" name="avoidCustType" class="fleft sel115 avoidBotherCampsegTypeSelect">
                	  		</select>
                	  	</li>
+               	  	 -->
                	  	<li class="way">
                	  		<a href="javascript:void(0)" id="handBtn">批量导入</a>
                	  		<a href="javascript:void(0)" class="none" id="importBtn">手动输入</a>
@@ -133,6 +137,11 @@
                	  	</li>
                	  </ol>
                </div>
+               <!-- 2016/10/11时点，不需要营销类型。
+               		页面上的选择框注释掉了。但后台逻辑还在，为了今后恢复方便，加了此hidden项目。
+               		今后营销类型恢复的时候，要删掉。-->
+               <input type="hidden" id="avoidCustTypeForAdd" name="avoidCustType" value="1"/>
+               
                </form>
             </div>
             <div class="modal-footer">
@@ -170,18 +179,24 @@
 	               	  		<label class="fleft labFmt80">通用渠道：</label>
 	               	  		<select id="edit-avoid-bother-customer-select-channel-type" name="avoidBotherType" class="fleft sel115 avoidBotherChannelTypeSelect">
 	               	  		</select>
-	               	  	</li>	
+	               	  	</li>
+	               	  	<!-- 2016/10/11时点，不需要营销类型。但以后可能需要所以暂时先注释掉。	
 	               	  	<li>
 	               	  		<label class="fleft labFmt80">营销类型：</label>
 	               	  		<select id="edit-avoid-bother-customer-select-campseg-type" name="avoidCustType" class="fleft sel115 avoidBotherCampsegTypeSelect">
 	               	  		</select>
 	               	  	</li>
+	               	  	-->
 					</ol>
 				</div>
 				<input type="hidden" id="productNoBef" name="productNoBef" value=""/>
 			    <input type="hidden" id="avoidCustTypeBef" name="avoidCustTypeBef" value=""/>
 			    <input type="hidden" id="avoidBotherTypeBef" name="avoidBotherTypeBef" value=""/>
 			    <input type="hidden" id="updateConfirmFlg" name="updateConfirmFlg" value=""/>
+                <!-- 2016/10/11时点，不需要营销类型。
+                		页面上的选择框注释掉了。但后台逻辑还在，为了今后恢复方便，加了此hidden项目。
+               	 		今后营销类型恢复的时候，要删掉。-->
+			    <input type="hidden" id="avoidCustTypeForEdit" name="avoidCustType" value="1"/>
 		    	</form>
             </div>
             <div class="modal-footer">
