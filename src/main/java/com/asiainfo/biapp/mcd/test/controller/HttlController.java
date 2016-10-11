@@ -33,8 +33,6 @@ public class HttlController extends BaseMultiActionController {
 	public ModelAndView findBooks(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String name=request.getParameter("name");
-	    String dic1=this.getConfigService().getProperty("CENTER_CITYID");
-	    log.info("dic1="+dic1);
 		ModelAndView model = new ModelAndView("test/books");
 		HashMap<String,Object> modelMap=new HashMap<String,Object>();
 		modelMap.put("user", "张三");

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.common.dao.impl;
+package com.asiainfo.biapp.mcd.sys.dao.impl;
 
 import java.sql.Types;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.common.dao.ISysDicDao;
+import com.asiainfo.biapp.mcd.sys.dao.ISysDicDao;
 
 @Repository("sysDicDao")
 public class SysDicDaoImpl extends JdbcDaoBase implements ISysDicDao {

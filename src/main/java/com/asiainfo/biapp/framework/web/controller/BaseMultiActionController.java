@@ -7,11 +7,9 @@ import java.io.StringWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.SpringContextsUtil;
@@ -31,12 +29,6 @@ public class BaseMultiActionController extends MultiActionController {
 	//@Qualifier("defaultUserPrivilege")
 	@SuppressWarnings("unused")
 	private IUserPrivilege userPrivilege;
-	
-	/**
-	 * 系统配置项
-	 */
-	@Autowired
-	private AppConfigService configService;
 	
 	
 	 /**
@@ -144,11 +136,5 @@ public class BaseMultiActionController extends MultiActionController {
 		this.userPrivilege = userPrivilege;
 	}
 
-	public AppConfigService getConfigService() {
-		return configService;
-	}
-
-	public void setConfigService(AppConfigService configService) {
-		this.configService = configService;
-	}
+	
 }

@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd.common.dao;
+package com.asiainfo.biapp.mcd.sys.dao;
 
 import java.util.List;
 import java.util.Map;
