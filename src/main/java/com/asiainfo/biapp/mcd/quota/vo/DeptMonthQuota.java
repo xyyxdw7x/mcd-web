@@ -83,16 +83,12 @@ public class DeptMonthQuota {
 	}
 
 
-
 	public long getUsedNum() {
 		return usedNum;
 	}
 
-	public void setUsedNum(long usedNum) {
-		this.usedNum = usedNum;
-	}
 
-	public void setUsedNum(int usedNum) {
+	public void setUsedNum(long usedNum) {
 		this.usedNum = usedNum;
 		this.remainNum = this.monthQuotaNum - this.usedNum;
 	}

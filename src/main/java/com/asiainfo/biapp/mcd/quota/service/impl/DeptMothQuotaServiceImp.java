@@ -6,15 +6,19 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.quota.dao.IDeptMonthQuotaDao;
+import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.dao.ICityMonthQuotaDao;
 import com.asiainfo.biapp.mcd.quota.dao.IUserDeptLinkDao;
 import com.asiainfo.biapp.mcd.quota.service.IDeptMothQuotaService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
+import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
 @Service("quotaConfigDeptMothService")
@@ -22,13 +26,17 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 	private static final Logger log = LogManager.getLogger();
 
 	@Resource(name = "quotaConfigDeptMothDao")
-	private IDeptMonthQuotaDao deptMonthQuotaDao;
+	private IDeptMonthQuotaDao deptMonthQuotaDao;//科室月配额
 	@Resource(name = "quotaConfigCityMothDao")	
-	private ICityMonthQuotaDao quotaConfigCityMothDao;
-	
+	private ICityMonthQuotaDao quotaConfigCityMothDao;//地市月配额
 	@Resource(name = "userDeptLinkDao")
-	private IUserDeptLinkDao userDeptLinkDao;
+	private IUserDeptLinkDao userDeptLinkDao;//人员科室
+	@Resource(name = "quotaConfigCityDayDao")
+	private ICityDayQuotaDao quotaConfigCityDayDao;//地市日配额
 
+	/**
+	 * 查询某个地市的所有科室的月配额---配额管理（左侧界面）
+	 */
 	@Override
 	public List<DeptMonthQuota> getCityDeptsMonthQuota(String cityId,String dataDate) throws Exception {
 
@@ -82,7 +90,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 	 * @return
 	 */
 	private List<Map<String, Object>> combineList(List<Map<String, Object>> src,List<Map<String, Object>> target){
-		if(target==null || target.size()<0){
+		if(CollectionUtils.isEmpty(target)){
 			return src;
 		}
 		for(int i =0; i<src.size();i++){
@@ -95,6 +103,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 					tmp.put("MONTH_QUOTA_NUM",  tmp2.get("MONTH_QUOTA_NUM"));
 					tmp.put("USED_NUM", tmp2.get("USED_NUM"));
 					tmp.put("DATA_DATE", tmp2.get("DATA_DATE"));
+					break;
 				}
 			}
 		}
@@ -147,14 +156,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 
 	}
 
-	/**
-	 * 判断各科室月限额之和是否小于或等于地市月限额
-	 * 
-	 * @param list
-	 * @param city
-	 * @param month
-	 * @return
-	 */
+	//判断各科室月限额之和是否小于或等于地市月限额
 	private Boolean isTotalDeptLeCity(List<DeptMonthQuota> list,String city, String month) {
 		Boolean renFlag = false;
 		int cityMonthQuota = quotaConfigCityMothDao.queryCityMonthQuotaInMem(city);// 地市月配额
@@ -172,11 +174,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 	}
 
 
-	/**
-	 * 将List<Map<String, Object>>转换成List<DeptsQuotaStatistics>
-	 * @param list
-	 * @return
-	 */
+	//将List<Map<String, Object>>转换成List<DeptMonthQuota>
 	private List<DeptMonthQuota> getStatistics(List<Map<String, Object>> list) {
 		List<DeptMonthQuota> renObj = new ArrayList<DeptMonthQuota>();
 
@@ -195,5 +193,109 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 	}
 
 
+	/**
+	 * 地市月配额平均分配到地市日配额中
+	 */
+	@Override
+	public void averageCityMonthQuota(){
+			
+			List<Map<String,Object>>  cityMonthQuotaList = this.quotaConfigCityMothDao.queryAllInMem();
+			
+			if(cityMonthQuotaList!=null && cityMonthQuotaList.size()>0){
+				List<CityMonthQuota>  cityMonth = new ArrayList<CityMonthQuota>();
+				
+				for(int i=0;i<cityMonthQuotaList.size();i++){
+					Map<String,Object> map = cityMonthQuotaList.get(i);
+					CityMonthQuota temp = new CityMonthQuota();
+					try {
+						QuotaUtils.map2Bean(map, temp);
+						cityMonth.add(temp);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				List<CityDayQuota> cityDays = null;
+				cityDays = this.cityMonth2DayForToday(cityMonth);
+				//插入前先删除本月的所有地市日配额，以防之前已有地市日配额时报错
+				quotaConfigCityDayDao.delCityDayQuota4Month(QuotaUtils.getDayMonth("yyyyMM"));
+				quotaConfigCityDayDao.addBatchAddCitysDayQuotaInMem(cityDays);
+			}
+		}
+		
+	private List<CityDayQuota> cityMonth2DayForToday(List<CityMonthQuota> citysMonthQuota){
+			
+			String currentMonth = QuotaUtils.getDayMonth("yyyyMM");
+			int monthDayNum = QuotaUtils.getMonDays(currentMonth) ;
+			List<CityDayQuota> days = new ArrayList<CityDayQuota>();
+			for(int i=0;i<citysMonthQuota.size();i++){
+				CityMonthQuota tempMonth = citysMonthQuota.get(i);
+				int tempCityMonthQuota = tempMonth.getMonthQuotaNum();
+				int arverageNum = tempCityMonthQuota/monthDayNum;
+				int lastDayNum = arverageNum;
+				if(tempCityMonthQuota%monthDayNum!=0){
+					lastDayNum = arverageNum+(tempCityMonthQuota%monthDayNum);
+				}
+				for(int j=0;j<monthDayNum;j++){
+					int tempDay = j+1;
+					CityDayQuota temp = new CityDayQuota();
+					temp.setCityId(tempMonth.getCityId());
+					temp.setDataDateM(currentMonth);
+					
+					if(tempDay<10){
+						temp.setDataDate(currentMonth+"0"+tempDay);
+					}else{
+						temp.setDataDate(currentMonth+tempDay);
+					}
+					
+					if(j!=monthDayNum-1){
+						temp.setDayQuotaNum(arverageNum);
+					}else{
+						temp.setDayQuotaNum(lastDayNum);
+					}
+					days.add(temp);
+				}
+			}
+			
+			return days;
+		}
 
+	
+	/**
+	 * 科室月限额：已配置时按照已配置的值；没有配置时取模板值；
+	 */
+	@Override
+	public void setDeptsCurrentMonthQuota() {
+		String month = QuotaUtils.getDayMonth("yyyyMM");
+		List<Map<String, Object>> allDepts = userDeptLinkDao.getAllDepts();//所有科室(所有地市的)	
+		if(CollectionUtils.isEmpty(allDepts)){
+			return;
+		}
+		List<Map<String, Object>> allDeptMonthQuota = deptMonthQuotaDao.getAllDeptMonthQuotaInMem(month);	
+		this.combineList(allDepts, allDeptMonthQuota);
+		List<DeptMonthQuota> allDeptsQuota = this.getStatistics(allDepts);//---
+		
+		List<Map<String, Object>> allDeptMonthQuotaDef = deptMonthQuotaDao.queryAllDeptDefQuotaInMem();	
+		
+		if(!CollectionUtils.isEmpty(allDeptMonthQuotaDef)){
+			List<DeptMonthQuota> allDeptsDefQuota = this.getStatistics(allDeptMonthQuotaDef);//--
+			List<DeptMonthQuota> addList = new ArrayList<DeptMonthQuota>();
+			for(int i=0;i<allDeptsQuota.size();i++){
+				DeptMonthQuota tmpConf = allDeptsQuota.get(i);
+				long tmpConfNum = tmpConf.getMonthQuotaNum();
+				for(int j=0;j<allDeptsDefQuota.size();j++){
+					DeptMonthQuota tmpDef = allDeptsDefQuota.get(i);
+					if(tmpConfNum==0){//科室没有配置月配额
+						if(tmpConf.getDeptId().equals(tmpDef.getDeptId())){
+							tmpConf.setMonthQuotaNum(tmpDef.getDefaultMonthQuotaNum());
+							addList.add(tmpConf);
+							break;
+						}
+					}
+				}
+			}
+			deptMonthQuotaDao.saveBatchSaveDeptMonConfInMem(addList);
+		}
+	}
+	
+	
 }
