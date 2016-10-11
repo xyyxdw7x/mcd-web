@@ -8,16 +8,16 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
-import com.asiainfo.biapp.mcd.quota.service.IQuotaConfigCityDayService;
+import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
+import com.asiainfo.biapp.mcd.quota.service.ICityDayQuotaServiceImp;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 @Service("quotaConfigCityDayService")
-public class QuotaConfigCityDayServiceImp implements IQuotaConfigCityDayService {
+public class CityDayQuotaServiceImp implements ICityDayQuotaServiceImp {
 	
 	@Resource(name = "quotaConfigCityDayDao")
-	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
+	private ICityDayQuotaDao quotaConfigCityDayDao;
 
 	@Override
 	public CityDayQuota getCityQuotaStatisDay(String cityId) {

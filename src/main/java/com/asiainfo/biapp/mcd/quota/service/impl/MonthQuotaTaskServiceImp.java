@@ -4,50 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigDeptMothDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaMonthDeptUsedDao;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaMothCityUsedDao;
+import com.asiainfo.biapp.mcd.quota.dao.ICityMonthQuotaDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptMonthQuotaDao;
+import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.service.IMonthQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
-import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 
-	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
-	private IQuotaMothCityUsedDao quotaMothCityUsedDao;
-	private IQuotaConfigCityMothDao quotaConfigCityMothDao;
-	private IQuotaConfigDeptMothDao quotaConfigDeptMothDao;
-	private IQuotaMonthDeptUsedDao quotaMonthDeptUsedDao;
-	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
+	private ICityMonthQuotaDao quotaConfigCityMothDao;
+	private IDeptMonthQuotaDao deptMonthQuotaDao;
 	
-	public void setQuotaConfigCityDayDao(IQuotaConfigCityDayDao quotaConfigCityDayDao) {
+	private ICityDayQuotaDao quotaConfigCityDayDao;
+	
+	public void setQuotaConfigCityDayDao(ICityDayQuotaDao quotaConfigCityDayDao) {
 		this.quotaConfigCityDayDao = quotaConfigCityDayDao;
 	}
 
-	public void setQuotaConfigCityMothDao(IQuotaConfigCityMothDao quotaConfigCityMothDao) {
+	public void setQuotaConfigCityMothDao(ICityMonthQuotaDao quotaConfigCityMothDao) {
 		this.quotaConfigCityMothDao = quotaConfigCityMothDao;
 	}
 	
-	public void setQuotaConfigDeptMothDao(IQuotaConfigDeptMothDao quotaConfigDeptMothDao) {
-		this.quotaConfigDeptMothDao = quotaConfigDeptMothDao;
-	}
 
-	public void setQuotaMonthDeptUsedDao(IQuotaMonthDeptUsedDao quotaMonthDeptUsedDao) {
-		this.quotaMonthDeptUsedDao = quotaMonthDeptUsedDao;
-	}
-
-	public void setDeptsQuotaStatisticsDao(IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao) {
-		this.deptsQuotaStatisticsDao = deptsQuotaStatisticsDao;
-	}
-
-	public void setQuotaMothCityUsedDao(IQuotaMothCityUsedDao quotaMothCityUsedDao) {
-		this.quotaMothCityUsedDao = quotaMothCityUsedDao;
-	}
 	@Override
 	public void execTaskMonthQuota(){
 		this.setCityUsed4CurrentMonth();// 地市月配额：没有月使用额的地市添加月使用额
@@ -61,7 +42,7 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 
 		List<CityMonthQuota> useds = new ArrayList<CityMonthQuota>();
 		String month = QuotaUtils.getDayMonth("yyyyMM");
-		List<Map<String, Object>> list = deptsQuotaStatisticsDao.getConfigedCityUsedInMem(month);
+		List<Map<String, Object>> list = deptMonthQuotaDao.getConfigedCityUsedInMem(month);
 		if (list != null && list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {
 				Map<String, Object> map = list.get(i);
@@ -83,7 +64,7 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 				}
 				
 			}
-			quotaMothCityUsedDao.saveBatchSave(useds);
+			quotaConfigCityMothDao.saveBatchSaveCityMonthUsed(useds);
 		}
 	}
 	//地市月配额平均分配到地市日配额中
@@ -157,7 +138,7 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 		List<DeptMonthQuota> confs = new ArrayList<DeptMonthQuota>();
 		
 		//查询当月所有科室的月配额（月配额、月使用额、默认配额）
-		List<Map<String, Object>> list = deptsQuotaStatisticsDao.getDeptQuotaStaticInMem(month);
+		List<Map<String, Object>> list = deptMonthQuotaDao.getDeptQuotaStaticInMem(month);
 		//查询当月配置了日配额的所有科室
 		
 		if (list != null && list.size() > 0) {
@@ -198,8 +179,8 @@ public class MonthQuotaTaskServiceImp implements IMonthQuotaTaskService {
 				
 			}
 
-			quotaConfigDeptMothDao.saveBatchSaveInMem(confs);
-			quotaMonthDeptUsedDao.saveBatchSaveInMem(useds);
+			deptMonthQuotaDao.saveBatchSaveDeptMonConfInMem(confs);
+			deptMonthQuotaDao.saveBatchSaveUsedInMem(useds);
 			/*//将月限额平均到日限额中
 			List<QuotaConfigDeptDay> days = this.monthlist2Daylist(noConfDay, month);
 			quotaConfigDeptDayDao.batchSave(days);*/

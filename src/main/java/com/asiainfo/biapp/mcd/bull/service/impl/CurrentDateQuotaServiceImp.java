@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.asiainfo.biapp.mcd.bull.service.ICurrentDateQuotaService;
-import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptMonthQuotaDao;
 import com.asiainfo.biapp.mcd.quota.vo.CityMonthQuota;
 
 @Service("currentDateQuotaService")
 public class CurrentDateQuotaServiceImp implements ICurrentDateQuotaService {
 	@Autowired
-	private IDeptsQuotaStatisticsDao deptsQuotaStatisticsDao;
+	private IDeptMonthQuotaDao deptMonthQuotaDao;
 	
 	@Override
 	public CityMonthQuota getCityStatis(String cityId){
 		CityMonthQuota cityStatic = new CityMonthQuota();
-		Map<String, Object>  map = deptsQuotaStatisticsDao.getCityStatisInMem(cityId);
+		Map<String, Object>  map = deptMonthQuotaDao.getCityStatisInMem(cityId);
 		if(map!=null && map.size()>0){
 			cityStatic.setCityId(map.get("CITY_ID").toString());
 			if(map.get("MONTH_QUOTA_NUM")!=null){

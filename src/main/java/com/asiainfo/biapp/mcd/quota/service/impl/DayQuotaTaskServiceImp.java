@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
@@ -14,9 +14,9 @@ import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	
 	@Resource(name="quotaConfigCityDayDao")
-	private IQuotaConfigCityDayDao quotaConfigCityDayDao;
+	private ICityDayQuotaDao quotaConfigCityDayDao;
 
-	public void setQuotaConfigCityDayDao(IQuotaConfigCityDayDao quotaConfigCityDayDao) {
+	public void setQuotaConfigCityDayDao(ICityDayQuotaDao quotaConfigCityDayDao) {
 		this.quotaConfigCityDayDao = quotaConfigCityDayDao;
 	}
 

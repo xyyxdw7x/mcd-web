@@ -13,12 +13,12 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.IQuotaConfigCityDayDao;
+import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
 import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 @Repository(value="quotaConfigCityDayDao")
-public class QuotaConfigCityDayDaoImp extends JdbcDaoBase implements IQuotaConfigCityDayDao {
+public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao {
 
 	private static final Logger log = LogManager.getLogger();
 	

@@ -5,8 +5,16 @@ import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 
-public interface IDeptsQuotaStatisticsDao {
-    /**
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
+
+public interface IDeptMonthQuotaDao {
+
+	int getTotal4CityDeptMonthInMem(String cityId, String dataDate)throws DataAccessException;
+
+	public void saveBatchSaveDeptMonConfInMem(List<DeptMonthQuota> list);
+
+	//--------------------------------------------------------------------------------------------------------------
+	 /**
      * 配额管理界面：展示科室月配额（科室月配额和科室月使用额连接查询）
      * @param cityId
      * @param month
@@ -23,7 +31,19 @@ public interface IDeptsQuotaStatisticsDao {
 	 */
 	public Map<String, Object> getCityStatisInMem(String cityId)throws DataAccessException;
 	
-	//以下三个方法在定时任务中使用
+	 /**
+	  * 批量保存或者更新科室月配额：配额管理界面
+	  * @param list
+	  */
+	public void saveBatchSaveOrUpdateConfigInMem(List<DeptMonthQuota> list);
+	
+	/**
+	 * 批量保存科室月使用额
+	 * @param list
+	 */
+	public void saveBatchSaveUsedInMem(List<DeptMonthQuota> list);
+	
+	//以下三个方法在定时任务中使用-----------------------------------------------------------------------------------
     /**
      * 根据地市月限额配置查询地市月使用额，如果没有配置使用额，则使用额为0。（以地市月限额表为左表---city）
      * @param month
@@ -45,5 +65,12 @@ public interface IDeptsQuotaStatisticsDao {
      * @return
      */
 	public List<Map<String, Object>> getConfigedDayInMem(String date);
-
+	
+	/**
+	 * 批量保存科室月配额模板
+	 * @param list
+	 * @param cityId
+	 * @throws DataAccessException
+	 */
+	public void saveBatchSaveDefaultInMem(List<DeptMonthQuota> list, String cityId)throws DataAccessException;
 }

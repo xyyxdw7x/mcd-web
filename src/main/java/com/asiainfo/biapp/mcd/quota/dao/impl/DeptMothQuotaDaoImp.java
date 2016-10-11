@@ -1,18 +1,28 @@
 package com.asiainfo.biapp.mcd.quota.dao.impl;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
-import com.asiainfo.biapp.mcd.quota.dao.IDeptsQuotaStatisticsDao;
+import com.asiainfo.biapp.mcd.quota.dao.IDeptMonthQuotaDao;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
+import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 
-@Repository(value="deptsQuotaStatisticsDao")
-public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements IDeptsQuotaStatisticsDao {
+@Repository(value="quotaConfigDeptMothDao")
+public class DeptMothQuotaDaoImp extends JdbcDaoBase implements IDeptMonthQuotaDao {
+
+	private static Logger log = LogManager.getLogger();
+
+	private static final String TABLE = "mcd_quota_config_dept";//科室月配额表
 
 	/**
      * 配额管理界面：展示科室月配额（科室月配额和科室月使用额连接查询）
@@ -69,6 +79,53 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements IDeptsQuo
 		return map;
 	}
 
+	/**
+	 * 批量保存或者更新科室月配额：配额管理界面
+	 */
+	@Override
+	public void saveBatchSaveOrUpdateConfigInMem(final List<DeptMonthQuota> list) {
+		String delSql = "delete from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
+		String saveSql = "insert into " + TABLE + "(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
+		try {
+			this.getJdbcTemplate().batchUpdate(delSql,new BatchPreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement ps, int index)throws SQLException {
+							ps.setString(1, list.get(index).getCityId());
+							ps.setString(2, list.get(index).getDataDate());
+						}
+
+						@Override
+						public int getBatchSize() {
+							return list.size();
+						}
+					});
+		} catch (DataAccessException e) {
+			log.error("批量删除时报错....");
+			throw e;
+		}
+
+		try {
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement ps, int index)throws SQLException {
+							ps.setLong(1, list.get(index).getMonthQuotaNum());
+							ps.setString(2, list.get(index).getCityId());
+							ps.setString(3, list.get(index).getDataDate());
+							ps.setString(4, list.get(index).getDeptId());
+
+						}
+
+						@Override
+						public int getBatchSize() {
+							return list.size();
+						}
+					});
+		} catch (DataAccessException e) {
+			log.error("批量保存时报错....");
+			throw e;
+		}
+
+	}
 	
 	//以下三个方法在定时任务中使用----------------------------------------------------------------------------------
 	
@@ -119,8 +176,8 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements IDeptsQuo
 		}
 		return list;
 	}
-
-    /**
+  
+	/**
      * 根据科室月限额配置查找科室对应的日使用额。（以科室月限额表为左表--deptId）
      * @param date
      * @return
@@ -147,4 +204,107 @@ public class DeptsQuotaStatisticsDaoImp extends JdbcDaoBase implements IDeptsQuo
 		return list;
 	}
 
+	//-----------------------------------------------------------------------------------------------------
+
+	// 获得地市所有科室的月限额之和
+	@Override
+	public int getTotal4CityDeptMonthInMem(String cityId, String month)throws DataAccessException {
+		int total = 0;
+		String sql = "select MONTH_QUOTA_NUM from " + TABLE + " where CITY_ID=? and DATA_DATE=?";
+		Object[] parms = { cityId, month };
+
+		List<Map<String,Object>> list = this.getJdbcTemplate().queryForList(sql, parms);
+		
+		for (Map<String,Object> map : list) {
+			int tempQuota = Integer.parseInt(map.get("MONTH_QUOTA_NUM").toString());
+			total += tempQuota;
+		}
+		return total;
+	}
+
+	/**
+	 * 批量保存科室月配额
+	 */
+	@Override
+	public void saveBatchSaveDeptMonConfInMem(final List<DeptMonthQuota> list){
+		String saveSql = "insert into mcd_quota_config_dept(MONTH_QUOTA_NUM,CITY_ID,DATA_DATE,DEPT_ID) values(?,?,?,?)";
+		try {
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement ps, int index)throws SQLException {
+							ps.setLong(1, list.get(index).getMonthQuotaNum());
+							ps.setString(2, list.get(index).getCityId());
+							ps.setString(3, list.get(index).getDataDate());
+							ps.setString(4, list.get(index).getDeptId());
+						}
+						@Override
+						public int getBatchSize() {
+							return list.size();
+						}
+					});
+		} catch (DataAccessException e) {
+			log.error("批量保存时报错....",e);
+			throw e;
+		}
+		
+	}
+
+/**
+ * 批量保存科室月使用额
+ */
+	@Override
+	public void saveBatchSaveUsedInMem(final List<DeptMonthQuota> list) {
+		String sql ="insert into mcd_quota_used_dept_m(city_id,dept_id,data_date,used_num)values(?,?,?,?)";
+		this.getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int index) throws SQLException {
+				ps.setString(1, list.get(index).getCityId());
+				ps.setString(2, list.get(index).getDeptId());
+				ps.setString(3, list.get(index).getDataDate());
+				ps.setLong(4, list.get(index).getUsedNum());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return list.size();
+			}
+		});
+	}
+	/**
+	 * 批量保存或更新科室默认配额
+	 */
+	@Override
+	public void saveBatchSaveDefaultInMem(final List<DeptMonthQuota> list, String cityId)throws DataAccessException {
+		String delSql = "DELETE FROM MTL_QUOTA_DEPT_M_DEFAULT WHERE CITY_ID=?";
+		Object[] delPparm = { cityId };
+		String saveSql = "insert into MTL_QUOTA_DEPT_M_DEFAULT(CITY_ID,DEPT_ID,MONTH_QUOTA_NUM) values (?,?,?)";
+
+		try {
+			this.getJdbcTemplate().update(delSql, delPparm);
+
+			this.getJdbcTemplate().batchUpdate(saveSql,new BatchPreparedStatementSetter() {
+						@Override
+						public int getBatchSize() {
+							return list.size();
+						}
+
+						@Override
+						public void setValues(PreparedStatement ps, int index)
+								throws SQLException {
+							ps.setString(1, list.get(index).getCityId());
+							ps.setString(2, list.get(index).getDeptId());
+							ps.setLong(3, list.get(index).getMonthQuotaNum());
+
+						}
+
+					});
+		} catch (DataAccessException e) {
+			log.error("删除或者插入数据时出错");
+			throw e;
+		}
+
+	}
+	
+	
 }
