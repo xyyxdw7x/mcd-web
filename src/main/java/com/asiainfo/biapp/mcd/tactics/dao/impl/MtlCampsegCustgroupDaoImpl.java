@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
@@ -128,4 +129,27 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements ICampseg
 		}
 		return list;
 	}
+    /**
+     * 根据客户群ID查找用到该客户群的处于（待执行）的策略
+     * @param customGroupId
+     * @return 
+     */
+    @Override
+    public List<Map<String,Object>> getCustGroupSelectByGroupIdList(String customGroupId) {
+        List<Map<String,Object>>  list = new ArrayList<Map<String,Object>> ();
+        try {
+            //改变查询策略的方式，查询策略状态不为已完成和终止并且在有效期内的策略 , 不为已完成和终止的周期性策略当有新的客户群推送过来的时候都要去更新D表数据    modify by lixq10 2015年12月16日14:08:18
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("select mcc.*  from mcd_camp_custgroup_list mcc  ")
+                  .append("  left join mcd_camp_def mcs on mcc.CAMPSEG_ID = mcs.campseg_id ")
+                  .append(" where  mcc.CUSTGROUP_ID = ?  ")
+                  .append(" and mcs.campseg_stat_id not in(?,?)")
+                  .append(" AND SYSDATE BETWEEN nvl2(TO_DATE(mcs.start_date,'YYYY-MM-DD'),TO_DATE(mcs.start_date,'YYYY-MM-DD'),TO_DATE('19000101','YYYY-MM-DD'))  AND nvl2(TO_DATE(mcs.end_date,'YYYY-MM-DD'),TO_DATE(mcs.end_date,'YYYY-MM-DD'),TO_DATE('21000101','YYYY-MM-DD'))");
+            list= this.getJdbcTemplate().queryForList(buffer.toString(), new Object[] { customGroupId,McdCONST.MPM_CAMPSEG_STAT_HDWC,McdCONST.MPM_CAMPSEG_STAT_HDZZ});
+            
+        } catch (Exception e) {
+            
+        }
+        return list;
+    }
 }

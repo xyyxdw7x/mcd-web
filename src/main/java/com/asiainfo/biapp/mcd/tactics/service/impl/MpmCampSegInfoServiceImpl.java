@@ -1119,14 +1119,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         return xmlStr.toString();
     }
     
-    /**
-     * 查找活动下的所有渠道
-     * @param campsegId
-     * @return
-     */
-    private List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
-        return mtlChannelDefDao.getChannelByCampsegId(campsegId);
-    }
+
      
     @Override
 	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
@@ -1349,5 +1342,23 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			}
 			
 	}
+    /**
+     * 根据客户群ID查找用到该客户群的处于（待执行）的策略
+     * @param customGroupId
+     * @return 
+     */
+    @Override
+    public List<Map<String,Object>>  getCustGroupSelectByGroupIdList(String customGroupId) {
+        return mtlCampsegCustgroupDao.getCustGroupSelectByGroupIdList(customGroupId);
+    }
+    /**
+     * 查找活动下的所有渠道
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
+            return mtlChannelDefDao.getChannelByCampsegId(campsegId);
+    }
     
 }

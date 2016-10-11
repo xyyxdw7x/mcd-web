@@ -12,6 +12,7 @@ import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
@@ -276,6 +277,18 @@ public interface IMpmCampSegInfoService {
 	 * @throws MpmException
 	 */
 	public McdCampDef getCampByPid(String pid) throws MpmException;
+    /**
+     * 根据客户群ID查找用到该客户群的处于（待执行）的策略
+     * @param customGroupId
+     * @return 
+     */
+    public List<Map<String,Object>>  getCustGroupSelectByGroupIdList(String customGroupId);
+    /**
+     * 查询策略下所有 
+     * @param campsegId渠道
+     * @return
+     */
+    public List<McdCampChannelList> getChannelByCampsegId(String campsegId);
 	
 	
 	

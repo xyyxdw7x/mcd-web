@@ -97,6 +97,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 				}
 			}
 		} catch (Exception e) {
+		    log.error("查询客户群出错");
 		}
 		return custGroupList;
 	}
@@ -1219,4 +1220,16 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 
                 return null;
           }
+        /**
+         * 批量执行语句sqlFire
+         * @param inertSql  插入语句
+         * @param columnTypeList 每个字段应该对应的字段类型LIST
+         * @param txtList  txt文档每行数据LIST
+         * @param customGroupDataDate 
+         */
+        @Override
+        public void addInMembatchExecute(String inertSql, List<String> columnTypeList, List<String> txtList,
+                        String customGroupDataDate) {
+            custGroupInfoDao.addInMembatchExecute(inertSql,columnTypeList,txtList,customGroupDataDate);
+        }
 }

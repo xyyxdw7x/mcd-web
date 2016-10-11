@@ -233,6 +233,14 @@ public interface ICustGroupInfoService {
      * @throws MpmException
      */
     public String doSendCustInfo(String custInfoXml);
+    /**
+     * 批量执行语句sqlFire
+     * @param inertSql  插入语句
+     * @param columnTypeList 每个字段应该对应的字段类型LIST
+     * @param txtList  txt文档每行数据LIST
+     * @param customGroupDataDate 
+     */
+    public void addInMembatchExecute(String inertSql, List<String> columnTypeList, List<String> lineList,String customGroupDataDate);
 	
 	/**
 	 * 通过导入文件方式插入客户群清单数据

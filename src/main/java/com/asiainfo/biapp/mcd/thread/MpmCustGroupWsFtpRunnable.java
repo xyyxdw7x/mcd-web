@@ -18,12 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,12 +34,22 @@ import org.dom4j.Element;
 
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.util.SpringContextsUtil;
+import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.ApacheFtpUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
+import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
+import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
+import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
+import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 
 
 
@@ -371,14 +383,14 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //					    	lineList.add(line);
 //					    	if(lineList.size() >= num){
 ////							    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//					    	    custGroupInfoService.batchSqlFireExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//					    	    custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
 //						        lineList.clear();
 //					    	}
 //
 //					    	inportCount = inportCount +1;
 //				    	}
 ////					    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//				    	custGroupInfoService.batchSqlFireExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//				    	custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
 //
 //			    	} catch (Exception e) {
 //						if("".equals(exceptionMessage)){
@@ -425,7 +437,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //			}else{
 //				custInfoBean.setCustomStatusId(9);
 //			}
-//			mtlCustGroupService.updateMtlGroupinfo(custInfoBean);
+//			custGroupInfoService.updateMtlGroupinfo(custInfoBean);
 //			xml.append(exceptionMessage + "</msg></result>");
 //			
 //			IMtlCallWsUrlService callwsUrlService;
@@ -446,25 +458,22 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //		
 //		}
 //		
-//	   if(custInfoBean.getUpdateCycle().intValue() != MpmCONST.CUST_INFO_GRPUPDATEFREQ_ONE) {
+//	   if(custInfoBean.getUpdateCycle().intValue() != McdCONST.CUST_INFO_GRPUPDATEFREQ_ONE) {
 //		   	log.info("----------update  custom  cycle");
 //			IMpmCampSegInfoService segInfoservice = null;
-//			IMpmCampSegInfoService service  = null;
 //			IMcdCampsegTaskService taskService = null;
 //			try {
-//				segInfoservice = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-//			    service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(
-//						MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-//				taskService = (IMcdCampsegTaskService) SystemServiceLocator.getInstance().getService(
-//						MpmCONST.MCD_CAMPSEG_TASK_SERVICE);
+//				segInfoservice  = (IMpmCampSegInfoService) SpringContextsUtil.getBean("mpmCampSegInfoService");
+//
+//				taskService = (IMcdCampsegTaskService) SpringContextsUtil.getBean("mcdCampsegTaskService");
 //			} catch (Exception e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
 //			//MtlCampsegCustGroup  segInfoservice.getCustGroupSelectByGroupIdList(customGroupId);
 //			//根据客户群ID查找用到该客户群的处于（待执行）的策略，用JDBC查询过滤掉策略状态不符合的
-//		    List mtlCampsegCustGroupList = segInfoservice.getCustGroupSelectByGroupIdJDBCList(customGroupId,"CG");
-//		    List<MtlCampSeginfo> MtlCampSeginfoList = new ArrayList<MtlCampSeginfo>();
+//		    List mtlCampsegCustGroupList = segInfoservice.getCustGroupSelectByGroupIdList(customGroupId);
+//		    List<McdCampDef> MtlCampSeginfoList = new ArrayList<McdCampDef>();
 //			
 //			int newDate = Integer.parseInt(DateUtil.formatDate(new Date(), "yyyyMMdd"));
 //			boolean isSMSTest = false;//短信渠道是否在测试
@@ -473,33 +482,33 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //		    	Map map = (Map)mtlCampsegCustGroupList.get(i);
 //		    	String campsegId = map.get("CAMPSEG_ID") == null ? "" : map.get("CAMPSEG_ID").toString();
 //		    	String custGroupId = map.get("CUSTGROUP_ID") == null ? "" : map.get("CUSTGROUP_ID").toString();
-//		    	MtlCampSeginfo m = segInfoservice.getCampSegInfo(campsegId);
-//				List<MtlCampSeginfo> childMtlCampSeginfoList = segInfoservice.getChildCampSeginfo(m.getCampsegPid());
+//		    	McdCampDef m = segInfoservice.getCampSegInfo(campsegId);
+//				List<McdCampDef> childMtlCampSeginfoList = segInfoservice.getChildCampSeginfo(m.getPid());
 //
 //		    	int endDate = Integer.parseInt(m.getEndDate().replace("-","")); //修改因为格式导致的报错
 //		    	//策略包整体审核通过，且子策略有短信渠道,且没有超期
 //		    	log.info("check out date:"+newDate+"<"+endDate+"--------------------------"+campsegId);
 //				if(newDate < endDate){
 //					//查找活动下的所有渠道
-//					List<MtlChannelDef> mtlChannelDefList = service.getChannelByCampsegId(campsegId);
+//					List<McdCampChannelList> mtlChannelDefList = segInfoservice.getChannelByCampsegId(campsegId);
 //					log.info("select channel size:"+mtlChannelDefList.size()+"-------------------------");
 //					//是否含短信渠道
 //					boolean isSMS = false;
 //					//是否是周期性
 //					boolean isCYCLE = false;
 //                    int channelOne = 0;
-//					for(MtlChannelDef mtlChannelDef : mtlChannelDefList){
-//						//是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
-//						log.info("select channel contactType:"+mtlChannelDef.getContactType().intValue()+"------------"+mtlChannelDef.getChanneltypeId().intValue());
-//						if(mtlChannelDef.getContactType().intValue() == MpmCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE || mtlChannelDef.getContactType().intValue() == 3){
-//							List<McdCampsegTask> mcdCampsegTaskList = taskService.findByCampsegIdAndChannelId(campsegId,mtlChannelDef.getChannelId());
+//					for(McdCampChannelList mtlChannelDef : mtlChannelDefList){
+//						//是周期性且是短信渠道    设计图画错，是否是周期性都要创建自动任务：mtlChannelDef.getContactType().intValue() == McdCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE && 
+//						log.info("select channel contactType:"+mtlChannelDef.getContactType().intValue()+"------------"+mtlChannelDef.getChannelId());
+//						if(mtlChannelDef.getContactType().intValue() == McdCONST.MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE || mtlChannelDef.getContactType().intValue() == 3){
+//							List<McdCampTask> mcdCampsegTaskList = taskService.findByCampsegIdAndChannelId(campsegId,mtlChannelDef.getChannelId());
 //							log.info("select task size:"+mcdCampsegTaskList.size());
-//							if(mtlChannelDef.getChanneltypeId().intValue() == MpmCONST.CHANNEL_TYPE_SMS_INT){
+//							if(Integer.parseInt(mtlChannelDef.getChannelId()) == McdCONST.CHANNEL_TYPE_SMS_INT){
 //								try {
 //									
 //									//判断是否有已有此策略任务，如果有直接创先新任务，如果没有需要经过短信测试
 //									if(mcdCampsegTaskList != null && mcdCampsegTaskList.size() > 0){
-//										McdCampsegTask mcdCampsegTask = mcdCampsegTaskList.get(0);
+//									    McdCampTask mcdCampsegTask = mcdCampsegTaskList.get(0);
 //										mcdCampsegTask.setCycleType((short)mtlChannelDef.getContactType().intValue());
 //
 //                                        //对应清单表新增客户群数据
@@ -510,7 +519,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 ////										McdCampsegTask task = new McdCampsegTask();
 ////										task.setCycleType((short)mtlChannelDef.getContactType().intValue());
 ////										String currentTime = MpmUtil.convertLongMillsToYYYYMMDDHHMMSS(new Date().getTime());
-////										task.setTaskSendoddTabName(MpmCONST.MTL_DUSER_O_PREFIX + currentTime);
+////										task.setTaskSendoddTabName(McdCONST.MTL_DUSER_O_PREFIX + currentTime);
 ////										taskService.createTaskSendoddTab(task.getTaskSendoddTabName());
 ////										
 ////										addMcdCampsegTask(task,campsegId,custGroupId,mtlChannelDef.getChannelId());
@@ -524,7 +533,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 ////								        if(result.equals("操作成功")){
 ////									       log.info("调用短信渠道测试操作成功！数据正在传输，请稍后...");
 ////									       isSMSTest = true;
-////									      // mtlSmsSendTestTask.updateCampsegInfoState(campsegId, MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+////									      // mtlSmsSendTestTask.updateCampsegInfoState(campsegId, McdCONST.MPM_CAMPSEG_STAT_HDCS);
 ////								        }else{
 ////									       log.error("调用短信渠道测试操作失败！。。。。。。。。。");
 ////									       isSMSTest = true;
@@ -539,7 +548,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //							}else{
 //								//判断是否有已有此策略任务，如果有直接创先新任务，如果没有需要经过短信测试
 //								if(mcdCampsegTaskList != null && mcdCampsegTaskList.size() > 0){
-//									McdCampsegTask mcdCampsegTask = mcdCampsegTaskList.get(0);
+//								    McdCampTask mcdCampsegTask = mcdCampsegTaskList.get(0);
 //                                    
 //                                    //对应清单表新增客户群数据
 //                                    addCustListTabName(mcdCampsegTask,campsegId,custGroupId,mtlChannelDef.getChannelId(),"0",channelOne);
@@ -561,9 +570,9 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //					
 //					if(isSMSTest){
 //						try {
-//							mtlSmsSendTestTask.updateCampsegInfoState(campsegId, MpmCONST.MPM_CAMPSEG_STAT_HDCS);
-//							for(MtlCampSeginfo childMtl : childMtlCampSeginfoList){
-//								mtlSmsSendTestTask.updateCampsegInfoState(childMtl.getCampsegId(), MpmCONST.MPM_CAMPSEG_STAT_HDCS);
+//							mtlSmsSendTestTask.updateCampsegInfoState(campsegId, McdCONST.MPM_CAMPSEG_STAT_HDCS);
+//							for(McdCampDef childMtl : childMtlCampSeginfoList){
+//								mtlSmsSendTestTask.updateCampsegInfoState(childMtl.getCampId(), McdCONST.MPM_CAMPSEG_STAT_HDCS);
 //							}
 //						} catch (Exception e) {
 //							e.printStackTrace();
@@ -575,8 +584,8 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //		    	
 //		    }
 //					
-//	   }
-	}
+	   }
+//	}
 	
 //	/**
 //	 * 
@@ -587,49 +596,31 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //	 * @param flag:当flag=0 在更新D表数据的同时，还要插入task和task_date表数据；flag=1 仅仅是更新D表数据
 //	 *  @param channelOne  同一策略，当有多渠道时，只有第一次插入清单数据
 //	 */
-//	private void addCustListTabName(McdCampsegTask task,String campsegId,String custGroupId,String channelId,String flag, int channelOne){
+//	private void addCustListTabName(McdCampTask task,String campsegId,String custGroupId,String channelId,String flag, int channelOne){
 //
 //		
 //		try {
-//			IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-//			IMcdMtlGroupInfoService groupService = (IMcdMtlGroupInfoService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.IMCD_MTL_GROUPINFO_SERVICE);
-//			IMcdCampsegTaskService taskService = (IMcdCampsegTaskService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.MCD_CAMPSEG_TASK_SERVICE);
+//			IMpmCampSegInfoService service = (IMpmCampSegInfoService) SpringContextsUtil.getBean("mpmCampSegInfoService");
+//			ICustGroupInfoService groupService = (ICustGroupInfoService)SpringContextsUtil.getBean("custGroupInfoService");
+//			IMcdCampsegTaskService taskService = (IMcdCampsegTaskService) SpringContextsUtil.getBean("mcdCampsegTaskService");
 //			
 //			String tableName = null;
 //			if(task == null){
-//				task = new McdCampsegTask();
-////				tableName = service.createCustGroupTab(MpmCONST.MTL_DUSER_I_PREFIX);
+//				task = new McdCampTask();
+////				tableName = service.createCustGroupTab(McdCONST.MTL_DUSER_I_PREFIX);
 //				//当任务不存在的时候，直接从策略信息中去查找D表名称  modify by lixq10
-//				tableName = service.getCampSegInfo(campsegId).getInitCustListTab();
+//				tableName = service.getCampSegInfo(campsegId).getCustListTab();
 //			}else{
 //				tableName = task.getCustListTabName();
 //			}
 //			log.info("ready to update table:"+tableName+"-----------------------");
-//			MtlCampSeginfo mtlCampSeginfo = service.getCampSegInfo(campsegId);
+//			McdCampDef mtlCampSeginfo = service.getCampSegInfo(campsegId);
 //			
 //			
-//			if(StringUtil.isNotEmpty(campsegId)){
-//				String bussinessLableSql = "";
-//				String basicEventSql = "";
-//				List mtlCampsegCustGroupList = service.getTempletSelectByCampsegIdJDBCList(campsegId,"CGT");
-//				for(int i = 0; i <mtlCampsegCustGroupList.size();i++){
-//					Map map = (Map)mtlCampsegCustGroupList.get(i);
-//					if(i==0){
-//						bussinessLableSql = map.get("EXEC_SQL") == null ? "" : map.get("EXEC_SQL").toString();
-//					}else{
-//						basicEventSql = map.get("EXEC_SQL") == null ? "" : map.get("EXEC_SQL").toString();
-//					}
-//				}
+//			if(StringUtils.isNotBlank(campsegId)){
 //				
-////				List list = groupService.getCustInfoList(custGroupId,bussinessLableSql,basicEventSql,mtlCampSeginfo.getOrderPlanIds(),mtlCampSeginfo.getExcludePlanIds());
-////				
-////				//将list中的数据存放到清单表中
-////				service.insertCustGroupToTable(tableName, list);
 //				//当tableName不存在的时候不进行插入操作
-//				if(StringUtil.isNotEmpty(tableName)){
+//				if(StringUtils.isNotBlank(tableName)){
 //					
 //					//判断哪些场景不需要对客户群做去重操作  modify by lixq10 2016年7月26日15:01:39  begin
 //					boolean removeRepeatFlag = isRemoveRepeat(campsegId);
@@ -637,7 +628,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //					
 //					//插入经过条件过滤的数据
 //					if(channelOne == 0){
-//						groupService.insertCustGroupNewWay(custGroupId,bussinessLableSql,basicEventSql,mtlCampSeginfo.getOrderPlanIds(),mtlCampSeginfo.getExcludePlanIds(),tableName,removeRepeatFlag);
+//						groupService.insertCustGroupNewWay(custGroupId,null,null,null,null,tableName,removeRepeatFlag);
 //					}
 //					log.info("update table end"+tableName+"-----------------------，flag:"+flag);
 //					if("0".equals(flag)){
@@ -661,10 +652,10 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //	
 //	//检查是否需要对客户群进行过滤
 //	private boolean isRemoveRepeat(String campsegId){
-//		IMtlChannelDefDao mtlChannelDefDao;
+//	    IMtlChannelDefDao mtlChannelDefDao;
 //		boolean removeRepeatFlag = true;  //false:不需要去重  true：需要去重
 //		try {
-//			mtlChannelDefDao = (IMtlChannelDefDao)SystemServiceLocator.getInstance().getService("mtlChannelDefDao");
+//			mtlChannelDefDao = (IMtlChannelDefDao)SpringContextsUtil.getBean("mtlChannelDefDao");
 //			List list = null;
 //			try {
 //				list = mtlChannelDefDao.findMtlChannelDef(campsegId);
@@ -677,9 +668,9 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //			String xnwjcy = MpmConfigure.getInstance().getProperty("RULE_TIME_XNWJCY");
 //			String functionId = "";
 //			for(int j = 0;j<list.size();j++){
-//				MtlChannelDef mtlChannelDef = (MtlChannelDef) list.get(0);
+//			    McdCampChannelList mtlChannelDef = (McdCampChannelList) list.get(0);
 //				functionId = mtlChannelDef.getFunctionId();
-//				if(StringUtil.isNotEmpty(functionId)){
+//				if(StringUtils.isNotBlank(functionId)){
 //					if(functionId.equals("qqwjcy") || functionId.equals("qqwzw") || functionId.equals("xnwjcy")){
 //						removeRepeatFlag = false;
 //						break;
@@ -692,15 +683,14 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //		return removeRepeatFlag;
 //	}
 //	
-//	private void addMcdCampsegTaskDate(McdCampsegTask mcdCampsegTask){
+//	private void addMcdCampsegTaskDate(McdCampTask mcdCampsegTask){
 //		IMcdCampsegTaskService taskService;
-//		IMcdMtlGroupInfoDao mcdMtlGroupInfoDao;
+//		ICustGroupInfoService mcdMtlGroupInfoDao;
 //		IMpmCampSegInfoService mpmCampSegInfoService;
 //		try {
-//			taskService = (IMcdCampsegTaskService) SystemServiceLocator.getInstance().getService(MpmCONST.MCD_CAMPSEG_TASK_SERVICE);
-//			mcdMtlGroupInfoDao = (IMcdMtlGroupInfoDao) SystemServiceLocator.getInstance().getService("mcdMtlGroupInfoDao");
-//		    mpmCampSegInfoService = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
+//			taskService = (IMcdCampsegTaskService) SpringContextsUtil.getBean("mcdCampsegTaskService");
+//			mcdMtlGroupInfoDao = (ICustGroupInfoService) SpringContextsUtil.getBean("custGroupInfoService");
+//		    mpmCampSegInfoService =  (IMpmCampSegInfoService) SpringContextsUtil.getBean("mpmCampSegInfoService");
 //			List<MtlCampsegCiCustgroup> mtlCampsegCustGroupList = mpmCampSegInfoService.getMtlCampsegCustGroup(mcdCampsegTask.getCampsegId(),"CG");
 //			log.info("select custom size:"+mtlCampsegCustGroupList.size()+"--------------------");
 //			String dataDate = "";
@@ -720,7 +710,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //			}
 //			Date planExecTime = new Date();
 //			String taskId = mcdCampsegTask.getTaskId();
-//			short execStatus = MpmCONST.TASK_STATUS_UNDO;
+//			short execStatus = McdCONST.TASK_STATUS_UNDO;
 //			//在做插入之前先判断该记录是否存在,方便测试重复推送   modify by lixq10
 //			log.info("insert into taskDate:"+taskId+"----------------------dataDate:"+dataDate);
 //			if(!taskService.checkTaskDataIsExist(taskId, dataDate)){
@@ -740,10 +730,9 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //			String excepMsg) {
 //		IMtlCallWsUrlService callwsUrlService;
 //		try {
-//			callwsUrlService = (IMtlCallWsUrlService) SystemServiceLocator
-//					.getInstance().getService("callWsUrlService");
-//			MtlCallwsUrl url = callwsUrlService
-//					.getCallwsURL("WSMCDINTERFACESERVER");
+//		    callwsUrlService = (IMtlCallWsUrlService)SpringContextsUtil.getBean("mtlCallWsUrlService");
+//            McdSysInterfaceDef url = callwsUrlService.getCallwsURL("WSMCDINTERFACESERVER");
+//			
 //
 //			Client client = new Client(new URL(url.getCallwsUrl()));
 //
@@ -821,26 +810,23 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //    } 
 //	
 //	
-//	private void addMcdCampsegTask(McdCampsegTask task,String campsegId,String custGroupId,String channelId){
+//	private void addMcdCampsegTask(McdCampTask task,String campsegId,String custGroupId,String channelId){
 ////		if(task == null){
 ////			task = new McdCampsegTask();
 ////		}
 //		
 //		try {
-//			IMpmCampSegInfoService service = (IMpmCampSegInfoService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.CAMPAIGN_SEG_INFO_SERVICE);
-//			IMcdMtlGroupInfoService groupService = (IMcdMtlGroupInfoService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.IMCD_MTL_GROUPINFO_SERVICE);
-//			IMcdCampsegTaskService taskService = (IMcdCampsegTaskService) SystemServiceLocator.getInstance().getService(
-//					MpmCONST.MCD_CAMPSEG_TASK_SERVICE);
+//			IMpmCampSegInfoService service =  (IMpmCampSegInfoService) SpringContextsUtil.getBean("mpmCampSegInfoService")
+//			                ICustGroupInfoService groupService = (ICustGroupInfoService) SpringContextsUtil.getBean("custGroupInfoService");
+//			IMcdCampsegTaskService taskService =  (IMcdCampsegTaskService) SpringContextsUtil.getBean("mcdCampsegTaskService");
 //			
-//			MtlCampSeginfo mtlCampSeginfo = service.getCampSegInfo(campsegId);
+//			McdCampDef mtlCampSeginfo = service.getCampSegInfo(campsegId);
 //			task.setCampsegId(campsegId);
 //			task.setChannelId(channelId);
 //			//生成清单表（任务的基础清客户单表和派单客户清单表
 //			task.setTaskStartTime(new Date());
 //		//	task.setTaskEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(mtlCampSeginfo.getEndDate()));
-//			task.setExecStatus(MpmCONST.TASK_STATUS_UNDO);
+//			task.setExecStatus(McdCONST.TASK_STATUS_UNDO);
 ////			String custListTabName = null;
 ////			
 ////			List mtlCustomList = groupService.getMtlCustomListInfo(custGroupId);
@@ -849,7 +835,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 ////				custListTabName = map.get("list_table_name").toString();
 ////			}
 //			String tableName = null;
-//			if(StringUtil.isNotEmpty(campsegId)){
+//			if(StringUtils.isNotBlank(campsegId)){
 //				String bussinessLableSql = "";
 //				String basicEventSql = "";
 //				List mtlCampsegCustGroupList = service.getTempletSelectByCampsegIdJDBCList(campsegId,"CGT");
@@ -863,7 +849,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //				}
 //				
 ////				List list = groupService.getCustInfoList(custGroupId,bussinessLableSql,basicEventSql,mtlCampSeginfo.getOrderPlanIds(),mtlCampSeginfo.getExcludePlanIds());
-//				tableName = service.createCustGroupTab(MpmCONST.MTL_DUSER_I_PREFIX);
+//				tableName = service.createCustGroupTab(McdCONST.MCD_ZD_USER_PREFIX);
 ////				//将list中的数据存放到清单表中
 ////				service.insertCustGroupToTable(tableName, list);
 //				//判断哪些场景不需要对客户群做去重操作  modify by lixq10 2016年7月26日15:01:39  begin
@@ -873,8 +859,9 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 //
 //			}
 //
-//			String custListTabName = mtlCampSeginfo.getInitCustListTab();
-//			String currentTime = MpmUtil.convertLongMillsToYYYYMMDDHHMMSS(new Date().getTime());
+//			String custListTabName = mtlCampSeginfo.getCustListTab();
+//			MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
+//			String currentTime =MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 //			task.setCustListTabName(custListTabName);
 //			task.setRetry(0);
 //			task.setBotherAvoidNum(0);

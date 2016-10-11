@@ -32,4 +32,10 @@ public interface ICampsegCustgroupDao {
 	 * @return
 	 */
 	public List<Map<String,Object>> getCustInfoByCampsegId(String campsegId);
+    /**
+     * 根据客户群ID查找用到该客户群的处于（待执行）的策略
+     * @param customGroupId
+     * @return 
+     */
+    public abstract List<Map<String,Object>>  getCustGroupSelectByGroupIdList(String customGroupId);
 }

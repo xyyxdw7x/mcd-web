@@ -120,4 +120,13 @@ public class McdCONST {
     public static final int CUST_INFO_GRPUPDATEFREQ_MONTH = 2;
     //3代表日周期
     public static final int CUST_INFO_GRPUPDATEFREQ_DAY = 3;
+    
+    
+    //1策略与渠道对应关系--客户接触方式  一次性
+    public static final int MTL_CHANNLE_DEF_CONTACETTYPE_ONE = 1;
+    //2策略与渠道对应关系--客户接触方式  周期性
+    public static final int MTL_CHANNLE_DEF_CONTACETTYPE_CYCLE= 2;
+    
+    
+    
 }

@@ -2,6 +2,10 @@ package com.asiainfo.biapp.mcd.common.custgroup.dao.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -14,6 +18,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.aop.BeanSelfAware;
@@ -42,7 +48,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			parameterList.add(currentUserId);
 			parameterList.add(currentUserId);
 			
-			buffer.append("SELECT  (1) FROM MCD_CUSTGROUP_DEF cgd ");
+			buffer.append("SELECT  count(1) FROM MCD_CUSTGROUP_DEF cgd ");
 			buffer.append(" WHERE (CREATE_USER_ID = ? or cgd.custom_group_id in ( select custom_group_id from mcd_custgroup_push where create_push_target_id = ?)) ")
 			 .append(" and custom_status_id not in (2,9)")
 		 	 .append("  and (to_char(Fail_Time,'yyyy-MM-dd')>to_char(trunc(sysdate),'yyyy-MM-dd') or Fail_Time is null)"); //失效时间计算
@@ -103,7 +109,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
            */			
 			if(StringUtils.isNotEmpty(keyWords)){
 				if(keyWords.equals("%")){
-					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
+					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR cgd.CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
 				}else{
 					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ? OR CUSTOM_GROUP_ID LIKE ?)");
 					parameterList.add("%" + keyWords + "%");
@@ -140,6 +146,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 				custGroupList.add(custGroupInfo);
 			}
 		} catch (Exception e) {
+		    log.error("查询客户群出错");
 		}
 		return custGroupList;
 	}
@@ -1538,5 +1545,44 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 
             String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
             this.getJdbcTemplate().execute(sql);
+        }
+        /**
+         * 批量执行语句MCD_AD
+         * @param inertSql  插入语句
+         * @param columnTypeList 每个字段应该对应的字段类型LIST
+         * @param txtList  txt文档每行数据LIST
+         * @param customGroupDataDate 
+         */
+        @Override
+        public void addInMembatchExecute(String inertSql, final List<String> columnTypeList, final List<String> txtList,
+                        final String customGroupDataDate) {
+            this.getJdbcTemplate().batchUpdate(inertSql, new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    String[] lines = txtList.get(i).split(",");
+                    int num = 0;
+                    for(int j=0; j<lines.length ; j++){
+                        String attrColType = columnTypeList.get(j);
+                        if("number".equals(attrColType)){
+                            int number = Integer.parseInt(lines[j]);
+                            ps.setInt(j+1, number);
+                        }else if("varchar".equals(attrColType) || "char".equals(attrColType) || "nvchar2".equals(attrColType) || "vchar2".equals(attrColType)  || "varchar2".equals(attrColType) ){
+                            String s = lines[j];
+                            ps.setString(j+1, s);
+                        }else if("decimal".equals(attrColType)){
+                            BigDecimal bd = new BigDecimal(lines[j]);  
+                            ps.setBigDecimal(j+1, bd);
+                        }
+                        num = j+1;
+                    }
+                    ps.setString(num+1, customGroupDataDate);
+                    
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return txtList.size();
+                }
+            });            
         }
 }
