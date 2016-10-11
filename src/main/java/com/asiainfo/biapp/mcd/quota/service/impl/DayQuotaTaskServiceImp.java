@@ -1,15 +1,9 @@
 package com.asiainfo.biapp.mcd.quota.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
-import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
-import com.asiainfo.biapp.mcd.quota.vo.CityDayQuota;
 
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	
@@ -22,8 +16,8 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 
 	@Override
 	public void execTaskDayQuota(){
-		//没有日使用额的地市时为该地市插入日使用额
-		List<CityDayQuota> noConfUsedList=new ArrayList<CityDayQuota>();
+		//没有日使用额的地市时为该地市插入日使用额----跟韩静诺确认可以去掉。执行中心自己判断如果当日没有日使用额的时候自己添加日使用额记录
+		/*List<CityDayQuota> noConfUsedList=new ArrayList<CityDayQuota>();
 		String dataDate=QuotaUtils.getDayDate("yyyyMMdd");
 		List<Map<String,Object>> list = quotaConfigCityDayDao.getCityUsedListInMem(dataDate);
 		if(list!=null && list.size()>0){
@@ -42,8 +36,7 @@ public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 				
 			}
 		}
-		quotaConfigCityDayDao.addBatchAddUsedNumInMem(noConfUsedList);
-		
+		quotaConfigCityDayDao.addBatchAddUsedNumInMem(noConfUsedList);*/
 		
 	}
 

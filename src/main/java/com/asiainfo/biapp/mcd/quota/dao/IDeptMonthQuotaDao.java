@@ -43,28 +43,6 @@ public interface IDeptMonthQuotaDao {
 	 */
 	public void saveBatchSaveUsedInMem(List<DeptMonthQuota> list);
 	
-	//以下三个方法在定时任务中使用-----------------------------------------------------------------------------------
-    /**
-     * 根据地市月限额配置查询地市月使用额，如果没有配置使用额，则使用额为0。（以地市月限额表为左表---city）
-     * @param month
-     * @return
-     * @throws DataAccessException
-     */
-	public List<Map<String, Object>> getConfigedCityUsedInMem(String month)throws DataAccessException;
-
-    /**
-     * 查询所有科室（地市科室表）的月配额和月使用额情况
-     * @param month
-     * @return
-     */
-	public List<Map<String, Object>> getDeptQuotaStaticInMem(String month);
-
-    /**
-     * 根据科室月限额配置查找科室对应的日使用额。（以科室月限额表为左表--deptId）
-     * @param date
-     * @return
-     */
-	public List<Map<String, Object>> getConfigedDayInMem(String date);
 	
 	/**
 	 * 批量保存科室月配额模板
@@ -73,4 +51,17 @@ public interface IDeptMonthQuotaDao {
 	 * @throws DataAccessException
 	 */
 	public void saveBatchSaveDefaultInMem(List<DeptMonthQuota> list, String cityId)throws DataAccessException;
+	/**
+	 * 查询所有（地市的）科室月配额（科室月配额和科室月使用额连接查询）
+	 * @param month
+	 * @return
+	 * @throws DataAccessException
+	 */
+	public List<Map<String, Object>> getAllDeptMonthQuotaInMem(String month) throws DataAccessException;
+
+	/**
+	 * 
+	 * @throws DataAccessException
+	 */
+	public List<Map<String, Object>> queryAllDeptDefQuotaInMem() throws DataAccessException;
 }
