@@ -17,7 +17,7 @@ public class AppConfigService {
 
 	
 	/**
-	 * 实时的省份
+	 * 实施的省份
 	 */
 	public  static String PROFILE_ACTIVE;
 	
@@ -29,7 +29,7 @@ public class AppConfigService {
 	 * @param key
 	 * @return
 	 */
-	public String getProperty(String key) throws Exception{
+	public static String getProperty(String key) throws Exception{
 		if(SYS_DIC==null){
 			throw new Exception("系统字典数据加载失败");
 		}
@@ -44,7 +44,7 @@ public class AppConfigService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getPropertyList(String rootKey) throws Exception{
+	public static List<String> getPropertyList(String rootKey) throws Exception{
 		if(SYS_DIC==null){
 			throw new Exception("系统字典数据加载失败");
 		}
@@ -52,5 +52,4 @@ public class AppConfigService {
 		List<String> list= (List<String>) SYS_DIC.get(rootKey);
 		return list;
 	};
-	
 }
