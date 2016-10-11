@@ -31,7 +31,7 @@
                     <tbody>
                         <tr>
                             <td class="title">客户群名称</td>
-                            <td><input id="custom_name" type="text" placeholder="必填"></td>
+                            <td><input id="custom_name" type="text" placeholder="必填" maxlength="32" ></td>
                             <td></td>
                         </tr>
                         <tr>
