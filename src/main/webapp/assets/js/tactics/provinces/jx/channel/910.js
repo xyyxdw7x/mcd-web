@@ -139,6 +139,9 @@ channelInfo910.loadSMtempaltes910=function(){
 						$("#channel"+channelInfo910.baseInfo.channelId+"SMTypeUl_"+retData[index].typeId).append(templateHtml);
 					}
 				}
+				
+				//往下弹出tooltip的样式设定
+				$("[data-toggle='tooltip']").tooltip({});
 			} else {
 				// 查询失败
 			}
