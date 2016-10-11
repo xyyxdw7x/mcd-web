@@ -45,7 +45,7 @@ define(["backbone","my97","form"],function(require, exports, module) {
 				alert("失效日期必须大于今天");
 				return ;
 			}
-			if($.trim($("#custom_name").val()) != "" && $.trim($(".show-upload-file").val()) != "") {
+			if($.trim($("#custom_name").val()) != "" && $.trim($(".show-upload-file").val()) != "" && $.trim($("#custom_name").val()).length <= 32 && $.trim($("#custom_description").val()).length <= 30) {
 				var data = {
 					custom_name: $("#custom_name").val(),
 					invalid_date: $("#invalid_date").val(),
@@ -77,6 +77,12 @@ define(["backbone","my97","form"],function(require, exports, module) {
 				}
 				if($.trim($(".show-upload-file").val()) == "") {
 					$(".show-upload-file").css("border-color", "#ff0000");
+				}
+				if($.trim($("#custom_name").val()).length > 32){
+					alert("客户群名称长度必须小于或等于32个字符。");
+				}
+				if($.trim($("#custom_description").val()).length > 30){
+					alert("客户群描述长度必须小于或等于30个字符。");
 				}
 			}
 		},
