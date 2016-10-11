@@ -27,8 +27,8 @@ public class HomeController extends BaseMultiActionController {
 	@Autowired
 	private ISaleSituationService saleSituationService;
 	
-	@Autowired
-	private ICepKeywordsService cepKeywordsService;
+//	@Autowired
+//	private ICepKeywordsService cepKeywordsService;
 	//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
 	
 	@RequestMapping
