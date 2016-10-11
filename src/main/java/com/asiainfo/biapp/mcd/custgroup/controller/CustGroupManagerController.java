@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -233,8 +234,12 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			
 			campSegInfoService.addCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
 		
-            //String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
-            String config_Path = "D:\\temp\\mpm\\upload";
+			//String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
+			String config_Path = "D:\\temp\\mpm\\upload";
+			Properties props=System.getProperties();
+			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) ==-1) {
+				config_Path = "/home/imcd/mcd_jiangxi/custgroup_upload";
+			}
 			
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
 			String filepath = null;
