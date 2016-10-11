@@ -59,10 +59,9 @@ function clickAdiv(obj) {
 }
 
 function add_on_top(ele) {
-	var _url = _ctx + '/action/priorityorder/';
+	var _url = _ctx + '/action/priorityOrder/editPriorityCampseg.do';
 	var chanID = $("td.fleft.content-type-box.J_campType.active").attr('cnid');
 	var params = {
-		cmd : 'editPriorityCampseg.do',
 		channelId : chanID,
 		campsegId : $(ele).attr('mat'),
 		chnAdivId : $(ele).attr('chnAdivId')
