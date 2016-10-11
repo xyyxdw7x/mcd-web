@@ -111,7 +111,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 				if(keyWords.equals("%")){
 					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ").append("'%\\%%' escape '\\'").append(" OR cgd.CUSTOM_GROUP_ID LIKE ").append("'%\\%%' escape '\\')");
 				}else{
-					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ? OR CUSTOM_GROUP_ID LIKE ?)");
+					sbuffer.append(" AND (CUSTOM_GROUP_NAME LIKE ? OR cgd.CUSTOM_GROUP_ID LIKE ?)");
 					parameterList.add("%" + keyWords + "%");
 					parameterList.add("%" + keyWords + "%");
 				}
