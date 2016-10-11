@@ -1,4 +1,4 @@
-define(["backbone","my97","upload"],function(require, exports, module) {    
+define(["backbone","my97","form"],function(require, exports, module) {    
 	
 	module.exports={
 		init:function(){
@@ -52,35 +52,22 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 					user_type: $(".import-local-custom-table input[name='user_type']:checked").val(),
 					custom_description: $("#custom_description").val()
 				};  
-				//var oMyForm = new FormData();
-				//oMyForm.append("file", $("#upload_file")[0].files[0]);
-				$.ajaxFileUpload({  
+				$("#form").ajaxSubmit({  
 			        url : _ctx+"/action/custgroup/custGroupManager/saveCustGroup.do",
 			        data: data,
-			        secureuri : false,  
-			        fileElementId : 'upload_file',
-			        dataType : 'text',
+			        dataType : 'json',
 			        success : function(data) {
-			        	data=data.substring(data.indexOf("{"),data.lastIndexOf("}")+1);
-			        	//去掉后台返回数据中的pre标签
-			        	var start = data.indexOf(">");  
-						if(start != -1) {  
-							var end = data.indexOf("<", start + 1);  
-							if(end != -1) {  
-								data = data.substring(start + 1, end);  
-							} 
-						}
-						if(parseInt(JSON.parse(data).status) == 200) {
-							alert("新增客户群成功！");
-							//直接跳转到我的客户群页面
-							var baseUrl=window.location.protocol+"//"+window.location.host+_ctx;
-							var url=baseUrl+"/jsp/custom/customManage.jsp?";
-							window.location.href=url;
-						} else {
-							alert("新增客户群失败！");
-						}
+			        	if(data.status!=200||data.status==undefined){
+			        		alert("新增客户群失败！");
+			        		return ;
+			        	}
+			        	alert("新增客户群成功！");
+						//直接跳转到我的客户群页面
+						var baseUrl=window.location.protocol+"//"+window.location.host+_ctx;
+						var url=baseUrl+"/jsp/custom/customManage.jsp?";
+						window.location.href=url;
 			        },  
-			        error : function(data, status, e) {
+			        error : function(e) {
 			        	alert("新增客户群失败！");
 			        }
 			    });
@@ -93,29 +80,6 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 				}
 			}
 		},
-//		getPath:function(obj){
-//			if(obj)    
-//		    {    
-//		   
-//			    if (window.navigator.userAgent.indexOf("MSIE")>=1)    
-//			      {    
-//			        obj.select();    
-//			        obj.blur();
-//			      return document.selection.createRange().text;    
-//			      }    
-//			   
-//			    else if(window.navigator.userAgent.indexOf("Firefox")>=1)    
-//			      {   
-//			      if(obj.files)    
-//			        {    
-////			        return obj.files.item(0).getAsDataURL();
-//			    	  return window.URL.createObjectURL(obj.files[0]);
-//			        }    
-//			      return obj.value;    
-//			      }   
-//			    return obj.value;    
-//		    }
-//		},
 		openBrowse:function(){
 			var ie=navigator.appName=="Microsoft Internet Explorer" ? true : false;
 			if(ie){
@@ -166,9 +130,6 @@ define(["backbone","my97","upload"],function(require, exports, module) {
 	    },
 		downloadrdyw:function(){
 	      	 var url = _ctx+"/action/custgroup/custGroupManager/downloadTemplate.do";
-	      	              
-//	      	 window.open(url);
-	      	 debugger
 	      	window.location.href = url;
 		}
 	};

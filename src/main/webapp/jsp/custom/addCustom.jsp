@@ -5,11 +5,8 @@
 <head>
 <title>新增客户群</title>
 
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<link rel="shortcut icon" href="<%=request.getContextPath()%>/assets/images/logos/favicon.ico" />
-
 <!-- TODO jx目录下的resetDialog-jqueryUI.css只能是供江西引用 -->
-<link href="<%=request.getContextPath()%>/assets/css/provinces/jx/put/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">
+<link href="<%=request.getContextPath()%>/assets/css/provinces/<%=provinces%>/put/resetDialog-jqueryUI.css" rel="stylesheet" type="text/css">
 <link href="<%=request.getContextPath()%>/assets/css/addCustom.css" rel="stylesheet" type="text/css">
 
 </head>
