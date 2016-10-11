@@ -75,7 +75,7 @@
             			<span class="fleft">您确定要保存，当前操作吗？立即生效</span>
             		</li>
             		<li>
-            			<p><input type="checkbox" class="fleft rMargin5"  id="resetBtn" /> <span class="fleft">保存为默认配置</span></p>
+            			<p class="saveCbx"><input type="checkbox" class="fleft rMargin5"  id="resetBtn" /> <span class="fleft">保存为默认配置</span></p>
             		</li>
             	</ol>
             </div>
