@@ -1499,6 +1499,62 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	
 		}
 		
+		/**
+		 * 在客户群信息表中客户群名称查询客户群定义信息
+		 * @param custgroupName 客户群名称
+		 * @return List<McdCustgroupDef> 客户群定义信息列表
+		 * @author luoch
+		 * @throws Exception
+		 */
+		@Override
+		public List<McdCustgroupDef> getCustgroupByName(String custgroupName){
+			List<McdCustgroupDef> result = null;
+			if (StringUtils.isEmpty(custgroupName)) {
+				return result;
+			}
+			
+			List<Map<String, Object>> list = null;
+			try {
+				String sql = "SELECT * FROM mcd_custgroup_def WHERE custom_group_name = ? ";
+				log.info("根据客户群名称查询客户群清单信息sql={} ,custom_group_name={}", sql, custgroupName);
+				list = this.getJdbcTemplate().queryForList(sql, new Object[] { custgroupName});
+				if (CollectionUtils.isNotEmpty(list)) {
+					result = new ArrayList<McdCustgroupDef>();
+					McdCustgroupDef custGroupInfo = null;
+					for (Map<String, Object> map : list) {
+						custGroupInfo = new McdCustgroupDef();
+						custGroupInfo.setCustomGroupId((String) map.get("CUSTOM_GROUP_ID"));
+						custGroupInfo.setCustomGroupName((String) map.get("CUSTOM_GROUP_NAME"));
+						custGroupInfo.setCustomGroupDesc((String) map.get("CUSTOM_GROUP_DESC"));
+						custGroupInfo.setCreateUserId((String) map.get("CREATE_USER_ID"));
+						custGroupInfo.setDataDate(String.valueOf(map.get("max_data_time")));
+						if(null != map.get("CUSTOM_NUM")){
+							custGroupInfo.setCustomNum(Integer.parseInt(String.valueOf(map.get("CUSTOM_NUM"))));
+						}
+						if(null != map.get("CUSTOM_STATUS_ID")){
+							custGroupInfo.setCustomStatusId(Integer.parseInt(String.valueOf(map.get("CUSTOM_STATUS_ID"))));
+						}
+						if(null != map.get("UPDATE_CYCLE")){
+							custGroupInfo.setUpdateCycle(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))));
+							if(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))) == 1){
+								custGroupInfo.setCustGroupUpdateCycle("一次性");
+							}else if(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))) == 2){
+								custGroupInfo.setCustGroupUpdateCycle("月");
+							}else if(Integer.parseInt(String.valueOf(map.get("UPDATE_CYCLE"))) == 3){
+								custGroupInfo.setCustGroupUpdateCycle("日");
+							}
+						}
+						custGroupInfo.setCreateUserName(String.valueOf(map.get("create_user_name")));
+						result.add(custGroupInfo);
+					}
+				}
+			} catch (Exception e) {
+				log.error("根据客户群名称查询客户群信息异常",e);
+				throw e;
+			}
+			return result;	
+		}
+		
         @Override
         public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate) {
             List<Map<String, Object>> list = null;

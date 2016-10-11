@@ -46,30 +46,52 @@ define(["backbone","my97","form"],function(require, exports, module) {
 				return ;
 			}
 			if($.trim($("#custom_name").val()) != "" && $.trim($(".show-upload-file").val()) != "" && $.trim($("#custom_name").val()).length <= 32 && $.trim($("#custom_description").val()).length <= 30) {
-				var data = {
-					custom_name: $("#custom_name").val(),
-					invalid_date: $("#invalid_date").val(),
-					user_type: $(".import-local-custom-table input[name='user_type']:checked").val(),
-					custom_description: $("#custom_description").val()
-				};  
-				$("#form").ajaxSubmit({  
-			        url : _ctx+"/action/custgroup/custGroupManager/saveCustGroup.do",
-			        data: data,
-			        dataType : 'json',
-			        success : function(data) {
-					alert(data.msg);
-					if(data.status=="FAILURE"){
-						return ;
-					}
-						//直接跳转到我的客户群页面
-						var url=contextPath+"/jsp/custom/customManage.jsp?";
-						window.location =url;
-			        },  
-			        error : function(e) {
-			        	alert("新增客户群失败！");
-			        }
-			    });
+				
+				//先验证客户群名称是否已经存在
+				$.post(
+					contextPath+"/action/custgroup/custGroupManager/existsCustGroupName.do",
+					{custgroupName: $.trim($("#custom_name").val())},
+					function(retData, status, jqXHR){
+						debugger
+						//客户群名称不存在，可以提交
+						if(!retData.flag){
+							//收集数据
+							var data = {
+								custom_name: $("#custom_name").val(),
+								invalid_date: $("#invalid_date").val(),
+								user_type: $(".import-local-custom-table input[name='user_type']:checked").val(),
+								custom_description: $("#custom_description").val()
+							};
+							//数据提交
+							$("#form").ajaxSubmit({  
+								url : _ctx+"/action/custgroup/custGroupManager/saveCustGroup.do",
+								data: data,
+								dataType : 'json',
+								success : function(data) {
+									alert(data.msg);
+									if(data.status=="FAILURE"){
+										return ;
+									}
+									//直接跳转到我的客户群页面
+									var url=contextPath+"/jsp/custom/customManage.jsp?";
+									window.location =url;
+								},
+								error : function(e) {
+									alert("新增客户群失败！");
+								}
+							});
+							
+						} else {
+							
+							//客户群名称存在
+							alert(retData.msg);
+							return;
+						}
+					},
+					"json");
 			} else {
+				
+				//表单校验不通过
 				if($.trim($("#custom_name").val()) == "") {
 					$("#custom_name").css("border-color", "#ff0000");
 				}

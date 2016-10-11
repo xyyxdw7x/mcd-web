@@ -163,6 +163,35 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 检查客户群定义信息表中是否存在给定的客户群名称
+	 * @param request
+	 * @param response
+	 * @author luoch
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping
+	@ResponseBody
+	public Map<String,Object> existsCustGroupName(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		String custgroupName = request.getParameter("custgroupName");
+		
+		boolean flag = false;
+		try {
+			flag = custGroupInfoService.existsCustgroupName(custgroupName);
+			returnMap.put("flag", flag);
+			if (flag) {
+				returnMap.put("msg", "已存在同名客户群，请重新输入客户群名称!");
+			}
+		} catch (Exception e) {
+			log.error("根据客户群名称查询客户群信息异常", e);
+			e.printStackTrace();
+			throw new Exception("根据客户群名称查询客户群信息异常");
+		}
+		return returnMap;
+	}
 	/**
 	 * 上传客户群
 	 * @param actionMapping

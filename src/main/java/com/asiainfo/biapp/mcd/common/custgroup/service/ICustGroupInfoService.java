@@ -188,7 +188,15 @@ public interface ICustGroupInfoService {
     public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage);
 
     public void updateMtlGroupAttrRel(String customGroupId,String columnName,String columnCnName,String columnDataType,String columnLength,String mtlCuserTableName);
-    
+	
+	/**
+	 * 检查客户群定义信息表中是否存在给定的客户群名称
+	 * @param custgroupName 客户群名称
+	 * @return true|false 存在|不存在
+	 * @throws Exception
+	 */
+	public boolean existsCustgroupName(String custgroupName) throws Exception;
+	
 	/**
 	 * 将客户群数据插入到清单表中
 	 * @param clearTable 插入前是否清空数据

@@ -174,6 +174,15 @@ public interface ICustGroupInfoDao {
      * @return
      */
 	McdCustgroupDef getCustGroupInfoById(String custGroupId);
+	
+	/**
+	 * 根据客户群名称查询客户群定义信息
+	 * @param custgroupName 客户群名称
+	 * @author luoch
+	 * @return
+	 */
+	public List<McdCustgroupDef> getCustgroupByName(String custgroupName);
+	
 	/**
 	 * 根据客户群清单表名，查询出项目客户群数量信息 add by zhanghy2 at 2015-12-06 because of huge custom group
 	 */
