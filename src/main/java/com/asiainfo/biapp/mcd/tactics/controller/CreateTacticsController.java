@@ -2062,6 +2062,9 @@ public class CreateTacticsController extends BaseMultiActionController {
 			for (int j = 0; j < channelsInfoArray.size(); j++) {
 					JSONObject obj = (JSONObject) channelsInfoArray.get(j);
 					McdCampChannelList mtlChannelDef = (McdCampChannelList) JSONObject.toBean(obj, McdCampChannelList.class);
+					if(mtlChannelDef.getAdivId()==null){//渠道默认运营位为1
+						mtlChannelDef.setAdivId("1");
+					}
 					mtlChannelDefList.add(mtlChannelDef);
 			}
 			campSeginfoSub.setMtlChannelDefList(mtlChannelDefList);
