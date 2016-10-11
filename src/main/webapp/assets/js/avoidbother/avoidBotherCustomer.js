@@ -1,10 +1,7 @@
-define(["backbone","my97","page","upload"],function(require, exports, module) {      
+define(["backbone","my97","page","form"],function(require, exports, module) {      
 	module.exports={
 		value_campseg_type:{},
 		init:function(){
-			 //var navManage = require("navManage");
-			 //navManage.init();
-
 			this.loadAvoidBotherUserType({currentDom:".avoidBotherUserType"});
 			this.loadAllChannelType();
 			this.loadCampsegType({currentDom:".avoidBotherCampsegType"});
@@ -183,29 +180,7 @@ define(["backbone","my97","page","upload"],function(require, exports, module) {
 				},
 				click : function(obj) {
 					var $target = $(obj.target);
-					/*
-					if($target.hasClass("page-num")){
-						this.setDomList($target.html(),new avoidBothorCustomerTableModel({id : options.id})); 
-					}else if($target.hasClass("page-button") && $target.attr("data-flag")){
-						var pageNum = $target.siblings(".page-num.active").html()*1+1;
-						if($target.attr("data-flag").indexOf("next") > -1 || $target.attr("data-flag").indexOf("last-dot") > -1){
-							this.setDomList(pageNum,new avoidBothorCustomerTableModel({id : options.id})); 
-						}else if($target.attr("data-flag").indexOf("prev") > -1|| $target.attr("data-flag").indexOf("first-dot") > -1){
-							pageNum = $target.siblings(".page-num.active").html()*1-1;
-							this.setDomList(pageNum,new avoidBothorCustomerTableModel({id : options.id})); 
-						}
-					}else if($target.hasClass("ui-page-button")){
-                    	var pageNum = $target.prev().find(".ui-page-num").val();
-                    	var totalNum = 0;
-                    	$(".page-num").each(function(){
-                    		var tempTotalNum=$(this).text()*1;
-                    		if(tempTotalNum>totalNum){
-                    			totalNum=tempTotalNum;
-                    		}
-                    	});
-                    	pageNum = pageNum > totalNum ? totalNum : pageNum <= 0 ? 1 : pageNum;
-                    	this.setDomList(pageNum,new avoidBothorCustomerTableModel({id : options.id}));
-                    } else */if ($target.hasClass("icon_del")) {
+					if ($target.hasClass("icon_del")) {
                     	var productNo = $target.attr("productNo");
                     	var userType = $target.attr("userType");
                     	var channelType = $target.attr("channelType");
@@ -496,25 +471,13 @@ define(["backbone","my97","page","upload"],function(require, exports, module) {
 				avoidBotherType: $("#avoidBotherType").val(),
 				avoidCustType: $("#avoidCustType").val(),
 			};
-			var oMyForm = new FormData();
-			oMyForm.append("file", filterFile.files[0]);
-			$.ajaxFileUpload({  
+			
+			$("#newBotherAvoidUserForm").ajaxSubmit({
 		        url : _ctx+"/action/BotherAvoidList/batchAddBotherAvoidUser.do",
 		        data: data,
-		        secureuri : false,  
-		        fileElementId : 'filterFile',
-		        dataType : 'text',
+		        dataType : 'json',
 		        success : function(data) {
-		        	data=data.substring(data.indexOf("{"),data.lastIndexOf("}")+1);
-		        	//去掉后台返回数据中的pre标签
-		        	var start = data.indexOf(">");  
-					if(start != -1) {  
-						var end = data.indexOf("<", start + 1);  
-						if(end != -1) {  
-							data = data.substring(start + 1, end);  
-						} 
-					}
-					if(parseInt(JSON.parse(data).status) == 200) {
+					if(data.status==200) {
 		        		module.exports.hideNewCustomer();
 						alert("添加免打扰用户成功");
 						$("#show_upload_file").val("");

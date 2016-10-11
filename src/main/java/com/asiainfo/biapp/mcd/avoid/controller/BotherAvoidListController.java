@@ -1,5 +1,4 @@
 package com.asiainfo.biapp.mcd.avoid.controller;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,14 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
-import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampType;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
 import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
-//migration
-//import com.asiainfo.biapp.mcd.avoid.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.framework.jdbc.DimIdNameMapper;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
@@ -53,9 +47,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 @Controller
 @RequestMapping("/action/BotherAvoidList")
 public class BotherAvoidListController extends BaseMultiActionController {
-	private static Logger log = LogManager.getLogger();
 
-	
 	@Resource(name="botherAvoidService")
 	private IMcdMtlBotherAvoidService service;
 
@@ -133,7 +125,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void searchBotherAvoidUserType(HttpServletRequest request,
+	public JSONObject searchBotherAvoidUserType(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		List<McdDimCampType> userTypeList = mpmBotherAvoidUserTypeService.queryDimAllData();
@@ -141,7 +133,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");
 		dataJson.put("data", JmsJsonUtil.obj2Json(userTypeList));
-		this.outJson(response, dataJson);
+		return dataJson;
 
 	}
 
@@ -157,7 +149,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void addBotherAvoidUser(HttpServletRequest request,
+	public JSONObject addBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		JSONObject dataJson = new JSONObject();
@@ -169,8 +161,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 				StringUtils.isEmpty(request.getParameter("avoidCustType")) ||
 				StringUtils.isEmpty(request.getParameter("userTypeId"))){
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		
 		String[] productNo = request.getParameter("productNo").split(",");
@@ -178,8 +169,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		for (int i = 0; i < productNo.length; i++) {
 			if(productNo[i].trim().length() != 11 || !MpmUtil.isNumeric(productNo[i].trim())){
 				dataJson.put("status", "202");
-				this.outJson(response, dataJson);
-				return;
+				return dataJson;
 			}
 		}
 		
@@ -200,7 +190,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	
 		
 		dataJson.put("status", "200");
-		this.outJson(response, dataJson);
+		return dataJson;
 	
 	}
 
@@ -216,7 +206,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void delBotherAvoidUser(HttpServletRequest request,
+	public JSONObject delBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		JSONObject dataJson = new JSONObject();
@@ -225,8 +215,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 				StringUtils.isEmpty(request.getParameter("avoidBotherType")) ||
 				StringUtils.isEmpty(request.getParameter("avoidCustType"))){
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		
 		McdBotherAvoid mtlBotherAvoid = new McdBotherAvoid();
@@ -237,7 +226,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		service.delBotherAvoidUser(mtlBotherAvoid);
 		
 		dataJson.put("status", "200");
-		this.outJson(response, dataJson);
+		return dataJson;
 	}
 	
 	/**
@@ -252,15 +241,14 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void batchDelBotherAvoidUser(HttpServletRequest request,
+	public JSONObject batchDelBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		JSONObject dataJson = new JSONObject();
 		
 		if(StringUtils.isEmpty(request.getParameter("batchRemove"))){
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		
 		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
@@ -281,7 +269,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		service.batchDelBotherAvoidUser(list);
 		
 		dataJson.put("status", "200");
-		this.outJson(response, dataJson);
+		return dataJson;
 	}
 
 	/**
@@ -296,7 +284,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void batchAddBotherAvoidUser(
+	public JSONObject batchAddBotherAvoidUser(
 			@RequestParam(value = "filterFile", required = false)MultipartFile multiFile,
 			HttpServletRequest  request,
 			HttpServletResponse response) throws Exception{ 
@@ -307,8 +295,8 @@ public class BotherAvoidListController extends BaseMultiActionController {
 				StringUtils.isEmpty(request.getParameter("avoidCustType")) ||
 				StringUtils.isEmpty(request.getParameter("userTypeId"))){
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			//this.outJson(response, dataJson);
+			return dataJson;
 		}
 		
 		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
@@ -317,29 +305,25 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		
 		if (productNo.length == 0) {
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		List<String> telNo = new ArrayList<String>();
 		for (int i = 0; i < productNo.length; i++) {
 			if ("".equals(productNo[i].trim())){
 				dataJson.put("status", "202");
-				this.outJson(response, dataJson);
-				return;
+				return dataJson;
 			}
 			if (!"#".equals(productNo[i].substring(0, 1))){//注释以外
 				if(productNo[i].trim().length() != 11 || !MpmUtil.isNumeric(productNo[i].trim())){
 					dataJson.put("status", "202");
-					this.outJson(response, dataJson);
-					return;
+					return dataJson;
 				}
 				telNo.add(productNo[i].trim());
 			}
 		}
 		if(telNo.isEmpty()){//注释以外没有实际的电话号码
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		
 		for (int i = 0; i < telNo.size(); i++) {
@@ -358,7 +342,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		service.addBotherAvoidUser(list);
 
 		dataJson.put("status", "200");
-		this.outJson2(response, dataJson);
+		return dataJson;
 	}
 	
 	/**
@@ -373,7 +357,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void mdfBotherAvoidUser(HttpServletRequest request,
+	public JSONObject mdfBotherAvoidUser(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		JSONObject dataJson = new JSONObject();
@@ -385,8 +369,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 				StringUtils.isEmpty(request.getParameter("avoidCustType")) ||
 				StringUtils.isEmpty(request.getParameter("userTypeId"))){
 			dataJson.put("status", "202");
-			this.outJson(response, dataJson);
-			return;
+			return dataJson;
 		}
 		
 		List<McdBotherAvoid> list = new ArrayList<McdBotherAvoid>();
@@ -429,7 +412,7 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			dataJson.put("status", "202");
 		}
 		
-		this.outJson(response, dataJson);
+		return dataJson;
 	}
 
 	/**
@@ -444,57 +427,57 @@ public class BotherAvoidListController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public void searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public JSONObject searchCampsegType(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	
 		List<McdDimCampType> campsegTypeList = dimCampsegTypeIdNameMapper.queryDimAllData();
 		
 		JSONObject dataJson = new JSONObject();
 		dataJson.put("status", "200");
 		dataJson.put("data", JmsJsonUtil.obj2Json(campsegTypeList));
-		this.outJson(response, dataJson);
+		return dataJson;
 	
 	}
 
-	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
-			log.debug("output json to response:{}", json);
-			response.setContentType("text/json; charset=UTF-8");
-			response.setCharacterEncoding("UTF-8");
-
-			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
-			response.setHeader("Pragma", "No-cache");
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expires", 0);
-
-			try {
-				response.getWriter().print(json == null ? "{}" : json.toString());
-				response.getWriter().flush();
-				response.getWriter().close();
-			} catch (IOException e) {
-				log.error("--out put json error", e);
-				throw new MpmException("--out put json error", e);
-			}
-	 }
+//	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
+//			log.debug("output json to response:{}", json);
+//			response.setContentType("text/json; charset=UTF-8");
+//			response.setCharacterEncoding("UTF-8");
+//
+//			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
+//			response.setHeader("Pragma", "No-cache");
+//			response.setHeader("Cache-Control", "no-cache");
+//			response.setDateHeader("Expires", 0);
+//
+//			try {
+//				response.getWriter().print(json == null ? "{}" : json.toString());
+//				response.getWriter().flush();
+//				response.getWriter().close();
+//			} catch (IOException e) {
+//				log.error("--out put json error", e);
+//				throw new MpmException("--out put json error", e);
+//			}
+//	 }
 	 
 	 
-	 protected void outJson2(HttpServletResponse response, Object json) throws MpmException {
-			log.debug("output json to response:{}", json);
-			response.setContentType("text/json; charset=UTF-8");
-			response.setCharacterEncoding("UTF-8");
-
-			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
-			response.setHeader("Pragma", "No-cache");
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expires", 0);
-
-			try {
-				response.getWriter().print(json == null ? "{}" : json.toString());
-				response.getWriter().flush();
-				response.getWriter().close();
-			} catch (IOException e) {
-				log.error("--out put json error", e);
-				throw new MpmException("--out put json error", e);
-			}
-	 }
+//	 protected void outJson2(HttpServletResponse response, Object json) throws MpmException {
+//			log.debug("output json to response:{}", json);
+//			response.setContentType("text/json; charset=UTF-8");
+//			response.setCharacterEncoding("UTF-8");
+//
+//			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
+//			response.setHeader("Pragma", "No-cache");
+//			response.setHeader("Cache-Control", "no-cache");
+//			response.setDateHeader("Expires", 0);
+//
+//			try {
+//				response.getWriter().print(json == null ? "{}" : json.toString());
+//				response.getWriter().flush();
+//				response.getWriter().close();
+//			} catch (IOException e) {
+//				log.error("--out put json error", e);
+//				throw new MpmException("--out put json error", e);
+//			}
+//	 }
 
 
 }

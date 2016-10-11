@@ -99,7 +99,7 @@
                 <h4 class="modal-title" id="openAddOpportunityLabel">新增</h4>
             </div>
             <div class="modal-body">
-            	<form id="newBotherAvoidUserForm" action="" enctype="multipart/form-data">
+            	<form id="newBotherAvoidUserForm" method="post" action="" enctype="multipart/form-data">
 				<div class="add-form-box">
                	  <ol>
                	  	<li>
