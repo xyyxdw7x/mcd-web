@@ -43,7 +43,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 		List<DeptMonthQuota> statisList = null;
 
 		List<Map<String, Object>> cityDepts = userDeptLinkDao.getCityDepts(cityId);//获得地市的所有科室
-		List<Map<String, Object>> cityDeptMonQuota = deptMonthQuotaDao.getStatisticsInMem(cityId, dataDate);
+		List<Map<String, Object>> cityDeptMonQuota = deptMonthQuotaDao.queryInMemCityDeptsMonthQuota(cityId, dataDate);
 		this.combineList(cityDepts, cityDeptMonQuota);
 		statisList = this.getStatistics(cityDepts);
 		this.setRemain4StatisList(statisList);// 设置剩余值
@@ -217,7 +217,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 				List<CityDayQuota> cityDays = null;
 				cityDays = this.cityMonth2DayForToday(cityMonth);
 				//插入前先删除本月的所有地市日配额，以防之前已有地市日配额时报错
-				quotaConfigCityDayDao.delCityDayQuota4Month(QuotaUtils.getDayMonth("yyyyMM"));
+                //quotaConfigCityDayDao.delCityDayQuota4Month(QuotaUtils.getDayMonth("yyyyMM"));
 				quotaConfigCityDayDao.addBatchAddCitysDayQuotaInMem(cityDays);
 			}
 		}

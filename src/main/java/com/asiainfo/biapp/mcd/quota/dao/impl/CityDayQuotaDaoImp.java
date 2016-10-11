@@ -28,8 +28,7 @@ public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao 
 		String sql = "select DAY_QUOTA_NUM from mcd_quota_config_city_D where CITY_ID=? and DATA_DATE=?";
 		String[] parms = {cityId,dataDate};
 		try {
-			num = this.getJdbcTemplate().queryForObject(  
-                    sql, new Object[] { parms }, Integer.class);  
+			num = this.getJdbcTemplate().queryForObject(sql, new Object[] { parms }, Integer.class);  
 		} catch (DataAccessException e) {
 			log.error("",e);
 		}
@@ -38,7 +37,6 @@ public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao 
 	
 	@Override
 	public List<Map<String, Object>> queryCityDayQuotasInMem(String cityId,String monthDate) {
-		//String sql = "select DATA_DATE, DAY_QUOTA_NUM, ALTERED from mcd_quota_config_city_D where CITY_ID = ? and DATA_DATE_M = ?";
 	    StringBuffer sql = new StringBuffer("select a.DATA_DATE, DAY_QUOTA_NUM, ALTERED,");
 	    sql.append(" nvl(DAY_QUOTA_NUM - b.used_num,DAY_QUOTA_NUM) as surplus ");
 	    sql.append(" from mcd_quota_config_city_D a ");
@@ -117,7 +115,6 @@ public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao 
 				ps.setString(3, list.get(index).getDataDateM());
 				ps.setInt(4, list.get(index).getDayQuotaNum());
 			}
-			
 			@Override
 			public int getBatchSize() {
 				return list.size();
@@ -222,8 +219,7 @@ public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao 
     @Override
     public int getCityMonthQuotaSumInMem(String cityId, String month) {
         String sql="select sum(t.day_quota_num) from mcd_quota_config_city_D t where city_id=? and data_date_m=?";
-        int sum = this.getJdbcTemplate().queryForObject(  
-                sql, new Object[]{cityId,month}, Integer.class);  
+        int sum = this.getJdbcTemplate().queryForObject(sql, new Object[]{cityId,month}, Integer.class);  
         log.info("sum="+sum);
         return sum;
     }
@@ -242,8 +238,7 @@ public class CityDayQuotaDaoImp extends JdbcDaoBase implements ICityDayQuotaDao 
         sql.append(" left join mcd_quota_used_city_d b ");
         sql.append(" on a.city_id = b.city_id and a.data_date = b.data_date ");
         sql.append(" where a.CITY_ID =  ? and a.data_date_m = ? and a.data_date < ?");
-        int sum = this.getJdbcTemplate().queryForObject(  
-        		sql.toString(), new Object[]{cityId,month,nowDate}, Integer.class);  
+        int sum = this.getJdbcTemplate().queryForObject(sql.toString(), new Object[]{cityId,month,nowDate}, Integer.class);  
         log.info("sum="+sum);
         return sum;
     }

@@ -31,7 +31,7 @@ public class DeptMothQuotaDaoImp extends JdbcDaoBase implements IDeptMonthQuotaD
      * @throws DataAccessException
      */
 	@Override
-	public List<Map<String, Object>> getStatisticsInMem(String cityId, String month)throws DataAccessException {
+	public List<Map<String, Object>> queryInMemCityDeptsMonthQuota(String cityId, String month)throws DataAccessException {
 		List<Map<String, Object>> list = null;
         StringBuffer sql = new StringBuffer();
         sql.append("select dmq.CITY_ID,dmq.DEPT_ID,nvl(dmq.MONTH_QUOTA_NUM,0) MONTH_QUOTA_NUM,"
@@ -46,9 +46,13 @@ public class DeptMothQuotaDaoImp extends JdbcDaoBase implements IDeptMonthQuotaD
 		Object[] parm = { month, cityId };
 
 		try {
+			this.getJdbcTemplate().getDataSource().getConnection();
 			list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
 		} catch (DataAccessException e) {
 			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return list;
 	}

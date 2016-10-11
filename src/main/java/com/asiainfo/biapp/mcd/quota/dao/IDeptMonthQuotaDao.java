@@ -21,7 +21,7 @@ public interface IDeptMonthQuotaDao {
      * @return
      * @throws DataAccessException
      */
-	public List<Map<String, Object>> getStatisticsInMem(String cityId, String month)throws DataAccessException;
+	public List<Map<String, Object>> queryInMemCityDeptsMonthQuota(String cityId, String month)throws DataAccessException;
 	
 	/**
 	 * 查询地市月配额：主要用于群发管理展示页面上半部分的百分比
