@@ -548,7 +548,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	public String addCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
 		String tabNameModel="mtl_cuser_XXXXXXXX";
 		String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
-		custGroupInfoDao.addCreateCustGroupTabInMem(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
+		custGroupInfoDao.addInMemCreateCustGroupTab(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel)); 
 		return tabName;
 	}
 	/**
