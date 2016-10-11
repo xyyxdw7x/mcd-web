@@ -571,7 +571,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 		 * @return 插入数据条数
 		 */
 		public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
-			return custGroupInfoDao.insertCustPhoneNoToTab(clearTable, data, tabName, date);
+			return custGroupInfoDao.insertInMemCustPhoneNoToTab(clearTable, data, tabName, date);
 		}
 		
 		/**
@@ -665,8 +665,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 				log.info("本次执行完成，更新任务状态,客户群ID：" + custGroupId);
 				this.updateSqlLoderISyncDataCfgStatus(custGroupId);
 				//在本笃数据库中也创建这个表
-				// TODO 暂时注释，因为异常原因注释，不清楚为什么要写这段代码
-//				this.createSynonymTableMcdBySqlFire(tableName);
+				this.createSynonymTableMcdBySqlFire(tableName);
 				this.updateMtlGroupStatus(tableName,custGroupId);
 
 			} catch (Exception e) {
@@ -892,6 +891,9 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			log.info("更改i_sync_data_cfg表的RUN_BEGIN_TIME字段值{}", beginDate);
 			custGroupInfoDao.updateSqlLoderISyncDataCfgBegin(tableName, beginDate);
 			
+			//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+			String tabSpace = "mcd_core_ad";
+			
 			String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
 			String filenameTemp =filepath+tableName + ".ctl"; 
 			StringBuffer buf = new StringBuffer(); 
@@ -900,7 +902,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			buf.append("OPTIONS(direct=TRUE,errors=100000,columnarrayrows=1000)").append(filein);
 			buf.append("load data").append(filein);
 			buf.append("infile 'IMPORT_CTL_FILE_PATH'").append(filein);
-			buf.append("append into table ").append(tableName).append(filein);
+			buf.append("append into table ").append(tabSpace+".").append(tableName).append(filein);
 			buf.append("fields terminated by \",\"").append(filein);
 			buf.append("TRAILING NULLCOLS").append(filein);
 			buf.append(lastLine);

@@ -222,7 +222,7 @@ public interface ICustGroupInfoDao {
 		 * @param date
 		 * @return 插入数据条数
 		 */
-		public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception;
+		public int insertInMemCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception;
 		
 		/**
 		 * 更新i_sync_data_cfg表的RUN_BEGIN_TIME字段
@@ -274,7 +274,7 @@ public interface ICustGroupInfoDao {
 	     */
 	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId);
 	    
-	    public void addCreateCustGroupTabInMem(String sql)throws MpmException;
+	    public void addInMemCreateCustGroupTab(String sql)throws MpmException;
 	    /**
 	     * 判断当前分区是否存在
 	     * @param tableName 表名

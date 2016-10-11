@@ -930,7 +930,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
      */
     @Override
     public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-        String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+        //String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String tabSpace = "mcd_core_ad";
         String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
         this.getJdbcTemplate().execute(sql);
     } 
@@ -1249,15 +1250,17 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	 * @param date
 	 * @return 插入数据条数
 	 */
-	public int insertCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
+	public int insertInMemCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
 		log.info("insertCustPhoneNoToTab tabName="+tabName+" clearTable="+clearTable);
+		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+		String tabSpace = "mcd_core_ad";
 		//插入行数
 		int total = 0;
 
 		//是否清空表
 		if (clearTable) {
 			log.info("清空{}表", tabName);
-			String truncateSQL = "truncate table "+tabName;
+			String truncateSQL = "truncate table "+tabSpace+"."+tabName;
 			this.getJdbcTemplate().execute(truncateSQL);
 		}
 		
@@ -1287,7 +1290,9 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 							phoneSeg3 = formatPhoneNo((short) i);
 							
 							phoneNumber = phoneSeg1 + phoneSeg2 + phoneSeg3;
-							innerSQL.append("INTO ").append(tabName);
+							innerSQL.append("INTO ");
+							innerSQL.append(tabSpace+".");
+							innerSQL.append(tabName);
 							innerSQL.append(" (PRODUCT_NO,DATA_DATE) VALUES ('");
 							innerSQL.append(phoneNumber);
 							innerSQL.append("','").append(date).append("') \n");
@@ -1321,8 +1326,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	 * @return
 	 */
 	public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{
-		String dbuserId = "mcd_core";
-		String dbuserPwd = "mcd_core";
+		String dbuserId = "mcd_core_ad";
+		String dbuserPwd = "mcd_core_ad";
 		String dbIP = "10.1.253.75";
 		String dbSid = "ora11g";
 		
@@ -1413,7 +1418,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    }
 	    
 	    @Override
-	    public void addCreateCustGroupTabInMem(String sql) {
+	    public void addInMemCreateCustGroupTab(String sql) {
 	        try {   
 	            log.info("sql: {}", sql);
 	            this.getJdbcTemplate().update(sql);
