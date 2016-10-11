@@ -145,6 +145,9 @@ channelInfo910.loadSMtempaltes910=function(){
 			
 			channelInfo910.initValue910();
 			
+			//往下弹出tooltip的样式设定
+			$("[data-toggle='tooltip']").tooltip({});
+			
 			//点击短信模板事件
 			channelInfo910.clickSMtemplateEventHandler910();
 		},"json");
