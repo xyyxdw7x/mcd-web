@@ -16,15 +16,22 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.service.ISaleSituationService;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
+import com.asiainfo.biapp.mcd.index.service.ICepKeywordsService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping("/mpm/homePage")
-public class HomePageController extends BaseMultiActionController {
+@RequestMapping("/homePage")
+public class HomeController extends BaseMultiActionController {
 	
 	@Autowired
 	private ISaleSituationService saleSituationService;
 	
-	@RequestMapping(params = "cmd=getSaleSituation")
+	@Autowired
+	private ICepKeywordsService cepKeywordsService;
+	//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
+	
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> getSaleSituation(HttpServletRequest request, HttpServletResponse response) {
 		SaleSituation saleSituation = null;
@@ -43,7 +50,7 @@ public class HomePageController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=getMySales")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> getMySales(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
@@ -63,7 +70,7 @@ public class HomePageController extends BaseMultiActionController {
 		return resultMap;
 	}
 
-	@RequestMapping(params = "cmd=getRecommendCamps")
+	@RequestMapping
 	@ResponseBody
 	public Map<String, Object> getRecommendCamps(HttpServletRequest request, HttpServletResponse response) {
 		User user = this.getUser(request, response);
@@ -82,4 +89,38 @@ public class HomePageController extends BaseMultiActionController {
 		}
 		return resultMap;
 	}
+	
+//	public JSONObject queryChartData(HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
+//		JSONObject dataJson = new JSONObject();
+//		try {
+////			List<CepKeywordsPkg> list = service.findHot(su per.pr);
+//			String params = request.getParameter("paramJson");
+//			JSONObject obj = JSONObject.fromObject(params);
+//			
+//			/**
+//			 * range取值：A：所有|M：本月|D：今日
+//			 * verti取值：tend：趋势变化情况|put：营销投放去向|area：地区分布情况
+//			 * tab取值：t_cam：总营销次数|t_suc：总营销成功数|cam_cvt：营销转化率
+//			 */
+//			String range = obj.optString("dim");
+//			String verti = obj.optString("verti");
+//			String tab = obj.optString("tab");
+//			
+//			String option = service.composite(range, verti, tab, super.user.getCityid());
+////			if (StringUtils.isEmpty(option)) {
+////				option = ParseUtil.parseOption(CompositeUtil.compose4Channel(divId, ""));
+////			}
+//			
+//			dataJson.put("status", "200");
+//			dataJson.put("data", option);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			dataJson.put("errorMsg", e.getMessage());
+//		}
+//		out(dataJson, response);
+//		return null;
+//	}
+
 }
