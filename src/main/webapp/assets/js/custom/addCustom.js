@@ -57,15 +57,13 @@ define(["backbone","my97","form"],function(require, exports, module) {
 			        data: data,
 			        dataType : 'json',
 			        success : function(data) {
-			        	if(data.status!=200||data.status==undefined){
-			        		alert("新增客户群失败！");
-			        		return ;
-			        	}
-			        	alert("新增客户群成功！");
+					alert(data.msg);
+					if(data.status=="FAILURE"){
+						return ;
+					}
 						//直接跳转到我的客户群页面
-						var baseUrl=window.location.protocol+"//"+window.location.host+_ctx;
-						var url=baseUrl+"/jsp/custom/customManage.jsp?";
-						window.location.href=url;
+						var url=contextPath+"/jsp/custom/customManage.jsp?";
+						window.location =url;
 			        },  
 			        error : function(e) {
 			        	alert("新增客户群失败！");

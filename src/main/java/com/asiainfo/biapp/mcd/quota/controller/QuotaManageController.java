@@ -82,11 +82,8 @@ public class QuotaManageController  extends BaseMultiActionController {
         }
         Map<String, Object> map= new HashMap<String, Object>();
         //地市整体月配额
-        if("999".equals(cityid)){
-            map.put("allowances", "无限制");
-        }else{
-            map.put("allowances", cityMonthConfig);
-        }
+       map.put("allowances", cityMonthConfig);
+        
         map.put("deptMonConfStati", deptMonConfStati);
         map.put("showDate", showDate);
         map.put("couldAdjust", couldAdjust);

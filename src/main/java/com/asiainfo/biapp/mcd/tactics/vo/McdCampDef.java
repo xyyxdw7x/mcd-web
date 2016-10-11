@@ -86,7 +86,7 @@ public class McdCampDef {
 	private List<McdCampChannelList> mtlChannelDefList; // 渠道执行
 	@Transient
 	private MtlChannelDefCall mtlChannelDefCall;// 渠道对应表_外呼
-	@Transient
+	@Column(name = "APPROVE_RESULT")
 	private Short approveResult; // 审批结果
 	@Transient
 	private String approveResultDesc;// 审批结果描述

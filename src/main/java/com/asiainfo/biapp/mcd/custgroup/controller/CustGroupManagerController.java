@@ -177,8 +177,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		// 创建客户群清单表 
 		try { 
-			Map<String, String> result = new HashMap<String, String>();
-			result.put("count", "0");  
+			returnMap.put("count", "0");  
 			int  num =custGroupInfoService.getGroupSequence(getUser(request,response).getCityId()) +1 ;  
 			SimpleDateFormat df = new SimpleDateFormat("yyMM"); 
 			String	month = df.format(new Date());    
@@ -204,6 +203,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			String failTime=request.getParameter("invalid_date");
 			String filename = multiFile.getOriginalFilename();
 			if (!filename.endsWith(".txt")) {
+				returnMap.put("msg", "上传的文件类型错误，请上传txt文件!!!");
 				throw new Exception("请上传txt文件!!!");
 			}
 			
@@ -230,7 +230,7 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	  		custGroupInfoService.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId,i,3,new Date(),"");
 	  		custGroupInfoService.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
 	  		custGroupInfoService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
-  			result.put("count", ""+i);
+	  		returnMap.put("count", ""+i);
 			
 			campSegInfoService.addCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
 		
@@ -270,13 +270,15 @@ public class CustGroupManagerController extends BaseMultiActionController{
 						e.printStackTrace();
 					}
 				} 
-			}).start(); 
-			returnMap.put("result", "OK");
-			returnMap.put("data", result);
+			}).start();
+			returnMap.put("status", "SUCCESS");
+			returnMap.put("msg", "客户群创建成功，上传成功，正在后台处理!");
 		} catch (Exception e) { 
-			log.error("上传客户群文件异常", e);
-			returnMap.put("result", "上传客户群文件异常");
-			returnMap.put("data", "");
+			log.error("创建客户群文件异常", e);
+			returnMap.put("status", "FAILURE");
+			if (returnMap.get("msg") == null) {
+				returnMap.put("msg","新增客户群失败，请联系管理员。");
+			}
 		} 
 		
 		return returnMap;

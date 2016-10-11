@@ -89,7 +89,7 @@ body{
   font-size: 12px;
   background: transparent;
   color: #6692f9;
-  cursor: pointer;
+ /*  cursor: pointer; */
 }
 .detail-title ol{
   overflow: hidden;
@@ -203,6 +203,7 @@ body{
 .limitMoneyInput{
   display:block;
   width:100%;
+  margin-top:0;
 }
 .tdBox{
   position: absolute;
@@ -314,7 +315,7 @@ body{
   font-size: 14px;
 }
 .promptLayer .body{
-  width: 244px;
+  width: 262px;
   height: 95px;
   margin:0 auto;
 }
@@ -359,4 +360,7 @@ background:#fff;
 padding:15px 20px;
 font-size:14px;
 color:#666;
+}
+.saveCbx input[type="checkbox"]{
+	margin:1px 0 0 20px;
 }

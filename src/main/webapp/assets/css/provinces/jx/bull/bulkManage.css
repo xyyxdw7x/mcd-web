@@ -238,6 +238,8 @@
 .bulk-list-content{
 	width:100%;
 	height:auto;
+	font-size:12px;
+	margin-bottom:0;
 }
 .bulk-list-thead{
 	width: 100%;
@@ -245,11 +247,14 @@
 	line-height: 43px;
 	background: #FAFCFF;
 	border: 1px solid #efefef;
+	border-left:0;
+	border-right:0;
 }
 .bulk-list-content span.fleft{
 	border-right: 1px solid #efefef;
 	height:43px;
 	text-align: center;
+	color:#000;
 }
 .bulk-item-num{
 	width:62px;
@@ -293,8 +298,8 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 }
 .bulk-list-tbody{
 	width: 100%;
-	height:36px;
-	line-height: 36px;
+	height:46px;
+	line-height: 46px;
 	background: #FBFBFB;
 	border-bottom: 1px solid #efefef;
 }
@@ -302,11 +307,12 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 	background: #fafafa;
 }
 .bulk-list-content .bulk-list-tbody span.fleft{
-	height:36px;
+	height:46px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 	position: relative;
+	text-indent:5px;
 }
 
 #createDimPlanListUl li:nth-child(even){
@@ -444,22 +450,22 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½
 *********/
 .ui-priority-num{
-	width:260px;
+	width:228px;
 }
 .ui-priority-name{
-	width:260px;
+	width:330px;
 }
 .ui-priority-custom-num{
-	width:160px;
+	width:170px;
 }
 .ui-priority-date{
-	width:160px;
+	width:138px;
 }
 .ui-priority-quantity{
-	width:160px;
+	width:138px;
 }
 .ui-priority-operation{
-	width:138px;
+	width:132px;
 	border-right:none !important;
 }
 .bulk-list-tbody.last{
@@ -467,11 +473,14 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 }
 
 .stick_on_top{
-	margin: 8px 8px 0px 0px;
+	margin: -1px 8px 0px 0px;
+}
+.stick_on_top[title="ÒÆ¶¯"]{
+	margin-top:-4px;
 }
 
 .stick_on_top_cancel{
-	margin: 0px 0px 5px 8px;
+	margin: 6px 0px 5px 8px;
 }
  .ui-button-dlg{
 	width: 80px !important;
@@ -481,7 +490,21 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 .ui-state-default .ui-icon{
 	background: none;
 }
-
+.container .content .content-main .content-table .content-table-box .content-table-td{
+	border:0 !important;
+	border-left:1px solid #efefef !important;
+}
+.container .content .content-main .content-table .content-table-box .content-table-td-green{
+	border:0 !important;
+}
+.container .content .content-main .content-table .content-table-box .content-table-th{
+	border-color:#efefef !important;
+	border-left:1px solid #efefef !important;
+	border-right:0 !important;
+}
+.container .content .content-main .content-table .content-table-box .content-table-th:nth-child(1){
+	border-left:0 !important;
+}
 
 
 

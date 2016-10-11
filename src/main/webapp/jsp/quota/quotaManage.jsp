@@ -31,10 +31,10 @@
 	 		</dl>
 	 		<ol class="fright">
 	 			<li>
-	 				<a href="javascript:void(0);" class="icon_edit" id="monthEdit"></a>
+	 				<a href="javascript:void(0);" class="icon_edit" id="monthEdit" title="编辑科室月配额"></a>
 	 			</li>
 	 			<li>
-	 				<button href="javascript:void(0);" class="icon_save" disabled="disabled" id="monthSave"></button>
+	 				<button href="javascript:void(0);" class="icon_save" disabled="disabled" id="monthSave" title="保存"></button>
 	 			</li>
 	 		</ol>
 	 	</div>
@@ -75,7 +75,7 @@
             			<span class="fleft">您确定要保存，当前操作吗？立即生效</span>
             		</li>
             		<li>
-            			<p><input type="checkbox" class="fleft rMargin5"  id="resetBtn" /> <span class="fleft">保存为默认配置</span></p>
+            			<p class="saveCbx"><input type="checkbox" class="fleft rMargin5"  id="resetBtn" /> <span class="fleft">保存为默认配置</span></p>
             		</li>
             	</ol>
             </div>
@@ -101,13 +101,13 @@
 	 		</dl>
 	 		<ol class="fright">
 	 			<li>
-	 				<a href="javascript:void(0);" class="icon_search" id="limitEdit"></a>
+	 				<a href="javascript:void(0);" class="icon_search" id="limitEdit" title="查看余量"></a>
 	 			</li>
 	 			<li>
-	 				<a href="javascript:void(0);" class="icon_edit" id="dateEdit"></a>
+	 				<a href="javascript:void(0);" class="icon_edit" id="dateEdit" title="编辑日配额"></a>
 	 			</li>
 	 			<li>
-	 				<button href="javascript:void(0);" class="icon_save" disabled="disabled" id="dateSave"></button>
+	 				<button href="javascript:void(0);" class="icon_save" disabled="disabled" id="dateSave" title="保存"></button>
 	 			</li>
 	 		</ol>
 	 	</div>
