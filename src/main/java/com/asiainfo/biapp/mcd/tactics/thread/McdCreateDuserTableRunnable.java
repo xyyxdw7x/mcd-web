@@ -7,20 +7,20 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.core.context.IApplicationContextRefreshed;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 多线程创建D表
@@ -106,9 +106,17 @@ public class McdCreateDuserTableRunnable implements Runnable,IApplicationContext
 					log.error("查询渠道信息异常："+e1);
 				}
 				//这三个场景不去重   只要包含这三个场景就不去重
-				String qqwjcy = MpmConfigure.getInstance().getProperty("RULE_TIME_QQWJCY");
-				String qqwzw = MpmConfigure.getInstance().getProperty("RULE_TIME_QQWZW");
-				String xnwjcy = MpmConfigure.getInstance().getProperty("RULE_TIME_XNWJCY");
+				String qqwjcy = null;
+				String qqwzw = null;
+				String xnwjcy = null;
+				try {
+					qqwjcy = AppConfigService.getProperty("RULE_TIME_QQWJCY");
+					qqwzw = AppConfigService.getProperty("RULE_TIME_QQWZW");
+					xnwjcy = AppConfigService.getProperty("RULE_TIME_XNWJCY");
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
 				String functionId = "";
 				for(int j = 0;j<list.size();j++){
 					McdCampChannelList mtlChannelDef = (McdCampChannelList) list.get(j);

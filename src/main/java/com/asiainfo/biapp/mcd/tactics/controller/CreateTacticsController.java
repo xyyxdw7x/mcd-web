@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
@@ -38,7 +39,6 @@ import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
@@ -1895,7 +1895,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 		String planTypeId = StringUtils.isNotEmpty(request.getParameter("planTypeId"))? request.getParameter("planTypeId") : null;
 		// 适用渠道
 		String channelId = request.getParameter("channelId") != null ? request.getParameter("channelId") : null;
-		// 产品类别（单产品？政策？）
+		// 产品类别（1单产品？2政策？）
 		String planSrvType = request.getParameter("planSrvType") != null ? request.getParameter("planSrvType") : null;
 
 		try {
@@ -1982,7 +1982,8 @@ public class CreateTacticsController extends BaseMultiActionController {
 		String channelId = request.getParameter("channelId");
 		List<McdDimAdivInfo> list = null;
 		try {
-			String adivdPictureURL = MpmConfigure.getInstance().getProperty("ADIVD_PICTURE_URL");
+			
+			String adivdPictureURL = AppConfigService.getProperty("ADIVD_PICTURE_URL");
 			list = planChannelAdivResourceService.getAdivByPlanChannel(planId, channelId);
 			if(!CollectionUtils.isEmpty(list)){
 				res.put("adivdPictureURL", adivdPictureURL);

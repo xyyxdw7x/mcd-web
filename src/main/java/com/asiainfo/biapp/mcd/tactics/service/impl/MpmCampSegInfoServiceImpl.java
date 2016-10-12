@@ -26,6 +26,7 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.DESBase64Util;
@@ -37,28 +38,27 @@ import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
+import com.asiainfo.biapp.mcd.exception.MpmException;
+import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMcdCampsegTaskDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
-import com.asiainfo.biapp.mcd.tactics.dao.ICampsegCustgroupDao;
-import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.DimCampDrvType;
-import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdApproveLog;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
-import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
-import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
-import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampChannelList;
-import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampCustgroupList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
+import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
+import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
+import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
+import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 
 /**
  *
@@ -432,7 +432,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	    	xmlStr.append("<cityId>" + mtlCampSeginfo.getCityId() + "</cityId>");//创建人地市id
 	    	xmlStr.append("<approveChannelId>" + channeIds.substring(1,channeIds.length()-1) + "</approveChannelId>");//审批渠道类型（判断采用哪个流程）：渠道ID
 	    	xmlStr.append("<approveFlowId>" + mtlCampSeginfo.getApproveFlowId() + "</approveFlowId>");//审批流程ID
-	    	String campsegInfoViewUrl = MpmConfigure.getInstance().getProperty("CAMPSEGINFO_VIEWURL");
+	    	
+	    	String campsegInfoViewUrl = AppConfigService.getProperty("CAMPSEGINFO_VIEWURL");
 			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
 	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
 	    	xmlStr.append("</campsegInfo>");
@@ -595,7 +596,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 cepEventFlag = true;
             }
             if (McdCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
-                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_STOP);
                     List<McdCampTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,McdCONST.CHANNEL_TYPE_SMS);
                     for(McdCampTask mcdCampsegTask : mcdCampsegTakList){
@@ -618,7 +619,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             } else if (McdCONST.MPM_CAMPSEG_STAT_DDCG.equals(type)) {//启动
                 String status = type;
                 //浙江版，策略与业务状态可多选，关联删除
-                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
                     McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
                     int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
                     int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
@@ -641,7 +642,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 }
 
             } else if (McdCONST.MPM_CAMPSEG_STAT_PAUSE.equals(type)) {//暂停
-                if ("zhejiang".equalsIgnoreCase(MpmConfigure.getInstance().getProperty("PROVINCE"))) {
+                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
                     mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_PAUSE);
                 }
                 
@@ -1172,8 +1173,9 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	 * @param tableName
 	 * @param tableModle
 	 * @return
+     * @throws Exception 
 	 */
-	private String getCreateDuserSQLForSqlfire(String tableName,String tableModle,int updateCycle){
+	private String getCreateDuserSQLForSqlfire(String tableName,String tableModle,int updateCycle) throws Exception{
 		String result = "";
 		List<Map<String,Object>> columnList = this.getSqlFireTableColumns(tableModle);
 		StringBuffer buffer = new StringBuffer();
@@ -1190,8 +1192,8 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		}
 		
 		StringBuilder strRet = new StringBuilder();
-		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+		String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+		String isUseSqlfire = AppConfigService.getProperty("MPM_IS_USE_SQLFIRE");
 		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
 			strRet.append("create table ").append(tabSpace).append(".").append(tableName).append(" ");
 		}else{

@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.thread;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 
 import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +30,6 @@ import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.util.ApacheFtpUtil;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.tactics.dao.IMtlChannelDefDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
@@ -57,7 +56,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 	private CustInfo custInfoBean;
 	private String customGroupDataDate;//统计周期
 	private String rowNumber = "";//客户数量
-	private int num = 2000;//分批次入库条数
 
 	public MpmCustGroupWsFtpRunnable(String fileName, String exceptionMessage, String customGroupId, String mtlCuserTableName,
 			List<Element> elementList,List<String> columnNameList,List<String> columnTypeList,CustInfo custInfoBean,
@@ -317,7 +315,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			    insertSqlTail = insertSqlTail + " data_date";
 			    insertSqlTail = insertSqlTail + ") values (" + values + ")";
 			    int inportCount = 0;
-			    List<String> lineList = new ArrayList<String>();
 			    List<Object> objectList = new ArrayList<Object>();
 			    try {
 	                    int lineNum = 1;
@@ -333,7 +330,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
                             String line = it.nextLine();
                             
                             String[] lines = line.split(",");
-                            int num = 0;
                             for(int j=0; j<lines.length ; j++){
                                 String attrColType = columnTypeList.get(j);
                                 if("number".equals(attrColType)){
@@ -346,7 +342,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
                                     BigDecimal bd = new BigDecimal(lines[j]);  
                                     objectList.add(bd);
                                 }
-                                num = j+1;
                             }
                             objectList.add(customGroupDataDate);
 

@@ -539,7 +539,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
     
 	@Override
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql, String ARPUSql, String orderProductNo,
-			String excludeProductNo,String tableName,boolean removeRepeatFlag) {
+			String excludeProductNo,String tableName,boolean removeRepeatFlag) throws Exception {
 		custGroupInfoDao.insertCustGroupNewWay(customgroupid, bussinessLableSql, ARPUSql, orderProductNo, excludeProductNo,tableName,removeRepeatFlag);
 	}
 	

@@ -26,7 +26,6 @@ import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.exception.MpmException;
@@ -947,9 +946,10 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	} 
 
     @Override
-	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String basicEventSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) {
-		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String basicEventSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) throws Exception {
+		String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+		String isUseSqlfire = AppConfigService.getProperty("MPM_IS_USE_SQLFIRE");
+		
 //		使用sql数据源
 		String sql = "";
 		try {
@@ -1610,10 +1610,11 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
         /**
          * 根据代替MCD_AD内的表在MCD里创建表的同义词
          * @param mtlCuserTableName
+         * @throws Exception 
          */
         @Override
-        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-            String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
+        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName) throws Exception {
+            String tabSpace =AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
 
             String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
             this.getJdbcTemplate().execute(sql);

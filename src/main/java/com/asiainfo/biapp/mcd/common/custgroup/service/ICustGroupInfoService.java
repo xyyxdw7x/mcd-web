@@ -155,8 +155,9 @@ public interface ICustGroupInfoService {
 	 * @param orderProductNo
 	 * @param excludeProductNo
 	 * @return
+     * @throws Exception 
 	 */
-	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) throws Exception;
 	
 
     public int getGroupSequence(String cityid);

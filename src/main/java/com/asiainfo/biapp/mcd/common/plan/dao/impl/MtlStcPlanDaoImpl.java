@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.framework.jdbc.VoPropertyRowMapper;
 import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
@@ -19,7 +20,6 @@ import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
@@ -69,7 +69,8 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 				parameterList.add(typeId);
 			}
 
-			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(MpmConfigure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
+			
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(AppConfigService.getProperty("CENTER_CITYID"))){  //地市限制
 				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
 			}
 			buffer.append(" and B.PLAN_TYPE_ID ='2'");
@@ -196,7 +197,8 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 				parameterList.add(typeId);
 			}
 		
-			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(MpmConfigure.getInstance().getProperty("CENTER_CITYID"))){  //地市限制
+			
+			if(StringUtils.isNotEmpty(cityId) && !cityId.equals(AppConfigService.getProperty("CENTER_CITYID"))){  //地市限制
 				buffer.append(" and (instr('|'||A.CITY_ID||'|','|"+cityId+"|',1,1)>0 or instr('|'||A.CITY_ID||'|','|999|',1,1)>0)");
 			}
 			buffer.append(" and B.PLAN_TYPE_ID ='2'");

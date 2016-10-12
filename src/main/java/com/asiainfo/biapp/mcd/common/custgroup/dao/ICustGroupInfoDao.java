@@ -166,8 +166,9 @@ public interface ICustGroupInfoDao {
 	 * @param orderProductNo
 	 * @param excludeProductNo
 	 * @return
+     * @throws Exception 
 	 */
-	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag);
+	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String ARPUSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) throws Exception;
 	/**
      * 根据客户群id查询客户群信息
      * @param custGroupId
@@ -325,8 +326,9 @@ public interface ICustGroupInfoDao {
         /**
          * 根据代替MCD_AD内的表在MCD里创建表的同义词
          * @param mtlCuserTableName
+         * @throws Exception 
          */
-        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName);
+        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName) throws Exception;
         /**
          * 批量执行语句sqlFire
          * @param inertSql  插入语句
