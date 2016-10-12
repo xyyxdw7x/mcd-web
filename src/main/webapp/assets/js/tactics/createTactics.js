@@ -77,6 +77,11 @@ tacticsInfo.addStepNumEventListenter=function(){
 				divObj.hide();
 			}
 		}
+		if(selectedIndex==1||selectedIndex==2){
+			$("#nextBtn").show();
+		}else{
+			$("#nextBtn").hide();
+		}
 	});
 }
 /**
@@ -88,7 +93,7 @@ tacticsInfo.addNextBtnEventListenter=function(){
 		var selectedIndex=parseInt($("#stepOl .active").find("i").html(),10);
 		var nextIndex=selectedIndex+1;
 		if(nextIndex>3){
-			nextIndex=1;
+			$("#nextBtn").hide();
 		}
 		//找到相应的li并触发点击事件 要保证事件的入口唯一
 		$("#stepOl li :contains('"+nextIndex+"')").trigger("click");

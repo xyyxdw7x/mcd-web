@@ -16,6 +16,14 @@ function initView901(data){
  * 短信渠道初始化
  */
 channelInfo901.initView=function(data){
+	//一次性客户群只能选择一次性
+	if(tacticsInfo.custGroup.updateCycle==1){
+		$("#901SendCycle [data-data='0']").attr("disabled",'true');
+		$("#901SendCycle [data-data='1']").removeAttr("disabled",'true');
+	}else{
+		$("#901SendCycle [data-data='1']").attr("disabled",'true');
+		$("#901SendCycle [data-data='0']").removeAttr("disabled",'true');
+	}
 	//发送周期切换
 	channelInfo901.addSendCycleChangeEvent();
 	channelInfo901.addSaveBtnClickEvent();
