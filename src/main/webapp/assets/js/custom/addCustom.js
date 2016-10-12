@@ -52,7 +52,6 @@ define(["backbone","my97","form"],function(require, exports, module) {
 					contextPath+"/action/custgroup/custGroupManager/existsCustGroupName.do",
 					{custgroupName: $.trim($("#custom_name").val())},
 					function(retData, status, jqXHR){
-						debugger
 						//客户群名称不存在，可以提交
 						if(!retData.flag){
 							//收集数据

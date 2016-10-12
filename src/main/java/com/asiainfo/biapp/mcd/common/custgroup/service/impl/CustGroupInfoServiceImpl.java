@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.annotation.Resource;
 
@@ -554,6 +555,13 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	    public void updateMtlGroupStatus(String tableName,String custGroupId){
 	        custGroupInfoDao.updateMtlGroupStatusInMem(tableName,custGroupId);
 	    }
+		/**
+		 * 更新mcd_custgroup_tab_list表custom_num字段值
+		 * @param tableName
+		 */
+		private void updatesavemtlCustomListNum(String tableName){
+			custGroupInfoDao.updatesavemtlCustomListNum(tableName);
+		}
 	    @Override
 	    public void savemtlCustomListInfo(String mtlCuserTableName,
 	            String customGroupDataDate, String customGroupId, int rowNumberInt,
@@ -642,11 +650,11 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			
 			//文件上传路径
 			String config_Path = AppConfigService.getProperty("CUSTGTOUP_UPLOAD_PATH");
-//			Properties props=System.getProperties();
-//			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) !=-1) {
-//				//windows下的开发代码
-//				config_Path = "D:\\temp\\mpm\\upload";
-//			}
+			Properties props=System.getProperties();
+			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) !=-1) {
+				//windows下的开发代码
+				config_Path = "D:\\temp\\mpm\\upload";
+			}
 			
 			//保存上传文件
 			String filepath = null;
@@ -810,6 +818,8 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 				//在本笃数据库中也创建这个表
 				this.createSynonymTableMcdBySqlFire(tableName);
 				this.updateMtlGroupStatus(tableName,custGroupId);
+				//更新mcd_custgroup_tab_list表custom_num字段值
+				this.updatesavemtlCustomListNum(tableName);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1163,13 +1173,13 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
                     custInfoBean.setCustomGroupDesc(customGroupDesc);
                     custInfoBean.setRuleDesc(customRules);
                     custInfoBean.setCreateUserId(userId);
-                    custInfoBean.setCreatetime(StringUtils.isNotBlank(crtTime) ? null : DateTool.getDate(crtTime));
-                    custInfoBean.setCustomNum(StringUtils.isNotBlank(rowNumber) ? null : Integer.parseInt(rowNumber));
-                    custInfoBean.setUpdateCycle(StringUtils.isNotBlank(dataCycle) ? null : Integer.parseInt(dataCycle));
+                    custInfoBean.setCreatetime(StringUtils.isBlank(crtTime) ? null : DateTool.getDate(crtTime));
+                    custInfoBean.setCustomNum(StringUtils.isBlank(rowNumber) ? null : Integer.parseInt(rowNumber));
+                    custInfoBean.setUpdateCycle(StringUtils.isBlank(dataCycle) ? null : Integer.parseInt(dataCycle));
 //                  custInfoBean.setCustomStatusId(Integer.parseInt(grpStatus));
-                    custInfoBean.setEffectiveTime(StringUtils.isNotBlank(effectiveTime) ? null :DateTool.getDate(effectiveTime));
-                    custInfoBean.setFailTime(StringUtils.isNotBlank(failTime) ? null : DateTool.getDate(failTime));
-                    if(!StringUtils.isNotBlank(crtPersnName) && StringUtils.isNotBlank(userId)) {
+                    custInfoBean.setEffectiveTime(StringUtils.isBlank(effectiveTime) ? null :DateTool.getDate(effectiveTime));
+                    custInfoBean.setFailTime(StringUtils.isBlank(failTime) ? null : DateTool.getDate(failTime));
+                    if(!StringUtils.isBlank(crtPersnName) && StringUtils.isBlank(userId)) {
                         User user = userPrivilege.queryUserById(userId);
 
                         String userName = "";

@@ -1,5 +1,5 @@
-/*重置*/
 .ui-widget.ui-widget-content{border:0;}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button,.ui-widget.ui-widget-content{font-family:"microsoft yahei";}
 .ui-dialog{padding:0;}
 .ui-dialog .ui-widget-header {
     background: #278bdd;
@@ -56,7 +56,6 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-/*xin新增与覆盖*/
 .ui-dialog .ui-widget-header .ui-button .ui-button-icon.ui-icon.ui-icon-closethick{
     background: url(../../../images/put-img.png) no-repeat no-repeat -99px -2px;
     margin-left: -12px;
@@ -86,11 +85,9 @@
     background: #ff9314;
     margin-right:153px !important;
 }
-/*保存*/
 .own-dialog{
 	width:100% !important;
 }
-/*产品政策保存弹窗*/
 .rows-box{
 	border-bottom:1px dashed #efefef;
 	margin:10px 0;
@@ -102,5 +99,7 @@
 .width-130{width: 130px;}
 .productDetail-dialog .text-left{color: #666;}
 .date-error{padding-left:188px;}
-/*增加类名的gradient-dialog 的dialog*/
 .gradient-dialog {background: #d9e7fe;}
+.save-dialog form{
+	padding-top:24px;
+}

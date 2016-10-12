@@ -109,7 +109,7 @@ shopCarInfo.addSaveDialogEvent=function(){
 		shopCarInfo.showDatePicker();
 		$("#saveDialog").dialog({
 			width:600,
-			height:300,
+			height:250,
 			resizable: false,
 			modal: true,
 			title:"保存",

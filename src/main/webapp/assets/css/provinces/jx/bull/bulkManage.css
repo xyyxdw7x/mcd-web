@@ -514,6 +514,11 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 	font-size:14px;
 	
 }
+.ui-dialog .ui-dialog-buttonpane button.gray-small-button{
+	color:#666;
+	background:#fafafa;
+	border-color:#ccc;
+}
 
 
 

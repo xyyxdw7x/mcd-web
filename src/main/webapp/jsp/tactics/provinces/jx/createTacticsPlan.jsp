@@ -10,7 +10,7 @@
 		<div class="search-box-wrp search-box-wrp-product">
 			<div class="search-box">
 				<p class="fleft">
-					<input id="inputKeywordPlan" name="inputKeywordPlan" placeholder="请输入关键字" type="text">
+					<input id="inputKeywordPlan" name="inputKeywordPlan" placeholder="请输入产品编号或名称" type="text">
 				</p>
 				<i id="planSearchBtn" class="searchBtn fright"></i>
 			</div>

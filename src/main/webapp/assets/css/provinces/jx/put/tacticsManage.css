@@ -3553,7 +3553,6 @@ body {
   padding: 0 25px;
   font-size: 14px;
   font-weight: bold;
-  font-family: "瀹嬩綋";
   cursor: pointer;
 }
 .tacticsManageQueryTab li.active {
@@ -4731,7 +4730,8 @@ html {
   margin: 0;
   position: relative;
   padding: 0;
-  margin: 6px 5px 0;
+  /* margin: 6px 5px 0;  若恢复一行两个按钮 仍用这个*/
+  margin:6px 5px 0 64px;
   text-align: left;
   font-size: 12px;
   cursor: auto;
@@ -4745,6 +4745,7 @@ html {
 .container .content .content-main .content-table .content-table-box.tacticsManageTable td:last-child .controls span.txt {
   float: left;
   padding: 0 10px;
+  min-width:67px; 
 }
 .container .content .content-main .content-table .content-table-box.tacticsManageTable td:last-child .controls .icon {
   float: left;
@@ -5000,4 +5001,16 @@ html {
   -moz-transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
+}
+.ui-dialog .ui-dialog-buttonpane button{
+	border:1px solid #278bdd;
+	color:#278bdd;
+	background:#fff;
+	font-size:14px;
+	
+}
+.ui-dialog .ui-dialog-buttonpane button.gray-small-button{
+	color:#666;
+	background:#fafafa;
+	border-color:#ccc;
 }

@@ -11,167 +11,167 @@
 			<tr class="even">
 				<td rowspan="4" class="content-table-td" style="background:#fff" ><%=data[i].channel_name%></td>
 				<td rowspan="1" class="content-table-td" >群发用语</td>
-				<td rowspan="1" class="content-table-td" ><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td rowspan="1" class="content-table-td" ><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >执行周期</td>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].update_cycle%></td>
+				<td rowspan="1" class="content-table-td" ><%=data[i].update_cycle%></td>
             </tr>
             <tr class="even">
 				<td rowspan="1" class="content-table-td" >触发时机</td>
 				<%if(data[i].eventRuleDesc!='' && data[i].eventRuleDesc!=null ){%>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].eventRuleDesc%></td>
+				<td rowspan="1" class="content-table-td" ><%=data[i].eventRuleDesc%></td>
 				<%}else{%>
-				<td rowspan="1" class="content-table-td" style="text-align:left;">无</td>
+				<td rowspan="1" class="content-table-td" >无</td>
 				<%}%>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >频次控制规则</td>
 				<%if(data[i].paramDays!='' && data[i].paramDays!=null && data[i].paramDays!='0' ){%>
-					<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].paramDays%>天<%=data[i].paramNum%>次</td>
+					<td rowspan="1" class="content-table-td" ><%=data[i].paramDays%>天<%=data[i].paramNum%>次</td>
 				<%}else{%>
-					<td rowspan="1" class="content-table-td" style="text-align:left;">无</td>
+					<td rowspan="1" class="content-table-td" >无</td>
 				<%}%>
             </tr>
 		<% }else if(channelId == '903'){%>
 			<tr class="even">
 				<td class="content-table-td" style="background:#fff"><%=data[i].channel_name%></td>
 				<td class="content-table-td" >运营位</td>
-				<td class="content-table-td" style="text-align:left;"><%=data[i].adivName%></td>
+				<td class="content-table-td" ><%=data[i].adivName%></td>
 			</tr>
 		<% }else if(channelId == '904'){%>
 			<tr class="even">
 				<td rowspan="5" class="content-table-td"  style="background:#fff"><%=data[i].channel_name%></td>
 				<td rowspan="1" class="content-table-td" >奖励金额(元)</td>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].awardMount%></td>
+				<td rowspan="1" class="content-table-td" ><%=data[i].awardMount%></td>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >推荐用语</td>
-				<td rowspan="1" class="content-table-td" ><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td rowspan="1" class="content-table-td" ><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >采编路径</td>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].editUrl%></td>
+				<td rowspan="1" class="content-table-td" ><%=data[i].editUrl%></td>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >办理路径</td>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><%=data[i].handleUrl%></td>
+				<td rowspan="1" class="content-table-td" ><%=data[i].handleUrl%></td>
 			</tr>
 			<tr class="even">
 				<td rowspan="1" class="content-table-td" >短信用语</td>
-				<td rowspan="1" class="content-table-td" style="text-align:left;"><div style="text-align:left" title="<%=data[i].sendSms.replace(new RegExp(/"/g),'“')%>"><%=data[i].sendSms%></div></td>
+				<td rowspan="1" class="content-table-td" ><div  title="<%=data[i].sendSms.replace(new RegExp(/"/g),'“')%>"><%=data[i].sendSms%></div></td>
             </tr>
 		<% }else if(channelId == '907'){%>
 			<tr class="even">
 				<td rowspan="2" class="content-table-td" style="background:#fff"><%=data[i].channel_name%></td>
 				<td class="content-table-td" >运营位</td>
 				<%if(data[i].channelAdivId=='1'){%>
-					<td class="content-table-td" style="text-align:left;">首页推荐</td>
+					<td class="content-table-td" >首页推荐</td>
 				<%}else if(data[i].channelAdivId=='2'){%>
-					<td class="content-table-td" style="text-align:left;">弹窗</td>
+					<td class="content-table-td" >弹窗</td>
 				<%}else {%>
-					<td class="content-table-td" style="text-align:left;">首页推荐，弹窗</td>
+					<td class="content-table-td" >首页推荐，弹窗</td>
 				<%}%>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >推荐用语</td>
-				<td class="content-table-td"><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td class="content-table-td"><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
             </tr>
 		<% }else if(data[i].channelId == '908'){%>
 			<tr class="even">
 				<td rowspan="<%=data[i].inPlanFlag=='是'?'14':'21'%>" class="content-table-td" style="background:#fff"><%=data[i].channelName%></td>
 				<td class="content-table-td" >任务编码</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskCode%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].taskCode%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >外呼周期</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].callCycle%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].callCycle%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >需求方</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].demand%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].demand%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >任务描述</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskComment%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].taskComment%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >客户标签信息</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].userLableInfo%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].userLableInfo%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >计划外呼量</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].callPlanNum%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].callPlanNum%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >要求完成时间</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].finishDate%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].finishDate%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >主叫号码</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].callNo%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].callNo%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >是否要清洗黑红白名单</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].avoidFilterFlag%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].avoidFilterFlag%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >是否拨测</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].callTestFlag%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].callTestFlag%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >是否需要进行频次清洗</td>
-				<td class="content-table-td"><div style="text-align:left" ><%=data[i].freFilterFlag%></div></td>
+				<td class="content-table-td"><div  ><%=data[i].freFilterFlag%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >外呼文件</td>
-				<td class="content-table-td"><div style="text-align:left" ><a href="../../../mpm/imcdChannelExecuteAction.aido?cmd=downLoadFile&oldFile=<%=data[i].callQuestionUrl%>"><%=data[i].callQuestionName%></a></div></td>
+				<td class="content-table-td"><div  ><a href="../../../mpm/imcdChannelExecuteAction.aido?cmd=downLoadFile&oldFile=<%=data[i].callQuestionUrl%>"><%=data[i].callQuestionName%></a></div></td>
 			</tr>
 			<% if(data[i].inPlanFlag=='是'){%>
 				<tr class="even">
 					<td class="content-table-td" >是否计划内关联月度计划</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].inPlanFlag%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].inPlanFlag%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >关联月度计划名称</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].monthTaskName%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].monthTaskName%></div></td>
 				</tr>
 			<%}else{%>
 				<tr class="even">
 					<td class="content-table-td" >任务名称</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskName%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].taskName%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >任务分类</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskClassName%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].taskClassName%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >任务类型一级</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskLevel1%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].taskLevel1%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >任务类型二级</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskLevel2%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].taskLevel2%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >任务类型三级</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].taskLevel3%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].taskLevel3%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >业务类型一级</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].busiLevel1%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].busiLevel1%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >业务类型二级</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].busiLevel2%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].busiLevel2%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >外呼形式</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].callFormName%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].callFormName%></div></td>
 				</tr>
 				<tr class="even">
 					<td class="content-table-td" >外呼属地</td>
-					<td class="content-table-td"><div style="text-align:left" ><%=data[i].callCityTypeName%></div></td>
+					<td class="content-table-td"><div  ><%=data[i].callCityTypeName%></div></td>
 				</tr>
 			<%}%>
 
@@ -184,7 +184,7 @@
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >推荐用语</td>
-				<td class="content-table-td"><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td class="content-table-td"><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
 		<% }else if(channelId == '911' || channelId == '912'){%>
 			<tr class="even">
@@ -194,11 +194,11 @@
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >标题</td>
-				<td class="content-table-td"><div style="text-align:left"><%=data[i].execTitle%></div></td>
+				<td class="content-table-td"><div ><%=data[i].execTitle%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >推荐用语</td>
-				<td class="content-table-td"><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td class="content-table-td"><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
 			<tr class="even">
 				<td class="content-table-td" >图片</td>
@@ -210,7 +210,7 @@
 			<tr class="even">
 				<td class="content-table-td"  style="background:#fff"><%=data[i].channel_name%></td>
 				<td class="content-table-td">推荐用语</td>
-				<td class="content-table-td" style="text-align:left;"><div style="text-align:left" title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+				<td class="content-table-td" style="text-align:left;"><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
 		<% }%>
 	<%}%>

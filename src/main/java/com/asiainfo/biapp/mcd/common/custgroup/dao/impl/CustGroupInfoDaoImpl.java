@@ -1440,7 +1440,15 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	        	throw new MpmException(e);
 	        }   
 	    }
-
+		/**
+		 * 更新mcd_custgroup_tab_list表custom_num字段值
+		 * @param tableName
+		 */
+		@Override
+		public void updatesavemtlCustomListNum(String tableName){
+			String sql = "update mcd_custgroup_tab_list set custom_num=(select COUNT(1) from '"+tableName+"')  where list_table_name='"+tableName+"'";
+			this.getJdbcTemplate().update(sql);
+		}
         @Override
         public void setSelfProxy(Object proxyObj) {
             this.custGroupInfoDao = (ICustGroupInfoDao)proxyObj;

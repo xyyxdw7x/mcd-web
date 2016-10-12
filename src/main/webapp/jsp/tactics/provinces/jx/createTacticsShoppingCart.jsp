@@ -51,7 +51,7 @@
 			    </div>
 		    </div> 
 			<div class="form-group form-group-new">
-			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>投放周期：</span></label>
+			    <label class="col-sm-4 control-label"><i class="color-red">*</i><span>投放周期:</span></label>
 			    <div class="col-sm-3">
 			      	<input type="text" id="startDate" class="form-control">
 			    </div>
