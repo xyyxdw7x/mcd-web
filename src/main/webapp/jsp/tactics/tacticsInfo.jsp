@@ -29,7 +29,7 @@
 </div>
 
 <div class="container tabbox active">
-	<div id="subCamsegTab" class="left-nav" style="display:none">
+	<div id="subCamsegTab" class="left-nav">
 	</div> 
 	<div id="subCamsegBoxesCT">
 	</div><!--subCamsegBoxesCT end -->
