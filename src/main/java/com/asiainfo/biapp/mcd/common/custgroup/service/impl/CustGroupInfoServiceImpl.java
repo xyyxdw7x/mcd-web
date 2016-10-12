@@ -1410,4 +1410,13 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
             return custGroupInfoDao.getInMemCustomListInfoNum(custListTabName,dataDate);
 
         }
+        /**
+         * 执行新增SQL语句
+         * @param insertSql
+         * @param values
+         */
+        @Override
+        public void addInMemExecute(String insertSql, Object[] values) {
+            custGroupInfoDao.addInMemExecute(insertSql,values);
+        }
 }

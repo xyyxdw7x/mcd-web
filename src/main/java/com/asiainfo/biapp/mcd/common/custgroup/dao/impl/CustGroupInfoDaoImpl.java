@@ -1680,4 +1680,13 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
             
             return this.getJdbcTemplate().queryForObject(sql,Integer.class, new Object[]{dataDate});
         }
+        /**
+         * 执行新增SQL语句
+         * @param insertSql
+         * @param values
+         */
+        @Override
+        public void addInMemExecute(String insertSql, Object[] values) {
+            this.getJdbcTemplate().update(insertSql, values);            
+        }
 }

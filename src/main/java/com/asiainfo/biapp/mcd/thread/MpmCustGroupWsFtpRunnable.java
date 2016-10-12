@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -300,56 +300,78 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + customGroupId);
 
 				
-			}else{
-//			    custGroupInfoService.addCustBySQLinsert(localHostPath,fileName + ".txt",mtlCuserTableName,customGroupId, customGroupDataDate);
-			    
-//				LineIterator it = FileUtils.lineIterator(fileTxt);			
-//
-//				String inertSql = "insert into " + mtlCuserTableName + "(";
-//				String values = "";
-//				
-//				//拼接表头
-//				for(int i = 0 ; i<columnNameList.size() ; i++){
-//					
-//					String cname = columnNameList.get(i);  
-//			    	inertSql = inertSql + cname + ",";
-//			    	values = values+"?,";
-//				}
-//			    values = values + " ?";
-//			    inertSql = inertSql + " data_date";
-//			    inertSql = inertSql + ") values (" + values + ")";
-//			    int inportCount = 0;
-//			    List<String> lineList = new ArrayList<String>();
-//			    try {
-//	                    
-//				    	while (it.hasNext()) {
-//		
-//					    	String line = it.nextLine();
-//					    	lineList.add(line);
-//					    	if(lineList.size() >= num){
-////							    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//					    	    custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//						        lineList.clear();
-//					    	}
-//
-//					    	inportCount = inportCount +1;
-//				    	}
-////					    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//				    	custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-//
-//			    	} catch (Exception e) {
-//						if("".equals(exceptionMessage)){
-//							exceptionMessage = "按行导入文件出错,第" + inportCount + "行出错";
-//						}
-//						exceptionMessage = exceptionMessage + e.getMessage();
-//						dataStatus = 3;
-//						e.printStackTrace();
-//						flag = 2;
-//			    	} finally {
-//
-//			    	   LineIterator.closeQuietly(it);
-//
-//			    	}
+			}else{			    
+				LineIterator it = FileUtils.lineIterator(fileTxt);	
+				String insertSql = "INSERT ALL ";
+				String insertSqlTail = " into " + mtlCuserTableName + "(";
+				String values = "";
+				
+				//拼接表头
+				for(int i = 0 ; i<columnNameList.size() ; i++){
+					
+					String cname = columnNameList.get(i);  
+					insertSqlTail = insertSqlTail + cname + ",";
+			    	values = values+"?,";
+				}
+			    values = values + " ?";
+			    insertSqlTail = insertSqlTail + " data_date";
+			    insertSqlTail = insertSqlTail + ") values (" + values + ")";
+			    int inportCount = 0;
+			    List<String> lineList = new ArrayList<String>();
+			    List<Object> objectList = new ArrayList<Object>();
+			    try {
+	                    int lineNum = 1;
+				    	while (it.hasNext()) {
+				    	    if(lineNum > 20000){
+				    	        lineNum = 1;
+				    	        insertSql = "INSERT ALL ";
+				    	        insertSql = insertSql + " SELECT * FROM dual";
+				    	        custGroupInfoService.addInMemExecute(insertSql,objectList.toArray());
+				    	        objectList.clear();
+				    	    } 
+				    	    insertSql = insertSql + insertSqlTail;
+                            String line = it.nextLine();
+                            
+                            String[] lines = line.split(",");
+                            int num = 0;
+                            for(int j=0; j<lines.length ; j++){
+                                String attrColType = columnTypeList.get(j);
+                                if("number".equals(attrColType)){
+                                    int number = Integer.parseInt(lines[j]);
+                                    objectList.add(number);
+                                }else if("varchar".equals(attrColType) || "char".equals(attrColType) || "nvchar2".equals(attrColType) || "vchar2".equals(attrColType)  || "varchar2".equals(attrColType) ){
+                                    String s = lines[j];
+                                    objectList.add(s);
+                                }else if("decimal".equals(attrColType)){
+                                    BigDecimal bd = new BigDecimal(lines[j]);  
+                                    objectList.add(bd);
+                                }
+                                num = j+1;
+                            }
+                            objectList.add(customGroupDataDate);
+
+                            inportCount = inportCount +1;
+
+				    	}
+				    	if(!"INSERT ALL ".equals(insertSql)){
+		                      insertSql = insertSql + " SELECT * FROM dual";
+		                      custGroupInfoService.addInMemExecute(insertSql,objectList.toArray());
+				    	}
+
+
+			    	} catch (Exception e) {
+						if("".equals(exceptionMessage)){
+							exceptionMessage = "按行导入文件出错,第" + inportCount + "行出错";
+						}
+						exceptionMessage = exceptionMessage + e.getMessage();
+						dataStatus = 3;
+						e.printStackTrace();
+						flag = 2;
+			    	} finally {
+
+			    	   LineIterator.closeQuietly(it);
+
+			    	}
 			    
 			    log.info("oracle 插入客户群数据完毕,客户群ID：" + customGroupId);
 			    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + customGroupId);

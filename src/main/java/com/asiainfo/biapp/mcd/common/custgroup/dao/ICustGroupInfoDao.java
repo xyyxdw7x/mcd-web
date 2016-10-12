@@ -349,4 +349,10 @@ public interface ICustGroupInfoDao {
          * @return
          */
         public int getInMemCustomListInfoNum(String custListTabName, String dataDate);
+        /**
+         * 执行新增SQL语句
+         * @param insertSql
+         * @param values 
+         */
+        public void addInMemExecute(String insertSql, Object[] values);
 }
