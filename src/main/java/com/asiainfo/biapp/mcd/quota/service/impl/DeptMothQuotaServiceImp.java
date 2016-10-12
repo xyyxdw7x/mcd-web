@@ -114,8 +114,20 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 	private void setRemain4StatisList(List<DeptMonthQuota> list) {
 		for (int i = 0; i < list.size(); i++) {
 			DeptMonthQuota temp = list.get(i);
-			long configNum = temp.getMonthQuotaNum();
-			long usedNum = temp.getUsedNum();
+			long configNum = 0;
+			long usedNum = 0;
+			if(temp.getMonthQuotaNum()==null){
+				temp.setMonthQuotaNum((long)0);
+			}else{
+				configNum = temp.getUsedNum().longValue(); 
+			}
+			
+			if(temp.getUsedNum()==null){
+				temp.setUsedNum((long)0);
+			}else{
+				usedNum = temp.getUsedNum().longValue();
+			}
+			
 			temp.setRemainNum(configNum - usedNum);
 		}
 	}

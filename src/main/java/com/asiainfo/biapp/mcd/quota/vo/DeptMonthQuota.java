@@ -42,7 +42,7 @@ public class DeptMonthQuota {
 	}
 
 	
-	public void setRemainNum(long remainNum) {
+	public void setRemainNum(Long remainNum) {
 		this.remainNum = remainNum;
 	}
 
