@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.codehaus.xfire.client.Client;
 import org.dom4j.Element;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.util.SpringContextsUtil;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
@@ -84,32 +85,49 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
- 		String ftpServer = MpmConfigure.getInstance().getProperty("PROVMPM_CUSTINFO_FTP_SERVER_IPINCE");//FTP链接
- 		int ftpServerPort = Integer.parseInt(MpmConfigure.getInstance().getProperty("MPM_CUSTINFO_FTP_SERVER_PORT"));//ftp端口
- 		
- 		String ftpStorePath = MpmConfigure.getInstance().getProperty("MPM_CUSTINFO_FTP_SERVER_STORE_PATH");//ftp地址
- 		String ftpUserName = MpmConfigure.getInstance().getProperty("MPM_CUSTINFO_FTP_USERNAME");//账号
- 		String ftpUserPwd = MpmConfigure.getInstance().getProperty("MPM_CUSTINFO_FTP_USERPWD");//密码
+ 		String ftpServer = null;
+ 		int ftpServerPort = 0;
+ 		String ftpStorePath = null;
+ 		String ftpUserName = null;
+ 		String ftpUserPwd = null;
+ 		String ftpEcoding = null;
+        try {
+            ftpServer = AppConfigService.getProperty("MPM_CUSTINFO_FTP_SERVER_IP");
+            ftpServerPort = Integer.parseInt(AppConfigService.getProperty("MPM_CUSTINFO_FTP_SERVER_PORT"));//ftp端口
+            ftpStorePath = AppConfigService.getProperty("MPM_CUSTINFO_FTP_SERVER_STORE_PATH");//ftp地址
+            ftpUserName = AppConfigService.getProperty("MPM_CUSTINFO_FTP_USERNAME");//账号
+            ftpUserPwd = AppConfigService.getProperty("MPM_CUSTINFO_FTP_USERPWD");//密码
+            ftpEcoding = AppConfigService.getProperty("MPM_CUSTINFO_FTP_ECODING");//编码
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }//FTP链接
+
  		StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
  		xml.append("<result><flag>");
 
  		ApacheFtpUtil ftp = null;
  		FTPClient ftpClient = null;
- 		ftp = ApacheFtpUtil.getInstance(ftpServer, ftpServerPort, ftpUserName, ftpUserPwd, null);
+ 		ftp = ApacheFtpUtil.getInstance(ftpServer, ftpServerPort, ftpUserName, ftpUserPwd, ftpEcoding);
  		if (ftpStorePath != null && ftpStorePath.length() != 0) {
  			ftp.changeDir(ftpStorePath);
  		}
  		ftpClient = ftp.getFtpClient();
 // 		ftpClient.setControlEncoding("GBK");
 //		// 从服务器上读取指定的文件 
-// 		ftpClient.setBufferSize(1024 * 1024);
- 		String localHostPath = File.separator + "data1" + File.separator + "app" + File.separator + "jqyxweb"  + File.separator + "tempCOC" + File.separator;
+// 		ftpClient.setBufferSize(1024 * 1024);MPM_CUSTINFO_LOCAL_PATH
+        String localHostPath = null;
+        try {
+            localHostPath = AppConfigService.getProperty("MPM_CUSTINFO_LOCAL_PATH");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+// 		String localHostPath = File.separator + "data1" + File.separator + "app" + File.separator + "jqyxweb"  + File.separator + "tempCOC" + File.separator;
 // 		String localHostPath = "D://";
  		try {
-			boolean chkIsTrue = ftp.download(localHostPath + fileName + ".CHK",ftpStorePath + File.separator + fileName + ".CHK");
-			boolean txtIsTrue = ftp.download(localHostPath + fileName + ".txt",ftpStorePath + File.separator + fileName + ".txt");
-// 			boolean txtIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.txt", "/app/mcdapp/tempCOC/MCD_GROUP_KHQ100003144_20160606.txt");
-//			boolean chkIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.CHK", "/app/mcdapp/tempCOC/MCD_GROUP_KHQ100003144_20160606.CHK");
+//			boolean chkIsTrue = ftp.download(localHostPath + fileName + ".CHK",ftpStorePath + File.separator + fileName + ".CHK");
+//			boolean txtIsTrue = ftp.download(localHostPath + fileName + ".txt",ftpStorePath + File.separator + fileName + ".txt");
+ 			boolean txtIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.txt", "/home/imcd/coc//MCD_GROUP_KHQ100003144_20160606.txt");
+			boolean chkIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.CHK", "/home/imcd/coc//MCD_GROUP_KHQ100003144_20160606.CHK");
 			if(!txtIsTrue){
 	  			exceptionMessage = "出现错误，ftp无法获取或者文件不存，或FTP出现错误无法读取";
 				flag = 2;
@@ -283,111 +301,55 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 
 				
 			}else{
-				
-//				BufferedReader readerCHK = new BufferedReader(new InputStreamReader(insChk, "GBK")); 
-//				String lineString;
-//				String[] lineChks = null;
-//				boolean isCorrect = true;
-//				String fileNameTrue = "";
-//				String fileNameSize = "";
-//				//获取验证文件内保存的需要读取的文件名及大小
-//				while ((lineString = readerCHK.readLine()) != null) {
-//					lineChks = lineString.split(",");
-//					fileNameTrue = lineChks[0];
-//					fileNameSize = lineChks[1];
-//				}
-//				if(!fileNameTrue.equals(fileName)){
-//					isCorrect = false;
-//				}
-//				int size = ins.available();
-//				Integer fileSize = Integer.parseInt(fileNameSize);
-////				if(fileSize.intValue() != size){
-////					isCorrect = false;
-////				}
-//				if(!isCorrect){
-////					exceptionMessage = "读取txt文件大小及名称与CHK文件中文件大小与名称不一致";
-//					exceptionMessage = "读取txt文件名称与CHK文件中文件名称不一致";
-//					flag = 2;
-//				}
-//				readerCHK.close();
-				
-				
-//				BufferedReader reader = new BufferedReader(new InputStreamReader(ins, "GBK")); 
-//				List<String> txtList = FileUtils.readLines(fileTxt);
-				LineIterator it = FileUtils.lineIterator(fileTxt);			
-//				String line; 
-
-				String inertSql = "insert into " + mtlCuserTableName + "(";
-				String values = "";
-				
-				//拼接表头
-				for(int i = 0 ; i<columnNameList.size() ; i++){
-					
-					String cname = columnNameList.get(i);  
-			    	inertSql = inertSql + cname + ",";
-			    	values = values+"?,";
-				}
-			    values = values + " ?";
-			    inertSql = inertSql + " data_date";
-			    inertSql = inertSql + ") values (" + values + ")";
-				//动态生成客户群清单表
-//			    mtlCustGroupService.batchExecute(inertSql,columnTypeList,txtList);
-//			    log.info("oracle 插入客户群数据完毕,客户群ID：" + customGroupId);
-//			    mtlCustGroupService.batchSqlFireExecute(inertSql,columnTypeList,txtList);
-//			    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + customGroupId);
+//			    custGroupInfoService.addCustBySQLinsert(localHostPath,fileName + ".txt",mtlCuserTableName,customGroupId, customGroupDataDate);
 			    
-			    //20160127内存溢出注释换方法
-//			    int threadNum = txtList.size()/num;
-//			    int startNum = 0;
-//			    int endNum = 0;
-//			    for (int i = 0 ; i <= threadNum ; i ++){
-//			    	if(i != 0 ){
-//			    		startNum = endNum;
+//				LineIterator it = FileUtils.lineIterator(fileTxt);			
+//
+//				String inertSql = "insert into " + mtlCuserTableName + "(";
+//				String values = "";
+//				
+//				//拼接表头
+//				for(int i = 0 ; i<columnNameList.size() ; i++){
+//					
+//					String cname = columnNameList.get(i);  
+//			    	inertSql = inertSql + cname + ",";
+//			    	values = values+"?,";
+//				}
+//			    values = values + " ?";
+//			    inertSql = inertSql + " data_date";
+//			    inertSql = inertSql + ") values (" + values + ")";
+//			    int inportCount = 0;
+//			    List<String> lineList = new ArrayList<String>();
+//			    try {
+//	                    
+//				    	while (it.hasNext()) {
+//		
+//					    	String line = it.nextLine();
+//					    	lineList.add(line);
+//					    	if(lineList.size() >= num){
+////							    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//					    	    custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//						        lineList.clear();
+//					    	}
+//
+//					    	inportCount = inportCount +1;
+//				    	}
+////					    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//				    	custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
+//
+//			    	} catch (Exception e) {
+//						if("".equals(exceptionMessage)){
+//							exceptionMessage = "按行导入文件出错,第" + inportCount + "行出错";
+//						}
+//						exceptionMessage = exceptionMessage + e.getMessage();
+//						dataStatus = 3;
+//						e.printStackTrace();
+//						flag = 2;
+//			    	} finally {
+//
+//			    	   LineIterator.closeQuietly(it);
+//
 //			    	}
-//			    	endNum = endNum + num;
-//			    	if(endNum > txtList.size()){
-//			    		endNum = txtList.size();
-//			    	}
-////			    	log.info("startNum：" + startNum);
-////			    	log.info("endNum：" + endNum);
-	//
-//				    mtlCustGroupService.batchExecute(inertSql,columnTypeList,txtList.subList(startNum, endNum),customGroupDataDate);
-////				    log.info("oracle 插入客户群数据完毕,客户群ID：" + customGroupId);
-//				    mtlCustGroupService.batchSqlFireExecute(inertSql,columnTypeList,txtList.subList(startNum, endNum),customGroupDataDate);
-////				    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + customGroupId);
-//			    }
-			    int inportCount = 0;
-			    List<String> lineList = new ArrayList<String>();
-			    try {
-	                    
-				    	while (it.hasNext()) {
-		
-					    	String line = it.nextLine();
-					    	lineList.add(line);
-					    	if(lineList.size() >= num){
-//							    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-					    	    custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-						        lineList.clear();
-					    	}
-
-					    	inportCount = inportCount +1;
-				    	}
-//					    mtlCustGroupService.batchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-				    	custGroupInfoService.addInMembatchExecute(inertSql,columnTypeList,lineList,customGroupDataDate);
-
-			    	} catch (Exception e) {
-						if("".equals(exceptionMessage)){
-							exceptionMessage = "按行导入文件出错,第" + inportCount + "行出错";
-						}
-						exceptionMessage = exceptionMessage + e.getMessage();
-						dataStatus = 3;
-						e.printStackTrace();
-						flag = 2;
-			    	} finally {
-
-			    	   LineIterator.closeQuietly(it);
-
-			    	}
 			    
 			    log.info("oracle 插入客户群数据完毕,客户群ID：" + customGroupId);
 			    log.info("sqlFire 插入客户群数据完毕,客户群ID：" + customGroupId);
@@ -408,7 +370,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
             log.info("本地TXT文件删除："+ deleteTxt + "文件名称：" + fileName);
             boolean deleteChk = fileChk.delete();
             log.info("本地Chk文件删除："+ deleteChk + "文件名称：" + fileName);
-            boolean deleteVerf = fileVerf.delete();
+            boolean deleteVerf = fileVerf != null ? fileVerf.delete() : false;
             log.info("本地Verf文件删除："+ deleteVerf + "文件名称：" + fileName);
 			int rowNumberInt = Integer.parseInt(rowNumber);
 			custGroupInfoService.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);

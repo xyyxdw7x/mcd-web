@@ -1173,13 +1173,13 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
                     custInfoBean.setCustomGroupDesc(customGroupDesc);
                     custInfoBean.setRuleDesc(customRules);
                     custInfoBean.setCreateUserId(userId);
-                    custInfoBean.setCreatetime(StringUtils.isNotBlank(crtTime) ? null : DateTool.getDate(crtTime));
-                    custInfoBean.setCustomNum(StringUtils.isNotBlank(rowNumber) ? null : Integer.parseInt(rowNumber));
-                    custInfoBean.setUpdateCycle(StringUtils.isNotBlank(dataCycle) ? null : Integer.parseInt(dataCycle));
+                    custInfoBean.setCreatetime(StringUtils.isBlank(crtTime) ? null : DateTool.getDate(crtTime));
+                    custInfoBean.setCustomNum(StringUtils.isBlank(rowNumber) ? null : Integer.parseInt(rowNumber));
+                    custInfoBean.setUpdateCycle(StringUtils.isBlank(dataCycle) ? null : Integer.parseInt(dataCycle));
 //                  custInfoBean.setCustomStatusId(Integer.parseInt(grpStatus));
-                    custInfoBean.setEffectiveTime(StringUtils.isNotBlank(effectiveTime) ? null :DateTool.getDate(effectiveTime));
-                    custInfoBean.setFailTime(StringUtils.isNotBlank(failTime) ? null : DateTool.getDate(failTime));
-                    if(!StringUtils.isNotBlank(crtPersnName) && StringUtils.isNotBlank(userId)) {
+                    custInfoBean.setEffectiveTime(StringUtils.isBlank(effectiveTime) ? null :DateTool.getDate(effectiveTime));
+                    custInfoBean.setFailTime(StringUtils.isBlank(failTime) ? null : DateTool.getDate(failTime));
+                    if(!StringUtils.isBlank(crtPersnName) && StringUtils.isBlank(userId)) {
                         User user = userPrivilege.queryUserById(userId);
 
                         String userName = "";
