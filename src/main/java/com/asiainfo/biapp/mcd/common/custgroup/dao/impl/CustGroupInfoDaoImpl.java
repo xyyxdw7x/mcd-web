@@ -1,9 +1,7 @@
 package com.asiainfo.biapp.mcd.common.custgroup.dao.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -19,10 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.aop.BeanSelfAware;
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
@@ -31,6 +29,7 @@ import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
@@ -931,18 +930,22 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		return sql;
 	}
 	
-    /**
-     * 根据代替SQLFIRE内的表在MCD里创建表的同义词
-     * @param mtlCuserTableName
-     */
-    @Override
-    public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) {
-        //String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		String tabSpace = "mcd_core_ad";
-        String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
-        this.getJdbcTemplate().execute(sql);
-    } 
-    
+	/**
+	 * 根据代替SQLFIRE内的表在MCD里创建表的同义词
+	 * @param mtlCuserTableName
+	 */
+	@Override
+	public void addCreateSynonymTableMcdBySqlFire(String mtlCuserTableName) throws Exception {
+		try {
+			String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+			String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;
+			this.getJdbcTemplate().execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	} 
+
     @Override
 	public void insertCustGroupNewWay(String customgroupid,String bussinessLableSql,String basicEventSql,String orderProductNo,String excludeProductNo,String tableName,boolean removeRepeatFlag) {
 		String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
@@ -1259,16 +1262,21 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	 */
 	public int insertInMemCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
 		log.info("insertCustPhoneNoToTab tabName="+tabName+" clearTable="+clearTable);
-		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		String tabSpace = "mcd_core_ad";
 		//插入行数
 		int total = 0;
 
-		//是否清空表
-		if (clearTable) {
-			log.info("清空{}表", tabName);
-			String truncateSQL = "truncate table "+tabSpace+"."+tabName;
-			this.getJdbcTemplate().execute(truncateSQL);
+		String tabSpace;
+		try {
+			tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+			//是否清空表
+			if (clearTable) {
+				log.info("清空{}表", tabName);
+				String truncateSQL = "truncate table "+tabSpace+"."+tabName;
+				this.getJdbcTemplate().execute(truncateSQL);
+			}
+		} catch (Exception e4) {
+			e4.printStackTrace();
+			throw e4;
 		}
 		
 		try {
@@ -1332,26 +1340,24 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	 * @param fileNamePrefix
 	 * @return
 	 */
-	public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{
-		String dbuserId = "mcd_core_ad";
-		String dbuserPwd = "mcd_core_ad";
-		String dbIP = "10.1.253.75";
-		String dbSid = "ora11g";
-		
-		String ctlFile = "";
-		String logFile = "";
-		if (!filepath.endsWith(File.separator)) {
-			logFile = filepath+File.separator+fileNamePrefix+".log";
-			ctlFile = filepath+File.separator+fileNamePrefix+".txt";
-		} else {
-			logFile = filepath+fileNamePrefix+".log";
-			ctlFile = filepath+fileNamePrefix+".txt";
-		}
-		
+	public void executeSqlldr(String filepath, String fileNamePrefix) throws Exception{		
 		try {
-			String command = "sqlldr "+dbuserId+"/"+dbuserPwd+"@"+dbIP+"/"+dbSid+" control='"+ctlFile+"' log='"+logFile+"'  readsize=10485760 direct=true";
+			String dbuserId = AppConfigService.getProperty("mcd_core_ad");
+			String dbuserPwd = AppConfigService.getProperty("mcd_core_ad");
+			String dbSid = AppConfigService.getProperty("ora11g");
+			
+			String ctlFile = "";
+			String logFile = "";
+			if (!filepath.endsWith(File.separator)) {
+				logFile = filepath+File.separator+fileNamePrefix+".log";
+				ctlFile = filepath+File.separator+fileNamePrefix+".txt";
+			} else {
+				logFile = filepath+fileNamePrefix+".log";
+				ctlFile = filepath+fileNamePrefix+".txt";
+			}
+			String command = "sqlldr "+dbuserId+"/"+dbuserPwd+"@"+dbSid+" control='"+ctlFile+"' log='"+logFile+"'  readsize=10485760 direct=true";
 			Runtime.getRuntime().exec(command);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
@@ -1425,12 +1431,13 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    }
 	    
 	    @Override
-	    public void addInMemCreateCustGroupTab(String sql) {
+	    public void addInMemCreateCustGroupTab(String sql) throws MpmException {
 	        try {   
 	            log.info("sql: {}", sql);
 	            this.getJdbcTemplate().update(sql);
 	        } catch (Exception e) {
 	        	log.error("", e);
+	        	throw new MpmException(e);
 	        }   
 	    }
 

@@ -18,7 +18,7 @@
 		<span class="del-icon delete"></span>
 	</div>
 	<div class="info-box">
-		<h5>适配政策</h5>
+		<h5>适配产品</h5>
 		<ul id="selectedPlan">
 		</ul>
 	</div>

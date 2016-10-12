@@ -8,11 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
+import com.asiainfo.biapp.framework.core.AppConfigService;
 
 public class MpmUtil {
 	private static Logger log = LogManager.getLogger();
@@ -34,18 +35,21 @@ public class MpmUtil {
 	 * @param tmpTable
 	 * @return
 	 */
-	public static String getSqlCreateAsTableInSqlFire(String newTab, String tmpTable) {
+	public static String getSqlCreateAsTableInSqlFire(String newTab, String tmpTable) throws Exception {
 		StringBuilder strRet = new StringBuilder();
-		//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-		//String isUseSqlfire = MpmConfigure.getInstance().getProperty("MPM_IS_USE_SQLFIRE");
-		String tabSpace = "mcd_core_ad";
-		String isUseSqlfire = "false";
-		if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
-			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" NOLOGGING as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2");
-		}else{
-			strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2").append(" WITH NO DATA");
+		try {
+			String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+			String isUseSqlfire = AppConfigService.getProperty("MPM_IS_USE_SQLFIRE");
+			if(StringUtils.isNotEmpty(isUseSqlfire) && isUseSqlfire.equals("false")){  //不使用sqlfire数据库
+				strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" NOLOGGING as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2");
+			}else{
+				strRet.append("create table ").append(tabSpace).append(".").append(newTab).append(" as select * from ").append(tabSpace).append(".").append(tmpTable).append(" where 1=2").append(" WITH NO DATA");
+			}
+			log.warn("在sqlfire库中创建清单表sql语句："+strRet.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
-		log.warn("在sqlfire库中创建清单表sql语句："+strRet.toString());
 		return strRet.toString();
 	}
 	/**

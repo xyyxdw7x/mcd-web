@@ -246,7 +246,7 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 * @throws MpmException
 	 */
-	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId)throws MpmException;
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) throws MpmException;
 	
 	/**
 	 * 为Duser表创建索引
