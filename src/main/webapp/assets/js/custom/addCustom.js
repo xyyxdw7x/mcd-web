@@ -64,7 +64,7 @@ define(["backbone","my97","form"],function(require, exports, module) {
 							};
 							//数据提交
 							$("#form").ajaxSubmit({  
-								url : _ctx+"/action/custgroup/custGroupManager/saveCustGroup.do",
+								url : _ctx+"/action/custgroup/custGroupManager/saveCustGroupImport.do",
 								data: data,
 								dataType : 'json',
 								success : function(data) {
