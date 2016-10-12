@@ -290,5 +290,10 @@ public interface IMpmCampSegInfoService {
     public List<McdCampChannelList> getChannelByCampsegId(String campsegId);
 	
 	
-	
+    /**
+     * 根据策略ID及类型，查找对应客户群或时机规则信息
+     * @param campsegId
+     * @return
+     */
+    public List<Map<String, Object>> getMtlCampsegCustGroup(String campsegId);
 }
