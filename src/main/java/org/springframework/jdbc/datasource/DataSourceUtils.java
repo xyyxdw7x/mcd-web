@@ -403,6 +403,7 @@ public abstract class DataSourceUtils {
 	 * (e.g. when participating in a JtaTransactionManager transaction).
 	 * @see org.springframework.transaction.jta.JtaTransactionManager
 	 */
+	@SuppressWarnings("unused")
 	private static class ConnectionSynchronization extends TransactionSynchronizationAdapter {
 
 		private final ConnectionHolder connectionHolder;
