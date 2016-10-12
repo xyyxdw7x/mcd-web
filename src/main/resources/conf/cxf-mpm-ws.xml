@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+  <bean id="sendCustInfoWsService" class="com.asiainfo.biapp.mcd.wservice.impl.SendCustInfoWsServiceImpl">  
+  </bean>  
+  <jaxws:server id="sendCustInfoService" serviceClass="com.asiainfo.biapp.mcd.wservice.ISendCustInfoWsService" address="/SendCustInfo">      
+    <jaxws:serviceBean>           
+        <ref bean="sendCustInfoWsService"/>       
+    </jaxws:serviceBean>       
+  </jaxws:server>   
+    
+</beans>
+
+    

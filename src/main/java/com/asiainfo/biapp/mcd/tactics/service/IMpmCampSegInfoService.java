@@ -246,7 +246,7 @@ public interface IMpmCampSegInfoService {
 	 * @return
 	 * @throws MpmException
 	 */
-	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) throws MpmException;
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId)throws MpmException;
 	
 	/**
 	 * 为Duser表创建索引
@@ -289,6 +289,12 @@ public interface IMpmCampSegInfoService {
      * @return
      */
     public List<McdCampChannelList> getChannelByCampsegId(String campsegId);
+    /**
+     * 根据策略ID及类型，查找对应客户群或时机规则信息
+     * @param campsegId
+     * @return
+     */
+    public List<Map<String, Object>> getMtlCampsegCustGroup(String campsegId);
 	
 	
 	

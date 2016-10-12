@@ -123,7 +123,8 @@ public class ApacheFtpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	private FTPClientConfig getFTPClientConfig() throws Exception {
+	@SuppressWarnings("unused")
+    private FTPClientConfig getFTPClientConfig() throws Exception {
 		String systemKey = FTPClientConfig.SYST_NT;
 		String serverLanguageCode = "zh";
 		FTPClientConfig conf = new FTPClientConfig(systemKey);
@@ -144,7 +145,8 @@ public class ApacheFtpUtil {
 	/**
 	 * 执行FTP操作前的检查，连接无效直接关闭
 	 */
-	private void isPositiveable() {
+	@SuppressWarnings("unused")
+    private void isPositiveable() {
 		if (!isPositive()) {
 			closeFtpConnection();
 		}
@@ -816,7 +818,7 @@ public class ApacheFtpUtil {
 	}
 
 	public static void main(String[] args) {
-		ApacheFtpUtil ftp = ApacheFtpUtil.getInstance("10.1.252.197", 21, "crmtest", "crmtest", "gb2312");
+//		ApacheFtpUtil ftp = ApacheFtpUtil.getInstance("10.1.252.197", 21, "crmtest", "crmtest", "gb2312");
 		try {
 
 			//ftp.changeDir("/ifdata1/data/F-IOP2.1-0005/20121117/23/");

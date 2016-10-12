@@ -106,6 +106,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <servlet-name>mvc</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  
+  <servlet>    
+    <servlet-name>CXFService</servlet-name>    
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>    
+</servlet>            
+<servlet-mapping>    
+    <servlet-name>CXFService</servlet-name>    
+    <url-pattern>/webservice/*</url-pattern>    
+</servlet-mapping>   
   <!-- spring mvc end-->
   
 

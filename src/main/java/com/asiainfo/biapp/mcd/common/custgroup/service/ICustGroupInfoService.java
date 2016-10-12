@@ -260,5 +260,25 @@ public interface ICustGroupInfoService {
 	 * @throws Exception
 	 */
 	public void insertCustGroupDataByImportFile(String filepath, String custGroupId, String tableName, String customGroupName, String date)throws Exception;
+	   /**
+     * 根据日期查询某表数量
+     * @param tableName  表名
+     * @param customGroupDataDate  日期
+     * @return
+     */
+    public int getTableNameNum(String tableName, String customGroupDataDate);
+    /**
+     * 根据客户群编码获取客户群清单信息
+     * @param customgroupid
+     * @return
+     */
+    public List<Map<String,Object>> getMtlCustomListInfo(String custgroupId);
+    /**
+     * 查询客户群清单表， 某周期总条数
+     * @param custListTabName
+     * @param dataDate
+     * @return
+     */
+    public int getInMemCustomListInfoNum(String custListTabName, String dataDate);
 }
 

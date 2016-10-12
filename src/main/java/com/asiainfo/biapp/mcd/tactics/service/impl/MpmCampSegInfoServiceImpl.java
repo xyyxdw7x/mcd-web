@@ -544,19 +544,19 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }
 
     }
-	@Override
-	public String addCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
-		String tabNameModel="mtl_cuser_XXXXXXXX";
-		String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
-		try {
-			String sql = MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel);
-			custGroupInfoDao.addInMemCreateCustGroupTab(sql);
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new MpmException(e);
-		} 
-		return tabName;
-	}
+    @Override
+    public String addCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
+        String tabNameModel="mtl_cuser_XXXXXXXX";
+        String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
+        try {
+            custGroupInfoDao.addInMemCreateCustGroupTab(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel));
+        } catch (MpmException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return tabName;
+    }
 	/**
 	 * 修改策略完成时间（延期）
 	 */
@@ -1128,32 +1128,31 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 
      
     @Override
-	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) throws MpmException {
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
 		List<Map<String,Object>> list = custGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();
 		//查询客户群的周期性
 		McdCustgroupDef groupInfo = custGroupInfoDao.getCustGroupInfoById(custGroupId);
 		int updateCycle = groupInfo.getUpdateCycle();
-		
-try {
-	//		if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
-	//			创建分区   edit by lixq10 2016年6月2日21:13:06
-	//			try {
-					campSegInfoDao.addInMemExcSqlInMcdAd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
-					//MCD表创建同义词   
-					custGroupInfoService.createSynonymTableMcdBySqlFire(tabName);
-	
-	//			} catch (Exception e) {
-	//				log.error(e);
-	//			}
-	//		}else{
-	//			campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
-	//		}
-} catch (Exception e) {
-	e.printStackTrace();
-	throw new MpmException(e.getMessage());
-}
+		try {
+		    //      if(StringUtils.isNotEmpty(province) && province.equals("zhejiang")){  //浙江Oracle sqlfire同时创建表
+		    //          创建分区   edit by lixq10 2016年6月2日21:13:06
+		    //          try {
+		                    campSegInfoDao.addInMemExcSqlInMcdAd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+		                    //MCD表创建同义词   
+		                    custGroupInfoService.createSynonymTableMcdBySqlFire(tabName);
+		    
+		    //          } catch (Exception e) {
+		    //              log.error(e);
+		    //          }
+		    //      }else{
+		    //          campSegInfoDao.excSqlInMcd(this.getCreateDuserSQLForSqlfire(tabName, tabNameModel,updateCycle));
+		    //      }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    throw new MpmException(e.getMessage());
+		}
 		return tabName;
 	}
     
@@ -1371,6 +1370,15 @@ try {
     @Override
     public List<McdCampChannelList> getChannelByCampsegId(String campsegId) {
             return mtlChannelDefDao.getChannelByCampsegId(campsegId);
+    }
+    /**
+     * 根据策略ID及类型，查找对应客户群或时机规则信息
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getMtlCampsegCustGroup(String campsegId) {
+        return mtlCampsegCustgroupDao.getMtlCampsegCustGroup(campsegId);
     }
     
 }

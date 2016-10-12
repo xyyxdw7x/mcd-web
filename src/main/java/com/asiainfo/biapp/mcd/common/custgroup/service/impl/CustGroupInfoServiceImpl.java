@@ -961,17 +961,14 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			creatTxtFile(chkFile,tableName+".txt"); 
 		}
 		
+        @SuppressWarnings("unchecked")
         @Override
         public String doSendCustInfo(String custInfoXml) {
             String exceptionMessage = "";
-            int dataStatus=0;//默认成功 
             String customGroupDataDate = "";//统计周期
             String rowNumber = "";//客户数量
-            Object[] args = new Object[]{};
             String mtlCuserTableName = "";
             String fileName = "";
-            String fileNameChk = "";
-            String chkFileName = "";
             String customGroupId= "";
             String customGroupName = "";
             String customGroupDesc ="";
@@ -980,7 +977,6 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
             String crtPersnName = "";
             String crtTime = "";
             String dataCycle= "";
-            String grpStatus = "";
             String effectiveTime = "";
             String failTime = "";
             int flag = 1;
@@ -1027,7 +1023,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
                 this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
                 return xml.toString();
             } 
-            List mtlCustomListInfoList = custGroupInfoDao.getMtlCustomListInfo(customGroupId,customGroupDataDate);
+            List<Map<String, Object>> mtlCustomListInfoList = custGroupInfoDao.getMtlCustomListInfo(customGroupId,customGroupDataDate);
             log.info("客户群ID："+customGroupId+",日期:"+customGroupDataDate+"的客户群，历史提送过：" + mtlCustomListInfoList != null ? mtlCustomListInfoList.size() : 0);
             if(mtlCustomListInfoList == null || mtlCustomListInfoList.size() == 0){
                 List<Element> elementList = null;
@@ -1061,7 +1057,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
                      elementList=columnsElement.elements("column"); 
 //                   List<Map> mapList = new ArrayList<Map>();
                      //客户群清单表名
-                    fileName = "MCD_GROUP_" + customGroupId + "_";
+                     fileName = "MCD_GROUP_" + customGroupId + "_";
                      Integer dataCycleInt = Integer.parseInt(dataCycle);
                      if(McdCONST.CUST_INFO_GRPUPDATEFREQ_ONE == dataCycleInt.intValue() || McdCONST.CUST_INFO_GRPUPDATEFREQ_DAY == dataCycleInt.intValue()){
                         fileName = fileName + customGroupDataDate;
@@ -1243,5 +1239,36 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
         public void addInMembatchExecute(String inertSql, List<String> columnTypeList, List<String> txtList,
                         String customGroupDataDate) {
             custGroupInfoDao.addInMembatchExecute(inertSql,columnTypeList,txtList,customGroupDataDate);
+        }
+        /**
+         * 根据日期查询某表数量
+         * @param tableName  表名
+         * @param customGroupDataDate  日期
+         * @return
+         */
+        @Override
+        public int getTableNameNum(String tableName, String customGroupDataDate) {
+            return custGroupInfoDao.getInMemTableNameNum(tableName,customGroupDataDate);
+        }
+        /**
+         * 根据客户群编码获取客户群清单信息
+         * @param customgroupid
+         * @return
+         */
+        @Override
+        public List<Map<String, Object>> getMtlCustomListInfo(String custgroupId) {
+            return custGroupInfoDao.getMtlCustomListInfo(custgroupId);
+
+        }
+        /**
+         * 查询客户群清单表， 某周期总条数
+         * @param custListTabName
+         * @param dataDate
+         * @return
+         */
+        @Override
+        public int getInMemCustomListInfoNum(String custListTabName, String dataDate) {
+            return custGroupInfoDao.getInMemCustomListInfoNum(custListTabName,dataDate);
+
         }
 }

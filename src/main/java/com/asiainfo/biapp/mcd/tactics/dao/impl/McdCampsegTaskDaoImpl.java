@@ -349,5 +349,23 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
 			log.error("更新策略任务状态异常："+e);
 		}
 	}
+    /**
+     * 判断taskData是否存在
+     * @param taskId
+     * @param dataDate
+     * @return
+     */
+    @Override
+    public boolean checkTaskDataIsExist(String taskId, String dataDate) {
+        boolean flag = false;
+        String sql = "select count(1) from mcd_camp_task_date where task_id='"+taskId+"' and DATA_DATE='"+dataDate+"'";
+        log.info("检查task_date数据是否重复"+sql);
+        int num = this.getJdbcTemplate().queryForObject(sql,Integer.class);
+        log.info("检查task_date数据是否重复，num="+num);
+        if(num > 0){
+            flag = true;
+        }
+        return flag;
+    }
 	
 }

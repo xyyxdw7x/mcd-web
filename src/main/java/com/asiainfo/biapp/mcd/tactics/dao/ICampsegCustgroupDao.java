@@ -38,4 +38,10 @@ public interface ICampsegCustgroupDao {
      * @return 
      */
     public abstract List<Map<String,Object>>  getCustGroupSelectByGroupIdList(String customGroupId);
+    /**
+     * 根据策略ID及类型，查找对应客户群或时机规则信息
+     * @param campsegId
+     * @return
+     */
+    public  List<Map<String, Object>> getMtlCampsegCustGroup(String campsegId);
 }

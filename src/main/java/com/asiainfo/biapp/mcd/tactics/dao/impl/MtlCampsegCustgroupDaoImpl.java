@@ -152,4 +152,16 @@ public class MtlCampsegCustgroupDaoImpl  extends JdbcDaoBase implements ICampseg
         }
         return list;
     }
+    /**
+     * 根据策略ID及类型，查找对应客户群或时机规则信息
+     * @param campsegId
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getMtlCampsegCustGroup(String campsegId) {
+        String sql = "select * from mcd_camp_custgroup_list mcc where mcc.CAMPSEG_ID =?";
+        List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql,new Object[]{campsegId});
+        return list;
+
+    }
 }

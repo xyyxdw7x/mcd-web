@@ -105,4 +105,11 @@ public interface IMcdCampsegTaskDao {
 	 * @param status
 	 */
 	public void updateCampsegTaskDataStatusById(String campsegId,int groupNum,short status);
+    /**
+     * 判断taskData是否存在
+     * @param taskId
+     * @param dataDate
+     * @return
+     */
+    boolean checkTaskDataIsExist(String taskId, String dataDate);
 }

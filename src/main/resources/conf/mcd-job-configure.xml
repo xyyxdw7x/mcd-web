@@ -57,7 +57,7 @@
 
 		<bean id="mcdCreateDuserTableTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		    <property name="jobDetail" ref="mcdCreateDuserTableJob" />
-		    <property name="cronExpression" value="0 0/2 * * * ?" />
+		    <property name="cronExpression" value="0 0/1 * * * ?" />
 		</bean>
 	
 	   

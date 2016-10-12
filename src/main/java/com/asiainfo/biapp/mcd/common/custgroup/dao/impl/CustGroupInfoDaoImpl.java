@@ -1563,7 +1563,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		}
 		
         @Override
-        public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate) {
+        public List<Map<String, Object>> getMtlCustomListInfo(String customGroupId, String customGroupDataDate) {
             List<Map<String, Object>> list = null;
             try {
                 StringBuffer sbuffer = new StringBuffer();
@@ -1647,5 +1647,29 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
                     return txtList.size();
                 }
             });            
+        }
+        /**
+         * 根据日期查询某表数量
+         * @param tableName  表名
+         * @param customGroupDataDate  日期
+         * @return
+         */
+        @Override
+        public int getInMemTableNameNum(String tableName, String customGroupDataDate) {
+            String sql = "select count(1) from " + tableName + " where data_date = ?";           
+            return this.getJdbcTemplate().queryForObject(sql,Integer.class, new Object[]{customGroupDataDate});
+        }
+        /**
+         * 查询客户群清单表， 某周期总条数
+         * @param custListTabName
+         * @param dataDate
+         * @return
+         */
+        @Override
+        public int getInMemCustomListInfoNum(String custListTabName, String dataDate) {
+            String sql = "select count(1) from " + custListTabName + " where data_date = ?";
+
+            
+            return this.getJdbcTemplate().queryForObject(sql,Integer.class, new Object[]{dataDate});
         }
 }

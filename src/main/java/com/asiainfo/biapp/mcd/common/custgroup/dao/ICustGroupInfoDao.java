@@ -303,7 +303,7 @@ public interface ICustGroupInfoDao {
          * @param customGroupDataDate
          * @return
          */
-        public List getMtlCustomListInfo(String customGroupId, String customGroupDataDate);
+        public List<Map<String, Object>> getMtlCustomListInfo(String customGroupId, String customGroupDataDate);
         /**
          * 重复传递客户群，删除之前的客户群推送信息表
          * @param customGroupId  客户群ID
@@ -329,4 +329,18 @@ public interface ICustGroupInfoDao {
          * @param customGroupDataDate 
          */
         public void addInMembatchExecute(String inertSql, List<String> columnTypeList, List<String> txtList,String customGroupDataDate);
+        /**
+         * 根据日期查询某表数量
+         * @param tableName  表名
+         * @param customGroupDataDate  日期
+         * @return
+         */
+        public int getInMemTableNameNum(String tableName, String customGroupDataDate);
+        /**
+         * 查询客户群清单表， 某周期总条数
+         * @param custListTabName
+         * @param dataDate
+         * @return
+         */
+        public int getInMemCustomListInfoNum(String custListTabName, String dataDate);
 }

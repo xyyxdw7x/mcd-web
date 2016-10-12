@@ -1,16 +1,19 @@
 package com.asiainfo.biapp.mcd.wservice.impl;
 
+import javax.annotation.Resource;
 import javax.jws.WebService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.wservice.ISendCustInfoWsService;
-
-@WebService(endpointInterface = "com.asiainfo.biapp.mcd.wservice.ISendCustInfoWsService")
+@Component
+@WebService
 public class SendCustInfoWsServiceImpl implements  ISendCustInfoWsService{
 	private static final Logger log = LogManager.getLogger();
+	@Resource(name="custGroupInfoService")
 	private ICustGroupInfoService custGroupInfoService;
 
 	@Override
