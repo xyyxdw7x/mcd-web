@@ -54,7 +54,8 @@
                             <td><input id="invalid_date" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d+1}'})" readOnly="true"></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr style="display:none">
+                       <!-- 暂时将使用对象隐藏，江西不需要推送给别人 -->
                             <td class="title">使用对象</td>
                             <td>
                                 <label><input type="radio" name="user_type" value=1 checked="checked">给自己用</label>

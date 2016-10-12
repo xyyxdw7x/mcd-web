@@ -283,6 +283,12 @@ public interface ICustGroupInfoDao {
 	     */
 	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId);
 	    
+		/**
+		 * 更新mcd_custgroup_tab_list表custom_num字段值
+		 * @param tableName
+		 */
+		public void updatesavemtlCustomListNum(String tableName);
+		
 	    public void addInMemCreateCustGroupTab(String sql)throws MpmException;
 	    /**
 	     * 判断当前分区是否存在

@@ -209,6 +209,10 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			if (!filename.endsWith(".txt")) {
 				throw new Exception("请上传txt文件!!!");
 			}
+			long size = multiFile.getBytes().length;
+			if (size<1) {
+				throw new Exception("上传的文件为空!!!");
+			}
 			
 			custGroupInfoService.saveCustGroupImport(userId, userName, cityId, customGroupName, customGroupDesc, multiFile, failTime);
 
@@ -216,9 +220,10 @@ public class CustGroupManagerController extends BaseMultiActionController{
 			returnMap.put("msg", "客户群创建成功，上传成功，正在后台处理!");
 		} catch (Exception e) { 
 			log.error("创建客户群异常", e);
+			e.printStackTrace();
 			returnMap.put("status", "FAILURE");
 			if (returnMap.get("msg") == null) {
-				returnMap.put("msg","新增客户群失败，请联系管理员。");
+				returnMap.put("msg","新增客户群失败，请联系管理员。出错信息："+e.getMessage());
 			}
 		} 
 		
