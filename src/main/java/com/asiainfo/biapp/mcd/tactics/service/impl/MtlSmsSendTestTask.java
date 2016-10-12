@@ -27,10 +27,9 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
-import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
-import com.asiainfo.biapp.mcd.quota.vo.McdSysDic;
 import com.asiainfo.biapp.mcd.tactics.dao.IMpmCampSegInfoDao;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlSmsSendTestTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
@@ -53,8 +52,7 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
     private static Connection conn = null;
     private static PreparedStatement ps = null;
     private static ResultSet rs = null;
-    @Resource(name="sysCampConfigDao")
-    private IMtlSysCampConfigDao mtlSysCampConfigDao;
+  
     @Resource(name="mpmCampSegInfoDao")
     private IMpmCampSegInfoDao mpmCampSegInfoDao;
     
@@ -77,31 +75,15 @@ public class MtlSmsSendTestTask  extends JdbcDaoBase  implements IMtlSmsSendTest
         String reserve24 = "";
         String reserve25 = "";
         String sendWSURL = "";        
-        List<McdSysDic> list = mtlSysCampConfigDao.getAll();//获取配置项
         
-        for(McdSysDic config:list){
-            if("SMS_TEST_SEND_CHANNELID".equals(config.getConfigKey())){
-                reserve21 = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_CHANNELNAME".equals(config.getConfigKey())){
-                reserve22 = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_BUSIID".equals(config.getConfigKey())){
-                reserve23 = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_BUSINAME".equals(config.getConfigKey())){
-                reserve24 = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_TEMPLATE_ID".equals(config.getConfigKey())){
-                reserve25 = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_SENDNOPREFIX".equals(config.getConfigKey())){
-                port = config.getConfigValue();
-            }
-            if("SMS_TEST_SEND_WSURL".equals(config.getConfigKey())){
-                sendWSURL = config.getConfigValue();
-            }
-        }
+        reserve21 = AppConfigService.getProperty("SMS_TEST_SEND_CHANNELID");
+        reserve22 = AppConfigService.getProperty("SMS_TEST_SEND_CHANNELNAME");
+        reserve23 =  AppConfigService.getProperty("SMS_TEST_SEND_BUSIID");
+        reserve24 =  AppConfigService.getProperty("SMS_TEST_SEND_BUSINAME");
+        reserve25 =  AppConfigService.getProperty("SMS_TEST_SEND_TEMPLATE_ID");
+        port  =  AppConfigService.getProperty("SMS_TEST_SEND_SENDNOPREFIX");
+        sendWSURL  =  AppConfigService.getProperty("SMS_TEST_SEND_WSURL");
+        
         
         Map<Integer, String> map = new HashMap<Integer, String>();//要发送的人放在map里
         Date beginTime = new Date(System.currentTimeMillis() - 1000);//开始时间
@@ -694,8 +676,9 @@ private String getReplyPhoNameByPho(String replyPhoneNo) throws SQLException {
  * @param sendNo
  * @param message
  * @return
+ * @throws Exception 
  */
-private String simpleSmsSendTask(String campsegPho, String sendNo, String message) {
+private String simpleSmsSendTask(String campsegPho, String sendNo, String message) throws Exception {
     
 
     String reserve21 = "";
@@ -704,27 +687,14 @@ private String simpleSmsSendTask(String campsegPho, String sendNo, String messag
     String reserve24 = "";
     String reserve25 = "";
     String sendWSURL = "";
-    List<McdSysDic> list = mtlSysCampConfigDao.getAll();//获取配置项
-    for(McdSysDic config:list){
-        if("SMS_TEST_SEND_CHANNELID".equals(config.getConfigKey())){
-            reserve21 = config.getConfigValue();
-        }
-        if("SMS_TEST_SEND_CHANNELNAME".equals(config.getConfigKey())){
-            reserve22 = config.getConfigValue();
-        }
-        if("SMS_TEST_SEND_BUSIID".equals(config.getConfigKey())){
-            reserve23 = config.getConfigValue();
-        }
-        if("SMS_TEST_SEND_BUSINAME".equals(config.getConfigKey())){
-            reserve24 = config.getConfigValue();
-        }
-        if("SMS_TEST_SEND_TEMPLATE_ID".equals(config.getConfigKey())){
-            reserve25 = config.getConfigValue();
-        }
-        if("SMS_TEST_SEND_WSURL".equals(config.getConfigKey())){
-            sendWSURL = config.getConfigValue();
-        }
-    }
+    
+    reserve21 = AppConfigService.getProperty("SMS_TEST_SEND_CHANNELID");
+    reserve22 = AppConfigService.getProperty("SMS_TEST_SEND_CHANNELNAME");
+    reserve23 =  AppConfigService.getProperty("SMS_TEST_SEND_BUSIID");
+    reserve24 =  AppConfigService.getProperty("SMS_TEST_SEND_BUSINAME");
+    reserve25 =  AppConfigService.getProperty("SMS_TEST_SEND_TEMPLATE_ID");
+    sendWSURL  =  AppConfigService.getProperty("SMS_TEST_SEND_WSURL");
+    
     String context = "SMS_CONTENT~"+message;
 //  Date datetime = new Date(System.currentTimeMillis() - 1000);//开始时间
     Calendar schduleTime = Calendar.getInstance();

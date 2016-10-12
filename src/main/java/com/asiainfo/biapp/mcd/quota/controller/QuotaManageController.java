@@ -19,12 +19,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.CommonUtil;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
 import com.asiainfo.biapp.mcd.exception.MpmException;
-import com.asiainfo.biapp.mcd.quota.dao.IMtlSysCampConfigDao;
 import com.asiainfo.biapp.mcd.quota.service.ICityDayQuotaServiceImp;
 import com.asiainfo.biapp.mcd.quota.service.IDeptMothQuotaService;
 import com.asiainfo.biapp.mcd.quota.util.QuotaUtils;
@@ -41,8 +41,7 @@ public class QuotaManageController  extends BaseMultiActionController {
     private IDeptMothQuotaService quotaConfigDeptMothService;
     @Resource(name = "quotaConfigCityDayService")
     private ICityDayQuotaServiceImp quotaConfigCityDayService;
-    @Resource(name = "sysCampConfigDao")
-    private IMtlSysCampConfigDao sysCampConfigDao;
+
     
     /**
      * 查询当前人员所在地市的所有科室的月配额
@@ -89,9 +88,10 @@ public class QuotaManageController  extends BaseMultiActionController {
         map.put("couldAdjust", couldAdjust);
         map.put("newDate",DateTool.getStringDate(new Date(), "yyyyMM"));
         //add by zhuyq3 2015-10-29 15:14:57
-        Object obj = sysCampConfigDao.getProperety("SMS_CITY_NUM");
+        //Object obj = sysCampConfigDao.getProperety("SMS_CITY_NUM");
+        
         try {
-            map.put("smsCityNum", Integer.parseInt(String.valueOf(obj)));
+            map.put("smsCityNum", AppConfigService.getProperty("SMS_CITY_NUM"));
         } catch (Exception e) {
             e.printStackTrace();
             map.put("smsCityNum", 0);
