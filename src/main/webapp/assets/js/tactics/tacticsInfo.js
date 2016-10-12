@@ -328,7 +328,7 @@ define(["backbone","my97"],function(require, exports, module) {
 				var subCampsegId=subCampsegIdCTList.eq(i).html();
 				var _htm='<div class="box">';
 				_htm+='<div class="content">';
-				_htm+='<div class="content-title-little">政策</div>';
+				_htm+='<div class="content-title-little">产品</div>';
 				_htm+='<div class="content-main">';
 				_htm+='<div class="mtlStcPlan content-table"></div>';
 				_htm+='</div></div>';
