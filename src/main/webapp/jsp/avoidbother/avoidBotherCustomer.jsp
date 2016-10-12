@@ -105,7 +105,7 @@
 				<div class="add-form-box">
                	  <ol>
                	  	<li>
-               	  		<label class="fleft labFmt80">客户类型：</label>
+               	  		<label class="fleft labFmt80">用户类型：</label>
                	  		<select id="userTypeId" name="userTypeId" class="fleft sel115 avoidBotherUserTypeSelect">
                	  		</select>
                	  	</li>	
