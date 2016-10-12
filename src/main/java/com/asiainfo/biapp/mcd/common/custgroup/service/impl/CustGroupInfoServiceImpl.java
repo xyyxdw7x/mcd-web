@@ -30,6 +30,7 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.mcd.avoid.service.IMcdMtlBotherAvoidService;
@@ -38,7 +39,6 @@ import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.DateTool;
-import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
@@ -528,7 +528,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
      * @param mtlCuserTableName
      */
     @Override
-    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+    public void createSynonymTableMcdBySqlFire(String mtlCuserTableName)  throws Exception {
     	custGroupInfoDao.addCreateSynonymTableMcdBySqlFire(mtlCuserTableName); 
     } 
     
@@ -652,7 +652,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 				insertSqlLoderISyncDataCfg(tableName+".txt",tableName + ".verf",customGroupName,tableName,filepath,filenameTemp,custGroupId);
 				
 				//导入客户群到数据库的方式：0、在当前系统使用执行sql脚本导入文件 	1、在当前系统使用sqlldr方式导入文件	2、在其他系统使用sqlldr方式导入文件
-				String importToDbType = MpmConfigure.getInstance().getProperty("IMPORT_CUST_TO_DB_TYPE");
+				String importToDbType = AppConfigService.getProperty("CUSTGROUP_TODB_IMPORT_TYPE");
 				if(StringUtils.isEmpty(importToDbType) || importToDbType.equals("0")){
 					
 					//在当前系统使用执行sql脚本导入文件
@@ -666,7 +666,8 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 					//在其他系统使用sqlldr方式导入文件,比如浙江的做法：单独起动一个应用，用语将上传的文件导入到数据库
 					insertCustByOtherAppSQLLDR(filepath, tableName, customGroupName, date);
 				} else {
-					//留作其他方式拓展使用
+					//留作其他方式拓展使用，单需要在这里完善逻辑，否则异常。
+					throw new Exception("导入客户群到数据库的方式配置错误：CUSTGROUP_TODB_IMPORT_TYPE值不正确。");
 				}
 				
 				Boolean isTrue = this.getSqlLoderISyncDataCfgEnd(tableName);
@@ -771,7 +772,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			List<Object> result = new ArrayList<Object>();
 			
 			//号码校验的表达式
-			String mobilePhoneNoPattern =  MpmConfigure.getInstance().getProperty("MOBILE_PHONENO_PATTERN");
+			String mobilePhoneNoPattern = AppConfigService.getProperty("MOBILE_PHONENO_PATTERN");
 			String pattern = "^1[34578]\\d{9}$";
 			if(StringUtils.isNotEmpty(mobilePhoneNoPattern)) {
 				pattern = mobilePhoneNoPattern;
@@ -904,8 +905,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			log.info("更改i_sync_data_cfg表的RUN_BEGIN_TIME字段值{}", beginDate);
 			custGroupInfoDao.updateSqlLoderISyncDataCfgBegin(tableName, beginDate);
 			
-			//String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
-			String tabSpace = "mcd_core_ad";
+			String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
 			
 			String lastLine = "(  PRODUCT_NO  char(32) TERMINATED BY WHITESPACE,DATA_DATE constant '" +date + "')"; 
 			String filenameTemp =filepath+tableName + ".ctl"; 

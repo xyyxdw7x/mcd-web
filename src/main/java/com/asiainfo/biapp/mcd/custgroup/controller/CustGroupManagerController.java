@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
@@ -262,12 +263,11 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	  		returnMap.put("count", ""+i);
 			
 			campSegInfoService.addCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
-		
-			//String config_Path = MpmConfigure.getInstance().getProperty("SYS_COMMON_UPLOAD_PATH") ; 
-			String config_Path = "D:\\temp\\mpm\\upload";
+			
+			String config_Path = AppConfigService.getProperty("CUSTGTOUP_UPLOAD_PATH");
 			Properties props=System.getProperties();
-			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) ==-1) {
-				config_Path = "/home/imcd/mcd_jiangxi/custgroup_upload";
+			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) !=-1) {
+				config_Path = "D:\\temp\\mpm\\upload";
 			}
 			
 			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
