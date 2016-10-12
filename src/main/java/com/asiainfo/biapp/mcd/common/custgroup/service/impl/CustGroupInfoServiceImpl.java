@@ -552,14 +552,14 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	        custGroupInfoDao.updateMtlGroupinfo(custInfoBean);
 	    }
 	    @Override
-	    public void updateMtlGroupStatus(String tableName,String custGroupId){
+	    public void updateMtlGroupStatus(String tableName,String custGroupId) throws Exception {
 	        custGroupInfoDao.updateMtlGroupStatusInMem(tableName,custGroupId);
 	    }
 		/**
 		 * 更新mcd_custgroup_tab_list表custom_num字段值
 		 * @param tableName
 		 */
-		private void updatesavemtlCustomListNum(String tableName){
+		private void updatesavemtlCustomListNum(String tableName) throws Exception {
 			custGroupInfoDao.updatesavemtlCustomListNum(tableName);
 		}
 	    @Override

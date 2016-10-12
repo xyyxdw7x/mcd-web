@@ -174,7 +174,7 @@ public interface ICustGroupInfoService {
      * @param custGroupId
      * @return
      */
-    public void updateMtlGroupStatus(String tableName,String custGroupId);
+    public void updateMtlGroupStatus(String tableName,String custGroupId) throws Exception ;
     /**
      * 执行传过来的SQL语句，并注入参数
      * @param mtlCuserTableName   清单表名

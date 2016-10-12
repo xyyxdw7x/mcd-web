@@ -1417,10 +1417,10 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 
 	    }
 	    @Override
-	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId) {
-	        
+	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId) throws Exception {
+	    	String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
 	        StringBuilder updateSql = new StringBuilder();
-	        updateSql.append("UPDATE mcd_custgroup_def SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from ")
+	        updateSql.append("UPDATE mcd_custgroup_def SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from ").append(tabSpace).append(".")
 	        .append(tableName)
 	        .append(") where custom_group_id=?");
 	        
@@ -1445,8 +1445,9 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 		 * @param tableName
 		 */
 		@Override
-		public void updatesavemtlCustomListNum(String tableName){
-			String sql = "update mcd_custgroup_tab_list set custom_num=(select COUNT(1) from '"+tableName+"')  where list_table_name='"+tableName+"'";
+		public void updatesavemtlCustomListNum(String tableName) throws Exception{
+			String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+			String sql = "update mcd_custgroup_tab_list set custom_num=(select COUNT(1) from "+tabSpace+"."+tableName+")  where list_table_name='"+tableName+"'";
 			this.getJdbcTemplate().update(sql);
 		}
         @Override
