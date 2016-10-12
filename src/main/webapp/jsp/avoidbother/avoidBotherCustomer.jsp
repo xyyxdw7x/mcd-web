@@ -200,7 +200,7 @@
 		    	</form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="button button-default close-add-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="button button-default close_edit_btn" data-dismiss="modal">取消</button>
                 <button type="button" class="button button-info" id="edit_btn">确认</button>
             </div>
         </div>
