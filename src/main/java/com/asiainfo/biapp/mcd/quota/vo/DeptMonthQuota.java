@@ -7,27 +7,33 @@ public class DeptMonthQuota {
 	private String cityId;
 	private String deptId;
 	private String deptName;
-	private long usedNum;
-	private long remainNum;
-	private long monthQuotaNum;
-	private long defaultMonthQuotaNum;
+	private Long usedNum;
+	private Long remainNum;
+	private Long monthQuotaNum;
+	private Long defaultMonthQuotaNum;
+	private String monthUsedPercent="0.00%";
 
 
-	public long getDefaultMonthQuotaNum() {
+	public Long getDefaultMonthQuotaNum() {
 		return defaultMonthQuotaNum;
 	}
 
-	public void setDefaultMonthQuotaNum(long defaultMonthQuotaNum) {
+	public void setDefaultMonthQuotaNum(Long defaultMonthQuotaNum) {
 		this.defaultMonthQuotaNum = defaultMonthQuotaNum;
 	}
 
-	private String monthUsedPercent="0.00%";
 	
 	public void setMonthUsedPercent() {
-		if (monthQuotaNum != 0) {
+		if (monthQuotaNum != null) {
 			DecimalFormat df = new DecimalFormat("0.00");
-			double temp= ((double)usedNum/monthQuotaNum)*100;
-			this.monthUsedPercent = df.format(temp)+"%";
+			if(usedNum!=null){
+				long usedNum1 = usedNum.longValue();
+				long monthQuotaNum1 =monthQuotaNum.longValue();
+				if(monthQuotaNum1!=0){
+					double temp= ((double)usedNum1/monthQuotaNum1)*100;
+					this.monthUsedPercent = df.format(temp)+"%";
+				}
+			}
 		}
 	}
 	
@@ -74,26 +80,26 @@ public class DeptMonthQuota {
 
 
 
-	public long getMonthQuotaNum() {
+	public Long getMonthQuotaNum() {
 		return monthQuotaNum;
 	}
 
-	public void setMonthQuotaNum(long monthQuotaNum) {
+	public void setMonthQuotaNum(Long monthQuotaNum) {
 		this.monthQuotaNum = monthQuotaNum;
 	}
 
 
-	public long getUsedNum() {
+	public Long getUsedNum() {
 		return usedNum;
 	}
 
 
-	public void setUsedNum(long usedNum) {
+	public void setUsedNum(Long usedNum) {
 		this.usedNum = usedNum;
 		this.remainNum = this.monthQuotaNum - this.usedNum;
 	}
 
-	public long getRemainNum() {
+	public Long getRemainNum() {
 		return remainNum;
 	}
 

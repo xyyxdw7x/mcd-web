@@ -45,15 +45,8 @@ public class DeptMothQuotaDaoImp extends JdbcDaoBase implements IDeptMonthQuotaD
         
 		Object[] parm = { month, cityId };
 
-		try {
-			this.getJdbcTemplate().getDataSource().getConnection();
-			list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
-		} catch (DataAccessException e) {
-			return null;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		list = this.getJdbcTemplate().queryForList(sql.toString(), parm);
+
 		return list;
 	}
 	

@@ -18,6 +18,7 @@ public class TestController extends BaseMultiActionController {
 	@RequestMapping("/test")
 	public String test(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		quotaConfigDeptMothService.averageCityMonthQuota();
+		quotaConfigDeptMothService.setDeptsCurrentMonthQuota();
 		return "333";
 	} 
 	

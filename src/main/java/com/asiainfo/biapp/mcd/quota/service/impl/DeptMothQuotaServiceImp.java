@@ -281,12 +281,13 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 			List<DeptMonthQuota> addList = new ArrayList<DeptMonthQuota>();
 			for(int i=0;i<allDeptsQuota.size();i++){
 				DeptMonthQuota tmpConf = allDeptsQuota.get(i);
-				long tmpConfNum = tmpConf.getMonthQuotaNum();
+				Long tmpConfNum = tmpConf.getMonthQuotaNum();
 				for(int j=0;j<allDeptsDefQuota.size();j++){
-					DeptMonthQuota tmpDef = allDeptsDefQuota.get(i);
-					if(tmpConfNum==0){//科室没有配置月配额
+					DeptMonthQuota tmpDef = allDeptsDefQuota.get(j);
+					if(tmpConfNum==null){//科室没有配置月配额
 						if(tmpConf.getDeptId().equals(tmpDef.getDeptId())){
 							tmpConf.setMonthQuotaNum(tmpDef.getDefaultMonthQuotaNum());
+							tmpConf.setDataDate(month);
 							addList.add(tmpConf);
 							break;
 						}
