@@ -544,19 +544,6 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
         }
 
     }
-    @Override
-    public String addCustGroupTabAsCustTable1(String tabPrefix,String custGroupId) {
-        String tabNameModel="mtl_cuser_XXXXXXXX";
-        String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
-        try {
-            custGroupInfoDao.addInMemCreateCustGroupTab(MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel));
-        } catch (MpmException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
-        return tabName;
-    }
 	/**
 	 * 修改策略完成时间（延期）
 	 */
@@ -1128,7 +1115,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 
      
     @Override
-	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
+	public String createCustGroupTabAsCustTable(String tabPrefix,String custGroupId) throws MpmException {
 		List<Map<String,Object>> list = custGroupInfoDao.getMtlCustomListInfo(custGroupId);
 		String tabNameModel = (String) list.get(0).get("LIST_TABLE_NAME");
 		String tabName = tabPrefix + MpmUtil.convertLongMillsToYYYYMMDDHHMMSSSSS();

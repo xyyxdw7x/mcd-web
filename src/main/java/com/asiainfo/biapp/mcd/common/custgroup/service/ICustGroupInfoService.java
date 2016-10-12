@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
@@ -196,6 +198,20 @@ public interface ICustGroupInfoService {
 	 * @throws Exception
 	 */
 	public boolean existsCustgroupName(String custgroupName) throws Exception;
+	
+	/**
+	 * 保存导入的客户群
+	 * @param userId 用户ID
+	 * @param userName 用户姓名
+	 * @param cityId 用户所属地市
+	 * @param customGroupName 客户群名称
+	 * @param customGroupDesc 客户群描述
+	 * @param multiFile 客户群号码清单文件
+	 * @param failTime 
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, Object> saveCustGroupImport(String userId, String userName, String cityId, String customGroupName, String customGroupDesc, MultipartFile multiFile, String failTime) throws Exception;
 	
 	/**
 	 * 将客户群数据插入到清单表中

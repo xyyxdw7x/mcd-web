@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -21,6 +22,8 @@ import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.xfire.client.Client;
@@ -29,6 +32,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
@@ -43,6 +47,7 @@ import com.asiainfo.biapp.mcd.common.util.MpmUtil;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
+import com.asiainfo.biapp.mcd.exception.MpmException;
 import com.asiainfo.biapp.mcd.tactics.service.IMtlCallWsUrlService;
 import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.thread.MpmCustGroupWsFtpRunnable;
@@ -573,6 +578,131 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 		public boolean existsCustgroupName(String custgroupName) throws Exception{
 			List<McdCustgroupDef> list = custGroupInfoDao.getCustgroupByName(custgroupName);
 			return CollectionUtils.isNotEmpty(list);
+		}
+		
+		/**
+		 * 保存导入的客户群
+		 * @param userId 用户ID
+		 * @param userName 用户姓名
+		 * @param cityId 用户所属地市
+		 * @param customGroupName 客户群名称
+		 * @param customGroupDesc 客户群描述
+		 * @param multiFile 客户群号码清单文件
+		 * @param failTime 
+		 * @return
+		 * @throws Exception
+		 */
+		public Map<String, Object> saveCustGroupImport(String userId, String userName, String cityId, String customGroupName, String customGroupDesc, MultipartFile multiFile, String failTime) throws Exception {
+			Map<String, Object> returnMap = new HashMap<String, Object>();
+			
+			//获得当前用户的地市本年度当前月已导入的客户群数+1
+			int num = this.getGroupSequence(cityId) +1 ;
+			SimpleDateFormat df = new SimpleDateFormat("yyMM"); 
+			String	month = df.format(new Date());
+			String code="";
+			if (num < 10 && num > 0) { 
+				code = "000" + num; 
+			} else if (num < 100 && num > 9) { 
+				code = "00" + num;
+			} else if (num < 1000 && num > 99) {
+				code = "0" + num ;
+			} else{
+				code = "" + num;
+			}
+			//获得客户群ID
+			final String custGroupId ="J" +cityId+ month+code;
+			//生成客户群清单表的表名
+			final String tableName = "MTL_CUSER_" +custGroupId;
+			
+			//保存客户群清单表信息到mcd_custgroup_def表 
+			CustInfo custInfoBean =null;
+			custInfoBean = new CustInfo();
+			custInfoBean.setCustomGroupId(custGroupId);
+			custInfoBean.setCustomGroupName(customGroupName);
+			custInfoBean.setCustomGroupDesc(customGroupDesc);
+			custInfoBean.setCreateUserId(userId);
+			custInfoBean.setCreatetime(new Date());
+			custInfoBean.setCustomNum(0);
+			custInfoBean.setUpdateCycle(1);
+			custInfoBean.setCustomSourceId("0");
+			custInfoBean.setIsPushOther(0);
+			custInfoBean.setCustomStatusId(3);
+			custInfoBean.setEffectiveTime(new Date());
+			custInfoBean.setFailTime(DateUtils.parseDateStrictly(failTime, new String[]{"yyyy-MM-dd"}));
+			custInfoBean.setCreateUserName(userName);
+			this.updateMtlGroupinfo(custInfoBean);
+			
+			//保存客户群清单信息到mcd_custgroup_tab_list表
+			this.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId, 0,3,new Date(),"");
+			//保存客户群属性到mcd_custgroup_attr_list表
+			this.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
+			//创建客户群推送信息到mcd_custgroup_push表
+			this.addMtlGroupPushInfos(custGroupId,userId,userId);
+			//根据模板表创建客户群清单表
+			this.addCustGroupTabAsCustTable("MTL_CUSER_",custGroupId);
+			
+			//文件上传路径
+			String config_Path = AppConfigService.getProperty("CUSTGTOUP_UPLOAD_PATH");
+//			Properties props=System.getProperties();
+//			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) !=-1) {
+//				//windows下的开发代码
+//				config_Path = "D:\\temp\\mpm\\upload";
+//			}
+			
+			//保存上传文件
+			String filepath = null;
+			if (!config_Path.endsWith(File.separator)) {
+				filepath = config_Path + File.separator; 
+			} else {
+				filepath = config_Path;
+			}
+			String filename = multiFile.getOriginalFilename();
+			File f1 = new File(filepath + filename);
+			if (f1.exists()) {
+				File newFile = new File(filepath + tableName+".txt");
+				log.info("存在同名文件，{}改名为{}",filename, tableName);
+				f1.renameTo(newFile); 
+			}
+			FileOutputStream fos = new FileOutputStream(filepath + tableName+".txt"); //创建输出流  
+			fos.write(multiFile.getBytes()); //写入  
+			fos.flush();//释放  
+			fos.close(); //关闭  
+			System.out.println(custGroupId +tableName); 
+			
+			//文件中的号码入库、更改状态等操作
+			final String path = filepath;
+			final String custName = customGroupName;
+			final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");			
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						insertCustGroupDataByImportFile(path, custGroupId, tableName, custName, date); 
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+			
+			return returnMap;
+		}
+		
+		/**
+		 * 根据模板表创建客户群清单表
+		 * @param tabPrefix
+		 * @param custGroupId
+		 * @return
+		 */
+		public String addCustGroupTabAsCustTable(String tabPrefix,String custGroupId) {
+			String tabNameModel="mtl_cuser_XXXXXXXX";
+			String tabName = tabPrefix + custGroupId; //浙江Oracle sqlfire同时创建表
+			try {
+				String sql = MpmUtil.getSqlCreateAsTableInSqlFire(tabName, tabNameModel);
+				custGroupInfoDao.addInMemCreateCustGroupTab(sql);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new MpmException(e);
+			} 
+			return tabName;
 		}
 		
 		/**

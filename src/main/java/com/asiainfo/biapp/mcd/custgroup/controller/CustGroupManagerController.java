@@ -1,17 +1,13 @@
 package com.asiainfo.biapp.mcd.custgroup.controller;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -29,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
@@ -37,7 +30,6 @@ import com.asiainfo.biapp.mcd.common.custgroup.vo.McdCustgroupDef;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.MpmConfigure;
 import com.asiainfo.biapp.mcd.common.util.Pager;
-import com.asiainfo.biapp.mcd.custgroup.vo.CustInfo;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdCvColDefine;
 import com.asiainfo.biapp.mcd.tactics.service.IMpmCampSegInfoService;
 
@@ -202,108 +194,28 @@ public class CustGroupManagerController extends BaseMultiActionController{
 	 */
 	@RequestMapping
 	@ResponseBody
-	public Map<String, Object> saveCustGroup(@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
+	public Map<String, Object> saveCustGroupImport(@RequestParam(value = "upload_file", required = false)MultipartFile multiFile,
 			HttpServletRequest  request,HttpServletResponse response) throws Exception{ 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		// 创建客户群清单表 
-		try { 
-			returnMap.put("count", "0");  
-			int  num =custGroupInfoService.getGroupSequence(getUser(request,response).getCityId()) +1 ;  
-			SimpleDateFormat df = new SimpleDateFormat("yyMM"); 
-			String	month = df.format(new Date());    
-			String code="";   
-			if (num < 10 && num > 0)
-			{ 
-				code = "000" + num ; 
-			} 
-			else if (num < 100 && num > 9)
-			{ 
-				code = "00" + num  ;
-			} 
-			else if (num < 1000 && num > 99) {
-				code = "0" + num ; 
-			}
-			else{
-				code = "" + num ; 
-			}
-			final String custGroupId ="J" +getUser(request,response).getCityId()+ month+code; 
-			final String tableName = "MTL_CUSER_" +custGroupId; 
-			final String customGroupName=request.getParameter("custom_name");
+		try {
+			String userId = getUserId(request,response);
+			String userName = this.getUser(request, response).getName();
+			String cityId = getUser(request,response).getCityId();
 			String customGroupDesc=request.getParameter("custom_description");
 			String failTime=request.getParameter("invalid_date");
+			String customGroupName=request.getParameter("custom_name");
 			String filename = multiFile.getOriginalFilename();
 			if (!filename.endsWith(".txt")) {
-				returnMap.put("msg", "上传的文件类型错误，请上传txt文件!!!");
 				throw new Exception("请上传txt文件!!!");
 			}
 			
-			int i=0;  
-			//TABLE mcd_custgroup_def   
-			CustInfo custInfoBean =null;
-			custInfoBean = new CustInfo();
-	  		custInfoBean.setCustomGroupId(custGroupId);
-	  		custInfoBean.setCustomGroupName(customGroupName);
-	  		custInfoBean.setCustomGroupDesc(customGroupDesc);
-	  		custInfoBean.setCreateUserId(getUserId(request,response));
-	  		custInfoBean.setCreatetime(new Date());
-	  		custInfoBean.setCustomNum(i);
-	  		custInfoBean.setUpdateCycle(1);
-	  		custInfoBean.setCustomSourceId("0");
-	  		custInfoBean.setIsPushOther(0);
-		  	custInfoBean.setCustomStatusId(3);
-	  		custInfoBean.setEffectiveTime(new Date());
-	  		custInfoBean.setFailTime(DateUtils.parseDateStrictly(failTime, new String[]{"yyyy-MM-dd"}));
-	  		custInfoBean.setCreateUserName(this.getUser(request, response).getName());
-	  		custGroupInfoService.updateMtlGroupinfo(custInfoBean);
-			
-	  		final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
-	  		custGroupInfoService.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId,i,3,new Date(),"");
-	  		custGroupInfoService.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
-	  		custGroupInfoService.addMtlGroupPushInfos(custGroupId,getUserId(request,response),getUserId(request,response));  
-	  		returnMap.put("count", ""+i);
-			
-			campSegInfoService.addCustGroupTabAsCustTable1("MTL_CUSER_",custGroupId);
-			
-			String config_Path = AppConfigService.getProperty("CUSTGTOUP_UPLOAD_PATH");
-			Properties props=System.getProperties();
-			if ( StringUtils.isEmpty(props.getProperty("os.name")) || props.getProperty("os.name").toUpperCase().indexOf("Windows".toUpperCase()) !=-1) {
-				config_Path = "D:\\temp\\mpm\\upload";
-			}
-			
-			//判断文件是否存在，如果不存在直接上传，如果存在需要重命名后上传
-			String filepath = null;
-			if (!config_Path.endsWith(File.separator)) {
-				filepath = config_Path + File.separator; 
-			} else {
-				filepath = config_Path;
-			}
-			File f1 = new File(filepath + filename);
-			if (f1.exists()) {
-				File newFile = new File(filepath + tableName+".txt");
-				log.info("存在同名文件，{}改名为{}",filename, tableName);
-				f1.renameTo(newFile); 
-			}
-			
-			FileOutputStream fos = new FileOutputStream(filepath + tableName+".txt"); //创建输出流  
-			fos.write(multiFile.getBytes()); //写入  
-			fos.flush();//释放  
-			fos.close(); //关闭  
-			System.out.println(custGroupId +tableName); 
-			
-			final String path = filepath;
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						custGroupInfoService.insertCustGroupDataByImportFile(path, custGroupId, tableName, customGroupName, date); 
-					}  catch (Exception e) {
-						e.printStackTrace();
-					}
-				} 
-			}).start();
+			custGroupInfoService.saveCustGroupImport(userId, userName, cityId, customGroupName, customGroupDesc, multiFile, failTime);
+
 			returnMap.put("status", "SUCCESS");
 			returnMap.put("msg", "客户群创建成功，上传成功，正在后台处理!");
 		} catch (Exception e) { 
-			log.error("创建客户群文件异常", e);
+			log.error("创建客户群异常", e);
 			returnMap.put("status", "FAILURE");
 			if (returnMap.get("msg") == null) {
 				returnMap.put("msg","新增客户群失败，请联系管理员。");
