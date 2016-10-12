@@ -200,8 +200,8 @@
 		    	</form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default close_edit_btn" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="edit_btn">确认</button>
+                <button type="button" class="button button-default close-add-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="button button-info" id="edit_btn">确认</button>
             </div>
         </div>
     </div>
@@ -232,8 +232,8 @@
 				</form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default close_rm_btn" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="remove_btn">确认</button>
+                <button type="button" class="button button-default close-add-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="button button-info" id="remove_btn">确认</button>
             </div>
         </div>
     </div>
