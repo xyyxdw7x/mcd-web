@@ -1,6 +1,5 @@
 package com.asiainfo.biapp.mcd.common.custgroup.service.impl;
 
-import java.net.URL;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

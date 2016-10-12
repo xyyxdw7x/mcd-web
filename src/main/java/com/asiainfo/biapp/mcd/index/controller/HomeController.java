@@ -16,9 +16,6 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.service.ISaleSituationService;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
-import com.asiainfo.biapp.mcd.index.service.ICepKeywordsService;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/homePage")

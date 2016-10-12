@@ -18,8 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 import com.asiainfo.biapp.mcd.avoid.dao.IMcdMtlBotherAvoidDao;
 import com.asiainfo.biapp.mcd.avoid.vo.McdBotherAvoid;
-import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
-import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.custgroup.vo.McdBotherContactConfig;
 
 /**
