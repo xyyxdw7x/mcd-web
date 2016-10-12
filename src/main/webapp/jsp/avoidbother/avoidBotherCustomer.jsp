@@ -67,7 +67,7 @@
 						<th>手机号码</th>
 						<th>用户类型</th>
 						<th>通用渠道</th>
-						<th>营销类型</th>
+						<!--  <th>营销类型</th> -->
 						<th>创建人</th>
 						<th width="160">
 							<div class="sel-box">
@@ -170,7 +170,7 @@
 	               	  		
 	               	  	</li>	
 	               	  	<li>
-	               	  		<label class="fleft labFmt80">客户类型：</label>
+	               	  		<label class="fleft labFmt80">用户类型：</label>
 	               	  		<select id="edit-avoid-bother-customer-select-user-type" name="userTypeId" class="fleft sel115 avoidBotherUserTypeSelect">
 	               	  			<option value="">访问客户</option>
 	               	  		</select>
