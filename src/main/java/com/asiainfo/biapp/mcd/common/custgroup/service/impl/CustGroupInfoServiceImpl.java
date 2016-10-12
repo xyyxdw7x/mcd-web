@@ -640,7 +640,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			this.updateMtlGroupinfo(custInfoBean);
 			
 			//保存客户群清单信息到mcd_custgroup_tab_list表
-			this.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyyMMdd") ,custGroupId, 0,3,new Date(),"");
+			this.savemtlCustomListInfo(tableName, DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss") ,custGroupId, 0,3,new Date(),"");
 			//保存客户群属性到mcd_custgroup_attr_list表
 			this.updateMtlGroupAttrRel(custGroupId,"PRODUCT_NO","手机号码","varchar","32",tableName); 
 			//创建客户群推送信息到mcd_custgroup_push表
