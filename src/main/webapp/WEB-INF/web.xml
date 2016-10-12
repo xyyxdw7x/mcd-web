@@ -85,6 +85,14 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <filter>
   	<filter-name>OauthLoginFilter</filter-name>
   	<filter-class>com.asiainfo.biapp.framework.filter.OauthLoginFilter</filter-class>
+  	    <init-param>
+			<param-name>autoLogin</param-name>
+			<param-value>true</param-value>
+	    </init-param>
+		<init-param>
+			<param-name>skip</param-name>
+			<param-value>/index.jsp;/login/;/services/;/servicesCxf/;/services</param-value>
+		</init-param>
   </filter>
   <filter-mapping>
   	<filter-name>OauthLoginFilter</filter-name>
@@ -107,14 +115,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   
-  <servlet>    
-    <servlet-name>CXFService</servlet-name>    
-    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>    
-</servlet>            
-<servlet-mapping>    
-    <servlet-name>CXFService</servlet-name>    
-    <url-pattern>/webservice/*</url-pattern>    
-</servlet-mapping>   
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>           
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping> 
   <!-- spring mvc end-->
   
 

@@ -23,10 +23,15 @@ import org.apache.http.HttpStatus;
 public class OauthLoginFilter implements Filter {
 
 	protected final Log log = LogFactory.getLog(getClass());
+	   protected boolean autoLogin = false;
+	    private static String skips[] = null;
 	
+	    public OauthLoginFilter() {
+	        super();
+	    }
 	@Override
 	public void destroy() {
-
+	    autoLogin = false;
 	}
 
 	@Override
@@ -43,6 +48,11 @@ public class OauthLoginFilter implements Filter {
 			chain.doFilter(request, response);
 			return ;
 		}
+		if (this.needSkipUserLoginCheck(hsr)) {
+	        chain.doFilter(request, response);
+	        return;
+	    }
+		  
 		String contextPath=hsr.getContextPath();
 		if(hsr.getSession().getAttribute("USER_ID")==null){
 			boolean isAjaxRequest = isAjaxRequest(hsr);  
@@ -61,6 +71,25 @@ public class OauthLoginFilter implements Filter {
 		
 	}
 	
+	 private boolean needSkipUserLoginCheck(HttpServletRequest r) {
+	        boolean result = false;
+	        String uri = r.getRequestURI();
+
+	        //过滤掉直接输入根路径 或者 根路径 + / 这些
+	        if (uri.equals(r.getContextPath()) || uri.equals(r.getContextPath() + "/")) {
+	            return true;
+	        }
+
+	        for (String s : skips) {
+	            if (uri.indexOf(s) > -1) {
+	                result = true;
+	                break;
+	            }
+	        }
+
+	        return result;
+	    }
+	
 	public  boolean isAjaxRequest(HttpServletRequest request)  
     {  
         String header = request.getHeader("X-Requested-With");   
@@ -72,7 +101,14 @@ public class OauthLoginFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-
+        String value = arg0.getInitParameter("autoLogin");
+        if (value != null && (value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"))) {
+            autoLogin = true;
+        }
+        String skip = arg0.getInitParameter("skip");
+        if (skip != null) {
+            skips = skip.split(";");
+        }
 	}
 
 }

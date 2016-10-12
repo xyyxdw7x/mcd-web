@@ -315,12 +315,12 @@ public interface ICustGroupInfoDao {
          * AD库里执行语句
          * @param creatMtlCuserSql
          */
-        public void execInMemSql(String creatMtlCuserSql);
+        public void addInMemSql(String creatMtlCuserSql);
         /**
          * 根据代替MCD_AD内的表在MCD里创建表的同义词
          * @param mtlCuserTableName
          */
-        public void createSynonymTableMcdBySqlFire(String mtlCuserTableName);
+        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName);
         /**
          * 批量执行语句sqlFire
          * @param inertSql  插入语句

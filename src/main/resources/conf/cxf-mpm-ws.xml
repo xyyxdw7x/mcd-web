@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xmlns:jaxws="http://cxf.apache.org/jaxws"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+       http://cxf.apache.org/jaxws  
+       http://cxf.apache.org/schemas/jaxws.xsd">  
 
   <bean id="sendCustInfoWsService" class="com.asiainfo.biapp.mcd.wservice.impl.SendCustInfoWsServiceImpl">  
   </bean>  

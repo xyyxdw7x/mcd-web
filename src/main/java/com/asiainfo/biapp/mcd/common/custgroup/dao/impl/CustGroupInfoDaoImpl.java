@@ -1584,7 +1584,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
         @Override
         public void deleteMtlGroupPushInfos(String customGroupId) {
             //客户群如果重复推送，删除之前的目标推送人，维护最新的目标推送人
-            String deletesql = "delete from mtl_group_push_info where custom_group_id = ?";
+            String deletesql = "delete from mcd_custgroup_push where custom_group_id = ?";
             Object[] deleteArgdbs = new Object[]{customGroupId};
             this.getJdbcTemplate().update(deletesql, deleteArgdbs);
             
@@ -1594,7 +1594,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
          * @param creatMtlCuserSql
          */
         @Override
-        public void execInMemSql(String creatMtlCuserSql) {
+        public void addInMemSql(String creatMtlCuserSql) {
             this.getJdbcTemplate().execute(creatMtlCuserSql);
             
         }
@@ -1603,7 +1603,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
          * @param mtlCuserTableName
          */
         @Override
-        public void createSynonymTableMcdBySqlFire(String mtlCuserTableName) {
+        public void addSynonymTableMcdBySqlFire(String mtlCuserTableName) {
             String tabSpace = MpmConfigure.getInstance().getProperty("MPM_SQLFIRE_TABLESPACE");
 
             String sql = "create synonym  " + mtlCuserTableName + "  for "+ tabSpace + "." + mtlCuserTableName;

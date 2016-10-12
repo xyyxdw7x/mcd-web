@@ -1233,9 +1233,9 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 //                  mtlCustGroupJdbcDao.execute(creatMtlCuserSql);//因为此库需要建同义词，故注释
                     
 
-                    custGroupInfoDao.execInMemSql(creatMtlCuserSql);
+                    custGroupInfoDao.addInMemSql(creatMtlCuserSql);
                     //MCD表创建同义词
-                    custGroupInfoDao.createSynonymTableMcdBySqlFire(mtlCuserTableName);
+                    custGroupInfoDao.addSynonymTableMcdBySqlFire(mtlCuserTableName);
 
 
                 }catch (Exception e) {
