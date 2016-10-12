@@ -247,11 +247,11 @@ body{
   height: 77px;
 }
 .limit_state a{
+  cursor:default;
   display: block;
   width: 26px;
   height: 26px;
   background: transparent url(../../../../images/quota/detail_edit.png) no-repeat center -117px;
-  cursor: pointer;
 }
 .limit_state.active{
   background: #009bf5;
@@ -302,7 +302,7 @@ body{
   top:50%;
   margin-left: -145px;
   margin-top: -87px;
-  z-index: 20;
+  z-index: 30;
   border:1px solid #278bdd;
   background: #fff;
 }

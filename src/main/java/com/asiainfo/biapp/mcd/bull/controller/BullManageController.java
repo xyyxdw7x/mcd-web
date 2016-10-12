@@ -202,9 +202,10 @@ public class BullManageController extends BaseMultiActionController {
 
 	private void escape(List<BullMonitor> list) {
 		for (BullMonitor monitor : list) {
-			String campsegNameTemp = monitor.getCampsegName();
+			/*String campsegNameTemp = monitor.getCampsegName();
 			String campsegNo=monitor.getCampsegNo();
-			monitor.setShowCampsegName(campsegNameTemp+"_"+campsegNo);
+			monitor.setShowCampsegName(campsegNameTemp+"_"+campsegNo);*/
+			monitor.setShowCampsegName(monitor.getCampsegName());
 			monitor.setExecStatusName(TasKStatus.getName(monitor.getExecStatus()));
 			monitor.setCreateTime(monitor.getCreateTime().substring(0, 10));
 		}
