@@ -114,13 +114,6 @@ define(["backbone"],function(require, exports,module) {
 									position: { my: "center", at: "center", of: window },
 									buttons: [
 										{
-											text: "取消" ,
-											"class":"gray-small-button",
-											click: function() {
-												$( this ).dialog( "close" );
-											}
-										},
-										{
 											text: "确定",
 											"class":"ok-small-button ui-button-dlg",
 											click: function() {
@@ -144,6 +137,13 @@ define(["backbone"],function(require, exports,module) {
 												$( this ).dialog( "close" );
 												//添加查询方法
 												
+											}
+										},
+										{
+											text: "取消" ,
+											"class":"gray-small-button",
+											click: function() {
+												$( this ).dialog( "close" );
 											}
 										}
 									],

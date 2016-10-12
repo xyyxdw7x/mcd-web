@@ -1,6 +1,6 @@
-.bulk-body{
+/* .bulk-body{
 	background: #f7f7f7;
-}
+} */
 .bulk-container{
 	width: 1250px;
 	height: auto;
@@ -257,12 +257,14 @@
 	color:#000;
 }
 .bulk-item-num{
-	width:62px;
+	width:65px;
 	border-left: 3px solid #FFF;
 }
 .bulk-list-thead .bulk-item-num{
 	width:65px;
 	border:none;
+	border-left: 3px solid #fff;
+	box-sizing:border-box;
 }
 .bulk-list-content .bulk-list-tbody:HOVER .bulk-item-num{
 	border-left: 3px solid #278bdd;
@@ -504,6 +506,13 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 }
 .container .content .content-main .content-table .content-table-box .content-table-th:nth-child(1){
 	border-left:0 !important;
+}
+.ui-dialog .ui-dialog-buttonpane button{
+	border:1px solid #278bdd;
+	color:#278bdd;
+	background:#fff;
+	font-size:14px;
+	
 }
 
 
