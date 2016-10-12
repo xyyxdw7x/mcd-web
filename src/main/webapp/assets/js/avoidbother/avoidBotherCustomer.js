@@ -521,6 +521,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 			$("#avoidBotherType").val($("#avoidBotherType option").first().attr("value"));
 			$("#avoidCustType").val($("#avoidCustType option").first().attr("value"));
 			$("#handInput").val("请输入手机号码，多个号码用逗号分开。");
+			$("#show_upload_file").val("");
 			
 		},
 		hideNewCustomer:function() {
