@@ -437,47 +437,4 @@ public class BotherAvoidListController extends BaseMultiActionController {
 		return dataJson;
 	
 	}
-
-//	 protected void outJson(HttpServletResponse response, Object json) throws MpmException {
-//			log.debug("output json to response:{}", json);
-//			response.setContentType("text/json; charset=UTF-8");
-//			response.setCharacterEncoding("UTF-8");
-//
-//			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
-//			response.setHeader("Pragma", "No-cache");
-//			response.setHeader("Cache-Control", "no-cache");
-//			response.setDateHeader("Expires", 0);
-//
-//			try {
-//				response.getWriter().print(json == null ? "{}" : json.toString());
-//				response.getWriter().flush();
-//				response.getWriter().close();
-//			} catch (IOException e) {
-//				log.error("--out put json error", e);
-//				throw new MpmException("--out put json error", e);
-//			}
-//	 }
-	 
-	 
-//	 protected void outJson2(HttpServletResponse response, Object json) throws MpmException {
-//			log.debug("output json to response:{}", json);
-//			response.setContentType("text/json; charset=UTF-8");
-//			response.setCharacterEncoding("UTF-8");
-//
-//			// 璁剧疆娴忚鍣ㄤ笉瑕佺紦瀛 
-//			response.setHeader("Pragma", "No-cache");
-//			response.setHeader("Cache-Control", "no-cache");
-//			response.setDateHeader("Expires", 0);
-//
-//			try {
-//				response.getWriter().print(json == null ? "{}" : json.toString());
-//				response.getWriter().flush();
-//				response.getWriter().close();
-//			} catch (IOException e) {
-//				log.error("--out put json error", e);
-//				throw new MpmException("--out put json error", e);
-//			}
-//	 }
-
-
 }

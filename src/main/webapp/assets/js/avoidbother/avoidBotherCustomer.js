@@ -132,7 +132,8 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
             	if ($("#selectAll").prop("checked")) {
         			$(".checkbox_row1").prop("checked", "true");
         		} else {
-        			$(".checkbox_row1").removeProp("checked");
+        			//$(".checkbox_row1").removeProp("checked");
+        			$(".checkbox_row1").prop("checked", false);
         		}
             });
 	        $(".sel-txt").on("click",function(event) {
@@ -501,6 +502,8 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 				module.exports.addNewCustomer();
 			});
 			
+			/*渠道是“短信”的时候，不显示营销类型的状态“无”
+			 * 2016/10/11时点，不需要显示营销渠道，所以注释掉了。
 			var typeVal=$("#avoidBotherType").val();
 			if("901"== typeVal) {
 				var optionEles= $("#avoidCustType option[value='0']");
@@ -512,6 +515,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 					$("#avoidCustType").val(defaultVal);
 				}
 			}
+			*/
 			
 			$("#userTypeId").val($("#userTypeId option").first().attr("value"));
 			$("#avoidBotherType").val($("#avoidBotherType option").first().attr("value"));

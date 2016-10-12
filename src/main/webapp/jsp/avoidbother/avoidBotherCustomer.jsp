@@ -65,7 +65,7 @@
 							<input type="checkbox" id="selectAll" name="" value="" class="checkbox_all"/>
 						</th>
 						<th>手机号码</th>
-						<th>客户类型</th>
+						<th>用户类型</th>
 						<th>通用渠道</th>
 						<th>营销类型</th>
 						<th>创建人</th>
