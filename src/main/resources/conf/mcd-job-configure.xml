@@ -12,33 +12,13 @@
 		context)方法，注入这个类和其依赖关系。但是耦合API -->
 	<!-- 方式二：Spring使用MethodInvokingJobDetailFactoryBean，任何一个普通类都可，注入这个类， 还有那个方法要定时将job放到触发器中，并定义什么时候触发 
 		将触发器加入触发列表，触发列表可以自动启动触发器 -->
-	<!-- 
-	<bean id="dayQuotaTaskService" class="com.asiainfo.biapp.mcd.quota.service.DayQuotaTaskServiceImp">
-		<property name="deptsQuotaStatisticsDao">
-			<ref bean="deptsQuotaStatisticsDao" />
-		</property>
-		<property name="quotaDayDeptUsedDao">
-			<ref bean="quotaDayDeptUsedDao" />
-		</property>
-		<property name="quotaConfigDeptDayDao">
-			<ref bean="quotaConfigDeptDayDao" />
-		</property>
-		<property name="quotaConfigDeptMothDao">
-			<ref bean="quotaConfigDeptMothDao" />
-		</property>
-		<property name="quotaConfigCityDayDao">
-			<ref bean="quotaConfigCityDayDao" />
-		</property>
-	</bean> 
-	
-	 -->
+
 	 
 	
-		<!--创建Duser表的过程  add by lixq10  -->
+	<!--创建Duser表的过程 -->
 	<bean id="mcdCreateDuserTableTask" class="com.asiainfo.biapp.mcd.tactics.task.McdCreateDuserTableTask">
 	</bean>
-	<bean id="mcdCreateDuserTableJob"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="mcdCreateDuserTableJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">
 			<ref bean="mcdCreateDuserTableTask" />
 		</property>
@@ -54,21 +34,37 @@
 		</property>
 	</bean>
 	 -->
-
-		<bean id="mcdCreateDuserTableTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="mcdCreateDuserTableTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		    <property name="jobDetail" ref="mcdCreateDuserTableJob" />
 		    <property name="cronExpression" value="0 0/1 * * * ?" />
-		</bean>
+	</bean>
+	
+	
+	<!--mcd月定时任务 -->
+	<bean id="mcdMonthTask" class="com.asiainfo.biapp.mcd.task.McdMonthTask">
+	</bean>
+	<bean id="mcdMonthTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="mcdMonthTask" />
+		</property>
+		<property name="targetMethod">
+			<value>doTask</value>
+		</property>
+	</bean>
+    <bean id="mcdMonthTaskTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="mcdMonthTaskJob" />
+		    <property name="cronExpression" value="0 1 0 1 * ?" />
+	</bean>
 	
 	   
     
-		<bean id="jobTriggerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		
+   <bean id="jobTriggerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<!-- <property value="classpath:config/aibi_mpm/quartz.properties" name="configLocation" /> -->
 	    <property name="startupDelay" value="120" />
 		<property name="triggers">
 			<list>
 				<ref bean="mcdCreateDuserTableTrigger" />
+				<ref bean="mcdMonthTaskTrigger" />
 			</list>
 		</property>
 	</bean>
