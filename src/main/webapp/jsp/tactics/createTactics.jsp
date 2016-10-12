@@ -24,7 +24,7 @@
 		<!-- 左侧数字导航区 -->
 		<div class="put-left fleft ft14 mtop_47">
 			<ol id="stepOl">
-				<li class="active"><span>选政策</span><i>1</i></li>
+				<li class="active"><span>选产品</span><i>1</i></li>
 				<li class="line"></li>
 				<li><span>选客户</span><i>2</i></li>
 				<li class="line"></li>
