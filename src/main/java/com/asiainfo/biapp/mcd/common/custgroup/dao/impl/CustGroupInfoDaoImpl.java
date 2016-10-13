@@ -204,7 +204,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			buffer.append(" from mcd_custgroup_def t where t.custom_status_id <>'2' ");
 
 			if("MY-CUSTOM".equals(contentType)) {
-				buffer.append(" and (t.create_user_id = ?  or t.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = '"+userId+"'))");
+				buffer.append(" and (t.create_user_id = ?  or t.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))");
+				plist.add(userId);
 				plist.add(userId);
 			}
 			if(keywords != null && !"".equals(keywords)) {
@@ -232,7 +233,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			buffer.append(" FROM mcd_custgroup_tab_list t1");
 			buffer.append(" ) t2 where t2.rn = 1) dinfo");
 			buffer.append(" left join mcd_custgroup_def cinfo on dinfo.custom_group_id = cinfo.custom_group_id");
-			buffer.append(" where (cinfo.create_user_id =  '"+userId+"' or  cinfo.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = '"+userId+"'))");
+			buffer.append(" where (cinfo.create_user_id =  ? or  cinfo.custom_group_id in (select custom_group_id from mcd_custgroup_push where create_push_target_id = ?))");
             buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mcd_camp_def mcs,mcd_camp_custgroup_list mcc where mcs.campseg_id = mcc.campseg_id and mcs.campseg_stat_id in ('50','54','59'))");
 			    buffer.append(") tab) re ");
 
@@ -242,6 +243,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 				buffer.append(" and (re.custom_group_id like '%" + keywords + "%' or re.custom_group_name like '%" + keywords + "%')");
 			}
 			buffer.append(" order by re.create_time desc");
+			plist.add(userId);
+			plist.add(userId);
 		}
 		
 		log.info("执行sql="+buffer);
