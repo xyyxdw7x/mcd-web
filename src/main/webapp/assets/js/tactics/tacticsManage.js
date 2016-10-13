@@ -671,7 +671,6 @@ define(["backbone","my97"],function(require, exports, module) {
 					});
 				},
 				setBtnAttr:function(option){
-					debugger;
 					// 排除掉催单事件
 					if(option.cmd=="reminder.do"){
 						return ;

@@ -596,14 +596,12 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
                 cepEventFlag = true;
             }
             if (McdCONST.MPM_CAMPSEG_STAT_HDZZ.equals(type)) {//终止
-                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_STOP);
-                    List<McdCampTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,McdCONST.CHANNEL_TYPE_SMS);
-                    for(McdCampTask mcdCampsegTask : mcdCampsegTakList){
-                        String taskSendoddTabName = mcdCampsegTask.getTaskSendoddTabName();
-                        if(taskSendoddTabName != null && "".equals(taskSendoddTabName)){
-                            mcdCampsegTaskService.dropTaskSendoddTabNameInMem(taskSendoddTabName);
-                        }
+                mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_STOP);
+                List<McdCampTask> mcdCampsegTakList = mcdCampsegTaskService.findByCampsegIdAndChannelId(campSegId,McdCONST.CHANNEL_TYPE_SMS);
+                for(McdCampTask mcdCampsegTask : mcdCampsegTakList){
+                    String taskSendoddTabName = mcdCampsegTask.getTaskSendoddTabName();
+                    if(taskSendoddTabName != null && "".equals(taskSendoddTabName)){
+                        mcdCampsegTaskService.dropTaskSendoddTabNameInMem(taskSendoddTabName);
                     }
                 }
                 if (cepEventFlag) {
@@ -619,32 +617,30 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
             } else if (McdCONST.MPM_CAMPSEG_STAT_DDCG.equals(type)) {//启动
                 String status = type;
                 //浙江版，策略与业务状态可多选，关联删除
-                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
-                    McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
-                    int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
-                    int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
-                    int newDate = Integer.parseInt(DateFormatUtils.format(new Date(), "yyyyMMdd"));
-                    if(startDate > newDate){//未到策略开始时间
-                        status = McdCONST.MPM_CAMPSEG_STAT_ZXZT;
-                    }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
-                        status = McdCONST.MPM_CAMPSEG_STAT_DDCG;
-                    }else{//已到策略结束时间
-                        status = McdCONST.MPM_CAMPSEG_STAT_HDWC;
-                    }
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_RUNNING);
-
-                    if (cepEventFlag) {
-                        
-                    	//TODO CEP需要重构
-                    	//CepUtil.restartCepEvent(segInfo.getCepEventId());
-                    }
-                    campSegInfoDao.updateCampStat(rList, status);
+                McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campSegId);
+                int startDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getStartDate().replaceAll("-",""));
+                int endDate = mtlCampSeginfo == null ? 0 : Integer.parseInt(mtlCampSeginfo.getEndDate().replaceAll("-",""));
+                int newDate = Integer.parseInt(DateFormatUtils.format(new Date(), "yyyyMMdd"));
+                if(startDate > newDate){//未到策略开始时间
+                    status = McdCONST.MPM_CAMPSEG_STAT_ZXZT;
+                }else if(newDate >= startDate && newDate <= endDate){//到策略开始时间，未到策略结束时间
+                    status = McdCONST.MPM_CAMPSEG_STAT_DDCG;
+                }else{//已到策略结束时间
+                    status = McdCONST.MPM_CAMPSEG_STAT_HDWC;
                 }
+                mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_RUNNING);
+
+                if (cepEventFlag) {
+                    
+                	//TODO CEP需要重构
+                	//CepUtil.restartCepEvent(segInfo.getCepEventId());
+                }
+                campSegInfoDao.updateCampStat(rList, status);
+                
 
             } else if (McdCONST.MPM_CAMPSEG_STAT_PAUSE.equals(type)) {//暂停
-                if ("zhejiang".equalsIgnoreCase(AppConfigService.getProperty("PROVINCE"))) {
-                    mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_PAUSE);
-                }
+                mcdCampsegTaskService.updateCampTaskStat(campSegId,McdCONST.TASK_STATUS_PAUSE);
+                
                 
                 if (cepEventFlag) {
                 	//TODO CEP需要重构
