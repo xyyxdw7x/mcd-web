@@ -1,4 +1,4 @@
-define(["backbone","my97"],function(require, exports, module) {      
+define(["backbone","my97","page"],function(require, exports, module) {      
 	module.exports={
 		init:function(){
 			 //var navManage = require("navManage");
@@ -91,6 +91,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					return this;
 				} ,
 				setDomList:function(pageNum,tableModel){
+					var thisObj=this;
 					var pageFlag = pageNum==1 ? "F" : "G";
 					var defaultData = {cmd:options.cmd,pageNum:pageNum,pageFlag:pageFlag};
 					var ajaxData = $.extend(defaultData, options.ajaxData);
@@ -126,8 +127,26 @@ define(["backbone","my97"],function(require, exports, module) {
 						}
 						var htmlobj=$(tableHtml);
 						$(options.currentDom).empty().append(htmlobj);
+						thisObj.renderPageView(model.attributes.data,thisObj);
 						options.domCallback(htmlobj);
 					});
+				},
+				/**
+				 * 分页显示组件
+				 */
+				
+				renderPageView:function(data,obj){debugger;
+					$("#tacticsManagerPage").pagination({
+				        items: data.totalSize,
+				        itemsOnPage: data.pageSize,
+				        currentPage:data.pageNum,
+				        prevText:'上一页',
+				        nextText:'下一页',
+				        cssStyle: 'light-theme',
+				        onPageClick:function(pageNumber,event){
+				        	obj.setDomList(pageNumber,new tacticsTableModel({id : options.id}));
+				        }
+				    });
 				},
 				showMoreTips:function(obj){
 					if($('.more_tips_outer').length!=0){
