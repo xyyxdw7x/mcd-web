@@ -114,29 +114,26 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						if(attributes.hasOwnProperty("dateType")){
 							attributes.data.dateType = attributes.dateType ;
 						}
-						if(options.addData!=""){
-							model.set(options.addData);
-						//	console.log(model.attributes);
-							tableHtml = new EJS({
-								url : options.ejsUrl
-							}).render({result:model.attributes});
+						tableHtml = new EJS({
+							url : options.ejsUrl
+						}).render(model.attributes);
+						var pagecss = "";
+						if(options.addData==""){
+							pagecss = "tacticsManagerPage";
 						}else{
-							tableHtml = new EJS({
-								url : options.ejsUrl
-							}).render(model.attributes);
+							pagecss = "tacticsManagerPageAll";
 						}
 						var htmlobj=$(tableHtml);
 						$(options.currentDom).empty().append(htmlobj);
-						thisObj.renderPageView(model.attributes.data,thisObj);
+						thisObj.renderPageView(model.attributes.data,thisObj,pagecss);
 						options.domCallback(htmlobj);
 					});
 				},
 				/**
 				 * 分页显示组件
 				 */
-				
-				renderPageView:function(data,obj){debugger;
-					$("#tacticsManagerPage").pagination({
+				renderPageView:function(data,obj,p){
+					$("#"+p).pagination({
 				        items: data.totalSize,
 				        itemsOnPage: data.pageSize,
 				        currentPage:data.pageNum,
@@ -244,6 +241,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 							currentDom:"#tacticsTable_all",
 							ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable_all.ejs',
 							ajaxData:{"isSelectMy":"1"},
+							addData:"1",
 							domCallback:function(htmlobj){
 								//module.exports.tacticsListManage();
 								module.exports.getCampSegChildTable(htmlobj);
@@ -860,7 +858,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 							var campsegId = $(this).attr('campsegid');
 							$.ajax({
 								type : "post",
-								url:_ctx+"/action/tactics/tacticsManager/searchExecContent",
+								url:_ctx+"/action/tactics/tacticsManager/searchExecContent.do",
 								contentType: "application/x-www-form-urlencoded; charset=utf-8",
 								dataType:'json',
 								data:{"campsegId":campsegId},
@@ -872,7 +870,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 									var innerDiv = $('<div class="edit-dialog-div"></div>');
 									for(var i = 0; i<_data.length; i++){
 										if(_data[i].campsegName.substring(2)!=""){
-											var _campseg_name = _data[i].campsegName.substring(0,2)+(parseInt(_data[i].campsegName.substring(2))+1);
+											var _campseg_name = _data[i].campsegName.substring(0,2);
 										}else{
 											var _campseg_name = _data[i].campsegName;
 										}
@@ -1032,7 +1030,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					                	    	  ajaxJson.childCampseg = childCampsegList;
 					                	    	  $.ajax({
 													type : "post",
-													url:_ctx+"/action/tactics/tacticsManager/saveExecContent",
+													url:_ctx+"/action/tactics/tacticsManager/saveExecContent.do",
 													contentType: "application/x-www-form-urlencoded; charset=utf-8",
 													dataType:'json',
 													data:{'json':JSON.stringify(ajaxJson)},

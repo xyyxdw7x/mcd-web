@@ -139,25 +139,28 @@ define(["backbone","unslider"],function(require, exports, module) {
                 delay: false,              //  The delay between slide animations (in milliseconds)
                 complete: function() {},  //  A function that gets called after every slide animation
                 keys: true,               //  Enable keyboard (left, right) arrow shortcuts
-                dots: false,               //  Display dot navigation
+                dots: false,              //  Display dot navigation
+                arrows:[],
+                nav:false,
                 fluid: true
             });
             $(".recommend-page-span").click(function(){
                 var data = slider.data('unslider');
+                alert(data);
                 if($(this).hasClass("prev")){
-                    if(data.i==0){
+                    if(data.current==0){
                         return ;
                     }
                     //  Move to the previous slide (or the last slide if there isn't one)
                     data.prev();
                     $(this).next().removeClass("disable-recommend-page");
-                    if(data.i==1){
+                    if(data.current==1){
                         $(this).addClass("disable-recommend-page");
                     }else{
                         $(this).removeClass("disable-recommend-page");
                     }
                 }else if($(this).hasClass("next")){
-                    if(data.i==3){
+                    if(data.current==3){
                         $(this).addClass("disable-recommend-page");
                         return ;
                     }
@@ -165,7 +168,7 @@ define(["backbone","unslider"],function(require, exports, module) {
                     //  Move to the next slide (or the first slide if there isn't one)
                     data.next();
                     $(this).prev().removeClass("disable-recommend-page");
-                    if(data.i==2){
+                    if(data.current==2){
                         $(this).addClass("disable-recommend-page");
                     }else{
                         $(this).removeClass("disable-recommend-page");
@@ -184,6 +187,8 @@ define(["backbone","unslider"],function(require, exports, module) {
                     complete: function() {},  //  A function that gets called after every slide animation
                     keys: true,               //  Enable keyboard (left, right) arrow shortcuts
                     dots: false,               //  Display dot navigation
+                    arrows:[],
+                    nav:false,
                     fluid: true
                 });
             });
@@ -232,12 +237,6 @@ define(["backbone","unslider"],function(require, exports, module) {
                 var data_href = a.attr("data-href");
                 var data_subNavId = a.attr("data-subNavId");
                 a.attr("href",data_href);
-                //if(menu_text.indexOf(data_subNavId)!=-1){
-                  //  a.attr("href",data_href);
-                //}else{
-                  //  a.addClass("disable-a");
-                   // a.find('img').attr('src','../../assets/images/index/url-icon/index-url-icon-disable-'+(i+1)+'.png');
-                //}
             }
 
         }

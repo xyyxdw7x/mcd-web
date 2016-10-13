@@ -72,7 +72,7 @@ define(["backbone","my97","form"],function(require, exports, module) {
 										return ;
 									}
 									//直接跳转到我的客户群页面
-									var url=contextPath+"/jsp/custom/customManage.jsp?";
+									var url=contextPath+"/jsp/custom/customManage.jsp";
 									window.location =url;
 								},
 								error : function(e) {

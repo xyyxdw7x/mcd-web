@@ -259,10 +259,9 @@ define(["backbone"],function(require, exports,module) {
 						}
 						
 						if(target.hasClass("bulk-item-name")){
-							
 							var campsegId = target.attr("campsegpid");
 							var strUrl = window.location.href;
-							var url =window.location.href.split(_ctx)[0]+_ctx+"/mcd/pages/tactics/tacticsInfo.jsp?campsegId="+campsegId;
+							var url =window.location.href.split(_ctx)[0]+_ctx+"/jsp/tactics/tacticsInfo.jsp?campsegId="+campsegId;
 							window.open(url);
 						}
 						

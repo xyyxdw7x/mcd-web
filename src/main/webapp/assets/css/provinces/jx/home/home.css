@@ -71,8 +71,15 @@ a{
     width: 100%;
     margin: 5px 0 0 0;
 }
-.content .recommend .recommend-detail .recommend-detail-ul{
-
+.recommend-detail{
+    position: relative; 
+ 	overflow: auto; 
+}
+.recommend-detail-ul{
+	list-style: none; 
+}
+.recommend-detail-li{
+	float: left; 
 }
 .content .recommend .recommend-detail .recommend-detail-ul .recommend-detail-li{
     display: -webkit-box;

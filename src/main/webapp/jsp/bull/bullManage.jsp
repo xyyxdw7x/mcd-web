@@ -25,7 +25,7 @@
 <jsp:include page="/jsp/common/header.jsp"></jsp:include>
 
 <body class="bulk-body">
-	<div class="bulk-container"  <c:if test="${cityId == '999'}">style="display:none"</c:if>>
+	<div class="bulk-container" >
 		<div class="bulk-total-quota" >
 			<div class="bulk-quota-title fleft">
 				<i class="fleft bulk-quota-icon"></i>

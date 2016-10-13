@@ -1,4 +1,4 @@
-define(["backbone"],function(require, exports, module) {    
+define(["backbone","page"],function(require, exports, module) {    
 	
 	module.exports={
 		init:function(){
@@ -40,86 +40,6 @@ define(["backbone"],function(require, exports, module) {
 				},
 				click : function(obj) {
 					var $target = $(obj.target);
-					if($target.hasClass("page-num")){
-						this.setDomList($target.html(),new customTableModel({id : options.id})); 
-					}else if($target.hasClass("ui-page-button")){
-                    	var pageNum = $target.prev().find(".ui-page-num").val()*1;
-                    	var totalNum = $(".page-num").last().text()*1;
-                    	pageNum = pageNum > totalNum ? totalNum : pageNum <= 0 ? 1 : pageNum;
-                    	this.setDomList(pageNum,new customTableModel({id : options.id}));
-                    }else if($target.hasClass("page-button") && $target.attr("data-flag")){
-						var pageNum = $target.siblings(".page-num.active").html()*1+1;
-						if($target.attr("data-flag").indexOf("next") > -1 || $target.attr("data-flag").indexOf("last-dot") > -1){
-							this.setDomList(pageNum,new customTableModel({id : options.id})); 
-						}else if($target.attr("data-flag").indexOf("prev") > -1|| $target.attr("data-flag").indexOf("first-dot") > -1){
-							pageNum = $target.siblings(".page-num.active").html()*1-1;
-							this.setDomList(pageNum,new customTableModel({id : options.id}));
-						}
-					}else if($target.hasClass('hand-out-custom')){
-
-						var group_into_id = $target.parents('tr').find('td').eq(1).html();
-						var group_cycle_name = $target.parents('tr').find('td').eq(4).html();
-						var data_date = $target.parents('tr').find('td').eq(7).html();;
-						var group_table_name = $target.parents('tr').attr('data-table-name');;
-
-						var group_cycle = '';
-						if(group_cycle_name=='日'){
-							group_cycle = 'D';
-						}else if(group_cycle_name=='月'){
-							group_cycle = 'M';
-						}else{
-							group_cycle = 'O';//一次性
-						}
-
-						var ctObj=$("#handOutDialog");
-						ctObj.dialog({
-							title:"呼入队列选择",
-							modal:true,
-							width:400,
-							height:400,
-							position: { my: "center", at: "center", of: window },
-							buttons: [
-								{
-									text: "确定",
-									"class":"ok-button smallWidth",
-									click: function() {
-										var queue_id = $('input[name=queneRadio]:checked').attr('data-id');
-										if(queue_id=="" || queue_id=="-1"){
-											$(this).dialog( "close" );
-											return;
-										}
-										$.post( _ctx+"/action/custgroup/custGroupManager/insertQueue.do",
-											{"group_into_id":group_into_id,"group_cycle":group_cycle,"queue_id":queue_id,"data_date":data_date,"group_table_name":group_table_name},
-											function (result) {
-												if(result.data==1){
-													alert("分发成功!");
-												}
-											},
-											'json'
-										);
-
-										if($(this).attr("ifclose")!="false"){
-											$( this ).dialog( "close" );
-										}
-									}
-								},
-								{
-									text: "取消",
-									"class":"bigButton blue smallWidth",
-									click: function() {
-										$(this).dialog( "close" );
-									}
-								}
-							],
-							open: function(){},
-							close:function(event, ui ){
-								//ctObj.dialog("destroy");
-								//ctObj.remove();
-								$('body').css('overflow', 'auto');
-								$(this).dialog( "close" );
-							}
-						});
-					}
 				},
 				initialize : function() {
 					this.render(1);
@@ -129,7 +49,9 @@ define(["backbone"],function(require, exports, module) {
 					return this;
 				} ,
 				setDomList:function(pageNum,tableModel){
+					var thisObj=this;
 					var defaultData = {cmd:options.cmd,pageNum:pageNum};
+					//options.ajaxData={pageNum:pageNum,contentType:options.ajaxData.contentType,keywords:options.ajaxData.keywords};
 					var ajaxData = $.extend(defaultData, options.ajaxData);
 					tableModel.fetch({
 						type : "post",
@@ -172,7 +94,26 @@ define(["backbone"],function(require, exports, module) {
 						}).on('mouseout', function() {
 							$(this).css('background-color', _cls).siblings().css('background-color', _cls);
 						});
+						debugger;
+						thisObj.renderPageView(model.attributes.data,thisObj);
 					});
+				},
+				/**
+				 * 分页显示组件
+				 */
+				renderPageView:function(data,obj){
+					debugger;
+					$(".centent-page-box").pagination({
+				        items: data.totalSize,
+				        itemsOnPage: data.pageSize,
+				        currentPage:data.pageNum,
+				        prevText:'上一页',
+				        nextText:'下一页',
+				        cssStyle: 'light-theme',
+				        onPageClick:function(pageNumber,event){
+				        	obj.setDomList(pageNumber,new customTableModel({id : options.id}));
+				        }
+				    });
 				}
 			});
 			var tableView = new customTableView({el:options.currentDom});
@@ -379,17 +320,15 @@ define(["backbone"],function(require, exports, module) {
 			//先判断显示的是哪个tab
 			var tab = $("#customManageQueryTab .active").attr("data-tab");
 			var ajaxData = null;
-			var pageNum = 1;
 			var trNum = 0;
-			
+			debugger;
 			if(tab == "ALL-CUSTOM") {
-				pageNum = $("#customTable_all .content-table-page .page-num.active").html()*1;
 				trNum = $("#customTable_all .content-table tr").length-1;
 				if(trNum == 1) {
 					pageNum--;
 					pageNum = (pageNum == 0) ? 1 : pageNum;
 				}
-				ajaxData ={ "contentType":"ALL-CUSTOM", "keywords":$("#search_all input").val(), "pageNum" : pageNum };
+				ajaxData ={ "contentType":"ALL-CUSTOM", "keywords":$("#search_all input").val() };
 				if(window.tableViewManage_all){
 					window.tableViewManage_all .undelegateEvents();  
 				}
@@ -399,13 +338,8 @@ define(["backbone"],function(require, exports, module) {
 					ajaxData:ajaxData
 				});
 			} else if (tab == "MY-CUSTOM") {
-				pageNum = $("#customTable_mine .content-table-page .page-num.active").html()*1;
 				trNum = $("#customTable_mine .content-table tr").length-1;
-				if(trNum == 1) {
-					pageNum--;
-					pageNum = (pageNum == 0) ? 1 : pageNum;
-				}
-				ajaxData = { "contentType":"MY-CUSTOM","keywords":$("#search_mine input").val(),"pageNum":pageNum };
+				ajaxData = { "contentType":"MY-CUSTOM","keywords":$("#search_mine input").val()};
 				if(window.tableViewManage ){
 					window.tableViewManage.undelegateEvents();  
 				}
@@ -415,13 +349,9 @@ define(["backbone"],function(require, exports, module) {
 					ajaxData:ajaxData
 				});
 			} else if (tab == "ABNORMAL-CUSTOM") {
-				pageNum = $("#customTable_abnormal .content-table-page .page-num.active").html()*1;
+				pageNum = $("#customTable_abnormal .content-table-page .active .current").html()*1;
 				trNum = $("#customTable_abnormal .content-table tr").length-1;
-				if(trNum == 1) {
-					pageNum--;
-					pageNum = (pageNum == 0) ? 1 : pageNum;
-				}
-				var ajaxData = { "contentType":"ABNORMAL-CUSTOM","keywords":$("#search_abnormal input").val(), "pageNum": pageNum};
+				var ajaxData = { "contentType":"ABNORMAL-CUSTOM","keywords":$("#search_abnormal input").val()};
 				if(window.tableViewManage ){
 					window.tableViewManage.undelegateEvents();
 				}
