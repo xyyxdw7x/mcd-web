@@ -57,7 +57,7 @@ tacticsInfo.addStepNumEventListenter=function(){
 			return ;
 		}
 		if(selectedIndex==2&&tacticsInfo.plan==null){
-			alert("请选择政策");
+			alert("请选择产品");
 			return ;
 		}
 		if(selectedIndex==3&&tacticsInfo.custGroup==null){

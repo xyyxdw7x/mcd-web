@@ -115,7 +115,7 @@ define(["backbone"],function(require, exports,module) {
 									buttons: [
 										{
 											text: "确定",
-											"class":"ok-small-button ui-button-dlg",
+											"class":"ok-small-button",
 											click: function() {
 												
 												var PauseComment=$('.reasonDialog-div-textarea').val();
