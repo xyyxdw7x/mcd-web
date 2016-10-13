@@ -197,7 +197,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			buffer.append("select tbase.*, info.data_date,info.list_table_name from (");
 			buffer.append(" select * from (");
 			buffer.append(" select ROWNUM as rowno,t.custom_group_id,t.custom_group_name,t.custom_group_desc,t.create_user_id,t.create_time,t.rule_desc,t.custom_num,");
-			buffer.append(" case t.custom_status_id when 0 then '无效' when 1 then '有效'  when 3 then '提取处理中'  when 4 then '提取失败' when 9 then '客户群导入失败' end as custom_status,t.effective_time,t.fail_time,t.create_user_name,");
+			buffer.append(" case t.custom_status_id when 0 then '无效' when 1 then '有效'  when 3 then '提取处理中'  when 4 then '提取失败' when 9 then '客户群导入失败' when 10 then '入库异常' end as custom_status,t.effective_time,t.fail_time,t.create_user_name,");
 			buffer.append(" case t.update_cycle when 1 then '一次性' when 2 then '月' when 3 then '日' end as update_cycle_name");
 			buffer.append(" from mcd_custgroup_def t where t.custom_status_id <>'2' ");
 
@@ -234,7 +234,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
             buffer.append(" and cinfo.custom_group_id in (select distinct mcc.custgroup_id from mcd_camp_def mcs,mcd_camp_custgroup_list mcc where mcs.campseg_id = mcc.campseg_id and mcs.campseg_stat_id in ('50','54','59'))");
 			    buffer.append(") tab) re ");
 
-			buffer.append(" where ((re.invalid_flag = 1 and re.custom_status_id <>2)  or re.custom_status_id='9' or re.custom_num='0') ");// re.custom_status_id <>2：客户群状态不等于删除状态
+			buffer.append(" where ((re.invalid_flag = 1 and re.custom_status_id <>2)  or re.custom_status_id='9' or re.custom_status_id='10' or re.custom_num='0') ");// re.custom_status_id <>2：客户群状态不等于删除状态
 			
 			if(keywords != null && !"".equals(keywords)) {
 				buffer.append(" and (re.custom_group_id like '%" + keywords + "%' or re.custom_group_name like '%" + keywords + "%')");
