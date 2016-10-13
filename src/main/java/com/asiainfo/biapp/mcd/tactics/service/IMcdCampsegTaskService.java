@@ -48,5 +48,10 @@ public interface IMcdCampsegTaskService {
      * @throws Exception
      */
     void insertMcdCampsegTaskDate(String taskId, String dataDate, short execStatus, int tableNum, Date planExecTime);
+    /**
+     * 终止任务
+     * @param taskId
+     */
+    void stopCampsegTask(String taskId);
 
 }

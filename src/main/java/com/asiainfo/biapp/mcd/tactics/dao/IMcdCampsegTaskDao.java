@@ -112,4 +112,9 @@ public interface IMcdCampsegTaskDao {
      * @return
      */
     boolean checkTaskDataIsExist(String taskId, String dataDate);
+    /**
+     * 终止任务
+     * @param taskId
+     */
+    void stopCampsegTask(String taskId);
 }

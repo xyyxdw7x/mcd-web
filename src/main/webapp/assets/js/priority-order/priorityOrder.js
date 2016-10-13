@@ -87,6 +87,36 @@ function add_on_top(ele) {
 	setTimeout("on_top_manual(" + chanID + ")", 5000); // 5000毫秒，既是5秒~
 }
 
+function stop_task(ele) {
+	var _url = _ctx + '/action/priorityOrder/stopCampsegTask.do';
+	var chanID = $("td.fleft.content-type-box.J_campType.active").attr('cnid');
+	var params = {
+		channelId : chanID,
+		campsegId : $(ele).attr('mat'),
+		chnAdivId : $(ele).attr('chnAdivId'),
+		taskId : $(ele).attr('taskId')
+	};
+	$.ajax({
+		url : _url,
+		type : "post",
+		data : params,
+		success : function(result) {
+			if (result.status == 200) {
+				// alert('置顶成功!');
+				var channel_td = $('.J_campType.active');
+				if (channel_td.find('.icon-down').hasClass('hidden')) {
+					channel_td.click();
+				} else {
+					$('.adiv_tr .active').click();
+				}
+			} else if (result.status == 201) {
+				alert('操作异常,请稍候重试!');
+			}
+		}
+	});
+	setTimeout("on_top_manual(" + chanID + ")", 5000); // 5000毫秒，既是5秒~
+}
+
 function delay_offline() {
 	setTimeout(function() {
 		load_channel('initOnlineChannel', 'content_offline');
@@ -321,6 +351,42 @@ function on_top_manual(channel_id, adiv_id) {
 													},
 													error : function() {
 														alert("取消置顶失败");
+													}
+
+												});
+									});
+					// 点击终止任务
+					$(".stick_on_stop_task")
+							.bind(
+									"click",
+									function() {
+										var campsegId = $(this).parent().parent().attr('campsegId');
+										var cityId = $(this).parent().parent().attr('cityId');
+										var channelId = $(this).parent().parent().attr('channelId');
+										var chnAdivId = $(this).parent().parent().attr('chnAdivId');
+										var taskId = $(this).attr('taskId');
+										$.ajax({
+													type : "post",
+													url : _ctx
+															+ "/action/priorityOrder/stopCampsegTask.do",
+													data : {
+														campsegId : campsegId,
+														cityId : cityId,
+														channelId : channelId,
+														chnAdivId : chnAdivId,
+														taskId:taskId
+													},
+													success : function(data) {
+														var channel_td = $('.J_campType.active');
+														if (channel_td.find('.icon-down').hasClass('hidden')) {
+															// channel_td.click();
+															clickChannel(channel_td[0]);
+														} else {
+															clickAdiv($('.adiv_tr .active')[0]);
+														}
+													},
+													error : function() {
+														alert("任务终止失败");
 													}
 
 												});

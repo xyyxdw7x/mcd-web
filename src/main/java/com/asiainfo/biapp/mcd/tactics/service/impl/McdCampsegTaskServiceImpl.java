@@ -77,5 +77,15 @@ public class McdCampsegTaskServiceImpl implements IMcdCampsegTaskService{
         mcdCampsegTaskDao.insertMcdCampsegTaskDate(taskId,dataDate,execStatus,tableNum,planExecTime);
         
     }
+    /**
+     * 终止任务
+     * @param taskId
+     */
+    @Override
+    public void stopCampsegTask(String taskId) {
+        mcdCampsegTaskDao.stopCampsegTask(taskId);
+        
+        
+    }
 
 }
