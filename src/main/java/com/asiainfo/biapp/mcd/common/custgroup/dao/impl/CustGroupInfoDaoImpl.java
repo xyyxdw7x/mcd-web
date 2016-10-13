@@ -16,7 +16,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import com.asiainfo.biapp.framework.aop.BeanSelfAware;
@@ -1260,6 +1262,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	 * @param date
 	 * @return 插入数据条数
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int insertInMemCustPhoneNoToTab(boolean clearTable, Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> data, String tabName, String date) throws Exception{
 		log.info("insertCustPhoneNoToTab tabName="+tabName+" clearTable="+clearTable);
 		//插入行数
@@ -1278,58 +1281,112 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 			e4.printStackTrace();
 			throw e4;
 		}
-		
+		boolean USE_MULTIROWS_INSERT = false;
 		try {
-			long t1 = System.currentTimeMillis();
-			String insertSql = "INSERT ALL \n {0} SELECT * FROM dual";
-			
-			if (null != data) {
-				StringBuffer innerSQL = new StringBuffer();
+			//使用多行同时插入
+			if (USE_MULTIROWS_INSERT) {
+				long t1 = System.currentTimeMillis();
+				String insertSql = "INSERT ALL \n {0} SELECT * FROM dual";
 				
-				String phoneSeg1 = null;
-				String phoneSeg2 = null;
-				BitSet e3 = null;
-				String phoneSeg3 = null;
-				String phoneNumber = null;
-				String finalSql = "";
-				
-				//遍历数据集MAP
-				for (Map.Entry<Byte, Short2ObjectOpenHashMap<BitSet>> e1 : data.entrySet()) {
-					phoneSeg1 = "1" + e1.getKey();
+				if (null != data) {
+					StringBuffer innerSQL = new StringBuffer();
 					
-					for (Map.Entry<Short, BitSet> e2 : e1.getValue().entrySet()) {
+					String phoneSeg1 = null;
+					String phoneSeg2 = null;
+					BitSet e3 = null;
+					String phoneSeg3 = null;
+					String phoneNumber = null;
+					String finalSql = "";
+					
+					//遍历数据集MAP
+					for (Map.Entry<Byte, Short2ObjectOpenHashMap<BitSet>> e1 : data.entrySet()) {
+						phoneSeg1 = "1" + e1.getKey();
 						
-						phoneSeg2 = formatPhoneNo(e2.getKey());
-						e3 = e2.getValue();
-						for (int i = e3.nextSetBit(0); i != -1; i = e3.nextSetBit(i + 1)) {
-							phoneSeg3 = formatPhoneNo((short) i);
+						for (Map.Entry<Short, BitSet> e2 : e1.getValue().entrySet()) {
 							
-							phoneNumber = phoneSeg1 + phoneSeg2 + phoneSeg3;
-							innerSQL.append("INTO ");
-							innerSQL.append(tabSpace+".");
-							innerSQL.append(tabName);
-							innerSQL.append(" (PRODUCT_NO,DATA_DATE) VALUES ('");
-							innerSQL.append(phoneNumber);
-							innerSQL.append("','").append(date).append("') \n");
-							++total;
-							
-							if (total % 20000 == 0) {//每20000条插入一次
+							phoneSeg2 = formatPhoneNo(e2.getKey());
+							e3 = e2.getValue();
+							for (int i = e3.nextSetBit(0); i != -1; i = e3.nextSetBit(i + 1)) {
+								phoneSeg3 = formatPhoneNo((short) i);
+								
+								phoneNumber = phoneSeg1 + phoneSeg2 + phoneSeg3;
+								innerSQL.append("INTO ");
+								innerSQL.append(tabSpace+".");
+								innerSQL.append(tabName);
+								innerSQL.append(" (PRODUCT_NO,DATA_DATE) VALUES ('");
+								innerSQL.append(phoneNumber);
+								innerSQL.append("','").append(date).append("') \n");
+								++total;
+								
+								if (total % 2000 == 0) {//每2000条插入一次
+									finalSql = insertSql.replace("{0}", innerSQL);
+									this.getJdbcTemplate().execute(finalSql);
+									innerSQL = new StringBuffer();
+								}
+							}
+							if(innerSQL.length() != 0){//剩余的插入
 								finalSql = insertSql.replace("{0}", innerSQL);
 								this.getJdbcTemplate().execute(finalSql);
-								innerSQL = new StringBuffer();
 							}
-						}
-						if(innerSQL.length() != 0){//剩余的插入
-							finalSql = insertSql.replace("{0}", innerSQL);
-							this.getJdbcTemplate().execute(finalSql);
 						}
 					}
 				}
+				log.info("插入{}条数据到{}表共耗时:{}ms", total, tabName, (System.currentTimeMillis() - t1));
+			} else{
+				final Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> map = data;
+				final String sql = "INSERT INTO "+tabSpace+"."+tabName+" (PRODUCT_NO,DATA_DATE) VALUES (?,?)";
+				final String table = tabName;
+				final String dataDate = date;
+				final List<Integer> num = new ArrayList<Integer>(); 
+				
+				this.getJdbcTemplate().execute(sql, new PreparedStatementCallback() {
+					@Override
+					public Object doInPreparedStatement(PreparedStatement preparedstatement) throws SQLException, DataAccessException {
+						long t1 = System.currentTimeMillis();
+						int rows = 0;
+						
+						if (null != map) {
+							String phoneSeg1 = null;
+							String phoneSeg2 = null;
+							BitSet e3 = null;
+							String phoneSeg3 = null;
+							String phoneNumber = null;
+							
+							//遍历数据集MAP
+							for (Map.Entry<Byte, Short2ObjectOpenHashMap<BitSet>> e1 : map.entrySet()) {
+								phoneSeg1 = "1" + e1.getKey();
+								
+								for (Map.Entry<Short, BitSet> e2 : e1.getValue().entrySet()) {
+									
+									phoneSeg2 = formatPhoneNo(e2.getKey());
+									e3 = e2.getValue();
+									for (int i = e3.nextSetBit(0); i != -1; i = e3.nextSetBit(i + 1)) {
+										phoneSeg3 = formatPhoneNo((short) i);
+										phoneNumber = phoneSeg1 + phoneSeg2 + phoneSeg3;
+										++rows;
+										
+										preparedstatement.setString(1, phoneNumber);
+										preparedstatement.setString(2, dataDate);
+										preparedstatement.addBatch();
+										if (rows % 10000 == 0) {//每10000条提交一次
+											preparedstatement.executeBatch();
+										}
+									}
+								}
+							}
+							preparedstatement.executeBatch();
+						}
+						log.info("插入{}条数据到{}表共耗时:{}ms", rows, table, (System.currentTimeMillis() - t1));
+						num.add(rows);
+						return null;
+					}
+				});
+				total = num.get(0);
 			}
-			log.info("插入{}条数据到{}表共耗时:{}ms", total, tabName, (System.currentTimeMillis() - t1));
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("插入数据到" + tabName + "时发生异常:", e);
+			throw e;
 		}
 		return total;
 	}
