@@ -439,6 +439,115 @@
 .left-nav-bg2{
 	top:-20px;
 }
+.logRecordCT {
+  margin: 40px 110px 0 250px;
+  padding-bottom: 1px;
+  border-left: 2px solid #e3e3e3;
+}
+.logrow {
+  margin-bottom: 35px;
+}
+.recordLeft {
+  float: left;
+  width: 170px;
+  margin-left: -170px;
+  text-align: center;
+}
+.recordRight {
+  margin-left: 40px;
+}
+.recordPoint {
+  float: right;
+  list-style: none;
+  padding: 1px;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  margin: 0 -11px 0 0;
+  border-radius: 12px;
+  background-color: #efefef;
+}
+.recordPoint .point {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0px auto;
+  border-radius: 6px;
+  background-color: #626262;
+}
+.recordLeft .bluebar {
+  max-height: 50px;
+  line-height: 25px;
+  margin: -5px auto 0 auto;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #51aefc;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.5px;
+  min-height: 34px;
+}
+.icon_arrRight {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-left: 5px solid #51aefc;
+  vertical-align: middle;
+}
+.recordLeft .txt {
+  float: left;
+  width: 135px;
+  color: #666;
+  font-family: "Arial Black";
+}
+.recordLeft p {
+  width: 128px;
+  padding: 3px 0 0 0;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: bold;
+  letter-spacing: 0.1px;
+}
+.recordLeft .bluebar .icon_arrRight {
+  float: right;
+  margin: 12px -9px 0 0;
+}
+.recordLeft .txt > span {
+  display: block;
+  width: 128px;
+  margin: 2px auto auto;
+  font-size: 12px;
+  font-weight: normal;
+}
+.recordRight h4 {
+  height: 26px;
+  line-height: 24px;
+  text-indent: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "宋体";
+}
+.recordRight .log {
+  padding: 13px 19px;
+  background-color: #f4f5f7;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.icon_arrLeft {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-right: 6px solid #f4f5f7;
+  vertical-align: middle;
+}
+.recordRight .log .icon_arrLeft {
+  float: left;
+  margin-left: -29px;
+  margin-top: 6px;
+}
 /* 来自原版新建策略 end */
 
 .btnOrange {
