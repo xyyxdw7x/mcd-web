@@ -542,11 +542,11 @@ define(["backbone","my97"],function(require, exports, module) {
 		},
 		getLogRecord:function(options){
 			var defaults = {
-					urlRoot:_ctx+"/tactics/viewPolicyDetail",
-					id:"getLogRecord",
+					urlRoot:_ctx+"/action/tactics/tacticsInfo/",
+					id:"getLogRecord.do",
 //					cmd:"getLogRecord",
 					currentDom:"#logRecordCT",
-					ejsUrl:_ctx +"/assets/js/tactics/provinces/"+provinces+"/logRecord.ejs",
+					ejsUrl:_ctx +"/assets/js/tactics/provinces/logRecord.ejs",
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
