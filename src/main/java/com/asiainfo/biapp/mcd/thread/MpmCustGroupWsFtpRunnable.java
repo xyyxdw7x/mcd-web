@@ -80,7 +80,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 		    custGroupInfoService=(ICustGroupInfoService) SpringContextsUtil.getBean("custGroupInfoService");
 		    mtlSmsSendTestTask = (IMtlSmsSendTestTask)SpringContextsUtil.getBean("mtlSmsSendTestTask");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
  		String ftpServer = null;
@@ -122,10 +121,10 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 // 		String localHostPath = File.separator + "data1" + File.separator + "app" + File.separator + "jqyxweb"  + File.separator + "tempCOC" + File.separator;
 // 		String localHostPath = "D://";
  		try {
-//			boolean chkIsTrue = ftp.download(localHostPath + fileName + ".CHK",ftpStorePath + File.separator + fileName + ".CHK");
-//			boolean txtIsTrue = ftp.download(localHostPath + fileName + ".txt",ftpStorePath + File.separator + fileName + ".txt");
- 			boolean txtIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.txt", "/home/imcd/coc//MCD_GROUP_KHQ100003144_20160606.txt");
-			boolean chkIsTrue = ftp.download("D://MCD_GROUP_KHQ100003144_20160606.CHK", "/home/imcd/coc//MCD_GROUP_KHQ100003144_20160606.CHK");
+			boolean chkIsTrue = ftp.download(localHostPath + fileName + ".CHK",ftpStorePath + File.separator + fileName + ".CHK");
+			boolean txtIsTrue = ftp.download(localHostPath + fileName + ".txt",ftpStorePath + File.separator + fileName + ".txt");
+// 			boolean txtIsTrue = ftp.download("D://MCD_GROUP_KHQ000008464_20150914.txt", "/home/imcd/coc//MCD_GROUP_KHQ000008464_20150914.txt");
+//			boolean chkIsTrue = ftp.download("D://MCD_GROUP_KHQ000008464_20150914.CHK", "/home/imcd/coc//MCD_GROUP_KHQ000008464_20150914.CHK");
 			if(!txtIsTrue){
 	  			exceptionMessage = "出现错误，ftp无法获取或者文件不存，或FTP出现错误无法读取";
 				flag = 2;
@@ -168,7 +167,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			xml.append(exceptionMessage + "</msg></result>");
 			//如果存在错误，调用COC接受错误接口
 			this.loadCustListError(customGroupId,"IMCD",exceptionMessage);
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -319,11 +317,11 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			    try {
 	                    int lineNum = 1;
 				    	while (it.hasNext()) {
-				    	    if(lineNum > 20000){
+				    	    if(lineNum > 2000){
 				    	        lineNum = 1;
-				    	        insertSql = "INSERT ALL ";
-				    	        insertSql = insertSql + " SELECT * FROM dual";
+                                insertSql = insertSql + " SELECT * FROM dual";
 				    	        custGroupInfoService.addInMemExecute(insertSql,objectList.toArray());
+	                            insertSql = "INSERT ALL ";
 				    	        objectList.clear();
 				    	    } 
 				    	    insertSql = insertSql + insertSqlTail;
@@ -344,7 +342,7 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
                                 }
                             }
                             objectList.add(customGroupDataDate);
-
+                            lineNum++;
                             inportCount = inportCount +1;
 
 				    	}
@@ -428,7 +426,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 
 				taskService = (IMcdCampsegTaskService) SpringContextsUtil.getBean("mcdCampsegTaskService");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//MtlCampsegCustGroup  segInfoservice.getCustGroupSelectByGroupIdList(customGroupId);
@@ -736,7 +733,6 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 		    pw.flush(); 
 		    flag = true; 
 	    } catch (IOException e1) { 
-		    // TODO 自动生成 catch 块 
 		    throw e1; 
 	    } finally { 
 		    if (pw != null) { 

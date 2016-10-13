@@ -1689,6 +1689,6 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
          */
         @Override
         public void addInMemExecute(String insertSql, Object[] values) {
-            this.getJdbcTemplate().update(insertSql, values);            
+            this.getJdbcTemplate().update(insertSql, values); 
         }
 }
