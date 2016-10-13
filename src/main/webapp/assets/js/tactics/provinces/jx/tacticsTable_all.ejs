@@ -50,13 +50,13 @@
 				<!--  非自己的不做任何操作，modify by lixq10 2016年7月19日21:20:53
 				<div style="visibility:<%=data.result[i].manageBtnDisplay%>" class="fleft controls manage J_manageBtnAll" <%=(data.result[i].isMy==0&&(data.result[i].campsegStatId != 90 )) ? '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 				-->
-				<div class="fleft controls manage J_manageBtnAll" <%=(data.result[i].isMy==0&&(data.result[i].campsegStatId != 90 )) ? '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
+				<div class="fleft controls newControls manage J_manageBtnAll" <%=(data.result[i].isMy==0&&(data.result[i].campsegStatId != 90 )) ? '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 					<span class="txt J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">管理</span>
 					<div class="icon J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 						<span class="icon_arrDown J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>"></span>
 					</div>
 				</div>
-				<div class="fleft controls manage J_activityBtnAll" <%=data.result[i].isMy==0 ? (data.result[i].campsegStatId == 20 || data.result[i].campsegStatId == 91||data.result[i].campsegStatId == 90 || data.result[i].campsegStatId == 41|| data.result[i].campsegStatId == 48) ?  'style="display:none;"': '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
+				<div class="fleft controls newControls manage J_activityBtnAll" <%=data.result[i].isMy==0 ? (data.result[i].campsegStatId == 20 || data.result[i].campsegStatId == 91||data.result[i].campsegStatId == 90 || data.result[i].campsegStatId == 41|| data.result[i].campsegStatId == 48) ?  'style="display:none;"': '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 					<span class="txt J_activityBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">活动管控</span>
 					<div class="icon J_activityBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 						<span class="icon_arrDown J_activityBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>"></span>

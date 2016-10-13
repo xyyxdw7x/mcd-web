@@ -4742,6 +4742,9 @@ html {
   text-indent: 0;
   vertical-align: middle;
 }
+.container .content .content-main .content-table .content-table-box.tacticsManageTable td:last-child .controls.newControls{
+	margin: 6px 5px 0
+}
 .container .content .content-main .content-table .content-table-box.tacticsManageTable td:last-child .controls span.txt {
   float: left;
   padding: 0 10px;

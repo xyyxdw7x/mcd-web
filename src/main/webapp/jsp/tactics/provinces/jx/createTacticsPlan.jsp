@@ -43,7 +43,7 @@
 				<thead>
 					<tr>
 						<th class="text-center" width="6%">序号</th>
-						<th class="text-left" width="30%">产品编号及名称</th>                                                                  
+						<th class="text-center" width="30%">产品编号及名称</th>                                                                  
 						<th class="text-center" width="10%">产品类别</th>
 						<th class="text-center" width="10%">产品类型</th>
 						<th class="text-center" width="12%">生效时间</th>
