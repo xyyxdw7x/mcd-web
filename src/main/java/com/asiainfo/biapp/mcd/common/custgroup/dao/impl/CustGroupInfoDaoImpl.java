@@ -1204,7 +1204,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	    @Override
 	    public void savemtlCustomListInfo(String mtlCuserTableName,
 	            String customGroupDataDate, String customGroupId, int rowNumberInt,
-	            int dataStatus, Date newDate, String exceptionMessage) {
+	            int dataStatus, Date newDate, String exceptionMessage) throws Exception {
 //	      JdbcTemplate jt = SpringContext.getBean("jdbcTemplate", JdbcTemplate.class);
 	        
 	        String sqldb="";
@@ -1217,7 +1217,8 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 	        if(mtlGroupInfoList != null && mtlGroupInfoList.size() > 0){
 	            Map<String, Object> map = (Map<String, Object>) mtlGroupInfoList.get(0);
 	            String tableName  = map.get("list_table_name").toString();
-	            String dropsql = "drop  table "+ tableName;
+	            String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
+	            String dropsql = "drop  table "+tabSpace+"." +tableName;
 	            this.getJdbcTemplate().execute(dropsql);
 	            
 	            String deletemtlGroupAttpRel = "delete from mcd_custgroup_attr_list where list_table_name = ?";

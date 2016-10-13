@@ -565,7 +565,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	    @Override
 	    public void savemtlCustomListInfo(String mtlCuserTableName,
 	            String customGroupDataDate, String customGroupId, int rowNumberInt,
-	            int dataStatus, Date newDate, String exceptionMessage) {
+	            int dataStatus, Date newDate, String exceptionMessage) throws Exception {
 	        custGroupInfoDao.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
 
 	    }
@@ -822,8 +822,12 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 				this.updatesavemtlCustomListNum(tableName);
 
 			} catch (Exception e) {
+				
 				e.printStackTrace();
 				log.error("通过导入文件方式插入客户群清单数据执行时异常",e);
+				
+				//客户群导入失败了，需要短息通知维护人员，
+				//TODO 短信通知逻辑
 			}
 			
 		}
