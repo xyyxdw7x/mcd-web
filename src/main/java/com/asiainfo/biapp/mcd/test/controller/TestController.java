@@ -1,4 +1,4 @@
-package com.asiainfo.biapp.mcd;
+package com.asiainfo.biapp.mcd.test.controller;
 
 
 import javax.annotation.Resource;
