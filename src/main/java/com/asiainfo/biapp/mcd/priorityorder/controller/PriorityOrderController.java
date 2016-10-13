@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +20,7 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.priorityorder.service.ICampsegPriorityService;
 import com.asiainfo.biapp.mcd.priorityorder.vo.CampsegPriorityBean;
+import com.asiainfo.biapp.mcd.tactics.service.IMcdCampsegTaskService;
 
 @Controller
 @RequestMapping("/action/priorityOrder")
@@ -27,6 +29,8 @@ public class PriorityOrderController extends BaseMultiActionController {
 	private Logger log = Logger.getLogger(PriorityOrderController.class);
 	@Autowired
 	private ICampsegPriorityService campsegPriorityService;
+	@Resource(name = "mcdCampsegTaskService")
+	private IMcdCampsegTaskService mcdCampsegTaskService;
 
 	/**
 	 * 初始化手动置顶优先级
@@ -194,4 +198,32 @@ public class PriorityOrderController extends BaseMultiActionController {
 		}
 		return resultMap;
 	}
+	
+	   /**
+     * 取消置顶功能
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping()
+    @ResponseBody
+    public Map<String, Object> stopCampsegTask(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        String taskId = request.getParameter("taskId");
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            log.info("************开始终止任务操作*********************");
+            this.mcdCampsegTaskService.stopCampsegTask(taskId);
+            log.info("************结束执行终止任务操作*********************");
+            resultMap.put("data", "");
+            resultMap.put("status", "200");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("status", "201");
+            resultMap.put("result", "查询数据异常");
+        }
+        return resultMap;
+    }
 }

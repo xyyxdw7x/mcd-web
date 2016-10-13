@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -366,6 +367,36 @@ public class McdCampsegTaskDaoImpl   extends JdbcDaoBase  implements IMcdCampseg
             flag = true;
         }
         return flag;
+    }
+    /**
+     * 终止任务
+     * @param taskId
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public void stopCampsegTask(String taskId) {
+        //停止任务主表
+        String sql="update mcd_camp_task t set t.exec_status=? where t.task_id=?";
+        this.getJdbcTemplate().update(sql,new Object[]{McdCONST.TASK_STATUS_STOP,taskId});
+        
+        //停止任务对应时间表
+        String sql2="update mcd_camp_task_date t set t.exec_status=? where t.task_id =?";
+        this.getJdbcTemplate().update(sql2,new Object[]{McdCONST.TASK_STATUS_STOP,taskId});
+        
+        String sql1 = "call UPDATE_CAMPSEG_PRIORITY(?,?,?)";
+        this.getJdbcTemplate().execute(sql1,new CallableStatementCallback(){
+            public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException { 
+                Calendar dataCalendar1 = Calendar.getInstance();
+                dataCalendar1.setTime(new Date());
+                dataCalendar1.add(Calendar.DAY_OF_MONTH, -1);
+                cs.setString(1, new SimpleDateFormat("yyyyMMdd").format(dataCalendar1.getTime()));
+                cs.registerOutParameter(2, Types.INTEGER);
+                cs.registerOutParameter(3, Types.VARCHAR);
+                cs.execute(); 
+                return null; 
+            }
+        });
+        
     }
 	
 }

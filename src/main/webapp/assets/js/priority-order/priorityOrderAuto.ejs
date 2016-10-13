@@ -50,7 +50,10 @@
 							<!--<td class="content-table-td"><%=data.result[i].isNewDays%></td>-->
 							<td class="content-table-td"><%=data.result[i].succRate %>%</td>
 							<td class="content-table-td"><%=data.result[i].priOrderNum%></td>
-							<td class="content-table-td"><img mat="<%=data.result[i].campsegId%>" chnAdivId="<%=data.result[i].chnAdivId%>" title="置顶" class="stick_on_top" src="<%=_ctx%>/assets/images/cep/top-priority.png" style="cursor:pointer;" onclick="add_on_top(this);"></img></td>
+							<td class="content-table-td">
+							<img mat="<%=data.result[i].campsegId%>" chnAdivId="<%=data.result[i].chnAdivId%>" title="置顶" class="stick_on_top" src="<%=_ctx%>/assets/images/cep/top-priority.png" style="cursor:pointer;" onclick="add_on_top(this);"></img>
+							<img taskId="<%=data.result[i].taskId%>" chnAdivId="<%=data.result[i].chnAdivId%>" title="终止" src="<%=_ctx%>/assets/images/cep/top-priority.png" style="cursor:pointer;" onclick="stop_task(this);"></img>
+							</td>
 							<td style="display: none;"><%=data.result[i].chnAdivId%></td>
 						</tr>
 						<%

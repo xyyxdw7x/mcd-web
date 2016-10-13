@@ -25,6 +25,7 @@ public class CampsegPriorityBean {
 	private int campSuccNum;  //营销成功用户数
 	private int campUserNum;  //营销用户数
 	private float succRate;  //转化率
+	private String taskId;
 	
 	public String getCampsegId() {
 		return campsegId;
@@ -109,7 +110,14 @@ public class CampsegPriorityBean {
 	}
 	public void setChnAdivId(String chnAdivId) {
 		this.chnAdivId = chnAdivId;
-	} 
+	}
+    public String getTaskId() {
+        return taskId;
+    }
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    } 
+	
 	
 }
 

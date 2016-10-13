@@ -50,13 +50,13 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		long startTime = new Date().getTime();
 		sb.append("select * from (")	
 		  .append(" select mcoa.campseg_id,mcoa.pri_order_num,mcoa.city_id,mcoa.channel_id,mcoa.chn_adiv_id, mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
-		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,meicd.camp_succ_rate ")
+		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,meicd.camp_succ_rate,task_id ")
 		  .append(" from mcd_camp_order mcoa")
 		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
 		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 //		  .append(" left join (select * from mtl_campseg_sort  where stat_date = (select max(stat_date) from mtl_campseg_sort)) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.channel_id=meicd.channel_id and mcoa.city_id=meicd.city_id and meicd.CAMPSEG_TYPE=0")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
@@ -93,7 +93,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 			campsegPriorityBean.setCityId((String) map.get("city_id"));
 			campsegPriorityBean.setChannelId((String) map.get("channel_id"));
 			campsegPriorityBean.setChnAdivId((String) map.get("chn_adiv_id"));
-			
+			campsegPriorityBean.setTaskId((String) map.get("task_id"));
 			String campSuccRate = String.valueOf(map.get("camp_succ_rate"));
 			float successRate = 0f;
 			if(StringUtils.isEmpty(campSuccRate) || "null".equals(campSuccRate)){
@@ -128,13 +128,13 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		sb.append("select * from(")
 		  .append(" select mcoa.campseg_id,mcoa.pri_order_num, mcoa.chn_adiv_id,mcs.campseg_name,msp.plan_id,msp.plan_name,mgi.custom_num,")
 		  .append(" CEIL(to_date(mcs.end_date,'yyyy-mm-dd')-sysdate) ineffectieDays,")
-		  .append(" CEIL(sysdate-TO_DATE(to_char(mcs.create_time,'yyyy-mm-dd'), 'YYYY-MM-DD ')) IsNewDays,meicd.camp_succ_rate")
+		  .append(" CEIL(sysdate-TO_DATE(to_char(mcs.create_time,'yyyy-mm-dd'), 'YYYY-MM-DD ')) IsNewDays,meicd.camp_succ_rate,task_id")
 		  .append(" from mcd_camp_order mcoa")
 		  .append(" left join mcd_camp_def mcs on mcoa.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
 		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
 		  .append(" else round(sum(mcs.camp_succ_num_total)/sum(mcs.camp_user_num_total),4)  end camp_succ_rate")
@@ -175,6 +175,7 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 			campsegPriorityBean.setPlanName((String) map.get("plan_name"));
 			campsegPriorityBean.setChnAdivId((String) map.get("chn_adiv_id"));
 			campsegPriorityBean.setCustgroupNumber(0);
+			campsegPriorityBean.setTaskId((String) map.get("task_id"));
 			if(null != map.get("custom_num")){
 				campsegPriorityBean.setCustgroupNumber(Integer.parseInt(String.valueOf(map.get("custom_num"))));
 			}
