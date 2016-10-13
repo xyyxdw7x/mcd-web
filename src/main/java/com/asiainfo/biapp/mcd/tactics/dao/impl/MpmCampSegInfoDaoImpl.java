@@ -201,14 +201,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
 	    final String sql = "update mcd_camp_def set campseg_name=?,campseg_no=?,start_date=?,end_date=?,CAMPSEG_STAT_ID=?,campseg_type_id=?,camp_pri_id=?,approve_flow_id=?,"
 	                    + "create_username=?,create_userid=?,city_id=?,deptid=?,create_time=?,PLAN_ID=?,"
 	                    + "campseg_pid=?,camp_class=?,targer_user_nums=?,"
-	                    + "init_cust_list_tab = ?,approve_remind_time=?,is_filter_disturb=? where campseg_id = ?";
+	                    + "init_cust_list_tab = ?,approve_remind_time=?,is_filter_disturb=?,APPROVE_RESULT = ? where campseg_id = ?";
 	    Object[] objects = new Object[]{segInfo.getCampName(),segInfo.getCampNo(),segInfo.getStartDate(),segInfo.getEndDate(),segInfo.getStatId(),
 	                    segInfo.getTypeId(),segInfo.getPriId(),segInfo.getApproveFlowId(),
 	                    segInfo.getCreateUserName(),segInfo.getCreateUserId(),segInfo.getCityId(),segInfo.getDeptId(),segInfo.getCreateTime(),
 	                    segInfo.getPlanId(),segInfo.getPid(),
 	                    segInfo.getCampClass(),segInfo.getTargerUserNums(),
 	                    segInfo.getCustListTab(),segInfo.getLastRemindTime(),
-	                    segInfo.getIsFileterDisturb(),segInfo.getCampId()};
+	                    segInfo.getIsFileterDisturb(),segInfo.getApproveResult(),segInfo.getCampId()};
 	   
         this.getJdbcTemplate().update(sql,objects);
 
