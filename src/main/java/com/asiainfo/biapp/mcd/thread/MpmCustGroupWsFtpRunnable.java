@@ -314,10 +314,11 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			    insertSqlTail = insertSqlTail + ") values (" + values + ")";
 			    int inportCount = 0;
 			    List<Object> objectList = new ArrayList<Object>();
+			    int num = Integer.parseInt(AppConfigService.getProperty("BATCH_INSERT_NUM"));
 			    try {
 	                    int lineNum = 1;
 				    	while (it.hasNext()) {
-				    	    if(lineNum > 2000){
+				    	    if(lineNum > num){
 				    	        lineNum = 1;
                                 insertSql = insertSql + " SELECT * FROM dual";
 				    	        custGroupInfoService.addInMemExecute(insertSql,objectList.toArray());
