@@ -20,7 +20,6 @@ define(["backbone","unslider"],function(require, exports, module) {
                 type: "post",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 dataType: 'json',
-                //data: {"cmd": "getSaleSituation"},
                 success: function (model) {
                     var data = model.attributes.data;
                     var status = model.attributes.status;
