@@ -65,6 +65,7 @@ define(["backbone","unslider"],function(require, exports, module) {
                     $('#mySales').html(typeHtml);
 
                     //我要催单
+                    /*
                     $('.quickOrder').on('click',function(){
                         if($(this).hasClass('disableBtn')){
                             return false;
@@ -85,7 +86,7 @@ define(["backbone","unslider"],function(require, exports, module) {
                             }
                         });
 
-                    })
+                    })*/
                 }
             });
 

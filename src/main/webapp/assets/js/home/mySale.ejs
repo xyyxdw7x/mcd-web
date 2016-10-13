@@ -15,11 +15,13 @@
         <span class="priority-item-daysucc fleft" ><%=result.data.result[i].yesterdaySuccessNum%></span>
         <span class="priority-item-monsucc fleft" ><%=result.data.result[i].monthSuccessNum%></span>
         <span class="priority-item-info fleft" ><a target="_blank" href="<%=_ctx%>/jsp/tactics/tacticsInfo.jsp?campsegId=<%=result.data.result[i].campsegId%>">查看</a></span>
+        <!--
         <span class="priority-item-operation fleft" >
             <button type="button" class="bulk-quota-btn fleft list-btn quickOrder <%=formatQuickOrder(result.data.result[i].campsegStatId)%>">
                 <span class=" J_bulkStop"  >我要催单</span>
             </button>
         </span>
+        -->
     </li>
 <% } %>
 <%

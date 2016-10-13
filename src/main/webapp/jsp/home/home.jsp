@@ -94,7 +94,7 @@
                         <span class="priority-item-daysucc fleft" style="color:#333">昨日成功数</span>
                         <span class="priority-item-monsucc fleft" style="color:#333">本月成功数</span>
                         <span class="priority-item-info fleft" >详情</span>
-						<span class="priority-item-operation fleft" >操作</span>
+						<!-- <span class="priority-item-operation fleft" >操作</span> -->
                     </li>
                 </ul>
                 <ul class="priority-list-content" id="mySales">
@@ -117,6 +117,19 @@
             </div>
         </div>
 
+	<!--指标口径div -->
+	<div class="showGroupTypeDialog">
+		<div class="showGroupTypeDialog-content">
+			<table class="showGroupTypeDialog-detail">
+				<tbody>
+				<tr>
+					<td class="title">指标</td>
+					<td class="title">口径</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
     </div>
 
 </body>
