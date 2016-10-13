@@ -622,6 +622,7 @@ public class TacticsManagerController extends BaseMultiActionController {
 			for (McdCampDef mtlCampSeginfo : mtlCampSeginfoList) {
 				JSONObject dataJson = new JSONObject();
 				dataJson.put("campsegId", mtlCampSeginfo.getCampId());
+                dataJson.put("campsegName","规则");
 				// 获取有营销用语的渠道的营销用语
 				List<Map<String, Object>> execContentList = mpmCampSegInfoService.getExecContentList(mtlCampSeginfo
 						.getCampId());
