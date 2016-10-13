@@ -60,6 +60,7 @@ public class PlanBean {
 	private String typeName;
 	
 	private String campsegTypeId;
+	private String planComment;
 	
 	private String planPid ;  //产品上一级编号
 	private String planPname;   //产品上一级名称
@@ -86,6 +87,14 @@ public class PlanBean {
 	private String isUsed;   //是否已匹配
 	
 	
+	public String getPlanComment() {
+		return planComment;
+	}
+
+	public void setPlanComment(String planComment) {
+		this.planComment = planComment;
+	}
+
 	public String getPlanTypeName() {
 		return planTypeName;
 	}
