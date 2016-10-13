@@ -19,7 +19,7 @@
         <tr class="content-table-tr <%if(i%2==1){%>odd<%}else{%>even<%}%>" data-table-name="<%=data.result[i].LIST_TABLE_NAME%>">
             <td class="content-table-td"><%=i+1%></td>
             <td class="content-table-td"><%=data.result[i].CUSTOM_GROUP_ID%></td>
-            <td class="content-table-td td-align-left"><%=data.result[i].CUSTOM_GROUP_NAME%></td>
+            <td class="content-table-td td-align-left" title="<%=data.result[i].CUSTOM_GROUP_NAME%>"><%=data.result[i].CUSTOM_GROUP_NAME.length>14?data.result[i].CUSTOM_GROUP_NAME.substring(0,14)+'...':data.result[i].CUSTOM_GROUP_NAME%></td>
             <td class="content-table-td"><%=data.result[i].CREATE_USER_NAME%></td>
             <td class="content-table-td"><%=data.result[i].UPDATE_CYCLE_NAME%></td>
             <td class="content-table-td orangeFont"><%=data.result[i].CUSTOM_STATUS%></td>

@@ -11,7 +11,7 @@ define(["backbone","my97"],function(require, exports, module) {
 			this.loadAllChannelType();
 			window.tableViewManage  = this.loadTable({
 				currentDom:"#tacticsTable",
-				ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
+				ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
 				ajaxData:{"isSelectMy":"0"},
 				domCallback:function(htmlobj){
 			//		module.exports.tacticsListManage();
@@ -33,7 +33,7 @@ define(["backbone","my97"],function(require, exports, module) {
 				id:"searchIMcdCamp.do",
 //				cmd:"searchIMcdCamp",
 				currentDom:"#tacticsTable",
-				ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
+				ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
 				ajaxData:{},
 				addData:"",
 				complete:function(){
@@ -184,7 +184,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					//cmd:"searchMcdMpmCampSegChild",
 					currentDom:_table,
 					ajaxData:{"campsegId":_campsegId},
-					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/campSegChildTable.ejs'
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/campSegChildTable.ejs'
 				});
 				$("#tacticsManageBtnList").remove();
 				module.exports.stopBubble(e);
@@ -223,7 +223,7 @@ define(["backbone","my97"],function(require, exports, module) {
 						}
 						window.tableViewManage_all  = module.exports.loadTable({
 							currentDom:"#tacticsTable_all",
-							ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
+							ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable_all.ejs',
 							ajaxData:{"isSelectMy":"1"},
 							domCallback:function(htmlobj){
 								//module.exports.tacticsListManage();
@@ -242,7 +242,7 @@ define(["backbone","my97"],function(require, exports, module) {
 						}
 						window.tableViewManage  = module.exports.loadTable({
 							currentDom:"#tacticsTable",
-							ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
+							ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
 							ajaxData:{"isSelectMy":"0"},
 							domCallback:module.exports.getCampSegChildTable
 						});
@@ -293,7 +293,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					}
 					window.tableViewManage = _that.loadTable({
 						currentDom:"#tacticsTable",
-						ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
+						ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
 						ajaxData:ajaxData,
 						domCallback:function(htmlobj){
 						//	module.exports.tacticsListManage();
@@ -345,7 +345,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					}
 					window.tableViewManage_all = _that.loadTable({
 						currentDom:"#tacticsTable_all",
-						ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
+						ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable_all.ejs',
 						ajaxData:ajaxData,//{"isSelectMy":searchIndex,"keywords":_keywords,"campDrvId":campdrvid,"campsegStatId":campsegStatId}
 						domCallback:function(htmlobj){
 						//	module.exports.tacticsListManage();
@@ -381,7 +381,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"searchDimCampDrvType.do",
 //					cmd:"searchDimCampDrvType",
 					currentDom:".tacticsManageSearchDimCampDrvType",
-					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsManageSearchDimCampDrvType.ejs',
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsManageSearchDimCampDrvType.ejs',
 					ajaxData:{},
 					domClick:module.exports.clickTacticsManageSearchDimCampDrvType
 			};
@@ -463,7 +463,7 @@ define(["backbone","my97"],function(require, exports, module) {
 					id:"searchCampsegStat.do",
 //					cmd:"searchCampsegStat",
 					currentDom:".tacticsManageSearchCampsegStat",
-					ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsManageSearchCampsegStat.ejs',
+					ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsManageSearchCampsegStat.ejs',
 					ajaxData:{}
 			};
 			options = $.extend(defaults, options);
@@ -703,7 +703,7 @@ define(["backbone","my97"],function(require, exports, module) {
 								}
 								window.tableViewManage = module.exports.loadTable({
 									currentDom:"#tacticsTable",
-									ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable.ejs',
+									ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
 									ajaxData:{"isSelectMy":"0",campsegStatId:$(".J_campType.active").attr("campsegstatid")},
 									domCallback:function(htmlobj){
 									//	module.exports.tacticsListManage();
@@ -717,7 +717,7 @@ define(["backbone","my97"],function(require, exports, module) {
 								}
 								window.tableViewManage_all  = module.exports.loadTable({
 									currentDom:"#tacticsTable_all",
-									ejsUrl:_ctx + '/assets/js/tactics/provinces/jx/tacticsTable_all.ejs',
+									ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable_all.ejs',
 									ajaxData:{"isSelectMy":"1",campsegStatId:$(".J_campType.active").attr("campsegstatid")},
 									domCallback:function(htmlobj){
 									//	module.exports.tacticsListManage();
