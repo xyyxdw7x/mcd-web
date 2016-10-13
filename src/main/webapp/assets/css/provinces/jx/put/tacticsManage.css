@@ -4818,6 +4818,14 @@ html {
   margin: 0px 40px;
   position: relative;
 }
+.tacttics-delay-dialog#delayDialog label{
+margin:19px 40px 0 76px;
+ }
+ .tacttics-delay-dialog#delayDialog label input{
+ height: 38px;
+ line-height:38px;
+ width:276px;
+ }
 .tacttics-delay-dialog label input {
   border: 1px solid #efefef;
   background-color: #fff;
