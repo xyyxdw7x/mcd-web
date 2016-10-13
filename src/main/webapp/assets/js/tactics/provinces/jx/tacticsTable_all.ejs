@@ -80,48 +80,6 @@
 	<%}%>
 </table>
 <div class="content-table-page">
-	<div class="fright clearfix centent-page-box">
-		<%if(!data.hasPrevPage || data.totalSize == 0){%>
-			<a href="javascript:;" class="page-button fleft disabled">上一页</a>
-		<%}else{%>
-			<a href="javascript:;" class="page-button fleft" data-flag="prev">上一页</a>
-		<%}%>
-		<%if(data.totalPage>5){%>
-			<%if(data.pageNum<5 || data.pageNum>data.totalPage-2){%>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==1){%>active<%}%>">1</a>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==2){%>active<%}%>">2</a>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==3){%>active<%}%>">3</a>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==4){%>active<%}%>">4</a>
-				<a href="javascript:;" class="page-num fleft" data-flag="last-dot" style="pointer-events:none;">···</a>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==data.totalPage-1){%>active<%}%>" ><%=data.totalPage-1%></a>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==data.totalPage){%>active<%}%>"><%=data.totalPage%></a>
-			<%}else if(data.pageNum>4 && data.pageNum<data.totalPage-1){%>
-				<a href="javascript:;" class="page-num fleft ">1</a>
-				<a href="javascript:;" class="page-num fleft">2</a>
-				<%if(data.totalPage-2 == data.pageNum){%>
-					<a href="javascript:;" class="page-num fleft">3</a>
-				<%}%>
-				<a href="javascript:;" class="page-num fleft" data-flag="first-dot" style="pointer-events:none;">···</a>
-				<a href="javascript:;" class="page-num fleft active"><%=data.pageNum%></a>
-				<%if(data.totalPage-2 != data.pageNum){%>
-					<a href="javascript:;" class="page-num fleft" data-flag="last-dot" style="pointer-events:none;">···</a>
-				<%}%>
-				<a href="javascript:;" class="page-num fleft"><%=data.totalPage-1%></a>
-				<a href="javascript:;" class="page-num fleft"><%=data.totalPage%></a>
-			<%}%>
-		<%}else{%>
-			<%for(var i =1; i<=data.totalPage;i++){%>
-				<a href="javascript:;" class="page-num fleft <%if(data.pageNum==i){%>active<%}%>"><%=i%></a>
-			<%}%>
-		<%}%>
-		<%if(!data.hasNextPage || data.totalSize == 0){%>
-			<a href="javascript:;" class="page-button fleft disabled">下一页</a>
-		<%}else{%>
-			<a href="javascript:;" class="page-button fleft" data-flag="next">下一页</a>
-		<%}%>
-		<span class="fleft">
-			<input type="text"class="ui-page-num"/>
-		</span>
-		<a href="javascript:;" class="ui-page-button J_go_num fleft">跳转</a>
+	<div id="tacticsManagerPageAll" class="fright clearfix centent-page-box">
 	</div>
 </div>
