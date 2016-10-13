@@ -12,12 +12,17 @@
 <script type="text/javascript" src="<%=contextPath%>/assets/js/home/main.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/home/home_chart.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/assets/js/home/T_ELEPHANT.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/lib/echarts.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/assets/js/lib/DateUtil.js"></script>
 <style>
 	.clearBoth{
 		clear:both;
 	}
 </style>
 </head>
+<script type="text/javascript">
+	_ctx = "<%=request.getContextPath()%>";
+</script>
 <body>
 	<div id="page-container">
 		<div class="navigate">

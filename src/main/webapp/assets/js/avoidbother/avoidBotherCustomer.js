@@ -132,7 +132,6 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
             	if ($("#selectAll").prop("checked")) {
         			$(".checkbox_row1").prop("checked", "true");
         		} else {
-        			//$(".checkbox_row1").removeProp("checked");
         			$(".checkbox_row1").prop("checked", false);
         		}
             });
@@ -697,7 +696,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 				}
 				
 			});
-			$("#selectAll").removeProp("checked");
+			$("#selectAll").prop("checked", false);
 			module.exports.hideRemoveCustomer();
 		}
 	};

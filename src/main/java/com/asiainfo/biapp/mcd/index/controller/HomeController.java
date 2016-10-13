@@ -16,16 +16,18 @@ import com.asiainfo.biapp.framework.web.controller.BaseMultiActionController;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.index.service.ISaleSituationService;
 import com.asiainfo.biapp.mcd.index.vo.SaleSituation;
+import com.asiainfo.biapp.mcd.index.service.ICepKeywordsService;
+import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping("/homePage")
+@RequestMapping("/action/home")
 public class HomeController extends BaseMultiActionController {
 	
 	@Autowired
 	private ISaleSituationService saleSituationService;
 	
-//	@Autowired
-//	private ICepKeywordsService cepKeywordsService;
+	@Autowired
+	private ICepKeywordsService cepKeywordsService;
 	//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
 	
 	@RequestMapping
@@ -87,37 +89,40 @@ public class HomeController extends BaseMultiActionController {
 		return resultMap;
 	}
 	
-//	public JSONObject queryChartData(HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
-//		JSONObject dataJson = new JSONObject();
-//		try {
-////			List<CepKeywordsPkg> list = service.findHot(su per.pr);
-//			String params = request.getParameter("paramJson");
-//			JSONObject obj = JSONObject.fromObject(params);
-//			
-//			/**
-//			 * range取值：A：所有|M：本月|D：今日
-//			 * verti取值：tend：趋势变化情况|put：营销投放去向|area：地区分布情况
-//			 * tab取值：t_cam：总营销次数|t_suc：总营销成功数|cam_cvt：营销转化率
-//			 */
-//			String range = obj.optString("dim");
-//			String verti = obj.optString("verti");
-//			String tab = obj.optString("tab");
-//			
-//			String option = service.composite(range, verti, tab, super.user.getCityid());
-////			if (StringUtils.isEmpty(option)) {
-////				option = ParseUtil.parseOption(CompositeUtil.compose4Channel(divId, ""));
-////			}
-//			
-//			dataJson.put("status", "200");
-//			dataJson.put("data", option);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			dataJson.put("errorMsg", e.getMessage());
-//		}
-//		out(dataJson, response);
-//		return null;
-//	}
-
+	@RequestMapping
+	@ResponseBody
+	public JSONObject queryChartData(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
+		JSONObject dataJson = new JSONObject();
+		try {
+//			List<CepKeywordsPkg> list = service.findHot(su per.pr);
+			String params = request.getParameter("paramJson");
+			JSONObject obj = JSONObject.fromObject(params);
+			
+			/**
+			 * range取值：A：所有|M：本月|D：今日
+			 * verti取值：tend：趋势变化情况|put：营销投放去向|area：地区分布情况
+			 * tab取值：t_cam：总营销次数|t_suc：总营销成功数|cam_cvt：营销转化率
+			 */
+			String range = obj.optString("dim");
+			String verti = obj.optString("verti");
+			String tab = obj.optString("tab");
+			
+			String option = cepKeywordsService.composite(range, verti, tab, this.getUser(request, response).getCityId());
+//			if (StringUtils.isEmpty(option)) {
+//				option = ParseUtil.parseOption(CompositeUtil.compose4Channel(divId, ""));
+//			}
+			
+			dataJson.put("status", "200");
+			dataJson.put("data", option);
+			
+			return dataJson;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("errorMsg", e.getMessage());
+		}
+		return null;
+	}
 }

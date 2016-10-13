@@ -1,6 +1,8 @@
 $(function() {
 	console.log('init...');
-	var location = '../../assets/scripts/echarts/echarts';
+	//TODO 好像没用，先注释掉。
+	//var location = _ctx + '/assets/js/lib/echarts';
+	
 });
 
 /**
@@ -11,7 +13,7 @@ $(function() {
  */
 function loadData(range, verti, tab, eid) {
 	console.log(range + ', ' + verti + ', ' + tab + ', ' + eid);
-	var url = '../../../mpm/home.aido?cmd=queryChartData';
+	var url = _ctx + '/action/home/queryChartData.do';
 //	T_ELEPHANT elephant = new T_ELEPHANT(eid, url);
 	var param = {
 			dim : range,
@@ -24,7 +26,7 @@ function loadData(range, verti, tab, eid) {
 }
 
 function load() {
-	var url = '../../../mpm/home.aido?cmd=queryChartData';
+	var url = _ctx + '/action/home/queryChartData.do';
 	T_ELEPHANT.initAllChart(url);
 	T_ELEPHANT.queryAllChart();
 }
