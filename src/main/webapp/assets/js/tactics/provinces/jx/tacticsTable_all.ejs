@@ -37,7 +37,7 @@
 			<td class="content-table-td align_center"><%=data.result[i].createUserName%></td>
 			<td class="content-table-td align_center J_manageTd">
 			  <%
-					  var onlyCpoyArr = ["91","90","59","54","50","40","48"];
+					  var onlyCpoyArr = ["91","90","59","54","50","40","48","49"];
 					  var statusId = data.result[i].campsegStatId+"";
 					  data.result[i].manageBtnDisplay="visible";
 					  if($.inArray(statusId, onlyCpoyArr) != -1){
@@ -46,11 +46,17 @@
 						    data.result[i].manageBtnDisplay="hidden";
 						} 
 					  }
+					  if(data.result[i].taskStatusId=="30"){
+					  	data.result[i].manageBtnDisplay="hidden";
+					  }
+					  if(data.result[i].isMy!=0){
+					   data.result[i].manageBtnDisplay="hidden";
+					  }
 					%>
 				<!--  非自己的不做任何操作，modify by lixq10 2016年7月19日21:20:53
-				<div style="visibility:<%=data.result[i].manageBtnDisplay%>" class="fleft controls manage J_manageBtnAll" <%=(data.result[i].isMy==0&&(data.result[i].campsegStatId != 90 )) ? '': 'style="display:none;"' %>  statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
+				<div style="visibility:<%=data.result[i].manageBtnDisplay%>" class="fleft controls manage J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 				-->
-				<div class="fleft controls manage J_manageBtnAll <%=data.result[i].manageBtnDisplay%>" style="visibility:<%=data.result[i].manageBtnDisplay%>" style="visibility:<%=data.result[i].manageBtnDisplay%>" <%=(data.result[i].isMy==0&&(data.result[i].campsegStatId != 90 )) ? '': 'style="display:none;"' %> statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
+				<div class="fleft controls manage J_manageBtnAll <%=data.result[i].manageBtnDisplay%>" style="visibility:<%=data.result[i].manageBtnDisplay%>" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 					<span class="txt J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">管理</span>
 					<div class="icon J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>">
 						<span class="icon_arrDown J_manageBtnAll" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>"></span>

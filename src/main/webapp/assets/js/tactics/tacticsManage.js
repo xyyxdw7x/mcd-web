@@ -870,7 +870,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 									var dlg = $('<div id="editDialog" campsegId="'+campsegId+'" class="tacttics-edit-dialog"></div>');
 									var tab_ul = $('<ul class="edit-dialog-tab-ul"></ul>');
 									var innerDiv = $('<div class="edit-dialog-div"></div>');
-									debugger
 									for(var i = 0; i<_data.length; i++){
 										if(_data[i].campsegName.substring(2)!=""){
 											var _campseg_name = _data[i].campsegName.substring(0,2);
