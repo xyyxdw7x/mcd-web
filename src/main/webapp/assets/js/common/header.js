@@ -43,7 +43,7 @@ function initMenu(){
 		});
 	}
 	//一级菜单点击事件
-	$("#menuUl li").click(function(evnet){
+	$("#menuUl li").click(function(event){
 		var $obj=$(event.currentTarget);
 		var pid=$obj.data("id");
 		var $submenuLi=$("#subMenuUl li");
@@ -60,7 +60,7 @@ function initMenu(){
 		window.location.href=contextPath+skipUrl;
 	});
 	//二级菜单点击事件
-	$("#subMenuUl li").click(function(evnet){
+	$("#subMenuUl li").click(function(event){
 		var $obj=$(event.currentTarget);
 		var pid=$obj.data("pid");
 		var $submenuLi=$("#subMenuUl li");
