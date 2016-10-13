@@ -2,9 +2,11 @@ package com.asiainfo.biapp.mcd.quota.service.impl;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.asiainfo.biapp.mcd.quota.dao.ICityDayQuotaDao;
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
-
+@Service("dayQuotaTaskService")
 public class DayQuotaTaskServiceImp implements IDayQuotaTaskService {
 	
 	@Resource(name="quotaConfigCityDayDao")

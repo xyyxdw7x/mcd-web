@@ -16,7 +16,7 @@ public class ContactTaskServiceImp implements  ContactTaskService{
 	@Override
 	public void execTaskDayContact() {
 		String day = QuotaUtils.getBeforeDate(100, "yyyyMMdd");
-		mtlContactRecentLogDao.batchDeleteContactInMem(day);
-		mtlContactRecentLogDao.batchDeleteContactActivityInMem(day);
+		mtlContactRecentLogDao.updateInMemBatchDeleteContact(day);
+		mtlContactRecentLogDao.updateInMemBatchDeleteContactActivity(day);
 	}
 }

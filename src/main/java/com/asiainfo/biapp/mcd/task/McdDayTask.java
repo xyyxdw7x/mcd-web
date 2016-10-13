@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.asiainfo.biapp.mcd.quota.service.IDayQuotaTaskService;
 import com.asiainfo.biapp.mcd.task.Service.ContactTaskService;
 
@@ -14,9 +17,10 @@ public class McdDayTask   implements Serializable{
 	private IDayQuotaTaskService dayQuotaTaskService;
 	@Resource(name="contactTaskService")
 	private ContactTaskService contactTaskService;
+	private final Log log = LogFactory.getLog(getClass());
 	
 	public void doTask(){
-		System.out.println("McdDayQuotaTask启动......................");
+		log.info("............................McdDayQuotaTask启动......................");
 		try {
 			this.dayQuotaTaskService.execTaskDayQuota();
 			this.contactTaskService.execTaskDayContact();

@@ -7,14 +7,14 @@ import com.asiainfo.biapp.framework.jdbc.JdbcDaoBase;
 public class MtlContactRecentLogDaoImp extends JdbcDaoBase implements MtlContactRecentLogDao{
 	
 	@Override
-	public void batchDeleteContactInMem(String day){
+	public void updateInMemBatchDeleteContact(String day){
 		StringBuffer sqlClause = new StringBuffer(" delete from MTL_CONTACT_RECENT_LOG where 1=1 ");
 		sqlClause.append("and to_char(LOG_TIME,'yyyyMMdd')<?");
 		Object[] parm={day};
 		this.getJdbcTemplate().update(sqlClause.toString(),parm);
 	}
 	@Override
-	public void batchDeleteContactActivityInMem(String day){
+	public void updateInMemBatchDeleteContactActivity(String day){
 		StringBuffer sqlClause = new StringBuffer(" delete from MTL_CONTACT_ACTIVITY_RCT_LOG where 1=1 ");
 		sqlClause.append(" and to_char(LOG_TIME,'yyyyMMdd')<?");
 		Object[] parm={day};

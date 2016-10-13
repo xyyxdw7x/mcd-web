@@ -56,6 +56,39 @@
 		    <property name="cronExpression" value="0 1 0 1 * ?" />
 	</bean>
 	
+	<!--mcd日定时任务 -->
+	<bean id="mcdDayTask" class="com.asiainfo.biapp.mcd.task.McdDayTask">
+	</bean>
+	<bean id="mcdDayTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="mcdDayTask" />
+		</property>
+		<property name="targetMethod">
+			<value>doTask</value>
+		</property>
+	</bean>
+    <bean id="mcdDayTaskTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="mcdCampsegStatusJob" />
+		    <property name="cronExpression" value="0 1 0 * * ?" />
+	</bean>
+	
+	
+	<!--mcd状态变更定时任务 -->
+	<bean id="mcdCampsegStatusTask" class="com.asiainfo.biapp.mcd.task.McdCampsegStatusTask">
+	</bean>
+	<bean id="mcdCampsegStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="mcdCampsegStatusTask" />
+		</property>
+		<property name="targetMethod">
+			<value>doTask</value>
+		</property>
+	</bean>
+    <bean id="mcdCampsegStatusTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="mcdCampsegStatusJob" />
+		    <property name="cronExpression" value="0 0/3 * * * ?" />
+	</bean>
+	
 	   
     
    <bean id="jobTriggerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -65,6 +98,8 @@
 			<list>
 				<ref bean="mcdCreateDuserTableTrigger" />
 				<ref bean="mcdMonthTaskTrigger" />
+				<ref bean="mcdCampsegStatusTrigger" />
+				<ref bean="mcdDayTaskTrigger" />
 			</list>
 		</property>
 	</bean>
