@@ -7,7 +7,7 @@
     <% } %>
         <div class="recommend-detail-li-div recommend-detail-color-<%=i%5+1%>">
             <div class="title">
-                <p><a target="_blank" href="<%=_ctx%>/mcd/pages/tactics/tacticsInfo.jsp?campsegId=<%=result.data.result[i].campsegId%>" title="<%=result.data.result[i].campsegName%>"><%=result.data.result[i].campsegName%></a></p>
+                <p><a target="_blank" href="<%=_ctx%>/jsp/tactics/tacticsInfo.jsp?campsegId=<%=result.data.result[i].campsegId%>" title="<%=result.data.result[i].campsegName%>"><%=result.data.result[i].campsegName%></a></p>
             </div>
             <div class="info info-1">
                 <span class="info-name">营销用户数</span>
@@ -34,7 +34,7 @@
                         <% if (j!=0 && j%4==0) { %>
                             </li><li class="icon-list-li">
                         <% } %>
-                                <img src="<%=_ctx%>/mcd/assets/images/index-icon/channel_<%=result.data.result[i].channels[j].channelId%>.png" alt="<%=result.data.result[i].channels[j].channelTypeName%>" title="<%=result.data.result[i].channels[j].channelTypeName%>" />
+                                <img src="<%=_ctx%>/assets/images/index-icon/channel_<%=result.data.result[i].channels[j].channelId%>.png" alt="<%=result.data.result[i].channels[j].channelTypeName%>" title="<%=result.data.result[i].channels[j].channelTypeName%>" />
                         <% if (j == result.data.result[i].channels.length-1) { %>
                             </li>
                         <% } %>

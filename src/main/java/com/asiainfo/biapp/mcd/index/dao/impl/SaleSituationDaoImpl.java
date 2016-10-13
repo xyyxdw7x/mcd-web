@@ -260,9 +260,9 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements ISaleSituationD
 		List<CampChannel> list = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append(
-				"select a.channeltype_id,b.channeltype_name from mcd_camp_channel_list a,mcd_dim_channeltype b,mcd_camp_def c")
+				"select a.channel_id,b.channel_name from mcd_camp_channel_list a,mcd_dim_channel b,mcd_camp_def c")
 				.append(" WHERE c.campseg_pid='").append(campsegId)
-				.append("' and a.channeltype_id = b.channeltype_id and a.campseg_id=c.campseg_id");
+				.append("' and a.channel_id = b.channel_id and a.campseg_id=c.campseg_id");
 
 		log.debug("getCampChannel执行sql=" + sql);
 		try {
@@ -273,8 +273,8 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements ISaleSituationD
 						public CampChannel mapRow(ResultSet rs, int index)
 								throws SQLException {
 							CampChannel cc = new CampChannel();
-							cc.setChannelId(rs.getString("channeltype_id"));
-							cc.setChannelTypeName(rs.getString("channeltype_name"));
+							cc.setChannelId(rs.getString("channel_id"));
+							cc.setChannelTypeName(rs.getString("channel_name"));
 							return cc;
 						}
 					});

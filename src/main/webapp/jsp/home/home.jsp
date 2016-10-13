@@ -117,19 +117,6 @@
             </div>
         </div>
 
-	<!--指标口径div -->
-	<div class="showGroupTypeDialog">
-		<div class="showGroupTypeDialog-content">
-			<table class="showGroupTypeDialog-detail">
-				<tbody>
-				<tr>
-					<td class="title">指标</td>
-					<td class="title">口径</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
     </div>
 
 </body>
