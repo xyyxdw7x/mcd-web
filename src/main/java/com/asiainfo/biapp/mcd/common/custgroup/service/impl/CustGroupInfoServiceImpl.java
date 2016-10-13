@@ -553,7 +553,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 	    }
 	    @Override
 	    public void updateMtlGroupStatus(String tableName,String custGroupId) throws Exception {
-	        custGroupInfoDao.updateMtlGroupStatusInMem(tableName,custGroupId);
+	        custGroupInfoDao.updateMtlGroupStatus(tableName,custGroupId);
 	    }
 		/**
 		 * 更新mcd_custgroup_tab_list表custom_num字段值
@@ -911,11 +911,7 @@ public class CustGroupInfoServiceImpl implements ICustGroupInfoService{
 			List<Object> result = new ArrayList<Object>();
 			
 			//号码校验的表达式
-			String mobilePhoneNoPattern = AppConfigService.getProperty("MOBILE_PHONENO_PATTERN");
 			String pattern = "^1[34578]\\d{9}$";
-			if(StringUtils.isNotEmpty(mobilePhoneNoPattern)) {
-				pattern = mobilePhoneNoPattern;
-			}
 
 			Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>> h1 = new Byte2ObjectOpenHashMap<Short2ObjectOpenHashMap<BitSet>>(1);
 			int[] processNum = new int[4];

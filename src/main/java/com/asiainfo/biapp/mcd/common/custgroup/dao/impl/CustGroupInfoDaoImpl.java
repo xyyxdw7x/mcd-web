@@ -1417,7 +1417,7 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
 
 	    }
 	    @Override
-	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId) throws Exception {
+	    public void updateMtlGroupStatus(String tableName,String custGroupId) throws Exception {
 	    	String tabSpace = AppConfigService.getProperty("MPM_SQLFIRE_TABLESPACE");
 	        StringBuilder updateSql = new StringBuilder();
 	        updateSql.append("UPDATE mcd_custgroup_def SET  CUSTOM_STATUS_ID=1 , CUSTOM_NUM=(select COUNT(1) from ").append(tabSpace).append(".")

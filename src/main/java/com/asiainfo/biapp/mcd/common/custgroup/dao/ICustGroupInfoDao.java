@@ -282,7 +282,7 @@ public interface ICustGroupInfoDao {
 	     * @param tableName
 	     * @param custGroupId
 	     */
-	    public void updateMtlGroupStatusInMem(String tableName,String custGroupId) throws Exception;
+	    public void updateMtlGroupStatus(String tableName,String custGroupId) throws Exception;
 	    
 		/**
 		 * 更新mcd_custgroup_tab_list表custom_num字段值
