@@ -1,5 +1,6 @@
 package com.asiainfo.biapp.mcd.home.echartbean.echarts.series;
 
+@SuppressWarnings("rawtypes")
 public class LineSeries extends BaseSeries {
 
 	/**

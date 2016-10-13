@@ -1,6 +1,5 @@
 package com.asiainfo.biapp.mcd.home.echartbean;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +12,6 @@ import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
 import net.sf.json.xml.XMLSerializer;
 
-import org.apache.commons.beanutils.BeanUtils;
-
-//import com.asiainfo.biframe.utils.export.excelhelper.CellBean;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,29 +23,17 @@ public class JsonUtil {
 	static {
 		// 设置日期（Date、Timestamp）的格式
 		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		// 序列化设置,序列化成json字符串的时候不包含null值,针对Map类
-//		mapper.configure(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES,
-//				false);
-//		// 序列化设置,序列化成json字符串的时候不包含null值,针对POJO类
-//		mapper.setSerializationConfig(mapper.getSerializationConfig()
-//				.withSerializationInclusion(Inclusion.NON_NULL));
-////	 允许反序列化不带双引号的key
-//	 mapper.configure(DeserializationFeature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-////	 序列化的结果不带双引号
-//	 mapper.configure(org.codehaus.jackson.JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
-		
-		
 		// 序列化设置,序列化成json字符串的时候不包含null值
 		mapper.setSerializationInclusion(Include.NON_NULL);  
 		// 反序列化设置,忽略JSON字符串中存在而Java对象实际没有的属性，否则json字符串中的属性如果bean里面没有的话会报错
-		 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	public static JSONObject Object2Json(Object o) {
 		return JSONObject.fromObject(o);
 	}
 
-	public static JSONArray Object2Json(List o) {
+	public static JSONArray Object2Json(List<Object> o) {
 		return JSONArray.fromObject(o);
 	}
 
@@ -60,7 +44,7 @@ public class JsonUtil {
 		return JSONObject.fromObject(obj, jsonConfig);
 	}
 
-	public static JSONArray Object2Json(List list, PropertyFilter propertyFilter) {
+	public static JSONArray Object2Json(List<Object> list, PropertyFilter propertyFilter) {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.setJsonPropertyFilter(propertyFilter);
 		return JSONArray.fromObject(list, jsonConfig);
@@ -70,7 +54,7 @@ public class JsonUtil {
 		return Object2Json(o).toString();
 	}
 
-	public static String Object2JsonString(List o) {
+	public static String Object2JsonString(List<Object> o) {
 		return Object2Json(o).toString();
 	}
 
@@ -85,7 +69,7 @@ public class JsonUtil {
 	 *            object类型包含的属性字符串与类型的键值对map 基本类型不需要
 	 * @return
 	 */
-	public static Object JsonString2Bean(String js, Class c, Map classMap) {
+	public static Object JsonString2Bean(String js, Class<?> c, Map<?, ?> classMap) {
 		JSONObject jo = JSONObject.fromObject(js);
 		return JSONObject.toBean(jo, c, classMap);
 	}
@@ -101,9 +85,9 @@ public class JsonUtil {
 	 *            object类型包含的属性字符串与类型的键值对map 基本类型不需要
 	 * @return
 	 */
-	public static List JsonString2List(String js, Class c, Map classMap) {
+	public static List<Object> JsonString2List(String js, Class<?> c, Map<?, ?> classMap) {
 		JSONArray array = JSONArray.fromObject(js);
-		List l = new ArrayList();
+		List<Object> l = new ArrayList<Object>();
 		JSONObject jo = null;
 		Object o = null;
 		for (int i = 0; i < array.size(); i++) {
@@ -113,45 +97,6 @@ public class JsonUtil {
 		}
 		return l;
 	}
-
-	//TODO excelhelper.CellBean？
-//	public static Object JsonString2Bean(String js, Class c) {
-//		JSONObject jo = JSONObject.fromObject(js);
-//		List cellList = new ArrayList();
-//		if ((jo.containsKey("headers"))
-//				&& (jo.getJSONArray("headers").size() > 0)) {
-//			JSONArray jarr = jo.getJSONArray("headers");
-//			for (int i = 0; i < jarr.size(); i++) {
-//				JSONObject jobj = (JSONObject) jarr.get(i);
-//				Map map1 = (Map) JSONObject.toBean(jobj, Map.class);
-//				CellBean cellbean = new CellBean();
-//				try {
-//					BeanUtils.copyProperties(cellbean, map1);
-//					cellList.add(cellbean);
-//				} catch (IllegalAccessException e) {
-//					e.printStackTrace();
-//				} catch (InvocationTargetException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		Map map = (Map) JSONObject.toBean(jo, Map.class);
-//		if (cellList.size() > 0) {
-//			map.put("headers", cellList);
-//		}
-//		Object bean = null;
-//		try {
-//			bean = c.newInstance();
-//			BeanUtils.copyProperties(bean, map);
-//		} catch (InstantiationException e) {
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			e.printStackTrace();
-//		} catch (InvocationTargetException e) {
-//			e.printStackTrace();
-//		}
-//		return bean;
-//	}
 
 	public static String JsonString2Xml(String s) {
 		XMLSerializer xml = new XMLSerializer();

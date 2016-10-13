@@ -9,7 +9,6 @@ import com.asiainfo.biapp.mcd.home.echartbean.echarts.Option;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.Axis;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.AxisLabel;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.AxisLine;
-import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.DataRange;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.Indicator;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.Legend;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.axis.Polar;
@@ -159,6 +158,7 @@ public class ParseUtil {
 		return JsonUtil.toJSONString(opts);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static Option parse2Line(ChartInfoBase cib) throws Exception {
 		Option option = new Option();
 		option.setChartType(cib.getChartType());
@@ -270,6 +270,7 @@ public class ParseUtil {
 	/**
 	 * parse tornado
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseTornado(ChartInfoBase cib, Option option) {
 //		setTitle(cib, option);
 		Legend legend = new Legend();
@@ -339,6 +340,7 @@ public class ParseUtil {
 	 * @param option 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseAreaLine(ChartInfoBase cib, Option option) {
 		setTitle(cib, option);
 		setTooltip(option);
@@ -520,7 +522,6 @@ public class ParseUtil {
 		List<Object> lData = new ArrayList<Object>();
 		Polar polar = new Polar();
 		List<RadarSeries> serieses = new ArrayList<RadarSeries>();
-		List<String> cleaner = new ArrayList<String>();
 		if (EchartsUtil.isNull(cib.getDatasets())) {
 			return "empty datasets";
 		}
@@ -606,7 +607,7 @@ public class ParseUtil {
 	 * set itemStyle for series
 	 * @param series
 	 */
-	private static void setItemStyle(BaseSeries series, boolean flag) {
+	private static void setItemStyle(BaseSeries<?> series, boolean flag) {
 		if (Constants.ECHARTS_LEGEND.TIME_LINE.equals(series.getName())
 				|| Constants.ECHARTS_LEGEND.GUARD_LINE.equals(series.getName())) {
 			return;
@@ -645,6 +646,7 @@ public class ParseUtil {
 	 * set itemStyle 4 mapSeries
 	 * @param series
 	 */
+	@SuppressWarnings("unused")
 	private static void setItemStyle(MapSeries series) {
 		ItemStyle is = new ItemStyle();
 		SubItemStyle normal = new SubItemStyle();
@@ -719,6 +721,7 @@ public class ParseUtil {
 	 * @param cib
 	 * @param option
 	 */
+	@SuppressWarnings("unused")
 	private static void setDataRange(ChartInfoBase cib, Option option) {/*
 		DataRange dataRange = new DataRange();
 		ChartDataRange cdr = cib.getDataRange();
@@ -752,6 +755,7 @@ public class ParseUtil {
 		option.setTitle(title);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static void setCenterAndRadius(BaseSeries series, boolean isFull) {
 		if (series instanceof PieSeries) {
 			String[] center = new String[2];
@@ -764,11 +768,10 @@ public class ParseUtil {
 			center[1] = "50%";
 			series.setCenter(center);
 		}
-//		if (isFull) {
 		series.setRadius(new String [] {"40%", "60%"});
-//		}
 	}
 	
+	@SuppressWarnings({ "unused", "rawtypes" })
 	private static void setCenterAndRadius(BaseSeries series, int index, boolean isFull) {
 		if (series instanceof PieSeries) {
 			String[] center = new String[2];
@@ -837,6 +840,7 @@ public class ParseUtil {
 	 * @param option 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseLineAndBar(ChartInfoBase cib, Option option) throws Exception {
 		setTitle(cib, option);
 		setTooltip(option);
@@ -941,6 +945,7 @@ public class ParseUtil {
 	 * @param option 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseMSLineAndBar(ChartInfoBase cib, Option option) throws Exception {				
 		setTitle(cib, option);
 		List<ChartDataset> datasets = cib.getDatasets();	
@@ -999,6 +1004,7 @@ public class ParseUtil {
 	 * @param option 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseMSBar(ChartInfoBase cib, Option option) throws Exception {				
 		setTitle(cib, option);
 		List<ChartDataset> datasets = cib.getDatasets();	
@@ -1111,7 +1117,6 @@ public class ParseUtil {
 		if (EchartsUtil.isNull(cib.getDatasets())) {
 			return "empty datasets";
 		}
-		int _index = 0;
 		for (ChartDataset cds : cib.getDatasets()) {
 			PieSeries series = new PieSeries();
 			MarkPoint markPoint = new MarkPoint();
@@ -1152,6 +1157,7 @@ public class ParseUtil {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	private static String parseHorizontalBar(ChartInfoBase cib, Option option) throws Exception {
 		setTitle(cib, option);
 		setTooltip(option);
@@ -1181,11 +1187,9 @@ public class ParseUtil {
 				}
 				Data4HBar d4b = new Data4HBar();
 				String hValue = cs.getValue();
-//				d4b.setItemStyle(hValue);
 				d4b.setValue(hValue);
 				hData.add(d4b);
 			}
-//			setItemStyle(series, true);
 			series.setData(hData);
 			serieses.add(series);
 		}
@@ -1193,7 +1197,6 @@ public class ParseUtil {
 		
 		Axis xAxis = new Axis();
 		AxisLine axisLine = new AxisLine();
-//		axisLine.setShow(false);
 		xAxis.setAxisLine(axisLine);
 		xAxis.setType("value");
 		double[] dArr = {0d, 0.05d};

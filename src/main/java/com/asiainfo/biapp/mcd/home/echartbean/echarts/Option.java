@@ -174,10 +174,12 @@ public class Option implements java.io.Serializable {
 		this.yAxis = yAxis;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<? extends BaseSeries> getSeries() {
 		return series;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setSeries(List<? extends BaseSeries> series) {
 		this.series = series;
 	}

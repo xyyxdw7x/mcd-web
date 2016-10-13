@@ -3,27 +3,15 @@ package com.asiainfo.biapp.mcd.home.service.impl;
 
 import com.asiainfo.biapp.mcd.home.echartbean.Constants;
 import com.asiainfo.biapp.mcd.home.dao.ICepKeywordsDao;
-//import com.asiainfo.biapp.mcd.bean.zhejiang.PageResult;
 import com.asiainfo.biapp.mcd.home.echartbean.EchartsUtil;
 import com.asiainfo.biapp.mcd.home.service.ICepKeywordsService;
 
 import javax.annotation.Resource;
 
-//import com.asiainfo.biapp.mcd.model.CepKeyword;
-//import com.asiainfo.biapp.mcd.model.CepKeywordsPkg;
-//import com.asiainfo.biapp.mcd.util.CommonUtil;
-//import com.asiainfo.biframe.exception.ServiceException;
-//import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//import java.io.Serializable;
-//import java.util.HashSet;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.Set;
 @Service("CepKeywordsService")
 public class CepKeywordsServiceImpl implements ICepKeywordsService {
 
@@ -44,26 +32,13 @@ public class CepKeywordsServiceImpl implements ICepKeywordsService {
 	private static final String TAB_T_SUC = "t_suc";
 	private static final String TAB_CAMP_CVT = "cam_cvt";
 	
-//	private static final String TABLE_YEAR = "mtl_eval_info_plan_m";
-//	private static final String TABLE_MONTH = "mtl_eval_info_plan_d";
-	
 	private static final String C_999 = "999";
 
 	@Override
 	public String composite(String range, String verti, String tab, String cityId) {
 
 		try {
-//			String _GROUP_TAB = "mcd_dim_city";
-//			String _GROUP_COL_ = "CITY_ID";
-//			String _GROUP_COL_NAME_ = "CITY_NAME";
-			if (!C_999.equals(cityId)) {
-//				_GROUP_TAB = "DIM_PUB_COUNTY";
-//				_GROUP_COL_ = "COUNTY_ID";
-//				_GROUP_COL_NAME_ = "COUNTY_NAME";
-			}
-
 			String chartType = Constants.ECHARTS_CHARTTYPE.LINE;
-//			String tabName = TABLE_YEAR;
 			String legend = "";
 			StringBuffer sql = new StringBuffer("SELECT ");
 			String orderCol = " T.STAT_DATE ";
@@ -74,14 +49,10 @@ public class CepKeywordsServiceImpl implements ICepKeywordsService {
 				sql.append(", ");
 				legend = "总";
 			} else if (RANGE_MONTH.equals(range.toUpperCase())) {
-//				tabName = TABLE_MONTH;
-//			orderCol = " T.STAT_DATE ";
 				sql.append(orderCol);
 				sql.append(", ");
 				legend = "本月";
 			} else if (RANGE_DAY.equals(range.toUpperCase())) {
-//				tabName = TABLE_MONTH;
-//			orderCol = " T.STAT_DATE ";
 				sql.append(orderCol);
 				sql.append(", ");
 				legend = "今日";
@@ -100,7 +71,6 @@ public class CepKeywordsServiceImpl implements ICepKeywordsService {
 					legend += "成功数";
 				}
 				if (TAB_CAMP_CVT.equals(tab.toLowerCase())) {
-//					sql.append(" SUM(T.PV_CONVERT_RATE) * 100 ");
 					trend_select_head = " CASE WHEN sum(cam_num) = 0 THEN 0 else round(sum(cam_succ) / sum(cam_num),4)*100 END cam_rate ";
 					legend += "转化率(%)";
 				}
@@ -172,7 +142,6 @@ public class CepKeywordsServiceImpl implements ICepKeywordsService {
 					legend += "成功数";
 				}
 				if (TAB_CAMP_CVT.equals(tab.toLowerCase())) {
-//					sql.append(" SUM(T.PV_CONVERT_RATE) * 100 ");
 					put_select_head = " CASE WHEN sum(cam_num) = 0 THEN 0 else round(sum(cam_succ) / sum(cam_num),4)*100 END cam_rate ";
 					legend += "转化率(%)";
 				}
