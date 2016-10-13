@@ -210,7 +210,7 @@ public interface ICustGroupInfoDao {
 	     * @return
 	     * @throws Exception
 	     */
-	    public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage);
+	    public void savemtlCustomListInfo(String mtlCuserTableName,String customGroupDataDate, String customGroupId, int rowNumberInt,int dataStatus, Date newDate, String exceptionMessage) throws Exception ;
 	    /**
 	     * 根据COC传递数据，修改或新增客户群与属性对应关系表
 	     * @param customGroupId  客户群ID

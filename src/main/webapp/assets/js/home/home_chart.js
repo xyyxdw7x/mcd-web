@@ -1,8 +1,5 @@
 $(function() {
 	console.log('init...');
-	//TODO 好像没用，先注释掉。
-	//var location = _ctx + '/assets/js/lib/echarts';
-	
 });
 
 /**

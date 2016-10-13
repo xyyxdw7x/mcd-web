@@ -154,7 +154,12 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
 			flag = 1;
 			log.info("复制客户群Txt文件到失败，失败原因" +customGroupId + "：" +e1.getMessage());
 			int rowNumberInt = Integer.parseInt(rowNumber);
-			custGroupInfoService.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+			try {
+				custGroupInfoService.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error(e);
+			}
 			xml.append(flag + "</flag><groupId>");
 			xml.append(customGroupId + "</groupId><msg>");
 			if("".equals(exceptionMessage)){
@@ -389,7 +394,12 @@ public class MpmCustGroupWsFtpRunnable implements Runnable {
             boolean deleteVerf = fileVerf != null ? fileVerf.delete() : false;
             log.info("本地Verf文件删除："+ deleteVerf + "文件名称：" + fileName);
 			int rowNumberInt = Integer.parseInt(rowNumber);
-			custGroupInfoService.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+			try {
+				custGroupInfoService.savemtlCustomListInfo(mtlCuserTableName,customGroupDataDate,customGroupId,rowNumberInt,dataStatus,new Date(),exceptionMessage);
+			} catch (Exception e1) {
+				log.error(e1);
+				e1.printStackTrace();
+			}
 			xml.append(flag + "</flag><groupId>");
 			xml.append(customGroupId + "</groupId><msg>");
 			if("".equals(exceptionMessage)){

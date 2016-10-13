@@ -232,7 +232,7 @@
 				</form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="button button-default close-add-btn" data-dismiss="modal">取消</button>
+                <button type="button" class="button button-default close_rm_btn" data-dismiss="modal">取消</button>
                 <button type="button" class="button button-info" id="remove_btn">确认</button>
             </div>
         </div>

@@ -6,6 +6,7 @@ import java.util.List;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.base.MarkLine;
 import com.asiainfo.biapp.mcd.home.echartbean.echarts.base.MarkPoint;
 
+@SuppressWarnings("rawtypes")
 public class Series extends BaseSeries implements Serializable {
 
 	/**
