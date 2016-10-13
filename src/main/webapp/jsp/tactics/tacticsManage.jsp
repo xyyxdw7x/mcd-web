@@ -31,7 +31,7 @@
 					<li class="content-type-search">
 						<div class="content-type-search-box fleft">
 							<p class="fleft">
-								<input type="text" name="search" placeholder="请输入关键字"/>
+								<input type="text" name="search" placeholder="请输入策略编号或名称"/>
 							<p>
 							<i id="searchButton_mine" class="searchBtn fright"></i>
 						</div>
@@ -63,7 +63,7 @@
 					<li class="content-type-search">
 						<div class="content-type-search-box fleft">
 							<p class="fleft">
-								<input type="text" name="search" placeholder="请输入关键字"/>
+								<input type="text" name="search" placeholder="请输入策略编号或名称"/>
 							<p>
 							<i id="searchButton_all" class="searchBtn fright"></i>
 						</div>
