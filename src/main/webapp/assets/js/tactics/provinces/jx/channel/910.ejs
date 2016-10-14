@@ -23,9 +23,11 @@
 </div>
 
 <!-- 短信夹带-预览弹窗 -->
-<div class="messageWith-dilog over-hidden" style="display:none;" id="SMPreviewDiv_channelId_<%=data.channelId%>">
+<div class="messageWith-dilog" style="display:none;" id="SMPreviewDiv_channelId_<%=data.channelId%>">
+	<span class="closeBtnCir" title="关闭" id="closePreview_channelId_<%=data.channelId%>"><i>&times;</i></span>
 	<div class="messageWith-con">
 		<div id ="SMPreviewText_channelId_<%=data.channelId%>"></div>
 	</div>
 </div>
+<div class="ui-widget-overlay ui-front messageWith-dilog-bg"  style="z-index: 100;display:none;"></div><!--半透明背景-->
 </div>

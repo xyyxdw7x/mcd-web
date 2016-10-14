@@ -82,6 +82,13 @@ channelInfo913.queryAdivInfoSuc = function(result){
  */
 channelInfo913.addSaveBtnClickEvent=function(){
 	$("#channelSaveBtn913").click(function(event){
+		//输入项校验
+		var checkResult = channelInfo913.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
 		var newdata=channelInfo913.getChannelInfoData();
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
@@ -97,9 +104,9 @@ channelInfo913.getChannelInfoData=function(){
 	channelInfo.channelId=channelInfo913.baseInfo.channelId;
 	channelInfo.channelName=channelInfo913.baseInfo.channelName;
 	channelInfo.execContent=$("#content913").val();
-	var keys=["推荐语","运营位ID"];
+	var keys=["推荐语","运营位ID","推荐用语"];
 	var content=channelInfo.execContent;
-	var values=[content,channelInfo913.baseInfo.adivIds];
+	var values=[content,channelInfo913.baseInfo.adivIds,channelInfo.execContent];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
 	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
@@ -113,6 +120,13 @@ channelInfo913.getChannelInfoData=function(){
  */
 channelInfo913.clickPreview = function(){
 	$("#channelVopPrevId").click(function(){
+		//输入项校验
+		var checkResult = channelInfo913.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
 		$("#channelVopPrevDialog").show();
 		$(".ui-widget-overlay").show();
 		$(".ui-widget-overlay").css("opacity",".9");
@@ -120,9 +134,16 @@ channelInfo913.clickPreview = function(){
 		$("#rightPlanName913").html(tacticsInfo.plan.planName);
 		$("#topPlanName913").html(tacticsInfo.plan.planName);
 		var content1=$("#content913").val();
-		$("#previewContent901").text(content1);
+		$("#previewContent913").text(content1);
 	});
 	$("#previewBtn913").click(function(){
+		//输入项校验
+		var checkResult = channelInfo913.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
 		$("#channelVopPrevDialog").show();
 		$(".ui-widget-overlay").show();
 		$(".ui-widget-overlay").css("opacity",".9");
@@ -130,10 +151,30 @@ channelInfo913.clickPreview = function(){
 		$("#rightPlanName913").html(tacticsInfo.plan.planName);
 		$("#topPlanName913").html(tacticsInfo.plan.planName);
 		var content=$("#content913").val();
-		$("#previewContent901").text(content);
+		$("#previewContent913").text(content);
 	});
 	$(".ui-widget-overlay").click(function(){
 		$(this).hide();
 		$("#channelVopPrevDialog").hide();
 	});
+}
+
+/**
+ * 确定、预览前的合法性检查
+ */
+channelInfo913.checkValidation=function(){
+	var result = new Array();
+	result[0]=true;
+	
+	var contentWords = $("#content913").val();
+	if(contentWords.length<1){
+		result[0]=false;
+		result[1]="必须录入推荐用语!";
+		return result;
+	} else if(contentWords.trim().length<1) {
+		result[0]=false;
+		result[1]="推荐用语不能为空字符!";
+		return result;
+	}
+	return result;
 }
