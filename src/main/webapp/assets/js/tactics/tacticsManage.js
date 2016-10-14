@@ -91,7 +91,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					return this;
 				} ,
 				setDomList:function(pageNum,tableModel){
-					debugger;
 					var thisObj=this;
 					var pageFlag = pageNum==1 ? "F" : "G";
 					var defaultData = {cmd:options.cmd,pageNum:pageNum,pageFlag:pageFlag};
@@ -107,7 +106,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						data:ajaxData
 					});
 					tableModel.on("change", function(model) {
-						debugger;
 						var tableHtml = ""; 
 						var attributes = model.attributes;
 						if(attributes.hasOwnProperty("date")){
