@@ -20,11 +20,11 @@
 		<tr class="content-table-tr <%if(i%2==1){%>odd<%}else{%>even<%}%>"> 
 			<td class="content-table-td"> 
 			<%if(data.result[i].DQ_1=='1'){%> 
-				<span  value="<%=data.result[i].DQ_D_1%>"><img src=""/></a><img src="../../assets/images/dqcl.png"   alt="【策略到期提醒】距离营销策略到期日期<%=data.result[i].DQ_D_1%>天" title="【策略到期提醒】距离营销策略到期日期<%=data.result[i].DQ_D_1%>天"/></span>
+				<span  class="tdImg-box" value="<%=data.result[i].DQ_D_1%>"><img src=""/></a><img src="../../assets/images/dqcl.png"   alt="【策略到期提醒】距离营销策略到期日期<%=data.result[i].DQ_D_1%>天" title="【策略到期提醒】距离营销策略到期日期<%=data.result[i].DQ_D_1%>天"/></span>
             <%} else  {  if(data.result[i].DQ_2=='1') {%> 
-		    <span  value="<%=data.result[i].DQ_D_2%>"> <img src="../../assets/images/dqsp.png" alt="【审批到期提醒】<%=data.result[i].DQ_D_2_NAME%><%=data.result[i].DQ_D_2%>天" title="【审批到期提醒】<%=data.result[i].DQ_D_2_NAME%><%=data.result[i].DQ_D_2%>天" /></span>
+		    <span  class="tdImg-box" value="<%=data.result[i].DQ_D_2%>"> <img src="../../assets/images/dqsp.png" alt="【审批到期提醒】<%=data.result[i].DQ_D_2_NAME%><%=data.result[i].DQ_D_2%>天" title="【审批到期提醒】<%=data.result[i].DQ_D_2_NAME%><%=data.result[i].DQ_D_2%>天" /></span>
 		        <%} else { if(data.result[i].DQ_3=='1') {%> 
-				  <span  value="<%=data.result[i].DQ_D_3%>"><img src="../../assets/images/dqzc.png" alt="【政策到期提醒】距离营销政策到期日期<%=data.result[i].DQ_D_3%>天"  title="【政策到期提醒】距离营销政策到期日期<%=data.result[i].DQ_D_3%>天"/></span>
+				  <span  class="tdImg-box" value="<%=data.result[i].DQ_D_3%>"><img src="../../assets/images/dqzc.png" alt="【政策到期提醒】距离营销政策到期日期<%=data.result[i].DQ_D_3%>天"  title="【政策到期提醒】距离营销政策到期日期<%=data.result[i].DQ_D_3%>天"/></span>
 			 <%}}}%>  <%=i+1%>   
 			  </td>
 			<td class="content-table-td">
@@ -36,7 +36,7 @@
 			<td class="content-table-td <%=data.result[i].campsegStatName=='暂停'?'more_tips':''%>" pauseComment="<%=data.result[i].pauseComment%>" style="overflow: visible;"><%=data.result[i].campsegStatName%></td>
 			<td class="content-table-td align_center J_manageTd">
 				<%
-					  var onlyCpoyArr = ["91","90","59","54","50","40","48"];
+					  var onlyCpoyArr = ["91","90","59","54","50","40","48","49"];
 					  var statusId = data.result[i].campsegStatId+"";
 					  data.result[i].manageBtnDisplay="visible";
 					  if($.inArray(statusId, onlyCpoyArr) != -1){

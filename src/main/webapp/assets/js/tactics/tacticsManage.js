@@ -91,6 +91,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					return this;
 				} ,
 				setDomList:function(pageNum,tableModel){
+					debugger;
 					var thisObj=this;
 					var pageFlag = pageNum==1 ? "F" : "G";
 					var defaultData = {cmd:options.cmd,pageNum:pageNum,pageFlag:pageFlag};
@@ -106,6 +107,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						data:ajaxData
 					});
 					tableModel.on("change", function(model) {
+						debugger;
 						var tableHtml = ""; 
 						var attributes = model.attributes;
 						if(attributes.hasOwnProperty("date")){
@@ -117,15 +119,18 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						tableHtml = new EJS({
 							url : options.ejsUrl
 						}).render(model.attributes);
+						var selectTab = $("#tacticsManageQueryTab .active").attr("data-tab");
 						var pagecss = "";
-						if(options.addData==""){
+						if(selectTab=="MY"){
 							pagecss = "tacticsManagerPage";
 						}else{
 							pagecss = "tacticsManagerPageAll";
 						}
 						var htmlobj=$(tableHtml);
 						$(options.currentDom).empty().append(htmlobj);
-						thisObj.renderPageView(model.attributes.data,thisObj,pagecss);
+						if(model.id != "searchMcdMpmCampSegChild.do"){
+							thisObj.renderPageView(model.attributes.data,thisObj,pagecss);
+						}
 						options.domCallback(htmlobj);
 					});
 				},
@@ -189,7 +194,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 		},
 		getCampSegChildTable:function(obj){
 			var _cls = '';
-			
 			obj.find("> tbody > tr > td").on("click",function(e){
 				var _table=$(this).parent().next().find("td.nopadding .tableOuter");
 				_table.is(":visible")?_table.hide():_table.show();

@@ -109,7 +109,7 @@ channelInfo910.loadSMtempaltes910=function(){
 		'</div>\n';
 	var url = contextPath;
 	var templateLi = 
-		'<li  data-toggle="tooltip" data-placement="bottom" title="{Tooltip}" smtemp="{smtemp}" id="{liId}">\n'+
+		'<li  data-toggle="tooltip" data-placement="bottom" titcontent="{Tooltip}" title="{Tooltip}" smtemp="{smtemp}" id="{liId}">\n'+
 			'<span class="type-title" id="{templateTextId}">{smsTemplateText}</span>\n'+
 			'<img class="selected-img" src="'+contextPath+'/assets/images/channelSelected.png">\n'+
 		'</li>\n';
@@ -132,6 +132,7 @@ channelInfo910.loadSMtempaltes910=function(){
 					
 					for(var index2 in templates){
 						var templateHtml = templateLi.replace("{Tooltip}", templates[index2].templateContent);
+						templateHtml = templateHtml.replace("{Tooltip}", templates[index2].templateContent);
 						templateHtml = templateHtml.replace("{smtemp}", templates[index2].templateId);
 						templateHtml = templateHtml.replace("{liId}", "channel"+channelInfo910.baseInfo.channelId+"SMUl"+retData[index].typeId+"li"+templates[index2].templateId);
 						templateHtml = templateHtml.replace("{templateTextId}", "channel"+channelInfo910.baseInfo.channelId+"SMUl"+retData[index].typeId+"liTextId"+templates[index2].templateId);
@@ -190,7 +191,7 @@ channelInfo910.getSelectedSMtemplates=function (){
 		}
 		
 		var typeName = $(this).parent().prevAll("span").html();
-		templates[1] = templates[1] + typeName+$(this).attr("title");
+		templates[1] = templates[1] + typeName+$(this).attr("titcontent");
 	});
 	return templates;
 }
