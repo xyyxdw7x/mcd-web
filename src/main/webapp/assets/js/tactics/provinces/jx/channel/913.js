@@ -21,6 +21,7 @@ channelInfo913.initView=function(data){
 	channelInfo913.addSaveBtnClickEvent();
 	channelInfo913.clickPreview();//预览
 	channelInfo913.clickChannelVopEventHandler();
+	channelInfo913.clickClosePreviewDialogHandler();
 	var $textArea=$("#content913");
 	var $maxNum=$("#wordSize913");
 	textAreaInputNumTip($textArea,$maxNum);
@@ -104,9 +105,9 @@ channelInfo913.getChannelInfoData=function(){
 	channelInfo.channelId=channelInfo913.baseInfo.channelId;
 	channelInfo.channelName=channelInfo913.baseInfo.channelName;
 	channelInfo.execContent=$("#content913").val();
-	var keys=["推荐语","运营位ID","推荐用语"];
+	var keys=["渠道名称","推荐用语","运营位ID"];
 	var content=channelInfo.execContent;
-	var values=[content,channelInfo913.baseInfo.adivIds,channelInfo.execContent];
+	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivIds];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
 	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
@@ -164,10 +165,6 @@ channelInfo913.clickPreview = function(){
 		var content=$("#content913").val();
 		$("#previewContent913").text(content);
 	});
-	$(".ui-widget-overlay").click(function(){
-		$(this).hide();
-		$("#channelVopPrevDialog").hide();
-	});
 }
 
 /**
@@ -188,4 +185,14 @@ channelInfo913.checkValidation=function(){
 		return result;
 	}
 	return result;
+}
+
+/**
+ * 点击关闭预览窗口事件处理
+ */
+channelInfo913.clickClosePreviewDialogHandler=function(){
+	$("#closePreview_channelId_"+channelInfo913.baseInfo.channelId).click(function(){
+		$(".ui-widget-overlay").hide();
+		$("#channelVopPrevDialog").hide();
+	});
 }

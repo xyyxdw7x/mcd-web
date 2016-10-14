@@ -164,7 +164,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .vop-1{width:309px; position: relative; height:550px;background:url(../../../../images/put/vop-1.png) no-repeat;}
 .vop-1 .vop-bot{color: #fff; bottom:0; font-size: 14px; width: 309px; height:30px; position: absolute;background:url(../../../../images/put/vop-bot.png) no-repeat;}
 .vop-left .vop-bot{z-index: 5;}
-.vop-1 .vop-name{display: inline-block; padding:5px 0 0 66px;}
+.vop-1 .vop-name{display: inline-block; padding:5px 0 0 66px; max-width:280px;overflow:hidden;height:28px;}
 .vop-right{position: relative;width:309px;height:550px;}
 .vop-right .vop-1{z-index:1;}
 .vop-bg{position: absolute; top:55px; z-index: 2;width:309px;height:495px;background:url(../../../../images/put/vop-2.png) no-repeat;}
@@ -179,6 +179,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .messageWith-con div{line-height: 24px;margin-bottom:10px;}
 .messageWith-con p{margin-left:-5px;}
 .closeBtnCir{display:block;top:-10px; position:relative;z-index:999999;cursor:pointer;background:#ccc;width:40px;height:40px;left:265px;border-radius:50%;}
+.closeBtnCir-VOP{left:673px;}
 .closeBtnCir i{display:inline-block;font-size:40px;color:#fff;position:relative;top:-10px;left:6px;}
 /*营业厅-个性化功能推荐-弹窗*/
 .dialog-ul{overflow: hidden;width: 782px;margin:0 auto;}
