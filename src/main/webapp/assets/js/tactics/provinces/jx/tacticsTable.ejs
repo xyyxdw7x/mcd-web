@@ -36,7 +36,7 @@
 			<td class="content-table-td <%=data.result[i].campsegStatName=='暂停'?'more_tips':''%>" pauseComment="<%=data.result[i].pauseComment%>" style="overflow: visible;"><%=data.result[i].campsegStatName%></td>
 			<td class="content-table-td align_center J_manageTd">
 				<%
-					  var onlyCpoyArr = ["91","90","59","54","50","40","48"];
+					  var onlyCpoyArr = ["91","90","59","54","50","40","48","49"];
 					  var statusId = data.result[i].campsegStatId+"";
 					  data.result[i].manageBtnDisplay="visible";
 					  if($.inArray(statusId, onlyCpoyArr) != -1){
