@@ -81,12 +81,13 @@ function initMenu(){
  * @param numItem 最大字数
  */
 function textAreaInputNumTip(textArea,numItem) {
-    var max = numItem.text(),curLength;
+    var max = numItem.text();
+    var curLength;
     textArea[0].setAttribute("maxlength", max);
     curLength = textArea.val().length;
     numItem.text(max - curLength);
     textArea.on('input propertychange', function () {
-        var _value = $(this).val().replace(/\n/gi,"");
+        var _value = $(this).val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
         numItem.text(max - _value.length);
     });
 }

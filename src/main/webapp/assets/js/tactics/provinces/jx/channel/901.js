@@ -31,13 +31,15 @@ channelInfo901.initView=function(data){
 	channelInfo901.querySmsVarList();
 	var $textArea=$("#content901");
 	var $maxNum=$("#wordSize901");
-	textAreaInputNumTip($textArea,$maxNum);
+	textAreaInputNumTip($textArea,$maxNum);//编辑推荐用语事件
+	
 	//如果有默认的推荐语则
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
 		$("#content901").val(tacticsInfo.plan.planComment);
 		var wordLen = tacticsInfo.plan.planComment.length;
 		$maxNum.text($maxNum.text()-wordLen);
 	}
+
 	//编辑情况下有策略ID
 	if(data.campId==null||data.campId==undefined){
 		return ;
