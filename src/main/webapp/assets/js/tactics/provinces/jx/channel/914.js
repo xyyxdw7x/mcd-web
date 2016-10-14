@@ -40,14 +40,8 @@ channelInfo914.initValue914 = function(){
 	if(channelInfo914.baseInfo.hasOwnProperty("execContent")){
 		//更新营销用语
 		$("#channelId_"+channelInfo914.baseInfo.channelId+"_contentWords").val(channelInfo914.baseInfo.execContent);
-		//营销用语的可输入长度
-		var $textArea=$("#channelId_"+channelInfo914.baseInfo.channelId+"_contentWords");
-		var $maxNum=$("#channelId_"+channelInfo914.baseInfo.channelId+"_wordSize");
-		textAreaInputNumTip($textArea,$maxNum);
-		var wordLen = channelInfo914.baseInfo.execContent.length;
-		$maxNum.text($maxNum.text()-wordLen);
-		
-		
+		//输入字数时对字数限制
+		//channelInfo914.textAreaInputNumTip914();
 		//触发事件，将编辑回显得数据放入购物车
 		var newdata = channelInfo914.collectData914();
 		$("#channelDiv").trigger("changeChannel", newdata);
@@ -97,6 +91,9 @@ channelInfo914.clickCommitButtonEventHandler914=function(){
 			alert(checkResult[1]);
 			return ;
 		}
+		if($("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).hasClass("disable-href")){
+			return ;
+		}
 		
 		var newdata = channelInfo914.collectData914();
 		
@@ -111,7 +108,8 @@ channelInfo914.textAreaInputNumTip914=function(){
 	//输入字数时对字数限制
 	var $textArea=$("#channelId_"+channelInfo914.baseInfo.channelId+"_contentWords");
 	var $maxNum=$("#channelId_"+channelInfo914.baseInfo.channelId+"_wordSize");
-	textAreaInputNumTip($textArea,$maxNum);
+	var $commitButton=$("#commitButton_channelId_"+channelInfo914.baseInfo.channelId);
+	textAreaInputNumTip($textArea,$maxNum,$commitButton);
 }
 
 /**
@@ -129,6 +127,10 @@ channelInfo914.checkValidation=function(){
 	} else if(contentWords.trim().length<1) {
 		result[0]=false;
 		result[1]="推荐营销用语不能为空字符!";
+		return result;
+	}else if($("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).hasClass("disable-href")){
+		result[0]=false;
+		result[1]="";
 		return result;
 	}
 	return result;

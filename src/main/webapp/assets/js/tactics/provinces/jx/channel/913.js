@@ -22,22 +22,62 @@ channelInfo913.initView=function(data){
 	channelInfo913.clickPreview();//预览
 	channelInfo913.clickChannelVopEventHandler();
 	channelInfo913.clickClosePreviewDialogHandler();
-	var $textArea=$("#content913");
-	var $maxNum=$("#wordSize913");
-	textAreaInputNumTip($textArea,$maxNum);
-	//编辑情况下有策略ID
-	if(data.campId==null||data.campId==undefined){
-		return ;
-	}
+	
 	//回显
 	if(data.hasOwnProperty("execContent")){
 		$("#content913").val(data.execContent);
-		var wordLen = data.execContent.length;
-		$maxNum.text($maxNum.text()-wordLen);
 	}
 	if(data.hasOwnProperty("execContent")){
 		$("#channelSaveBtn913").trigger("click");
 	}
+	//输入字数时对字数限制
+	channelInfo913.textAreaInputNumTip913();
+	//编辑情况下没有策略ID
+	if(data.campId==null||data.campId==undefined){
+		return ;
+	}
+}
+
+/**
+ * 营销用语输入字数限制
+ */
+channelInfo913.textAreaInputNumTip913=function(){
+	var $textArea=$("#content913");
+	var $maxNum=$("#wordSize913");
+	var $commitButton=$("#channelSaveBtn913");
+	channelInfo913.textAreaInputNumTip($textArea,$maxNum,$commitButton);
+}
+
+/**
+ * 输入框字数变化提示;
+ * 推荐用语输入50个字为最佳效果，超过50个字还可以输入，最多可以输入140个字，
+ * 超出140个字推荐用语边框变红，“确定”按钮文字变为“字数超出请修改”并不能点击
+ * @param textArea输入框
+ * @param numItem 最大字数
+ */
+channelInfo913.textAreaInputNumTip = function(textArea,numItem,commitButton) {
+    var max = numItem.text();
+    var curLength;
+    textArea[0].setAttribute("maxlength", 140);
+    curLength = textArea.val().length;
+    numItem.text(max - curLength);
+    textArea.on('input propertychange', function () {
+        var _value = $(this).val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
+        numItem.text(max - _value.length);
+        if(_value.length>=50){
+        	numItem.text(0);
+        }
+        
+        if(numItem.text()==0&&_value.length>=140){
+        	textArea.addClass("red-border");
+        	commitButton.addClass("disable-href");
+        	commitButton.text("字数超出请修改");
+        }else{
+        	textArea.removeClass("red-border");
+        	commitButton.removeClass("disable-href");
+        	commitButton.text("确定");
+        }
+    });
 }
 
 /**
@@ -83,12 +123,18 @@ channelInfo913.queryAdivInfoSuc = function(result){
  */
 channelInfo913.addSaveBtnClickEvent=function(){
 	$("#channelSaveBtn913").click(function(event){
+		
+		if($("#channelSaveBtn901").hasClass("disable-href")){
+			return ;
+		}
 		//输入项校验
 		var checkResult = channelInfo913.checkValidation();
 		if(!checkResult[0]){
 			alert(checkResult[1]);
 			return ;
 		}
+		
+		
 		
 		var newdata=channelInfo913.getChannelInfoData();
 		$("#channelDiv").trigger("changeChannel", newdata);
