@@ -163,6 +163,9 @@ channelInfo910.clickChannelContentEventHandler910=function(){
 	
 	//预览按钮
 	channelInfo910.clickPreviewButtonEventHandler910();
+
+	//关闭预览窗口
+	channelInfo910.clickClosePreviewDialogHandler910();
 	
 	//输入字数时对字数限制
 	channelInfo910.textAreaInputNumTip910();
@@ -253,23 +256,19 @@ channelInfo910.clickPreviewButtonEventHandler910=function(){
 		var templates = channelInfo910.getSelectedSMtemplates();
 		var channelContentWords = $("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val();
 		var privewContent = templates[1]+SM_QUOTE+channelContentWords;
-		$("#SMPreviewText_channelId_"+channelInfo910.baseInfo.channelId).html(privewContent);
-		
-		//将预览展示作为dialog弹出
-		$("#SMPreviewDiv_channelId_"+channelInfo910.baseInfo.channelId).dialog({
-			width:260,
-			height:630,
-			resizable: false,
-			modal: true,
-			title: channelInfo910.baseInfo.channelName+"夹带短信预览",
-			buttons: [{
-				"class":"dialog-btn dialog-btn-blue",
-				"text":"关闭",
-				"click": function() {
-					$( this ).dialog( "close" );
-				}
-			}]
-		});
+		$('.messageWith-dilog').show();
+		$('.messageWith-dilog-bg').show();
+		$("#SMPreviewText_channelId_"+channelInfo910.baseInfo.channelId).text(privewContent);
+	});
+}
+
+/**
+ * 点击关闭预览窗口事件处理
+ */
+channelInfo910.clickClosePreviewDialogHandler910=function(){
+	$("#closePreview_channelId_"+channelInfo910.baseInfo.channelId).click(function(){
+		$('.messageWith-dilog').hide();
+		$('.messageWith-dilog-bg').hide();
 	});
 }
 
