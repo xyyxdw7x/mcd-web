@@ -12,6 +12,7 @@
     		</c:if>  
 		</c:forEach> 
 		</ul>
+		<span class="username">${sessionScope.USER.name},您好</span>
 	</div>
 	<div class="subnav" >
 		<div class="width950">

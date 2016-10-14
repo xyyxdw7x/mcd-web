@@ -352,3 +352,9 @@
 	width: 150px;
 }
 .header .subnav ul.sun-nav-product{margin-right: 200px;}
+
+.username{
+	line-height: 60px;
+    display: block;
+    float: right;
+}
