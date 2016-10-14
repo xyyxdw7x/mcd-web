@@ -17,12 +17,10 @@ function initView913(data){
  * VOP渠道初始化
  */
 channelInfo913.initView=function(data){
-	$("#channelVopId").click(function(){
-		$(this).addClass("active");
-	});
 	channelInfo913.queryAdivInfo();
 	channelInfo913.addSaveBtnClickEvent();
 	channelInfo913.clickPreview();//预览
+	channelInfo913.clickChannelVopEventHandler();
 	var $textArea=$("#content913");
 	var $maxNum=$("#wordSize913");
 	textAreaInputNumTip($textArea,$maxNum);
@@ -63,6 +61,7 @@ channelInfo913.queryAdivInfo = function(){
  */
 channelInfo913.queryAdivInfoSuc = function(result){
 	var adivIds="";
+	if(result.data){
 	for(var i=0;i<result.data.length;i++){
 		var item=result.data[i];
 		if(i==(result.data.length-1)){
@@ -72,6 +71,7 @@ channelInfo913.queryAdivInfoSuc = function(result){
 		}
 	}
 	channelInfo913.baseInfo.adivIds=adivIds;
+	}
 }
 
 
@@ -113,6 +113,17 @@ channelInfo913.getChannelInfoData=function(){
 	return channelInfo;
 }
 
+channelInfo913.clickChannelVopEventHandler = function(){
+	$("#channelVopId .opera-top").click(function(){
+		
+		var hasClass = $("#channelVopId").hasClass("active");
+		if(!hasClass){
+			$("#channelVopId").addClass("active");
+		} else {
+			$("#channelVopId").removeClass("active");
+		}
+	});
+}
 
 /**
  * 点击预览按钮事件处理
@@ -126,7 +137,7 @@ channelInfo913.clickPreview = function(){
 			alert(checkResult[1]);
 			return ;
 		}
-		
+		$("#channelVopId").addClass("active");
 		$("#channelVopPrevDialog").show();
 		$(".ui-widget-overlay").show();
 		$(".ui-widget-overlay").css("opacity",".9");
