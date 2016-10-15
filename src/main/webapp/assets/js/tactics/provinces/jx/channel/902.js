@@ -19,7 +19,7 @@ channelInfo902.initView=function(){
 	channelInfo902.loadSomeBaseData902();
 	
 	//初始化值(编辑时)
-	//channelInfo902.initValue902();
+	channelInfo902.initValue902();
 	
 	//添加事件监听
 	channelInfo902.clickChannelContentEventHandler902();
@@ -41,7 +41,7 @@ channelInfo902.initValue902 = function(){
 		//更新营销用语
 		$("#channelId_"+channelInfo902.baseInfo.channelId+"_contentWords").val(channelInfo902.baseInfo.execContent);
 		//输入字数时对字数限制
-		channelInfo902.textAreaInputNumTip902();
+		//channelInfo902.textAreaInputNumTip902();
 		//触发事件，将编辑回显得数据放入购物车
 		var newdata = channelInfo902.collectData902();
 		$("#channelDiv").trigger("changeChannel", newdata);
@@ -54,6 +54,9 @@ channelInfo902.initValue902 = function(){
 channelInfo902.clickChannelContentEventHandler902=function(){
 	//确定按钮
 	channelInfo902.clickCommitButtonEventHandler902();
+	
+	//预览按钮
+	channelInfo902.clickPreviewButtonEventHandler902();
 	
 	//输入字数时对字数限制
 	channelInfo902.textAreaInputNumTip902();
@@ -132,4 +135,70 @@ channelInfo902.checkValidation=function(){
 	}
 	
 	return result;
+}
+
+/**
+ * 点击预览按钮事件处理
+ */
+channelInfo902.clickPreviewButtonEventHandler902=function(){
+	$("#previewButton_channelId_"+channelInfo902.baseInfo.channelId).click(function(){
+		//输入项校验
+		var checkResult = channelInfo902.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
+		
+		//预览数据填充
+		var plans = "";
+		$("#selectedPlan li span").each(function(){
+			plans= plans + $(this).html();
+		});
+		$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_PreviewPlanName1").html(plans);
+		$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_PreviewPlanName2").html(plans);
+		var words = $("#channelId_"+channelInfo902.baseInfo.channelId+"_contentWords").val();
+		$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_Previe_contentWords1").html(words);
+		$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_Previe_contentWords2").html(words);
+		var custgroupId = $("#selectedCg").data("data").customGroupId;
+		if(custgroupId){
+			$.post(
+				contextPath+"/action/custgroup/custGroupManager/getCustGroupPortrait.do",
+				{custgroupId: custgroupId},
+				function(retData, textStatus, jqXHR){
+					if(retData.sucFlag){
+						if(retData.data != null){
+							for(var i in retData.data){
+								var hx = retData.data[i];
+								var hxspan = '<span class="color-blue-dialog">'+hx+'</span>';
+								$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_hxdiv1").append(hxspan);
+								$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_hxdiv2").append(hxspan);
+							}
+						} else {/*客户群画像为空*/}
+					} else{alert("获取客户画像失败！");}
+					//数据加载完后做其他处理
+				},"json");
+		}
+		
+		//展示预览窗口
+		$("#channelId_"+channelInfo902.baseInfo.channelId+"_PreviewDiv").show();
+		$(".perCommend-dilog").dialog({
+			width:900,
+			height:560,
+			resizable: false,
+			modal: true,
+			title:"个性化推荐功能",
+		});
+		//增加类名控制公共样式
+		$(".gradient-dialog").dialog('widget').addClass('gradient-dialog');
+		//用户属性展开与收藏
+		$('.userPrio-toggle span').click(function(){
+			if($('.userPrio-show').is(':hidden')){
+				$('.userPrio-show').stop().slideDown();
+				$('.userPrio-toggle span').find('i').removeClass('tog-hide').addClass('tog-show');
+			}else{
+				$('.userPrio-show').stop().slideUp();
+				$('.userPrio-toggle span').find('i').removeClass('tog-show').addClass('tog-hide');
+			}
+		});
+	});
 }
