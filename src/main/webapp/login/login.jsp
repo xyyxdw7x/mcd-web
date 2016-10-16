@@ -58,7 +58,7 @@
 	}
 </script>
 </head>
-<body>
+<body class="userLogin-body">
 	<div class="userLogin-box" align="center">
 		<div class="fleft loginLeft-box"></div>
 		<div class="fright loginRight-box">
