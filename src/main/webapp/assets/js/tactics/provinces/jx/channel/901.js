@@ -88,7 +88,6 @@ channelInfo901.textAreaInputNumTip = function(textArea,numItem,commitButton) {
         if(_value.length>=50){
         	numItem.text(0);
         }
-        
         if(numItem.text()==0&&_value.length>=140){
         	textArea.addClass("red-border");
         	commitButton.addClass("disable-href");
