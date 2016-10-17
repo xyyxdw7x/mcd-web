@@ -253,6 +253,7 @@ table {
 	background-position-y:-30px;
 	}
 .userLogin-box{
+	font-family:"Microsoft yahei";
 	width:1050px;
 	margin:0 auto;
 	overflow:hidden;
@@ -289,7 +290,7 @@ table {
 .psd-li label input{
 	margin:-2px 5px 0 0;
 	position:relative;
-	top:2px;
+	top:4px;
 }
 .psd-li a{
 	color:#fff;
@@ -301,6 +302,7 @@ input.login-input{
 	text-indent:13px;
 	font-size;14px;
 	color:#666;
+	font-family:"Microsoft yahei";
 }
 input.btn-loginSubmit{
 	background-color:#ff9414;
@@ -309,5 +311,7 @@ input.btn-loginSubmit{
 	border: none;
 	text-align: center;
 	border-radius:2px;
+	cursor:pointer;
+	
 }
 
