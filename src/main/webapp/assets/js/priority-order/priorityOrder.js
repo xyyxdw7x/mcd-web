@@ -1,5 +1,5 @@
 //优先级排序
-define([ "backbone" ], function(require, exports,
+define([ "backbone","my97","page" ], function(require, exports,
 		module) {
 	module.exports = {
 		init : function() {
@@ -620,10 +620,27 @@ function on_top_auto(channel_id, adiv_id, page_no, is_replace, call_back) {
 			add_page_listener();
 
 			$("#search_sale_order_auto").val(keyWord);
+			debugger;
+			renderPageView(result.data,"");
 		}
 	});
 }
 
+function renderPageView(data,obj){
+	debugger;
+	$("#priorityOrderAutoPage").pagination({
+        items: data.totalSize,
+        itemsOnPage: data.pageSize,
+        currentPage:data.pageNum,
+        prevText:'上一页',
+        nextText:'下一页',
+        cssStyle: 'light-theme',
+        onPageClick:function(pageNumber,event){
+//        	obj.setDomList(pageNumber,new tacticsTableModel({id : options.id}));
+        	add_page_listener();
+        }
+    });
+}
 function add_page_listener() {
 	$('a.page-num').on(
 			'click',
