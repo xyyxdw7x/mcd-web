@@ -182,6 +182,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .closeBtnCir-VOP{left:673px;}
 .closeBtnCir i{display:inline-block;font-size:40px;color:#fff;position:relative;top:-10px;left:6px;}
 /*营业厅-个性化功能推荐-弹窗*/
+.perCommend-bg{height:100%;width:100%;background:url(../../../../images/put/perCommend-bg.jpg) no-repeat;background-size:100%;}
 .dialog-ul{overflow: hidden;width: 782px;margin:0 auto;}
 .dialog-ul li{float: left;height:310px; width: 376px; padding:0 2px; background: #fff;margin:0 0 0 10px;}
 .perCommend-dilog{width:100%;height:100%;}
