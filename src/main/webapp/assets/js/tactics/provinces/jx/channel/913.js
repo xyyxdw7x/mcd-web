@@ -3,7 +3,7 @@
  * baseInfo渠道基本信息，包含渠道ID 渠道名称
  */
 var channelInfo913={baseInfo:null};
-
+var channel913AdivNames = null;
 
 /**
  * VOP渠道初始化函数  在主体架构中会动态调用该函数
@@ -107,16 +107,20 @@ channelInfo913.queryAdivInfo = function(){
  */
 channelInfo913.queryAdivInfoSuc = function(result){
 	var adivIds="";
+	var adivNames = "";
 	if(result.data){
 	for(var i=0;i<result.data.length;i++){
 		var item=result.data[i];
 		if(i==(result.data.length-1)){
 			adivIds=item.adivId+adivIds;
+			adivNames=item.adivName+adivNames;
 		}else{
 			adivIds=item.adivId+adivIds+",";
+			adivNames=item.adivName+adivNames+",";
 		}
 	}
 	channelInfo913.baseInfo.adivIds=adivIds;
+	channel913AdivNames = adivNames;
 	}
 }
 
@@ -156,9 +160,9 @@ channelInfo913.getChannelInfoData=function(){
 	channelInfo.channelId=channelInfo913.baseInfo.channelId;
 	channelInfo.channelName=channelInfo913.baseInfo.channelName;
 	channelInfo.execContent=$("#content913").val();
-	var keys=["渠道名称","推荐用语","运营位ID"];
+	var keys=["渠道名称","推荐用语","运营位ID","运营位名称"];
 	var content=channelInfo.execContent;
-	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivIds];
+	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivIds,channel913AdivNames];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
 	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
