@@ -146,7 +146,6 @@ define(["backbone","unslider"],function(require, exports, module) {
             });
             $(".recommend-page-span").click(function(){
                 var data = slider.data('unslider');
-                alert(data);
                 if($(this).hasClass("prev")){
                     if(data.current==0){
                         return ;
