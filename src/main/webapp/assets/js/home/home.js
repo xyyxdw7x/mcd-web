@@ -1,4 +1,4 @@
-define(["backbone","unslider"],function(require, exports, module) {
+define(["unslider","backbone"],function(require, exports, module) {
     var generalModel = Backbone.Model.extend({
         urlRoot : _ctx+"/action/home",
         defaults : {
