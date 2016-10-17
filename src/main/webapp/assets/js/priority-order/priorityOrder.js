@@ -488,7 +488,7 @@ function reloadManualList(url, channelId, adiv_id) {
 					var html = new EJS(
 							{
 								url : _ctx
-										+ '/assets/js/effectAppraisal/sale_order_on_top.ejs'
+										+ '/assets/js/priority-order/priorityOrderTop.ejs'
 							}).render({
 						data : rst
 					});
@@ -604,6 +604,11 @@ function on_top_auto(channel_id, adiv_id, page_no, is_replace, call_back) {
 		},
 		success : function(result) {
 			var rst = result.data;
+//			if(rst!=null&&rst.result.length>0){
+//				for(var i=0;i<10;i++){
+//					rst.result[i+1]=rst.result[0]
+//				}
+//			}
 			var html = new EJS({
 				url : _ctx + '/assets/js/priority-order/priorityOrderAuto.ejs'
 			}).render({
@@ -617,17 +622,13 @@ function on_top_auto(channel_id, adiv_id, page_no, is_replace, call_back) {
 			if (call_back != null) {
 				window[call_back](page_no);
 			}
-			add_page_listener();
-
 			$("#search_sale_order_auto").val(keyWord);
-			debugger;
 			renderPageView(result.data,"");
 		}
 	});
 }
 
 function renderPageView(data,obj){
-	debugger;
 	$("#priorityOrderAutoPage").pagination({
         items: data.totalSize,
         itemsOnPage: data.pageSize,
@@ -636,70 +637,17 @@ function renderPageView(data,obj){
         nextText:'下一页',
         cssStyle: 'light-theme',
         onPageClick:function(pageNumber,event){
-//        	obj.setDomList(pageNumber,new tacticsTableModel({id : options.id}));
-        	add_page_listener();
+        	var adiv_id = '';
+        	if ($('.J_campType.active').find('span').hasClass('hidden')) {
+
+        	} else {
+        		adiv_id = $('.adiv_tr td.active').attr('adiv_id');
+        	}
+        	on_top_auto($('.J_campType.active').attr('cnid'), adiv_id, pageNumber, true, 'switch_active');
         }
     });
 }
-function add_page_listener() {
-	$('a.page-num').on(
-			'click',
-			function() {
-				var adiv_id = '';
-				if ($('.J_campType.active').find('span').hasClass('hidden')) {
 
-				} else {
-					if ($('.adiv_tr td').hasClass('active')) {
-						adiv_id = $('.adiv_tr td.active').attr('adiv_id');
-					} else {
-						adiv_id = 4;
-					}
-				}
-				on_top_auto($('.J_campType.active').attr('cnid'), adiv_id, $
-						.trim($(this).text()), true, 'switch_active');
-			});
-
-	$('a.page-button')
-			.on(
-					'click',
-					function() {
-						var dir = $(this).attr('data-flag');
-						if (dir == undefined) {
-							return;
-						}
-						dir = $.trim(dir);
-						var adiv_id = '';
-						if ($('.J_campType.active').find('span').hasClass(
-								'hidden')) {
-
-						} else {
-							if ($('.adiv_tr td').hasClass('active')) {
-								adiv_id = $('.adiv_tr td.active').attr(
-										'adiv_id');
-							} else {
-								adiv_id = 4;
-							}
-						}
-						if ('prev' == dir) {
-							on_top_auto($('.J_campType.active').attr('cnid'),
-									adiv_id,
-									Number($.trim($('a.page-num.fleft.active')
-											.text())) - 1, true,
-									'switch_active');
-						} else if ('next' == dir) {
-							on_top_auto($('.J_campType.active').attr('cnid'),
-									adiv_id,
-									Number($.trim($('a.page-num.fleft.active')
-											.text())) + 1, true,
-									'switch_active');
-						} else if ('go' == dir) {
-							on_top_auto($('.J_campType.active').attr('cnid'),
-									adiv_id, Number($.trim($('#goPageNumInput')
-											.val())), true, 'switch_active');
-						}
-					});
-
-}
 
 function switch_active(pn) {
 	$('a.page-num').each(function(i, items) {
