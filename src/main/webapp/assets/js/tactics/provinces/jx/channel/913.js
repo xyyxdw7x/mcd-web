@@ -23,6 +23,11 @@ channelInfo913.initView=function(data){
 	channelInfo913.clickChannelVopEventHandler();
 	channelInfo913.clickClosePreviewDialogHandler();
 	
+	//如果有默认的推荐语则
+	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
+		$("#channelId_"+channelInfo913.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+	}
+	
 	//回显
 	if(data.hasOwnProperty("execContent")){
 		$("#content913").val(data.execContent);
