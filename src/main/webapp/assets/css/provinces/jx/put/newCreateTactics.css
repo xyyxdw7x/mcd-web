@@ -123,7 +123,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .opera-ol li.active .opera-bot .opera-btn{display:inline-block;}
 .opera-btn{display:none; width:34px; height:34px; background: url(../../../../images/put-img.png) no-repeat -109px -235px;position:absolute;right:10px; top:8px;}
 /*mesOld-ul  */
-.mesOld-ul li{width:100px;height:30px; padding:0 15px; margin:0 8px 8px 0; text-align:center;line-height:28px; font-size:12px;}
+.mesOld-ul li{width:139px;height:30px; padding:0 4px; margin:0 8px 8px 0; text-align:center;line-height:28px; font-size:12px;}
 .mesOld-ul li span{display: block;height: 28px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .left-mes{overflow:hidden;}
 .left-mes .ftB{width:68px;float:left;margin:5px 0 0 22px;}
@@ -164,7 +164,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .vop-1{width:309px; position: relative; height:550px;background:url(../../../../images/put/vop-1.png) no-repeat;}
 .vop-1 .vop-bot{color: #fff; bottom:0; font-size: 14px; width: 309px; height:30px; position: absolute;background:url(../../../../images/put/vop-bot.png) no-repeat;}
 .vop-left .vop-bot{z-index: 5;}
-.vop-1 .vop-name{display: inline-block; padding:5px 0 0 66px;}
+.vop-1 .vop-name{display: inline-block; padding:5px 0 0 66px; max-width:280px;overflow:hidden;height:28px;}
 .vop-right{position: relative;width:309px;height:550px;}
 .vop-right .vop-1{z-index:1;}
 .vop-bg{position: absolute; top:55px; z-index: 2;width:309px;height:495px;background:url(../../../../images/put/vop-2.png) no-repeat;}
@@ -179,8 +179,11 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .messageWith-con div{line-height: 24px;margin-bottom:10px;}
 .messageWith-con p{margin-left:-5px;}
 .closeBtnCir{display:block;top:-10px; position:relative;z-index:999999;cursor:pointer;background:#ccc;width:40px;height:40px;left:265px;border-radius:50%;}
+.closeBtnCir-VOP{left:673px;}
 .closeBtnCir i{display:inline-block;font-size:40px;color:#fff;position:relative;top:-10px;left:6px;}
 /*营业厅-个性化功能推荐-弹窗*/
+html,body{height:100%;width:100%;}
+.perCommend-bg{height:100%;width:100%; position:fixed; left:0;top:0; z-index:99; background:url(../../../../images/put/perCommend-bg.jpg) no-repeat;background-size:100%;}
 .dialog-ul{overflow: hidden;width: 782px;margin:0 auto;}
 .dialog-ul li{float: left;height:310px; width: 376px; padding:0 2px; background: #fff;margin:0 0 0 10px;}
 .perCommend-dilog{width:100%;height:100%;}
@@ -190,7 +193,7 @@ input.dateInput{border:1px solid #ccc; margin:0 5px;padding:3px;}
 .color-blue-dialog{color: #4a7df8;border:1px solid #4a7df8;padding:6px 8px;margin:0 10px 10px 0;border-radius:2px;display: inline-block;}
 .blue-4{color: #4a7df8;}
 .col-xs-4-new{width: 110px;}
-.row-li-top{border-top:3px solid #a9c3f4; padding:10px 2px;}
+.row-li-top{border-top:3px solid #a9c3f4; padding:10px 2px;height:251px;overflow-y:auto;overflow-x:hidden;}
 .row-li-bot{padding-left:70px; height:59px;border-top:2px solid #94b4f3;background: #edf3fb;width: 376px; margin-left:-2px;}
 .row-li-bot span{cursor: pointer; margin: 10px 10px 0 15px;}
 .btn-pn{cursor: pointer; width: 15px; height:27px; position: absolute; top:195px;}

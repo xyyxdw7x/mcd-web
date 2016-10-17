@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.Menu;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.framework.util.MD5Util;
 import com.asiainfo.biapp.mcd.privilege.dao.IUserPrivilegeDao;
 
 @Service("defaultUserPrivilege")
@@ -34,8 +33,8 @@ public class DefaultUserPrivilege implements IUserPrivilege {
 	@Override
 	public User validationUserPwd(String userId, String userPwd) throws Exception {
 		logger.info("userId="+userId+" userPwd="+userPwd);
-		String md5Pwd=MD5Util.encode(userPwd);
-		User user=userPrivilegeDao.queryUser(userId, md5Pwd);
+		//String md5Pwd=MD5Util.encode(userPwd);
+		User user=userPrivilegeDao.queryUser(userId, userPwd);
 		return user;
 	}
 

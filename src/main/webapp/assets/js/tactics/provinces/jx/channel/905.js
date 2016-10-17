@@ -40,14 +40,8 @@ channelInfo905.initValue905 = function(){
 	if(channelInfo905.baseInfo.hasOwnProperty("execContent")){
 		//更新营销用语
 		$("#channelId_"+channelInfo905.baseInfo.channelId+"_contentWords").val(channelInfo905.baseInfo.execContent);
-		//营销用语的可输入长度
-		var $textArea=$("#channelId_"+channelInfo905.baseInfo.channelId+"_contentWords");
-		var $maxNum=$("#channelId_"+channelInfo905.baseInfo.channelId+"_wordSize");
-		textAreaInputNumTip($textArea,$maxNum);
-		var wordLen = channelInfo905.baseInfo.execContent.length;
-		$maxNum.text($maxNum.text()-wordLen);
-		
-		
+		//输入字数时对字数限制
+		//channelInfo905.textAreaInputNumTip905();
 		//触发事件，将编辑回显得数据放入购物车
 		var newdata = channelInfo905.collectData905();
 		$("#channelDiv").trigger("changeChannel", newdata);
@@ -97,6 +91,9 @@ channelInfo905.clickCommitButtonEventHandler905=function(){
 			alert(checkResult[1]);
 			return ;
 		}
+		if($("#commitButton_channelId_"+channelInfo905.baseInfo.channelId).hasClass("disable-href")){
+			return ;
+		}
 		
 		var newdata = channelInfo905.collectData905();
 		
@@ -111,7 +108,8 @@ channelInfo905.textAreaInputNumTip905=function(){
 	//输入字数时对字数限制
 	var $textArea=$("#channelId_"+channelInfo905.baseInfo.channelId+"_contentWords");
 	var $maxNum=$("#channelId_"+channelInfo905.baseInfo.channelId+"_wordSize");
-	textAreaInputNumTip($textArea,$maxNum);
+	var $commitButton=$("#commitButton_channelId_"+channelInfo905.baseInfo.channelId);
+	textAreaInputNumTip($textArea,$maxNum,$commitButton);
 }
 
 /**

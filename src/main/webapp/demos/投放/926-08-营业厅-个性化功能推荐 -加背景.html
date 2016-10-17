@@ -1,22 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>营业厅-个性化功能推荐</title>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap/css/bootstrap.css" />
+     <link rel="stylesheet" type="text/css" href="../../assets/css/lib/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/main.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/put/newCreateTactics.css" />	
+	<link rel="stylesheet" type="text/css" href="../../assets/css/provinces/jx/public-dialog.css" />
+	<script src="../../assets/js/lib/jquery-3.1.1.min.js"></script>
+	<script src="../../assets/js/lib/bootstrap.min.js"></script>
+	<script src="../../assets/js/lib/jquery-ui.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$(".perCommend-dilog").dialog({
+				width:900,
+				height:560,
+				resizable: false,
+		    	modal: true,
+			    title:"个性化推荐功能",
+				});
+			//增加类名控制公共样式
+			$(".gradient-dialog").dialog('widget').addClass('gradient-dialog');
+			//用户属性展开与收藏
+			$('.userPrio-toggle span').click(function(){
+				if($('.userPrio-show').is(':hidden')){
+					$('.userPrio-show').stop().slideDown();
+					$('.userPrio-toggle span').find('i').removeClass('tog-hide').addClass('tog-show');
+				}else{
+					$('.userPrio-show').stop().slideUp();
+					$('.userPrio-toggle span').find('i').removeClass('tog-show').addClass('tog-hide');
+				}
+				
+			});
+		});	 
+	</script>
+</head>
+<body>
 
-<div role="tabpanel" id="channelContentDiv_<%=data.channelId%>" class="tab-pane active">
-<div class="left-right-box">
-	<span class="color-333 left ft14">推荐营销用语：</span>
-	<div class="right text-area-box">
-		<textarea name="channelId_<%=data.channelId%>_contentWords" id="channelId_<%=data.channelId%>_contentWords" value=""></textarea>
-		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_wordSize">500</span>个字</p>
-	</div>
-</div>
-<div class="btns-wrp over-hidden">
-	<p class="fright">
-		<a href="javascript:;" class="mright_10 btn60-26 btn-a btn-a-blue" id="commitButton_channelId_<%=data.channelId%>">确定</a>
-		<a href="javascript:;" class="btn60-26 btn-a btn-a-white" id = "previewButton_channelId_<%=data.channelId%>">预览</a>
-	</p>
-	
-</div>
-
-<div class="perCommend-dialog-box container" style="display:none;" id="channelId_<%=data.channelId%>_PreviewDiv">
-	<div class="perCommend-dilog gradient-dialog over-hidden" id="channelId_<%=data.channelId%>_PreviewDialog">
+<!-- 营业厅-个性化功能推荐-弹窗 -->
+<div class="perCommend-dialog-box container">
+	<div class="perCommend-dilog gradient-dialog over-hidden">
 		<div class="perCommend-con">
 			<div class="bannerBox">
 				<div class="btn-prev btn-pn"></div>
@@ -26,16 +51,21 @@
 						<div class="row-li-top">
 							<div class="row">
 								<div class="col-xs-2">产品:</div>
-								<div class="col-xs-10 color-666" id="ChannelId_<%=data.channelId%>_PreviewPlanName1"></div>
+								<div class="col-xs-10 color-666">[省]-购4G手机直降-飞享138-送费480</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-2">画像 :</div>
-								<div class="col-xs-10" id="ChannelId_<%=data.channelId%>_hxdiv1">
+								<div class="col-xs-10">
+									<span class="color-blue-dialog">果粉</span>
+									<span class="color-blue-dialog">月流量1000M</span>
+									<span class="color-blue-dialog">月消费 150元</span>
+									<span class="color-blue-dialog">机领18个月</span>
+									
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-2">推荐:</div>
-								<div class="col-xs-10 color-666" id="ChannelId_<%=data.channelId%>_Previe_contentWords1"></div>
+								<div class="col-xs-10 color-666">苹果6 直降90元，还送480元话费</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-4 col-xs-4-new">酬金 :<span class="blue-4">00000</span></div>
@@ -54,16 +84,21 @@
 						<div class="row-li-top">
 							<div class="row">
 								<div class="col-xs-2">产品:</div>
-								<div class="col-xs-10 color-666" id="ChannelId_<%=data.channelId%>_PreviewPlanName2"></div>
+								<div class="col-xs-10 color-666">[省]-购4G手机直降-飞享138-送费480</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-2">画像 :</div>
-								<div class="col-xs-10" id="ChannelId_<%=data.channelId%>_hxdiv2">
+								<div class="col-xs-10">
+									<span class="color-blue-dialog">果粉</span>
+									<span class="color-blue-dialog">月流量1000M</span>
+									<span class="color-blue-dialog">月消费 150元</span>
+									<span class="color-blue-dialog">机领18个月</span>
+									
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-2">推荐:</div>
-								<div class="col-xs-10 color-666" id="ChannelId_<%=data.channelId%>_Previe_contentWords2"></div>
+								<div class="col-xs-10 color-666">苹果6 直降90元，还送480元话费</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-4 col-xs-4-new">酬金 :<span class="blue-4">00000</span></div>
@@ -101,5 +136,5 @@
 		</div>
 	</div>
 </div>
-
-</div>
+</body>
+</html>

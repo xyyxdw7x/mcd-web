@@ -17,36 +17,30 @@ function initView901(data){
  */
 channelInfo901.initView=function(data){
 	//一次性客户群只能选择一次性
+	$("#901SendCycle button").removeClass("active");
 	if(tacticsInfo.custGroup.updateCycle==1){
 		$("#901SendCycle [data-data='0']").attr("disabled",'true');
 		$("#901SendCycle [data-data='1']").removeAttr("disabled",'true');
+		$("#901SendCycle [data-data='1']").addClass("active");
 	}else{
 		$("#901SendCycle [data-data='1']").attr("disabled",'true');
 		$("#901SendCycle [data-data='0']").removeAttr("disabled",'true');
+		$("#901SendCycle [data-data='0']").addClass("active");
 	}
 	//发送周期切换
 	channelInfo901.addSendCycleChangeEvent();
 	channelInfo901.addSaveBtnClickEvent();
 	//changeCustomerGroup
 	channelInfo901.querySmsVarList();
-	var $textArea=$("#content901");
-	var $maxNum=$("#wordSize901");
-	textAreaInputNumTip($textArea,$maxNum);
+	
 	//如果有默认的推荐语则
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
 		$("#content901").val(tacticsInfo.plan.planComment);
-		var wordLen = tacticsInfo.plan.planComment.length;
-		$maxNum.text($maxNum.text()-wordLen);
 	}
-	//编辑情况下有策略ID
-	if(data.campId==null||data.campId==undefined){
-		return ;
-	}
+	
 	//回显
 	if(data.hasOwnProperty("execContent")){
 		$("#content901").val(data.execContent);
-		var wordLen = data.execContent.length;
-		$maxNum.text($maxNum.text()-wordLen);
 	}
 	if(data.hasOwnProperty("contactType")){
 		var contactType=data.contactType;
@@ -56,6 +50,54 @@ channelInfo901.initView=function(data){
 	if(data.hasOwnProperty("execContent")){
 		$("#channelSaveBtn901").trigger("click");
 	}
+	//输入字数时对字数限制
+	channelInfo901.textAreaInputNumTip901();
+	//编辑情况下没有策略ID
+	if(data.campId==null||data.campId==undefined){
+		return ;
+	}
+	
+}
+
+/**
+ * 营销用语输入字数限制
+ */
+channelInfo901.textAreaInputNumTip901=function(){
+	var $textArea=$("#content901");
+	var $maxNum=$("#wordSize901");
+	var $commitButton=$("#channelSaveBtn901");
+	channelInfo901.textAreaInputNumTip($textArea,$maxNum,$commitButton);
+}
+
+/**
+ * 输入框字数变化提示;
+ * 推荐用语输入50个字为最佳效果，超过50个字还可以输入，最多可以输入140个字，
+ * 超出140个字推荐用语边框变红，“确定”按钮文字变为“字数超出请修改”并不能点击
+ * @param textArea输入框
+ * @param numItem 最大字数
+ */
+channelInfo901.textAreaInputNumTip = function(textArea,numItem,commitButton) {
+    var max = numItem.text();
+    var curLength;
+    textArea[0].setAttribute("maxlength", 140);
+    curLength = textArea.val().length;
+    numItem.text(max - curLength);
+    textArea.on('input propertychange', function () {
+        var _value = $(this).val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
+        numItem.text(max - _value.length);
+        if(_value.length>=50){
+        	numItem.text(0);
+        }
+        if(numItem.text()==0&&_value.length>=140){
+        	textArea.addClass("red-border");
+        	commitButton.addClass("disable-href");
+        	commitButton.text("字数超出请修改");
+        }else{
+        	textArea.removeClass("red-border");
+        	commitButton.removeClass("disable-href");
+        	commitButton.text("确定");
+        }
+    });
 }
 /**
  * 获取渠道输入信息
@@ -106,6 +148,10 @@ channelInfo901.addSendCycleChangeEvent=function(){
  */
 channelInfo901.addSaveBtnClickEvent=function(){
 	$("#channelSaveBtn901").click(function(event){
+		//如果是一次性的要禁用周期性的点击事件
+		if($(event.target).attr("disabled")=="disabled"){
+			return ;
+		}
 		var content=$("#content901").val().replace(/\n/gi,"");
 		if(content==""){
 			alert("短信推荐用语不能为空");

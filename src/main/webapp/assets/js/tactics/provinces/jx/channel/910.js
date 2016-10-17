@@ -81,14 +81,8 @@ channelInfo910.initValue910 = function(){
 		if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
 			//更新营销用语
 			$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
-			//营销用语的可输入长度
-			var $textArea=$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords");
-			var $maxNum=$("#channelId_"+channelInfo910.baseInfo.channelId+"_wordSize");
-			textAreaInputNumTip($textArea,$maxNum);
-			var wordLen = channelInfo910.baseInfo.execContent.length;
-			$maxNum.text($maxNum.text()-wordLen);
-			
-			
+			//输入字数时对字数限制
+			channelInfo910.textAreaInputNumTip910();
 			//触发事件，将编辑回显得数据放入购物车
 			var newdata = channelInfo910.collectData910();
 			$("#channelDiv").trigger("changeChannel", newdata);
@@ -167,9 +161,9 @@ channelInfo910.clickChannelContentEventHandler910=function(){
 
 	//关闭预览窗口
 	channelInfo910.clickClosePreviewDialogHandler910();
-	
 	//输入字数时对字数限制
 	channelInfo910.textAreaInputNumTip910();
+	
 }
 
 /**
@@ -203,7 +197,40 @@ channelInfo910.textAreaInputNumTip910=function(){
 	//输入字数时对字数限制
 	var $textArea=$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords");
 	var $maxNum=$("#channelId_"+channelInfo910.baseInfo.channelId+"_wordSize");
-	textAreaInputNumTip($textArea,$maxNum);
+	var $commitButton=$("#commitButton_channelId_"+channelInfo910.baseInfo.channelId);
+	channelInfo910.textAreaInputNumTip($textArea,$maxNum,$commitButton);
+}
+
+/**
+ * 输入框字数变化提示;
+ * 推荐用语输入50个字为最佳效果，超过50个字还可以输入，最多可以输入140个字，
+ * 超出140个字推荐用语边框变红，“确定”按钮文字变为“字数超出请修改”并不能点击
+ * @param textArea输入框
+ * @param numItem 最大字数
+ */
+channelInfo910.textAreaInputNumTip = function(textArea,numItem,commitButton) {
+    var max = numItem.text();
+    var curLength;
+    textArea[0].setAttribute("maxlength", 140);
+    curLength = textArea.val().length;
+    numItem.text(max - curLength);
+    textArea.on('input propertychange', function () {
+        var _value = $(this).val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
+        numItem.text(max - _value.length);
+        if(_value.length>=50){
+        	numItem.text(0);
+        }
+        
+        if(numItem.text()==0&&_value.length>=140){
+        	textArea.addClass("red-border");
+        	commitButton.addClass("disable-href");
+        	commitButton.text("字数超出请修改");
+        }else{
+        	textArea.removeClass("red-border");
+        	commitButton.removeClass("disable-href");
+        	commitButton.text("确定");
+        }
+    });
 }
 
 /**
@@ -229,12 +256,16 @@ channelInfo910.clickSMtemplateEventHandler910=function(){
  */
 channelInfo910.clickCommitButtonEventHandler910=function(){
 	$("#commitButton_channelId_"+channelInfo910.baseInfo.channelId).click(function(){
+		if($("#commitButton_channelId_"+channelInfo910.baseInfo.channelId).hasClass("disable-href")){
+			return ;
+		}
 		//输入项校验
 		var checkResult = channelInfo910.checkValidation();
 		if(!checkResult[0]){
 			alert(checkResult[1]);
 			return ;
 		}
+		
 		
 		var newdata = channelInfo910.collectData910();
 		$("#channelDiv").trigger("changeChannel", newdata);

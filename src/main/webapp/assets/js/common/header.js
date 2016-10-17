@@ -80,16 +80,27 @@ function initMenu(){
  * @param textArea输入框
  * @param numItem 最大字数
  */
-function textAreaInputNumTip(textArea,numItem) {
-    var max = numItem.text(),curLength;
+function textAreaInputNumTip(textArea,numItem,commitButton) {
+    var max = numItem.text();
+    var curLength;
     textArea[0].setAttribute("maxlength", max);
     curLength = textArea.val().length;
     numItem.text(max - curLength);
     textArea.on('input propertychange', function () {
-        var _value = $(this).val().replace(/\n/gi,"");
+        var _value = $(this).val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
         numItem.text(max - _value.length);
+        if(numItem.text()==0){
+        	textArea.addClass("red-border");
+        	commitButton.addClass("disable-href");
+        	commitButton.text("字数超出请修改");
+        }else{
+        	textArea.removeClass("red-border");
+        	commitButton.removeClass("disable-href");
+        	commitButton.text("确定");
+        }
     });
 }
+
 /**
  * 加载js文件
  * @param url

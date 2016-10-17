@@ -15,7 +15,7 @@
 		<div class="search-box-wrp search-box-wrp-custom">
 			<div class="search-box">
 				<p class="fleft">
-					<input id="cgSearchInput" placeholder="请输入关键字" type="text" >
+					<input id="cgSearchInput" placeholder="请输入客户群编号或名称" type="text" >
 				</p>
 				<i id="cgSearchBtn" class="searchBtn fright"  id="searchBtn"></i>
 			</div>

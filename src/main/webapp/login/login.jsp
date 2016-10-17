@@ -3,79 +3,79 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <head>
-<%
-	response.setHeader("Pragma", "No-cache");
-	response.setHeader("Cache-Control", "no-cache");
-	response.setHeader("Cache-Control", "no-store");
-	response.setDateHeader("Expires", 0);
-%>
-<script type="text/javascript"
-	src="../assets/js/lib/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/css/common.css" />
+<script type="text/javascript" src="../assets/js/lib/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../assets/js/lib/jquery.md5.min.js"></script>
+<script type="text/javascript" src="../assets/js/lib/jquery.cookie.min.js"></script>
 <script type="text/javascript">
-	var _ctx = "<%=request.getContextPath()%>";
-
+	var contextPath = "<%=request.getContextPath()%>";
 	$(document).ready(function() {
 		$("#btnLogin").click(function() {
 			login();
 		});
-        
+		if($.cookie("IMCD_USER")!=undefined){
+			$("#userName").val($.cookie("IMCD_USER"));
+		}
 	});
-	
-	$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
-		alert("thrownError=" + thrownError);
+	//点击回车进行登录
+	$(document).keyup(function(event) {
+		if (event.keyCode == 13) {
+			$("#btnLogin").trigger("click");
+		}
 	});
-	
-	$(document).keyup(function(event){
-		  if(event.keyCode ==13){
-		    $("#btnLogin").trigger("click");
-		  }
-		});
-	
 	function login() {
-		var userId = $("#userName").val();
-		var pwd = $("#userPwd").val();
-		var url = _ctx + "/action/privilege/login/login.do";
+		var userId = $("#userName").val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
+		if(userId==""){
+			alert("用户名不能为空");
+			return ;
+		}
+		var pwd=$("#userPwd").val().replace(/\n/gi,"").replace(/\$[\s\S]*?\$/gi,"");
+		var userPwd = $.md5(pwd);
+		var url = contextPath + "/action/privilege/login/login.do";
+		var data={userId:userId,userPwd:userPwd};
 		$.ajax({
-			type : 'POST',
-			url : url,
-			dataType : "json",
-			data : {
-				userId : userId,
-				userPwd : pwd
-			},
-			success : function(result) {
+			type:"POST",
+			url:url,
+			dataType:"json",
+			data:data,
+			success:function(result) {
 				if (result == true) {
-					window.location = _ctx + "/jsp/home/home.jsp"
+					//保存或取消用户名
+					if($("#remUserName").is(':checked')){
+						$.cookie("IMCD_USER",userId,{expires:10});
+					}else{
+						$.removeCookie("IMCD_USER");
+					}
+					window.location = contextPath + "/jsp/home/home.jsp";
 				} else {
 					alert("用户名或密码错误！");
 				}
 			},
 			error : function(err) {
-				alert(err + "ERROR");
+				alert(err + "登录失败，请重试。");
 			}
 		});
-
 	}
 </script>
 </head>
-<body>
-	<div class="container" align="center" style="margin-top: 200px;">
-		<ul style="list-style-type: none;">
-			<li>
-			<label>用户名：</label>
-			<input type="text"
-				style="width: 320px; height: 35px; color: #b6b6b6; margin-top: 12px; margin-bottom: 15px;  font-size: 14px; padding: 0 0 0 10px;"
-				id="userName">
-			</li>
-			<li>
-			<label>密&nbsp;码：</label>
-			<input type="password"
-				style="width: 320px; height: 35px; color: #b6b6b6; font-size: 14px; padding: 0 0 0 10px; margin-bottom: 15px;"
-				id="userPwd">
-			</li>
-			<li><input id="btnLogin" type="submit" value="立即登录"
-				style="background-color: #ff961e; color: white; width: 300px; height: 35px; margin-top: 12px; font-size: 16px; border: none; text-align: center;"></li>
-		</ul>
+<body class="userLogin-body">
+	<div class="userLogin-box" align="center">
+		<div class="fleft loginLeft-box"></div>
+		<div class="fright loginRight-box">
+				<ul>
+					<li class="text-center login-logo"><img src="../assets/images/login/login-logo.png" />
+					<li>
+					<li><input id="userName" class="login-input" placeholder="用户名" type="text"></li>
+					<li>
+					<li><input id="userPwd" class="login-input" placeholder="密码" type="password">
+					<li>
+					<li class="psd-li">
+							<label class="fleft">
+							<input id="remUserName" type="checkbox">记住用户名</label> <a href="#" class="fright" style="display:none">忘记密码？</a>
+					</li>
+					<li><input id="btnLogin" class="login-input btn-loginSubmit" value="登录" type="submit"></li>
+				</ul>
+		</div>
 	</div>
 </body>
 </html>

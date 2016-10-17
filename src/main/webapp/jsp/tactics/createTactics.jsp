@@ -20,6 +20,8 @@
 		String shopCarUrl="provinces/"+provinces+"/createTacticsShoppingCart.jsp";
 	%>
 	<%@ include file="../../jsp/common/header.jsp" %>
+	
+	<div  class="perCommend-bg none"></div><!-- 个性化功能推荐弹窗背景图 -->
 	<div class="put-container w-1200">
 		<!-- 左侧数字导航区 -->
 		<div class="put-left fleft ft14 mtop_47">

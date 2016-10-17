@@ -40,14 +40,8 @@ channelInfo906.initValue906 = function(){
 	if(channelInfo906.baseInfo.hasOwnProperty("execContent")){
 		//更新营销用语
 		$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val(channelInfo906.baseInfo.execContent);
-		//营销用语的可输入长度
-		var $textArea=$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords");
-		var $maxNum=$("#channelId_"+channelInfo906.baseInfo.channelId+"_wordSize");
-		textAreaInputNumTip($textArea,$maxNum);
-		var wordLen = channelInfo906.baseInfo.execContent.length;
-		$maxNum.text($maxNum.text()-wordLen);
-		
-		
+		//输入字数时对字数限制
+		//channelInfo906.textAreaInputNumTip906();
 		//触发事件，将编辑回显得数据放入购物车
 		var newdata = channelInfo906.collectData906();
 		$("#channelDiv").trigger("changeChannel", newdata);
@@ -100,6 +94,9 @@ channelInfo906.clickCommitButtonEventHandler906=function(){
 			alert(checkResult[1]);
 			return ;
 		}
+		if($("#commitButton_channelId_"+channelInfo906.baseInfo.channelId).hasClass("disable-href")){
+			return ;
+		}
 		
 		var newdata = channelInfo906.collectData906();
 		
@@ -120,7 +117,34 @@ channelInfo906.clickPreviewButtonEventHandler906=function(){
 		}
 		
 		//预览数据填充
-		
+		var plans = "";
+		$("#selectedPlan li span").each(function(){
+			plans= plans + $(this).html();
+		});
+		$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_PreviewPlanName1").html(plans);
+		$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_PreviewPlanName2").html(plans);
+		var words = $("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords").val();
+		$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_contentWords1").html(words);
+		$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_contentWords2").html(words);
+		var custgroupId = $("#selectedCg").data("data").customGroupId;
+		if(custgroupId){
+			$.post(
+				contextPath+"/action/custgroup/custGroupManager/getCustGroupPortrait.do",
+				{custgroupId: custgroupId},
+				function(retData, textStatus, jqXHR){
+					if(retData.sucFlag){
+						if(retData.data != null){
+							for(var i in retData.data){
+								var hx = retData.data[i];
+								var hxspan = '<span class="color-blue-dialog">'+hx+'</span>';
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_hxdiv1").append(hxspan);
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_hxdiv2").append(hxspan);
+							}
+						} else {/*客户群画像为空*/}
+					} else{alert("获取客户画像失败！");}
+					//数据加载完后做其他处理
+				},"json");
+		}
 		
 		//展示预览窗口
 		$("#channelId_"+channelInfo906.baseInfo.channelId+"_PreviewDiv").show();
@@ -153,7 +177,8 @@ channelInfo906.textAreaInputNumTip906=function(){
 	//输入字数时对字数限制
 	var $textArea=$("#channelId_"+channelInfo906.baseInfo.channelId+"_contentWords");
 	var $maxNum=$("#channelId_"+channelInfo906.baseInfo.channelId+"_wordSize");
-	textAreaInputNumTip($textArea,$maxNum);
+	var $commitButton=$("#commitButton_channelId_"+channelInfo906.baseInfo.channelId);
+	textAreaInputNumTip($textArea,$maxNum,$commitButton);
 }
 
 /**
