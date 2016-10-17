@@ -148,12 +148,18 @@ channelInfo906.clickPreviewButtonEventHandler906=function(){
 		
 		//展示预览窗口
 		$("#channelId_"+channelInfo906.baseInfo.channelId+"_PreviewDiv").show();
+		$('.perCommend-bg').removeClass('none');//显示背景图片
 		$(".perCommend-dilog").dialog({
 			width:900,
 			height:560,
 			resizable: false,
 			modal: true,
 			title:"个性化推荐功能",
+		});
+		//点击关闭预览按钮
+		$('.ui-dialog-titlebar-close').off('click').on('click',function(){
+			$(".perCommend-dilog").dialog('close');
+			$('.perCommend-bg').addClass('none');//背景图片不需要时
 		});
 		//增加类名控制公共样式
 		$(".gradient-dialog").dialog('widget').addClass('gradient-dialog');
@@ -168,6 +174,7 @@ channelInfo906.clickPreviewButtonEventHandler906=function(){
 			}
 		});
 	});
+
 }
 
 /**
