@@ -181,6 +181,8 @@ channelInfo902.clickPreviewButtonEventHandler902=function(){
 		
 		//展示预览窗口
 		$("#channelId_"+channelInfo902.baseInfo.channelId+"_PreviewDiv").show();
+		$('.perCommend-bg').removeClass('none');//背景图片需要时
+		//$('.perCommend-bg').addClass('none');//背景图片不需要时
 		$(".perCommend-dilog").dialog({
 			width:900,
 			height:560,
