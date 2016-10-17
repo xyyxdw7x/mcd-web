@@ -60,7 +60,7 @@ tacticsInfo.addStepNumEventListenter=function(){
 			alert("请选择产品");
 			return ;
 		}
-		if(selectedIndex==3&&tacticsInfo.custGroup==null){
+		if(selectedIndex==3&&(tacticsInfo.custGroup==null||tacticsInfo.plan==null)){
 			alert("请选择客户群");
 			return ;
 		}
