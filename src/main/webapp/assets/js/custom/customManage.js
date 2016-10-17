@@ -94,7 +94,6 @@ define(["backbone","page"],function(require, exports, module) {
 						}).on('mouseout', function() {
 							$(this).css('background-color', _cls).siblings().css('background-color', _cls);
 						});
-						debugger;
 						thisObj.renderPageView(model.attributes.data,thisObj);
 					});
 				},
@@ -102,7 +101,6 @@ define(["backbone","page"],function(require, exports, module) {
 				 * 分页显示组件
 				 */
 				renderPageView:function(data,obj){
-					debugger;
 					$(".centent-page-box").pagination({
 				        items: data.totalSize,
 				        itemsOnPage: data.pageSize,
@@ -321,7 +319,6 @@ define(["backbone","page"],function(require, exports, module) {
 			var tab = $("#customManageQueryTab .active").attr("data-tab");
 			var ajaxData = null;
 			var trNum = 0;
-			debugger;
 			if(tab == "ALL-CUSTOM") {
 				trNum = $("#customTable_all .content-table tr").length-1;
 				if(trNum == 1) {
