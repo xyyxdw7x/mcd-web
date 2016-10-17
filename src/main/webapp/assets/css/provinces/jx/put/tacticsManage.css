@@ -1,3 +1,6 @@
+.no-cursor{
+	cursor:default !important;
+}
 .tdImg-box{display:inline-block;margin-left:-24px;}
 .btnOrange {
   padding: 5px 15px;
