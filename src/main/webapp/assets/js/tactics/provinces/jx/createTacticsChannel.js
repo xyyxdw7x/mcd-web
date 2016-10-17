@@ -166,6 +166,10 @@ channelInfo.getPlanChannelsSuc=function(data){
 			$("#channelClose_"+currentChannelId).trigger("click",currentObj);
 		}
 	});
+	//删除所有的渠道信息
+	$("#selectedChannelsDisplayUl .close").each(function(index,obj){
+		$(obj).trigger("click");
+	});
 }
 /**
  * 渠道编辑传入渠道信息事件
