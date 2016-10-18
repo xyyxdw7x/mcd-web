@@ -9,6 +9,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 			//this.loadTacticsManageSearchDimCampDrvType();
 			this.loadTacticsManageSearchCampsegStat({currentDom:".tacticsManageSearchCampsegStat"});
 			this.loadAllChannelType();
+			this.loadAllCampsegStat();
 			window.tableViewManage  = this.loadTable({
 				currentDom:"#tacticsTable",
 				ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
@@ -86,7 +87,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 				initialize : function() {
 					this.render(1);
 				},
-				render : function(pageNum) { 
+				render : function(pageNum) {
 					this.setDomList(pageNum,this.model);
 					return this;
 				} ,
@@ -230,19 +231,35 @@ define(["backbone","my97","page"],function(require, exports, module) {
 				},
 				click : function(obj) {
 					var target=$(obj.target);
+					
+					var ajaxData = {};
+					var searchIndex=0;
+					var campdrvid="";
+					var _topparent=target.parents(".content-type-outer-box");
+					var drvList=_topparent.find(".tacticsManageSearchDimCampDrvType .content-type-box.active");
+					for(var i=0;i<drvList.length;i++){
+						campdrvid+=drvList.eq(i).attr("campdrvid")||"";
+						i<(drvList.length-1)?campdrvid+=",":""
+					}
+
+					
 					if(target.hasClass("active")) return;
 					var ctID=target.parent().attr("dataCT");
 					var _index=target.parent().find("li").index(target[0]);
 					target.addClass("active").siblings(".active").removeClass("active");
 					$("#"+ctID).find("> .box").eq(_index).addClass("active").siblings(".box.active").removeClass("active");
+					debugger;
 					if(target.attr("data-tab") == "ALL"){
+						//渠道类型
+						var channelId=$("#channelIdDivAll .active").attr("channelid");
+						var campsegStatId=$("#statIdDivAll .active").attr("statid");
 						if(window.tableViewManage_all ){
 							window.tableViewManage_all.undelegateEvents();  
 						}
 						window.tableViewManage_all  = module.exports.loadTable({
 							currentDom:"#tacticsTable_all",
 							ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable_all.ejs',
-							ajaxData:{"isSelectMy":"1"},
+							ajaxData:{"isSelectMy":"1","channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId},
 							addData:"1",
 							domCallback:function(htmlobj){
 								//module.exports.tacticsListManage();
@@ -254,6 +271,8 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						$(".tacticsManageSearchCampsegStat").hide();
 						$(".J_tacticsAll").show();
 					}else{
+						var channelId=$("#channelIdDiv .active").attr("channelid");
+						var campsegStatId=$("#statIdDiv .active").attr("statid");
 						$(".tacticsManageSearchCampsegStat").show();
 						$(".J_tacticsAll").hide();
 						if(window.tableViewManage ){
@@ -262,7 +281,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						window.tableViewManage  = module.exports.loadTable({
 							currentDom:"#tacticsTable",
 							ejsUrl:_ctx + '/assets/js/tactics/provinces/'+provinces+'/tacticsTable.ejs',
-							ajaxData:{"isSelectMy":"0"},
+							ajaxData:{"isSelectMy":"0","channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId},
 							domCallback:module.exports.getCampSegChildTable
 						});
 					}
@@ -299,13 +318,11 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					//渠道类型
 					var channelId=$("#channelIdDiv .active").attr("channelid");
 					if(target.attr("id") == "searchButton_mine"){
-						var campsegStatId=_topparent.find(".tacticsManageSearchCampsegStat .content-type-box.active").attr("campsegstatid")||"";
-						ajaxData = {"isSelectMy":searchIndex,"channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId};
-					}
-					if(target.hasClass("J_campType")){
-						var campsegStatId=$(target).attr("campsegstatid")||"";
-						
-						ajaxData = {"isSelectMy":searchIndex,"channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId};
+						//var campsegStatId=$(target).attr("campsegstatid")||"";
+						var campsegStatId=$("#statIdDiv .active").attr("statid");
+						//渠道类型
+						var channelId=$("#channelIdDiv .active").attr("channelid");
+						ajaxData = {"isSelectMy":0,"channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId};
 					}
 					if(window.tableViewManage ){
 						window.tableViewManage.undelegateEvents();  
@@ -349,15 +366,14 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					}
 					var ajaxData ={};
 					if(target.attr("id") == "searchButton_all"){
-						var campsegStatId=_topparent.find(".J_tacticsAll .content-type-box.active").attr("campsegstatid")||"";
+						//var campsegStatId=_topparent.find(".J_tacticsAll .content-type-box.active").attr("campsegstatid")||"";
+						var campsegStatId=$("#statIdDivAll .active").attr("statid");
 						//渠道类型
 						var channelId=$("#channelIdDivAll .active").attr("channelid");
 						ajaxData = {"isSelectMy":1,"channelId":channelId,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId};
 					}
-					if(target.hasClass("J_campType")){
-						var campsegStatId=$(target).attr("campsegstatid")||"";
-						ajaxData = {"isSelectMy":1,"keywords":$("#tacticsManageTabCT .box.active input").val(),"campDrvId":campdrvid,"campsegStatId":campsegStatId};
-					}
+					//if(target.hasClass("J_campType")){
+
 //					var campsegStatId=_topparent.find(".tacticsManageSearchCampsegStat .content-type-box.active").attr("campsegstatid")||"";
 					if(window.tableViewManage_all ){
 						window.tableViewManage_all .undelegateEvents();  
@@ -472,6 +488,32 @@ define(["backbone","my97","page"],function(require, exports, module) {
 			    	}
 			    	$("#channelIdDiv").append(str);
 			    	$("#channelIdDivAll").append(strAll);
+			    },
+			    dataType:"text"
+			});
+		},
+		loadAllCampsegStat:function(){
+			var url=_ctx+"/action/tactics/tacticsManager/searchCampsegStat.do";
+			$.ajax({
+				type:"POST",
+			    url: url ,
+			    success:function(result){
+			    	var jsonData=$.parseJSON(result);
+			    	if(jsonData.status!="200"){
+			    		alert("获取状态类型失败");
+			    		return ;
+			    	}
+			    	debugger;
+			    	var len=jsonData.data.length;
+			    	var str="";
+			    	var strAll="";
+			    	for(var i=0;i<len;i++){
+			    		var item=jsonData.data[i];
+			    		str=str+"<span class=\"fleft content-type-box\" onclick=\"campsegStatChange(this)\" statId=\""+item.campsegStatId+"\">"+item.campsegStatName+"</span>";
+			    		strAll=strAll+"<span class=\"fleft content-type-box\" onclick=\"campsegStatChangeAll(this)\" statId=\""+item.campsegStatId+"\">"+item.campsegStatName+"</span>";
+			    	}
+			    	$("#statIdDiv").append(str);
+			    	$("#statIdDivAll").append(strAll);
 			    },
 			    dataType:"text"
 			});
@@ -1162,12 +1204,30 @@ function channelChange(obj){
 	var $target = $(obj);
 	$target.addClass("active").siblings().removeClass("active");
 	$("#searchButton_mine").click();
-}
+}campsegStatChange
 /**
  * 全部策略渠道类型切换
  * @param obj
  */
 function channelChangeAll(obj){
+	var $target = $(obj);
+	$target.addClass("active").siblings().removeClass("active");
+	$("#searchButton_all").click();
+}
+/**
+ * 我的策略渠道类型切换
+ * @param obj
+ */
+function campsegStatChange(obj){
+	var $target = $(obj);
+	$target.addClass("active").siblings().removeClass("active");
+	$("#searchButton_mine").click();
+}
+/**
+ * 全部策略渠道类型切换
+ * @param obj
+ */
+function campsegStatChangeAll(obj){
 	var $target = $(obj);
 	$target.addClass("active").siblings().removeClass("active");
 	$("#searchButton_all").click();

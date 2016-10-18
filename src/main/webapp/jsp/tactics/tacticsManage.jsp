@@ -36,9 +36,19 @@
 							<i id="searchButton_mine" class="searchBtn fright"></i>
 						</div>
 					</li>
-					<li class="tacticsManageSearchDimCampDrvType clearfix content-type-item">
+					<!-- <li class="tacticsManageSearchDimCampDrvType clearfix content-type-item">
 					</li>
 					<li class="tacticsManageSearchCampsegStat clearfix content-type-item ">
+					</li> -->
+					<li class="clearfix content-type-item ">
+						<div class="fleft content-type-tite">状态：</div>
+						<div class="fleft content-type-list">
+							<div class=" content-type-item-inner">
+								<div id="statIdDiv" class="content-type-inner">
+									<span onclick="channelChange(this)" class="fleft content-type-box" channelId="">全部</span>
+								</div>
+							</div>
+						</div>
 					</li>
 					<li class="clearfix content-type-item ">
 						<div class="fleft content-type-tite">渠道：</div>
@@ -68,9 +78,19 @@
 							<i id="searchButton_all" class="searchBtn fright"></i>
 						</div>
 					</li>
-					<li class="tacticsManageSearchDimCampDrvType clearfix content-type-item">
+					<!-- <li class="tacticsManageSearchDimCampDrvType clearfix content-type-item">
+					</li> -->
+					<li class="clearfix content-type-item ">
+						<div class="fleft content-type-tite">状态：</div>
+						<div class="fleft content-type-list">
+							<div class=" content-type-item-inner">
+								<div id="statIdDivAll" class="content-type-inner">
+									<span onclick="campsegStatChange(this)" class="fleft content-type-box" channelId="">全部</span>
+								</div>
+							</div>
+						</div>
 					</li>
-					<li class="J_tacticsAll clearfix content-type-item"></li>
+					<!-- <li class="J_tacticsAll clearfix content-type-item"></li> -->
 					<li class="clearfix content-type-item ">
 						<div class="fleft content-type-tite">渠道：</div>
 						<div class="fleft content-type-list">
