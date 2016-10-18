@@ -6,6 +6,7 @@ import java.util.Map;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdStcPlanOrderAttr;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.exception.MpmException;
@@ -127,4 +128,14 @@ public interface IMtlStcPlanDao {
 	 * @throws MpmException
 	 */
 	McdPlanDef getPlanById(String planId) throws MpmException;
+	
+	/**
+	 * 根根产品id、渠道id 获得某些渠道预览的产品酬金等相关信息
+	 * @param planId 产品id
+	 * @param channelId 渠道id
+	 * @param cityId 地市id
+	 * @return
+	 */
+	public McdStcPlanOrderAttr getPlanRewardInfo(String planId, String channelId, String cityId) throws Exception;
+	
 }

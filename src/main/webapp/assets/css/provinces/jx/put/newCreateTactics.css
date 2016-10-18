@@ -192,7 +192,7 @@ html,body{height:100%;width:100%;}
 .perCommend-con{padding:20px 0;}
 .color-blue-dialog{color: #4a7df8;border:1px solid #4a7df8;padding:6px 8px;margin:0 10px 10px 0;border-radius:2px;display: inline-block;}
 .blue-4{color: #4a7df8;}
-.col-xs-4-new{width: 110px;}
+.col-xs-4-new{width: 110px;text-align:left;padding:0 0 0 26px;}
 .row-li-top{border-top:3px solid #a9c3f4; padding:10px 2px;height:251px;overflow-y:auto;overflow-x:hidden;}
 .row-li-bot{padding-left:70px; height:59px;border-top:2px solid #94b4f3;background: #edf3fb;width: 376px; margin-left:-2px;}
 .row-li-bot span{cursor: pointer; margin: 10px 10px 0 15px;}

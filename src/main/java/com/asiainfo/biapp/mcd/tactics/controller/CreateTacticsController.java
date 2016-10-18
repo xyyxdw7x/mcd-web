@@ -36,6 +36,7 @@ import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdStcPlanOrderAttr;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
@@ -2161,6 +2162,35 @@ public class CreateTacticsController extends BaseMultiActionController {
 	public McdPlanDef getPlanById(HttpServletRequest request, HttpServletResponse response){
 		String id =  request.getParameter("planId");
 		return mtlStcPlanService.getMtlStcPlanByPlanID(id);
+	}
+	/**
+	 * 根根产品id、 获得某些渠道预览的产品酬金等相关信息
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping
+	public Map<String,Object> getAboutPlanRewardInfo(HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		String planId =  request.getParameter("planId");
+		String channelId = request.getParameter("channelId");
+		try {
+			User user = this.getUser(request, response);
+			String cityId = user.getCityId();
+			McdStcPlanOrderAttr planReward = mtlStcPlanService.getPlanRewardInfo(planId, channelId, cityId);
+			returnMap.put("flag", true);
+			returnMap.put("msg", "");
+			returnMap.put("data", planReward);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info(e);
+			returnMap.put("flag", false);
+			returnMap.put("msg", "获取酬金信息失败！");
+		}
+		return returnMap;
 	}
 	
 }

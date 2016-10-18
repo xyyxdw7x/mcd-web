@@ -184,6 +184,23 @@ channelInfo902.clickPreviewButtonEventHandler902=function(){
 				},"json");
 		}
 		
+		//通过产品id和渠道id获取积分和酬金
+		var planIds = "";
+		var planlis = $("#selectedPlan li");
+		planIds = $(planlis[0]).data().data.planId;
+		$.post(contextPath+"/action/custgroup/custGroupManager/getAboutPlanRewardInfo.do",
+				{planId: planIds, channelId: channelInfo902.baseInfo.channelId},
+				function(retData, textStatus, jqXHR){
+					if(retData.flag){
+						if(retData.data != null){
+							var reward = retData.data.planReward;
+							$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_Previe_reward1").appen(reward);
+							$("#ChannelId_"+channelInfo902.baseInfo.channelId+"_Previe_reward2").appen(reward);
+						}
+					} else{alert(retData.msg);}
+					//数据加载完后做其他处理
+				},"json");
+		
 		//展示预览窗口
 		$("#channelId_"+channelInfo902.baseInfo.channelId+"_PreviewDiv").show();
 		$('.perCommend-bg').removeClass('none');//显示背景图片

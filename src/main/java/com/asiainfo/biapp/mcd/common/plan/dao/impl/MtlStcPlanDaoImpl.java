@@ -18,6 +18,7 @@ import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
+import com.asiainfo.biapp.mcd.common.plan.vo.McdStcPlanOrderAttr;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -505,5 +506,30 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 			logger.error("",e);
 		}
 		return plan;
+	}
+	
+	/**
+	 * 根根产品id、渠道id 获得某些渠道预览的产品酬金等相关信息
+	 * @param planId 产品id
+	 * @param channelId 渠道id
+	 * @param cityId 地市id
+	 * @return
+	 */
+	@Override
+	public McdStcPlanOrderAttr getPlanRewardInfo(String planId, String channelId, String cityId) throws Exception{
+		final String sql="select t.PLAN_ID,t.CITY_ID,t.CHANNEL_ID,PLAN_REWARD,PLAN_REWARD_LEVEL,IS_CHECK,ORDER_NUM from MCD_STC_PLAN_ORDER_ATTR t where PLAN_ID=? and t.CITY_ID=? and t.CHANNEL_ID=?";
+		//log.info("查询产品为{}、渠道为{}、地市为{}的积分信息sql={}", planId, channelId, cityId, sql);
+		List<McdStcPlanOrderAttr> list = null;
+		try {
+			list = this.getJdbcTemplate().query(sql,new Object[]{planId,cityId,channelId}, new VoPropertyRowMapper<McdStcPlanOrderAttr>(McdStcPlanOrderAttr.class));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		if(list!=null&&list.size()>0){
+			return (McdStcPlanOrderAttr) list.get(0);
+		}else{
+			return null;
+		}
 	}
 }

@@ -152,20 +152,22 @@ channelInfo906.clickPreviewButtonEventHandler906=function(){
 				},"json");
 		}
 		
-/*		//通过产皮id获取积分和酬金
+		//通过产品id和渠道id获取积分和酬金
 		var planIds = "";
 		var planlis = $("#selectedPlan li");
-		planIds = $(planlis[0]).data().planId;
-		$.post(contextPath+"/action/custgroup/custGroupManager/getAnyCredits.do",
-				{planId: planIds},
+		planIds = $(planlis[0]).data().data.planId;
+		$.post(contextPath+"/action/tactics/createTactics/getAboutPlanRewardInfo.do",
+				{planId: planIds, channelId: channelInfo906.baseInfo.channelId},
 				function(retData, textStatus, jqXHR){
-					if(retData.sucFlag){
+					if(retData.flag){
 						if(retData.data != null){
-							
-						} else {}
-					} else{}
+							var reward = retData.data.planReward;
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward1").append(reward);
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward2").append(reward);
+						}
+					} else{alert(retData.msg);}
 					//数据加载完后做其他处理
-				},"json");*/
+				},"json");
 		
 		//展示预览窗口
 		$("#channelId_"+channelInfo906.baseInfo.channelId+"_PreviewDiv").show();
