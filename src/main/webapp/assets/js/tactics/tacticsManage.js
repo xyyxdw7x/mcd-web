@@ -585,10 +585,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					if($.inArray(statusId, onlyCpoyArr) != -1){
 						//去掉复制按钮
 						//li = '<li campsegId="'+campsegId+'" btnType="copy">复制</li>';
-						if(DQ_2=='1')
-						{
-							li +='<li campsegId="'+campsegId+'" btnType="quickOrder">催单</li>'; 
-						}
+						li +='<li campsegId="'+campsegId+'" btnType="quickOrder">催单</li>'; 
 					}else if(statusId == 41){
 						//li = '<li campsegId="'+campsegId+'" btnType="modify">修改</li><li campsegId="'+campsegId+'" btnType="copy">复制</li><li campsegId="'+campsegId+'" btnType="reset">撤销</li>';
 						li = '<li campsegId="'+campsegId+'" btnType="modify">修改</li><li campsegId="'+campsegId+'" btnType="reset">撤销</li>';
