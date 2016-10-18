@@ -101,6 +101,13 @@ public interface IMtlStcPlanDao {
 	 */
 	List<PlanBean> execQuerySql(String sql, List<Object> params);
 	/**
+	 * 执行查询sql 返回结果集
+	 * @param sql sql语句
+	 * @param params 对应的参数
+	 * @return
+	 */
+	List<Map<String,Object>> execQrySql(String sql, List<Object> params);
+	/**
 	 * 执行查询条件，返回记录总条数
 	 * @param sql
 	 * @param params
