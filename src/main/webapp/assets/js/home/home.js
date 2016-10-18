@@ -140,38 +140,31 @@ define(["unslider","backbone"],function(require, exports, module) {
                 complete: function() {},  //  A function that gets called after every slide animation
                 keys: true,               //  Enable keyboard (left, right) arrow shortcuts
                 dots: false,              //  Display dot navigation
-                arrows:[],
-                nav:false,
                 fluid: true
             });
             $(".recommend-page-span").click(function(){
                 var data = slider.data('unslider');
+                if(data.li.length==1){
+                	return;//只有一页的时候，不做换页处理。
+                }
                 if($(this).hasClass("prev")){
-                    if(data.current==0){
-                        return ;
+                	if(data.i==0){//当前页是第一页的时候
+                		return;
+                	}
+                	$(this).next().removeClass("disable-recommend-page");
+                    if(data.i-1==0){//将跳转到第一页
+                    	$(this).addClass("disable-recommend-page");//将prev设定为不可用。
                     }
-                    //  Move to the previous slide (or the last slide if there isn't one)
-                    data.prev();
-                    $(this).next().removeClass("disable-recommend-page");
-                    if(data.current==1){
-                        $(this).addClass("disable-recommend-page");
-                    }else{
-                        $(this).removeClass("disable-recommend-page");
-                    }
+                    data.prev();//跳转
                 }else if($(this).hasClass("next")){
-                    if(data.current==3){
+                	if(data.i+2>data.li.length){//当前页是最后一页的时候
+                		return;
+                	}
+                	$(this).prev().removeClass("disable-recommend-page");
+                    if(data.i+2==data.li.length){//将跳转到最后一页，将next设定为不可用。
                         $(this).addClass("disable-recommend-page");
-                        return ;
                     }
-                    $(this).removeClass("disable-recommend-page");
-                    //  Move to the next slide (or the first slide if there isn't one)
-                    data.next();
-                    $(this).prev().removeClass("disable-recommend-page");
-                    if(data.current==2){
-                        $(this).addClass("disable-recommend-page");
-                    }else{
-                        $(this).removeClass("disable-recommend-page");
-                    }
+                    data.next();//跳转
                 }
             });
         },
@@ -186,8 +179,6 @@ define(["unslider","backbone"],function(require, exports, module) {
                     complete: function() {},  //  A function that gets called after every slide animation
                     keys: true,               //  Enable keyboard (left, right) arrow shortcuts
                     dots: false,               //  Display dot navigation
-                    arrows:[],
-                    nav:false,
                     fluid: true
                 });
             });
