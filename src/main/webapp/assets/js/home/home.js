@@ -1,4 +1,4 @@
-define(["backbone","unslider"],function(require, exports, module) {
+define(["unslider","backbone"],function(require, exports, module) {
     var generalModel = Backbone.Model.extend({
         urlRoot : _ctx+"/action/home",
         defaults : {
@@ -146,7 +146,6 @@ define(["backbone","unslider"],function(require, exports, module) {
             });
             $(".recommend-page-span").click(function(){
                 var data = slider.data('unslider');
-                alert(data);
                 if($(this).hasClass("prev")){
                     if(data.current==0){
                         return ;

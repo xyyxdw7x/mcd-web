@@ -8,6 +8,7 @@ var channelInfo={};
 channelInfo.initChannel=function(){
 	channelInfo.queryAllChannelList();
 	channelInfo.addPlanChangeEvent();
+	channelInfo.addCustomerGroupChangeEvent();
 	channelInfo.addAddChannelsEvent();
 }
 /**
@@ -72,7 +73,6 @@ channelInfo.addChannelTab=function(data){
 	channelInfo.addTabClickEvent(data);
 	channelInfo.addCloseTabeClickEvent(data);
 	
-	//TODO word size可以从后端配置而获得
 	var ejsChannelContentUrl = contextPath+"/assets/js/tactics/provinces/"+provinces+"/channel/"+channelId+".ejs";
 	var channelContentHtml = new EJS({url:ejsChannelContentUrl}).render({'data':{'channelId':''+data.channelId+'','channelName':''+data.channelName+'','wordSize':"240"}});
 	$("#selectedChannelsContentDisplayDiv").append(channelContentHtml);//渠道内容
@@ -103,7 +103,6 @@ channelInfo.addTabClickEvent=function(data){
 	$("#channelTab_"+channelId).bind("click",function(event){
 		$("#selectedChannelsDisplayUl li").filter(".active").removeClass("active");
 		$(event.target).parent().addClass("active");
-		//$("#901SendCycle button").not(".active").addClass("active");
 		$("#selectedChannelsContentDisplayDiv > div").hide();
 		$("#channelContentDiv_"+channelId).show();
 	});
@@ -113,7 +112,10 @@ channelInfo.addTabClickEvent=function(data){
  */
 channelInfo.addCloseTabeClickEvent=function(data){
 	var channelId=data.channelId;
-	$("#channelClose_"+data.channelId).bind("click",function(event){
+	$("#channelClose_"+data.channelId).bind("click",function(event,dataObj){
+		if(dataObj!=null){
+			channelId=dataObj.channelId;
+		}
 		$("#li_channelId_"+channelId).removeClass("active");
 		$("#channelTabDiv_"+channelId).remove();
 		$("#channelContentDiv_"+channelId).remove();
@@ -137,6 +139,19 @@ channelInfo.addPlanChangeEvent=function(){
 	});
 }
 /**
+ * 绑定选择客户群事件
+ */
+channelInfo.addCustomerGroupChangeEvent=function(){
+	$("#channelDiv").bind("changeCustomerGroup",function(event,data){
+		// 移除已经选择的渠道信息
+		$("#selectedChannelsDisplayUl .close").each(function(index,obj){
+			$(obj).trigger("click");
+		});
+	});
+}
+
+
+/**
  * 根据产品查询渠道信息成功
  */
 channelInfo.getPlanChannelsSuc=function(data){
@@ -147,7 +162,13 @@ channelInfo.getPlanChannelsSuc=function(data){
 			$(this).hide();
 		}else{
 			$(this).show();
+			var currentObj={channelId:currentChannelId};
+			$("#channelClose_"+currentChannelId).trigger("click",currentObj);
 		}
+	});
+	//删除所有的渠道信息
+	$("#selectedChannelsDisplayUl .close").each(function(index,obj){
+		$(obj).trigger("click");
 	});
 }
 /**

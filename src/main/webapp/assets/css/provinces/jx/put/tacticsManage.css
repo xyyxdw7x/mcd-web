@@ -1,3 +1,6 @@
+.no-cursor{
+	cursor:default !important;
+}
 .tdImg-box{display:inline-block;margin-left:-24px;}
 .btnOrange {
   padding: 5px 15px;
@@ -4731,8 +4734,7 @@ html {
   margin: 0;
   position: relative;
   padding: 0;
-  /* margin: 6px 5px 0;  若恢复一行两个按钮 仍用这个*/
-  margin:6px 5px 0 64px;
+  margin: 6px 5px 0; 
   text-align: left;
   font-size: 12px;
   cursor: auto;

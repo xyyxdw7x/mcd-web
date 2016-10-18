@@ -1752,4 +1752,30 @@ public class CustGroupInfoDaoImpl extends JdbcDaoBase  implements ICustGroupInfo
         public void addInMemExecute(String insertSql, Object[] values) {
             this.getJdbcTemplate().update(insertSql, values); 
         }
+		
+		/**
+		 * 根据客户群id获得客户群画像
+		 * @param custgroupId
+		 * @return
+		 * @throws Exception
+		 */
+		public List<String> getCustGroupPortrait(String custgroupId) throws Exception{
+			List<String> resultList = null;
+			String sql = "select ATTR_COL_NAME from mtl_group_sel_attr_rel t where t.custom_group_id =?";
+			log.info("查询{}客户群对应的sql={}：", custgroupId, sql);
+			
+			try {
+				List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql, new Object[]{custgroupId});
+				if (CollectionUtils.isNotEmpty(list)) {
+					resultList = new ArrayList<String>();
+					for (Map<String, Object> map : list) {
+						resultList.add((String)map.get("ATTR_COL_NAME"));
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			return resultList;
+		}
 }

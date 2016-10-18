@@ -28,7 +28,6 @@ public class HomeController extends BaseMultiActionController {
 	
 	@Autowired
 	private ICepKeywordsService cepKeywordsService;
-	//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
 	
 	@RequestMapping
 	@ResponseBody
@@ -93,10 +92,8 @@ public class HomeController extends BaseMultiActionController {
 	@ResponseBody
 	public JSONObject queryChartData(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//ICepKeywordsService service = SpringContext.getBean("cepKeywordsService", ICepKeywordsService.class);
 		JSONObject dataJson = new JSONObject();
 		try {
-//			List<CepKeywordsPkg> list = service.findHot(su per.pr);
 			String params = request.getParameter("paramJson");
 			JSONObject obj = JSONObject.fromObject(params);
 			
@@ -110,9 +107,6 @@ public class HomeController extends BaseMultiActionController {
 			String tab = obj.optString("tab");
 			
 			String option = cepKeywordsService.composite(range, verti, tab, this.getUser(request, response).getCityId());
-//			if (StringUtils.isEmpty(option)) {
-//				option = ParseUtil.parseOption(CompositeUtil.compose4Channel(divId, ""));
-//			}
 			
 			dataJson.put("status", "200");
 			dataJson.put("data", option);

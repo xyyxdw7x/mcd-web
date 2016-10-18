@@ -16,6 +16,8 @@ shopCarInfo.addChangePlanEvent=function(){
 	$("#shopCar").bind("shopCarChangePlan",function(event,data){
 		$("#selectedPlan").html("");
 		if(data==null){
+			$("#selectedPlan").html("");
+			// 产品取消
 			return ;
 		}
 		var planId=data.planId;
@@ -34,6 +36,7 @@ shopCarInfo.addChangeCustomerGroupEvent=function(){
 		if(data==null){
 			$("#selectedCg").html("");
 			$("#selectedCg").data("data",null);
+			return ;
 		}
 		//设置客户群名称
 		$("#selectedCg").html(data.customGroupName);

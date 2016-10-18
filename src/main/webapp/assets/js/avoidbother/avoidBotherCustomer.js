@@ -263,6 +263,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 				        nextText:'下一页',
 				        cssStyle: 'light-theme',
 				        onPageClick:function(pageNumber,event){
+				        	$("#selectAll").prop("checked", false);
 				        	obj.setDomList(pageNumber,new avoidBothorCustomerTableModel({id : options.id}));
 				        }
 				    });

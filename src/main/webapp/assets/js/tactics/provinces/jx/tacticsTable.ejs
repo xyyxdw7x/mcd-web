@@ -4,7 +4,7 @@
 		<th class="content-table-th" style="width:44%">策略编号及名称</th>
 		<th class="content-table-th" style="width:15%">执行周期</th>
 		<th class="content-table-th" style="width:7%">状态</th>
-		<th class="content-table-th" style="width:18%">操作</th>
+		<th class="content-table-th text-left" style="width:18%;padding-left:30px;">操作</th>
 	</tr>
 	<%for(var i = 0;i<data.result.length;i++){
 	   data.result[i].DQ_D_2_NAME="距离营销策略开始日期";
@@ -49,13 +49,13 @@
 					  	data.result[i].manageBtnDisplay="hidden";
 					  }
 					%>
-				<div class="fleft controls manage J_manageBtn <%=data.result[i].manageBtnDisplay%>" style="visibility:<%=data.result[i].manageBtnDisplay%>" isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>" DQ_2="<%=data.result[i].DQ_2%>" >
+				<div class="controls manage J_manageBtn <%=data.result[i].manageBtnDisplay%>" style="visibility:<%=data.result[i].manageBtnDisplay%>" isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>" DQ_2="<%=data.result[i].DQ_2%>" >
 					<span class="txt J_manageBtn"  isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>" DQ_2="<%=data.result[i].DQ_2%>" >管理</span>
 					<div class="icon J_manageBtn" isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" invalidFlag="<%=data.result[i].invalidFlag%>" campsegId="<%=data.result[i].campsegId%>" DQ_2="<%=data.result[i].DQ_2%>" >
 						<span class="icon_arrDown J_manageBtn" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>" DQ_2="<%=data.result[i].DQ_2%>" ></span>
 					</div>
 				</div>
-				<div class="fleft controls manage J_activityBtn" <%=(data.result[i].campsegStatId == 20 || data.result[i].campsegStatId == 90|| data.result[i].campsegStatId == 91|| data.result[i].campsegStatId == 41|| data.result[i].campsegStatId == 48||data.result[i].taskStatusId==30) ?  'style="display:none;"': ''%> isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>">
+				<div class="controls manage J_activityBtn" <%=(data.result[i].campsegStatId == 20 || data.result[i].campsegStatId == 90|| data.result[i].campsegStatId == 91|| data.result[i].campsegStatId == 41|| data.result[i].campsegStatId == 48||data.result[i].taskStatusId==30) ?  'style="display:none;"': ''%> isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>">
 					<span class="txt J_activityBtn"  isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>">活动管控</span>
 					<div class="icon J_activityBtn" isMy="<%=data.result[i].isMy%>" statusId="<%=data.result[i].campsegStatId%>" campsegId="<%=data.result[i].campsegId%>">
 						<span class="icon_arrDown J_activityBtn" statusId="<%=data.result[i].campsegStatId%>" isMy="<%=data.result[i].isMy%>" campsegId="<%=data.result[i].campsegId%>"></span>
@@ -64,7 +64,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="5" class="nopadding">
+			<td colspan="5" class="nopadding no-cursor">
 				<div class="tableOuter">
 					
 				</div>

@@ -6,6 +6,4 @@ public interface IMtlMcdUserInfoDao {
 
 	MtlMcdUserInfo getMtlMcdUserInfo(String userId);
 
-	
-
 }

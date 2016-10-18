@@ -63,6 +63,11 @@ channelInfo910.initView=function(){
  * 初始化值(编辑时)
  */
 channelInfo910.initValue910 = function(){
+	//如果有默认的推荐语则
+	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
+		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+	}
+	
 	//初始化值（编辑时）
 	if(tacticsInfo.camp!=null){
 		if(channelInfo910.baseInfo.bossTemplateId!=null){

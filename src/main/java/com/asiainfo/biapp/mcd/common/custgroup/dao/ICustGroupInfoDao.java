@@ -357,4 +357,12 @@ public interface ICustGroupInfoDao {
          * @param values 
          */
         public void addInMemExecute(String insertSql, Object[] values);
+		
+		/**
+		 * 根据客户群id获得客户群画像
+		 * @param custgroupId
+		 * @return
+		 * @throws Exception
+		 */
+		public List<String> getCustGroupPortrait(String custgroupId) throws Exception;
 }

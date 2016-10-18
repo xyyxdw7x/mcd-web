@@ -17,12 +17,15 @@ function initView901(data){
  */
 channelInfo901.initView=function(data){
 	//一次性客户群只能选择一次性
+	$("#901SendCycle button").removeClass("active");
 	if(tacticsInfo.custGroup.updateCycle==1){
 		$("#901SendCycle [data-data='0']").attr("disabled",'true');
 		$("#901SendCycle [data-data='1']").removeAttr("disabled",'true');
+		$("#901SendCycle [data-data='1']").addClass("active");
 	}else{
 		$("#901SendCycle [data-data='1']").attr("disabled",'true');
 		$("#901SendCycle [data-data='0']").removeAttr("disabled",'true');
+		$("#901SendCycle [data-data='0']").addClass("active");
 	}
 	//发送周期切换
 	channelInfo901.addSendCycleChangeEvent();
@@ -34,9 +37,6 @@ channelInfo901.initView=function(data){
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
 		$("#content901").val(tacticsInfo.plan.planComment);
 	}
-	
-	
-
 	
 	//回显
 	if(data.hasOwnProperty("execContent")){
@@ -88,7 +88,6 @@ channelInfo901.textAreaInputNumTip = function(textArea,numItem,commitButton) {
         if(_value.length>=50){
         	numItem.text(0);
         }
-        
         if(numItem.text()==0&&_value.length>=140){
         	textArea.addClass("red-border");
         	commitButton.addClass("disable-href");
@@ -149,7 +148,8 @@ channelInfo901.addSendCycleChangeEvent=function(){
  */
 channelInfo901.addSaveBtnClickEvent=function(){
 	$("#channelSaveBtn901").click(function(event){
-		if($("#channelSaveBtn901").hasClass("disable-href")){
+		//如果是一次性的要禁用周期性的点击事件
+		if($(event.target).attr("disabled")=="disabled"){
 			return ;
 		}
 		var content=$("#content901").val().replace(/\n/gi,"");

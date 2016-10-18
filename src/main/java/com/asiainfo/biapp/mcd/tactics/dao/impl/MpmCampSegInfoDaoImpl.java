@@ -41,14 +41,14 @@ public class MpmCampSegInfoDaoImpl extends JdbcDaoBase  implements IMpmCampSegIn
         .append(segInfo.getCreateUserId())
         .append("',0,1) as \"isMy\",dcs.CAMPSEG_STAT_SITEID as \"campsegStatSiteId\",msi.pause_comment as  \"pauseComment\" ");
         
-        if(segInfo.getIsSelectMy() != null && segInfo.getIsSelectMy() == 0){
-            buffer.append(",(CASE  WHEN msi.campseg_stat_id = '54' AND TO_NUMBER(TO_DATE(msi.end_date, 'YYYY-MM-DD') - sysdate) * 24 <= 72 THEN 1 ELSE 0 END) AS \"DQ_1\",")
-            .append("(CASE WHEN msi.campseg_stat_id = '40' AND TO_NUMBER(TO_DATE(msi.start_date, 'YYYY-MM-DD') - sysdate) * 24 <= 24 THEN 1 ELSE 0 END) AS \"DQ_2\",")
-            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') AND TO_NUMBER((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - sysdate) * 24 <= 72 THEN 1 ELSE 0 END) AS \"DQ_3\",")
-            .append("(CASE WHEN msi.campseg_stat_id = '54' THEN TRUNC(TO_DATE(msi.end_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_1\",")
-            .append("(CASE WHEN msi.campseg_stat_id = '40' THEN TRUNC(TO_DATE(msi.start_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_2\",")
-            .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') THEN TRUNC((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_3\" ") ;
-        } 
+      
+        buffer.append(",(CASE  WHEN msi.campseg_stat_id = '54' AND TO_NUMBER(TO_DATE(msi.end_date, 'YYYY-MM-DD') - sysdate) * 24 <= 72 and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN 1 ELSE 0 END) AS \"DQ_1\",")
+        .append("(CASE WHEN msi.campseg_stat_id = '40' AND TO_NUMBER(TO_DATE(msi.start_date, 'YYYY-MM-DD') - sysdate) * 24 <= 24  and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN 1 ELSE 0 END) AS \"DQ_2\",")
+        .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71') AND TO_NUMBER((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - sysdate) * 24 <= 72  and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN 1 ELSE 0 END) AS \"DQ_3\",")
+        .append("(CASE WHEN msi.campseg_stat_id = '54'  and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN TRUNC(TO_DATE(msi.end_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_1\",")
+        .append("(CASE WHEN msi.campseg_stat_id = '40'  and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN TRUNC(TO_DATE(msi.start_date, 'YYYY-MM-DD') - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_2\",")
+        .append("(CASE WHEN msi.campseg_stat_id IN ('40', '54', '59', '71')  and ").append(" msi.create_userid = '").append(segInfo.getCreateUserId()).append("' THEN TRUNC((select MIN(PLAN_ENDDATE) from mcd_plan_def where PLAN_ENDDATE IS NOT NULL AND PLAN_ID = msi.Plan_Id) - trunc(sysdate ,'dd')) ELSE 0 END) AS \"DQ_D_3\" ") ;
+        
         
         buffer.append(" from mcd_camp_def msi ")
                .append(" left join mcd_dim_camp_status dcs on msi.campseg_stat_id = dcs.campseg_stat_id ")

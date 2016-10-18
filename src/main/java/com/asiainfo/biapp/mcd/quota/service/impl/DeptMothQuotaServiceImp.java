@@ -119,7 +119,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 			if(temp.getMonthQuotaNum()==null){
 				temp.setMonthQuotaNum((long)0);
 			}else{
-				configNum = temp.getUsedNum().longValue(); 
+				configNum = temp.getMonthQuotaNum().longValue(); 
 			}
 			
 			if(temp.getUsedNum()==null){

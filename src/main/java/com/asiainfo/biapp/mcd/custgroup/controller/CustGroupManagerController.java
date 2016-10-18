@@ -390,5 +390,33 @@ public class CustGroupManagerController extends BaseMultiActionController{
 		returnMap.put("data", i+"");
 		return returnMap;
 	}
+	
+	/**
+	 * 获得客户画像
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping
+	@ResponseBody
+	public Map<String, Object> getCustGroupPortrait(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String custgroupId = request.getParameter("custgroupId");
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		try {
+			List<String> result = custGroupInfoService.getCustGroupPortrait(custgroupId);
+			returnMap.put("sucFlag", true);
+			returnMap.put("data", result);
+			returnMap.put("msg", "获取客户画像成功！");
+		} catch (Exception e) {
+			returnMap.put("sucFlag", false);
+			returnMap.put("data", null);
+			returnMap.put("msg", "获取客户画像失败！");
+			e.printStackTrace();
+		}
+		
+		return returnMap;
+	}
 
 }

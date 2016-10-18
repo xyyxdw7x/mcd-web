@@ -36,6 +36,11 @@ channelInfo908.loadSomeBaseData908=function(){
  * 初始化值(编辑时)
  */
 channelInfo908.initValue908 = function(){
+	//如果有默认的推荐语则
+	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
+		$("#channelId_"+channelInfo908.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+	}
+	
 	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
 	if(channelInfo908.baseInfo.hasOwnProperty("execContent")){
 		//更新营销用语
