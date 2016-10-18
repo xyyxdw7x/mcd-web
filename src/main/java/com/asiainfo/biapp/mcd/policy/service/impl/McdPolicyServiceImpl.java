@@ -52,7 +52,6 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 	private Map<String, Object> getPolicysByConditionSql(String typeId, String statusId, String keyWords,
 			String keyWords2, Pager pager) {
 		StringBuffer buffer = new StringBuffer("");
-		String  bufferSql = "";
 		Map<String,Object> result = new HashMap<String,Object>();
 		List<Object> params = new ArrayList<Object>();
 		buffer.append("SELECT DISTINCT A.PLAN_ID,PLAN_NAME,B.TYPE_NAME,B.TYPE_ID,A.PLAN_STATUS, ");
