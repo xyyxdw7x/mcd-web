@@ -20,7 +20,7 @@ public interface IMcdMtlBotherAvoidService {
 
 	public List<Map<String,Object>> searchBotherAvoidUser(Pager pager, McdBotherAvoid mtlBotherAvoid);
 	
-	public void addBotherAvoidUser(List<McdBotherAvoid> list);
+	public void addBotherAvoidUser(List<McdBotherAvoid> list) throws Exception;
 	
 	public int chkIsExist(McdBotherAvoid mtl);
 		

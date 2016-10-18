@@ -185,11 +185,14 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			list.add(mtlBotherAvoid);
 		}
 	
-		service.batchDelBotherAvoidUser(list);//新增客户如果已存在，则先删除。
-		service.addBotherAvoidUser(list);
-	
+		try{
+			service.batchDelBotherAvoidUser(list);//新增客户如果已存在，则先删除。
+			service.addBotherAvoidUser(list);
+			dataJson.put("status", "200");
+		}catch(Exception e){
+			dataJson.put("status", "202");
+		}
 		
-		dataJson.put("status", "200");
 		return dataJson;
 	
 	}
@@ -338,10 +341,16 @@ public class BotherAvoidListController extends BaseMultiActionController {
 			list.add(mtlBotherAvoid);
 		}
 	
-		service.batchDelBotherAvoidUser(list);//新增客户如果已存在，则先删除。
-		service.addBotherAvoidUser(list);
+		try{
+			service.batchDelBotherAvoidUser(list);//新增客户如果已存在，则先删除。
+			service.addBotherAvoidUser(list);
+			
+			dataJson.put("status", "200");
+		}catch(Exception e){
+			dataJson.put("status", "202");
+		}
 
-		dataJson.put("status", "200");
+		
 		return dataJson;
 	}
 	

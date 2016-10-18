@@ -115,14 +115,15 @@ public class BotherAvoidServiceImpl implements IMcdMtlBotherAvoidService {
 	}
 	
 	@Override
-	public void addBotherAvoidUser(List<McdBotherAvoid> list) {
+	public void addBotherAvoidUser(List<McdBotherAvoid> list) throws Exception {
 		
 		try {
 			
 			mcdMtlBotherAvoidDao.addBotherAvoidUserInMem(list);
 
 		} catch(Exception e) {
-			e.printStackTrace();
+			log.error(e);
+			throw e;
 		}
 		
 	}
