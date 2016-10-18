@@ -35,7 +35,7 @@
 .bulk-total-quota-column{
 	width: 500px;
 	height: 36px;
-	background: #eadeac;
+	background: #b4d2f1;
 	word-break:normal;
 }
 .bulk-total-quota-column .bulk-total-quota-column-inner{
@@ -44,7 +44,7 @@
 	line-height: 36px;
 	color: #fff;
 	font-size: 18px;
-	background: #f0b928;
+	background: #4dadff;
 	text-align: center;
 	font-family: "arial narrow";
 	word-break:normal;
@@ -98,7 +98,7 @@
 .bulk-quota-column-box{
 	width: 80%;
 	height: 22px;
-	background: #eadeac;
+	background: #b4d2f1;
 	margin: 0 0 10px;
 	word-break:normal;
 }
@@ -108,7 +108,7 @@
 	line-height: 22px;
 	color: #fff;
 	font-size: 14px;
-	background: #f0b928;
+	background: #4dadff;
 	text-align: center;
 	font-family: "arial narrow";
 	word-break:normal;
@@ -477,7 +477,7 @@ ul li.bulk-list-tbody .bulk-item-name:hover{
 .stick_on_top{
 	margin: -1px 8px 0px 0px;
 }
-.stick_on_top[title="ÒÆ¶¯"]{
+.stick_on_top[title="ï¿½Æ¶ï¿½"]{
 	margin-top:-4px;
 }
 
