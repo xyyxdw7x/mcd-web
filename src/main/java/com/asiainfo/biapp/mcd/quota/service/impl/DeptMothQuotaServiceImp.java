@@ -147,6 +147,7 @@ public class DeptMothQuotaServiceImp implements IDeptMothQuotaService {
 		int cityMonthQuota = quotaConfigCityMothDao.queryCityMonthQuotaInMem(cityId);// 地市月配额
 		int deptsMonthTotal=0;  //各科室的月配额之和
 		for(DeptMonthQuota temp:list){
+			temp.setCityId(cityId);
 			long tempQuota = temp.getMonthQuotaNum();
 			deptsMonthTotal+=tempQuota;
 		}

@@ -348,38 +348,35 @@ function  renderDateData(jsonText){
           $(promptLayer).hide();
           $(shadeLayer).hide();
           $("#monthSave").removeClass("active").attr("disabled","disabled");
-          
-          if($("#resetBtn")[0].checked == true){
-        	     renderMonthData(MonthDataBuffer);
-          }else{
-	           var  opts = {url:_ctx+"/quotaManage/batchModifyMonConf?ttDate="+(new Date()).getTime() , async :false};
-	      	   var  ajaxData = {};
-	      	   var   inputLen = $("#monthTbody").find(".limitInput").length;
-	      	    var beanArr = "[";
-			      	 $("#monthTbody").find(".limitInput").each(function(index ,item){
-			      		  var  _item = $(item);
-			      		  var  orgVal = parseInt(_item.attr("orgvalue"),10);
-			      		  var  txtVal =   parseInt(_item.val(),10);
-			      		  var  deptId =  _item.attr("id");
-			      		          // 原始值未变化不做处理
-			      		        	    beanArr += "{ 'deptId' :"+deptId + ", 'monthQuotaNum' :"+ txtVal+ " }";
-			      		        	    if(index < inputLen-1){
-			      		        	    	beanArr +=",";
-			      		        	    }
-			      	 })
-	      	          ajaxData["dataDate"] = formateDateFn($.trim($("#month").val()));
-			          ajaxData["beans"]  =  beanArr +"]";
-			      //调用后台 AJAX    
-	             sendAjaxJson(opts, ajaxData, function(jsonText){
-	            	 if(jsonText.status == 200){
-	            		   if(jsonText.data["result"] == 1){
-	            			      getMonthData();
-	            		   }else{
-	            			   alert("各科室月限额之和大于地市月限额!");
-	            		   }
-	            	 }
-	             });
-          }
+          var isSaveDefault = $("#resetBtn").is(":checked");
+          var  opts = {url:_ctx+"//mpm/deptMonthQuota.aido?cmd=batchModifyMonConf&isSaveDefault="+isSaveDefault+"&ttDate="+(new Date()).getTime() , async :false};
+     	   var  ajaxData = {};
+     	   var   inputLen = $("#monthTbody").find(".limitInput").length;
+     	    var beanArr = "[";
+		      	 $("#monthTbody").find(".limitInput").each(function(index ,item){
+		      		  var  _item = $(item);
+		      		  var  orgVal = parseInt(_item.attr("orgvalue"),10);
+		      		  var  txtVal =   parseInt(_item.val(),10);
+		      		  var  deptId =  _item.attr("id");
+		      		          // 原始值未变化不做处理
+		      		        	    beanArr += "{ 'deptId' :"+deptId + ", 'monthQuotaNum' :"+ txtVal+ " }";
+		      		        	    if(index < inputLen-1){
+		      		        	    	beanArr +=",";
+		      		        	    }
+		      	 })
+     	          ajaxData["dataDate"] = formateDateFn($.trim($("#month").val()));
+		          ajaxData["beans"]  =  beanArr +"]";
+		      //调用后台 AJAX    
+            sendAjaxJson(opts, ajaxData, function(jsonText){
+           	 if(jsonText.status == 200){
+           		   if(jsonText.data["result"] == 1){
+           			      getMonthData();
+           		   }else{
+           			   alert("各科室月限额之和大于地市月限额!");
+           		   }
+           	 }
+            });
+     
     }
     //关闭弹出层
     function closeDateLayer(promptLayer ,shadeLayer){

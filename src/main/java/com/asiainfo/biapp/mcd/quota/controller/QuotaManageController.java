@@ -124,13 +124,20 @@ public class QuotaManageController  extends BaseMultiActionController {
         JSONObject dataJson = new JSONObject();
         String cityid = this.getUser(request, response).getCityId();
         String dataDate = request.getParameter("dataDate");
+        String isSaveDefault = request.getParameter("isSaveDefault");
         if (StringUtils.isEmpty(dataDate)) {
             dataDate = QuotaUtils.getDayMonth("yyyyMM");
         }
         String jsonStr = request.getParameter("beans");
+    	if("true".equals(isSaveDefault)){
+			@SuppressWarnings("unchecked")
+			List<DeptMonthQuota> list2 = QuotaUtils.JsonStr2List(jsonStr,DeptMonthQuota.class);
+			quotaConfigDeptMothService.saveDefault(list2, cityid);
+		}
         
         @SuppressWarnings("unchecked")
         List<DeptMonthQuota> list = QuotaUtils.JsonStr2List(jsonStr,DeptMonthQuota.class);
+        
         
         renFlag=quotaConfigDeptMothService.saveOrUpdate(list, cityid,dataDate);
 
