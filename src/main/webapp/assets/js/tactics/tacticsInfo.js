@@ -144,30 +144,55 @@ define(["backbone","my97"],function(require, exports, module) {
 				    		endDate:myDate.Format("yyyyMMdd")
 				    	}],campsegId,subCampsegIds);
 			    	});
-			    	$(document).on("focus","[id *='d4311']",function(){
-			    		var id= $(this).parent().next().next().find(">input").attr("id");
-			    		WdatePicker({onpicked:function(){
-			    			$("#"+id).focus();
-			    			module.exports.loadChannelTableData([{
-					    		CHANNEL_ID:$(this).parent().parent().attr("data-id"),
-					    		startDate:new Date($("#"+id).val()).Format("yyyyMMdd"),
-					    		endDate:new Date(endDate).Format("yyyyMMdd")
+//			    	$(document).on("focus","[id *='d4311']",function(){
+//			    		var id= $(this).parent().next().next().find(">input").attr("id");
+//			    		WdatePicker({onpicked:function(){
+//			    			$("#"+id).focus();
+//			    			module.exports.loadChannelTableData([{
+//					    		CHANNEL_ID:$(this).parent().parent().attr("data-id"),
+//					    		startDate:new Date($("#"+id).val()).Format("yyyyMMdd"),
+//					    		endDate:new Date(endDate).Format("yyyyMMdd")
+//					    	}],campsegId,subCampsegIds);
+//			    		},maxDate:'#F{$dp.$D(\''+id+'\')}'});
+//			    		$(".J_channel_date_ul[data-id='"+$(this).parent().parent().attr("data-id")+"'] li.active").removeClass("active");
+//			    	});
+			    	 var fromDate = $("[id *='d4311']").datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yymmdd"}).on( "change", function(event){
+			    		 var channelId=$(event.target).attr("id").substring(5,8);
+			    		 var endDateValue=$("#d4312"+channelId).val();
+			    		 module.exports.loadChannelTableData([{
+					    		CHANNEL_ID:channelId,
+					    		startDate:this.value,
+					    		endDate:endDateValue
 					    	}],campsegId,subCampsegIds);
-			    		},maxDate:'#F{$dp.$D(\''+id+'\')}'});
-			    		$(".J_channel_date_ul[data-id='"+$(this).parent().parent().attr("data-id")+"'] li.active").removeClass("active");
-			    	});
-			    	$(document).on("focus","[id *='d4312']",function(){
-			    		var id= $(this).parent().prev().prev().find(">input").attr("id");
-			    		var endDate= $(this).val();
-			    		WdatePicker({minDate:'#F{$dp.$D(\''+id+'\')}',onpicked:function(){
-			    			module.exports.loadChannelTableData([{
-					    		CHANNEL_ID:$(this).parent().parent().attr("data-id"),
-					    		startDate:new Date($("#"+id).val()).Format("yyyyMMdd"),
-					    		endDate:new Date(endDate).Format("yyyyMMdd")
+			    		 $("#d4312"+channelId).datepicker( "option", "minDate", $.datepicker.parseDate("yymmdd", this.value));
+			    		 $(event.target).parent().parent().find("li").removeClass("active"); 
+			         });
+			    	 var toDate = $("[id *='d4312']").datepicker({changeMonth: true,numberOfMonths:1,dateFormat:"yymmdd"}).on( "change", function(event){
+			    		 var channelId=$(event.target).attr("id").substring(5,8);
+			    		 var startDate=$("#d4311"+channelId).val();
+			    		 module.exports.loadChannelTableData([{
+					    		CHANNEL_ID:channelId,
+					    		startDate:startDate,
+					    		endDate:this.value
 					    	}],campsegId,subCampsegIds);
-			    		}});
-			    		$(".J_channel_date_ul[data-id='"+$(this).parent().parent().attr("data-id")+"'] li.active").removeClass("active");
-			    	});
+			    		 $("#d4311"+channelId).datepicker( "option", "maxDate", $.datepicker.parseDate("yymmdd", this.value));
+			    		 $(event.target).parent().parent().find("li").removeClass("active"); 
+			         });
+			    	 
+			    	 $.datepicker.dpDiv.addClass("ui-datepicker-box");
+			    	 
+//			    	$(document).on("focus","[id *='d4312']",function(){
+//			    		var id= $(this).parent().prev().prev().find(">input").attr("id");
+//			    		var endDate= $(this).val();
+//			    		WdatePicker({minDate:'#F{$dp.$D(\''+id+'\')}',onpicked:function(){
+//			    			module.exports.loadChannelTableData([{
+//					    		CHANNEL_ID:$(this).parent().parent().attr("data-id"),
+//					    		startDate:new Date($("#"+id).val()).Format("yyyyMMdd"),
+//					    		endDate:new Date(endDate).Format("yyyyMMdd")
+//					    	}],campsegId,subCampsegIds);
+//			    		}});
+//			    		$(".J_channel_date_ul[data-id='"+$(this).parent().parent().attr("data-id")+"'] li.active").removeClass("active");
+//			    	});
 			    	$(document).on("click","#channelExeStateList .left-nav-box",function(){
 			    		$('#channelExeStateList .left-nav-box').removeClass("left-nav-active");
 			    		$(this).addClass("left-nav-active");
