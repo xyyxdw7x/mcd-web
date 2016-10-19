@@ -6,6 +6,10 @@
 	height: auto;
 	overflow: hidden;
 	margin: 0 auto;
+	margin-top:25px;
+}
+.bulk-container-border{
+	background:#FBFBFB;
 }
 .bulk-total-quota{
 	width: 680px;
@@ -65,23 +69,23 @@
 	width: 12px;
 	margin: 7px;
 	border-radius: 20px;
-	background: #eadeac;
+	background: #b4d2f1;
 }
 .bulk-legend-right-icon{
 	height: 12px;
 	width: 12px;
 	margin: 7px;
 	border-radius: 20px;
-	background: #f0b928;
+	background: #4dadff;
 }
 .bulk-quota-column{
-	width: 100%;
+	padding:0 0 0 47px;
 	height: auto;
 	overflow: hidden;
 	margin: 0 0 65px;
 }
 .bulk-quota-column-item{
-	width: 20%;
+	width: 50%;
 	height: auto;
 	overflow: hidden;
 }
@@ -96,7 +100,7 @@
 	margin: 0 0 10px;
 }
 .bulk-quota-column-box{
-	width: 80%;
+	width:85%;
 	height: 22px;
 	background: #b4d2f1;
 	margin: 0 0 10px;

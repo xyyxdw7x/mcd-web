@@ -25,7 +25,7 @@
 <jsp:include page="/jsp/common/header.jsp"></jsp:include>
 
 <body class="bulk-body">
-	<div class="bulk-container" >
+	<div class="bulk-container bulk-container-border" >
 		<div class="bulk-total-quota" >
 			<div class="bulk-quota-title fleft">
 				<i class="fleft bulk-quota-icon"></i>
