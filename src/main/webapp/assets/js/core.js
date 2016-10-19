@@ -16,6 +16,7 @@ seajs.config({
 	},
 	alias:{
 		"jquery": "lib/jquery-3.1.1.min.js",
+		"jqueryUI": "lib/jquery-ui-1.11.0.min.js" ,
 		"ejs":"lib/ejs.min.js",
 		"underscore":"lib/underscore.min.js",
 		"backbone":"lib/backbone.min.js",
@@ -28,7 +29,10 @@ seajs.config({
 		"form":"lib/jquery.form.min.js",
 		"my97":"lib-ext/my97/WdatePicker.js",
 		"unslider":"lib-ext/unslider.min.js",
-		"echart":"lib/echarts.js"
+		"echarts":"lib/echarts-all.js",
+		"MSMChart":"lib/MSMChart.js",
+		"MSMChartMain":"lib/MSMChartMain.js",
+		"DateUtil":"lib/DateUtil.js",
 	},
 	base:contextPath+"/assets/js/",
 	vars:{
