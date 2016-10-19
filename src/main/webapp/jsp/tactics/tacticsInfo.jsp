@@ -49,7 +49,7 @@
 </div><!--container3 end -->
 </body>
 </html>
-
+<script type="text/javascript" src="<%=contextPath%>/assets/js/lib-ext/my97/WdatePicker.js"></script>
 <script type="text/javascript">
 	seajs.use("tactics/tacticsInfo",function(tacticsInfo){
 		tacticsInfo.init();
