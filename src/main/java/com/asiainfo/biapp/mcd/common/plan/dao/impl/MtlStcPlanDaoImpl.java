@@ -1,11 +1,16 @@
 package com.asiainfo.biapp.mcd.common.plan.dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +23,6 @@ import com.asiainfo.biapp.mcd.common.plan.dao.IMtlStcPlanDao;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.plan.vo.McdStcPlanOrderAttr;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.util.DataBaseAdapter;
 import com.asiainfo.biapp.mcd.common.util.Pager;
@@ -509,27 +513,82 @@ public class MtlStcPlanDaoImpl extends JdbcDaoBase implements IMtlStcPlanDao {
 	}
 	
 	/**
-	 * 根根产品id、渠道id 获得某些渠道预览的产品酬金等相关信息
+	 * 根根产品id、获得某些渠道预览的产品酬金等相关信息
 	 * @param planId 产品id
-	 * @param channelId 渠道id
 	 * @param cityId 地市id
 	 * @return
 	 */
 	@Override
-	public McdStcPlanOrderAttr getPlanRewardInfo(String planId, String channelId, String cityId) throws Exception{
-		final String sql="select t.PLAN_ID,t.CITY_ID,t.CHANNEL_ID,PLAN_REWARD,PLAN_REWARD_LEVEL,IS_CHECK,ORDER_NUM from MCD_STC_PLAN_ORDER_ATTR t where PLAN_ID=? and t.CITY_ID=? and t.CHANNEL_ID=?";
-		//log.info("查询产品为{}、渠道为{}、地市为{}的积分信息sql={}", planId, channelId, cityId, sql);
-		List<McdStcPlanOrderAttr> list = null;
+	public Map<String, String> getPlanRewardAndScoreInfo(String planId, String cityId) throws Exception{
+		final String sql = "select t1.PLAN_ID,t2.CITY_ID,t2.SCORE, t3.AWARD from mcd_plan_def t1 left join mcd_plan_staffscore t2 "
+				+ "on t1.plan_id = t2.plan_id left join mcd_plan_award t3 "
+				+ "on t1.plan_id=t3.plan_id and t2.city_id=t3.city_id where t1.plan_id=? and t2.city_id=?";
+		// log.info("查询产品为{}、地市为{}的积分信息sql={}", planId, cityId, sql);
+		Map<String, String> result = null;
 		try {
-			list = this.getJdbcTemplate().query(sql,new Object[]{planId,cityId,channelId}, new VoPropertyRowMapper<McdStcPlanOrderAttr>(McdStcPlanOrderAttr.class));
+			List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql, new Object[] { planId, cityId});
+			if (CollectionUtils.isNotEmpty(list)) {
+				result = new HashMap<String, String>();
+				for (Map<String, Object> map : list) {
+					result.put("planId", (String)map.get("PLAN_ID"));
+					result.put("cityId", (String)map.get("CITY_ID"));
+					BigDecimal score = (BigDecimal)map.get("SCORE");
+					BigDecimal award = (BigDecimal)map.get("AWARD");
+					result.put("score", score.toString());
+					result.put("award", award.toString());
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		if(list!=null&&list.size()>0){
-			return (McdStcPlanOrderAttr) list.get(0);
-		}else{
-			return null;
+		return result;
+	}
+	
+	/**
+	 * 根根产品id、渠道id 查询上月的订购数、订购率查询
+	 * @param planId 产品id
+	 * @param channelId 渠道id
+	 * @return
+	 */
+	public Map<String, Object> getLastMonthPlanOrderRateInfo(String planId, String channelId) throws Exception{
+		//上个月的日期字符串
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MONTH, -1);
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMM");
+		String date = df.format(cal.getTime());
+		//表名
+		String tabName = "MCD_CHN_"+channelId+"_LOG_"+date;
+		
+		//查询sql
+		StringBuffer sqlbu = new StringBuffer("select t.PLAN_ID,");
+		sqlbu.append("count(t.plan_id) as SENDOD_MOUNT,");
+		sqlbu.append("(select count(t1.plan_id) as order_mount from "+tabName+"  t1 where t1.log_status=4 and t1.plan_id=? ) as ORDER_MOUNT ");
+		sqlbu.append("from "+tabName+" t where t.PLAN_ID=? group by t.PLAN_ID ");
+		
+		Map<String, Object> result = null;
+		final String sql = sqlbu.toString();
+		try {
+			List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql, new Object[] { planId, planId});
+			if(CollectionUtils.isNotEmpty(list)){
+				Map<String, Object> map = list.get(0);
+				result = new HashMap<String, Object>();
+				result.put("planId", (String)map.get("PLAN_ID"));
+				BigDecimal sendodMount = (BigDecimal)map.get("SENDOD_MOUNT");
+				result.put("sendodMount", sendodMount.intValue());
+				BigDecimal orderMount = (BigDecimal)map.get("ORDER_MOUNT");
+				result.put("orderMount", orderMount.intValue());
+				if (sendodMount.intValue() ==0) {
+					result.put("sucRate", Double.valueOf(0.0));
+				} else {
+					result.put("sucRate", orderMount.doubleValue()/sendodMount.doubleValue());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
+		return result;
 	}
 }

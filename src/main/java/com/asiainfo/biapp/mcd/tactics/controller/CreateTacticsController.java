@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,6 @@ import com.asiainfo.biapp.mcd.common.plan.service.IMtlStcPlanService;
 import com.asiainfo.biapp.mcd.common.plan.vo.DimPlanSrvType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.plan.vo.McdPlanDef;
-import com.asiainfo.biapp.mcd.common.plan.vo.McdStcPlanOrderAttr;
 import com.asiainfo.biapp.mcd.common.plan.vo.PlanBean;
 import com.asiainfo.biapp.mcd.common.service.IMpmCommonService;
 import com.asiainfo.biapp.mcd.common.util.JmsJsonUtil;
@@ -2171,7 +2171,7 @@ public class CreateTacticsController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public Map<String,Object> getAboutPlanRewardInfo(HttpServletRequest request, HttpServletResponse response){
+	public Map<String,Object> getPlanRewardAndScoreInfo(HttpServletRequest request, HttpServletResponse response){
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
 		String planId =  request.getParameter("planId");
@@ -2179,11 +2179,15 @@ public class CreateTacticsController extends BaseMultiActionController {
 		try {
 			User user = this.getUser(request, response);
 			String cityId = user.getCityId();
-			McdStcPlanOrderAttr planReward = mtlStcPlanService.getPlanRewardInfo(planId, channelId, cityId);
+			//积分、酬金信息查询
+			Map<String, String> reward = mtlStcPlanService.getPlanRewardAndScoreInfo(planId, cityId);
+			
+			//上月的订购数、订购率查询
+			Map<String, Object> orderMount = mtlStcPlanService.getLastMonthPlanOrderRateInfo(planId, channelId);
 			returnMap.put("flag", true);
 			returnMap.put("msg", "");
-			returnMap.put("data", planReward);
-			
+			returnMap.put("reward", reward);
+			returnMap.put("orderMount", orderMount);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info(e);

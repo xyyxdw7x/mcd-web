@@ -156,14 +156,30 @@ channelInfo906.clickPreviewButtonEventHandler906=function(){
 		var planIds = "";
 		var planlis = $("#selectedPlan li");
 		planIds = $(planlis[0]).data().data.planId;
-		$.post(contextPath+"/action/tactics/createTactics/getAboutPlanRewardInfo.do",
+		$.post(contextPath+"/action/tactics/createTactics/getPlanRewardAndScoreInfo.do",
 				{planId: planIds, channelId: channelInfo906.baseInfo.channelId},
 				function(retData, textStatus, jqXHR){
 					if(retData.flag){
-						if(retData.data != null){
-							var reward = retData.data.planReward;
-							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward1").append(reward);
-							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward2").append(reward);
+						if(retData.reward != null){
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward1").append(retData.reward.score);
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_reward2").append(retData.reward.award);
+						}
+						if(retData.orderMount != null){							
+							if(retData.orderMount.sucRate<0.01){								
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate1").append("低");
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate2").append("低");
+							} else if(retData.orderMount.sucRate>=0.01 && retData.orderMount.sucRate<=0.05) {
+								
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate1").append("中");
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate2").append("中");
+							} else {
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate1").append("高");
+								$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_sucRate2").append("高");
+								
+							}
+							
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_orderMount1").append(retData.orderMount.orderMount);
+							$("#ChannelId_"+channelInfo906.baseInfo.channelId+"_Previe_orderMount2").append(retData.orderMount.orderMount);
 						}
 					} else{alert(retData.msg);}
 					//数据加载完后做其他处理

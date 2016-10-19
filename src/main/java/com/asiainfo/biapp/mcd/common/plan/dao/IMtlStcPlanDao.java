@@ -130,12 +130,18 @@ public interface IMtlStcPlanDao {
 	McdPlanDef getPlanById(String planId) throws MpmException;
 	
 	/**
-	 * 根根产品id、渠道id 获得某些渠道预览的产品酬金等相关信息
+	 * 根根产品id、 获得某些渠道预览的产品酬金等相关信息
 	 * @param planId 产品id
-	 * @param channelId 渠道id
 	 * @param cityId 地市id
 	 * @return
 	 */
-	public McdStcPlanOrderAttr getPlanRewardInfo(String planId, String channelId, String cityId) throws Exception;
+	public Map<String, String> getPlanRewardAndScoreInfo(String planId, String cityId) throws Exception;
 	
+	/**
+	 * 根根产品id、渠道id 查询上月的订购数、订购率查询
+	 * @param planId 产品id
+	 * @param channelId 渠道id
+	 * @return
+	 */
+	public Map<String, Object> getLastMonthPlanOrderRateInfo(String planId, String channelId) throws Exception;
 }
