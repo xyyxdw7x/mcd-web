@@ -1,4 +1,4 @@
-define(["backbone","my97"],function(require, exports, module) {      
+define(["backbone"],function(require, exports, module) {      
 	module.exports={
 		init:function(){
 			//详情
