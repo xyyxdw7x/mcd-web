@@ -101,7 +101,7 @@ public class MtlChannelDefDaoImpl extends JdbcDaoBase implements IMtlChannelDefD
         try {
             StringBuffer buffer = new StringBuffer();
             buffer.append("select basic.*,mcd_dim_adiv_info.adiv_name,mcd_camp_def.CEP_EVENT_ID from (")
-                  .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME ")
+                  .append(" select dmc.channel_id,dmc.channel_name,mcd.EXEC_CONTENT,mcd.update_cycle,mcd.contact_type,mcd.campseg_id,mcd.channel_adiv_id,mcd.param_num,mcd.param_days,mcd.award_mount,mcd.edit_url,mcd.handle_url,mcd.send_sms,mcd.EXEC_TITLE,mcd.FILE_NAME,mcd.boss_sms_template_id ")
                   .append(" from mcd_camp_channel_list mcd, mcd_dim_channel dmc ")
                   .append(" where mcd.channel_id = dmc.channel_id   and mcd.campseg_id = ? ) basic")
                   .append(" left join  mcd_dim_adiv_info on basic.channel_adiv_id = mcd_dim_adiv_info.adiv_id and basic.channel_id=mcd_dim_adiv_info.channel_id")

@@ -427,9 +427,10 @@ public class TacticsInfoController extends BaseMultiActionController {
 				exec_content = (String) tmap.get("EXEC_CONTENT");
 				update_cycle = String.valueOf(tmap.get("update_cycle"));
 				channelAdivId = (String) tmap.get("channel_adiv_id");
+				String templateId = (String) tmap.get("boss_sms_template_id");
 				String templateName = "";
-				if (StringUtils.isNotEmpty(channelAdivId)) {
-					String[] adivId = channelAdivId.split(",");
+				if (StringUtils.isNotEmpty(templateId)) {
+					String[] adivId = templateId.split(",");
 					for (int n = 0; n < adivId.length; n++) {
 						for (int m = 0; m < bossSmsTemplatelist.size(); m++) {
 							if (adivId[n].equals(bossSmsTemplatelist.get(m).getTemplateId())) {
