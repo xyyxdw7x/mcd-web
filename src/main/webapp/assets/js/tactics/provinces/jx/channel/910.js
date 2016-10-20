@@ -52,6 +52,9 @@ channelInfo910.collectData910=function(){
  * 界面上初始化、事件监听
  */
 channelInfo910.initView=function(){
+	//加载一些界面数据
+	channelInfo910.loadSomeBaseData910();
+	
 	//加载短信模板数据
 	channelInfo910.loadSMtempaltes910();
 	
@@ -60,13 +63,34 @@ channelInfo910.initView=function(){
 }
 
 /**
- * 初始化值(编辑时)
+ * 加载界面上渠道下的基础数据
  */
-channelInfo910.initValue910 = function(){
+channelInfo910.loadSomeBaseData910=function(){
 	//如果有默认的推荐语则
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
 		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
 	}
+	
+	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
+	if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
+		//更新营销用语
+		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
+		//输入字数时对字数限制
+		channelInfo910.textAreaInputNumTip910();
+		//触发事件，将编辑回显得数据放入购物车
+		var newdata = channelInfo910.collectData910();
+		$("#channelDiv").trigger("changeChannel", newdata);
+	}
+}
+
+/**
+ * 初始化值(编辑时)
+ */
+channelInfo910.initValue910 = function(){
+//	//如果有默认的推荐语则
+//	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
+//		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+//	}
 	
 	//初始化值（编辑时）
 	if(tacticsInfo.camp!=null){
@@ -82,17 +106,18 @@ channelInfo910.initValue910 = function(){
 			});
 		}
 		
-		//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
-		if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
-			//更新营销用语
-			$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
-			//输入字数时对字数限制
-			channelInfo910.textAreaInputNumTip910();
-			//触发事件，将编辑回显得数据放入购物车
-			var newdata = channelInfo910.collectData910();
-			$("#channelDiv").trigger("changeChannel", newdata);
-		}
 	}
+	
+//	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
+//	if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
+//		//更新营销用语
+//		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
+//		//输入字数时对字数限制
+//		channelInfo910.textAreaInputNumTip910();
+//		//触发事件，将编辑回显得数据放入购物车
+//		var newdata = channelInfo910.collectData910();
+//		$("#channelDiv").trigger("changeChannel", newdata);
+//	}
 }
 
 /**
@@ -143,7 +168,7 @@ channelInfo910.loadSMtempaltes910=function(){
 				//往下弹出tooltip的样式设定
 				$("[data-toggle='tooltip']").tooltip({});
 			} else {
-				// 查询失败
+				alert("未查询到短信模板！");
 			}
 			
 			channelInfo910.initValue910();

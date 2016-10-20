@@ -23,7 +23,7 @@ channelInfo913.initView=function(data){
 	
 	//如果有默认的推荐语则
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
-		$("#channelId_"+channelInfo913.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+		$("#content913").val(tacticsInfo.plan.planComment);
 	}
 	
 	//回显
@@ -35,10 +35,6 @@ channelInfo913.initView=function(data){
 	}
 	//输入字数时对字数限制
 	channelInfo913.textAreaInputNumTip913();
-	//编辑情况下没有策略ID
-	if(data.campId==null||data.campId==undefined){
-		return ;
-	}
 }
 
 /**
