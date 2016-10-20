@@ -17,14 +17,14 @@
             <ul class="sale-situation-ul">
                 <li class="sale-situation-li-up" data-range="A" data-tab="t_cam">
                     <div class="sale-situation-li-up-name">
-                        总营销数（人）
+                        总营销数（人） <span><img id="totalSale" class="helpIcon" src="../../assets/images/hover.png" /></span>
                     </div>
                     <div class="sale-situation-li-up-value totalNum">
                     </div>
                 </li>
                 <li class="sale-situation-li-up" data-range="A" data-tab="t_suc">
                     <div class="sale-situation-li-up-name">
-                        总成功数（人）
+                        总成功数（人）<span><img id="totalSuccess" class="helpIcon" src="../../assets/images/hover.png" /></span>
                     </div>
                     <div class="sale-situation-li-up-value totalSuccessNum">
                     </div>
@@ -32,19 +32,19 @@
             </ul>
             <ul class="sale-situation-ul flexDisplay">
                 <li class="sale-situation-li-down" data-range="M" data-tab="t_cam">
-                    <div class="sale-situation-li-down-name">本月营销数（人）</div>
+                    <div class="sale-situation-li-down-name">本月营销数（人）<span><img id="totalSaleMonth" class="helpIcon" src="../../assets/images/hover.png" /></span></div>
                     <div class="sale-situation-li-down-value saleNumMon"></div>
                 </li>
                 <li class="sale-situation-li-down" data-range="M" data-tab="t_suc">
-                    <div class="sale-situation-li-down-name">本月成功数（人）</div>
+                    <div class="sale-situation-li-down-name">本月成功数（人）<span><img id="totalSucessMonth" class="helpIcon" src="../../assets/images/hover.png" /></span></div>
                     <div class="sale-situation-li-down-value saleSuccessNumMon"></div>
                 </li>
                 <li class="sale-situation-li-down" data-range="M" data-tab="t_cam">
-                    <div class="sale-situation-li-down-name">昨日营销数（人）</div>
+                    <div class="sale-situation-li-down-name">昨日营销数（人）<span><img id="totalSaleDay" class="helpIcon" src="../../assets/images/hover.png" /></span></div>
                     <div class="sale-situation-li-down-value saleNumDay"></div>
                 </li>
                 <li class="sale-situation-li-down" data-range="M" data-tab="t_suc">
-                    <div class="sale-situation-li-down-name">昨日成功数（人）</div>
+                    <div class="sale-situation-li-down-name">昨日成功数（人）<span><img id="totalSuccessDay" class="helpIcon" src="../../assets/images/hover.png" /></span></div>
                     <div class="sale-situation-li-down-value saleSuccessNumDay"></div>
                 </li>
             </ul>

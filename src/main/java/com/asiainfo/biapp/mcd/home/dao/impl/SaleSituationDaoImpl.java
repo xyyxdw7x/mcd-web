@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -413,5 +414,22 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements ISaleSituationD
 		}
 		return num;
 
+	}
+	
+	/**
+	 * 口径信息
+	 */
+	@Override
+	public List<Map<String,Object>> getCaliber(){
+		List<Map<String,Object>> list = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT INDEX_ID,INDEX_DESC FROM DIM_EVAL_INDEX_INFO");
+		log.debug("getMyTotalCamp执行sql=" + sql);
+		try {
+			list = this.getJdbcTemplate().queryForList(sql.toString());
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
