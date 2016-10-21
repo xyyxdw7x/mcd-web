@@ -209,15 +209,15 @@ channelInfo913.getChannelInfoData=function(){
 			adivNames=adivNames+","+$(item).attr("adivname");
 		}
 	}
-	channelInfo913.baseInfo.adivIds=adivIds;
+	channelInfo913.baseInfo.adivId=adivIds;
 	channel913AdivNames = adivNames;
 	
 	var keys=["渠道名称","推荐用语","运营位ID","运营位名称"];
 	var content=channelInfo.execContent;
-	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivIds,channel913AdivNames];
+	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivId,channel913AdivNames];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
-	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
+	channelInfo.adivId=channelInfo913.baseInfo.adivId;
 	return channelInfo;
 }
 
