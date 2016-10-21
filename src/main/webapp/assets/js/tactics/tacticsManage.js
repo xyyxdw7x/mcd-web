@@ -248,7 +248,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					var _index=target.parent().find("li").index(target[0]);
 					target.addClass("active").siblings(".active").removeClass("active");
 					$("#"+ctID).find("> .box").eq(_index).addClass("active").siblings(".box.active").removeClass("active");
-					debugger;
 					if(target.attr("data-tab") == "ALL"){
 						//渠道类型
 						var channelId=$("#channelIdDivAll .active").attr("channelid");
