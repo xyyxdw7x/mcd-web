@@ -17,7 +17,9 @@ define(function(require, exports, module){
 		});
 	}
 });
-/**定义全局的产品视图对像*/
+
+
+/**定义全局的政策视图对像*/
 var planInfo={queryPlan:null,queryStatus:null,custManage:null};
 var keyWords ="";//初始化搜索关键字
 
@@ -37,7 +39,7 @@ function initView(){
  */
 function addEventListener(){
     initKeyWordsEventListiener();//关键字查询
-    tableView.addTableListener();//表格的监听事件
+    //tableView.addTableListener();//表格的监听事件
     detailView.addDetailListener();//详细内容事件监听
 }
 
@@ -46,23 +48,19 @@ function addEventListener(){
  */
 function initKeyWordsEventListiener(){
     $(".searchBtn").click(function(){
-    	statusId = "";
-    	typeId ="";
-    	pageNum=1;
         console.log("-----关键字查询开始------");
+        statusId = "";//状态参数
+        typeId ="";//类型参数
+        pageNum=1;
         keyWords="";
         keyWords=$(".keyWords").val();
         console.log("-----keyWords："+keyWords+"------");
-        //初始化视图数据
+       //初始化视图数据
         initTableViewData();
         //初始化列表视图
         initTableResultView(table_result);
-        
     });
     $(".keyWords").blur(function(){
-    	statusId = "";
-    	typeId ="";
-    	pageNum=1;
         keyWords="";//初始化关键字
         keyWords=$(".keyWords").val();
     });

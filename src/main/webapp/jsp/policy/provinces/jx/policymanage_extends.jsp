@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,15 +7,17 @@
     <%@ include file="../../../common/head.jsp" %>
     <link rel="shortcut icon" href="<%=contextPath%>/assets/images/logos/favicon.ico" />
     <!-- css内容 -->
-    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/provinces/jx/policy/common.css"><!-- 通用样式 -->
-    <link href="<%=contextPath%>/assets/css/provinces/jx/policy/policy.css" rel="stylesheet" type="text/css"><!-- 政策样式 -->
-    <link href="<%=contextPath%>/assets/css/provinces/jx/policy/policy_table.css" rel="stylesheet" type="text/css"><!-- 政策table样式 -->
-    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/jx/policy/policy_dialog.css" type="text/css"><!-- 政策弹窗样式 -->
+    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/policy/common.css"><!-- 通用样式 -->
+    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/policy/policy.css" rel="stylesheet" type="text/css"><!-- 政策样式 -->
+    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/policy/policy_table.css" rel="stylesheet" type="text/css"><!-- 政策table样式 -->
+    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/policy/policy_dialog.css" type="text/css"><!-- 政策弹窗样式 -->
 
     <!--js内容-->
-    <script src="<%=contextPath%>/assets/js/policy/provinces/jx/policyChoose.js" type="text/javascript"></script><!--policyChoose.js 选择菜单的视图-->
-    <script src="<%=contextPath%>/assets/js/policy/provinces/jx/policyList.js" type="text/javascript"></script><!--policyList.js 列表数据的视图-->
-    <script src="<%=contextPath%>/assets/js/policy/provinces/jx/policyDetail.js" type="text/javascript"></script><!--policyDetail.js 弹窗数据的视图-->
+    <script src="<%=contextPath%>/assets/js/policy/provinces/<%=provinces%>/policyChoose.js" type="text/javascript"></script><!--policyChoose.js 选择菜单的视图-->
+    <script src="<%=contextPath%>/assets/js/policy/provinces/<%=provinces%>/policyList.js" type="text/javascript"></script><!--policyList.js 列表数据的视图-->
+    <script src="<%=contextPath%>/assets/js/policy/provinces/<%=provinces%>/policyDetail.js" type="text/javascript"></script><!--policyDetail.js 弹窗数据的视图-->
+
+    
 
 </head>
 <body>
@@ -27,7 +30,9 @@
             <p class="fleft">
                 <input type="text" name="search" class="keyWords"  placeholder="请输入政策编码或政策名称">
             </p><p>
-            <i id="searchButton_all" class="searchBtn fright btn-blu"><img src="<%=contextPath%>/assets/images/search_icon.png"></i>
+            <i id="searchButton_all" class="searchBtn fright btn-blu">
+              <%--  <img src="<%=contextPath%>/assets/images/search_icon.png"> --%>
+            </i>
         </p></div>
     </div><!--search end-->
 
@@ -48,6 +53,15 @@
 
 </div><!--myCustomQuery end-->
 
+
+
+
+
+
+
+
+
+
 <!--内容table-->
 <div class="container customManageContainer">
     <div class="content">
@@ -56,12 +70,12 @@
                 <div class="content-table">
                     <div id="customTable_all" class="content-table-box customManageTable">
                              <div class="content-table-page">
-                                 <div class="fright clearfix centent-page-box divPlansPage"  >
-                                 </div>
+                                 <%--<div class="fright clearfix centent-page-box divPlansPage"  >--%>
+                                 <%--</div>--%>
                              </div><!--content-table-page end-->
 
                         <div class="container-table">
-                            <table class="table table-striped table-hover cust-table">
+                            <table class="table-content table-striped table-hover cust-table">
                                 <thead>
                                 <tr class="active">
                                     <th ><span style="width:30px;" >序号</span></th>
@@ -72,7 +86,7 @@
                                     <th ><span style="width:130px;">失效时间</span></th>
                                     <th ><span style="width:90px;">描述</span></th>
                                     <th ><span style="width:90px;">推荐语</span></th>
-                                    <th ><span style="width:55px;">产品经理</span></th>
+                                    <th ><span style="width:60px;">产品经理</span></th>
                                     <th><span style="width:100px;">操作</span></th>
                                 </tr>
                                 </thead>
@@ -105,6 +119,17 @@
         </div>
     </div>
 </div><!--container End-->
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- 弹出窗的背景 -->
@@ -278,11 +303,36 @@
     </div><!-- poppage end -->
 </div><!--popwin end-->
 
+
+<!-- 删除客户群提示框 -->
+<!--
+<div class="pop-win delete-custom-pop">
+    <div class="delete-custom-title">
+        <div class="delete-custom-title-title">提示</div>
+        <div class="delete-custom-title-close">x</div>
+    </div>
+    <div class="delete-custom-content">
+        <div class="delete-custom-content-tip">
+            <div class="delete-custom-content-icon"></div>
+            确定删除客户群？
+        </div>
+        <div class="delete-custom-btn-container">
+            <div class="delete-custom-btn-confirm">确定</div>
+            <div class="delete-custom-btn-cancel">取消</div>
+        </div>
+    </div>
+</div>
+-->
+
+
+
 <script type="text/javascript">
-    seajs.use("policy/provinces/jx/policymanage_extends.js",function(policymanage_extends){
-    	policymanage_extends.init();
-    });
-</script>
+	    seajs.use("policy/provinces/jx/policymanage_extends.js",function(policymanage_extends){
+	    	policymanage_extends.init();
+	    });
+	</script>
+
+
 
 </body>
 </html>

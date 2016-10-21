@@ -83,7 +83,7 @@ chooseView.addPlanTypeChooseView = function(){
  */
 function addStatusChooseEventListiener(){
     $('#divDimPlanTypes span').click(function () {
-    	pageNum=1;
+        pageNum=1;//记录当前页码
          statusId="";//初始化状态
         //1.添加状态选择
         $(this).addClass('active').siblings('span').removeClass('active');
@@ -103,7 +103,7 @@ function addStatusChooseEventListiener(){
  */
 function addPlanChooseEventListiener() {
     $('#divDimPlanSrvType span').click(function () {
-    	pageNum=1;
+        pageNum=1;//记录当前页码
         typeId = "";//初始化分类
         //添加分类选
         $(this).addClass('active').siblings('span').removeClass('active');

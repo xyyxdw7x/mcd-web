@@ -1,4 +1,3 @@
-/*产品库详情弹框样式*/
 .popwin {
     -webkit-box-align: center;
     -webkit-box-orient: vertical;
@@ -32,7 +31,7 @@
 
 .pop-page-header{
     background-color: #288bde;
-    color: #ffffff;
+    color: #dddddd;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     font-size: 13px;
@@ -66,8 +65,8 @@
 .pop-page-header-content span:hover{
     color:#fff;
 }
-.header-content-right span:hover{
-	color: #ff0000;
+#close:hover{
+    color:red;
 }
 .pop-page-header-content .header-content-left{
     float: left;
@@ -79,3 +78,5 @@
     height:27px;
     vertical-align: middle;
 }
+
+

@@ -1,6 +1,7 @@
 /**
- * tableView列表视图
+ * Created by john0723@outlook.com on 2016/9/28.
  */
+//tableView列表视图
 var tableView ={};
 
 var params ="";//参数
@@ -37,7 +38,6 @@ tableView.addTableListener=function(){
  *                   列表数据    总页码数
  */
 function initTableViewData() {
-    console.log("keyWords:"+keyWords+"; pageNum:"+pageNum+"; typeId:"+typeId+"; statusId:"+statusId);
     $.ajax({
         url:contextPath+"/plan/planManage/queryTableList.do",
         data:{
@@ -51,17 +51,43 @@ function initTableViewData() {
         success:function(data) {
             if(!data){return;}
             table_result="";//列表数据
+            totalPage = "";//总页码数
             pageSize = data.pageSize;//每页多少条
             totalSize= data.totalSize;//总条数
-            totalPage = data.totalPage;
-            table_result=data.result;
-          //初始化翻页
+            table_result=data.result;//列表数据
+            pageNum=data.pageNum;//当前页码
+
+            //初始化翻页
             renderPageView(data);
         }
     });
 }
 
 
+/**
+ * 初始化页面选择视图
+ *
+ * <option class="page-num" value="1">1</option>
+ */
+function initSelectPageView(totalPage){
+    var pageView ="";//初始化页码视图
+    //对页码选择视图处理
+    if(totalPage>10){
+        for(var i=1;i<10;i++){
+            pageView+="<option class='page-num' value="+i+">"+i+"</option>";
+        }
+        pageView += "<option class='page-more' >......</option>";
+        pageView += "<option class='page-num' value="+i+">"+totalPage+"</option>";
+        $(".select-page-num").html(pageView);
+    }else if(totalPage == 0){
+        pageView += "<option class='page-num' value="+i+">"+1+"</option>";
+    } else{
+        for(var i=1;i<=totalPage;i++){
+            pageView+="<option class='page-num' value="+i+">"+i+"</option>";
+        }
+        $(".select-page-num").html(pageView);
+    }
+}
 
 /**
  * 初始化列表视图
@@ -137,7 +163,6 @@ function initTableResultView(table_result){
 }
 
 
-
 /**
  * 详细内容弹窗
  * 1.弹窗开启
@@ -157,7 +182,6 @@ function addDetailPopWinEventListiener(){
 }
 
 
-
 /**
  * 翻页实现
  * @param data
@@ -170,7 +194,7 @@ function renderPageView(data){
         prevText:'上一页',
         nextText:'下一页',
         cssStyle: 'light-theme',
-        onPageClick:function(currentNum,event){
+        onPageClick:function renderPage(currentNum,event){
             pageNum=currentNum;//更新当前页码
             //初始化视图数据
             initTableViewData();
@@ -179,3 +203,4 @@ function renderPageView(data){
         }
     });
 }
+

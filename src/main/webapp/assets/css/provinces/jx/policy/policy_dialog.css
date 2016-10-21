@@ -65,6 +65,9 @@
 .pop-page-header-content span:hover{
     color:#fff;
 }
+#close:hover{
+    color:red;
+}
 .pop-page-header-content .header-content-left{
     float: left;
 }

@@ -86,7 +86,7 @@ chooseView.addPlanTypeChooseView = function(){
  */
 function addStatusChooseEventListiener(){
     $('#divDimPlanTypes span').click(function () {
-    	pageNum=1;
+         pageNum=1;
          statusId="";//初始化状态
         //1.添加状态选择
         $(this).addClass('active').siblings('span').removeClass('active');
@@ -95,8 +95,6 @@ function addStatusChooseEventListiener(){
         initTableViewData();
         //初始化列表视图
         initTableResultView(table_result);
-        //初始化页面选择视图
-        initSelectPageView(totalPage);
     });
 }
 
@@ -106,7 +104,7 @@ function addStatusChooseEventListiener(){
  */
 function addPlanChooseEventListiener() {
     $('#divDimPlanSrvType span').click(function () {
-    	pageNum=1;
+        pageNum=1;
         typeId = "";//初始化分类
         //添加分类选
         $(this).addClass('active').siblings('span').removeClass('active');
@@ -115,7 +113,5 @@ function addPlanChooseEventListiener() {
         initTableViewData();
         //初始化列表视图
         initTableResultView(table_result);
-        //初始化页面选择视图
-        initSelectPageView(totalPage);
     });
 }

@@ -1,134 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<!--THE SITE IS DESIGNED BY john0723@outlook.com, Inc 17/10/2016-->
+<html lang="en">
 <head>
-    <title>产品库</title>
+    <meta charset="UTF-8">
+    <title>产品详细内容</title>
     <%@ include file="../../../common/head.jsp" %>
-    <link rel="shortcut icon" href="<%=contextPath%>/assets/images/logos/favicon.ico" />
-    <!-- css内容 -->
-    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/common.css"><!-- 通用样式 -->
-    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan.css" rel="stylesheet" type="text/css"><!-- 产品样式 -->
-    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan_table.css" rel="stylesheet" type="text/css"><!-- 产品table样式 -->
-    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan_dialog.css" type="text/css"><!-- 产品弹窗样式 -->
-
-    <!--js内容-->
-    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planChoose.js" type="text/javascript"></script><!--planChoose.js 选择菜单的视图-->
-    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planList.js" type="text/javascript"></script><!--planList.js 列表数据的视图-->
-    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planDetail.js" type="text/javascript"></script><!--planDetail.js 弹窗数据的视图-->
-
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> 
+    <!--css-->
+    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/common.css"/><!--通用样式-->
+    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan_detail.css"/><!--通用样式-->
+    <!--js-->
+    <script type="text/javascript" src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planmanage_extends_detail.js"></script>
+   
+   
+    <%
+    String planId=request.getParameter("planId");
+    %>
+    <script type="text/javascript" >
+        var planId="<%=planId%>";
+        //var planId = '10003';
+    </script>
 </head>
 <body>
-
-<!--搜索+选策略-->
-<div class="myCustomQuery">
-    <div class="search-box-container">
-        <span class="search-title fleft">产品库</span>
-        <div id="search_all" class="content-type-search-box fright show">
-            <p class="fleft">
-                <input type="text" name="search" class="keyWords"  placeholder="请输入产品编码或产品名称">
-            </p><p>
-            <i id="searchButton_all" class="searchBtn fright btn-blu">
-               <%-- <img src="<%=contextPath%>/assets/images/search_icon.png"> --%>
-            </i>
-        </p></div>
-    </div><!--search end-->
-
-    <div class="select-item-wrp ft12">
-        <div class="item-box">
-            <span class="fleft select-left">状态：</span>
-            <div id="divDimPlanTypes" class="fleft color-666 select-right">
-
-            </div>
-        </div>
-        <div class="item-box">
-            <span class="fleft select-left">类别：</span>
-            <div id="divDimPlanSrvType" class="fleft color-666 select-right">
-
-            </div>
-        </div>
-    </div><!--select end-->
-
-</div><!--myCustomQuery end-->
-
-
-<!--内容table-->
-<div class="container customManageContainer">
-    <div class="content">
-        <div id="customManageTabCT" class="content-main">
-            <div class="box active">
-                <div class="content-table">
-                    <div id="customTable_all" class="content-table-box customManageTable">
-                    
-                             <div class="content-table-page">
-                                 <%--<div class="fright clearfix centent-page-box divPlansPage" >--%>
-                                 <%--</div>--%>
-                             </div>
-                          <!--content-table-page end-->
-
-                        <div class="container-table">
-                            <table class="table-content table-striped table-hover cust-table">
-                                <thead>
-                                <tr class="active">
-                                    <th ><span style="width:30px;" >序号</span></th>
-                                    <th ><span style="width:97px;">单产品编码</span></th>
-                                    <th ><span style="width:160px;">单产品名称</span></th>
-                                    <th ><span style="width:65px;">类别</span></th>
-                                    <th ><span style="width:130px;">生效时间</span></th>
-                                    <th ><span style="width:130px;">失效时间</span></th>
-                                    <th ><span style="width:90px;">描述</span></th>
-                                    <th ><span style="width:90px;">推荐语</span></th>
-                                    <th ><span style="width:60px;">产品经理</span></th>
-                                    <th><span style="width:100px;">操作</span></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div><!--container-table end-->
-
-                       <div class="content-table-page">
-                             <div class="content-table-page">
-                                 <div class="fright clearfix centent-page-box divPlansPage" >
-                                 </div>
-                             </div>
-                        </div><!--content-table-page end-->
-                    </div>
-                </div><!-- content-table end -->
-            </div><!--box end -->
-
-            <div class="box">
-                <div class="content-table">
-                    <div id="customTable_mine" class="content-table-box customManageTable"></div>
-                </div><!-- content-table end -->
-            </div><!--box end -->
-
-            <div class="box">
-                <div class="content-table">
-                    <div id="customTable_abnormal" class="content-table-box customManageTable"></div>
-                </div><!-- content-table end -->
-            </div><!--box end -->
-        </div>
-    </div>
-</div><!--container End-->
-
-
 <!-- 弹出窗的背景 -->
-<div class="popwin"  style="display: none">
-    <div class="poppage " id="poppage" style="display: none">
-        <div class="pop-page-header">
-            <div class="pop-page-header-content">
-                <div class="header-content-left">
-                    <span id="header-content-detail">详情</span>
-                    <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img" title="编辑"></span>
-                    <span id="header-content-back"> < 返回 </span>
-                </div>
-                <div class="header-content-right">
-                    <span id="close" title="关闭"> X </span>
-                </div>
-            </div><!--pop-page-header-content end-->
-        </div><!--pop-page-header end-->
-
+<div class="popwin"  style="display: ">
+     <div class="head">
+         <div class="pop-page-header">
+             <div class="pop-page-header-content">
+                 <div class="header-content-left">
+                     <span id="header-content-detail">详情</span>
+                    <%--  <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img"></span>
+                     <span id="header-content-back"> < 返回 </span> --%>
+                 </div>
+                 <div class="header-content-right">
+                     <!-- <span id="close"> X </span> -->
+                 </div>
+             </div><!--pop-page-header-content end-->
+         </div><!--pop-page-header end-->
+     </div>
+     <div class="main">
+       <div class="poppage " id="poppage" style="display: ">
         <div class="pop-page-content">
             <div class="pop-page-content-top">
                 <div class="pop-page-content-top-div">
@@ -145,7 +58,9 @@
                     <div class="input-div">
                         <label>适用渠道：</label>
                         <ul class="more_select" id="channel">
-                             <li class="one_li"><input type="text" class="channel_input"><img src="<%=contextPath%>/assets/images/select.png"></li>
+                            <li class="one_li"><input type="text" class="channel_input"><img src="<%=contextPath%>/assets/images/select.png"></li>
+                            <li value="" style="display:none" class="checkbox_li"><input type="checkbox">1</li>
+                            <li value="" style="display:none" class="checkbox_li"><input type="checkbox">1</li>
                         </ul>
                     </div>
                 </div><!--1 end-->
@@ -160,9 +75,9 @@
                     </div>
                     <div class="input-div">
                         <label>适用地市：</label>
-                         <ul class="more_select" id="city">
+                        <ul class="more_select" id="city">
 
-                         </ul>
+                        </ul>
                     </div>
                 </div><!--2 end-->
                 <div class="pop-page-content-top-div " id="last">
@@ -257,7 +172,7 @@
 
                         <div class="pop-page-content-center-foot-btn">
                             <div class="btn-div">
-                                <button type="button" class="btn-blu" id="save-btn" disabled>保存</button>
+                                <button type="button" class="btn-blu" id="save-btn" style="display:none" disabled >保存</button>
                             </div>
 
                         </div>
@@ -270,9 +185,9 @@
                     <div class="pop-page-content-foot-btn-div btn-pref"> <span id="btn-pref"> < </span></div>
                     <div class="pop-page-content-foot-content-div">
                         <div class="pop-page-content-foot-content-div-list">
-                           <div class="pop-page-content-foot-content-div-list-div" id="campsegContent">
+                            <div class="pop-page-content-foot-content-div-list-div" id="campsegContent">
 
-                           </div>
+                            </div>
                         </div>
                     </div>
                     <div class="pop-page-content-foot-btn-div btn-next"> <span id="btn-next"> > </span></div>
@@ -280,14 +195,9 @@
             </div><!--pop-page-content-foot-->
         </div>
     </div><!-- poppage end -->
+     
+     </div>
+    
 </div><!--popwin end-->
-
-
-<script type="text/javascript">
-	    seajs.use("plan/provinces/jx/planmanage_extends.js",function(planmanage_extends){
-	    	planmanage_extends.init();
-	    });
-	</script>
-
 </body>
 </html>

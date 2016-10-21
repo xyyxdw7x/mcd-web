@@ -3,8 +3,11 @@ package com.asiainfo.biapp.mcd.policy.service;
 import java.util.List;
 import java.util.Map;
 
+import com.asiainfo.biapp.mcd.common.plan.vo.McdDimPlanType;
 import com.asiainfo.biapp.mcd.common.util.Pager;
 import com.asiainfo.biapp.mcd.plan.vo.McdDimPlanOnlineStatus;
+
+import net.sf.json.JSONObject;
 
 /**
  * 政策库操作service
@@ -35,6 +38,13 @@ public interface IMcdPolicyService {
 	 * @throws Exception
 	 */
 	public List<McdDimPlanOnlineStatus> initDimPolicyStatus() throws Exception;
+	
+	/**
+	 * 查询类型数据
+	 * @return
+	 * @throws Exception
+	 */
+	public List<McdDimPlanType> initDimPlanType() throws Exception;
 
 	/**
 	 * 保存政策编辑数据
@@ -56,42 +66,12 @@ public interface IMcdPolicyService {
 			String manager, String planDesc, String planComment, String dealCode_10086, String dealCode_1008611,
 			String urlForAndroid, String urlForIos, String cityIds, String scores, String awards);
 
+	
 	/**
-	 * 详情页面适用渠道
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Map<String, Object>> getMcdChannel(String planId) throws Exception;
-
-	/**
-	 * 详情页面适用城市
+	 * 详情内容
 	 * @param planId
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Map<String, Object>> getMcdCity(String planId) throws Exception;
-
-	/**
-	 * 详情页面内容详情
-	 * @param planId
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Map<String, Object>> getMcdDetail(String planId) throws Exception;
-
-	/**
-	 * 获取酬金和积分
-	 * @param planId
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Map<String, Object>> getMcdAwardScore(String planId) throws Exception;
-
-	/**
-	 * 获取策略
-	 * @param planId
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Map<String, Object>> getMcdCampseg(String planId) throws Exception;
+	public JSONObject queryDetail(String planId) throws Exception;
 }

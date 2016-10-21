@@ -194,7 +194,7 @@ function renderPageView(data){
         prevText:'上一页',
         nextText:'下一页',
         cssStyle: 'light-theme',
-        onPageClick:function(currentNum,event){
+        onPageClick:function renderPage(currentNum,event){
             pageNum=currentNum;//更新当前页码
             //初始化视图数据
             initTableViewData();
@@ -203,3 +203,4 @@ function renderPageView(data){
         }
     });
 }
+

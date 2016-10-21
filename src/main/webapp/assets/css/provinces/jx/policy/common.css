@@ -84,8 +84,7 @@ q:after {
 }
 body {
     font-size: 12px;
-    font-family: PingFang SC, Lantinghei SC, Microsoft Yahei,
-    Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans;
+    font-family: "microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-serif,"宋体";
     color: #333;
     text-rendering: optimizeLegibility;
     /*font-smoothing: antialiased;
