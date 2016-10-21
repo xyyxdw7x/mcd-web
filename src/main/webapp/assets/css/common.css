@@ -314,4 +314,15 @@ input.btn-loginSubmit{
 	cursor:pointer;
 	
 }
-
+/* date */
+input.dateInput{
+	border:1px solid #efefef;
+	height:20px;
+	width:95px;
+	margin:0 !important;
+	min-width:95px;
+	padding:0 15px 0 6px !important;
+	background:#fff url(../images/datePicker.gif) no-repeat right;
+	font-size:12px;
+	font-weight:normal;
+}
