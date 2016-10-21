@@ -15,7 +15,8 @@ function clickChannel(obj) {
 	if (adivInfo) {
 		if ($(obj).hasClass("active")) {
 			var attr_tr = $(obj).parents('tr').next();
-			attr_tr.toggle();
+			attr_tr.hide();
+			$(obj).removeClass('active');
 			if (attr_tr.find('td').length != 0) {
 				return false;
 			}
@@ -143,7 +144,7 @@ function load_channel(_cmd, _lct) {
 							}
 
 						}
-
+debugger;
 						_htm += '<td onclick="clickChannel(this);" class="fleft content-type-box J_campType" cnid="'
 								+ data[d].channelId
 								+ '" cntid="'
