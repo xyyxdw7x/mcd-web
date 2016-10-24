@@ -51,6 +51,7 @@ public class RESTfulController {
 		map.put("dasd", "1232");
 		map.put("dasd2", 11);
 		String url="http://localhost:8080/mcd-web/action/test/test3.do";
+		@SuppressWarnings("unchecked")
 		Map<String,Object> ss=restTemplate.getForObject(url, Map.class);
 		System.out.println(ss);
 		map.put("dasd21", ss);
