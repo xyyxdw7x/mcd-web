@@ -4,22 +4,9 @@ define(["backbone","echarts"
 		init:function(){
 			 
 			 $("#effectOverviewDate_day").val(getLastDate());
-//			 $("#effectOverviewDate_day").on("click",function(){
-//				 WdatePicker({
-//					 dateFmt: 'yyyy-MM-dd',
-//					 maxDate:'%y-%M-{%d-1}',
-//					 onpicked:function(dp){
-//						 var url=_ctx+"/action/kpi/queryChart.do";
-//						 var param = paramsIndex1();
-//						 url = url + "?paramJson="+param;
-//						 var chart = new MSMChart("index_1", url);
-//						 chart.xhrPost(url );
-//					 }
-//				 });
-//			 });
 			 $("#effectOverviewDate_day").datepicker({
 				 changeMonth: true,numberOfMonths:1,
-				 dateFormat:"yy-mm-dd",maxDate:"%y-%M-{%d-1}"}).on("change", function(event){
+				 dateFormat:"yy-mm-dd",minDate:"%y-%M-{%d-7}",maxDate:"%y-%M-{%d-1}"}).on("change", function(event){
 					 var url=_ctx+"/action/kpi/queryChart.do";
 					 var param = paramsIndex1();
 					 url = url + "?paramJson="+param;
