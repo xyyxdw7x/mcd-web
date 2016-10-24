@@ -1,0 +1,30 @@
+
+	<%for(var i = 0;i<result.length;i++){%>
+	
+		<%
+		
+		var index=i+1;
+		
+		var time=new XDate(result[i].CREATE_TIME);
+		time=time.toString("yyyy-MM-dd");
+		
+		%>
+		
+		<tr class="content-table-tr <%if(i%2==1){%>odd<%}else{%>even<%}%>"> 
+			<td class="text-center"><%=index%></td>
+			<td class="text-left">
+				<a href="<%=_ctx+"/jsp/tactics/tacticsInfo.jsp?campsegId="+result[i].CAMPSEG_ID%>" target="_blank">
+					<em>
+						<%=result[i].CAMPSEG_ID%>
+					</em>
+					&nbsp;&nbsp;
+					<%=result[i].CAMPSEG_NAME%>
+				</a>
+			</td>
+			<td class="text-center"><%=result[i].USERNAME%></td>
+			<td class="text-center"><%=time%></td>
+			<td>
+				<a href="javascript:void(0)" class="approve-tactics" title="审批" campsegId="<%=result[i].CAMPSEG_ID%>">审批</a>
+			</td>
+		</tr>
+	<%}%>
