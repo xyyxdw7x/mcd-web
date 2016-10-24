@@ -27,6 +27,8 @@ public class McdPlanChannelList {
 	private String adivResourceDesc;  //素材描述
 	private String adivContentURL;  //图片地址
 	private String adivContentToRUL;  //图片跳转地址
+	@Column(name="ONE_WORDS_CONTENT")
+	private String oneWordsContent; //一句好营销
 	
 	private String editURL; //采编路径
 	private String handleURL;  //执行路径
@@ -41,6 +43,15 @@ public class McdPlanChannelList {
 	
 	private String messageType;   //boss运营位  引用语类型
 	
+	
+	
+	
+	public String getOneWordsContent() {
+		return oneWordsContent;
+	}
+	public void setOneWordsContent(String oneWordsContent) {
+		this.oneWordsContent = oneWordsContent;
+	}
 	public String getId() {
 		return id;
 	}
