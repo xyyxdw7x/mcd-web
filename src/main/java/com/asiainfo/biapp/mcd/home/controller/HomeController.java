@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.home.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,6 +111,26 @@ public class HomeController extends BaseMultiActionController {
 			
 			dataJson.put("status", "200");
 			dataJson.put("data", option);
+			
+			return dataJson;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataJson.put("errorMsg", e.getMessage());
+		}
+		return null;
+	}
+	
+	@RequestMapping
+	@ResponseBody
+	public JSONObject getCaliber(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		JSONObject dataJson = new JSONObject();
+		try {
+			List<Map<String,Object>> list = saleSituationService.getCaliber();
+			
+			dataJson.put("status", "200");
+			dataJson.put("data", list);
 			
 			return dataJson;
 			

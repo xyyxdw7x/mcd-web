@@ -12,6 +12,8 @@ define(["unslider","backbone"],function(require, exports, module) {
             module.exports.getRecommendCamps();
 
             module.exports.setLink();
+            
+            module.exports.getCaliber();
 
         },
         getSaleSituationInfo : function(){
@@ -110,6 +112,40 @@ define(["unslider","backbone"],function(require, exports, module) {
 
         },
 
+        getCaliber : function(){
+            var recommendModel = new generalModel({id:"getCaliber.do"});
+            recommendModel.fetch({
+                type: "post",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                dataType: 'json',
+                success: function (model) {
+                	var data = model.attributes.data;
+                	for(i=0;i<data.length;i++){
+                		var titHtml=data[i].INDEX_DESC;
+                		if(data[i].INDEX_ID=="1010"){
+                			$("#totalSale").attr('title',titHtml);
+                		}
+                		if(data[i].INDEX_ID=="1020"){
+                			$("#totalSuccess").attr('title',titHtml);
+                		}
+                		if(data[i].INDEX_ID=="1030"){
+                			$("#totalSaleMonth").attr('title',titHtml);
+                		}
+                		if(data[i].INDEX_ID=="1040"){
+                			$("#totalSucessMonth").attr('title',titHtml);
+                		}
+                		if(data[i].INDEX_ID=="1050"){
+                			$("#totalSaleDay").attr('title',titHtml);
+                		}
+                		if(data[i].INDEX_ID=="1060"){
+                			$("#totalSuccessDay").attr('title',titHtml);
+                		}
+                	}
+                }
+            });
+
+        },
+        
         //设置性别
         setSex:function(sex){
             if(sex==null){

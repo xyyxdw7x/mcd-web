@@ -3,7 +3,6 @@
  * baseInfo渠道基本信息，包含渠道ID 渠道名称
  */
 var channelInfo913={baseInfo:null};
-var channel913AdivNames = null;
 
 /**
  * VOP渠道初始化函数  在主体架构中会动态调用该函数
@@ -20,12 +19,11 @@ channelInfo913.initView=function(data){
 	channelInfo913.queryAdivInfo();
 	channelInfo913.addSaveBtnClickEvent();
 	channelInfo913.clickPreview();//预览
-	channelInfo913.clickChannelVopEventHandler();
 	channelInfo913.clickClosePreviewDialogHandler();
 	
 	//如果有默认的推荐语则
 	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
-		$("#channelId_"+channelInfo913.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+		$("#content913").val(tacticsInfo.plan.planComment);
 	}
 	
 	//回显
@@ -37,10 +35,6 @@ channelInfo913.initView=function(data){
 	}
 	//输入字数时对字数限制
 	channelInfo913.textAreaInputNumTip913();
-	//编辑情况下没有策略ID
-	if(data.campId==null||data.campId==undefined){
-		return ;
-	}
 }
 
 /**
@@ -106,21 +100,63 @@ channelInfo913.queryAdivInfo = function(){
  * 获取运营位信息成功
  */
 channelInfo913.queryAdivInfoSuc = function(result){
-	var adivIds="";
-	var adivNames = "";
 	if(result.data){
-	for(var i=0;i<result.data.length;i++){
-		var item=result.data[i];
-		if(i==(result.data.length-1)){
-			adivIds=item.adivId+adivIds;
-			adivNames=item.adivName+adivNames;
-		}else{
-			adivIds=item.adivId+adivIds+",";
-			adivNames=item.adivName+adivNames+",";
+		//运营位li元素字符串
+		var liStr=
+		'<li id="{channelVopId}" title="{title}" adivname="{adivname}" adivid="{adivid}" >\n'+
+		'	<div class="opera-top">\n'+
+		'	<img src="{contextPath}/assets/images/put/opera-1.png"/>\n'+
+		'		<div class="op-bg"></div>\n'+
+		'	<div class="op-add"></div>\n'+
+		'	</div>\n'+
+		'	<p class="opera-bot text-center ft-14" id="{channelVopPrevId}">\n'+
+		'	底部运营位<a href="javascript:;" class="opera-btn fright"></a>\n'+
+		'	</p>\n'+
+		'</li>\n';
+		//根据运营位的个数动态加载界面展示运营位
+		for(var i=0;i<result.data.length;i++){
+			var item=result.data[i];
+			var lihtml= liStr.replace("{channelVopId}", "channel"+channelInfo913.baseInfo.channelId+"adiv"+item.adivId);
+			lihtml = lihtml.replace("{channelVopPrevId}", "channel"+channelInfo913.baseInfo.channelId+"VopPrev"+item.adivId);
+			lihtml = lihtml.replace("{title}", "运营位名称："+item.adivName);
+			lihtml = lihtml.replace("{adivname}", item.adivName);
+			lihtml = lihtml.replace("{adivid}", item.adivId);
+			lihtml = lihtml.replace("{contextPath}", contextPath);
+			$("#channelId"+channelInfo913.baseInfo.channelId+"_vopAdivInfoId").append(lihtml);
+
+			//运营位标题预览被点击事件处理
+			$("#channel"+channelInfo913.baseInfo.channelId+"VopPrev"+item.adivId).click(function(){
+				//输入项校验
+				var checkResult = channelInfo913.checkValidation();
+				if(!checkResult[0]){
+					alert(checkResult[1]);
+					return ;
+				}
+				$("#channel"+channelInfo913.baseInfo.channelId+"adiv"+item.adivId).addClass("active");
+				$("#channelVopPrevDialog").show();
+				$(".ui-widget-overlay").show();
+				$(".ui-widget-overlay").css("opacity",".9");
+				$("#leftPlanName913").html(tacticsInfo.plan.planName);
+				$("#rightPlanName913").html(tacticsInfo.plan.planName);
+				$("#topPlanName913").html(tacticsInfo.plan.planName);
+				var content1=$("#content913").val();
+				$("#previewContent913").text(content1);
+			});
+			
+			//运营位背景图片被点击事件处理
+			$("#channelId913_vopAdivInfoId li .opera-top").click(function(event){
+				var ce = $(event.currentTarget);
+				var parent = $(ce).parent();
+				var hasClass = $(parent).hasClass("active");
+				if(!hasClass){
+					$("#channel"+channelInfo913.baseInfo.channelId+"adiv"+item.adivId).addClass("active");
+				} else {
+					$("#channel"+channelInfo913.baseInfo.channelId+"adiv"+item.adivId).removeClass("active");
+				}
+			});
 		}
-	}
-	channelInfo913.baseInfo.adivIds=adivIds;
-	channel913AdivNames = adivNames;
+	} else{
+		alert("此产品在此渠道无运营位。");
 	}
 }
 
@@ -143,8 +179,7 @@ channelInfo913.addSaveBtnClickEvent=function(){
 			return ;
 		}
 		
-		
-		
+		//加入购物车
 		var newdata=channelInfo913.getChannelInfoData();
 		$("#channelDiv").trigger("changeChannel", newdata);
 	});
@@ -160,25 +195,30 @@ channelInfo913.getChannelInfoData=function(){
 	channelInfo.channelId=channelInfo913.baseInfo.channelId;
 	channelInfo.channelName=channelInfo913.baseInfo.channelName;
 	channelInfo.execContent=$("#content913").val();
+	
+	var yunyingwei = $("#channelId913_vopAdivInfoId li.active");
+	var adivIds="";
+	var adivNames = "";
+	for(var i=0;i<yunyingwei.length;i++){
+		var item=yunyingwei[i];
+		if(i==0){
+			adivIds=$(item).attr("adivid");
+			adivNames=$(item).attr("adivname");
+		}else{
+			adivIds=adivIds+","+$(item).attr("adivid");
+			adivNames=adivNames+","+$(item).attr("adivname");
+		}
+	}
+	channelInfo913.baseInfo.adivId=adivIds;
+	channel913AdivNames = adivNames;
+	
 	var keys=["渠道名称","推荐用语","运营位ID","运营位名称"];
 	var content=channelInfo.execContent;
-	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivIds,channel913AdivNames];
+	var values=[channelInfo913.baseInfo.channelName,content,channelInfo913.baseInfo.adivId,channel913AdivNames];
 	channelInfo.keys=keys;
 	channelInfo.values=values;
-	channelInfo.adivIds=channelInfo913.baseInfo.adivIds;
+	channelInfo.adivId=channelInfo913.baseInfo.adivId;
 	return channelInfo;
-}
-
-channelInfo913.clickChannelVopEventHandler = function(){
-	$("#channelVopId .opera-top").click(function(){
-		
-		var hasClass = $("#channelVopId").hasClass("active");
-		if(!hasClass){
-			$("#channelVopId").addClass("active");
-		} else {
-			$("#channelVopId").removeClass("active");
-		}
-	});
 }
 
 /**
@@ -186,23 +226,6 @@ channelInfo913.clickChannelVopEventHandler = function(){
  * @param data
  */
 channelInfo913.clickPreview = function(){
-	$("#channelVopPrevId").click(function(){
-		//输入项校验
-		var checkResult = channelInfo913.checkValidation();
-		if(!checkResult[0]){
-			alert(checkResult[1]);
-			return ;
-		}
-		$("#channelVopId").addClass("active");
-		$("#channelVopPrevDialog").show();
-		$(".ui-widget-overlay").show();
-		$(".ui-widget-overlay").css("opacity",".9");
-		$("#leftPlanName913").html(tacticsInfo.plan.planName);
-		$("#rightPlanName913").html(tacticsInfo.plan.planName);
-		$("#topPlanName913").html(tacticsInfo.plan.planName);
-		var content1=$("#content913").val();
-		$("#previewContent913").text(content1);
-	});
 	$("#previewBtn913").click(function(){
 		//输入项校验
 		var checkResult = channelInfo913.checkValidation();
@@ -239,6 +262,23 @@ channelInfo913.checkValidation=function(){
 		result[1]="推荐用语不能为空字符!";
 		return result;
 	}
+	
+	//是否已经加载了运营位
+	var yunyingwei = $("#channelId913_vopAdivInfoId li");
+	if(yunyingwei.length == 0){
+		result[0]=false;
+		result[1]="界面未加载运营位，渠道信息不完整!";
+		return result;
+	}
+	
+	//为选择运营位
+	yunyingwei = $("#channelId913_vopAdivInfoId li.active");
+	if(yunyingwei.length == 0){
+		result[0]=false;
+		result[1]="至少要选择一个运营位!";
+		return result;
+	}
+	
 	return result;
 }
 

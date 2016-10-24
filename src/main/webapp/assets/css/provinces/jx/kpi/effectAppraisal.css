@@ -4642,6 +4642,8 @@ html {
   line-height: 24px;
   min-width: 89px;
   width: 89px;
+  font-size:12px;
+  font-weight:normal;
 }
 .slideChooseMonth_list {
   position: absolute;

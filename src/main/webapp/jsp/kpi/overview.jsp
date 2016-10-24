@@ -20,7 +20,7 @@
 <div class="container effectContainer">
 	<div class="content">
     	<dl class="overviewDl">
-        	<dt><span id="dayDate1" class="dateChoose"><input type="text" id="effectOverviewDate_day" class="Wdate" style="border:1px solid #efefef;"></span>日使用效果</dt>
+        	<dt><span id="dayDate1" class="dateChoose"><input type="text" id="effectOverviewDate_day" class="dateInput" ></span>日使用效果</dt>
             <dd>
             	<div class="chartsInfo" id="echarts_1">日营销用户数<span class="num"></span>人，营销成功用户数<span class="num red"></span>人，营销成功率<span class="num"></span></div>
                 <div class="echartsCT">

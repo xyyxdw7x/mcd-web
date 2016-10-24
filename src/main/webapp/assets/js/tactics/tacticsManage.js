@@ -248,7 +248,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 					var _index=target.parent().find("li").index(target[0]);
 					target.addClass("active").siblings(".active").removeClass("active");
 					$("#"+ctID).find("> .box").eq(_index).addClass("active").siblings(".box.active").removeClass("active");
-					debugger;
 					if(target.attr("data-tab") == "ALL"){
 						//渠道类型
 						var channelId=$("#channelIdDivAll .active").attr("channelid");
@@ -849,7 +848,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 						if(btnType == 'stop' || btnType == 'pause'){
 							var dlg = $('<div class="reasonDialog" campsegId="'+campsegId+'"></div>');
 							dlg.append('<div class="reasonDialog-div"><textarea class="reasonDialog-div-textarea"></textarea>'
-								+'<p class="num-text">您还可以输入<i class="yellow inputNum">140</i>个字</p></div>');
+								+'<p class="num-text">您还可以输入<i class="yellow inputNum">50</i>个字</p></div>');
 							dlg.dialog({
 								title:"填写操作原因",
 								modal:true,
@@ -886,8 +885,8 @@ define(["backbone","my97","page"],function(require, exports, module) {
 							$(".reasonDialog-div-textarea").bind('keyup',function(){
 								var exec_content = $(this).val();
 								var inputNum = exec_content.length;
-								$(this).parent().find(".inputNum").html(140-exec_content.length);
-								if(140-exec_content.length>=0){
+								$(this).parent().find(".inputNum").html(50-exec_content.length);
+								if(50-exec_content.length>=0){
 									$(this).css('border','1px solid #ebeff0');
 								}else{
 									$(this).css('border','solid 1px red');
@@ -929,7 +928,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 											}else{
 												channel_ul.append('<li channelId="'+_channelExecContent[j].CHANNEL_ID+'">'+_channelExecContent[j].CHANNEL_NAME+'</li>');
 											}
-											var _text_num = 140;
 											if(_channelExecContent[j].EXEC_CONTENT.length!=0){
 												var exec_content = _channelExecContent[j].EXEC_CONTENT;
 												var strNew = "";
@@ -949,6 +947,7 @@ define(["backbone","my97","page"],function(require, exports, module) {
 														exec_content = "";
 													}
 												}
+												var _text_num = 50-exec_content.length;
 												_text_num = _text_num-strNew.length;
 											}
 
@@ -995,10 +994,10 @@ define(["backbone","my97","page"],function(require, exports, module) {
 
 
 									});
+									
 									$(".editDialog-textarea").keyup(function(){
 										var exec_content = $(this).val();
 										var inputNum = exec_content.length//parseInt($(this).parent().find("#inputNum").html());
-
 										var strNew = "";
 										while(exec_content.indexOf("$") != -1){
 											var star = exec_content.indexOf("$");
@@ -1018,8 +1017,8 @@ define(["backbone","my97","page"],function(require, exports, module) {
 										}
 
 										strNew = strNew + exec_content;
-										$(this).parent().find(".inputNum").html(140-strNew.length);
-										if(140-strNew.length>=0){
+										$(this).parent().find(".inputNum").html(50-strNew.length);
+										if(50-strNew.length>=0){
 											$(this).css('border','1px solid #ebeff0');
 										}else{
 											$(this).css('border','solid 1px red');

@@ -212,6 +212,16 @@
 				<td class="content-table-td">推荐用语</td>
 				<td class="content-table-td" ><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
+		<% }else if(channelId == '913' ){%>
+			<tr class="even">
+			    <td rowspan="2" class="content-table-td" style="background:#fff"><%=data[i].channel_name%></td>
+				<td class="content-table-td" >运营位</td>
+				<td class="content-table-td" ><%=data[i].adivName%></td>
+			</tr>
+			<tr class="even">	
+				<td class="content-table-td">推荐用语</td>
+				<td class="content-table-td" ><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
+			</tr>
 		<% }%>
 	<%}%>
 </table>

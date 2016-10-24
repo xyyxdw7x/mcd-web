@@ -1,6 +1,7 @@
 package com.asiainfo.biapp.mcd.home.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,10 @@ public class SaleSituationServiceImpl implements ISaleSituationService{
 	public Pager getMySale(String userId,int pageNum,int pageSize){
 		return saleSituationDao.getMySale(userId, pageNum,pageSize);
 	}
+	
+	@Override
+	public List<Map<String,Object>> getCaliber(){
+		return saleSituationDao.getCaliber();
+	}	
 
 }

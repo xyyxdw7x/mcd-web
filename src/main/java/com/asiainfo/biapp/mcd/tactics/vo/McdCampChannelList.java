@@ -22,6 +22,8 @@ public class McdCampChannelList implements java.io.Serializable {
 	private Short isHasVar; //是否具有替换符,0:无;1:有
 	@Column(name="EXEC_CONTENT")
 	private String execContent;
+	@Column(name="ONE_WORDS_CONTENT")//北京移动一句话营销用语
+	private String oneWordsContent;
 	@Column(name="TARGER_USER_NUMS")
 	private int targetUserNums;  //目标客户群
 	@Column(name="UPDATE_CYCLE")
@@ -59,6 +61,13 @@ public class McdCampChannelList implements java.io.Serializable {
 	@Transient
 	private String functionName;
 
+	
+	public String getOneWordsContent() {
+		return oneWordsContent;
+	}
+	public void setOneWordsContent(String oneWordsContent) {
+		this.oneWordsContent = oneWordsContent;
+	}
 	public String getBossTemplateId() {
 		return bossTemplateId;
 	}

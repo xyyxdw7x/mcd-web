@@ -11,7 +11,7 @@
 
 	</div>
 			<div class="content-table-box" id="createDimPlanList">
-				<table class="content-table">
+				<table class="content-table" style="border:0px;table-layout: fixed;width:1139px">
 					<tbody>
 						<tr>
 							<th class="content-table-th" style="width: 20%">策略编号</th>
@@ -43,7 +43,7 @@
 							     data.result[i].campsegShortName=data.result[i].campsegName;
 							  }
 							%>
-							<td class="content-table-td" title="<%=data.result[i].campsegName%>"><%=data.result[i].campsegShortName%></td>
+							<td class="content-table-td align_center" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" title="<%=data.result[i].campsegName%>"><%=data.result[i].campsegName%></td>
 							<!-- <td class="content-table-td align_center"><%=data.result[i].planName%></td>  -->
 							<td class="content-table-td" style="color: #FFBB66"><%=data.result[i].custgroupNumber%></td>
 							<!-- <td class="content-table-td" style="color: #FFBB66"><%=data.result[i].ineffectieDays%></td>  -->
