@@ -1,9 +1,5 @@
 package com.asiainfo.biapp.framework.web.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,10 +9,6 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
 import com.asiainfo.biapp.framework.util.SpringContextsUtil;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import net.sf.json.JSONObject;
 
 /**
  * 业务Controller的基类
@@ -59,74 +51,6 @@ public class BaseMultiActionController extends MultiActionController {
 		//request.getSession().setAttribute("USER_ID", "admin");
      }
 	 
-	 /**
-		 * 
-		 * @param response
-		 * @param obj
-		 *            发送给客户端的对象，最终将转化成json对象的data属性
-		 * @param status
-		 * @param errorMsg
-		 *            后台处理异常时传递给前端的信息
-		 * @throws IOException
-		 */
-		protected void outJson4Ws(HttpServletResponse response, Object obj, String status, String errorMsg) {
-			JSONObject dataJson = new JSONObject();
-			if ("200".equals(status)) {
-				String str = this.obj2Json(obj);
-				dataJson.put("data", str);
-			} else {
-				dataJson.put("result", errorMsg);
-				dataJson.put("data", "");
-			}
-			dataJson.put("status", status);
-			response.setContentType("application/json; charset=UTF-8");
-			response.setHeader("progma", "no-cache");
-			response.setHeader("Access-Control-Allow-Origin", "*");
-			response.setHeader("Cache-Control", "no-cache");
-			PrintWriter out;
-			try {
-				out = response.getWriter();
-				out.print(dataJson);
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-
-		/**
-		 * 对象转换为json字符串
-		 * @param obj
-		 * @return
-		 */
-		@SuppressWarnings("deprecation")
-		private  String obj2Json(Object obj) {
-			ObjectMapper om = new ObjectMapper();
-			
-			String jsonStr = "{}";
-			JsonGenerator jsonGenerator = null;
-			try {
-				if (obj != null) {
-					StringWriter sw = new StringWriter();
-					jsonGenerator = om.getJsonFactory().createJsonGenerator(sw);
-					jsonGenerator.writeObject(obj);
-					jsonStr = sw.toString();
-				}
-			} catch (Exception e) {
-
-			} finally {
-				if (jsonGenerator != null) {
-					try {
-						jsonGenerator.close();
-					} catch (IOException e) {
-					}
-				}
-			}
-			return jsonStr;
-		}
-
-		
 	public IUserPrivilege getUserPrivilege() {
 		IUserPrivilege up=(IUserPrivilege) SpringContextsUtil.getBean("defaultUserPrivilege");
 		return up;

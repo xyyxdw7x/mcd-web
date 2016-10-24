@@ -27,6 +27,7 @@ public class JmsJsonUtil {
 	 * @param obj
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String obj2Json(Object obj) {
 		String jsonStr = "{}";
 		JsonGenerator jsonGenerator = null;
@@ -56,6 +57,7 @@ public class JmsJsonUtil {
 	 * @param type
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static <T> T json2Obj(String json, Class<T> type) {
 		JsonParser jp = null;
 		try {
