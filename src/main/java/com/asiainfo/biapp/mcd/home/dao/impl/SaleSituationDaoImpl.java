@@ -359,11 +359,16 @@ public class SaleSituationDaoImpl extends JdbcDaoBase implements ISaleSituationD
 				.append(") nn");
 		sql.append(" on camp.campseg_id = nn.campseg_id ");
 		
-		sql.append(" left outer join  (select t.campseg_stat_siteid,t.campseg_stat_id,t.campseg_stat_name from mcd_dim_camp_status t  where t.campseg_stat_visible=0 ) aa")
+		sql.append(" left outer join  (select case t.campseg_stat_id")
+		.append(" when 40 then 1 when 48 then 2 when 49 then 3")
+		.append(" when 41 then 4 when 59 then 5 when 20 then 6")
+		.append(" when 50 then 7 when 54 then 8 when 90 then 9")
+		.append(" when 91 then 10 end campseg_stat_siteid_sort,t.campseg_stat_siteid,t.campseg_stat_id,t.campseg_stat_name")
+		.append(" from mcd_dim_camp_status t  where t.campseg_stat_visible=0 ) aa")
 		.append(" on aa.campseg_stat_id=camp.campseg_stat_id");
          
 		sql.append(" where camp.CREATE_USERID=? and camp.campseg_pid='0' ");
-		sql.append(" ORDER BY aa.campseg_stat_siteid ASC,camp.create_time desc ");
+		sql.append(" ORDER BY aa.campseg_stat_siteid_sort ASC,camp.create_time desc ");
 
 		String sqlStr = DataBaseAdapter.getPagedSql(sql.toString(), pageNum, pageSize);
 
