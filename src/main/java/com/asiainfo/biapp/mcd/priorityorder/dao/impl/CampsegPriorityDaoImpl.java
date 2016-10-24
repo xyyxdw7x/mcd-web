@@ -56,7 +56,12 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
 		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task ");
+	      if(StringUtils.isNotEmpty(channelId)){
+	            sb.append(" where channel_id='"+channelId+"'");
+	        }
+	      sb.append(" ) mct on mcoa.campseg_id = mct.campseg_id")
+
 //		  .append(" left join (select * from mtl_campseg_sort  where stat_date = (select max(stat_date) from mtl_campseg_sort)) meicd on mcoa.campseg_id=meicd.campseg_id and mcoa.channel_id=meicd.channel_id and mcoa.city_id=meicd.city_id and meicd.CAMPSEG_TYPE=0")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
@@ -134,7 +139,11 @@ public class CampsegPriorityDaoImpl extends JdbcDaoBase implements ICampsegPrior
 		  .append(" left join mcd_plan_def msp on mcs.plan_id=msp.plan_id")
 		  .append(" left join mcd_camp_custgroup_list mcc on mcc.campseg_id=mcs.campseg_id")
 		  .append(" left join mcd_custgroup_def mgi on mcc.custgroup_id = mgi.custom_group_id")
-		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task) mct on mcoa.campseg_id = mct.campseg_id")
+		  .append(" left join (select unique campseg_id ,exec_status,task_id from mcd_camp_task ");
+	        if(StringUtils.isNotEmpty(channelId)){
+	            sb.append("  where channel_id ='"+channelId+"'");
+	        }
+          sb.append(" ) mct on mcoa.campseg_id = mct.campseg_id")
 		  .append(" left join (")
 		  .append(" select campseg.city_id,campseg.campseg_id,case when nvl(sum(mcs.camp_user_num_total),0)=0 then 0")
 		  .append(" else round(sum(mcs.camp_succ_num_total)/sum(mcs.camp_user_num_total),4)  end camp_succ_rate")
