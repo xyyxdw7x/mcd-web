@@ -1,10 +1,24 @@
 
 <div role="tabpanel" id="channelContentDiv_<%=data.channelId%>" class="tab-pane active">
 <div class="left-right-box">
-	<span class="color-333 left ft14">推荐营销用语：</span>
+	<span class="color-333 left ft14">推荐用语：</span>
 	<div class="right text-area-box">
 		<textarea name="channelId_<%=data.channelId%>_contentWords" id="channelId_<%=data.channelId%>_contentWords" value=""></textarea>
-		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_wordSize"><%=data.wordSize%></span>个字</p>
+		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_contentWords_wordSize">240</span>个字</p>
+	</div>
+</div>
+<div class="left-right-box">
+	<span class="color-333 left ft14">营销短信语：</span>
+	<div class="right text-area-box">
+		<textarea name="channelId_<%=data.channelId%>_SMS_CONTENT" id="channelId_<%=data.channelId%>_SMS_CONTENT" value=""></textarea>
+		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_SMS_CONTENT_wordSize">70</span>个字</p>
+	</div>
+</div>
+<div class="left-right-box">
+	<span class="color-333 left ft14">一句话营销：</span>
+	<div class="right text-area-box">
+		<textarea name="channelId_<%=data.channelId%>_ONE_WORDS_CONTENT" id="channelId_<%=data.channelId%>_ONE_WORDS_CONTENT" value=""></textarea>
+		<p class="ft12 color-999 text-mes">您还可以输入<span id="channelId_<%=data.channelId%>_ONE_WORDS_CONTENT_wordSize">240</span>个字</p>
 	</div>
 </div>
 <div class="btns-wrp over-hidden">
