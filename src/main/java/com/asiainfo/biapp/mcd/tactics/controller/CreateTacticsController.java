@@ -1917,12 +1917,10 @@ public class CreateTacticsController extends BaseMultiActionController {
 	 */
 	@ResponseBody
 	@RequestMapping
-	public Map<String,String> selectPlanBackChannels(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Map<String,String> rs= new HashMap<String,String>();
+	List<McdPlanChannelList> selectPlanBackChannels(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String planId = request.getParameter("planId");
-		String channels = mcdPlanChannelListService.getChannelsByPlanId(planId);
-		rs.put("channels", channels);
-		return rs;
+		List<McdPlanChannelList> channels = mcdPlanChannelListService.getChannelsByPlanId(planId);
+		return channels;
 	}
 	
 	/**

@@ -14,18 +14,8 @@ public class McdPlanChannelListServiceImpl implements IMcdPlanChannelListService
 	@Resource(name="mcdPlanChannelListDao")
 	private IMcdPlanChannelListDao mcdPlanChannelListDao;
 	@Override
-	public String getChannelsByPlanId(String planId){
-		List<McdPlanChannelList> list = mcdPlanChannelListDao.getChannelsByPlanId(planId);
-		StringBuffer channels= new StringBuffer("");
-		if(list!=null && list.size()>0){
-			for(int i=0;i<list.size();i++){
-				channels.append(list.get(i).getChannelId());
-				if(i!=list.size()-1){
-					channels.append(",");
-				}
-			}
-		}
-		return channels.toString();
+	public List<McdPlanChannelList> getChannelsByPlanId(String planId){
+		return mcdPlanChannelListDao.getChannelsByPlanId(planId);
 	}
 
 }
