@@ -16,7 +16,7 @@
    
    
     <%
-    String planId=request.getParameter("planId");
+    String planId=request.getParameter("policyId");
     %>
     <script type="text/javascript" >
         var planId="<%=planId%>";
