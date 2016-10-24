@@ -119,24 +119,8 @@ public class PolicyManageController extends BaseMultiActionController {
 	@ResponseBody
 	@RequestMapping
 	public String policySaveContent(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String planId = request.getParameter("planId");
-		String typeId = request.getParameter("typeId");
-		String statusId = request.getParameter("statusId");
-		String channelId = request.getParameter("channelId");
-		String cityId = request.getParameter("cityId");
-		String manager = request.getParameter("managerName");
-		String planDesc = request.getParameter("planDesc");
-		String planComment = request.getParameter("planComment");
-		String dealCode_10086 = request.getParameter("dealCode_10086");
-		String dealCode_1008611 = request.getParameter("dealCode_1008611");
-		String urlForAndroid = request.getParameter("urlForAndroid");
-		String urlForIos = request.getParameter("urlForIos");
-		String cityIds = request.getParameter("cityIds");
-		String scores = request.getParameter("scores");
-		String awards = request.getParameter("awards");
-
-		Boolean plan = mcdPolicyService.savePolicy(planId, typeId, statusId, channelId, cityId, manager, planDesc,
-				planComment, dealCode_10086, dealCode_1008611, urlForAndroid, urlForIos, cityIds, scores, awards);
+		Map<String,String[]> saveData = request.getParameterMap();
+		Boolean plan = mcdPolicyService.savePolicy(saveData);
 		String result = "";
 		
 		if (plan == false) {

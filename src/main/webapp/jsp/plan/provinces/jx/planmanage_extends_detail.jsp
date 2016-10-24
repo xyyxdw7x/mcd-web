@@ -31,8 +31,8 @@
              <div class="pop-page-header-content">
                  <div class="header-content-left">
                      <span id="header-content-detail">详情</span>
-                    <%--  <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img"></span>
-                     <span id="header-content-back"> < 返回 </span> --%>
+                    <%--  <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img"></span> --%>
+                     <!-- <span id="header-content-back"> < 返回 </span> -->
                  </div>
                  <div class="header-content-right">
                      <!-- <span id="close"> X </span> -->

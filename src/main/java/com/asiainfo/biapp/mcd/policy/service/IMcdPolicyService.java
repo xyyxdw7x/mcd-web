@@ -62,9 +62,7 @@ public interface IMcdPolicyService {
 	 * @param urlForIos
 	 * @return
 	 */
-	public Boolean savePolicy(String planId, String typeId, String statusId, String channelId, String cityId,
-			String manager, String planDesc, String planComment, String dealCode_10086, String dealCode_1008611,
-			String urlForAndroid, String urlForIos, String cityIds, String scores, String awards);
+	public Boolean savePolicy(Map saveData);
 
 	
 	/**

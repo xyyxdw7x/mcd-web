@@ -104,42 +104,70 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 	}
 	
 	@Override
-	public Boolean savePolicy(String planId, String typeId, String statusId, String channelId, String cityId,
-			String manager, String planDesc, String planComment, String dealCode_10086, String dealCode_1008611,
-			String urlForAndroid, String urlForIos, String cityIds, String scores, String awards) {
+	public Boolean savePolicy(Map saveData) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		for(java.util.Iterator iter = saveData.entrySet().iterator();iter.hasNext();){
+			Map.Entry element = (Map.Entry)iter.next();
+			String strkey = element.getKey().toString();
+			String[] value = (String[])element.getValue();
+			String values = "";
+			map.put(strkey, value[0]);
+			for(int i =0;i<value.length;i++){
+				values = value[0];
+			}
+			map.put(strkey,values);
+		}	
+				
+		String planId = (String) map.get("saveData[planId]");
+		String typeId =  (String) map.get("saveData[typeId]");
+		String statusId =  (String) map.get("saveData[statusId]");
+		String channelId =  (String) map.get("saveData[channelId]");
+		String cityId = (String) map.get("saveData[cityId]");
+		String manager =  (String) map.get("saveData[managerName]");
+		String planDesc =  (String) map.get("saveData[planDesc]");
+		String planComment = (String) map.get("saveData[planComment]");
+		String dealCode_10086 =  (String) map.get("saveData[dealCode_10086]");
+		String dealCode_1008611 =  (String) map.get("saveData[dealCode_1008611]");
+		String urlForAndroid =  (String) map.get("saveData[urlForAndroid]");
+		String urlForIos =  (String) map.get("saveData[urlForIos]");
+		String cityIds =  (String) map.get("saveData[cityIds]");
+		String scores =  (String) map.get("saveData[scores]");
+		String awards =  (String) map.get("saveData[awards]");
+		
+		
 		// 更新dealCode内容快dealCode_10086,dealCode_1008611,urlForAndroid,urlForIos,MANAGER数据
-				Boolean updateDealCode = this.updateDealCode(planId, dealCode_10086, dealCode_1008611, urlForAndroid, urlForIos,
+		Boolean updateDealCode = this.updateDealCode(planId, dealCode_10086, dealCode_1008611, urlForAndroid, urlForIos,
 						manager);
 
-				// 更新typeId,statusId,planDesc
-				Map<String, Object> updatePlanDef = this.updatePlanDef(planId, typeId, statusId, planDesc);
-				String planDefSql = updatePlanDef.get("upSql").toString();
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				List<Object> planDefParam = (List) updatePlanDef.get("param");
-				Boolean planDefaveResult = mcdPolicyDao.updatePolicy(planDefSql, planDefParam);
+		// 更新typeId,statusId,planDesc
+		Map<String, Object> updatePlanDef = this.updatePlanDef(planId, typeId, statusId, planDesc);
+		String planDefSql = updatePlanDef.get("upSql").toString();
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		List<Object> planDefParam = (List) updatePlanDef.get("param");
+		Boolean planDefaveResult = mcdPolicyDao.updatePolicy(planDefSql, planDefParam);
 
-				// 更新推荐语
-				Boolean updatePlanComment = this.updatePlanComment(planId, planComment);
+		// 更新推荐语
+		Boolean updatePlanComment = this.updatePlanComment(planId, planComment);
 
-				// 更新Channel适用渠道
-				Boolean updateExecCon = this.updateExecCon(planId, channelId);
+		// 更新Channel适用渠道
+		Boolean updateExecCon = this.updateExecCon(planId, channelId);
 
-				// 更新酬金和积分
-				Boolean updateScoreAward = this.updateScoreAward(planId, cityIds, scores, awards);
+		// 更新酬金和积分
+		Boolean updateScoreAward = this.updateScoreAward(planId, cityIds, scores, awards);
 
-				log.info("dealCodeSaveResult:" + updateDealCode + ";planDefaveResult:" + planDefaveResult + ";updatePlanComment"
+		log.info("dealCodeSaveResult:" + updateDealCode + ";planDefaveResult:" + planDefaveResult + ";updatePlanComment"
 						+ updatePlanComment + ";updateExecCon" + updateExecCon + ";updateScoreAward:" + updateScoreAward);
-				Boolean insertResult = false;
+		Boolean insertResult = false;
 
-				// 对最终的反馈结果进行处理
-				if (updateDealCode == true && updateExecCon == true && updateScoreAward == true && updatePlanComment == true
+		// 对最终的反馈结果进行处理
+		if (updateDealCode == true && updateExecCon == true && updateScoreAward == true && updatePlanComment == true
 						&& planDefaveResult == true) {
-					insertResult = true;
-				} else {
-					insertResult = false;
-				}
+			insertResult = true;
+		} else {
+			insertResult = false;
+		}
 
-				return insertResult;
+		return insertResult;
 	}
 
 	

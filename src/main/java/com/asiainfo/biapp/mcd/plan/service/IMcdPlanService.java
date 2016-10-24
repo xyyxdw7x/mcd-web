@@ -60,9 +60,7 @@ public interface IMcdPlanService {
 	 * @param urlForIos
 	 * @return
 	 */
-	public Boolean savePlan(String planId, String typeId, String statusId, String channelId, String cityId,
-			String manager, String planDesc, String planComment, String dealCode_10086, String dealCode_1008611,
-			String urlForAndroid, String urlForIos, String cityIds, String scores, String awards);
+	public Boolean savePlan(Map saveData);
 
 	
 	/**

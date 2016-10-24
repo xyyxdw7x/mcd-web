@@ -1,4 +1,4 @@
-/**µ¯´°Ö÷ÌåÍ¨ÓÃÑùÊ½ */
+/**å¼¹çª—ä¸»ä½“é€šç”¨æ ·å¼ */
 .popwin {
     /*-webkit-box-align: center;*/
     /*-webkit-box-orient: vertical;*/
@@ -89,12 +89,12 @@
     vertical-align: middle;
 }
 
-/**µ¯´°Ö÷ÌåÍ¨ÓÃÑùÊ½  END */
+/**å¼¹çª—ä¸»ä½“é€šç”¨æ ·å¼  END */
 
 
 
 
-/**µ¯´°ÏêÏ¸ÄÚÈİ top*/
+/**å¼¹çª—è¯¦ç»†å†…å®¹ top*/
 .head{
     background-color: #288bde;
     color: #dddddd;
@@ -154,15 +154,16 @@ label{
 .pop-page-content-top-div .input-div select{
     width: 149px;
 }
-/**µ¯´°ÏêÏ¸ÄÚÈİ  top  End*/
+/**å¼¹çª—è¯¦ç»†å†…å®¹  top  End*/
 
 
 
-/**µ¯´°ÏêÏ¸ÄÚÈİ  center*/
-.pop-page-content-center-top,.pop-page-content-center-center,.pop-page-content-center-foot{
+/**å¼¹çª—è¯¦ç»†å†…å®¹  center*/
+.pop-page-content-center-foot{
     padding-bottom: 8px;
     border-bottom: 2px dotted #ccc;
     margin-bottom: 8px;
+    margin-top: 30px;
 }
 .pop-page-content-center-top-div .input-div label{
     width:90px;
@@ -222,11 +223,11 @@ label{
     width: 100%;
     height:100%;
 }
-/**µ¯´°ÏêÏ¸ÄÚÈİ  center  End*/
+/**å¼¹çª—è¯¦ç»†å†…å®¹  center  End*/
 
 
 
-/**µ¯´°ÏêÏ¸ÄÚÈİ  foot  */
+/**å¼¹çª—è¯¦ç»†å†…å®¹  foot  */
 
 .pop-page-content-foot{
     height:106px;
@@ -369,7 +370,7 @@ table.table.table-striped.table-bordered td {
 .award ,.score{
     background: #ebebe4;
 }
-/**µ¯´°ÏêÏ¸ÄÚÈİ  foot  End*/
+/**å¼¹çª—è¯¦ç»†å†…å®¹  foot  End*/
 
 #award td input,#score td input{
     width:40px;

@@ -344,6 +344,7 @@ function initCampsegView(){
             var campseg_stat_names = campseg[i].CAMPSEG_STAT_NAME;
             var num=i+1;
             campsegView+=""
+                +"<a href='"+contextPath+"/jsp/tactics/tacticsInfo.jsp?campsegId="+campseg_ids+"' target='_blanck'>"
                 +"<div class='campseg-li-div'>"
                 +"<div >"
                 +"<div class='content-num-div'><img src='"+contextPath+"/assets/images/tips_icon.png'><span>"+num+"</span></div><!--tips div  End-->"
@@ -354,6 +355,7 @@ function initCampsegView(){
                 +"</ul>"
                 +"</div>"
                 +"</div>"
+                +"</a>"
         }
     }
     $("#campsegContent").html(campsegView);
@@ -442,7 +444,7 @@ function addSaveEventListener(){
         scores=scores.substring(0,scores.length-1);//积分值
         awards=awards.substring(0,awards.length-1);//筹集值
 
-        console.log("cityIds"+cityIds+";scores"+scores+";awards"+awards);
+        console.log("cityIds"+cityIds+";scores"+scores+";awards"+awards+"planId:"+planId);
 
         //对空值作处理
         if(managerName == "无" || managerName ==null){managerName=""}
@@ -453,28 +455,28 @@ function addSaveEventListener(){
         if(urlForAndroid == "无" || urlForAndroid ==null){urlForAndroid=""}
         if(urlForIos == "无" || urlForIos ==null){urlForIos=""}
 
-
-        console.log(typeId+statusId+channelId+cityId+managerName+planDesc+planComment+dealCode_10086+dealCode_1008611+urlForAndroid+urlForIos);
+        var save_Data={
+            "planId":planId,
+            "typeId":typeId,
+            "statusId":statusId,
+            "channelId":channelId,
+            "cityId":cityId,
+            "managerName":managerName,
+            "planDesc":planDesc,
+            "planComment":planComment,
+            "dealCode_10086":dealCode_10086,
+            "dealCode_1008611":dealCode_1008611,
+            "urlForAndroid":urlForAndroid,
+            "urlForIos":urlForIos,
+            "cityIds":cityIds,
+            "scores":scores,
+            "awards":awards
+        };
         //将数据传入后台保存
         $.ajax({
             url:contextPath+"/plan/planManage/planSaveContent.do",
             data:{
-                "planId":planId,
-                "typeId":typeId,
-                "statusId":statusId,
-                "channelId":channelId,
-                "cityId":cityId,
-                "managerName":managerName,
-                "planDesc":planDesc,
-                "planComment":planComment,
-                "dealCode_10086":dealCode_10086,
-                "dealCode_1008611":dealCode_1008611,
-                "urlForAndroid":urlForAndroid,
-                "urlForIos":urlForIos,
-                "cityIds":cityIds,
-                "scores":scores,
-                "awards":awards
-
+                "saveData":save_Data
             },
             async:false,
             type:"POST",

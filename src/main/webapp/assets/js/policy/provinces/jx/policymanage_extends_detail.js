@@ -367,6 +367,7 @@ function initCampsegView(){
             var campseg_stat_names = campseg[i].CAMPSEG_STAT_NAME;
             var num=i+1;
             campsegView+=""
+                +"<a href='"+contextPath+"/jsp/tactics/tacticsInfo.jsp?campsegId="+campseg_ids+"' target='_blanck'>"
                 +"<div class='campseg-li-div'>"
                 +"<div >"
                 +"<div class='content-num-div'><img src='/mcd-web/assets/images/tips_icon.png'><span>"+num+"</span></div><!--tips div  End-->"
@@ -377,6 +378,7 @@ function initCampsegView(){
                 +"</ul>"
                 +"</div>"
                 +"</div>"
+                +"</a>"
         }
     }
     $("#campsegContent").html(campsegView);
@@ -397,7 +399,7 @@ function addBackEventListener(){
     $("#header-content-back").click(function(){
         //$(".popwin").hide();
         //$(".poppage").hide();
-    	if(confirm("您确定要关闭本页吗？")){
+        if(confirm("您确定要关闭本页吗？")){
             var browserName = navigator.appName;
             var browserVer = parseInt(navigator.appName);
             if(browserName == 'Microsoft Internet Explorer'){
@@ -416,13 +418,10 @@ function addBackEventListener(){
                     try{
                         window.close();
                         window.opener.close();
+                    }catch(e){
                         window.location.href="about:blank";
                         window.close();
                         window.opener.close();
-                        window.opener = null;
-                        window.open("","_self");
-                        window.close();
-                    }catch(e){
                     }
                 }else{
                     try{
@@ -466,15 +465,12 @@ function addCloseEventListener(){
                 var userAgent = navigator.userAgent;
                 if(userAgent.indexOf("Firefox") !=-1 || userAgent.indexOf("Chrome") !=-1){
                     try{
-                    	window.close();
+                        window.close();
                         window.opener.close();
+                    }catch(e){
                         window.location.href="about:blank";
                         window.close();
                         window.opener.close();
-                        window.opener = null;
-                        window.open("","_self");
-                        window.close();
-                    }catch(e){
                     }
                 }else{
                     try{
@@ -547,29 +543,30 @@ function addSaveEventListener(){
         if(dealCode_1008611 == "无" || dealCode_1008611 ==null){dealCode_1008611=""}
         if(urlForAndroid == "无" || urlForAndroid ==null){urlForAndroid=""}
         if(urlForIos == "无" || urlForIos ==null){urlForIos=""}
-
+        var save_Data={
+            "planId":planId,
+            "typeId":typeId,
+            "statusId":statusId,
+            "channelId":channelId,
+            "cityId":cityId,
+            "managerName":managerName,
+            "planDesc":planDesc,
+            "planComment":planComment,
+            "dealCode_10086":dealCode_10086,
+            "dealCode_1008611":dealCode_1008611,
+            "urlForAndroid":urlForAndroid,
+            "urlForIos":urlForIos,
+            "cityIds":cityIds,
+            "scores":scores,
+            "awards":awards
+        };
 
         console.log(typeId+statusId+channelId+cityId+managerName+planDesc+planComment+dealCode_10086+dealCode_1008611+urlForAndroid+urlForIos);
         //将数据传入后台保存
         $.ajax({
             url:contextPath+"/policy/policyManage/policySaveContent.do",
             data:{
-                "planId":planId,
-                "typeId":typeId,
-                "statusId":statusId,
-                "channelId":channelId,
-                "cityId":cityId,
-                "managerName":managerName,
-                "planDesc":planDesc,
-                "planComment":planComment,
-                "dealCode_10086":dealCode_10086,
-                "dealCode_1008611":dealCode_1008611,
-                "urlForAndroid":urlForAndroid,
-                "urlForIos":urlForIos,
-                "cityIds":cityIds,
-                "scores":scores,
-                "awards":awards
-
+                "saveData":save_Data
             },
             async:false,
             type:"POST",
