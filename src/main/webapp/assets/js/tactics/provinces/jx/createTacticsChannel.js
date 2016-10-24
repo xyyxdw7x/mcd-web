@@ -1,7 +1,7 @@
 /**
  * 渠道信息
  */
-var channelInfo={mcdPlanChannelList:null};
+var channelInfo={};
 /**
  * 初始化渠道
  */
@@ -66,8 +66,6 @@ channelInfo.addChannelTab=function(data){
 	//添加渠道标签
 	var li_tabs_html = new EJS({element:"channelTabTemp"}).render({data:data});
 	$("#selectedChannelsDisplayUl").append($(li_tabs_html));
-	//var channelContentDiv="<div role='tabpanel' id='channelContentDiv_"+channelId+"' class='tab-pane active '></div>";
-	//$("#selectedChannelsContentDisplayDiv").append(channelContentDiv);
 	
 	//页签点击事件和关闭事件
 	channelInfo.addTabClickEvent(data);
@@ -155,34 +153,23 @@ channelInfo.addCustomerGroupChangeEvent=function(){
  * 根据产品查询渠道信息成功
  */
 channelInfo.getPlanChannelsSuc=function(data){
+	var channels = data.channels;
 	$("#channelList li").each(function(){
 		var currentChannelId = $(this).attr("channelId");
-		
-		//遍历渠道和McdPlanChannelList，如果二者匹配，则显示；否则隐藏。
-		if(data != null && data.length>0){
-			var showFlag = false;
-			for(var i=0;i<data.length;i++){
-				if(data[i].channelId == currentChannelId) {
-					showFlag = true;
-					break;
-				}
-			}
-			if(!showFlag){
-				$(this).hide();
-			}else{
-				$(this).show();
-				var currentObj={channelId:currentChannelId};
-				$("#channelClose_"+currentChannelId).trigger("click",currentObj);
-			}
-			
-			//将data信息暂存，选择某些渠道时要带出某些信息
-			channelInfo.mcdPlanChannelList = data;
+		if(channels.indexOf(currentChannelId)<0){
+			$(this).hide();
+		}else{
+			$(this).show();
+			var currentObj={channelId:currentChannelId};
+			//$("#channelClose_"+currentChannelId).trigger("click",currentObj);
 		}
 	});
-	//删除所有的渠道信息
-	$("#selectedChannelsDisplayUl .close").each(function(index,obj){
-		$(obj).trigger("click");
-	});
+	if(!tacticsInfo.isEdit){
+		//删除所有的渠道信息
+		$("#selectedChannelsDisplayUl .close").each(function(index,obj){
+			$(obj).trigger("click");
+		});
+	}
 }
 /**
  * 渠道编辑传入渠道信息事件
@@ -194,6 +181,7 @@ channelInfo.addAddChannelsEvent=function(){
 			var channelId=item.channelId;
 			$("#li_channelId_"+channelId).trigger("click",item);
 		}
+		tacticsInfo.isEdit=false;
 	});
 }
 

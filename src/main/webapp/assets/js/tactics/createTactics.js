@@ -16,7 +16,7 @@ define(function(require, exports, module){
 /**
  * 全局变量信息  camp策略信息  plan产品信息 custGroup客户群信息 channels渠道信息 为数组
  */
-var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null};
+var tacticsInfo={camp:null,plan:null,custGroup:null,channels:null,isEdit:false};
 
 /**
  * 页面元素进行统一的绑定事件入口
@@ -44,6 +44,7 @@ tacticsInfo.initView=function(){
 	var isEdit=$.url().param("isEdit");
 	if(isEdit=="1"){
 		var campId=$.url().param("campId");;
+		tacticsInfo.isEdit=true;
 		tacticsInfo.queryCampInfoById(campId);
 	}
 }
@@ -60,7 +61,11 @@ tacticsInfo.addStepNumEventListenter=function(){
 			alert("请选择产品");
 			return ;
 		}
-		if(selectedIndex==3&&(tacticsInfo.custGroup==null||tacticsInfo.plan==null)){
+		if(selectedIndex==3&&(tacticsInfo.plan==null)){
+			alert("请选择产品");
+			return ;
+		}
+		if(selectedIndex==3&&(tacticsInfo.custGroup==null)){
 			alert("请选择客户群");
 			return ;
 		}
