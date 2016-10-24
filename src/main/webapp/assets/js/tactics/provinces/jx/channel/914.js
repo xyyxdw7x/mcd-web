@@ -41,6 +41,25 @@ channelInfo914.initValue914 = function(){
 		$("#channelId_"+channelInfo914.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
 	}
 	
+	var data = channelInfo.mcdPlanChannelList;
+	if(data != null && data != undefined && data.length>0){
+		for(var i=0;i<data.length;i++){
+			if(data[i].channelId == channelInfo914.baseInfo.channelId) {
+				if(data[i].smsContent!=null&&data[i].smsContent!=undefined&&data[i].smsContent!=""){
+					$("#channelId_"+channelInfo914.baseInfo.channelId+"_SMS_CONTENT").val(data[i].smsContent);
+				}
+				if(data[i].oneWordsContent!=null&&data[i].oneWordsContent!=undefined){
+					$("#channelId_"+channelInfo914.baseInfo.channelId+"_ONE_WORDS_CONTENT").val(data[i].oneWordsContent);
+				}
+				break;
+			}
+		}
+	}
+	
+	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
+		$("#channelId_"+channelInfo914.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
+	}
+	
 	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
 	if(channelInfo914.baseInfo.hasOwnProperty("execContent")){
 		//更新营销用语
