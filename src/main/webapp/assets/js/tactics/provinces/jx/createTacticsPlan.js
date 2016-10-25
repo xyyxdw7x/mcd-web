@@ -103,6 +103,10 @@ planInfo.queryPlan=function(pageNum){
 			if(editPlanInfo!=undefined&&editPlanInfo!=null){
 				$($("#tbodyPlansList .btn-a-blue")[0]).trigger("click", editPlanInfo);
 			}
+			
+			//产品链接点击事件点击
+			console.log("开始注册点击事件");
+			$("#tbodyPlansList tr td a").click(planInfo.openDetailDialog);
 		}
 	
 	});
@@ -186,3 +190,18 @@ planInfo.formatDate=function(now) {
 	}
 	return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
 };
+
+/**
+ * 产品详细信息查看弹窗
+ */
+planInfo.openDetailDialog=function(event){
+	//获得产品ID
+	var td = $(event.currentTarget).parent();
+	var tr = $(td).parent();
+	var dataInfo = $(tr).attr("data-info");
+	var obj = eval('(' + dataInfo + ')');
+	
+	//弹出新窗口
+	var url =contextPath+"/jsp/plan/provinces/jx/planmanage_extends_detail.jsp?planId="+obj.planId;
+	window.open(url);
+}
