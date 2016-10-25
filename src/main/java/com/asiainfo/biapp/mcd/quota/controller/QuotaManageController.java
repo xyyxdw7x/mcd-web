@@ -33,7 +33,7 @@ import com.asiainfo.biapp.mcd.quota.vo.DeptMonthQuota;
 import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping("/quotaManage")
+@RequestMapping("/action/quotaManage")
 public class QuotaManageController  extends BaseMultiActionController {
     private static final Logger log = LogManager.getLogger();
 
