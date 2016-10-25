@@ -154,6 +154,11 @@ channelInfo913.queryAdivInfoSuc = function(result){
 					$("#channel"+channelInfo913.baseInfo.channelId+"adiv"+item.adivId).removeClass("active");
 				}
 			});
+			
+			//只有一个运营位时默认选中
+			if(result.data.length == 1){
+				$("#channelId913_vopAdivInfoId li .opera-top").trigger("click");
+			}
 		}
 	} else{
 		alert("此产品在此渠道无运营位。");

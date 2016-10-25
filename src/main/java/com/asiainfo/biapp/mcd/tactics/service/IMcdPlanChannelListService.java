@@ -1,5 +1,9 @@
 package com.asiainfo.biapp.mcd.tactics.service;
 
+import java.util.List;
+
+import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
+
 public interface IMcdPlanChannelListService {
 
 	/**
@@ -7,6 +11,6 @@ public interface IMcdPlanChannelListService {
 	 * @param planId
 	 * @return
 	 */
-	String getChannelsByPlanId(String planId);
+	List<McdPlanChannelList> getChannelsByPlanId(String planId);
 
 }

@@ -265,7 +265,7 @@ T_ELEPHANT.prototype.renderLine = function(eid, optionObj) {
 			var _rate = 0.00;
 			$.ajax({
 				type: "POST",
-				url:"../../../mpm/homePage.aido?cmd=getSaleSituation",
+				url:_ctx + '/action/home/getSaleSituation.do',
 				data:{},
 				async:false,
 				dataType:"json",

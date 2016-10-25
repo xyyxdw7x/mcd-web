@@ -87,11 +87,6 @@ channelInfo910.loadSomeBaseData910=function(){
  * 初始化值(编辑时)
  */
 channelInfo910.initValue910 = function(){
-//	//如果有默认的推荐语则
-//	if(tacticsInfo.plan.planComment!=null&&tacticsInfo.plan.planComment!=undefined){
-//		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(tacticsInfo.plan.planComment);
-//	}
-	
 	//初始化值（编辑时）
 	if(tacticsInfo.camp!=null){
 		if(channelInfo910.baseInfo.bossTemplateId!=null){
@@ -107,17 +102,6 @@ channelInfo910.initValue910 = function(){
 		}
 		
 	}
-	
-//	//如果营销用语内容存在则需要更新营销用语、营销用语的可输入长度
-//	if(channelInfo910.baseInfo.hasOwnProperty("execContent")){
-//		//更新营销用语
-//		$("#channelId_"+channelInfo910.baseInfo.channelId+"_contentWords").val(channelInfo910.baseInfo.execContent);
-//		//输入字数时对字数限制
-//		channelInfo910.textAreaInputNumTip910();
-//		//触发事件，将编辑回显得数据放入购物车
-//		var newdata = channelInfo910.collectData910();
-//		$("#channelDiv").trigger("changeChannel", newdata);
-//	}
 }
 
 /**

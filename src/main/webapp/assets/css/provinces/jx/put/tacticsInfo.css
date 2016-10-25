@@ -79,7 +79,8 @@
 }
 .container .left-nav .left-nav-line {
   width: 2px;
-  height: 77px;
+ /*  height: 77px; */
+  height: 35px;
   overflow: hidden;
   margin: 0 0 18px 91px;
   position: relative;

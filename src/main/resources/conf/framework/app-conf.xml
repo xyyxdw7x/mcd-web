@@ -60,4 +60,36 @@
 	-->
 	<!-- mcd framework框架之外的插件可以在plugin-conf.xml中进行配置 framework中的配置最好不要轻易修改，否则会影响系统的正常启动 -->
 	<import resource="../plugin-conf.xml"/>
+	<bean id="simpleClientHttpRequestFactory" class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+        <property name="readTimeout" value="10000"/>
+        <property name="connectTimeout" value="5000"/>
+    </bean>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="simpleClientHttpRequestFactory"/>
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                	<property name="objectMapper">  
+	                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
+	                        <property name="dateFormat">  
+	                            <bean class="java.text.SimpleDateFormat">  
+	                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />  
+	                            </bean>  
+	                        </property>  
+	                    </bean>  
+               		 </property>  
+                </bean>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/plain;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 </beans>

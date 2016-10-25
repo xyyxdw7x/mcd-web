@@ -34,6 +34,7 @@ function initMenu(){
 			var pid=$(obj).attr("data-pid");
 			if(url.indexOf(varValue)>=0){
 				$("#subMenuUl li").filter("[data-pid!="+pid+"]").hide();
+				$("#menuUl li").filter("[data-id="+pid+"]").addClass("active");
 				$("#subMenuUl li").filter(".active").removeClass("active");
 				$("#subMenuUl li").filter("[data-pid="+pid+"]").show();
 				$(obj).addClass("active");

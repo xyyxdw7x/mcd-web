@@ -4,22 +4,9 @@ define(["backbone","echarts"
 		init:function(){
 			 
 			 $("#effectOverviewDate_day").val(getLastDate());
-//			 $("#effectOverviewDate_day").on("click",function(){
-//				 WdatePicker({
-//					 dateFmt: 'yyyy-MM-dd',
-//					 maxDate:'%y-%M-{%d-1}',
-//					 onpicked:function(dp){
-//						 var url=_ctx+"/action/kpi/queryChart.do";
-//						 var param = paramsIndex1();
-//						 url = url + "?paramJson="+param;
-//						 var chart = new MSMChart("index_1", url);
-//						 chart.xhrPost(url );
-//					 }
-//				 });
-//			 });
 			 $("#effectOverviewDate_day").datepicker({
 				 changeMonth: true,numberOfMonths:1,
-				 dateFormat:"yy-mm-dd",maxDate:"%y-%M-{%d-1}"}).on("change", function(event){
+				 dateFormat:"yy-mm-dd",minDate:"%y-%M-{%d-7}",maxDate:"%y-%M-{%d-1}"}).on("change", function(event){
 					 var url=_ctx+"/action/kpi/queryChart.do";
 					 var param = paramsIndex1();
 					 url = url + "?paramJson="+param;
@@ -27,8 +14,8 @@ define(["backbone","echarts"
 					 chart.xhrPost(url ); 
 			 });
 			 //下拉选月份
-			 $("#effectOverviewDate_month").val(getLastMonth());
-			 $("#effectOverviewDate_month").attr("date",getLastMonth());
+			 $("#effectOverviewDate_month").val(getCurrentMonth());
+			 $("#effectOverviewDate_month").attr("date",getCurrentMonth());
 			 $("#effectOverviewDate_month").slideChooseMonth({
 				monthNum:3,
 				callBack:function(_choosed){
@@ -53,8 +40,8 @@ define(["backbone","echarts"
 					 chart.xhrPost(url3 );
 				}
 			 });
-			 $("#effectOverviewDate_channelsMonth").val(getLastMonth());
-			 $("#effectOverviewDate_channelsMonth").attr("date",getLastMonth());
+			 $("#effectOverviewDate_channelsMonth").val(getCurrentMonth());
+			 $("#effectOverviewDate_channelsMonth").attr("date",getCurrentMonth());
 			 $("#effectOverviewDate_channelsMonth").slideChooseMonth({
 				monthNum:3,
 				callBack:function(_choosed){
