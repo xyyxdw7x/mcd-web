@@ -378,7 +378,7 @@ define(["backbone","my97","page","form"],function(require, exports, module) {
 			new searchCustomerTypeView({el:options.currentDom});
 		},
 		loadAllChannelType:function(){
-			var url=_ctx+"/StcPlan/initChannel?isDoubleSelect=0";
+			var url=_ctx+"/action/StcPlan/initChannel?isDoubleSelect=0";
 			$.ajax({
 				type:"POST",
 			    url: url ,

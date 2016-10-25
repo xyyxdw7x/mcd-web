@@ -27,7 +27,7 @@ import net.sf.json.JSONObject;
  * @author lixq10 2015-7-16 下午02:21:50
  * @version 1.0
  */
-@RequestMapping("/StcPlan")
+@RequestMapping("action/StcPlan")
 public class StcPlanController extends BaseMultiActionController {
 	
 	@Resource(name = "mcdDimChannelService")
