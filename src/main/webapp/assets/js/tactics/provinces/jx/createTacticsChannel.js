@@ -1,7 +1,7 @@
 /**
  * 渠道信息
  */
-var channelInfo={};
+var channelInfo={mcdPlanChannelList:null};
 /**
  * 初始化渠道
  */
@@ -132,6 +132,13 @@ channelInfo.addCloseTabeClickEvent=function(data){
  */
 channelInfo.addPlanChangeEvent=function(){
 	$("#channelDiv").bind("addPlanChange",function(event,data){
+		//data为null表示 删除产品信息
+		if(data==null){
+			$("#selectedChannelsDisplayUl .close").each(function(index,obj){
+				$(obj).trigger("click");
+			});
+			return ;
+		}
 		var url=contextPath+"/action/tactics/createTactics/selectPlanBackChannels.do";
 		$.post(url,{planId:data.planId},channelInfo.getPlanChannelsSuc);
 	});
@@ -153,17 +160,30 @@ channelInfo.addCustomerGroupChangeEvent=function(){
  * 根据产品查询渠道信息成功
  */
 channelInfo.getPlanChannelsSuc=function(data){
-	var channels = data.channels;
+	//var channels = data.channels;
 	$("#channelList li").each(function(){
 		var currentChannelId = $(this).attr("channelId");
-		if(channels.indexOf(currentChannelId)<0){
-			$(this).hide();
-		}else{
-			$(this).show();
-			var currentObj={channelId:currentChannelId};
-			//$("#channelClose_"+currentChannelId).trigger("click",currentObj);
+		
+		//遍历渠道和McdPlanChannelList，如果二者匹配，则显示；否则隐藏。
+		if(data != null && data.length>0){
+			var showFlag = false;
+			for(var i=0;i<data.length;i++){
+				if(data[i].channelId == currentChannelId) {
+					showFlag = true;
+					break;
+				}
+			}
+			if(!showFlag){
+				$(this).hide();
+			}else{
+				$(this).show();
+			}
+			//将data信息暂存，选择某些渠道时要带出某些信息
+			channelInfo.mcdPlanChannelList = data;
 		}
 	});
+	
+	
 	if(!tacticsInfo.isEdit){
 		//删除所有的渠道信息
 		$("#selectedChannelsDisplayUl .close").each(function(index,obj){
