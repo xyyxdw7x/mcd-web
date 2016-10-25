@@ -112,12 +112,14 @@ channelInfo901.getChannelInfoData=function(){
 	channelInfo.contactType =isLoopSend;
 	channelInfo.isHasVar=channelInfo901.hasSmsVar(channelInfo.execContent);
 	
-	var keys=["推荐语","触发时机","执行周期","派发时间"];
+	//var keys=["推荐语","触发时机","执行周期","派发时间"];
+	var keys=["推荐语","执行周期"];//2016-10-25改 去除"触发时机","派发时间"
 	var content=channelInfo.execContent;
 	var cepName="";
 	var cycleName=$("#901SendCycle button").filter(".active").html();
 	var sendTime="";
-	var values=[content,cepName,cycleName,sendTime];
+	//var values=[content,cepName,cycleName,sendTime];
+	var values=[content,cycleName];//2016-10-25改 去除"触发时机","派发时间"
 	channelInfo.keys=keys;
 	channelInfo.values=values;
 	
