@@ -406,7 +406,7 @@ T_ELEPHANT.prototype.renderDoughnut2D = function(eid, optionObj) {
 		
 // console.debug(JSON.stringify(optionObj));
 		optionObj.tooltip.trigger = 'item';
-		optionObj.tooltip.formatter = '{c}';
+		optionObj.tooltip.formatter = '{a} <br/>{b}';
 		
 		var _style_other = {
 				normal : {

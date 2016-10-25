@@ -199,16 +199,8 @@ public class KpiController  extends BaseMultiActionController{
 			td1.add(COUNTY_ID);
 			td2.add(KpiUtil.parseMoney(map.get("USER_NUM").toString(),""));
 			td3.add(KpiUtil.parseMoney(map.get("VAL_CAMP").toString(),""));
-			if(map.get("VAL_SUC")==null){
-				td4.add("0");
-			}else{
-				td4.add(KpiUtil.parseMoney(map.get("VAL_SUC").toString(),""));
-			}
-			if(map.get("RATE")==null){
-				td5.add("0");
-			}else{
-				td5.add(KpiUtil.parsePercent(map.get("RATE").toString()));
-			}
+			td4.add(KpiUtil.parseMoney(map.get("VAL_SUC").toString(),""));
+			td5.add(KpiUtil.parsePercent(map.get("RATE").toString()));
 			
 		}
 		reList.add(td1);

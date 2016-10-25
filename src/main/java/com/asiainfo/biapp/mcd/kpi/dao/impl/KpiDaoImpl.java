@@ -82,11 +82,14 @@ public class KpiDaoImpl extends JdbcDaoBase  implements IKpiDao {
 			StringBuffer sb = new StringBuffer("SELECT ");
 			sb.append(" T1.");
 			sb.append(_GROUP_COL_NAME_);
-			sb.append(" AREA_NAME, T2.AREA_ID, T2.VAL_CAMP VAL_CAMP, T2.VAL_SUC VAL_SUC,");
-			sb.append(" T2.RATE RATE FROM ");
+			sb.append(" AREA_NAME, T2.AREA_ID, NVL(T2.VAL_CAMP,0) VAL_CAMP, NVL(T2.VAL_SUC,0) VAL_SUC,");
+			sb.append(" NVL(T2.RATE,0) RATE FROM ");
+			sb.append(_GROUP_TAB);
+			sb.append(" T1 LEFT OUTER JOIN");
 			sb.append("(SELECT T.");
 			sb.append(_GROUP_COL_);
-			sb.append(" AREA_ID, SUM(T.CAMP_USER_NUM) AS VAL_CAMP, SUM(T.CAMP_SUCC_NUM) AS VAL_SUC, CASE WHEN SUM(T.CAMP_USER_NUM)= 0 THEN 0 ELSE  SUM(T.CAMP_SUCC_NUM) / SUM(T.CAMP_USER_NUM) END AS RATE FROM ");
+			sb.append(" AREA_ID, SUM(T.CAMP_USER_NUM) AS VAL_CAMP, SUM(T.CAMP_SUCC_NUM) AS VAL_SUC,");
+			sb.append(" CASE WHEN SUM(T.CAMP_USER_NUM)= 0 THEN 0 ELSE  SUM(T.CAMP_SUCC_NUM) / SUM(T.CAMP_USER_NUM) END AS RATE FROM ");
 			sb.append(" MTL_EVAL_INFO_PLAN_D T WHERE 1 = 1 ");
 
 			if (StringUtils.isNotEmpty(cityId) && !C_999.equals(cityId)) {
@@ -102,13 +105,18 @@ public class KpiDaoImpl extends JdbcDaoBase  implements IKpiDao {
 			sb.append(_GROUP_COL_);
 			sb.append(" ORDER BY T.");
 			sb.append(_GROUP_COL_);
-			sb.append(") T2, ");
-			sb.append(_GROUP_TAB);
-			sb.append(" T1");
-			sb.append(" WHERE T2.AREA_ID");
-			sb.append(" = T1.");
+			sb.append(") T2 ON T2.AREA_ID = T1.");
 			sb.append(_GROUP_COL_);
-			sb.append(" ORDER BY T2.AREA_ID ");
+			if (StringUtils.isNotEmpty(cityId)){
+				if(C_999.equals(cityId)){
+					sb.append(" WHERE T1.CITY_ID<'999'");//如果是省公司用户，X轴显示的为11个地市
+				}else{
+					sb.append(" WHERE T1.CITY_ID = '");//如果是地市公司，X轴显示的为该地市下所有的区县
+					sb.append(cityId);
+					sb.append("'");
+				}
+			}
+			sb.append(" ORDER BY T1.CITY_ID ");
 
 			list =  this.getJdbcTemplate().queryForList(sb.toString(), new Object[] { });
 			log.info("getDayUseEffectList params--date:" + date +";cityId="+cityId );
@@ -139,7 +147,9 @@ public class KpiDaoImpl extends JdbcDaoBase  implements IKpiDao {
 			StringBuffer sb = new StringBuffer("SELECT T1.");
 			sb.append(_GROUP_COL_NAME_);
 			sb.append(" AREA_NAME, T2.CITY_ID");
-			sb.append(", T2.VAL_USER USER_NUM, T2.VAL_CAMP VAL_CAMP, T2.VAL_SUC VAL_SUC, T2.RATE RATE FROM");
+			sb.append(", NVL(T2.VAL_USER,0) USER_NUM, NVL(T2.VAL_CAMP,0) VAL_CAMP, NVL(T2.VAL_SUC,0) VAL_SUC, NVL(T2.RATE,0) RATE FROM ");
+			sb.append(_GROUP_TAB);
+			sb.append(" T1 LEFT OUTER JOIN");
 			sb.append(" (SELECT T.");
 			sb.append(_GROUP_COL_);
 			sb.append(" CITY_ID, SUM(T.TARGET_USER_NUM) AS VAL_USER, SUM(T.CAMP_USER_NUM) AS VAL_CAMP, SUM(T.CAMP_SUCC_NUM) AS VAL_SUC, SUM(T.CAMP_SUCC_NUM) / SUM(T.CAMP_USER_NUM) AS RATE FROM ");
@@ -157,11 +167,19 @@ public class KpiDaoImpl extends JdbcDaoBase  implements IKpiDao {
 			sb.append(_GROUP_COL_);
 			sb.append(" ORDER BY T.");
 			sb.append(_GROUP_COL_);
-			sb.append(") T2, ");
-			sb.append(_GROUP_TAB);
-			sb.append(" T1 WHERE T2.CITY_ID");
+			sb.append(") T2 ON");
+			sb.append(" T2.CITY_ID");
 			sb.append(" = T1.");
 			sb.append(_GROUP_COL_);
+			if (StringUtils.isNotEmpty(cityId)){
+				if(C_999.equals(cityId)){
+					sb.append(" WHERE T1.CITY_ID<'999'");//如果是省公司用户，X轴显示的为11个地市
+				}else{
+					sb.append(" WHERE T1.CITY_ID = '");//如果是地市公司，X轴显示的为该地市下所有的区县
+					sb.append(cityId);
+					sb.append("'");
+				}
+			}
 			sb.append(" ORDER BY T2.CITY_ID ");
 
 			log.info("getMonthUseEffectList params--date:" + date +";cityId="+cityId );
