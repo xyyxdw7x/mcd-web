@@ -9,7 +9,7 @@
 		<% var channelId = data[i].channel_id;%>
 		<%if(channelId == '901') {%>
 			<tr class="even">
-				<td rowspan="4" class="content-table-td" style="background:#fff" ><%=data[i].channel_name%></td>
+				<td rowspan="2" class="content-table-td" style="background:#fff" ><%=data[i].channel_name%></td>
 				<td rowspan="1" class="content-table-td" >群发用语</td>
 				<td rowspan="1" class="content-table-td" ><div  title="<%=data[i].exec_content.replace(new RegExp(/"/g),'“')%>"><%=data[i].exec_content%></div></td>
 			</tr>
@@ -17,7 +17,8 @@
 				<td rowspan="1" class="content-table-td" >执行周期</td>
 				<td rowspan="1" class="content-table-td" ><%=data[i].update_cycle%></td>
             </tr>
-            <tr class="even">
+            <!--目前短信-渠道下 无触发时机和频次控制规则-->
+            <!-- <tr class="even">
 				<td rowspan="1" class="content-table-td" >触发时机</td>
 				<%if(data[i].eventRuleDesc!='' && data[i].eventRuleDesc!=null ){%>
 				<td rowspan="1" class="content-table-td" ><%=data[i].eventRuleDesc%></td>
@@ -32,7 +33,7 @@
 				<%}else{%>
 					<td rowspan="1" class="content-table-td" >无</td>
 				<%}%>
-            </tr>
+            </tr> -->
 		<% }else if(channelId == '903'){%>
 			<tr class="even">
 				<td class="content-table-td" style="background:#fff"><%=data[i].channel_name%></td>
