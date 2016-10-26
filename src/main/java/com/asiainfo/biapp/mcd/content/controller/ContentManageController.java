@@ -22,7 +22,7 @@ import com.asiainfo.biapp.mcd.plan.vo.McdDimPlanOnlineStatus;
 
 import net.sf.json.JSONObject;
 
-@RequestMapping("/content/contentManage")
+@RequestMapping("/action/content/contentManage")
 public class ContentManageController extends BaseMultiActionController {
 	private static Logger log = LogManager.getLogger();
 	@Resource(name = "mcdContentService")

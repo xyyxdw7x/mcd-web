@@ -45,7 +45,7 @@ chooseView.addPlanTypeChooseView = function(){
 
     //获取json数据
     $.ajax({
-        url:contextPath+"/policy/policyManage/queryPlanTypes.do",
+        url:contextPath+"/action/policy/policyManage/queryPlanTypes.do",
         type:"GET",
         async:false,
         success:function(data) {

@@ -30,7 +30,7 @@ import net.sf.json.JSONObject;
  * @author john0723@outlook.com
  *
  */
-@RequestMapping("/policy/policyManage")
+@RequestMapping("/action/policy/policyManage")
 public class PolicyManageController extends BaseMultiActionController {
 	private static Logger log = LogManager.getLogger();
 	@Resource(name = "mcdPolicyService")

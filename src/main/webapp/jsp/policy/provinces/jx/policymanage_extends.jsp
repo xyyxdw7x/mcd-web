@@ -1,5 +1,4 @@
-
- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,11 +16,8 @@
     <script src="<%=contextPath%>/assets/js/policy/provinces/<%=provinces%>/policyList.js" type="text/javascript"></script><!--policyList.js 列表数据的视图-->
     <script src="<%=contextPath%>/assets/js/policy/provinces/<%=provinces%>/policyDetail.js" type="text/javascript"></script><!--policyDetail.js 弹窗数据的视图-->
 
-    
-
 </head>
 <body>
-
 <!--搜索+选策略-->
 <div class="myCustomQuery">
     <div class="search-box-container">
@@ -139,7 +135,7 @@
             <div class="pop-page-header-content">
                 <div class="header-content-left">
                     <span id="header-content-detail">详情</span>
-                    <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img"></span>
+                    <span><img src="<%=contextPath%>/assets/images/edit_icon_u.png" id="detail_img"></span>
                     <span id="header-content-back"> < 返回 </span>
                 </div>
                 <div class="header-content-right">
@@ -278,7 +274,7 @@
 
                         <div class="pop-page-content-center-foot-btn">
                             <div class="btn-div">
-                                <button type="button" class="btn-blu" id="save-btn" disabled>保存</button>
+                                <button type="button" class="btn-blu" id="save-btn" >保存</button>
                             </div>
 
                         </div>
@@ -303,36 +299,11 @@
     </div><!-- poppage end -->
 </div><!--popwin end-->
 
-
-<!-- 删除客户群提示框 -->
-<!--
-<div class="pop-win delete-custom-pop">
-    <div class="delete-custom-title">
-        <div class="delete-custom-title-title">提示</div>
-        <div class="delete-custom-title-close">x</div>
-    </div>
-    <div class="delete-custom-content">
-        <div class="delete-custom-content-tip">
-            <div class="delete-custom-content-icon"></div>
-            确定删除客户群？
-        </div>
-        <div class="delete-custom-btn-container">
-            <div class="delete-custom-btn-confirm">确定</div>
-            <div class="delete-custom-btn-cancel">取消</div>
-        </div>
-    </div>
-</div>
--->
-
-
-
 <script type="text/javascript">
-	    seajs.use("policy/provinces/jx/policymanage_extends.js",function(policymanage_extends){
-	    	policymanage_extends.init();
-	    });
-	</script>
-
-
+    seajs.use("policy/provinces/<%=provinces%>/policymanage_extends.js",function(policymanage_extends){
+    	policymanage_extends.init();
+    });
+</script>
 
 </body>
 </html>

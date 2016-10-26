@@ -30,7 +30,7 @@
             <div class="pop-page-header-content">
                 <div class="header-content-left">
                     <span id="header-content-detail">详情</span>
-                    <%-- <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img" title="编辑"></span> --%>
+                    <%-- <span><img src="<%=contextPath%>/assets/images/edit_icon_u.png" id="detail_img" title="编辑"></span> --%>
                    <!--  <span id="header-content-back"> < 返回 </span> -->
                 </div>
                 <div class="header-content-right">
@@ -142,7 +142,7 @@
                     <div class="container-fluid">
                         <div class="pop-page-content-center-foot-btn">
                             <div class="btn-div">
-                                <%--<button type="button" class="btn-blu" id="save-btn" disabled>保存</button>--%>
+                                <%--<button type="button" class="btn-blu" id="save-btn" >保存</button>--%>
                             </div>
                         </div>
                     </div>

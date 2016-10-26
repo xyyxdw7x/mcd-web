@@ -1,5 +1,5 @@
 @charset "utf-8";
-/* CSS Document */
+/* 产品库使用的公共样式 */
 body,
 div,
 dl,
@@ -87,12 +87,7 @@ body {
     font-family: "microsoft yahei","Helvetica Neue", Helvetica, Arial, sans-serif,"宋体";
     color: #333;
     text-rendering: optimizeLegibility;
-    /*font-smoothing: antialiased;
-      -webkit-font-smoothing: antialiased;*/
-
     -moz-osx-font-smoothing: grayscale;
-    /* 	-moz-font-feature-settings: 'liga', 'kern'; */
-
 }
 html {
     *overflow-x: auto;

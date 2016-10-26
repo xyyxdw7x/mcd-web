@@ -56,7 +56,7 @@ public interface IMcdContentService {
 	 *            状态
 	 * @return
 	 */
-	public Boolean saveContent(Map saveData);
+	public Boolean saveContent(Map<String,String[]> saveData);
 	
 	
 	

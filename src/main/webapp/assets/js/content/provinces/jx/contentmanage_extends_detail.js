@@ -28,7 +28,12 @@ detailView.initView=function(){
 
     //关闭内容编辑
     $("#online_status > option").attr("disabled",true);
-    $("#save-btn").attr("disabled",true);
+    //对保存按钮的处理
+    $("#save-btn").removeClass("btn-blu");
+    //编辑图标的设定
+    $("#detail_img").attr("src",""+contextPath+"/assets/images/edit_icon_u.png");
+    //对类型不可编辑做背景处理
+    $("#online_status").css("background","#EBEBE4");
 };
 
 /**初始化监听事件*/
@@ -50,9 +55,9 @@ detailView.addDetailListener=function(){
  */
 function  initDetailViewResult(){
     detailData = "";//初始化json对象
-    var url=contextPath+"/content/contentManage/queryDetailContent.do";
+    var url=contextPath+"/action/content/contentManage/queryDetailContent.do";
     $.ajax({
-        url:contextPath+"/content/contentManage/queryDetailContent.do",
+        url:contextPath+"/action/content/contentManage/queryDetailContent.do",
         async:false,
         type:"POST",
         data:{
@@ -73,15 +78,28 @@ function initDetailView(){
     var queryContentStatus = detailData.queryContentStatus;//内容详情状态 【数组】
     var queryContentDef = detailData.queryContentDef;//内容详情整体内容
     var queryCampseg = detailData.queryCampseg;//内容详情策略 【数组】
+    var planInUse = detailData.planInUse;//判断该产品是否正在被使用
 
+    //给编辑图标添加产品是否正在被使用标签：
+    $("#detail_img").attr("plan_in_use",planInUse);
 
     //状态视图
     var statusView = "";//状态视图
     var d_online_status = queryContentDef[0].ONLINE_STATUS;
-    for(var i=0;i<queryContentStatus.length;i++){
-        var statusId = queryContentStatus[i].STATUS_ID;
-        var statusName = queryContentStatus[i].STATUS_NAME;
-        statusView += "<option value='"+statusId+"'  disabled>"+statusName+"</option>";
+    var d_status_name = queryContentDef[0].STATUS_NAME;
+    if(d_online_status == '3'){
+        statusView +="<option value='"+d_online_status+"'   disabled>"+d_status_name+"</option>";
+        for(var i=0;i<queryContentStatus.length;i++){
+            var statusId = queryContentStatus[i].STATUS_ID;
+            var statusName = queryContentStatus[i].STATUS_NAME;
+            statusView += "<option value='"+statusId+"' class='status' disabled>"+statusName+"</option>";
+        }
+    }else{
+        for(var i=0;i<queryContentStatus.length;i++){
+            var statusId = queryContentStatus[i].STATUS_ID;
+            var statusName = queryContentStatus[i].STATUS_NAME;
+            statusView += "<option value='"+statusId+"' class='status' disabled>"+statusName+"</option>";
+        }
     }
     $('#online_status').html(statusView);
     $('#online_status').val(d_online_status);
@@ -193,39 +211,45 @@ function addCloseEventListener(){
 function addSaveEventListener(){
     $("#save-btn").click(function(){
         console.log("-------addSaveEventListener():开始！----------");
-        //获取内容状态值
-        var typeId= $(".type_id span").attr("type_id");//类别
-        var statusId =$("#online_status").val();//状态
-        var save_Data={
-            "contentId":content_id,
-            "typeId":typeId,
-            "statusId":statusId
-        };
-        //将数据传入后台保存
-        $.ajax({
-            url:contextPath+"/content/contentManage/contentSave.do",
-            data:{
-                "saveData":save_Data
-            },
-            async:false,
-            type:"POST",
-            success:function(data) {
-                alert(data);
-                console.log("------保存内容事件-----");
-                $(".popwin").hide();
-                $(".poppage").hide();
+        var boolean = $(this).attr("class");
+        if(boolean == null || boolean == ""){
+            alert("请先编辑再保存！");
+        }else if(boolean == "btn-blu") {
+            //获取内容状态值
+            var typeId = $(".type_id span").attr("type_id");//类别
+            var statusId = $("#online_status").val();//状态
 
-                //初始化视图数据
-                initTableViewData();
-                //初始化列表视图
-                initTableResultView(table_result);
-                //初始化页面选择视图
-                initSelectPageView(totalPage);
-            },
-            error:function(){
-                alert("保存失败！")
+            var save_Data = {
+                "contentId": content_id,
+                "typeId": typeId,
+                "statusId": statusId
             }
-        });
+            //将数据传入后台保存
+            $.ajax({
+                url: contextPath + "/action/content/contentManage/contentSave.do",
+                data: {
+                    "saveData": save_Data
+                },
+                async: false,
+                type: "POST",
+                success: function (data) {
+                    alert(data);
+                    console.log("------保存内容事件-----");
+                    $(".popwin").hide();
+                    $(".poppage").hide();
+
+                    //初始化视图数据
+                    initTableViewData();
+                    //初始化列表视图
+                    initTableResultView(table_result);
+                    //初始化页面选择视图
+                    initSelectPageView(totalPage);
+                },
+                error: function () {
+                    alert("保存失败！")
+                }
+            });
+        }
     });
 
 }
@@ -236,9 +260,19 @@ function addSaveEventListener(){
  */
 function addEditEventListener(){
     $("#detail_img").click(function(){
-        //开启内容编辑
-        $("#online_status > option").attr("disabled",false);
-        $("#save-btn").attr("disabled",false);
+        var plan_in_use = $("#detail_img").attr("plan_in_use");
+        if(plan_in_use == 'true'){
+            alert("该产品已在营销策略中使用，不允许进行编辑。");
+        }else if(plan_in_use == 'false') {
+            //开启内容编辑
+            $("#online_status > .status").attr("disabled", false);
+            //对保存按钮的处理
+            $("#save-btn").addClass("btn-blu");
+            //编辑图标的设定
+            $("#detail_img").attr("src", "" + contextPath + "/assets/images/edit_icon_d.png");
+            //对类型不可编辑做背景处理
+            $("#online_status").css("background", "#fff");
+        }
     });
 }
 

@@ -1,6 +1,5 @@
 package com.asiainfo.biapp.mcd.plan.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import com.asiainfo.biapp.mcd.plan.vo.McdDimPlanOnlineStatus;
 
 import net.sf.json.JSONObject;
 
-@RequestMapping("/plan/planManage")
+@RequestMapping("/action/plan/planManage")
 public class PlanManageController extends BaseMultiActionController {
 	private static Logger log = LogManager.getLogger();
 	@Resource(name = "mcdPlanService")

@@ -56,7 +56,7 @@ public interface IMcdAppService {
 	 *            状态
 	 * @return
 	 */
-	public Boolean saveApp(Map saveData);
+	public Boolean saveApp(Map<String,String[]> saveData);
 	
 	
 	

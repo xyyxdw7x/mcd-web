@@ -72,18 +72,21 @@ public class McdAppServiceImpl implements IMcdAppService {
 		List<Map<String,Object>> queryAppDef=this.queryAppDef(appId);	
 		//详情内容策略块
 		List<Map<String,Object>> queryCampseg = this.queryCampseg(appId);
-	
+		//判断产品是否正在被使用 true是正在被使用，false是没有正在被使用
+	    Boolean planInUse = this.queryPlanInUse(appId);
 		
 	    dataDetail.put("queryAppStatus",queryAppStatus);
 	    dataDetail.put("queryAppDef", queryAppDef);
 	    dataDetail.put("queryCampseg", queryCampseg);
+	    dataDetail.put("planInUse",planInUse);
 		return dataDetail;
 	}
 
 
 	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Boolean saveApp(Map saveData) {
+	public Boolean saveApp(Map<String,String[]> saveData) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		for(java.util.Iterator iter = saveData.entrySet().iterator();iter.hasNext();){
 			Map.Entry element = (Map.Entry)iter.next();
@@ -190,15 +193,14 @@ public class McdAppServiceImpl implements IMcdAppService {
 	private Map<String, Object> getAppsByConditionSql(String statusId, String timeId, String keyWords,
 			Pager pager) {
 		StringBuffer buffer = new StringBuffer("");
-		String  bufferSql = "";
 		Map<String,Object> result = new HashMap<String,Object>();
 		List<Object> params = new ArrayList<Object>();
 		buffer.append("SELECT DISTINCT A.CONTENT_ID,CONTENT_NAME,CONTENT_TYPE,C.TYPE_NAME,CONTENT_CLASS,CONTENT_SOURCE, ");
 		buffer.append(" TO_CHAR(A.PUB_TIME,'YYYY-MM-DD') AS PUB_TIME,");
 		buffer.append(" TO_CHAR(A.INVALID_TIME,'YYYY-MM-DD') AS INVALID_TIME,");
 		buffer.append(" CASE WHEN UNIT_PRICE IS NULL THEN '0' ELSE TO_CHAR(UNIT_PRICE) END AS UNIT_PRICE,  ");
-		buffer.append(" CASE WHEN A.ONLINE_STATUS IS NULL THEN '0' ELSE A.ONLINE_STATUS END AS ONLINE_STATUS, ");
-		buffer.append(" CASE WHEN  B.STATUS_NAME IS NULL THEN '未上线' ELSE  B.STATUS_NAME END AS STATUS_NAME  ");
+		buffer.append(" CASE WHEN A.ONLINE_STATUS IS NULL THEN '3' ELSE A.ONLINE_STATUS END AS ONLINE_STATUS, ");
+		buffer.append(" CASE WHEN  B.STATUS_NAME IS NULL THEN '其它' ELSE  B.STATUS_NAME END AS STATUS_NAME  ");
 		buffer.append(" FROM MCD_CONTENT_DEF A   ");
 		buffer.append(" LEFT JOIN MCD_DIM_PLAN_ONLINE_STATUS B ON B.STATUS_ID=A.ONLINE_STATUS");
 		buffer.append(" LEFT JOIN MCD_DIM_CONTENT_TYPE C ON C.TYPE_ID=A.CONTENT_TYPE");
@@ -281,7 +283,8 @@ public class McdAppServiceImpl implements IMcdAppService {
 		querySql.append("CASE WHEN A.AWARD_MOUNT IS NULL THEN 0.00 ELSE A.AWARD_MOUNT END AS AWARD_MOUNT,   ");
 		querySql.append("A.CONTENT_URL,A.MANAGER,   ");
 		querySql.append("CASE WHEN A.CONTENT_SOURCE IS NULL THEN '无' ELSE A.CONTENT_SOURCE END AS CONTENT_SOURCE ,  ");
-		querySql.append("A.ONLINE_STATUS,B.STATUS_NAME,   ");
+		querySql.append("CASE WHEN A.ONLINE_STATUS IS NULL THEN '3' ELSE  A.ONLINE_STATUS END AS ONLINE_STATUS,  ");
+		querySql.append("CASE WHEN B.STATUS_NAME IS NULL THEN '其它' ELSE  B.STATUS_NAME END AS STATUS_NAME ,   ");
 		querySql.append("case when A.CONTENT_REMARK is null then '无' else A.CONTENT_REMARK end as CONTENT_REMARK,  ");
 		querySql.append("CASE WHEN D.CITY_ID IS NULL THEN ' ' ELSE D.CITY_ID END as CITY_ID,   ");
 		querySql.append("CASE WHEN E.CITY_NAME IS NULL THEN '无' ELSE E.CITY_NAME END AS CITY_NAME   ");
@@ -316,11 +319,38 @@ public class McdAppServiceImpl implements IMcdAppService {
 		querySql.append("LEFT JOIN MCD_DIM_CAMP_STATUS B    ");
 		querySql.append("ON A.CAMPSEG_STAT_ID = B.CAMPSEG_STAT_ID   ");
 		querySql.append("WHERE 1=1    ");
+		querySql.append(" AND A.CAMPSEG_PID = '0'  ");
 		querySql.append("AND A.PLAN_ID=?   ");
 		queryParam.add(contentId);	
 		return mtlStcPlanDao.execQrySql(querySql.toString(), queryParam);
 	}
 
+	
+	/**
+	 * 判断该产品是否正在被使用
+	 * @param planId
+	 * @return
+	 */
+	private Boolean queryPlanInUse(String contentId){
+		StringBuffer querySql = new StringBuffer("");
+		List<Object> queryParam = new ArrayList<Object>();
+		Boolean planInUse = false;
+		querySql.append("select  count(*) from MCD_CONTENT_DEF a,mcd_camp_def b ");
+		querySql.append("where a.CONTENT_ID = b.plan_id ");
+		querySql.append(" and a.status='1' ");
+		querySql.append(" and b.campseg_stat_id not in (60,90,91) ");
+		querySql.append(" and to_date(b.end_date,'yyyy-mm-dd hh:mi:ss') > sysdate ");
+		querySql.append(" and a.CONTENT_ID =? ");
+		queryParam.add(contentId);
+		int count =mtlStcPlanDao.execQuerySqlCount(querySql.toString(), queryParam);
+		
+		if(count>0){
+			planInUse = true;//产品正在被使用
+		}else{
+			planInUse = false;//产品没有正在被使用
+		}
+		return planInUse;
+	}
 	
 	/**
 	 * 更新statusId

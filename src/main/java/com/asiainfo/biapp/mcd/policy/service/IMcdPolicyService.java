@@ -62,7 +62,7 @@ public interface IMcdPolicyService {
 	 * @param urlForIos
 	 * @return
 	 */
-	public Boolean savePolicy(Map saveData);
+	public Boolean savePolicy(Map<String,String[]> saveData);
 
 	
 	/**

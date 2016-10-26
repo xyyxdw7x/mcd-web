@@ -43,12 +43,18 @@ function initDetailView(){
     //初始化策略视图
     initCampsegView();
 
+    //编辑图标的设定
+    $("#detail_img").attr("src",""+contextPath+"/assets/images/edit_icon_u.png");
     //关闭内容编辑
     $("#type_name > option,#online_status > option,.checkbox_li,#manager,#plan_comment").attr("disabled",true);
-    $("#deal_code_10086,#deal_code_1008611,#url_for_android,#url_for_ios,#save-btn").attr("disabled",true);
+    $("#deal_code_10086,#deal_code_1008611,#url_for_android,#url_for_ios").attr("disabled",true);
     $(".award,.award > input,.score,.score > input").attr("disabled",true);
     //对酬金积分不可编辑做背景处理
     $(".award,.award > input,.score,.score > input").css("background","#EBEBE4");
+    //对类型不可编辑做背景处理
+    $("#type_name,#online_status,#plan_busi_type,#channel_li,#city_li").css("background","#EBEBE4");
+    //对保存按钮的处理
+    $("#save-btn").removeClass("btn-blu");
 };
 
 /**初始化监听事件*/
@@ -78,7 +84,7 @@ var detailData = "";//json对象
 function getDetailViewResult(planId){
     detailData = "";//初始化json对象
     $.ajax({
-        url:contextPath+"/policy/policyManage/queryDetail.do",
+        url:contextPath+"/action/policy/policyManage/queryDetail.do",
         async:false,
         type:"POST",
         data:{
@@ -111,7 +117,7 @@ function initDetailsView(){
     var plan_comment = details.PLAN_COMMENT;
     var manager  = details.MANAGER;
     var curonline_status = details.ONLINE_STATUS;
-    var status_name = details.STATUS_NAME;
+    var curstatus_name = details.STATUS_NAME;
     var city_id = details.CITY_ID;
     var city_name = details.CITY_NAME;
     var plan_busi_type_subcode = details.PLAN_BUSI_TYPE_SUBCODE;
@@ -120,12 +126,13 @@ function initDetailsView(){
     var url_for_android = details.URL_FOR_ANDROID;
     var url_for_ios = details.URL_FOR_IOS;
 
+    var planInUse = detailData.planInUse;//判断该产品是否正在被使用
     var planTypes = detailData.planTypes;//类型数据对象 【数组】
-
     var planStatus = detailData.planStatus;//状态数据对象 【数组】
-
     var planBusiType = detailData.planBusiType;//营业侧 【数组】
 
+    //给编辑图标添加产品是否正在被使用标签：
+    $("#detail_img").attr("plan_in_use",planInUse);
 
     //初始化详细主体内容视图
     $("#plan_id").val(plan_id);//单产品编码
@@ -147,10 +154,19 @@ function initDetailsView(){
 
     //状态选择视图
     var statusView = "";//状态视图
-    for(var i=0;i<planStatus.length;i++){
-        var status_id = planStatus[i].statusId;
-        var status_name = planStatus[i].statusName;
-        statusView += "<option value="+status_id+" disabled>"+status_name+"</option>";
+    if(curonline_status == 3){
+        statusView= "<option value="+curonline_status+" disabled>"+curstatus_name+"</option>";
+        for(var i=0;i<planStatus.length;i++){
+            var status_id = planStatus[i].statusId;
+            var status_name = planStatus[i].statusName;
+            statusView += "<option value="+status_id+" class='status' disabled>"+status_name+"</option>";
+        }
+    }else{
+        for(var i=0;i<planStatus.length;i++){
+            var status_id = planStatus[i].statusId;
+            var status_name = planStatus[i].statusName;
+            statusView += "<option value="+status_id+" class='status' disabled>"+status_name+"</option>";
+        }
     }
     $('#online_status').html(statusView);//动态替换状态视图的数据
 
@@ -498,93 +514,116 @@ function addCloseEventListener(){
  */
 function addSaveEventListener(){
     $("#save-btn").click(function(){
-        //获取内容值
-        var typeId = $('#type_name').val();
-        var statusId =$("#online_status").val();
-        var channelId=$("#channel > .one_li > #channel_result").attr("channel_id");
-        var cityId = $("#city > .one_li > #city_result").attr("channel_id");
-        var managerName = $("#manager").val();
-        var planDesc = $("#plan_desc").val();
-        var planComment = $("#plan_comment").val();
-        var dealCode_10086 = $("#deal_code_10086").val();
-        var dealCode_1008611 = $("#deal_code_1008611").val();
-        var urlForAndroid =$("#url_for_android").val();
-        var urlForIos = $("#url_for_ios").val();
+        var boolean = $(this).attr("class");
+        if(boolean == null || boolean == ""){
+            alert("请先编辑再保存！");
+        }else if(boolean == "btn-blu") {
+            //获取内容值
+            var typeId = $('#type_name').val();
+            var statusId = $("#online_status").val();
+            var channelId = $("#channel > .one_li > #channel_result").attr("channel_id");
+            var cityId = $("#city > .one_li > #city_result").attr("channel_id");
+            var managerName = $("#manager").val();
+            var planDesc = $("#plan_desc").val();
+            var planComment = $("#plan_comment").val();
+            var dealCode_10086 = $("#deal_code_10086").val();
+            var dealCode_1008611 = $("#deal_code_1008611").val();
+            var urlForAndroid = $("#url_for_android").val();
+            var urlForIos = $("#url_for_ios").val();
 
-        //酬金积分的数据
-        var cityIds="";//酬金积分城市ids
-        var scores="";//积分值
-        var awards="";//筹集值
-        var scoreTds = $("#score > .score");
-        var awardTds = $("#award > .award");
-        for(var i=0;i<scoreTds.length;i++){
-            cityIds +=$(scoreTds[i]).find("input").attr("class")+"/";
-            var score=$(scoreTds[i]).find("input").val();//获取积分值
-            var award=$(awardTds[i]).find("input").val();//获取酬金值
+            //酬金积分的数据
+            var cityIds = "";//酬金积分城市ids
+            var scores = "";//积分值
+            var awards = "";//筹集值
+            var scoreTds = $("#score > .score");
+            var awardTds = $("#award > .award");
+            for (var i = 0; i < scoreTds.length; i++) {
+                cityIds += $(scoreTds[i]).find("input").attr("class") + "/";
+                var score = $(scoreTds[i]).find("input").val();//获取积分值
+                var award = $(awardTds[i]).find("input").val();//获取酬金值
+
+                //对空值作处理
+                if (score == null || score == "" || score == undefined) {
+                    score = "0.00";
+                }
+                if (award == null || award == "" || award == undefined) {
+                    award = "0.00";
+                }
+                scores += score + "/";
+                awards += award + "/";
+
+            }
+            cityIds = cityIds.substring(0, cityIds.length - 1);//酬金积分城市ids
+            scores = scores.substring(0, scores.length - 1);//积分值
+            awards = awards.substring(0, awards.length - 1);//筹集值
+
+            console.log("cityIds" + cityIds + ";scores" + scores + ";awards" + awards);
 
             //对空值作处理
-            if(score == null || score == "" ||score == undefined){score ="0.00";}
-            if(award == null || award == "" ||award == undefined){award ="0.00";}
-            scores +=score+"/";
-            awards +=award+"/";
-
-        }
-        cityIds=cityIds.substring(0,cityIds.length-1);//酬金积分城市ids
-        scores=scores.substring(0,scores.length-1);//积分值
-        awards=awards.substring(0,awards.length-1);//筹集值
-
-        console.log("cityIds"+cityIds+";scores"+scores+";awards"+awards);
-
-        //对空值作处理
-        if(managerName == "无" || managerName ==null){managerName=""}
-        if(planDesc == "无" || planDesc ==null){planDesc=""}
-        if(planComment == "无" || planComment ==null){planComment=""}
-        if(dealCode_10086 == "无" || dealCode_10086 ==null){dealCode_10086=""}
-        if(dealCode_1008611 == "无" || dealCode_1008611 ==null){dealCode_1008611=""}
-        if(urlForAndroid == "无" || urlForAndroid ==null){urlForAndroid=""}
-        if(urlForIos == "无" || urlForIos ==null){urlForIos=""}
-        var save_Data={
-            "planId":planId,
-            "typeId":typeId,
-            "statusId":statusId,
-            "channelId":channelId,
-            "cityId":cityId,
-            "managerName":managerName,
-            "planDesc":planDesc,
-            "planComment":planComment,
-            "dealCode_10086":dealCode_10086,
-            "dealCode_1008611":dealCode_1008611,
-            "urlForAndroid":urlForAndroid,
-            "urlForIos":urlForIos,
-            "cityIds":cityIds,
-            "scores":scores,
-            "awards":awards
-        };
-
-        console.log(typeId+statusId+channelId+cityId+managerName+planDesc+planComment+dealCode_10086+dealCode_1008611+urlForAndroid+urlForIos);
-        //将数据传入后台保存
-        $.ajax({
-            url:contextPath+"/policy/policyManage/policySaveContent.do",
-            data:{
-                "saveData":save_Data
-            },
-            async:false,
-            type:"POST",
-            success:function(data) {
-                alert(data);
-                console.log("------保存内容事件-----");
-                $(".popwin").hide();
-                $(".poppage").hide();
-
-                //初始化视图数据
-                initTableViewData();
-                //初始化列表视图
-                initTableResultView(table_result);
-            },
-            error:function(){
-                alert("保存失败！");
+            if (managerName == "无" || managerName == null) {
+                managerName = ""
             }
-        });
+            if (planDesc == "无" || planDesc == null) {
+                planDesc = ""
+            }
+            if (planComment == "无" || planComment == null) {
+                planComment = ""
+            }
+            if (dealCode_10086 == "无" || dealCode_10086 == null) {
+                dealCode_10086 = ""
+            }
+            if (dealCode_1008611 == "无" || dealCode_1008611 == null) {
+                dealCode_1008611 = ""
+            }
+            if (urlForAndroid == "无" || urlForAndroid == null) {
+                urlForAndroid = ""
+            }
+            if (urlForIos == "无" || urlForIos == null) {
+                urlForIos = ""
+            }
+            var save_Data = {
+                "planId": planId,
+                "typeId": typeId,
+                "statusId": statusId,
+                "channelId": channelId,
+                "cityId": cityId,
+                "managerName": managerName,
+                "planDesc": planDesc,
+                "planComment": planComment,
+                "dealCode_10086": dealCode_10086,
+                "dealCode_1008611": dealCode_1008611,
+                "urlForAndroid": urlForAndroid,
+                "urlForIos": urlForIos,
+                "cityIds": cityIds,
+                "scores": scores,
+                "awards": awards
+            };
+
+            console.log(typeId + statusId + channelId + cityId + managerName + planDesc + planComment + dealCode_10086 + dealCode_1008611 + urlForAndroid + urlForIos);
+            //将数据传入后台保存
+            $.ajax({
+                url: contextPath + "/action/policy/policyManage/policySaveContent.do",
+                data: {
+                    "saveData": save_Data
+                },
+                async: false,
+                type: "POST",
+                success: function (data) {
+                    alert(data);
+                    console.log("------保存内容事件-----");
+                    $(".popwin").hide();
+                    $(".poppage").hide();
+
+                    //初始化视图数据
+                    initTableViewData();
+                    //初始化列表视图
+                    initTableResultView(table_result);
+                },
+                error: function () {
+                    alert("保存失败！");
+                }
+            });
+        }
     });
 
 }
@@ -686,14 +725,23 @@ function channelResult(name,result){
  */
 function addEditEventListener(){
     $("#detail_img").click(function(){
-        //开启内容编辑
-        //$("#type_name > option,#online_status > option,#channel .checkbox_li,#manager,#plan_comment").attr("disabled",false);
-       // $("#deal_code_10086,#deal_code_1008611,#url_for_android,#url_for_ios,#save-btn").attr("disabled",false);
-       // $(".award,.award > input,.score,.score > input").attr("disabled",false);
-        //对酬金积分不可编辑做背景处理
-       // $(".award,.award > input,.score,.score > input").css("background","#fff");
-
-        //执行保存按钮
+        var plan_in_use = $("#detail_img").attr("plan_in_use");
+        if(plan_in_use == 'true'){
+            alert("该产品已在营销策略中使用，不允许进行编辑。");
+        }else if(plan_in_use == 'false') {
+            //开启内容编辑
+            //$("#type_name > option,#online_status > .status,#channel .checkbox_li,#manager,#plan_comment").attr("disabled",false);
+            //$("#deal_code_10086,#deal_code_1008611,#url_for_android,#url_for_ios").attr("disabled",false);
+            //$(".award,.award > input,.score,.score > input").attr("disabled",false);
+            //对酬金积分不可编辑做背景处理
+            //$(".award,.award > input,.score,.score > input").css("background","#fff");
+            //对类型不可编辑做背景处理
+            //$("#type_name,#online_status,#channel_result,#channel li").css("background","#fff");
+            //执行保存按钮处理
+            //$("#save-btn").addClass("btn-blu");
+            //编辑图标的设定
+            //$("#detail_img").attr("src",""+contextPath+"/assets/images/edit_icon_d.png");
+        }
     });
 }
 

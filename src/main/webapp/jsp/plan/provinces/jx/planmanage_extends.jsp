@@ -1,8 +1,24 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%
-	String contextPath=request.getContextPath().toString();
-%>
-<!--搜索+选策略-->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>产品库</title>
+    <%@ include file="../../../common/head.jsp" %>
+    <link rel="shortcut icon" href="<%=contextPath%>/assets/images/logos/favicon.ico" />
+    <!-- css内容 -->
+    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/common.css"><!-- 通用样式 -->
+    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan.css" rel="stylesheet" type="text/css"><!-- 产品样式 -->
+    <link href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan_table.css" rel="stylesheet" type="text/css"><!-- 产品table样式 -->
+    <link rel="stylesheet" href="<%=contextPath%>/assets/css/provinces/<%=provinces%>/plan/plan_dialog.css" type="text/css"><!-- 产品弹窗样式 -->
+
+    <!--js内容-->
+    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planChoose.js" type="text/javascript"></script><!--planChoose.js 选择菜单的视图-->
+    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planList.js" type="text/javascript"></script><!--planList.js 列表数据的视图-->
+    <script src="<%=contextPath%>/assets/js/plan/provinces/<%=provinces%>/planDetail.js" type="text/javascript"></script><!--planDetail.js 弹窗数据的视图-->
+
+</head>
+<body>
+<!-- 搜索+选策略 -->
 <div class="myCustomQuery">
     <div class="search-box-container">
         <span class="search-title fleft">产品库</span>
@@ -103,7 +119,7 @@
             <div class="pop-page-header-content">
                 <div class="header-content-left">
                     <span id="header-content-detail">详情</span>
-                    <span><img src="<%=contextPath%>/assets/images/bianji.png" id="detail_img" title="编辑"></span>
+                    <span><img src="<%=contextPath%>/assets/images/edit_icon_u.png" id="detail_img" title="编辑"></span>
                     <span id="header-content-back"> < 返回 </span>
                 </div>
                 <div class="header-content-right">
@@ -240,7 +256,7 @@
 
                         <div class="pop-page-content-center-foot-btn">
                             <div class="btn-div">
-                                <button type="button" class="btn-blu" id="save-btn" disabled>保存</button>
+                                <button type="button" class="btn-blu" id="save-btn">保存</button>
                             </div>
 
                         </div>
@@ -267,7 +283,10 @@
 
 
 <script type="text/javascript">
-	    seajs.use("plan/provinces/jx/planmanage_extends.js",function(planmanage_extends){
+	    seajs.use("plan/provinces/<%=provinces%>/planmanage_extends.js",function(planmanage_extends){
 	    	planmanage_extends.init();
 	    });
-</script>
+	</script>
+
+</body>
+</html>

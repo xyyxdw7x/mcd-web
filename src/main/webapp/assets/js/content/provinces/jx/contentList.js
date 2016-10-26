@@ -40,7 +40,7 @@ tableView.addTableListener=function(){
 function initTableViewData() {
     console.log("keyWords:"+keyWords+"; pageNum:"+pageNum+"; pub_time:"+timeId+"; statusId:"+statusId);
     $.ajax({
-        url:contextPath+"/content/contentManage/queryTableList.do",
+        url:contextPath+"/action/content/contentManage/queryTableList.do",
         data:{
             "keyWords":keyWords,
             "pageNum":pageNum,
@@ -107,6 +107,11 @@ function initTableResultView(table_result){
         }else if(online_status == 1){
             statusSelectView=""
                 +" <option disabled value='1' selected>上线</option>                                                            "
+                +" <option value='0' disabled>未上线</option>                                                          "
+        }else if(online_status == 3 ){
+            statusSelectView=""
+                +"<option disabled value='3' selected>其它</option> "
+                +" <option disabled value='1' >上线</option>                                                            "
                 +" <option value='0' disabled>未上线</option>                                                          "
         }
         //列表视图

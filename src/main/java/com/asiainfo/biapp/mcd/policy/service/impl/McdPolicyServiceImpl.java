@@ -79,9 +79,9 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 	public JSONObject queryDetail(String planId) throws Exception {
 		JSONObject dataDetail=new JSONObject();
 		//类别查询
-		List<Object> planTypes =(List)mtlStcPlanDao.initDimPlanType();
+		List<McdDimPlanType> planTypes =mtlStcPlanDao.initDimPlanType();
 		//查询状态
-		List<Map<String,Object>> planStatus =(List) mcdPolicyDao.initDimPolicyStatus();
+		List<McdDimPlanOnlineStatus> planStatus = mcdPolicyDao.initDimPolicyStatus();
 		//详情内容总体查询
 		List<Map<String,Object>> queryDefExt=this.queryDefExt(planId);
 		//查询只用渠道
@@ -92,6 +92,8 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		List<Map<String,Object>> awardScore = this.queryAwardScore(planId);
 		//查询策略
 	    List<Map<String,Object>> campseg = this.queryCampseg(planId);
+	    //判断产品是否正在被使用 true是正在被使用，false是没有正在被使用
+	    Boolean planInUse = this.queryPlanInUse(planId);
 	    
 	    dataDetail.put("queryDefExt",queryDefExt);
 	    dataDetail.put("planTypes", planTypes);
@@ -100,11 +102,13 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 	    dataDetail.put("planBusiType", planBusiType);
 	    dataDetail.put("awardScore", awardScore);
 	    dataDetail.put("campseg", campseg);
+	    dataDetail.put("planInUse",planInUse);
 		return dataDetail;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Boolean savePolicy(Map saveData) {
+	public Boolean savePolicy(Map<String,String[]> saveData) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		for(java.util.Iterator iter = saveData.entrySet().iterator();iter.hasNext();){
 			Map.Entry element = (Map.Entry)iter.next();
@@ -122,7 +126,7 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		String typeId =  (String) map.get("saveData[typeId]");
 		String statusId =  (String) map.get("saveData[statusId]");
 		String channelId =  (String) map.get("saveData[channelId]");
-		String cityId = (String) map.get("saveData[cityId]");
+		//String cityId = (String) map.get("saveData[cityId]");
 		String manager =  (String) map.get("saveData[managerName]");
 		String planDesc =  (String) map.get("saveData[planDesc]");
 		String planComment = (String) map.get("saveData[planComment]");
@@ -142,7 +146,8 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		// 更新typeId,statusId,planDesc
 		Map<String, Object> updatePlanDef = this.updatePlanDef(planId, typeId, statusId, planDesc);
 		String planDefSql = updatePlanDef.get("upSql").toString();
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		
+		@SuppressWarnings("unchecked")
 		List<Object> planDefParam = (List) updatePlanDef.get("param");
 		Boolean planDefaveResult = mcdPolicyDao.updatePolicy(planDefSql, planDefParam);
 
@@ -236,7 +241,6 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 	private Map<String, Object> getPolicysByConditionSql(String typeId, String statusId, String keyWords,
 			String keyWords2, Pager pager) {
 		StringBuffer buffer = new StringBuffer("");
-		String  bufferSql = "";
 		Map<String,Object> result = new HashMap<String,Object>();
 		List<Object> params = new ArrayList<Object>();
 		buffer.append("SELECT DISTINCT A.PLAN_ID,PLAN_NAME,B.TYPE_NAME,B.TYPE_ID,A.PLAN_STATUS, ");
@@ -246,8 +250,8 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		buffer.append("case when  a.PLAN_DESC is null then '无' else  a.PLAN_DESC end as PLAN_DESC,  ");
 		buffer.append("case when a.PLAN_COMMENT is null then '无' else A.PLAN_COMMENT end as PLAN_COMMENT , ");
 		buffer.append("CASE WHEN C.MANAGER IS NULL THEN '无'else C.MANAGER END AS MANAGER, ");
-		buffer.append("case when A.ONLINE_STATUS is null then '0' else A.ONLINE_STATUS  end as ONLINE_STATUS , ");
-		buffer.append("case when  D.STATUS_NAME is null then '未上线' else  D.STATUS_NAME end as STATUS_NAME  ");
+		buffer.append("case when A.ONLINE_STATUS is null then '3' else A.ONLINE_STATUS  end as ONLINE_STATUS , ");
+		buffer.append("case when  D.STATUS_NAME is null then '其它' else  D.STATUS_NAME end as STATUS_NAME  ");
 		buffer.append("FROM MCD_PLAN_DEF A   ");
 		buffer.append(" LEFT JOIN MCD_DIM_PLAN_TYPE B ON A.PLAN_TYPE=B.TYPE_ID ");
 		buffer.append("LEFT JOIN mcd_plan_ext_jx C ON A.PLAN_ID=C.PLAN_ID  ");
@@ -300,8 +304,8 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		querySql.append("case when  a.PLAN_DESC is null then '无' else  a.PLAN_DESC end as PLAN_DESC,");
 		querySql.append("case when a.PLAN_COMMENT is null then '无' else A.PLAN_COMMENT end as PLAN_COMMENT , ");
 		querySql.append("CASE WHEN C.MANAGER IS NULL THEN '无'else C.MANAGER END AS MANAGER,");
-		querySql.append("case when A.ONLINE_STATUS is null then '0' else A.ONLINE_STATUS  end as ONLINE_STATUS , ");
-		querySql.append("case when  D.STATUS_NAME is null then '未上线' else  D.STATUS_NAME end as STATUS_NAME , ");
+		querySql.append("case when A.ONLINE_STATUS is null then '3' else A.ONLINE_STATUS  end as ONLINE_STATUS , ");
+		querySql.append("case when  D.STATUS_NAME is null then '其它' else  D.STATUS_NAME end as STATUS_NAME , ");
 		querySql.append("CASE WHEN A.CITY_ID IS NULL THEN '' else  A.CITY_ID end as CITY_ID, ");
 		querySql.append("CASE WHEN E.CITY_NAME IS NULL THEN '无' else  E.CITY_NAME end as CITY_NAME, ");
 		querySql.append("case when C.PLAN_BUSI_TYPE_SUBCODE is null then '无' else C.PLAN_BUSI_TYPE_SUBCODE end as PLAN_BUSI_TYPE_SUBCODE, ");
@@ -397,9 +401,36 @@ public class McdPolicyServiceImpl implements IMcdPolicyService{
 		querySql.append("SELECT A.PLAN_ID,A.CAMPSEG_ID,A.CAMPSEG_NAME,B.CAMPSEG_STAT_NAME from  mcd_camp_def A ");
 		querySql.append("LEFT JOIN MCD_DIM_CAMP_STATUS B ");
 		querySql.append("ON A.CAMPSEG_STAT_ID = B.CAMPSEG_STAT_ID WHERE 1=1  ");
+		querySql.append(" AND A.CAMPSEG_PID = '0' ");
 		querySql.append(" AND A.PLAN_ID=?");
 		queryParam.add(planId);
 		return mtlStcPlanDao.execQrySql(querySql.toString(), queryParam);
+	}
+	
+	/**
+	 * 判断该产品是否正在被使用
+	 * @param planId
+	 * @return
+	 */
+	private Boolean queryPlanInUse(String planId){
+		StringBuffer querySql = new StringBuffer("");
+		List<Object> queryParam = new ArrayList<Object>();
+		Boolean planInUse = false;
+		querySql.append("select  count(*) from mcd_plan_def a,mcd_camp_def b ");
+		querySql.append("where a.plan_id = b.plan_id ");
+		querySql.append(" and a.plan_status='1' ");
+		querySql.append(" and b.campseg_stat_id not in (60,90,91) ");
+		querySql.append("and to_date(b.end_date,'yyyy-mm-dd hh:mi:ss') > sysdate ");
+		querySql.append("and a.plan_id =? ");
+		queryParam.add(planId);
+		int count =mtlStcPlanDao.execQuerySqlCount(querySql.toString(), queryParam);
+		
+		if(count>0){
+			planInUse = true;//产品正在被使用
+		}else{
+			planInUse = false;//产品没有正在被使用
+		}
+		return planInUse;
 	}
 	
 	

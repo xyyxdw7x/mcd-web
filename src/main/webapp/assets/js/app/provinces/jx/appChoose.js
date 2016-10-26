@@ -41,7 +41,7 @@ chooseView.addContentTypeChooseView = function(){
 
     //获取json数据
     $.ajax({
-        url:contextPath+"/app/appManage/queryAppTypes.do",
+        url:contextPath+"/action/app/appManage/queryAppTypes.do",
         type:"GET",
         async:false,
         success:function(data) {
