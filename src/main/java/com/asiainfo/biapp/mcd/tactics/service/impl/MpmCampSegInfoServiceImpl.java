@@ -206,7 +206,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			}
 			if("true".equals(isApprove)){
 					String approveStr = this.submitApprovalXml(campsegPid);
-					if("提交审批成功".equals(approveStr)){
+					if("1".equals(approveStr)){
 						approveFlag = "1"; //走审批，审批成功
 					}else{
 						approveFlag = "2"; //走审批，审批失败
@@ -1226,7 +1226,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 		
 		if("true".equals(isApprove)){
 			String approveStr = this.submitApprovalXml(campPid);
-			if("提交审批成功".equals(approveStr)){
+			if("1".equals(approveStr)){
 				approveFlag = McdCONST.TACTICS_COMMIT_SUCCESS; //走审批，审批成功
 			}else{
 				approveFlag = McdCONST.TACTICS_COMMIT_FAIL; //走审批，审批失败

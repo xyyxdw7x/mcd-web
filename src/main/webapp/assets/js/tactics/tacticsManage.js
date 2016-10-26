@@ -502,7 +502,6 @@ define(["backbone","my97","page"],function(require, exports, module) {
 			    		alert("获取状态类型失败");
 			    		return ;
 			    	}
-			    	debugger;
 			    	var len=jsonData.data.length;
 			    	var str="";
 			    	var strAll="";

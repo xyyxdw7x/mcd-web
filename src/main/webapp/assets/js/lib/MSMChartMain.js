@@ -316,8 +316,8 @@ function formatAxisLabel(option) {
 			newData.push({
 				value : data[d],
 				textStyle : {
-					color: 'white',
-                    fontSize: 40,
+					color: 'black',
+                    fontSize: 12,
                     fontWeight : 'bold'
 				}
 			});

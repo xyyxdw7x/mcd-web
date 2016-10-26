@@ -70,13 +70,13 @@ channelInfo914.initValue914 = function(){
 	//如果营销短信语存在则需要更新营销短信语、营销短信语的可输入长度
 	if(channelInfo914.baseInfo.hasOwnProperty("sendSms")){
 		//更新营销短信语
-		$("#channelId_"+channelInfo914.baseInfo.channelId+"_SMS_CONTENT").val(channelInfo914.baseInfo.execContent);
+		$("#channelId_"+channelInfo914.baseInfo.channelId+"_SMS_CONTENT").val(channelInfo914.baseInfo.sendSms);
 	}
 	
 	//如果一句话营销存在则需要更新一句话营销、一句话营销的可输入长度
 	if(channelInfo914.baseInfo.hasOwnProperty("oneWordsContent")){
 		//更新一句话营销
-		$("#channelId_"+channelInfo914.baseInfo.channelId+"_ONE_WORDS_CONTENT").val(channelInfo914.baseInfo.execContent);
+		$("#channelId_"+channelInfo914.baseInfo.channelId+"_ONE_WORDS_CONTENT").val(channelInfo914.baseInfo.oneWordsContent);
 	}
 	
 	if(channelInfo914.baseInfo.hasOwnProperty("execContent")||channelInfo914.baseInfo.hasOwnProperty("sendSms")||channelInfo914.baseInfo.hasOwnProperty("oneWordsContent")){
@@ -132,11 +132,11 @@ channelInfo914.collectData914=function(){
 channelInfo914.clickCommitButtonEventHandler914=function(){
 	$("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).click(function(){
 		//输入项校验(北京移动914渠道不对数据做非空校验)
-		//var checkResult = channelInfo914.checkValidation();
-		//if(!checkResult[0]){
-		//	alert(checkResult[1]);
-		//	return ;
-		//}
+		var checkResult = channelInfo914.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
 		if($("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).hasClass("disable-href")){
 			return ;
 		}

@@ -105,7 +105,6 @@ planInfo.queryPlan=function(pageNum){
 			}
 			
 			//产品链接点击事件点击
-			console.log("开始注册点击事件");
 			$("#tbodyPlansList tr td a").click(planInfo.openDetailDialog);
 		}
 	
@@ -203,5 +202,9 @@ planInfo.openDetailDialog=function(event){
 	
 	//弹出新窗口
 	var url =contextPath+"/jsp/plan/provinces/jx/planmanage_extends_detail.jsp?planId="+obj.planId;
-	window.open(url);
+	var iWidth=1180; //弹出窗口的宽度;
+	var iHeight=650; //弹出窗口的高度;
+	var iTop = (window.screen.availHeight-iHeight)/2; //获得窗口的垂直位置;
+	var iLeft = (window.screen.availWidth-iWidth)/2; //获得窗口的水平位置;
+	window.open(url,"_blank", "height="+iHeight+", width="+iWidth+", top="+iTop+", left="+iLeft+", titlebar=yes, toolbar=no, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no, channelmode=no,directories=no,fullscreen=no", true);
 }
