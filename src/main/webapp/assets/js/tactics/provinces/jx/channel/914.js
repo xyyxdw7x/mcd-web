@@ -132,11 +132,11 @@ channelInfo914.collectData914=function(){
 channelInfo914.clickCommitButtonEventHandler914=function(){
 	$("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).click(function(){
 		//输入项校验(北京移动914渠道不对数据做非空校验)
-		//var checkResult = channelInfo914.checkValidation();
-		//if(!checkResult[0]){
-		//	alert(checkResult[1]);
-		//	return ;
-		//}
+		var checkResult = channelInfo914.checkValidation();
+		if(!checkResult[0]){
+			alert(checkResult[1]);
+			return ;
+		}
 		if($("#commitButton_channelId_"+channelInfo914.baseInfo.channelId).hasClass("disable-href")){
 			return ;
 		}
