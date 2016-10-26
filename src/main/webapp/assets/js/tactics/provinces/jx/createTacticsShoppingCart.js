@@ -194,12 +194,12 @@ shopCarInfo.saveOrCommitTactics=function(dialog,isCommit){
 		type:"POST",
 		data:{"data":dataStr},
 		success:function(result) {
-			if(result.flag=="0"){
+			if(result.flag=="1"){
 				$(dialog).dialog("close");
 				var tacticsManagerUrl=contextPath+"/jsp/tactics/tacticsManage.jsp";
 				window.location.href=tacticsManagerUrl;
-			}else{
-				alert("保存策略失败");
+			}else if(result.flag=="2"){
+				alert("保存策略保存成功，但是提交审批失败");
 			}
 		},
 		error:function (event) {
