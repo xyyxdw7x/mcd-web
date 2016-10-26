@@ -615,9 +615,9 @@ function filt_digi(data, power) {
 }
 
 function filt_measure(data) {
-	var _max = data[0];
+	var _max = parseInt(data[0]);
 	for (var d in data) {
-		var tmp = data[d];
+		var tmp = parseInt(data[d]);
 		if(_max < tmp){
 			_max = tmp;
 		}
