@@ -75,5 +75,15 @@ public class LoginController extends BaseMultiActionController {
 		}
 		model.addObject("menus", list);
 		return model;
-	} 
+	}
+	
+	@RequestMapping()
+	@ResponseBody
+	public ModelAndView loginOut(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		request.getSession().setAttribute("USER_ID",null);
+		ModelAndView model = new ModelAndView("redirect:/login/login.jsp");
+		return model;
+	}
+	
 }

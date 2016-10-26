@@ -12,7 +12,7 @@
     		</c:if>  
 		</c:forEach> 
 		</ul>
-		<span class="username">${sessionScope.USER.name},您好</span>
+		<span class="username">${sessionScope.USER.name},您好<a href="${pageContext.request.getContextPath()}/action/privilege/login/loginOut.do" class="loginOut">退出</a></span>
 	</div>
 	<div class="subnav" >
 		<div class="width950">

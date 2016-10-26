@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpStatus;
 
 /**
  * 用户登录验证过滤器
@@ -59,7 +58,8 @@ public class OauthLoginFilter implements Filter {
 	        if (isAjaxRequest)  
 	         {  
 	        	 hsr.setCharacterEncoding("UTF-8");
-	        	 hsrs.sendError(HttpStatus.SC_UNAUTHORIZED, "您已经太长时间没有操作,请刷新页面");
+	        	 //hsrs.sendError(HttpStatus.SC_UNAUTHORIZED, "您已经太长时间没有操作,请刷新页面");
+	        	 hsrs.sendRedirect(contextPath+"/login/login.jsp");
 	             return ;  
 	         }else{
 	        	 hsrs.sendRedirect(contextPath+"/login/login.jsp");

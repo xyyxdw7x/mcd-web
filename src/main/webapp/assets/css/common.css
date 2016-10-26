@@ -326,3 +326,7 @@ input.dateInput{
 	font-size:12px;
 	font-weight:normal;
 }
+.loginOut{
+	color:#278bdd;
+	padding-left:10px;
+}
