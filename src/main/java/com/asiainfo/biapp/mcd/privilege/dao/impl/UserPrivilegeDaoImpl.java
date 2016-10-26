@@ -57,7 +57,9 @@ public class UserPrivilegeDaoImpl extends JdbcDaoBase implements IUserPrivilegeD
 	@Override
 	public List<Menu> getUserMenuInfos(String userId) throws Exception {
 		logger.info("userId="+userId);
-		String sql="select t.MENUITEMID,t.MENUITEMTITLE,t.PARENTID,t.SORTNUM,t.URL from SYS_MENU_ITEM t where parentid!=-10 order by t.parentid ,sortnum asc ";
+		String sql="select t.MENUITEMID,t.MENUITEMTITLE,t.PARENTID,t.SORTNUM,t.URL from USER_USER_ROLE_RELATION UR , USER_ROLE_MENU_RELATION RM, SYS_MENU_ITEM t "
+				+ "where UR.ROLE_ID=RM.ROLE_ID AND RM.MENU_ID= T.MENUITEMID and parentid!=-10 and ur.user_id='"+userId+"' order by t.parentid ,sortnum asc ";
+		logger.info("查询userId="+userId+"的菜单查询sql："+sql);
 		List<Menu> menus=this.getJdbcTemplate().query(sql, new VoPropertyRowMapper<Menu>(Menu.class));
 		return menus;
 	}
