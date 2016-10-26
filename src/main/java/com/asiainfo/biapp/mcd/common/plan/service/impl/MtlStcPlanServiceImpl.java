@@ -158,6 +158,9 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 			buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID = ?)");
 			params.add(channelId);
 		}
+		
+		//查询上线的渠道
+		buffer.append(" AND A.online_status='1' ");
 
         //政策在开始和结束之间
 		buffer.append(" AND sysdate BETWEEN nvl2(A.PLAN_STARTDATE,A.PLAN_STARTDATE,TO_DATE('19000101','YYYYMMDD'))  AND nvl2(A.PLAN_ENDDATE,A.PLAN_ENDDATE,TO_DATE('21000101','YYYYMMDD'))");
@@ -204,6 +207,8 @@ public class MtlStcPlanServiceImpl implements IMtlStcPlanService {
 			buffer.append(" and A.PLAN_ID in ( select unique PLAN_ID from mcd_plan_channel_list WHERE CHANNEL_ID = ?)");
 			params.add(channelId);
 		}
+		//查询上线的渠道
+		buffer.append(" AND A.online_status='1' ");
 
         //政策在开始和结束之间
 		buffer.append(" AND sysdate BETWEEN nvl2(A.PLAN_STARTDATE,A.PLAN_STARTDATE,TO_DATE('19000101','YYYYMMDD'))  AND nvl2(A.PLAN_ENDDATE,A.PLAN_ENDDATE,TO_DATE('21000101','YYYYMMDD'))");
