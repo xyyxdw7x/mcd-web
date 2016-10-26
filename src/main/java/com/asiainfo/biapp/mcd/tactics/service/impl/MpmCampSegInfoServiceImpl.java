@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -12,9 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
-import javax.xml.namespace.QName;
 
-import org.apache.axis.client.Call;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -29,7 +26,6 @@ import org.springframework.stereotype.Service;
 import com.asiainfo.biapp.framework.core.AppConfigService;
 import com.asiainfo.biapp.framework.privilege.service.IUserPrivilege;
 import com.asiainfo.biapp.framework.privilege.vo.User;
-import com.asiainfo.biapp.framework.util.DESBase64Util;
 import com.asiainfo.biapp.mcd.common.constants.McdCONST;
 import com.asiainfo.biapp.mcd.common.custgroup.dao.ICustGroupInfoDao;
 import com.asiainfo.biapp.mcd.common.custgroup.service.ICustGroupInfoService;
@@ -56,7 +52,6 @@ import com.asiainfo.biapp.mcd.tactics.vo.McdCampDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdCampTask;
 import com.asiainfo.biapp.mcd.tactics.vo.McdDimCampStatus;
 import com.asiainfo.biapp.mcd.tactics.vo.McdPlanChannelList;
-import com.asiainfo.biapp.mcd.tactics.vo.McdSysInterfaceDef;
 import com.asiainfo.biapp.mcd.tactics.vo.McdTempletForm;
 import com.asiainfo.biapp.mcd.tactics.vo.MtlChannelDefCall;
 
@@ -305,7 +300,7 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 			
 			if("true".equals(isApprove)){
 					String approveStr = this.submitApprovalXml(campsegPid);
-					if("提交审批成功".equals(approveStr)){
+					if("1".equals(approveStr)){
 						approveFlag = "1"; //走审批，审批成功
 					}else{
 						approveFlag = "2"; //走审批，审批失败
@@ -391,105 +386,27 @@ public class MpmCampSegInfoServiceImpl implements IMpmCampSegInfoService {
 	}
 	@Override
 	public String submitApprovalXml(String campsegId) {
-		StringBuffer xmlStr = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		xmlStr.append("<campsegInfo>");
-
-        try {
-        	//策略包基本信息
-			McdCampDef mtlCampSeginfo = campSegInfoDao.getCampSegInfo(campsegId);
-			//策略包下子策略基本信息
-			List<McdCampDef> mtlCampSeginfoList = this.getChildCampSeginfo(campsegId);
-			//取渠道信息
-			List<Map<String,Object>> approveChannelIdList = mtlChannelDefDao.findChildChannelIdList(campsegId);
-			Set<String> channeIdSet = new HashSet<String>();
-			for(int i = 0;i< approveChannelIdList.size();i++){
-				Map<String,Object> map = (Map<String,Object>) approveChannelIdList.get(i);
-				String channelId = map.get("channel_id").toString();
-				channeIdSet.add(channelId);
-			}
-			String channeIds = channeIdSet.toString().replaceAll(" ","");
-
-
-	    	//策略基本信息
-	    	xmlStr.append("<campsegId>" + mtlCampSeginfo.getCampId()+ "</campsegId>");//营销策略编号 
-	    	xmlStr.append("<campsegName>" + mtlCampSeginfo.getCampName()+ "</campsegName>");//策略名称 
-	    	xmlStr.append("<campsegType>" + mtlCampSeginfo.getTypeId()+ "</campsegType>");//营销类别	
-	    	xmlStr.append("<startDate>" + mtlCampSeginfo.getStartDate()+ "</startDate>");//策略开始时间
-	    	xmlStr.append("<endDate>" + mtlCampSeginfo.getEndDate() + "</endDate>");//策略结束时间
-	    	xmlStr.append("<createTime>" + DateFormatUtils.format(mtlCampSeginfo.getCreateTime(), "yyyy-MM-dd HH:mm:ss")  + "</createTime>");//创建时间
-	    	
-	    	User user  = userPrivilege.queryUserById(mtlCampSeginfo.getCreateUserId());
-	    	String userName =  user != null ? user.getName() : "";
-	    	xmlStr.append("<createUser>" +userName + "</createUser>");//创建人
-	    	//有些帐号经分帐号和OA帐号不同 提交审批需要OA帐号
-	    	String createUserId=mtlCampSeginfo.getCreateUserId();
-	    	if(oaMap!=null){
-	    		if(oaMap.get(createUserId)!=null){
-		    		createUserId=oaMap.get(createUserId);
-		    	}
-	    	}
-	    	xmlStr.append("<createUserId>" + createUserId + "</createUserId>");//创建人ID
-	    	xmlStr.append("<cityId>" + mtlCampSeginfo.getCityId() + "</cityId>");//创建人地市id
-	    	xmlStr.append("<approveChannelId>" + channeIds.substring(1,channeIds.length()-1) + "</approveChannelId>");//审批渠道类型（判断采用哪个流程）：渠道ID
-	    	xmlStr.append("<approveFlowId>" + mtlCampSeginfo.getApproveFlowId() + "</approveFlowId>");//审批流程ID
-	    	
-	    	String campsegInfoViewUrl = AppConfigService.getProperty("CAMPSEGINFO_VIEWURL");
-			String token = DESBase64Util.encodeInfo(mtlCampSeginfo.getCampId());
-	    	xmlStr.append("<campsegInfoViewUrl>" + campsegInfoViewUrl+mtlCampSeginfo.getCampId() + "&token=" +token+ "</campsegInfoViewUrl>");////营销策略信息URL
-	    	xmlStr.append("</campsegInfo>");
-					
-			String results = "";
-			String request_id ="";
-			String assign_id = "";
-			String result_desc = "";
-			
-			log.info("开始提交审批 ！");
-			McdSysInterfaceDef url = callwsUrlService.getCallwsURL("APPREVEINFO_BYIDS");
 		
-			QName name=new QName("http://impl.biz.web.tz","commitApproveInfo");
-			org.apache.axis.client.Service service = new  org.apache.axis.client.Service();
-			Call call = (Call) service.createCall();
-			call.setTargetEndpointAddress(new java.net.URL(url.getCallwsUrl()));
-			call.setOperationName(name);
-			call.setTimeout(50000);//超时时间5秒
-			log.info(xmlStr.toString());
-			String childxml = call.invoke(new Object[] { xmlStr.toString() }).toString();
-
-			log.info("提交审批返回responed xml " + childxml);
-			 Document dom=DocumentHelper.parseText(childxml); 
-	   		 Element root=dom.getRootElement();  
-	   		results = root.element("result") == null ? "" : root.element("result").getText(); 
-   			request_id = root.element("request_id") == null ? "" : root.element("request_id").getText(); 
-   			assign_id = root.element("assign_id") == null ? "" : root.element("assign_id").getText(); 
-   			result_desc = root.element("result_desc") == null ? "" : root.element("result_desc").getText(); 	
-			
-			log.info("提交审批后返回值 result: " + results + " , request_id: " + request_id + " , assign_id: " + assign_id + " , result_desc: " + result_desc);
-			
-			McdCampDef segInfo = campSegInfoDao.getCampSegInfo(campsegId);
-			if("1".equals(results)){
-				segInfo.setApproveFlowId(assign_id);
+        	try {
+				//策略包下子策略基本信息
+				List<McdCampDef> mtlCampSeginfoList = this.getChildCampSeginfo(campsegId);
+				
+				McdCampDef segInfo = campSegInfoDao.getCampSegInfo(campsegId);
+				segInfo.setApproveFlowId(campsegId);
 				segInfo.setStatId(Short.valueOf(McdCONST.MPM_CAMPSEG_STAT_HDSP));
 				for(McdCampDef childSeg : mtlCampSeginfoList){
-					childSeg.setApproveFlowId(assign_id);
-					childSeg.setStatId(Short.valueOf(McdCONST.MPM_CAMPSEG_STAT_HDSP));
-					campSegInfoDao.updateCampSegInfo(childSeg);
-				}
-			}else{
-				log.error("提交审批流程失败，失败原因：", result_desc);
-				String ApproveResult = "提交失败，失败原因："+result_desc;
-				return ApproveResult;
+						childSeg.setApproveFlowId(campsegId);
+						childSeg.setStatId(Short.valueOf(McdCONST.MPM_CAMPSEG_STAT_HDSP));
+						campSegInfoDao.updateCampSegInfo(childSeg);
+					}
+					campSegInfoDao.updateCampSegInfo(segInfo);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			campSegInfoDao.updateCampSegInfo(segInfo);
-			
-			
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-			return "提交失败，失败原因：" + e.getMessage();
-		}
 
-        
-		return "提交审批成功";
+		return "1";
 	}
 	
 	@Override
